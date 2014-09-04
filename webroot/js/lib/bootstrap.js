@@ -93,7 +93,7 @@ window.XBS = {
 		return true;
 	},
 	foldSplash: function() {
-
+		var barslide = function() {};
 	}
 
 }
