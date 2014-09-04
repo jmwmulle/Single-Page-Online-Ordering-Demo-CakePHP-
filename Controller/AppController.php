@@ -128,7 +128,85 @@ class AppController extends Controller {
 	}
 
 
+static function data_attr($data, $quotes = "\"", $false_behavior = "int", $true_behavior = "int") {
+		// determines how boolean values should be represented in the attribute
+		$true_behaviors  = array( "int", "string" );
+		$false_behaviors = array( "int", "string", "null", "remove", "attr" );
 
+		//todo: consider throwing errors here; incorrect false behavior could fuck up a lot of stuff...
+		if ( !in_array( $true_behavior, $true_behaviors ) ) {
+			$true_behavior = "int";
+		}
+		if ( !in_array( $false_behavior, $false_behaviors ) ) {
+			$false_behavior = "int";
+		}
+		if ( $quotes != "'" && $quotes != "\"" && $quotes != "`" ) { /*todo: throw an error*/;
+		}
+
+		$data_attributes = array();
+		$switchQuotes    = false;
+		foreach ( $data as $attr => $val ) {
+			$remove = false;
+			if ( $val === true ) {
+				if ( $true_behavior == "int" ) {
+					$val = "1";
+				}
+				else {
+					$val = "true";
+				}
+			}
+			if ( $val === false ) {
+				switch ( $false_behavior ) {
+					case "string":
+						$val = "false";
+						break;
+					case "int":
+						$val = 0;
+						break;
+					case "remove":
+						$remove = true;
+						break;
+					case "null":
+						$val = "null";
+						break;
+					default:
+						$val = null; // ie. attr; this line does nothing but keep things visually tidy
+				}
+			}
+			if ( is_array( $val ) ) { // assume this should be an js array or object
+				$vStr = "";
+				if ( AppController::is_associative_array( $val ) ) {
+					$kvPairs = array();
+					foreach ( $val as $k => $v ) {
+						$v          = str_replace( [ "'", '"' ], [ "&#39;", "&quot;" ], $v );
+						$kvPairs[ ] = '"' . $k . '":"' . $v . '"';
+					}
+					$vStr = "{" . implode( ", ", $kvPairs ) . "}";
+				}
+				else {
+					$vStr = '["' . implode( '", "', $val ) . '"]';
+				}
+				$switchQuotes = true;
+				$val          = $vStr;
+			}
+
+			if ( !$remove ) {
+				if ( $switchQuotes ) {
+					$quotes = $quotes === "\"" ? "'" : "\"";
+				}
+				$attr     = str_replace( array( "_", " " ), array( "-", "-" ), $attr );
+				$data_str = $val === null ||
+				            !isset( $val ) ? "data-$attr" : str_replace( "%QT", $quotes, "data-$attr=%QT$val%QT" );
+				array_push( $data_attributes, $data_str );
+				if ( $switchQuotes ) {
+					$quotes       = $quotes === "\"" ? "'" : "\"";
+					$switchQuotes = false;
+				}
+			}
+		}
+
+		return implode( " ", $data_attributes );
+	}
 
 
 	static function as_file_name($string) {

@@ -9,6 +9,7 @@ window.XBS = {
 	init: function() {
 		var initStatus = true;
 		var sitRep = {
+			layoutInit: XBS.layoutInit(),
 			scaleSplash: XBS.scaleSplash(),
 			jqBinds:XBS.jqBinds()
 		};
@@ -19,7 +20,7 @@ window.XBS = {
 				/* I do not know if throwing an error is the best approach, here (I've also made no attempt to catch it).
 				   I do know that if this has failed, the site isn't going any further; could just as easily return false
 				   and be handled elsewhere/later. */
-				throw "Bootstrap failed. We're probably under attack. Hide 'ya kids."
+				throw "Bootstrap failed: "+initEl+" failed.";
 			}
 		}
 
@@ -35,10 +36,30 @@ window.XBS = {
 	jqBinds: function() {
 		$(window).on("resize", XBS.scaleSplash);
 
+		//splash redirects
+		$("section#splash *[data-splash-redirect]").each(function() {
+			var data = $(this).data();
+			$(this).on(data.on,null,data.splashRedirect, XBS.foldSplash);
+		});
+
+		//contingent aspect ratios
+		$(window).on("resize", ".preserve-aspect-ratio",null,XBS.assertAspectRatio);
+		return true;
+	},
+	layoutInit: function() {
+		$(".preserve-aspect-ratio").each(function() {
+			var data = $(this).data("aspectRatio");
+			XBS.assertAspectRatio(this, Number(data.x) / Number(data.y), data.respect);
+		});
+
+		$(".detach").each(function() {
+			XBS.detach(this);
+		});
+
 		return true;
 	},
 	scaleSplash: function() {
-		var splashbarTop = $(".splash-bar").offset().top;
+		var splashbarTop = $(XSM.splash.splashBar).offset().top;
 		var scaleFactor = 570/splashbarTop;
 		var dealDim = [splashbarTop, scaleFactor *400];
 		var dealLeft = String(((window.innerWidth - dealDim[1]) / 2)+( 1.25 * $("#order").innerWidth())) +"px";
@@ -92,9 +113,54 @@ window.XBS = {
 
 		return true;
 	},
-	foldSplash: function() {
-		var barslide = function() {};
-	}
+	detach: function(element) {
+		var height = $(element).innerHeight();
+		$(element).css({height:height});
+		return this;
+	},
+	assertAspectRatio: function(selector, ratio, respect) {
+		// make sure the ratio is indeed a ratio
+		if (!isInt(ratio) && !isFloat(ratio)) {
+			var ratioVals = ratio.split("/");
+			if (ratioVals.length !== 2) throw "Invalid value for argument 'ratio'; must be int, float or string matching n/m";
+			ratio = Number(ratioVals[0]) / Number(ratioVals[1]);
+		}
 
+		var dimensions = {width:$(selector).innerWidth(), height:$(selector).innerHeight()};
+		if (respect != "y") {
+			dimensions.height = dimensions.width / ratio;
+		} else {
+			dimensions.width = dimensions.height * ratio;
+		}
+		$(selector).css(dimensions);
+	},
+	fasten: function(selector) {
+		//todo: error handling & logic for objects vs arrays
+		var selectors = ( isArray(selector) ) ? selector : [selector];
+		for (i in selectors) {
+			var sel = selectors[i];
+			var offset = $(sel).offset();
+			var dims = $(sel).css(['height','width']);
+//			pr(dims, "dims");
+			$(sel).css({position:"fixed", top:offset.top, left:offset.left, height:dims.height, width:dims.width});
+		}
+		return  (isArray(selector) ) ? selector : $(selector);
+	},
+	foldSplash: function(destination) {
+		XBS.fasten([XSM.splash.splashBar,XSM.splash.logo, XSM.splash.menu]);
+
+		var logoZoomFade = function() {
+			$(XSM.splash.logo).animate({opacity:0,height:"100%", width:"100%"},500,"linear")
+			//$(XSM.splash.logo).animate({opacity:0,height:"100%", width:"100%"},200,"linear")
+			return true;
+		};
+
+		var barslide = function() {
+		//	$(XSM.splash.splashBar).animate({left:String(-1.1 * window.innerWidth)+"px"}, 300, "easeInCubic", logoZoomFade);
+		};
+
+		barslide();
+	}
 }
 
+/* JONO: USE THIS WHEN THE TIME COMES TO ASSESS THE HEIGHT OF ORBCARS ON SCREENL: https://github.com/imakewebthings/jquery-waypoints */

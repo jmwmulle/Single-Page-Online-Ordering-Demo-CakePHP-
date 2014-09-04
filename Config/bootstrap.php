@@ -123,9 +123,9 @@ function ___strToSel($parts, $type = null) {
 	return AppController::str_to_selector($parts, $type);
 }
 
-//function ___dA($data, $quotes="\"", $false_behavior = "int", $true_behavior = "int") {
-//	return AppController::data_attr($data, $quotes, $false_behavior, $true_behavior);
-//}
+function ___dA($data, $quotes="\"", $false_behavior = "int", $true_behavior = "int") {
+	return AppController::data_attr($data, $quotes, $false_behavior, $true_behavior);
+}
 
 function ___asClockTime($time, $unit = SECS) {
 	return AppController::asClockTime($time, $unit);

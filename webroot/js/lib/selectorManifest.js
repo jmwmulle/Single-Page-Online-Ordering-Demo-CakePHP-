@@ -15,8 +15,9 @@ var XSM = {
 	splash:{
 		cont:"#splash-pane",
 		circle:"#splash-circle",
-		bar1:".splash-bar:nth-of-type(1)",
-		bar2:".splash-bar:nth-of-type(2)"
+		splashBar:"#splash-bar",
+		logo:"#splash-logo",
+		menu:"#menu"
 	}
 }
 

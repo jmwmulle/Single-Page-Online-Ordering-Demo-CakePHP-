@@ -2,118 +2,136 @@
   @return (100% - $sibling-height) /2;
 }
 
-
 section#splash.pane {
-  position:fixed;
-  top:0;
-  left:2000px;
-  width:100%;
-  height:100%;
-  background-image: url('../img/splash/pizza-bg.jpg');
-  background-size:cover, 30%;
-  background-repeat:no-repeat;
-  z-index:9000;
-  vertical-align:middle;
-  div, a { position:relative;}
+  position          : fixed;
+  top               : 0;
+  left              : 0;
+  width             : 100%;
+  height            : 100%;
+  background-image  : url('../img/splash/pizza-bg.jpg');
+  background-size   : cover, 30%;
+  background-repeat : no-repeat;
+  z-index           : 9000;
+  vertical-align    : middle;
+  div, a { position : relative; }
 
   #grand-opening-deal {
-    position:fixed;
-    margin:0 auto;
-    z-index:9050;
-    background-image: url('../img/splash/deal.png');
-    background-repeat:no-repeat;
-    background-size:contain;
-    width:rem-calc(400px);
-    height:rem-calc(570px);
+    position          : fixed;
+    margin            : 0 auto;
+    z-index           : 9050;
+    background-image  : url('../img/splash/deal.png');
+    background-repeat : no-repeat;
+    background-size   : contain;
+    width             : rem-calc(400px);
+    height            : rem-calc(570px);
     @include mouse-memoirs;
-    color:$text-grey;
-//    padding-top:rem-calc(120px);
-//    padding-left:rem-calc(60px);
+    color             : $text-grey;
+    //    padding-top:rem-calc(120px);
+    //    padding-left:rem-calc(60px);
     div:first-of-type {
-      h3,h4 { font-family: inherit; }
+      h3, h4 { font-family : inherit; }
       h3 {
-        text-transform:uppercase;
-        color: $text-grey;
+        text-transform : uppercase;
+        color          : $text-grey;
         ul {
-          padding:0;
-          margin:0;
-          width:60%;
-          display:inline-block;
+          padding : 0;
+          margin  : 0;
+          width   : 60%;
+          display : inline-block;
           li {
-          list-style-type:none;
-            display:inline-block;
-            background-repeat:no-repeat;
-            background-size:cover;
-            width: rem-calc(30px);
-            height: rem-calc(30px);
-            &.facebook { background-image:url('../img/splash/facebook_icon.png');}
-            &.gplus { background-image:url('../img/splash/gplus_icon.png');}
-            &.twitter { background-image:url('../img/splash/twitter_icon.png');}
-            &.email { background-image:url('../img/splash/email_icon.png');}
+            list-style-type   : none;
+            display           : inline-block;
+            background-repeat : no-repeat;
+            background-size   : cover;
+            width             : rem-calc(30px);
+            height            : rem-calc(30px);
+            &.facebook { background-image : url('../img/splash/facebook_icon.png'); }
+            &.gplus { background-image : url('../img/splash/gplus_icon.png'); }
+            &.twitter { background-image : url('../img/splash/twitter_icon.png'); }
+            &.email { background-image : url('../img/splash/email_icon.png'); }
           }
         }
       }
-      padding:rem-calc(20px);
+      padding : rem-calc(20px);
     }
   }
-  a { @include unselectable;}
+  a { @include unselectable; }
   .spacer {
-    height:spacer-height($splash-content-height);
-    width:100%;
+    height : spacer-height($splash-content-height);
+    width  : 100%;
   }
   .content {
-    margin:0;
-    height:$splash-content-height;
+    margin : 0;
+    height : $splash-content-height;
+    width  : 100%;
+    .wrapper { width:inherit; height:100%;}
+  }
+  #splash-circle-wrapper {
     width:100%;
-    #splash-circle {
-      min-height:rem-calc(600px);
-      height:100%;
-      min-width:rem-calc(600px);
-      width:auto;
-      background-image: url('../img/splash/bluecircle.png');
-      background-position:center;
-      background-size:contain;
-      background-repeat:no-repeat;
-      #order, #menu {
-        display:block;
-        height:spacer-height($splash-bar-height);
-        width:rem-calc(392px);
-        margin: 0 auto;
-        background-repeat:no-repeat;
-        background-size:auto 50%;
-        transition:background-image 0.3s ease-out;
-      }
-      #order {
-        background-image:url("../img/splash/order_soon.png");
-        background-position:center 80%;
-        cursor:default;
-      }
-      #menu {
-        background-image:url("../img/splash/menu.png");
-        background-position:center 20%;
-        &:hover {  background-image:url("../img/splash/menu_hover.png");}
-      }
-    .splash-bar {
-      position:relative;
-      width:100%;
-      height:$splash-bar-height;
-      @include splash-bar-gradient;
-      border-top:1px solid $dark-grey;
-      border-bottom:1px solid $dark-grey;
-        .spacer  {height:spacer-height($splash-logo-height);}
-        #splash-logo {
-          z-index:9030;
-          height:90%;
-          width:auto;
-          position:relative;
-          margin: 0 auto;
-          background-image:url('../img/splash/logo.png');
-          background-repeat:no-repeat;
-          background-position:center center;
-          background-size:contain;
-        }
-      }
-    }
+    perspective:600px;
+  }
+  #splash-circle {
+    min-height          : rem-calc(600px);
+    height              : 100%;
+    min-width           : rem-calc(600px);
+    width               : auto;
+    background-image    : url('../img/splash/bluecircle.png');
+    background-position : center;
+    background-size     : contain;
+    background-repeat   : no-repeat;
+//    &.stow {
+//      transform:
+//    }
+  }
+  #order, #menu {
+    display           : block;
+    height            : spacer-height($splash-bar-height);
+    width             : rem-calc(392px);
+    margin            : 0 auto;
+    background-repeat : no-repeat;
+    background-size   : auto 50%;
+    transition        : background-image 0.3s ease-out;
+  }
+  #order {
+    background-image    : url("../img/splash/order_soon.png");
+    background-position : center 80%;
+    cursor              : default;
+  }
+  #menu {
+    min-width:rem-calc(175px);
+    background-image    : url("../img/splash/menu.png");
+    background-position : center 20%;
+    &:hover { background-image : url("../img/splash/menu_hover.png"); }
+  }
+  #splash-bar-wrapper {
+    position      : relative;
+    width         : 100%;
+    height        : $splash-bar-height;
+    .spacer { height : spacer-height($splash-logo-height); }
+  }
+  #splash-bar {
+    position      : relative;
+    width         : 100%;
+    height:100%;
+    @include splash-bar-gradient;
+    border-top    : 1px solid $dark-grey;
+    border-bottom : 1px solid $dark-grey;
+  }
+  #splash-logo-wrapper {
+    z-index  : 9030;
+    height   : 90%;
+    width    : auto;
+    position : relative;
+    margin   : 0 auto;
+  }
+  #splash-logo {
+    background-image    : url('../img/splash/logo.png');
+    background-repeat   : no-repeat;
+    background-position : center center;
+    background-size     : contain;
+    height:100%;
+    min-width:rem-calc(175px);
+    margin:0 auto;
   }
 
 }

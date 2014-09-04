@@ -16,17 +16,24 @@
 	</div>
 	<div class="spacer"></div>
 	<div class="content">
-		<div id="splash-circle">
-			<a href="#" id="order">&nbsp;
+		<div id="splash-circle-wrapper" class="detach wrapper">
+			<div id="splash-circle" class="detach">
+				<a href="#" id="order">&nbsp;
 
-			</a>
-			<div class="splash-bar">
-				<div class="spacer"></div>
-				<div id="splash-logo">
-
+				</a>
+				<div id="splash-bar-wrapper">
+					<div id="splash-bar" class="detach">
+						<div class="spacer"></div>
+						<div id="splash-logo-wrapper">
+							<div id="splash-logo" class="preserve-aspect-ratio" <?php echo ___dA(array('aspect-ratio' => array('x'=>552,'y'=>274, 'respect'=> 'y')));?>></div>
+						</div>
+					</div>
+				</div>
+				<div class="wrapper">
+					<?php $menuAttr = array("splash-redirect" => "pages/menu", 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
+					<a href="#" id="menu" <?php echo ___dA($menuAttr);?> data-on="click">&nbsp;</a>
 				</div>
 			</div>
-			<a href="#" data-splash-redirect="pages/menu">&nbsp;</a>
 		</div>
 	</div>
 </section>

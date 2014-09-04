@@ -14,7 +14,8 @@
 			"//code.jquery.com/ui/1.11.1/jquery-ui.js",
 			"utilities",
 			"/bower_components/foundation/js/foundation.min",
-			"lib/bootstrap"), array('block' => 'app'));
+			"lib/bootstrap",
+			"application"), array('block' => 'app'));
 	?>
 </head>
 <body>
