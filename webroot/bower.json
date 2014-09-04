@@ -1,0 +1,13 @@
+{
+  "name": "foundation-libsass-template",
+  "dependencies": {
+    "foundation": "zurb/bower-foundation"
+  },
+  "devDependencies": {
+    "ember": "~1.7.0",
+    "ember-data": "~0.0.14"
+  },
+  "resolutions": {
+    "ember": "~1.7.0"
+  }
+}

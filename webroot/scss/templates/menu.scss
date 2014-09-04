@@ -1,0 +1,96 @@
+main#menu.pane {
+  // strange_bullseyes.jpg -> source: http://subtlepatterns.com, author: Christopher Buecheler (http://cwbuecheler.com)
+  background-image    : url("../img/xtreme-red-gradient.png"), url("../img/strange_bullseyes.png");
+  background-repeat   : repeat-x, repeat;
+  background-position : left 1rem, top left;
+  background-size     : 100% rem-calc(90px), auto auto;
+  .xtreme-blue {
+    background-color : $xtreme-blue;
+    &:first-of-type { height : 1em; }
+  }
+  ul {
+    list-style-type : none;
+    margin          : 0;
+  }
+  * { font-size : inherit; }
+  nav {
+    &#topnav {
+      font-size   : $h1-font-size;
+      font-weight : normal;
+      @include Fredericka;
+      ul {
+        padding : 0;
+        margin  : 0;
+        height  : rem-calc(90px);
+        li {
+          margin-bottom  : 0;
+          padding-bottom : 0;
+          height         : inherit;
+          line-height    : rem-calc(90px);
+          &.ornament {
+            height              : inherit;
+            background-image    : url("../img/ornament.png");
+            background-size     : 50%;
+            background-repeat   : no-repeat;
+            background-position : center center;
+            &.right {
+            }
+          }
+        }
+      }
+
+    }
+
+    &#subnav {
+      height      : 2000px;
+      padding-top : 2rem;
+      text-align  : center;
+      @include mouse-memoirs;
+
+      ul {
+        list-style-type : none;
+        text-align      : center;
+        margin          : 0;
+        li {
+          height           : 12rem;
+          border-radius    : 1rem;
+          background-color : darken($xtreme-blue, 10%);
+          box-shadow       : inset 0px 0px 5px $black-a50;
+          margin-bottom    : 1rem;
+          font-size        : 2rem;
+          line-height      : 20rem;
+        }
+      }
+    }
+
+    &#subnav-toc {
+      background-color : $white-a33;
+      box-shadow       : 0px 0px 1rem $black-a33;
+      min-height       : 2000px;
+      ul {
+        @include HelveticaBlCn;
+        color          : $black;
+        font-weight    : bold;
+        text-transform : uppercase;
+        li {
+          list-style-position : inside;
+          list-style-image    : url("../img/toc_sm_square.png");
+          line-height         : 3rem;
+          &.neighbour { list-style-image : url("../img/toc_med_square.png"); }
+          &.screen-center { list-style-image : url("../img/toc_lrg_square.png"); }
+        }
+      }
+    }
+  }
+  section#menu-content {
+    margin-top:1rem;
+    ul.orb-list li {
+      border-radius : 1rem;
+      background-color:$white;
+      box-shadow    : 0 rem-calc(12px) rem-calc(36px) $black-a33;
+      min-height: 16rem;
+      margin-bottom:2rem;
+    }
+  }
+
+}

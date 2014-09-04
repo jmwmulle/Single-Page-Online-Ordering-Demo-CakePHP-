@@ -1,0 +1,68 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '--save-dev',
+1 verbose cli   'ember-extension-support' ]
+2 info using npm@1.3.14
+3 info using node@v0.10.22
+4 warn package.json foundation-libsass-template@0.0.1 No repository field.
+5 verbose readDependencies using package.json deps
+6 verbose cache add [ 'ember-extension-support', null ]
+7 verbose cache add name=undefined spec="ember-extension-support" args=["ember-extension-support",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: 'ember-extension-support',
+8 verbose parsed url   path: 'ember-extension-support',
+8 verbose parsed url   href: 'ember-extension-support' }
+9 silly lockFile 65a2dbc6-ember-extension-support ember-extension-support
+10 verbose lock ember-extension-support /Users/jono/.npm/65a2dbc6-ember-extension-support.lock
+11 silly lockFile 65a2dbc6-ember-extension-support ember-extension-support
+12 silly lockFile 65a2dbc6-ember-extension-support ember-extension-support
+13 verbose addNamed [ 'ember-extension-support', '' ]
+14 verbose addNamed [ null, '*' ]
+15 silly lockFile 9af9ed65-ember-extension-support ember-extension-support@
+16 verbose lock ember-extension-support@ /Users/jono/.npm/9af9ed65-ember-extension-support.lock
+17 silly addNameRange { name: 'ember-extension-support', range: '*', hasData: false }
+18 verbose url raw ember-extension-support
+19 verbose url resolving [ 'https://registry.npmjs.org/', './ember-extension-support' ]
+20 verbose url resolved https://registry.npmjs.org/ember-extension-support
+21 info trying registry request attempt 1 at 23:07:15
+22 http GET https://registry.npmjs.org/ember-extension-support
+23 http 404 https://registry.npmjs.org/ember-extension-support
+24 silly registry.get cb [ 404,
+24 silly registry.get   { date: 'Tue, 02 Sep 2014 02:07:39 GMT',
+24 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+24 silly registry.get     'content-type': 'application/json',
+24 silly registry.get     'cache-control': 'max-age=0',
+24 silly registry.get     'content-length': '52',
+24 silly registry.get     'accept-ranges': 'bytes',
+24 silly registry.get     via: '1.1 varnish',
+24 silly registry.get     age: '0',
+24 silly registry.get     'x-served-by': 'cache-jfk1030-JFK',
+24 silly registry.get     'x-cache': 'MISS',
+24 silly registry.get     'x-cache-hits': '0',
+24 silly registry.get     'x-timer': 'S1409623658.722877,VS0,VE358',
+24 silly registry.get     'keep-alive': 'timeout=10, max=50',
+24 silly registry.get     connection: 'Keep-Alive' } ]
+25 silly lockFile 9af9ed65-ember-extension-support ember-extension-support@
+26 silly lockFile 9af9ed65-ember-extension-support ember-extension-support@
+27 error 404 'ember-extension-support' is not in the npm registry.
+27 error 404 You should bug the author to publish it
+27 error 404
+27 error 404 Note that you can also install from a
+27 error 404 tarball, folder, or http url, or git url.
+28 error System Darwin 13.1.0
+29 error command "node" "/usr/local/bin/npm" "install" "--save-dev" "ember-extension-support"
+30 error cwd /Library/WebServer/Documents/xtreme/app/webroot
+31 error node -v v0.10.22
+32 error npm -v 1.3.14
+33 error code E404
+34 verbose exit [ 1, true ]

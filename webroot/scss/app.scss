@@ -1,0 +1,16 @@
+@import "defs";
+@import "palette";
+
+// foundation imports
+@import "settings";
+@import "foundation";
+
+// SITEWIDE
+@import "structure";
+@import "typography";
+
+// TEMPLATES                // z-indices
+@import "templates/splash"; // 9000-series
+@import "templates/menu";   // 8000-series
+
+

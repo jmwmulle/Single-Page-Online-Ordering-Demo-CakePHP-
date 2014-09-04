@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "Helvetica Neue Condensed Black";
+  src: url("../files/HelveticaNeueLTStd-BlkCn.otf");
+}
+
+@mixin mouse-memoirs {
+  font-family:"Mouse Memoirs", sans-serif;
+}
+
+@mixin Fredericka {
+  font-family:"Fredericka the Great", sans-serif;
+}
+
+@mixin HelveticaBlCn {
+  font-family:"Helvetica Neue Condensed Black", arial, sans-serif;
+}

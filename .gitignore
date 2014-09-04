@@ -1,0 +1,9 @@
+.idea
+.idea/*
+.htaccess
+.DS_Store
+tmp/
+tmp/*
+webroot/jonsauce
+webroot/jonsauce/*
+Config/database.php
