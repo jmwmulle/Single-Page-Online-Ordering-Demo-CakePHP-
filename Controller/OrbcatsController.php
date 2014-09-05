@@ -118,10 +118,6 @@ class OrbcatsController extends AppController {
 			$o['config'] = json_decode($o['config'], true);
 			$orbs[0]['Orb'][$i] = $o;
 		}
-
-	public function beforeFilter() {
-		parent::beforeFilter();
-		$this->Auth->allow('index', 'view');
 		$orbs = $orbs[0]['Orb'];
 		foreach($subnav as $i => $oc) {
 			$subnav[$i] = array('label' => $oc,
@@ -132,5 +128,10 @@ class OrbcatsController extends AppController {
 		$here = 'Menu';
 		$topnav = array("Menu", "Favs");
 		$this->set(compact('active','orbs','here','topnav','subnav','toc'));
+	}
+
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('index', 'view');
 	}
 }

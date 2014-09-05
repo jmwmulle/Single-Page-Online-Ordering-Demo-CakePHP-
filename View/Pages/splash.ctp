@@ -23,7 +23,7 @@
 				<div id="order-wrapper" class="wrapper">
 					<div class="spacer">&nbsp;</div>
 					<?php $orderAttr = array("splash-redirect" => "pages/order", 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
-					<a href="#" id="order" <?php echo ___dA($orderAttr);?> data-on="click">&nbsp;</a>
+					<a href="#" id="order" <?php //echo ___dA($orderAttr);?> data-on="click">&nbsp;</a>
 				</div>
 				<div id="splash-bar-wrapper" class="detach wrapper">
 					<div id="splash-bar" class="detach">
