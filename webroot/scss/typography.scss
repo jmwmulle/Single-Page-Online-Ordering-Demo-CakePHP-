@@ -14,3 +14,5 @@
 @mixin HelveticaBlCn {
   font-family:"Helvetica Neue Condensed Black", arial, sans-serif;
 }
+
+h2.orb-card { @include HelveticaBlCn;}

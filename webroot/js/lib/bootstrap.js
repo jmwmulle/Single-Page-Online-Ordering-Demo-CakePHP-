@@ -6,11 +6,10 @@
  */
 
 window.XBS = {
-	init: function() {
+	init: function(isSplash) {
 		var initStatus = true;
 		var sitRep = {
-			layoutInit: XBS.layoutInit(),
-			scaleSplash: XBS.scaleSplash(),
+			layoutInit: XBS.layoutInit(isSplash),
 			jqBinds:XBS.jqBinds()
 		};
 
@@ -39,14 +38,23 @@ window.XBS = {
 		//splash redirects
 		$("section#splash *[data-splash-redirect]").each(function() {
 			var data = $(this).data();
-			$(this).on(data.on,null,data.splashRedirect, XBS.foldSplash);
+			$(this).on(data.on,null,{route:data.splashRedirect}, XBS.splashRedirect);
 		});
+
+		$("*[data-scroll-to]").each(function() {
+				$(this).on("click", function() {
+					var scroll = $(this).data();
+					var top = $(asId(scroll.scrollTo)).offset().top;
+					$(scroll.scrollTarget).animate({marginTop:String(-1 * top)+"px"});
+				});
+		});
+
 
 		//contingent aspect ratios
 //		$(".preserve-aspect-ratio").on("resize",XBS.assertAspectRatio);
 		return true;
 	},
-	layoutInit: function() {
+	layoutInit: function(isSplash) {
 		//fix menu & order margins
 		var opad = String($(XSM.splash.menuWrap).innerHeight() * 0.45)+"px";
 		var mpad = String($(XSM.splash.menuWrap).innerHeight() * 0.15)+"px";
@@ -63,6 +71,10 @@ window.XBS = {
 		$(".detach").each(function() {
 			XBS.detach(this);
 		});
+
+		if (isSplash) {
+			XBS.scaleSplash();
+		}
 
 		return true;
 	},
@@ -117,7 +129,11 @@ window.XBS = {
 		}
 		return  (isArray(selector) ) ? selector : $(selector);
 	},
-	foldSplash: function(destination) {
+	splashRedirect: function(route) {
+		if (isEvent(route) ) route = route.data.route;
+		XBS.foldSplash(route);
+	},
+	foldSplash: function(route) {
 		XBS.fasten([XSM.splash.splashBar,XSM.splash.logo]);
 		var logo = $(XSM.splash.logo).clone().attr('id', stripCSS(XSM.splash.logoClone));
 		var logoLoc = $(XSM.splash.logo).offset();
@@ -129,11 +145,13 @@ window.XBS = {
 				$(this).hide();
 				$(XSM.splash.circleWrap).css({});
 							$(XSM.splash.circle).addClass("flipped");
-							$(XSM.splash.circle).animate({transform:"rotafdteY(640deg)"}, 1000,"linear", function() {
-								$(XSM.splash.logoClone).hide("puff");
-								$("#splash").fadeOut();
-							});
+				//todo: use modernizr to do this more effectively
+					//		$(XSM.splash.circle).animate({transform:"rotafdteY(640deg)"}, 1000,"linear", function() {
+								$(XSM.splash.logoClone).hide("puff", function() {window.location.replace(route)});
+//								$("#splash").fadeOut();
+					//		});
 			});
+		return true;
 	}
 }
 

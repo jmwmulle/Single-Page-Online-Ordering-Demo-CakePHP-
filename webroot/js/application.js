@@ -1,2 +1,2 @@
 $(document).foundation();
-XBS.init();
+XBS.init(isSplash);

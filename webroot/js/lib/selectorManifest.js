@@ -12,6 +12,10 @@
 
 var XSM = {
 	global:{},
+	main: {
+		toc: "#subnav-toc",
+		tocListItem:"#subnav-toc li"
+	},
 	splash:{
 		cont:"#splash-pane",
 		circle:"#splash-circle",

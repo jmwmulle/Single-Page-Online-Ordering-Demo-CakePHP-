@@ -34,7 +34,7 @@
 					</div>
 				</div>
 				<div id="menu-wrapper" class="wrapper">
-					<?php $menuAttr = array("splash-redirect" => "pages/menu", 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
+					<?php $menuAttr = array("splash-redirect" => "menu", 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
 					<div class="spacer"></div>
 					<a href="#" id="menu" <?php echo ___dA($menuAttr);?> data-on="click">&nbsp;</a>
 				</div>

@@ -107,6 +107,26 @@ class OrbcatsController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
-	public function menu($orbcat) {
+	public function menu($id = null) {
+		$active = (!$id || !$this->Orbcat->exists()) ? 1 : $id;
+		$orbs = $this->Orbcat->find('all', array('recursive' => 1, "conditions" => array("`Orbcat`.`id`" => $active)));
+		$subnav = $this->Orbcat->find('list');
+		$toc = array();
+		foreach($orbs[0]['Orb'] as $i => $o) {
+			$toc[$o['id']] = $o['title'];
+			$o['price_matrix'] = json_decode($o['price_matrix'], true);
+			$o['config'] = json_decode($o['config'], true);
+			$orbs[0]['Orb'][$i] = $o;
 		}
+		$orbs = $orbs[0]['Orb'];
+		foreach($subnav as $i => $oc) {
+			$subnav[$i] = array('label' => $oc,
+			                     'url' => ___cakeUrl('orbcats','menu', $i),
+			                     'active' => $i == $id ? true : false
+			);
+		}
+		$here = 'Menu';
+		$topnav = array("Menu", "Favs");
+		$this->set(compact('active','orbs','here','topnav','subnav','toc'));
+	}
 }
