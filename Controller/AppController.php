@@ -178,7 +178,7 @@ static function data_attr($data, $quotes = "\"", $false_behavior = "int", $true_
 				if ( AppController::is_associative_array( $val ) ) {
 					$kvPairs = array();
 					foreach ( $val as $k => $v ) {
-						$v          = str_replace( [ "'", '"' ], [ "&#39;", "&quot;" ], $v );
+						$v          = str_replace( array( "'", '"' ), array( "&#39;", "&quot;" ), $v );
 						$kvPairs[ ] = '"' . $k . '":"' . $v . '"';
 					}
 					$vStr = "{" . implode( ", ", $kvPairs ) . "}";

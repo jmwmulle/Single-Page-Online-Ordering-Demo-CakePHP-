@@ -43,14 +43,22 @@ window.XBS = {
 		});
 
 		//contingent aspect ratios
-		$(window).on("resize", ".preserve-aspect-ratio",null,XBS.assertAspectRatio);
+//		$(".preserve-aspect-ratio").on("resize",XBS.assertAspectRatio);
 		return true;
 	},
 	layoutInit: function() {
+		//fix menu & order margins
+		var opad = String($(XSM.splash.menuWrap).innerHeight() * 0.45)+"px";
+		var mpad = String($(XSM.splash.menuWrap).innerHeight() * 0.15)+"px";
+		$(XSM.splash.orderSpacer).css({height:opad});
+		$(XSM.splash.menuSpacer).css({height:mpad});
+
 		$(".preserve-aspect-ratio").each(function() {
+			$(this).removeAttr("style");
 			var data = $(this).data("aspectRatio");
 			XBS.assertAspectRatio(this, Number(data.x) / Number(data.y), data.respect);
 		});
+
 
 		$(".detach").each(function() {
 			XBS.detach(this);
@@ -62,61 +70,24 @@ window.XBS = {
 		var splashbarTop = $(XSM.splash.splashBar).offset().top;
 		var scaleFactor = 570/splashbarTop;
 		var dealDim = [splashbarTop, scaleFactor *400];
-		var dealLeft = String(((window.innerWidth - dealDim[1]) / 2)+( 1.25 * $("#order").innerWidth())) +"px";
+		var dealLeft = String( (window.innerWidth / 2) + (.33 * $("#order").innerWidth()) ) +"px";
 		$("#grand-opening-deal").css({
-			height:dealDim[0]+"px",
-			width:dealDim[1]+"px",
+			height:String(1.08 * dealDim[0])+"px",
+			width:String(1.08 * dealDim[1])+"px",
 			left:dealLeft
-//			paddingTop:scaleFactor * 120,
-//			paddingLeft:scaleFactor * 60
-		}).on("click", function() {
-			pr("wtf?");
-			$("body").append("<div id='hide-pane'><div id='register-now'></div></div>");
-			$('#hide-pane').css({
-				position:"fixed",
-				display:"none",
-				width:"100%",
-				height:"100%",
-				zIndex: "99999",
-				backgroundColor:"rgba(0,0,0,.3)"
-			}).fadeIn();
-			$('#register-now').css({
-				display:"none",
-				position:"relative",
-			   width:"800px",
-			   height:"550px",
-				padding:"24px",
-			   margin:"10% auto",
-			   zIndex:"9999",
-				background: "#feffff",
-				background: "-moz-linear-gradient(top,  #feffff 0%, #ddf1f9 35%, #a0d8ef 100%)",
-				background: "-webkit-gradient(linear, left top, left bottom, color-stop(0%,#feffff), color-stop(35%,#ddf1f9), color-stop(100%,#a0d8ef))",
-				background: "-webkit-linear-gradient(top,  #feffff 0%,#ddf1f9 35%,#a0d8ef 100%)",
-				background: "-o-linear-gradient(top,  #feffff 0%,#ddf1f9 35%,#a0d8ef 100%)",
-				background: "-ms-linear-gradient(top,  #feffff 0%,#ddf1f9 35%,#a0d8ef 100%)",
-				background: "linear-gradient(to bottom,  #feffff 0%,#ddf1f9 35%,#a0d8ef 100%)",
-				filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#a0d8ef',GradientType=0 )",
-			   border:"5px solid rgb(255,255,255)",
-			   boxShadow:"0 15px 15px rgba(0,0,0,.3)"}).toggle("fadeIn");
-				$.get("users/add").done(function(resp) {
-					pr(resp);
-					$('#register-now').html(resp);
-				});
-			$("#hide-pane").on("click", function() {
-				$("#register-now").fadeOut();
-				$(this).fadeOut().remove();
-			});
-
-
-
 		});
-
+		$(".fastened").attr('style', '').removeClass('fastened');
+		$(".detach").attr('style', '');
+		XBS.layoutInit();
 		return true;
 	},
 	detach: function(element) {
+		var isStatic = $(element).data('static');
+
 		var height = $(element).innerHeight();
 		$(element).css({height:height});
-		return this;
+		if (isStatic) XBS.fasten(element);
+		return $(element);
 	},
 	assertAspectRatio: function(selector, ratio, respect) {
 		// make sure the ratio is indeed a ratio
@@ -141,25 +112,28 @@ window.XBS = {
 			var sel = selectors[i];
 			var offset = $(sel).offset();
 			var dims = $(sel).css(['height','width']);
-//			pr(dims, "dims");
-			$(sel).css({position:"fixed", top:offset.top, left:offset.left, height:dims.height, width:dims.width});
+
+			$(sel).css({position:"fixed", top:offset.top, left:offset.left, height:dims.height, width:dims.width}).addClass("fastened");
 		}
 		return  (isArray(selector) ) ? selector : $(selector);
 	},
 	foldSplash: function(destination) {
-		XBS.fasten([XSM.splash.splashBar,XSM.splash.logo, XSM.splash.menu]);
-
-		var logoZoomFade = function() {
-			$(XSM.splash.logo).animate({opacity:0,height:"100%", width:"100%"},500,"linear")
-			//$(XSM.splash.logo).animate({opacity:0,height:"100%", width:"100%"},200,"linear")
-			return true;
-		};
-
-		var barslide = function() {
-		//	$(XSM.splash.splashBar).animate({left:String(-1.1 * window.innerWidth)+"px"}, 300, "easeInCubic", logoZoomFade);
-		};
-
-		barslide();
+		XBS.fasten([XSM.splash.splashBar,XSM.splash.logo]);
+		var logo = $(XSM.splash.logo).clone().attr('id', stripCSS(XSM.splash.logoClone));
+		var logoLoc = $(XSM.splash.logo).offset();
+		$(logo).css({position:"fixed",top:logoLoc.top, left:logoLoc.left,zIndex:"9999999"});
+		$("#splash").append(logo);
+		$(XSM.splash.logo).remove();
+		$(XSM.splash.splashBar).animate({left:String(-1.1 * window.innerWidth)+"px"}, 300, "easeInCubic",
+			function() {
+				$(this).hide();
+				$(XSM.splash.circleWrap).css({});
+							$(XSM.splash.circle).addClass("flipped");
+							$(XSM.splash.circle).animate({transform:"rotafdteY(640deg)"}, 1000,"linear", function() {
+								$(XSM.splash.logoClone).hide("puff");
+								$("#splash").fadeOut();
+							});
+			});
 	}
 }
 

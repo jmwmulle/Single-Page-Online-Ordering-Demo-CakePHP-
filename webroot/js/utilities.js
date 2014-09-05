@@ -145,7 +145,7 @@ function selToStr(str) {
 }
 
 
-function stripCssDelimeters(selector) {
+function stripCSS(selector) {
 	return selector.substring(0,1) == "." || selector.substring(0,1) == "#" ? selector.substring(1) : selector;
 }
 

@@ -18,9 +18,10 @@
 			"application"), array('block' => 'app'));
 	?>
 </head>
-<body>
+<body id="body-content">
+
 <?php $this->start('main');?>
-	<main id="menu" class="pane" >
+	<main id="menu" class="pane loading" >
 		<div class="row" >
 			<div class="large-2 columns xtreme-blue" ></div >
 			<div class="large-10 columns" ></div >
