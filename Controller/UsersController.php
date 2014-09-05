@@ -111,20 +111,9 @@ class UsersController extends AppController {
 	}
 
 	public function login() {
-	    db($this->data);
 	    if ($this->Session->read('Auth.User')) {
 		$this->Session->setFlash('You are logged in!');
 		return $this->redirect('/');
-	    }
-	    if ($this->request->is('ajax')) {
-		$conditions = array('User.email' => $this->data['email']);
-		if ($this->User->hasAny($conditions)){
-			if ($this->Auth->login(array('email' => $this->data['email'], 'password' => $this->data['uid']))) {
-				return $this->redirect($this->Auth->redirect());
-			}
-		} else {
-			
-		}		
 	    }
 	    if ($this->request->is('post')) {
 		if ($this->Auth->login()) {
@@ -141,7 +130,34 @@ class UsersController extends AppController {
 	}
 
 	public function opauth_complete() {
-		$this->redirect(___cakeUrl('users', 'login'));
+		if ($this->data['validated']) {
+			$conditions = array('User.email' => $this->data['auth']['info']['email']);
+			if ($this->User->hasAny($conditions)){
+				if ($this->Auth->login(array('email' => $this->data['auth']['info']['email'], 'password' => $this->data['auth']['uid']))) {
+					return $this->redirect($this->Auth->redirect());
+				}
+			} else {
+				$newUser = array('User' => array(
+					'email' => $this->data['auth']['info']['email'],
+					'password' => $this->data['auth']['uid'],
+					'firstname' => $this->data['auth']['info']['first_name'],
+					'lastname' => $this->data['auth']['info']['last_name'],
+					'group_id' => 1
+				));
+				if ($this->User->create($newUser)) {
+				} else {
+					db("Failed");
+				}
+				$this->Session->setFlash(__('Logged in. Welcome ' + $this->data['auth']['info']['name'] + '.'));
+				return $this->redirect($this->Auth->redirect());
+			}
+		} else {
+			$this->Session->setFlash(__('Login failed. Please try again.'));
+		}
+	}
+
+	public function home() {
+		$this->redirect(___cakeUrl('pages','splash'));
 	}
 
 	public function beforeFilter() {
