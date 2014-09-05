@@ -85,13 +85,18 @@ window.XBS = {
 			});
 		}
 
+		$("#splash").on("mouseover", function() {
+				$("#grand-opening-deal").slideDown();
+				$(this).unbind("hover");
+		});
+
 		return true;
 	},
 	scaleSplash: function() {
 		var splashbarTop = $(XSM.splash.splashBar).offset().top;
 		var scaleFactor = 570/splashbarTop;
 		var dealDim = [splashbarTop, scaleFactor *400];
-		var dealLeft = String( (window.innerWidth / 2) + (.33 * $("#order").innerWidth()) ) +"px";
+		var dealLeft = String( (window.innerWidth / 2) + (.8 * $("#order").innerWidth()) ) +"px";
 		$("#grand-opening-deal").css({
 			height:String(1.08 * dealDim[0])+"px",
 			width:String(1.08 * dealDim[1])+"px",

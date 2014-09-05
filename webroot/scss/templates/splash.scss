@@ -24,7 +24,7 @@ section#splash.pane {
     background-color:$black-a33;
   }
   #grand-opening-deal {
-    visibility: hidden;
+    display:none;
     position          : fixed;
     margin            : 0 auto;
     z-index           : 9050;
