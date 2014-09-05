@@ -125,7 +125,9 @@ class UsersController extends AppController {
 	}
 
 	public function logout() {
-	    //Leave empty for now.
+		$this->Session->setFlash('Good-Bye');
+		$this->redirect($this->Auth->logout());$this->Session->setFlash('Good-Bye');
+		$this->redirect($this->Auth->logout());
 	}
 
 	public function beforeFilter() {

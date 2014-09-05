@@ -109,4 +109,9 @@ class OrbcatsController extends AppController {
 
 	public function menu($orbcat) {
 		}
+
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('index', 'view');
+	}
 }

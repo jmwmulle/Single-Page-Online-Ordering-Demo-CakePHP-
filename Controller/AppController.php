@@ -36,6 +36,7 @@ class AppController extends Controller {
 	                            ), 'Session');
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
+	$this->Auth->allow('display');
 
 	static function cakeUrl($controller, $action, $params = null) {
 		if ( !is_array( $params ) & !empty( $params ) ) {
@@ -178,7 +179,7 @@ static function data_attr($data, $quotes = "\"", $false_behavior = "int", $true_
 				if ( AppController::is_associative_array( $val ) ) {
 					$kvPairs = array();
 					foreach ( $val as $k => $v ) {
-						$v          = str_replace( [ "'", '"' ], [ "&#39;", "&quot;" ], $v );
+						$v          = str_replace( array("'", '"'), array("&#39;", "&quot;"), $v );
 						$kvPairs[ ] = '"' . $k . '":"' . $v . '"';
 					}
 					$vStr = "{" . implode( ", ", $kvPairs ) . "}";
@@ -280,9 +281,9 @@ static function data_attr($data, $quotes = "\"", $false_behavior = "int", $true_
 		);
 		$this->Auth->logoutRedirect = array(
 		  'controller' => 'users',
-		  'action' => 'login'
+		  'action' => 'logout'
 		);
-			$this->Auth->loginRedirect = array(
+		$this->Auth->loginRedirect = array(
 		  'controller' => 'users',
 		  'action' => 'home'
 		);
