@@ -12,6 +12,7 @@
 		echo $this->Html->script(array("lib/selectorManifest.js",
 			"/bower_components/jquery/dist/jquery.min",
 			"//code.jquery.com/ui/1.11.1/jquery-ui.js",
+			"vendor/jquery.mousewheel.min",
 			"utilities",
 			"/bower_components/foundation/js/foundation.min",
 			"lib/bootstrap",

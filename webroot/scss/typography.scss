@@ -15,4 +15,4 @@
   font-family:"Helvetica Neue Condensed Black", arial, sans-serif;
 }
 
-h2.orb-card { @include HelveticaBlCn;}
+h1.orb-card, h2.orb-card, h3.orb-card, h4.orb-card, h5.orb-card { @include HelveticaBlCn;}

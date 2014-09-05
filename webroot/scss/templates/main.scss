@@ -8,8 +8,13 @@ main#menu.pane {
 }
 nav {
   &#topnav {
+    background-image    : url("../img/xtreme-red-gradient.png");
+    background-repeat   : repeat-x;
+//    background-position : left 1rem;
+    background-size     : 100% rem-calc(90px);
     font-size   : $h1-font-size;
     font-weight : normal;
+    z-index:8800;
     @include Fredericka;
     ul {
       padding : 0;
@@ -40,6 +45,7 @@ nav {
     height      : 2000px;
     padding-top : 2rem;
     text-align  : center;
+    z-index:8900;
     @include mouse-memoirs;
 
     ul {
@@ -63,6 +69,7 @@ nav {
     background-color : $white-a33;
     box-shadow       : 0px 0px 1rem $black-a33;
     min-height       : 2000px;
+    z-index:8700;
     ul {
       @include HelveticaBlCn;
       color          : $black;
@@ -77,6 +84,9 @@ nav {
       }
     }
   }
+}
+#primary-content.content-area {
+  z-index:8000;
 }
 
 nav.scroll-area {

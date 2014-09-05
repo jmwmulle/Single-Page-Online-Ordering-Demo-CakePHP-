@@ -42,16 +42,16 @@ window.XBS = {
 		});
 
 		$("*[data-scroll-to]").each(function() {
+				var scroll = $(this).data();
+				var offset = $("ul.orbcard-list").offset().top + 16;
+				var top = $(asId(scroll.scrollTo)).offset().top;
+				$(this).data('top',top);
+
 				$(this).on("click", function() {
-					var scroll = $(this).data();
-					var top = $(asId(scroll.scrollTo)).offset().top;
-					$(scroll.scrollTarget).animate({marginTop:String(-1 * top)+"px"});
+					$(scroll.scrollTarget).animate({marginTop:String(offset+(-1 * scroll.top))+"px"});
 				});
 		});
 
-
-		//contingent aspect ratios
-//		$(".preserve-aspect-ratio").on("resize",XBS.assertAspectRatio);
 		return true;
 	},
 	layoutInit: function(isSplash) {
@@ -74,6 +74,15 @@ window.XBS = {
 
 		if (isSplash) {
 			XBS.scaleSplash();
+		} else {
+			var initialOffset = $("#primary-content").offset().top;
+			$("#primary-content").on("mousewheel", function(e) {
+					var marginTopString = $(this).css('marginTop');
+					var marginVal = Number(marginTopString.replace("px", ""));
+					var margin = marginVal + e.deltaY;
+					if (margin > 0) margin = 0;
+					$(this).css({marginTop:margin});
+			});
 		}
 
 		return true;
