@@ -29,14 +29,10 @@ App::uses( 'File', 'Utility' );
  * @link           http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-	public $components = array( "Session", "RequestHandler", 'Acl',
-	                            'Auth' => array(
-		                            'authorize' => array(
-			                            'Actions' => array( 'actionPath' => 'controllers' )
-		                            )
-	                            ), 'Session');
+	public $components = array( "Session");
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
+	protected $topnav = array('Menu','Order','Deals','Favs');
 
 	static function cakeUrl($controller, $action, $params = null) {
 		if ( !is_array( $params ) & !empty( $params ) ) {
@@ -54,6 +50,7 @@ class AppController extends Controller {
 
 		return array( "controller" => $controller, "action" => $action );
 	}
+
 
 	static function now($asString = true) {
 		$date = new DateTime( 'now' );
@@ -84,6 +81,7 @@ class AppController extends Controller {
 	}
 
 	static function class_declaration($classes) {
+		if (!is_array($classes)) $classes = array($classes);
 		foreach ( $classes as $i => $class ) {
 			if ( is_array( $class ) ) {
 				$classes[ $i ] = implode( "-", $class );
@@ -129,7 +127,7 @@ class AppController extends Controller {
 	}
 
 
-static function data_attr($data, $quotes = "\"", $false_behavior = "int", $true_behavior = "int") {
+	static function data_attr($data, $quotes = "\"", $false_behavior = "int", $true_behavior = "int") {
 		// determines how boolean values should be represented in the attribute
 		$true_behaviors  = array( "int", "string" );
 		$false_behaviors = array( "int", "string", "null", "remove", "attr" );
@@ -179,7 +177,7 @@ static function data_attr($data, $quotes = "\"", $false_behavior = "int", $true_
 				if ( AppController::is_associative_array( $val ) ) {
 					$kvPairs = array();
 					foreach ( $val as $k => $v ) {
-						$v          = str_replace( array("'", '"'), array("&#39;", "&quot;"), $v );
+						$v          = str_replace( array( "'", '"' ), array( "&#39;", "&quot;" ), $v );
 						$kvPairs[ ] = '"' . $k . '":"' . $v . '"';
 					}
 					$vStr = "{" . implode( ", ", $kvPairs ) . "}";
@@ -267,6 +265,9 @@ static function data_attr($data, $quotes = "\"", $false_behavior = "int", $true_
 		return $date_time->format( "H:i:s" );
 	}
 
+	public function beforeRender() {
+		$this->set("topnav", $this->topnav);
+	}
 
 	public function beforeFilter() {
 		//Configure AuthComponent
@@ -289,6 +290,4 @@ static function data_attr($data, $quotes = "\"", $false_behavior = "int", $true_
 		);
 		$this->Auth->allow('display');
 	}	
-
 }
-

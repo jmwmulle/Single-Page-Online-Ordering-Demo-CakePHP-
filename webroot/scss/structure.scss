@@ -8,3 +8,15 @@
   z-index:1; //by default; should be overwritten by template
 }
 .spacer { @include unselectable; }
+.content-area {padding:1rem}
+.top-spacer { height:1rem;}
+section.content {padding-top:1rem;}
+.content-area { position:relative; max-height:80%; overflow-y:visible;}
+ul.container {
+    list-style-type : none;
+    margin          : 0;
+  }
+
+
+// DECORATION CLASSES
+.xtreme-blue { background-color : $xtreme-blue; }

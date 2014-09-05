@@ -29,6 +29,7 @@
  * ...and connect the rest of 'Pages' controller's URLs.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	Router::connect('/menu', array('controller' => 'orbcats', 'action' => 'menu'));
 
 	Router::connect(
 		'/opauth-complete/*', 

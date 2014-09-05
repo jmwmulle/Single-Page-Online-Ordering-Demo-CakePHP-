@@ -1,5 +1,5 @@
 <?php
-	App::uses( 'AppModel', 'Model', 'AuthComponent', 'Controller/Component' );
+	App::uses( 'AppModel', 'Model' );
 
 	/**
 	 * User Model
@@ -9,7 +9,7 @@
 	 */
 	class User extends AppModel {
 
-		public $actsAs = array( 'Acl' => array( 'type' => 'requester' ) );
+//		public $actsAs = array( 'Acl' => array( 'type' => 'requester' ) );
 
 		/**
 		 * Validation rules
@@ -109,29 +109,29 @@
 			)
 		);
 
-		public function beforeSave($options = array()) {
-			$this->data[ 'User' ][ 'password' ] = AuthComponent::password(
-			                                                   $this->data[ 'User' ][ 'password' ]
-			);
+//		public function beforeSave($options = array()) {
+//			$this->data[ 'User' ][ 'password' ] = AuthComponent::password(
+//			                                                   $this->data[ 'User' ][ 'password' ]
+//			);
+//
+//			return true;
+//		}
 
-			return true;
-		}
-
-		public function parentNode() {
-			if ( !$this->id && empty( $this->data ) ) {
-				return null;
-			}
-			if ( isset( $this->data[ 'User' ][ 'group_id' ] ) ) {
-				$groupId = $this->data[ 'User' ][ 'group_id' ];
-			}
-			else {
-				$groupId = $this->field( 'group_id' );
-			}
-			if ( !$groupId ) {
-				return null;
-			}
-			else {
-				return array( 'Group' => array( 'id' => $groupId ) );
-			}
-		}
+//		public function parentNode() {
+//			if ( !$this->id && empty( $this->data ) ) {
+//				return null;
+//			}
+//			if ( isset( $this->data[ 'User' ][ 'group_id' ] ) ) {
+//				$groupId = $this->data[ 'User' ][ 'group_id' ];
+//			}
+//			else {
+//				$groupId = $this->field( 'group_id' );
+//			}
+//			if ( !$groupId ) {
+//				return null;
+//			}
+//			else {
+//				return array( 'Group' => array( 'id' => $groupId ) );
+//			}
+//		}
 	}

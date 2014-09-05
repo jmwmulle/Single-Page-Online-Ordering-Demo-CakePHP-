@@ -165,4 +165,3 @@ Configure::write('Opauth.Strategy.Twitter', array(
 	'client_id' => '355448840085-0b92qc1ksodcd03ca2fidmbfu2iv5f3l.apps.googleusercontent.com',
 	'client_secret' => 'feuihy7Mm0yQ8IXePb6OjcIT'
 ));
-

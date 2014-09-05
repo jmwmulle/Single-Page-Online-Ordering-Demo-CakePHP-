@@ -16,33 +16,51 @@
 			"/bower_components/foundation/js/foundation.min",
 			"lib/bootstrap",
 			"application"), array('block' => 'app'));
-	?>
-</head>
-<body>
 
+	?>
+<script type="text/javascript">var isSplash =<?php echo ($this->get("isSplash")) ? 'true' : 'false';?>;</script>
+</head>
+
+<body id="body-content">
 <?php $this->start('main');?>
-	<main id="menu" class="pane" >
+	<main id="menu" class="pane loading" >
 		<div class="row" >
-			<div class="large-2 columns xtreme-blue" ></div >
+			<div class="large-2 columns xtreme-blue top-spacer" ></div >
 			<div class="large-10 columns" ></div >
 		</div >
 		<div class="row" >
 			<nav id="subnav" class="large-2 columns xtreme-blue">
-			<?php if ($this->get('subnavContents')) echo $this->Elements( 'subnav', array( 'elements' => $subnavContents ) );?>
+			<?php if ($this->get('subnav')) echo $this->Element( 'subnav', array( 'elements' => $subnav ) );?>
 			</nav>
 			<div class="large-10 columns">
 				<div class="row">
 					<nav id="topnav" class="large-12 columns">
-						<?php if ($this->get('topnav')) echo $this->Element('topnav', array('navopts' => $topnav, 'selected' => $here));?>
+						<?php
+							if ($this->get('topnav') && $this->get('here')) {
+							echo $this->Element('topnav', array('navopts' => $topnav, 'selected' => $here));}?>
 					</nav>
-					<section id="menu-content">
-						<div id="content-area" class="large-9 columns">
-							<?php if (!$this->get('isSplash') ) echo $this->fetch('content');?>
+					<section class="content">
+						<div class="large-9 columns">
+							<div>
+								<?php $scrollUpAttr = array('scroll' => 'parent', 'scroll-direction' => 'up');
+									  $scrollDownAttr = array('scroll' => 'parent', 'scroll-direction' => 'down');?>
+								<nav class="scroll-area up" <?php echo ___dA($scrollUpAttr);?>></nav>
+									<div id="primary-content" class="large-12 columns content-area">
+										<?php if (!$this->get('isSplash') ) echo $this->fetch('content');?>
+									</div>
+								<nav class="scroll-area down" <?php echo ___dA($scrollDownAttr);?>></nav>
+							</div>
 						</div>
-							<nav id="subnav-toc" class="large-3 columns">
-								<ul>
-								</ul>
-							</nav>
+						<nav id="subnav-toc" class="large-3 columns">
+							<ul class="container">
+							<?php if ($this->get('toc') ) {
+										foreach($toc as $snt) {
+											$data = array("scroll-to" => ___strToSel($snt), "scroll-target" => "#primary-content");
+											?>
+								<li <?php echo ___dA($data);?>><?php echo ucwords($snt);?></li>
+							<?php }}?>
+							</ul>
+						</nav>
 					</section>
 				</div>
 			</div>
