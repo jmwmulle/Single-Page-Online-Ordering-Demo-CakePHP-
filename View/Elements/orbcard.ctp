@@ -12,7 +12,7 @@
 <div class="row">
 	<?php AppController::anchor($orb['title']);?>
 	<div class="large-4 small-6 columns thumb">
-		<?php echo $this->Html->image('nothumb.png', array('alt' => ucwords($orb['title'])." menu photo"));?>
+		<?php echo $this->Html->image('nothumb.png', array('alt' => ucwords($orb['title'])." menu photo", "class" => "orb-card-thumb"));?>
 	</div>
 	<div class="large-8 small-6 columns">
 		<h2 class="orb-card"><?php echo $orb[ 'title' ]; ?><span class='subheader'><?php echo $orb[ 'subtitle' ]; ?></span></h2>
@@ -22,11 +22,13 @@
 	<p class="large-12 small-12 columns"><?php echo $orb[ 'description' ]; ?></p>
 </div>
 <div class="row">
-	<dl class="large-12 small-12 columns price-table">
-		<?php foreach ( $orb[ 'price_matrix' ] as $opt => $price ) { ?>
-			<dt><?php echo ucwords( $opt ); ?></dt>
-			<dd><?php echo ucwords( $price ); ?></dd>
-		<?php } ?>
-	</dl>
-
+	<div class="large-12 small-12 columns price-table">
+		<h4 class="orb-card">Price</h4>
+		<dl>
+			<?php foreach ( $orb[ 'price_matrix' ] as $opt => $price ) { ?>
+				<dt><?php echo ucwords( $opt ); ?></dt>
+				<dd><?php echo ucwords( $price ); ?></dd>
+			<?php } ?>
+		</dl>
+	</div>
 </div>
