@@ -19,6 +19,7 @@ App::uses( 'Controller', 'Controller' );
 App::uses( 'Folder', 'Utility' );
 App::uses( 'File', 'Utility' );
 
+
 /**
  * Application Controller
  * Add your application-wide methods in the class below, your controllers
@@ -33,10 +34,9 @@ class AppController extends Controller {
 		                            'authorize' => array(
 			                            'Actions' => array( 'actionPath' => 'controllers' )
 		                            )
-	                            ), 'Session', 'OAuth.OAuth');
+	                            ), 'Session');
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
-	$this->Auth->allow('display');
 
 	static function cakeUrl($controller, $action, $params = null) {
 		if ( !is_array( $params ) & !empty( $params ) ) {

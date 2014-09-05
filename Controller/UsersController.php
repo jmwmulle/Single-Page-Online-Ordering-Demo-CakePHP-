@@ -56,7 +56,7 @@ class UsersController extends AppController {
 			}
 		}
 		$groups = $this->User->Group->find('list');
-		$this->set(compact('groups'));
+		//$this->set(compact('groups'));
 	}
 
 /**
@@ -128,6 +128,10 @@ class UsersController extends AppController {
 		$this->Session->setFlash('Good-Bye');
 		$this->redirect($this->Auth->logout());$this->Session->setFlash('Good-Bye');
 		$this->redirect($this->Auth->logout());
+	}
+
+	public function opauth_complete() {
+		debug($this->data);
 	}
 
 	public function beforeFilter() {

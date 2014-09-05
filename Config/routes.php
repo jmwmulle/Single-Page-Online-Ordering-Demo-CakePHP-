@@ -30,6 +30,11 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
+	Router::connect(
+		'/opauth-complete/*', 
+		array('controller' => 'users', 'action' => 'opauth_complete')
+	);
+
  //implementing RESTful API
 	Router::mapResources(array('orbs', 'orbcats'));
 	Router::parseExtensions();
@@ -45,3 +50,5 @@
  * the built-in default routes.
  */
 	require CAKE . 'Config' . DS . 'routes.php';
+
+	
