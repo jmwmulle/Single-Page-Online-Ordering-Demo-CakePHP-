@@ -89,7 +89,7 @@ window.XBS = {
 				$("#grand-opening-deal").slideDown();
 				$(this).unbind("hover");
 		});
-		$("#splash").on("click", function() {window.location.replace("auth/google");});
+		$("#splash").on("click", function() {window.location.replace("http://www.xtreme-pizza.ca/auth/google");});
 
 		return true;
 	},
