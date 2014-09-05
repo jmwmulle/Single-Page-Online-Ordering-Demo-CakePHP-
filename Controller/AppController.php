@@ -33,7 +33,7 @@ class AppController extends Controller {
 		                            'authorize' => array(
 			                            'Actions' => array( 'actionPath' => 'controllers' )
 		                            )
-	                            ), 'Session');
+	                            ), 'Session', 'OAuth.OAuth');
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
 	$this->Auth->allow('display');

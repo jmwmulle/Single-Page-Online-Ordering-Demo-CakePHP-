@@ -149,3 +149,4 @@ function ___cfName($data) {
 
 CakePlugin::load('AclExtras');
 CakePlugin::load('Migrations');
+CakePlugin::load('OAuth');
