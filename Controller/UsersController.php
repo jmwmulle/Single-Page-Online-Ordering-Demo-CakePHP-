@@ -134,31 +134,28 @@ class UsersController extends AppController {
 
 #opauth_complete	
 	public function opauth_complete() {
-		if ($this->data['validated']) {
-			$conditions = array('User.email' => $this->data['auth']['info']['email']);
-			if ($this->User->hasAny($conditions)){
-				if ($this->Auth->login(array('email' => $this->data['auth']['info']['email'], 'password' => $this->data['auth']['uid']))) {
-					return $this->redirect($this->Auth->redirect());
-				} else {
-					db("Login Failed");
-				}
-			} else {
-				$newUser = array('User' => array(
-					'email' => $this->data['auth']['info']['email'],
-					'password' => $this->data['auth']['uid'],
-					'firstname' => $this->data['auth']['info']['first_name'],
-					'lastname' => $this->data['auth']['info']['last_name'],
-					'group_id' => 1
-				));
-				if ($this->User->save($newUser)) {
-				} else {
-					db("Failed to Create User");
-				}
-				$this->Session->setFlash(__('Logged in. Welcome ' + $this->data['auth']['info']['name'] + '.'));
+		db($this->data);
+		$conditions = array('User.email' => $this->data['auth']['info']['email']);
+		if ($this->User->hasAny($conditions)){
+			if ($this->Auth->login(array('email' => $this->data['auth']['info']['email'], 'password' => $this->data['auth']['uid']))) {
 				return $this->redirect($this->Auth->redirect());
+			} else {
+				db("Login Failed");
 			}
 		} else {
-			$this->Session->setFlash(__('Login failed. Please try again.'));
+			$newUser = array('User' => array(
+				'email' => $this->data['auth']['info']['email'],
+				'password' => $this->data['auth']['uid'],
+				'firstname' => $this->data['auth']['info']['first_name'],
+				'lastname' => $this->data['auth']['info']['last_name'],
+				'group_id' => 1
+			));
+			if ($this->User->save($newUser)) {
+			} else {
+				db("Failed to Create User");
+			}
+			$this->Session->setFlash(__('Logged in. Welcome ' + $this->data['auth']['info']['name'] + '.'));
+			return $this->redirect($this->Auth->redirect());
 		}
 	}
 
