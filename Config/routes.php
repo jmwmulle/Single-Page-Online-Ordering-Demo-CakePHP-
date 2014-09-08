@@ -32,7 +32,7 @@
 	Router::connect('/menu', array('controller' => 'orbcats', 'action' => 'menu'));
 
 	Router::connect(
-		'/opauth-complete/*', 
+		'/opauth-complete/*',//google/oauth2callback', 
 		array('controller' => 'users', 'action' => 'opauth_complete')
 	);
 

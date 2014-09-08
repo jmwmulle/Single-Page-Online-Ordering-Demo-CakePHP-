@@ -132,30 +132,84 @@ class UsersController extends AppController {
 		$this->redirect($this->Auth->logout());
 	}
 
-#opauth_complete	
+/*opauth_complete_google*/	
 	public function opauth_complete() {
-		db($this->data);
-		$conditions = array('User.email' => $this->data['auth']['info']['email']);
-		if ($this->User->hasAny($conditions)){
-			if ($this->Auth->login(array('email' => $this->data['auth']['info']['email'], 'password' => $this->data['auth']['uid']))) {
-				return $this->redirect($this->Auth->redirect());
-			} else {
-				db("Login Failed");
+		if ($this->data['validated']) {
+			$prov = $this->data['auth']['provider'];
+			if ($prov == 'Google') {
+				$this->proc_google_login($this->data);
+			} elseif ($prov == 'Twitter') {
+				$this->proc_twitter_login($this->data);
+			} elseif ($prov == 'Facebook') {
+				$this->proc_facebook_login($this->data);
 			}
 		} else {
-			$newUser = array('User' => array(
-				'email' => $this->data['auth']['info']['email'],
-				'password' => $this->data['auth']['uid'],
-				'firstname' => $this->data['auth']['info']['first_name'],
-				'lastname' => $this->data['auth']['info']['last_name'],
-				'group_id' => 1
-			));
-			if ($this->User->save($newUser)) {
+			db('Failed\n'+$this->data);
+			$this->Session->setFlash(__('Login failed. Please try again.'));
+			return $this->redirect($this->redirect(___cakeUrl('pages','splash')));
+		}
+	}
+
+/*proc_google_login*/
+	public function proc_google_login($data) {
+		if ($this->Auth->loggedIn()) {
+			$this->User->set('google_uid', $data['auth']['uid']);
+			$this->User->save();
+		} else {
+			$conditions = array('User.google_uid' => $data['auth']['uid']);
+			if ($this->User->hasAny($conditions)){
+				if ($this->Auth->login(array('google_uid' => $this->data['auth']['uid']))) {
+					return $this->redirect($this->Auth->redirect());
+				} else {
+					db("Login Failed");
+				}
 			} else {
-				db("Failed to Create User");
+				$newUser = array('User' => array(
+					'email' => $data['auth']['info']['email'],
+					'google_uid' => $data['auth']['uid'],
+					'firstname' => $data['auth']['info']['first_name'],
+					'lastname' => $data['auth']['info']['last_name'],
+					'email_verified' => $data['raw']['verified_email'],
+					'group_id' => 1
+				));
+				if ($this->User->save($newUser)) {
+				} else {
+					db("Failed to Create User");
+				}
+				$this->Session->setFlash(__('Logged in. Welcome ' + $data['auth']['info']['name'] + '.'));
+				return $this->redirect($this->Auth->redirect());
 			}
-			$this->Session->setFlash(__('Logged in. Welcome ' + $this->data['auth']['info']['name'] + '.'));
-			return $this->redirect($this->Auth->redirect());
+		}
+	}
+
+/*proc_twitter_login*/
+	public function proc_twitter_login($data) {
+		if ($this->Auth->loggedIn()) {
+			$this->User-set('User.twitter_uid' => $data['auth']['uid']);
+			$this->User->save();
+		} else {
+			$conditions = array('User.twitter_uid' => $data['auth']['uid']);
+			if ($this->User->hasAny($conditions)){
+				if ($this->Auth->login(array('twitter_uid' => $data['auth']['uid']))) {
+					return $this->redirect($this->Auth->redirect());
+				} else {
+					db("Login Failed");
+				}
+			} else {
+				$split_name = explode(' ', $data['auth']['info']['name'], 2);
+				$newUser = array('User' => array(
+					'twitter_uid' => $data['auth']['uid'],
+					'firstname' => $split_name[0],
+					'lastname' => $split_name[1],
+					'group_id' => 1
+				));
+				if ($this->User->save($newUser)) {
+				} else {
+					db("Failed to Create User");
+				}
+				$this->Session->setFlash(__('Logged in. Welcome ' + $data['auth']['info']['name'] + '.'));
+				return $this->redirect($this->Auth->redirect());
+			}
 		}
 	}
 
