@@ -157,8 +157,8 @@ Configure::write('Opauth.Strategy.Google', array(
 ));
 
 Configure::write('Opauth.Strategy.Facebook', array(
-	'app_id' => '355448840085-0b92qc1ksodcd03ca2fidmbfu2iv5f3l.apps.googleusercontent.com',
-	'app_secret' => 'feuihy7Mm0yQ8IXePb6OjcIT'
+	'app_id' => '765798036795267',
+	'app_secret' => '57dfbdff219046eec4c396e52644494c'
 ));
 
 Configure::write('Opauth.Strategy.Twitter', array(
