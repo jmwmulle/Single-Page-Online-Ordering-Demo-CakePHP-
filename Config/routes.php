@@ -31,10 +31,9 @@
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	Router::connect('/menu', array('controller' => 'orbcats', 'action' => 'menu'));
 
-	Router::connect(
-		'/opauth-complete/*',//google/oauth2callback', 
-		array('controller' => 'users', 'action' => 'opauth_complete')
-	);
+	Router::connect('/opauth-complete/*', array('controller' => 'users', 'action' => 'opauth_complete'));
+
+	#Router::connect('/confirm/*', array('controller' => 'users', 'action' => 'edit'));
 
  //implementing RESTful API
 	Router::mapResources(array('orbs', 'orbcats'));

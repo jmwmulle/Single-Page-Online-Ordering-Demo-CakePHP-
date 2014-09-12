@@ -292,7 +292,7 @@ class AppController extends Controller {
 		);
 		$this->Auth->loginRedirect = array(
 		  'controller' => 'users',
-		  'action' => 'home'
+		  'action' => 'editi/'+AuthComponent::user('id')
 		);
 		$this->Auth->allow('display');
 	}	

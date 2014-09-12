@@ -119,10 +119,24 @@ class UsersController extends AppController {
 	    }
 	    if ($this->request->is('post')) {
 		if ($this->Auth->login()) {
-		    return $this->redirect($this->Auth->redirect());
+		    return $this->redirect($this->Auth->redirectUrl());
 		}
 		$this->Session->setFlash(__('Your username or password was incorrect.'));
 	    }
+		if ($this->request->is('put') && $this->Session->read('stashedID') != null) {
+			$user = $this->Session->read(null, $this->Session->read('stashedID'));
+			$this->Session->write('stashedID', null);
+			if ($this->Auth->login($newUser)) {
+				$this->Session->setFlash(__('Welcome to Xtreme Pizza, ' + $user['User']['firstname']));
+				return $this->redirect($this->Auth->redirectUrl());
+			} else {
+				$this->Session->setFlash(__('Login failed. Please try again.'));
+				return $this->redirect(___cakeUrl('pages', 'splash'));
+			}
+		} else {
+			$this->Session->setFlash(__('Login failed. Please try again.'));
+			return $this->redirect(___cakeUrl('pages', 'splash'));
+		}
 	}
 
 #logout	
@@ -135,79 +149,50 @@ class UsersController extends AppController {
 /*opauth_complete*/	
 	public function opauth_complete() {
 		if ($this->data['validated']) {
-			if (!$this->Session['authloop']):
-			$this->login($this->data);	
-			$this->Session->set('creds'=>$this->data);
-			$this->Session->set('auths'=>$this->Session['authsloop']+1)
-		} else {
-			db('Failed\n'+$this->data);
-			$this->Session->setFlash(__('Login failed. Please try again.'));
-			return $this->redirect($this->redirect(___cakeUrl('pages','splash')));
-		}
-	}
-
-/*login*/
-	public function login($creds) {
-		if ($this->Session['merging']) {
-			$altUser = $this->Session['altUser'];
-			$this->Session['altUser'] = null;
-		}
-		$prov = $creds['auth']['provider']
-		if ($prov == 'Google') {
-			$newUser = array('User' => array(
-				'email' => $creds['auth']['info']['email'],
-				'google_uid' => $creds['auth']['uid'],
-				'firstname' => $creds['auth']['info']['first_name'],
-				'lastname' => $creds['auth']['info']['last_name'],
-				'email_verified' => $creds['raw']['verified_email'],
-				'group_id' => 1));
-			$conditions = array('User.google_uid' => $newUser['google_uid']);
-		} elseif ($prov == 'Twitter') {
-			$split_name = explode(' ', $creds['auth']['info']['name'], 2);
-			$newUser = array('User' => array(
-				'twitter_uid' => $creds['auth']['uid'],
-				'firstname' => $split_name[0],
-				'lastname' => $split_name[1],
-				'group_id' => 1
-			));
-			$conditions = array('User.twitter_uid' => $newUser['twitter_uid']);
-		} elseif ($prov == 'Facebook') {
-			db($creds);
-		}
-		if (!$this->User->hasAny($conditions)){
-			if ($this->Session['merging']) {
-				$newUser = $newUser + $altUser;
-				$this->Session['merging'] = false;
-				$this->Session->setFlash(__("That account wasn't found, either, but we merged them and made a new one for you. Welcome to Xtreme Pizza, " + $newUser['firstName']));
-				$this->User->save($newUser);
-				$this->Auth->login($newUser);
-			} elseif ($this->Session['decline-merge']) {
-				$this->User->save($newUser);
-				$this->Session->setFlash(__("Welcome to Xtreme Pizza, " + $newUser['firstName']));
-				$this->Auth->login($newUser);
-			} else {
-				$this->Session['altUser'] = $newUser;
-				$this->Session['merging'] = true; #TODO Figure out how to set this from a view
-				$this->Render('merge-choice');
+			$creds = $this->data;	
+			$prov = $creds['auth']['provider'];
+			if ($prov == 'Google') {
+				$newUser = array('User' => array(
+					'email' => $creds['auth']['info']['email'],
+					'google_uid' => $creds['auth']['uid'],
+					'firstname' => $creds['auth']['info']['first_name'],
+					'lastname' => $creds['auth']['info']['last_name'],
+					'email_verified' => $creds['raw']['verified_email'],
+					'group_id' => 1));
+				$conditions = array('User.google_uid' => $newUser['User']['google_uid']);
+			} elseif ($prov == 'Twitter') {
+				$split_name = explode(' ', $creds['auth']['info']['name'], 2);
+				$newUser = array('User' => array(
+					'twitter_uid' => $creds['auth']['uid'],
+					'firstname' => $split_name[0],
+					'lastname' => $split_name[1],
+					'group_id' => 1
+				));
+				$conditions = array('User.twitter_uid' => $newUser['User']['twitter_uid']);
+			} elseif ($prov == 'Facebook') {
+				db($creds);
 			}
-		} elseif ($this->Session['merging']) {
-			$newUser = $newUser + $altUser;
-			$this->User->save($newUser);
-			$this->Session['merging'] = false;
-			if ($this->Auth->login($newUser)) {
-                                $this->Session->setFlash(__("That account wasn't found either, but both are valid. Merging and creating a new account. Contact support if you think this was performed in error."));
-				return $this->redirect($this->Auth->redirect());
-                        } else {
-                                $this->Session->setFlash(__('Login failed. Please contact support.'));
-                                
-				$this->redirect(___cakeUrl('pages', 'splash');
-                        }
-		}
-		if ($this->Auth->login($newUser)) {
-			return $this->redirect($this->Auth->redirect());
+			if ($this->User->hasAny($conditions)) {
+				if ($this->Session->read('stashedID') != null) {
+					$newUser = $this->User->read(null, $this->Session->read('stashedID')) + $newUser;
+					$this->User->save($newUser);
+					$this->Session->write('stashedID', null);
+				}
+				if ($this->Auth->login($newUser)) {
+					$this->Session->setFlash(__("Welcome back, " + $newUser['User']['firstname']));
+					return $this->redirect($this->Auth->redirectUrl());
+				} else {
+					$this->Session->setFlash(__('Login failed. Please try again.'));
+					return $this->redirect(___cakeUrl('pages', 'splash'));
+				}
+			} else {
+				$this->User->save($newUser);
+				$this->Session->write('stashedID', $this->User->id);
+				$this->render('merge-choice');
+			}
 		} else {
-			$this->Session->setFlash(__('Login failed. Please contact support.'));
-			$this->redirect(___cakeUrl('pages', 'splash');
+			$this->Session->setFlash(__('Login failed. Please try again.'));
+			return $this->redirect(___cakeUrl('pages','splash'));
 		}
 	}
 
