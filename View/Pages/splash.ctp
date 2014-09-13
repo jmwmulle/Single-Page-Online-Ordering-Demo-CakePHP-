@@ -1,7 +1,14 @@
 <section id="splash" class="pane loading">
-	<nav>&nbsp;
-	</nav>
-	<div id="grand-opening-deal">
+	<div id="splash-modal-wrapper" >
+		<div id="splash-modal">
+			<h1></h1>
+			<div class="content">
+			<?php $this->fetch('flash'); ?>
+			</div>
+			<a class="close-reveal-modal">&#215;</a>
+		</div>
+	</div>
+	<div id="grand-opening-deal" data-splash-modal data-source="register">
 <!--		<div>-->
 <!--			<h3>Join With:-->
 <!--				<ul id="deal-button-panel">-->

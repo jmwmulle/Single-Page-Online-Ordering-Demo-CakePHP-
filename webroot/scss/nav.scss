@@ -1,0 +1,133 @@
+
+//----------------------------------------------------------------------------------------------------------------TOPNAV
+nav#topnav {
+  background-image  : url("../img/xtreme-red-gradient.png");
+  background-repeat : repeat-x;
+  background-size   : 100% $topnav-height;
+  z-index           : 8800;
+  height    : $topnav-height;
+  @include tightContent();
+  ul {
+    height: inherit;
+    li {
+      @include tightContent();
+      height:inherit;
+      &.ornament {
+        height              : inherit;
+        background-image    : url("../img/ornament.png");
+        background-size     : 50%;
+        background-repeat   : no-repeat;
+        background-position : center center;
+        &.right {
+        }
+      }
+    }
+  }
+
+}
+
+//----------------------------------------------------------------------------------------------------------------SUBNAV
+nav#subnav {
+  min-height  : 2000px;
+  padding-top : 2rem;
+  text-align  : center;
+  z-index     : 8900;
+  @include mouse-memoirs;
+
+  ul {
+    list-style-type : none;
+    text-align      : center;
+    margin          : 0;
+    li {
+      height           : 12rem;
+      border-radius    : 1rem;
+      background-color : darken($xtreme-blue, 10%);
+      box-shadow       : inset 0px 0px 5px $black-a50;
+      margin-bottom    : 1rem;
+      font-size        : 1.5rem;
+      line-height      : 1.75rem;
+      text-align       : text
+    }
+  }
+}
+//-------------------------------------------------------------------------------------------------------------------TOC
+nav#subnav-toc {
+  background-color : $white-a33;
+  box-shadow       : 0px 0px 1rem $black-a15;
+  min-height       : 2000px;
+  z-index          : 8700;
+  ul {
+    @include HelveticaBlCn;
+    color          : $black;
+    font-weight    : bold;
+    text-transform : uppercase;
+    margin-top     : 2rem;
+    li {
+      font-size     : 0.8rem;
+      line-height   : 1rem;
+      margin-bottom : 2rem;
+      &.neighbour { list-style-image : url("../img/toc_med_square.png"); }
+      &.screen-center { list-style-image : url("../img/toc_lrg_square.png"); }
+    }
+  }
+}
+
+nav.scroll-area {
+  display          : none;
+  position         : relative;
+  width            : 100%;
+  height           : 3rem;
+  background-color : red;
+  &.top {
+    float : top;
+    //    top:0;
+  }
+  &.bottom {
+    float : bottom;
+    //    bottom:0;
+  }
+}
+
+nav#login {
+  position         : fixed;
+  bottom           : 0;
+  left             : 0;
+  width            : 10%;
+  height           : 100%;
+  background-color : $black-a33;
+  z-index          : 9040;
+  padding-top      : 2rem;
+  h2 {
+    color : $white;
+    @include HelveticaBlCn;
+  }
+
+  ul#login-options {
+    li {
+//      list-style-type   : none;
+      @include portraitBG;
+      width             : 6rem;
+      height            : 6rem;
+      padding           : 1.5rem;
+      margin            : 1.5rem;
+      line-height       : 3em;
+      transition        : background-image 300ms ease-out;
+      &.facebook {
+        background-image : url('../img/splash/facebook_icon.png');
+        &:hover { background-image : url('../img/splash/facebook_icon.hover.png'); }
+      }
+      &.google {
+        background-image : url('../img/splash/gplus_icon.png');
+        &:hover { background-image : url('../img/splash/gplus_icon.hover.png'); }
+      }
+      &.twitter {
+        background-image : url('../img/splash/twitter_icon.png');
+        &:hover { background-image : url('../img/splash/twitter_icon.hover.png'); }
+      }
+      &.email {
+        background-image : url('../img/splash/email_icon.png');
+        &:hover { background-image : url('../img/splash/email_icon.hover.png'); }
+      }
+    }
+  }
+}

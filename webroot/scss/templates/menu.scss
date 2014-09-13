@@ -10,13 +10,12 @@ li.orbcard {
   border:1px solid rgb(125,125,125);
   background-color:$white;
   border-radius: $big-radius;
-  dd,dt {
-    display:inline-block;
-    clear:both;
-  }
+
+
 }
 
 img.orb-card-thumb {
-  width:6rem;
-  height:6rem;
+  width:100%;
+  height:100%;
+  margin: 0 0 1rem 0;
 }

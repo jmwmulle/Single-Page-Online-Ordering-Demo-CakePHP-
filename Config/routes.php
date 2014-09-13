@@ -30,6 +30,7 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	Router::connect('/menu', array('controller' => 'orbcats', 'action' => 'menu'));
+	Router::connect('/register', array('controller' => 'pages', 'action' => 'signup'));
 
  //implementing RESTful API
 	Router::mapResources(array('orbs', 'orbcats'));
