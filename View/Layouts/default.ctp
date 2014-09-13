@@ -28,10 +28,10 @@
 <nav id="login">
 	<h2 class="text-center">Sign In!</h2>
 	<ul id="login-options">
-		<li class="facebook" data-splash-modal data-source="orbs/add"></li>
-		<li class="google" data-reveal-id="flash-modal" data-reveal-ajax="auth/google"></li>
-		<li class="twitter" data-reveal-id="flash-modal" data-reveal-ajax="auth/twitter"></li>
-		<li class="email" data-reveal-id="flash-modal" data-reveal-ajax="auth/email"></li>
+		<li class="facebook" data-splash-modal data-source="auth/facebook"></li>
+		<li class="google" data-splash-modal data-source="auth/google"></li>
+		<li class="twitter" data-splash-modal data-source="auth/twitter"></li>
+		<li class="email" data-splash-modal data-source="users/login"></li>
 	</ul>
 </nav>
 <?php $this->start('main');?>
