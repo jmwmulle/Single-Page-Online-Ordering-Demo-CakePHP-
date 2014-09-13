@@ -55,6 +55,7 @@ class OrbsController extends AppController {
 				$this->Session->setFlash(__('The orb could not be saved. Please, try again.'));
 			}
 		}
+		if  ($this->request->is('ajax') ) $this->layout = "ajax";
 		$orbcats = $this->Orb->Orbcat->find('list');
 		$orbextras = $this->Orb->Orbextra->find('list');
 		$this->set(compact('orbcats', 'orbextras'));

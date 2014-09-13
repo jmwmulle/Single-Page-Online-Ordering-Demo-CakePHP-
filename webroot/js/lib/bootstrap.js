@@ -6,6 +6,9 @@
  */
 
 window.XBS = {
+	data: {
+		scrollableElements:[XSM.main.primaryContent, XSM.main.toc, XSM.main.subNav]
+	},
 	init: function(isSplash) {
 		var initStatus = true;
 		var sitRep = {
@@ -40,7 +43,17 @@ window.XBS = {
 			var data = $(this).data();
 			$(this).on(data.on,null,{route:data.splashRedirect}, XBS.splashRedirect);
 		});
+		// custom modals for the splash page
+		$("*[data-splash-modal]").each(function() {
+			$(this).on("click", null, $(this).data(), XBS.splashModal);
+		});
 
+		// ajax-binds for nav
+		$(XSM.global.ajaxLink).each(function() {
+				$(this).on("click", null, $(this).data(), XBS.load);
+		});
+
+		// auto scrolling elements
 		$("*[data-scroll-to]").each(function() {
 				var scroll = $(this).data();
 				var offset = $("ul.orbcard-list").offset().top + 16;
@@ -51,6 +64,7 @@ window.XBS = {
 					$(scroll.scrollTarget).animate({marginTop:String(offset+(-1 * scroll.top))+"px"});
 				});
 		});
+
 
 		return true;
 	},
@@ -75,24 +89,65 @@ window.XBS = {
 		if (isSplash) {
 			XBS.scaleSplash();
 		} else {
-			var initialOffset = $("#primary-content").offset().top;
-			$("#primary-content").on("mousewheel", function(e) {
-					var marginTopString = $(this).css('marginTop');
-					var marginVal = Number(marginTopString.replace("px", ""));
-					var margin = marginVal + e.deltaY;
-					if (margin > 0) margin = 0;
-					$(this).css({marginTop:margin});
-			});
+			for ( i in XBS.data.scrollableElements ) {
+				XBS.bindScrolling(XBS.data.scrollableElements[i]);
+			}
 		}
 
 		$("#splash").on("mouseover", function() {
 				$("#grand-opening-deal").slideDown();
 				$(this).unbind("hover");
 		});
-		$("#splash").on("click", function() {window.location.replace("auth/google");});
 
 		return true;
 	},
+	load: function(targets, sources) {
+		if (isEvent(arguments[0]) ) {
+			var e = arguments[0];
+			targets = e.data.for;
+			sources = e.data.get;
+		}
+		if (!isArray(targets)) targets = [targets];
+		if (!isArray(sources)) sources = [sources];
+		for (var i in targets) {
+			var target = targets[i];
+			var source = sources[i];
+			pr([target, source], "target,source");
+			pr($(target).data(), "target.data");
+			if ($(target).data('scrollTarget') != "undefined") {
+				var initialOffset = $(target).data("initialOffset");
+				var currentOffset = $(target).offset().top;
+				pr([initialOffset, currentOffset],"initialOffset,currentOffset");
+				// reset scrolling first
+				if (initialOffset != currentOffset) {
+					var topMargin = initialOffset + (initialOffset - currentOffset);
+					pr(topMargin);
+					$(target).html('').animate({marginTop:String(topMargin) +"px"});
+				}
+			}
+		}
+		return $(target).load(source, function(resp) { return true;}) === true;
+	},
+	bindScrolling: function(selector) {
+		var initialOffset = $(selector).offset().top;
+		$(selector).data("initial-offset",initialOffset);
+		var lastChild = $(selector).last();
+		var lastChildTop = $(lastChild).offset().top;
+		//todo: this won't work because the last child is also the first; it's a wrapper. Your solution was
+		//todo: to add a class, "last-content-child" to the area that could be searched for by jQuery.
+		var currentHeight = $(selector).innerHeight();
+		var maxScroll = currentHeight + window.innerHeight;
+		$(selector).css({height:String(currentHeight + window.innerHeight)+"px"});
+		$(selector).on("mousewheel", function(e) {
+				var marginTopString = $(this).css('marginTop');
+				var marginVal = Number(marginTopString.replace("px", ""));
+				var margin = marginVal + e.deltaY;
+				if (margin > 0) margin = 0;
+				if (margin > maxScroll) margin = maxScroll;
+				$(this).css({marginTop:margin});
+		});
+	},
+
 	scaleSplash: function() {
 		var splashbarTop = $(XSM.splash.splashBar).offset().top;
 		var scaleFactor = 570/splashbarTop;
@@ -148,12 +203,27 @@ window.XBS = {
 		if (isEvent(route) ) route = route.data.route;
 		XBS.foldSplash(route);
 	},
+	splashModal: function(modalSource) {
+		if (isEvent(arguments[0]) ) modalSource = arguments[0].data.source;
+
+		window.location.replace("#/"+modalSource);
+		$(XSM.splash.modalContent).load(modalSource, function() {
+			$(XSM.splash.modalWrap).fadeIn(500, function() {
+				$(XSM.splash.modal).show('slide');
+			}).on("click", function() {
+				$(XSM.splash.modal).slideUp(300, function() {
+					$(this).html('');
+					$(XSM.splash.modalWrap).fadeOut();
+				})
+			});
+		});
+	},
 	foldSplash: function(route) {
 		XBS.fasten([XSM.splash.splashBar,XSM.splash.logo]);
 		var logo = $(XSM.splash.logo).clone().attr('id', stripCSS(XSM.splash.logoClone));
 		var logoLoc = $(XSM.splash.logo).offset();
 		$(logo).css({position:"fixed",top:logoLoc.top, left:logoLoc.left,zIndex:"9999999"});
-		$("#splash").append(logo);
+		$(XSM.splash.self).append(logo);
 		$(XSM.splash.logo).remove();
 		$(XSM.splash.splashBar).animate({left:String(-1.1 * window.innerWidth)+"px"}, 300, "easeInCubic",
 			function() {

@@ -6,6 +6,18 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
+
+$this->start('subnav');
+echo $this->Element( 'subnav', array( 'elements' => $subnav ) );
+$this->end('subnav');
+
+$this->start('topnav');
+echo $this->Element('topnav', array('navopts' => $topnav, 'selected' => $here));
+$this->end('topnav');
+
+$this->start('toc');
+echo $this->Element('toc', array('elements' => $toc));
+$this->end('toc');
 ?>
 <ul class="container orbcard-list">
 <?php foreach($orbs as $o) {?>

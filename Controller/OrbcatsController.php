@@ -107,8 +107,20 @@ class OrbcatsController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
-	public function menu($id = null) {
-		$active = (!$id || !$this->Orbcat->exists()) ? 1 : $id;
+	public function toc($id = null) {
+		if ($this->request->is("ajax")) {
+			$this->layout = "ajax";
+			$orbs = $this->menu($id, true);
+			$this->set('orbs', $orbs);
+		} else {
+			$this->redirect("/");
+		}
+	}
+
+	public function menu($id = null, $return = false) {
+		if ($this->request->is("ajax")) $this->layout = "ajax";
+		$active = (!$id || !$this->Orbcat->exists($id)) ? 1 : $id;
+
 		$orbs = $this->Orbcat->find('all', array('recursive' => 1, "conditions" => array("`Orbcat`.`id`" => $active)));
 		$subnav = $this->Orbcat->find('list');
 		$toc = array();
@@ -118,6 +130,10 @@ class OrbcatsController extends AppController {
 			$o['config'] = json_decode($o['config'], true);
 			$orbs[0]['Orb'][$i] = $o;
 		}
+		if ($return) {
+			$this->autorender = false;
+			return $toc;
+		}
 		$orbs = $orbs[0]['Orb'];
 		foreach($subnav as $i => $oc) {
 			$subnav[$i] = array('label' => $oc,
@@ -126,7 +142,6 @@ class OrbcatsController extends AppController {
 			);
 		}
 		$here = 'Menu';
-		$topnav = array("Menu", "Favs");
 		$this->set(compact('active','orbs','here','topnav','subnav','toc'));
 	}
 

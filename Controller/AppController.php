@@ -37,7 +37,7 @@ class AppController extends Controller {
 	                            ), 'Session');
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
-	protected $topnav = array('Menu','Order','Deals','Favs');
+	protected $topnav = array('Menu','Deals','Favs', 'Order',);
 
 	static function cakeUrl($controller, $action, $params = null) {
 		if ( !is_array( $params ) & !empty( $params ) ) {

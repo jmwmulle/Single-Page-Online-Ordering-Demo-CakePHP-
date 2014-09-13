@@ -1,106 +1,19 @@
+
+#flash {
+  position : relative;
+  width    : 600px;
+  margin   : 0 auto;
+  display  : inline-block;
+}
+
+
 main#menu.pane {
   // strange_bullseyes.jpg -> source: http://subtlepatterns.com, author: Christopher Buecheler (http://cwbuecheler.com)
   background-image    : url("../img/xtreme-red-gradient.png"), url("../img/strange_bullseyes.png");
   background-repeat   : repeat-x, repeat;
   background-position : left 1rem, top left;
-  background-size     : 100% rem-calc(90px), auto auto;
-
-}
-nav {
-  &#topnav {
-    background-image    : url("../img/xtreme-red-gradient.png");
-    background-repeat   : repeat-x;
-//    background-position : left 1rem;
-    background-size     : 100% rem-calc(90px);
-    font-size   : $h1-font-size;
-    font-weight : normal;
-    z-index:8800;
-    @include Fredericka;
-    ul {
-      padding : 0;
-      margin  : 0;
-      height  : rem-calc(90px);
-      font-size:inherit;
-      li {
-        margin-bottom  : 0;
-        padding-bottom : 0;
-        height         : inherit;
-        line-height    : rem-calc(90px);
-        font-size:inherit;
-        &.ornament {
-          height              : inherit;
-          background-image    : url("../img/ornament.png");
-          background-size     : 50%;
-          background-repeat   : no-repeat;
-          background-position : center center;
-          &.right {
-          }
-        }
-      }
-    }
-
-  }
-
-  &#subnav {
-    height      : 2000px;
-    padding-top : 2rem;
-    text-align  : center;
-    z-index:8900;
-    @include mouse-memoirs;
-
-    ul {
-      list-style-type : none;
-      text-align      : center;
-      margin          : 0;
-      li {
-        height           : 12rem;
-        border-radius    : 1rem;
-        background-color : darken($xtreme-blue, 10%);
-        box-shadow       : inset 0px 0px 5px $black-a50;
-        margin-bottom    : 1rem;
-        font-size        : 1.5rem;
-        line-height      : 1.75rem;
-        text-align       : text
-      }
-    }
-  }
-
-  &#subnav-toc {
-    background-color : $white-a33;
-    box-shadow       : 0px 0px 1rem $black-a33;
-    min-height       : 2000px;
-    z-index:8700;
-    ul {
-      @include HelveticaBlCn;
-      color          : $black;
-      font-weight    : bold;
-      text-transform : uppercase;
-      li {
-        list-style-position : inside;
-        list-style-image    : url("../img/toc_sm_square.png");
-        line-height         : 3rem;
-        &.neighbour { list-style-image : url("../img/toc_med_square.png"); }
-        &.screen-center { list-style-image : url("../img/toc_lrg_square.png"); }
-      }
-    }
-  }
-}
-#primary-content.content-area {
-  z-index:8000;
+  background-size     : 100% $topnav-height, auto auto;
 }
 
-nav.scroll-area {
-  display:none;
-  position:relative;
-  width:100%;
-  height:3rem;
-  background-color:red;
-  &.top {
-    float:top;
-//    top:0;
-  }
-  &.bottom {
-    float:bottom;
-//    bottom:0;
-  }
-}
+
+

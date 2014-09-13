@@ -21,10 +21,13 @@
 ?>
 
 <ul class="container">
-	<?php foreach ($elements as $e) {
-		$classes = array(___strToSel($e['label']));
+	<?php foreach ($elements as $i => $e) {
+		$classes = array("ajax-link", ___strToSel($e['label']));
 		if ($e['active']) array_push($classes, "active");
+		$dataArray = array("get"=> array(implode(DS,$e['url']), "orbcats/toc/$i"),
+		                                 "for" => array("#primary-content", "#subnav-toc")
+		);
 		?>
-	<li <?php echo ___cD($classes);?> data-get="<?php echo implode(DS,$e['url']);?>" data-for="#main-content"><?php echo ucwords($e['label']);?></li>
+	<li <?php echo ___cD($classes)." ".___dA($dataArray).">".ucwords($e['label']);?></li>
 	<?php } ?>
 </ul>

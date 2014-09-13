@@ -11,12 +11,20 @@
  */
 
 var XSM = {
-	global:{},
+	global:{
+		ajaxLink:".ajax-link"
+	},
 	main: {
+		primaryContent: "#primary-content",
+		subNav:"#subnav",
 		toc: "#subnav-toc",
 		tocListItem:"#subnav-toc li"
 	},
 	splash:{
+		self:"#splash",
+		modal:"#splash-modal",
+		modalWrap:"#splash-modal-wrapper",
+		modalContent:"#splash-modal .content",
 		cont:"#splash-pane",
 		circle:"#splash-circle",
 		circleWrap:"#splash-circle-wrapper",

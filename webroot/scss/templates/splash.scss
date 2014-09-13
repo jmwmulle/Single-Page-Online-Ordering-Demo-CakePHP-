@@ -15,14 +15,7 @@ section#splash.pane {
   vertical-align    : middle;
   transition: background-image 0.3s ease-in-out;
   div, a { position : relative; }
-  nav {
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:3rem;
-    background-color:$black-a33;
-  }
+
   #grand-opening-deal {
     display:none;
     position          : fixed;
@@ -152,4 +145,44 @@ section#splash.pane {
     margin:0 auto;
   }
 
+}
+
+#splash-modal-wrapper {
+  display:none;
+  width:100%;
+  height:100%;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:10000;
+  background-color:$black-a75;
+  padding-top:3rem;
+}
+#splash-modal {
+  display:none;
+  position:relative;
+  margin:0 auto;
+  width:50%;
+  height:auto;
+  max-width:rem-calc(800px);
+  min-width: rem-calc(400px);
+  min-height:rem-calc(400px);
+  max-height:75%;
+  background-color:white;
+  overflow:clip;
+  h1 {
+    width:100%;
+    height:4rem;
+    background-image:url('../img/splash/logo.png');
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:1rem top;
+    background-color:$xtreme-blue;
+
+  }
+  .content {
+    padding:1rem;
+    width:100%;
+    overflow:clip;
+  }
 }
