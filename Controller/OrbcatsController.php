@@ -137,7 +137,7 @@ class OrbcatsController extends AppController {
 		$orbs = $orbs[0]['Orb'];
 		foreach($subnav as $i => $oc) {
 			$subnav[$i] = array('label' => $oc,
-			                     'url' => ___cakeUrl('orbcats','menu', $i),
+			                     'url' =>"menu/$i",
 			                     'active' => $i == $id ? true : false
 			);
 		}

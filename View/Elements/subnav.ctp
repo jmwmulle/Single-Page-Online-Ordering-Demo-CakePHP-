@@ -22,12 +22,9 @@
 
 <ul class="container">
 	<?php foreach ($elements as $i => $e) {
-		$classes = array("ajax-link", ___strToSel($e['label']));
+		$classes = array("js-link", ___strToSel($e['label']));
 		if ($e['active']) array_push($classes, "active");
-		$dataArray = array("get"=> array(implode(DS,$e['url']), "orbcats/toc/$i"),
-		                                 "for" => array("#primary-content", "#subnav-toc")
-		);
 		?>
-	<li <?php echo ___cD($classes)." ".___dA($dataArray).">".ucwords($e['label']);?></li>
+	<li <?php echo ___cD($classes);?> data-url="/xtreme/<?php echo $e['url'];?>"><?php echo ucwords($e['label']);?></li>
 	<?php } ?>
 </ul>
