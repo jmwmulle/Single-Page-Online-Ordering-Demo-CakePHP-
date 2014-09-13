@@ -52,6 +52,9 @@ window.XBS = {
 		$(XSM.global.ajaxLink).each(function() {
 				$(this).on("click", null, $(this).data(), XBS.load);
 		});
+		$(XSM.global.jsLink).each(function() {
+			$(this).on("click", function() { window.location.replace($(this).data('url'))});
+		});
 
 		// auto scrolling elements
 		$("*[data-scroll-to]").each(function() {
@@ -109,24 +112,24 @@ window.XBS = {
 		}
 		if (!isArray(targets)) targets = [targets];
 		if (!isArray(sources)) sources = [sources];
-		for (var i in targets) {
+		for (var i = 0; i < targets.length; i++) {
+
 			var target = targets[i];
 			var source = sources[i];
-			pr([target, source], "target,source");
-			pr($(target).data(), "target.data");
-			if ($(target).data('scrollTarget') != "undefined") {
-				var initialOffset = $(target).data("initialOffset");
-				var currentOffset = $(target).offset().top;
-				pr([initialOffset, currentOffset],"initialOffset,currentOffset");
-				// reset scrolling first
-				if (initialOffset != currentOffset) {
-					var topMargin = initialOffset + (initialOffset - currentOffset);
-					pr(topMargin);
-					$(target).html('').animate({marginTop:String(topMargin) +"px"});
+			pr([i, target, source], "i,target,source");
+			$(target).fadeOut(300, function() {
+				if ($(target).data('scrollTarget') != "undefined") {
+					var initialOffset = $(target).data("initialOffset");
+					var currentOffset = $(target).offset().top;
+					pr([initialOffset, currentOffset],"initialOffset,currentOffset");
+					// reset scrolling first
+						var topMargin = initialOffset + (initialOffset - currentOffset);
+						$(this).attr('style','').html('');
 				}
-			}
+				$(target).load(source, function() { $(this).fadeIn(300);});
+			});
 		}
-		return $(target).load(source, function(resp) { return true;}) === true;
+		return true;
 	},
 	bindScrolling: function(selector) {
 		var initialOffset = $(selector).offset().top;
@@ -206,7 +209,7 @@ window.XBS = {
 	splashModal: function(modalSource) {
 		if (isEvent(arguments[0]) ) modalSource = arguments[0].data.source;
 
-		window.location.replace("#/"+modalSource);
+		//window.location.replace(modalSource);
 		$(XSM.splash.modalContent).load(modalSource, function() {
 			$(XSM.splash.modalWrap).fadeIn(500, function() {
 				$(XSM.splash.modal).show('slide');

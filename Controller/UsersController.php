@@ -46,6 +46,7 @@ class UsersController extends AppController {
  * @return void
  */
 	public function add() {
+		if ($this->request->is('ajax')) { $this->layout =  "ajax";}
 		if ($this->request->is('post')) {
 			$this->User->create();
 			if ($this->User->save($this->request->data)) {

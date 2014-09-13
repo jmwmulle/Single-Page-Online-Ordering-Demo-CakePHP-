@@ -5,7 +5,7 @@
 			<div class="content">
 			<?php $this->fetch('flash'); ?>
 			</div>
-			<a class="close-reveal-modal">&#215;</a>
+			<a class="close-splash-modal">&#215;</a>
 		</div>
 	</div>
 	<div id="grand-opening-deal" data-splash-modal data-source="register">

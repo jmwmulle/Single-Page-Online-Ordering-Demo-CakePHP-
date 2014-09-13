@@ -7,7 +7,7 @@
  * About.me: about.me/thisimpetus
  */
 ?>
-<ul>
+<ul class="text-center tight">
 <?php
 	foreach($elements as $orblink) {
 		$data = array("scroll-to" => ___strToSel($orblink), "scroll-target" => "#primary-content");

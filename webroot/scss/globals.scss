@@ -9,3 +9,5 @@ button.unavailable {
   background-image:url("../img/order_coming_soon.png");
   @include portraitBG;
 }
+
+.tight { @include tightContent();}

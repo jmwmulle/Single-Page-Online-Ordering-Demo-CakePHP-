@@ -12,7 +12,8 @@
 
 var XSM = {
 	global:{
-		ajaxLink:".ajax-link"
+		ajaxLink:".ajax-link",
+		jsLink:".js-link"
 	},
 	main: {
 		primaryContent: "#primary-content",

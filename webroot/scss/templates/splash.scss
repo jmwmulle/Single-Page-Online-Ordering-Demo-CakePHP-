@@ -186,3 +186,15 @@ section#splash.pane {
     overflow:clip;
   }
 }
+
+$close-splash-diameter: 1.2rem;
+a.close-splash-modal {
+  float:right;
+  color:$white;
+  background-color:$dark-grey;
+  border-radius:$global-rounded;
+  width:$close-splash-diameter;
+  height:$close-splash-diameter;
+  line-height:1rem;
+  text-align:center;
+}

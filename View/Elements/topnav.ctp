@@ -13,7 +13,7 @@
  * $here = (str) << currently viewed page,  must exactly match one of the navopts >>
  */
 
-$activeNavOptions = array("Menu","Deals");
+$activeNavOptions = array("Menu");
 ?>
 
 <ul class="large-block-grid-6 text-center">
