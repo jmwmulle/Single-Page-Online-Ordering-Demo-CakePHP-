@@ -119,10 +119,24 @@ class UsersController extends AppController {
 	    }
 	    if ($this->request->is('post')) {
 		if ($this->Auth->login()) {
-		    return $this->redirect($this->Auth->redirect());
+		    return $this->redirect($this->Auth->redirectUrl());
 		}
 		$this->Session->setFlash(__('Your username or password was incorrect.'));
 	    }
+		if ($this->request->is('put') && $this->Session->read('stashedID') != null) {
+			$user = $this->Session->read(null, $this->Session->read('stashedID'));
+			$this->Session->write('stashedID', null);
+			if ($this->Auth->login($newUser)) {
+				$this->Session->setFlash(__('Welcome to Xtreme Pizza, ' + $user['User']['firstname']));
+				return $this->redirect($this->Auth->redirectUrl());
+			} else {
+				$this->Session->setFlash(__('Login failed. Please try again.'));
+				return $this->redirect(___cakeUrl('pages', 'splash'));
+			}
+		} else {
+			$this->Session->setFlash(__('Login failed. Please try again.'));
+			return $this->redirect(___cakeUrl('pages', 'splash'));
+		}
 	}
 
 #logout	
@@ -132,39 +146,54 @@ class UsersController extends AppController {
 		$this->redirect($this->Auth->logout());
 	}
 
-#opauth_complete	
+/*opauth_complete*/	
 	public function opauth_complete() {
 		if ($this->data['validated']) {
-			$conditions = array('User.email' => $this->data['auth']['info']['email']);
-			if ($this->User->hasAny($conditions)){
-				if ($this->Auth->login(array('email' => $this->data['auth']['info']['email'], 'password' => $this->data['auth']['uid']))) {
-					return $this->redirect($this->Auth->redirect());
-				} else {
-					db("Login Failed");
-				}
-			} else {
+			$creds = $this->data;	
+			$prov = $creds['auth']['provider'];
+			if ($prov == 'Google') {
 				$newUser = array('User' => array(
-					'email' => $this->data['auth']['info']['email'],
-					'password' => $this->data['auth']['uid'],
-					'firstname' => $this->data['auth']['info']['first_name'],
-					'lastname' => $this->data['auth']['info']['last_name'],
+					'email' => $creds['auth']['info']['email'],
+					'google_uid' => $creds['auth']['uid'],
+					'firstname' => $creds['auth']['info']['first_name'],
+					'lastname' => $creds['auth']['info']['last_name'],
+					'email_verified' => $creds['raw']['verified_email'],
+					'group_id' => 1));
+				$conditions = array('User.google_uid' => $newUser['User']['google_uid']);
+			} elseif ($prov == 'Twitter') {
+				$split_name = explode(' ', $creds['auth']['info']['name'], 2);
+				$newUser = array('User' => array(
+					'twitter_uid' => $creds['auth']['uid'],
+					'firstname' => $split_name[0],
+					'lastname' => $split_name[1],
 					'group_id' => 1
 				));
-				if ($this->User->save($newUser)) {
-				} else {
-					db("Failed to Create User");
+				$conditions = array('User.twitter_uid' => $newUser['User']['twitter_uid']);
+			} elseif ($prov == 'Facebook') {
+				db($creds);
+			}
+			if ($this->User->hasAny($conditions)) {
+				if ($this->Session->read('stashedID') != null) {
+					$newUser = $this->User->read(null, $this->Session->read('stashedID')) + $newUser;
+					$this->User->set($newUser);
+					$this->Session->write('stashedID', null);
 				}
-				$this->Session->setFlash(__('Logged in. Welcome ' + $this->data['auth']['info']['name'] + '.'));
-				return $this->redirect($this->Auth->redirect());
+				if ($this->Auth->login($newUser)) {
+					$this->Session->setFlash(__("Welcome back, " + $newUser['User']['firstname']));
+					return $this->redirect($this->Auth->redirectUrl());
+				} else {
+					$this->Session->setFlash(__('Login failed. Please try again.'));
+					return $this->redirect(___cakeUrl('pages', 'splash'));
+				}
+			} else {
+				$this->User->save($newUser);
+				$this->Session->write('stashedID', $this->User->id);
+				$this->render('merge-choice');
 			}
 		} else {
 			$this->Session->setFlash(__('Login failed. Please try again.'));
+			return $this->redirect(___cakeUrl('pages','splash'));
 		}
-	}
-
-#home	
-	public function home() {
-		$this->redirect(___cakeUrl('pages','splash'));
 	}
 
 #beforeFilter	

@@ -32,10 +32,9 @@
 	Router::connect('/menu', array('controller' => 'orbcats', 'action' => 'menu'));
 	Router::connect('/register', array('controller' => 'pages', 'action' => 'signup'));
 
-	Router::connect(
-		'/opauth-complete/*', 
-		array('controller' => 'users', 'action' => 'opauth_complete')
-	);
+	Router::connect('/opauth-complete/*', array('controller' => 'users', 'action' => 'opauth_complete'));
+
+	#Router::connect('/confirm/*', array('controller' => 'users', 'action' => 'edit'));
 
  //implementing RESTful API
 	Router::mapResources(array('orbs', 'orbcats'));
