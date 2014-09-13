@@ -209,7 +209,7 @@ window.XBS = {
 	splashModal: function(modalSource) {
 		if (isEvent(arguments[0]) ) modalSource = arguments[0].data.source;
 
-		window.location.replace("#/"+modalSource);
+		//window.location.replace(modalSource);
 		$(XSM.splash.modalContent).load(modalSource, function() {
 			$(XSM.splash.modalWrap).fadeIn(500, function() {
 				$(XSM.splash.modal).show('slide');
