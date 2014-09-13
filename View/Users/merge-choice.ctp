@@ -3,3 +3,4 @@
 <a href=/auth/google>Google</a>
 <a href=/auth/twitter>Twitter</a>
 <a href=/auth/facebook>FB</a>
+<a href=/user/login>No thanks</a>

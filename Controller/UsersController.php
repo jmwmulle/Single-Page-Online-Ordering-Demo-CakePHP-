@@ -175,7 +175,7 @@ class UsersController extends AppController {
 			if ($this->User->hasAny($conditions)) {
 				if ($this->Session->read('stashedID') != null) {
 					$newUser = $this->User->read(null, $this->Session->read('stashedID')) + $newUser;
-					$this->User->save($newUser);
+					$this->User->set($newUser);
 					$this->Session->write('stashedID', null);
 				}
 				if ($this->Auth->login($newUser)) {
