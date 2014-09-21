@@ -120,14 +120,18 @@ class UsersController extends AppController {
 	    }
 	    if ($this->request->is('post')) {
 		if ($this->Auth->login()) {
+		    $this->Session->setFlash(__('Welcome'));
 		    return $this->redirect($this->Auth->redirectUrl());
+		} else {
+			$this->Session->setFlash(__('Your username or password was incorrect.'));
+			return $this->redirect(___cakeUrl('pages', 'splash'));
 		}
-		$this->Session->setFlash(__('Your username or password was incorrect.'));
 	    }
-		if ($this->request->is('put') && $this->Session->read('stashedID') != null) {
-			$user = $this->Session->read(null, $this->Session->read('stashedID'));
-			$this->Session->write('stashedID', null);
-			if ($this->Auth->login($newUser)) {
+		if ($this->Session->read('stashedUser') != null) {
+			$user = $this->Session->read('stashedUser');
+			$this->Session->write('stashedUser', null);
+			$this->User->save($user);
+			if ($this->Auth->login($user['User'])) {
 				$this->Session->setFlash(__('Welcome to Xtreme Pizza, ' + $user['User']['firstname']));
 				return $this->redirect($this->Auth->redirectUrl());
 			} else {
@@ -143,13 +147,16 @@ class UsersController extends AppController {
 #logout	
 	public function logout() {
 		$this->Session->setFlash('Good-Bye');
-		$this->redirect($this->Auth->logout());$this->Session->setFlash('Good-Bye');
-		$this->redirect($this->Auth->logout());
+		$this->Auth->logout();
+		$this->Session->write('stashedUser', null);
+		$this->redirect(___cakeUrl('pages', 'splash'));
 	}
 
 /*opauth_complete*/	
 	public function opauth_complete() {
+		$this->log("Opauth complete");
 		if ($this->data['validated']) {
+			$this->log($this->data);
 			$creds = $this->data;	
 			$prov = $creds['auth']['provider'];
 			if ($prov == 'Google') {
@@ -158,7 +165,7 @@ class UsersController extends AppController {
 					'google_uid' => $creds['auth']['uid'],
 					'firstname' => $creds['auth']['info']['first_name'],
 					'lastname' => $creds['auth']['info']['last_name'],
-					'email_verified' => $creds['raw']['verified_email'],
+					'email_verified' => $creds['auth']['raw']['verified_email'],
 					'group_id' => 1));
 				$conditions = array('User.google_uid' => $newUser['User']['google_uid']);
 			} elseif ($prov == 'Twitter') {
@@ -174,15 +181,19 @@ class UsersController extends AppController {
 				db($creds);
 			}
 			if ($this->User->hasAny($conditions)) {
-				if ($this->Session->read('stashedID') != null) {
-					$exUser = $this->User->find($newUser);
-					db($exUser);
-					db(array_replace($this->User->read(null, $this->Session->read('stashedID')),$exUser));
-					$newUser = array_replace($newUser, $this->User->read(null, $this->Session->read('stashedID')));
-					$this->User->set($newUser);
-					$this->Session->write('stashedID', null);
+				
+				if ($this->Session->read('stashedUser') != null) {
+					$exUser = $this->User->find('first', array('conditions' => array('User.twitter_uid' => $newUser['User']['twitter_uid'])));
+					$newUser = $this->Session->read('stashedUser');
+					$newUser['User'] = array_merge($exUser['User'], $newUser['User']);
+					if (!$this->User->save($newUser))
+					{
+						$this->Session->setFlash(__('Login failed. Please try again.'));
+						return $this->redirect(___cakeUrl('pages', 'splash'));
+					}
+					$this->Session->write('stashedUser', null);
 				}
-				if ($this->Auth->login($newUser)) {
+				if ($this->Auth->login($newUser['User'])) {
 					$this->Session->setFlash(__("Welcome back, " + $newUser['User']['firstname']));
 					return $this->redirect($this->Auth->redirectUrl());
 				} else {
@@ -190,8 +201,14 @@ class UsersController extends AppController {
 					return $this->redirect(___cakeUrl('pages', 'splash'));
 				}
 			} else {
-				$this->User->save($newUser);
-				$this->Session->write('stashedID', $this->User->id);
+				$this->Session->write('stashedUser',$newUser);
+				/*if ($this->login($newUser['User'])) {
+					$this->redirect($this->Auth->redirectUrl());
+				} else {
+					$this->Session->setFlash(__('Login failed. Please try again.'));
+					return $this->redirect(___cakeUrl('pages', 'splash'));
+				}*/
+
 				$this->render('merge-choice');
 			}
 		} else {

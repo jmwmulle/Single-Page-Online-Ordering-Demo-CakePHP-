@@ -34,7 +34,7 @@ class AppController extends Controller {
 		                            'authorize' => array(
 			                            'Actions' => array( 'actionPath' => 'controllers' )
 		                            )
-	                            ), 'Session');
+	                            ), 'DebugKit.Toolbar');
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
 	protected $topnav = array('Menu','Deals','Favs', 'Order',);

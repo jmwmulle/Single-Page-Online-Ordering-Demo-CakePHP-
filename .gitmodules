@@ -4,3 +4,9 @@
 [submodule "Plugin/Migrations"]
 	path = Plugin/Migrations
 	url = https://github.com/CakeDC/migrations.git
+[submodule "app/Plugin/DebugKit"]
+	path = app/Plugin/DebugKit
+	url = https://github.com/cakephp/debug_kit.git
+[submodule "Plugin/DebugKit"]
+	path = Plugin/DebugKit
+	url = https://github.com/cakephp/debug_kit.git
