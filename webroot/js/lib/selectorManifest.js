@@ -13,7 +13,19 @@
 var XSM = {
 	global:{
 		ajaxLink:".ajax-link",
-		jsLink:".js-link"
+		autoScrollers: "*[data-scroll-to]",
+		detachable: ".detach",
+		imageQueue: "#image-loading-queue",
+		loadingScreen: "#loadingScreen",
+		jsLink:".js-link",
+		preserveAS: ".preserve-aspect-ratio",
+		scrollable: "*[data-scrolling-target]"
+	},
+	load: {
+		dismissLSButton: "#dismiss-loading-screen",
+		pizzaLoaderGIF: "#pizza-loader-gif",
+		loadingMessage: "#loading-message",
+		readyMessage: "#ready-message"
 	},
 	main: {
 		primaryContent: "#primary-content",
@@ -23,20 +35,25 @@ var XSM = {
 	},
 	splash:{
 		self:"#splash",
-		modal:"#splash-modal",
-		modalWrap:"#splash-modal-wrapper",
-		modalContent:"#splash-modal .content",
 		cont:"#splash-pane",
 		circle:"#splash-circle",
 		circleWrap:"#splash-circle-wrapper",
-		splashBar:"#splash-bar",
+		detached: "#splash .detach",
+		fastened:"#splash .fastened",
 		logo:"#splash-logo",
 		logoClone:"#splash-logo_fasten-clone",
-		order:"#order",
-		orderSpacer:"#order-wrapper .spacer",
 		menu:"#menu",
 		menuWrap:"#menu-wrapper",
-		menuSpacer:"#menu-wrapper .spacer"
+		menuSpacer:"#menu-wrapper .spacer",
+		modal:"#splash-modal",
+		modalLoad:"*[data-splash-modal]",
+		modalWrap:"#splash-modal-wrapper",
+		modalContent:"#splash-modal .content",
+		openingDeal:"grand-opening-deal",
+		order:"#order",
+		orderSpacer:"#order-wrapper .spacer",
+		preserveAS: "#splash *.preserve-aspect-ratio",
+		splashBar:"#splash-bar"
 	}
-}
+};
 

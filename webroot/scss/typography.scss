@@ -11,11 +11,11 @@
   font-family:"Fredericka the Great", sans-serif;
 }
 
-@mixin HelveticaBlCn {
+@mixin HelveticaBlkCn {
   font-family:"Helvetica Neue Condensed Black", arial, sans-serif;
 }
 
-h1.orb-card, h2.orb-card, h3.orb-card, h4.orb-card, h5.orb-card { @include HelveticaBlCn;}
+h1.orb-card, h2.orb-card, h3.orb-card, h4.orb-card, h5.orb-card { @include HelveticaBlkCn;}
 
 h1.nav {
   @include Fredericka;
@@ -32,3 +32,6 @@ h1.nav {
     text-shadow: 0 0 rem-calc(8px) $white;
   }
 }
+
+
+$button-font-family: "Helvetica Neue Condensed Black";

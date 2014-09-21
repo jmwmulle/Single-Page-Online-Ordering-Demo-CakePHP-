@@ -57,7 +57,7 @@ nav#subnav-toc {
   min-height       : 2000px;
   z-index          : 8700;
   ul {
-    @include HelveticaBlCn;
+    @include HelveticaBlkCn;
     color          : $black;
     font-weight    : bold;
     text-transform : uppercase;
@@ -99,7 +99,7 @@ nav#login {
   padding-top      : 2rem;
   h2 {
     color : $white;
-    @include HelveticaBlCn;
+    @include HelveticaBlkCn;
   }
 
   ul#login-options {

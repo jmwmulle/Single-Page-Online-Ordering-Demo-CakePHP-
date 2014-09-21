@@ -24,6 +24,7 @@
 	<?php foreach ($elements as $i => $e) {
 		$classes = array("js-link", ___strToSel($e['label']));
 		if ($e['active']) array_push($classes, "active");
+		if ($i == count($elements) - 1) array_push($classes, "last-content-element");
 		?>
 	<li <?php echo ___cD($classes);?> data-url="/xtreme/<?php echo $e['url'];?>"><?php echo ucwords($e['label']);?></li>
 	<?php } ?>

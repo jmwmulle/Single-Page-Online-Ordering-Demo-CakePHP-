@@ -1,0 +1,64 @@
+@mixin xtreme-button-padding($size:"med") {
+  $base-padding:0.75rem;
+  $side-pad-factor: 1.5;
+  @if ($size == "xlg") { 
+    $base-padding: 1.25rem;
+    $side-pad-factor: 1.5;
+  }
+  @if ($size == "lrg") { 
+    $base-padding: 1rem;
+    $side-pad-factor: 1.5;
+  }
+  @if ($size == "sml") { 
+    $base-padding: 0.5rem;
+    $side-pad-factor: 1.5;
+  }
+  @if ($size == "tny") { 
+    $base-padding: 0.25rem;
+    $side-pad-factor: 2.5;
+  }
+  $pad-top: $base-padding * 1.7108;
+  $pad-bottom: $base-padding;
+  $pad-left-right: $base-padding * $side-pad-factor;
+  padding: $pad-top $pad-left-right $pad-bottom $pad-left-right;
+}
+
+@mixin xtreme-button-body($size:"med") {
+  $font-size: $h3-font-size;
+   @if ($size == "xlg") { $font-size: $h1-font-size;}
+   @if ($size == "lrg") { $font-size: $h2-font-size;}
+   @if ($size == "sml") { $font-size: $h4-font-size;}
+   @if ($size == "tny") { $font-size: $h5-font-size;}
+  font-size:$font-size;
+  @include xtreme-button-padding($size);
+}
+
+@mixin xtreme-button-skin($foreground, $background, $hover-transition:true, $transition-color:false) {
+  $hover-color: scale-color($background, $lightness: -1 * $button-function-factor);
+  @if ($transition-color != false) {
+    $hover-color:$transition-color;
+  }
+
+  background-color:$background;
+  color:$foreground;
+  @if ($hover-transition) {
+   &:hover { background-color: $hover-color;}
+  }
+}
+
+.xtreme-button {
+  @include HelveticaBlkCn;
+  transition: background-color 0.3s ease-in-out;
+  &.rounded { border-radius: $global-rounded;}
+  &.lrg {
+    @include xtreme-button-body("lrg");
+  }
+  &.sml {
+     font-size:$h5-font-size;
+   }
+  &.yellow-on-black {
+    @include xtreme-button-skin($dark-grey, $xtreme-yellow, $transition-color:$white);
+  }
+  &.hidden { display:none;}
+}
+

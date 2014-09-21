@@ -20,7 +20,13 @@ echo $this->Element('toc', array('elements' => $toc));
 $this->end('toc');
 ?>
 <ul class="container orbcard-list">
-<?php foreach($orbs as $o) {?>
-	<li id="<?php echo ___strToSel($o['title']);?>" class="orbcard"><?php echo $this->Element('orbcard', array('orb' => $o));?></li>
+<?php
+	$orbsCount = count($orbs);
+	foreach($orbs as $i => $o) {
+		$classArray = $i == ($orbsCount - 1) ? array("orbcard","last-content-element") : array("orbcard");
+		?>
+	<li id="<?php echo ___strToSel($o['title']);?>" <?php echo ___cD($classArray);?>>
+		<?php echo $this->Element('orbcard', array('orb' => $o));?>
+	</li>
 <?php } ?>
 </ul>
