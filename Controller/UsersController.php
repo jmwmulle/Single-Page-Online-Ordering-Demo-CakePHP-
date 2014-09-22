@@ -67,7 +67,7 @@ class UsersController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	public function edit($id) {
 		if (!$this->User->exists($id)) {
 			throw new NotFoundException(__('Invalid user'));
 		}
@@ -107,12 +107,7 @@ class UsersController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
-#register	
-	public function register() {
-		// don't know enough about oAuth to know if this is 1 function or 4 (FB/Twitter/G+/e-mail)
-	}
-
-#login	
+/*login	*/
 	public function login() {
 	    if ($this->Session->read('Auth.User')) {
 		$this->Session->setFlash('You are logged in!');
@@ -130,11 +125,25 @@ class UsersController extends AppController {
 		if ($this->Session->read('stashedUser') != null) {
 			$user = $this->Session->read('stashedUser');
 			$this->Session->write('stashedUser', null);
-			$this->User->save($user);
-			if ($this->Auth->login($user['User'])) {
+			if (!$this->User->save($user)) {
+				$this->log($this->User->validationErrors);
+			}
+			$conditions = array();
+			if (array_key_exists('google_uid', $user['User'])) {
+				$conditions['User.google_uid'] = $user['User']['google_uid'];
+			}
+			if (array_key_exists('twitter_uid', $user['User'])) {
+				$conditions['User.twitter_uid'] = $user['User']['twitter_uid'];
+			}
+			if (array_key_exists('facebook_uid', $user['User'])) {
+				$conditions['User.facebook_uid'] = $user['User']['facebook_uid'];
+			}
+			$user = $this->User->find('first', array('conditions' => $conditions));
+			if ($this->Auth->login($user)) {
 				$this->Session->setFlash(__('Welcome to Xtreme Pizza, ' + $user['User']['firstname']));
-				return $this->redirect($this->Auth->redirectUrl());
+				return $this->redirect(___cakeUrl('users','edit',array('id' => $user['User']['id'])));
 			} else {
+				db("Login Failed");
 				$this->Session->setFlash(__('Login failed. Please try again.'));
 				return $this->redirect(___cakeUrl('pages', 'splash'));
 			}
@@ -144,7 +153,7 @@ class UsersController extends AppController {
 		}
 	}
 
-#logout	
+/*logout*/	
 	public function logout() {
 		$this->Session->setFlash('Good-Bye');
 		$this->Auth->logout();
@@ -166,7 +175,8 @@ class UsersController extends AppController {
 					'firstname' => $creds['auth']['info']['first_name'],
 					'lastname' => $creds['auth']['info']['last_name'],
 					'email_verified' => $creds['auth']['raw']['verified_email'],
-					'group_id' => 1));
+					'group_id' => 1
+				));
 				$conditions = array('User.google_uid' => $newUser['User']['google_uid']);
 			} elseif ($prov == 'Twitter') {
 				$split_name = explode(' ', $creds['auth']['info']['name'], 2);
@@ -178,12 +188,19 @@ class UsersController extends AppController {
 				));
 				$conditions = array('User.twitter_uid' => $newUser['User']['twitter_uid']);
 			} elseif ($prov == 'Facebook') {
-				db($creds);
+				$newUser = array('User' => array(
+					'email' => $creds['auth']['info']['email'],
+					'facebook_uid' => $creds['auth']['uid'],
+					'firstname' => $creds['auth']['info']['first_name'],
+					'lastname' => $creds['auth']['info']['last_name'],
+					'email_verified' => $creds['auth']['raw']['verified'],
+					'group_id' => 1
+				));
+				$conditions = array('User.facebook_uid' => $newUser['User']['facebook_uid']);
 			}
 			if ($this->User->hasAny($conditions)) {
-				
 				if ($this->Session->read('stashedUser') != null) {
-					$exUser = $this->User->find('first', array('conditions' => array('User.twitter_uid' => $newUser['User']['twitter_uid'])));
+					$exUser = $this->User->find('first', array('conditions' => $conditions));
 					$newUser = $this->Session->read('stashedUser');
 					$newUser['User'] = array_merge($exUser['User'], $newUser['User']);
 					if (!$this->User->save($newUser))
@@ -193,22 +210,17 @@ class UsersController extends AppController {
 					}
 					$this->Session->write('stashedUser', null);
 				}
-				if ($this->Auth->login($newUser['User'])) {
-					$this->Session->setFlash(__("Welcome back, " + $newUser['User']['firstname']));
-					return $this->redirect($this->Auth->redirectUrl());
+				$exUser = $this->User->find('first', array('conditions' => $conditions));
+				if ($this->Auth->login($exUser)) {
+					$this->Session->setFlash(__("Welcome back, " + $exUser['User']['firstname']));
+					return $this->redirect(___cakeUrl('users', 'edit', array('id' => $exUser['User']['id'])));
 				} else {
+					db('Login failed');
 					$this->Session->setFlash(__('Login failed. Please try again.'));
 					return $this->redirect(___cakeUrl('pages', 'splash'));
 				}
 			} else {
 				$this->Session->write('stashedUser',$newUser);
-				/*if ($this->login($newUser['User'])) {
-					$this->redirect($this->Auth->redirectUrl());
-				} else {
-					$this->Session->setFlash(__('Login failed. Please try again.'));
-					return $this->redirect(___cakeUrl('pages', 'splash'));
-				}*/
-
 				$this->render('merge-choice');
 			}
 		} else {
@@ -217,7 +229,7 @@ class UsersController extends AppController {
 		}
 	}
 
-#beforeFilter	
+/*beforeFilter*/	
 	public function beforeFilter() {
 	    parent::beforeFilter();
 

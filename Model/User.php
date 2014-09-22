@@ -17,6 +17,11 @@
 		 * @var array
 		 */
 		public $validate = array(
+			'id' => array(
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
+				),
+			),
 			'firstname' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),

@@ -159,7 +159,8 @@ Configure::write('Opauth.Strategy.Google', array(
 
 Configure::write('Opauth.Strategy.Facebook', array(
 	'app_id' => '765798036795267',
-	'app_secret' => '57dfbdff219046eec4c396e52644494c'
+	'app_secret' => '57dfbdff219046eec4c396e52644494c',
+	'scope' => 'email'
 ));
 
 Configure::write('Opauth.Strategy.Twitter', array(

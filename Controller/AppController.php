@@ -289,11 +289,8 @@ class AppController extends Controller {
 		$this->Auth->logoutRedirect = array(
 		  'controller' => 'users',
 		  'action' => 'logout'
-		);
-		$this->Auth->loginRedirect = array(
-		  'controller' => 'users',
-		  'action' => 'editi/'+AuthComponent::user('id')
-		);
+	  	);
+		$this->Auth->loginRedirect = ___cakeUrl("users","edit",array('id' => $this->Auth->user('id')));
 		$this->Auth->allow('display');
 	}	
 }
