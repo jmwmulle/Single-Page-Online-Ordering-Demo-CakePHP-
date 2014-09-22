@@ -7,16 +7,14 @@
  * About.me: about.me/thisimpetus
  */
 ?>
-<dl class="text-center tight">
+<ul class="text-center tight">
 <?php
 	foreach($elements as $i => $orblink) {
 		$classes = array();
 		if ($i == count($elements)) array_push($classes, "last-content-element");
-		$data = array("magellan-arrival" => ___strToSel($orblink), "scroll-target" => "#primary-content");
+		$data = array("scroll-to" => ___strToSel($orblink), "scroll-target" => "#primary-content");
 	?>
-<dd <?php echo ___dA($data);?> <?php echo ___cD($classes);?>>
-	<a href="<?php echo ___strToSel($orblink, "id");?>"><?php echo ucwords($orblink);?></a>
-</dd>
+<li <?php echo ___dA($data);?> <?php echo ___cD($classes);?>><?php echo ucwords($orblink);?></li>
 <?php }?>
-</dl>
+</ul>
 

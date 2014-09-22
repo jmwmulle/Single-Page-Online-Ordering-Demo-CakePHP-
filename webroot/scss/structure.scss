@@ -1,13 +1,9 @@
 //FRAMES & CONTAINERS
 body {
- // overflow:hidden;
+  overflow:hidden;
 }
-#image-loading-queue {
-  display:none;
-}
-
 .pane {
-//  position:fixed;
+  position:fixed;
   top:0;
   left:0;
   width:100%;

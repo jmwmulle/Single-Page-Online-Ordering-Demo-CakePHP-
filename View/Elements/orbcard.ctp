@@ -10,7 +10,7 @@
 ?>
 
 <div class="row">
-	<?php echo AppController::anchor(___strToSel($orb['title']));?>
+	<?php AppController::anchor($orb['title']);?>
 	<div class="large-4 small-6 columns thumb">
 		<?php echo $this->Html->image('nothumb.png', array('alt' => ucwords($orb['title'])." menu photo", "class" => "orb-card-thumb"));?>
 		<button class="large expand unavailable">&nbsp;</button>
@@ -18,7 +18,7 @@
 	<div class="large-8 small-6 columns">
 		<div class="row">
 			<div class="large-12 small-12 columns">
-				<h4 class="orb-card" data-magellan-arrival="<?php ___strToSel($orb['title']);?>">
+				<h4 class="orb-card">
 					<?php echo $orb[ 'title' ]; ?>
 					<span class='subheader'><?php echo $orb[ 'subtitle' ]; ?></span>
 				</h4>
