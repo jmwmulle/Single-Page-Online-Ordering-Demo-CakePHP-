@@ -26,6 +26,7 @@ var C = constants;
          pr(this.raisedError.message+". \n\tWith trace: {0}".format(this.raisedError.stack), "InitError > {0}".format(this.raisedError.name), true);
 	 };
  }
+
 window.XBS = {
 	data: {
 		hostRootDirs: {
@@ -55,7 +56,8 @@ window.XBS = {
 	},
 	cfg: {
 		root: null,
-		minLoadTime: 1000
+		developmentMode:false,
+		minLoadTime: 1
 	},
 	evnt: {
 		wakeFromSleep: eCustom("wakeFromSleep"),
@@ -89,8 +91,8 @@ window.XBS = {
 		XBS.fn.setHost(host);
 //		try {
 			XBS.layout.init();
-			XBS.splash.init();
-			XBS.cache.init();
+		//	XBS.splash.init();
+			//XBS.cache.init();
 //		} catch(e) {
 //			if (e instanceof InitError) {
 //				e.read();
@@ -104,6 +106,7 @@ window.XBS = {
 		cbDone:false,
 		failed: [],
 		init: function() {
+			return true;
 			//todo: dynamically tie load-screen behavior to template/caching situation
 				$("img.image-loader.preload").each(function() {
 						$(this).cacheImages({
@@ -117,23 +120,24 @@ window.XBS = {
 				});
 			$(window).trigger(XBS.evnt.assetsLoaded);
 		}
-//		fetchImages: function() {
-//			//todo: callbacks for errors
-//			XBS.stopwatch.start();
-//			$(XSM.global.imageQueue).loadImages({
-//				allLoadedClb:function() { $(window).trigger(XBS.evnt.assetsLoaded);},
-//				imgErrorClb: function() {pr(this, "ImageError", true)},
-//				imgLoadedClb: function() {/*pr(this, "ImageLoaded");*/},
-//				noImgClb: function() {pr(this, "No Images!", true)}
-//			});
-//		}
+		/*fetchImages: function() {
+			//todo: callbacks for errors
+			XBS.stopwatch.start();
+			$(XSM.global.imageQueue).loadImages({
+				allLoadedClb:function() { $(window).trigger(XBS.evnt.assetsLoaded);},
+				imgErrorClb: function() {pr(this, "ImageError", true)},
+				imgLoadedClb: function() {pr(this, "ImageLoaded");},
+				noImgClb: function() {pr(this, "No Images!", true)}
+			});
+		}*/
 	},
 	layout: {
 		init: function() {
 			try {
-				XBS.fn.execInitSequence(XBS.layout.jqBinds);
-				XBS.layout.detachAnimationTargets();
-				XBS.layout.initializeScrolling();
+				XBS.fn.execInitSequence(XBS.layout.jq_binds);
+				if (XBS.cfg.isSplash) {
+					XBS.layout.detachAnimationTargets();
+				}
 			} catch(e) {
 				e.stackHistory = e.stack;
 				pr(e.stackHistory);
@@ -145,23 +149,24 @@ window.XBS = {
 		detachAnimationTargets: function() {
 			$(XSM.global.detachable).each(function() { XBS.layout.detach(this);});
 		},
-		jqBinds: {
-			hasInitSequence:true,
-			bindAjaxNav: function() {
+		jq_binds: {
+			has_init_sequence:true,
+			bind_activization: function() {
+				$(XSM.effects.activize).each(function() {
+					$(this).on("click", XBS.layout.activate);
+				});
+
+				return true
+			},
+			bind_ajax_nav: function() {
 				$(XSM.global.ajaxLink).each(function() {
 					$(this).on(C.CLK, null, $(this).data(), XBS.load);
 				});
 
 				return true;
 			},
-			bindAutoScrolling: function() {
-				$(XSM.global.autoScrollers).each(function() {
-					$(this).on(C.CLK,null, $(this).data(), XBS.layout.autoScroll);
-				});
-
-				return true;
-			},
 			bindAssetsLoadedListener: function() {
+				if (XBS.cfg.developmentMode) return true;
 				$(window).on(XBS.evnt.assetsLoaded.type, function() {
 //						if (XBS.cfg.execInitSequenced = true) {
 							XBS.layout.readyLoadingScreen();
@@ -176,52 +181,24 @@ window.XBS = {
 
 				return true;
 			},
-			bindScrolling: function() {
-				$(XSM.global.scrollable).each(function() {
-					// get and store within the element it's initial offset for later reference
-					var initialOffset = $(this).offset().top;
-					var lastContentEl= $(this).find(".last-content-element");
-					if (lastContentEl.length == 0) {
-						var children = $(this).children();
-						if (children.length != 0) {
-							lastContentEl = children[children.length - 1];
-						} else {
-							lastContentEl = false;
-						}
-					} else {
-						lastContentEl = lastContentEl[0];
-					}
-					// try to set maxOffset according to the last scrollable element; use last child if need be
-					var maxOffset = null;
-					if (lastContentEl)  {
-						var lastElTop = $(lastContentEl).offset().top;
-						// if scroll isn't even needed, don't allow it
-						maxOffset = lastElTop > window.innerHeight ? lastElTop : 0;
-					} else {
-						maxOffset = 0;
-					}
-					$(this).data({initialOffset:initialOffset, maxOffset:maxOffset});
-					$(this).css({height:$(this).innerHeight() + window.innerHeight});
-					$(this).on("mousewheel", null, null, XBS.layout.scroll);
-				});
+			windowResizeListener: function() {
+				if (XBS.cfg.isSplash) {
+					$(window).on("resize", XBS.splash.render);
+				}
 				return true;
 			},
-			windowResizeListener: function() {
-				$(window).on("resize", XBS.splash.render);
+		style_effects: {
+			has_init_sequence: true,
+			solidify: function () {
+				$(XSM.effects.solidify).each(function() {
 
+				});
 				return true;
 			}
-		},
-		autoScroll: function() {
-			if (isEvent(arguments[0]) ) {
-				var e = arguments[0];
-				var scrollTarget = e.data.scrollTarget;
-				var scrollTo = e.data.scrollTo;
+			
 			}
-			var delta = $(scrollTarget).data('autoScrollTo') - $(scrollTo).offset().top;
-			var direction = delta > 1 ? -1 : 1;
-			XBS.layout.scroll(scrollTarget, Math.abs(delta), direction);
 		},
+
 		assertAspectRatio: function(targets) {
 			if (!targets) targets = XSM.global.preserveAS;
 			$(targets).each(function() {
@@ -248,26 +225,11 @@ window.XBS = {
 
 			return true;
 		},
-		initializeScrolling: function() {
-			/* assert a autoscroll-to attribute for each scrollable area, ie. a vertical scroll destination */
-			$(XSM.global.scrollable).each( function() {
-				var height = $(this).innerHeight();
-				var offset = $(this).offset().top;
 
-				/* Find out if the element extends off the screen or not, and then get it's visible, vertical center */
-				var visibleCenter = (height + offset > window.innerHeight ) ? (window.innerHeight - offset)/2 : height/2;
-				$(this).data({autoScrollTo:visibleCenter});
-			});
+		activate: function() {
 
-			return true;
-
-//			$(XSM.global.autoScrollers).each(function() {
-//				var offset = $("ul.orbcard-list").offset().top + 16;
-//				var targetTop = $(asId($(this).data("scrollTo"))).offset().top;
-//				$(this).data({scrollToPost:top});
-//			});
-//			$(scroll.scrollTarget).animate({marginTop:String(offset+(-1 * scroll.top))+ C.PX});
 		},
+
 		detach: function(element) {
 			var isStatic = $(element).data('static');
 			var height = $(element).innerHeight();
@@ -288,6 +250,10 @@ window.XBS = {
 			return  (isArray(selector) ) ? selector : $(selector);
 		},
 		readyLoadingScreen: function() {
+			if (XBS.cfg.developmentMode) {
+				XBS.fn.layout.toggleLoadingScreen();
+				return true;
+			}
 			if (XBS.cfg.isSplash) {
 				$(XSM.load.pizzaLoaderGIF).fadeOut(500, function() {
 					$(XSM.load.loadingMessage).hide("slide",{direction:"right"},300, function() {
@@ -302,25 +268,15 @@ window.XBS = {
 				});
 			}
 		},
-		scroll: function(target, distance, direction) {
-				var e = arguments[0];
-				var offsetData = $(this).data();
-				var marginTopString = $(this).css('marginTop');
-				var marginVal = Number(marginTopString.replace("px", ""));
-				var margin = marginVal - e.originalEvent.deltaY;
-				if (margin > 0) margin = 0;
-				if (Math.abs(margin) > offsetData.maxOffset) margin = -1 * offsetData.maxOffset;
-				$(this).css({marginTop:margin});
-		},
 		toggleLoadingScreen: function() {
 			$(XSM.global.loadingScreen).fadeToggle();
 		}
 	},
 	splash: {
-		hasInitSequence: true,
+		has_init_sequence: true,
 		init: function() {
 			if (!XBS.cfg.isSplash) return true;
-			XBS.fn.execInitSequence(XBS.splash.jqBinds);
+			XBS.fn.execInitSequence(XBS.splash.jq_binds);
 			$(XSM.splash.self).on(C.MOUSEOVER, function() {
 					$(XSM.splash.openingDeal).slideDown();
 					$(this).unbind(C.HOVER);
@@ -329,8 +285,8 @@ window.XBS = {
 
 			return true;
 		},
-		jqBinds: {
-			hasInitSequence: true,
+		jq_binds: {
+			has_init_sequence: true,
 			splashRedirectListener: function() {
 							$("section#splash *[data-splash-redirect]").each(function() {
 								var data = $(this).data();
@@ -410,11 +366,11 @@ window.XBS = {
 	},
 	fn: {
 		execInitSequence: function(initOb) {
-			if (!exists(initOb.hasInitSequence) ) {
-				throw new TypeError("Object passed to XBS.fn.execInitSequence() does not contain 'hasInitSequence' property.");
+			if (!exists(initOb.has_init_sequence) ) {
+				throw new TypeError("Object passed to XBS.fn.execInitSequence() does not contain 'has_init_sequence' property.");
 			}
 			var sitRep = {};
-			for (fn in initOb) { if (fn != "hasInitSequence") sitRep[fn] = initOb[fn](); }
+			for (fn in initOb) { if (fn != "has_init_sequence") sitRep[fn] = initOb[fn](); }
 			return sitRep;
 		},
 		offsetToMargin: function(target, offset) {

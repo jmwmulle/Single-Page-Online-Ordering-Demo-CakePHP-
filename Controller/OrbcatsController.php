@@ -107,41 +107,58 @@ class OrbcatsController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
-	public function toc($id = null) {
-		if ($this->request->is("ajax")) {
-			$this->layout = "ajax";
-			$orbs = $this->menu($id, true);
-			$this->set('orbs', $orbs);
-		} else {
-			$this->redirect("/");
-		}
-	}
-
-	public function menu($id = null, $return = false) {
+	public function menu($orbcat_id = null, $orb_id = null, $return = false) {
+		$here = 'Menu';
+		$active_orb = false;
 		if ($this->request->is("ajax")) $this->layout = "ajax";
-		$active = (!$id || !$this->Orbcat->exists($id)) ? 1 : $id;
+		$orbcat_id = (!$orbcat_id || !$this->Orbcat->exists($orbcat_id)) ? 1 : $orbcat_id; // default to pizza if null
+		$this->Orbcat->id = $orbcat_id;
 
-		$orbs = $this->Orbcat->find('all', array('recursive' => 1, "conditions" => array("`Orbcat`.`id`" => $active)));
-		$subnav = $this->Orbcat->find('list');
-		$toc = array();
-		foreach($orbs[0]['Orb'] as $i => $o) {
-			$toc[$o['id']] = $o['title'];
-			$o['price_matrix'] = json_decode($o['price_matrix'], true);
-			$o['config'] = json_decode($o['config'], true);
-			$orbs[0]['Orb'][$i] = $o;
+		$active_orbcat = array(
+			"id" => $orbcat_id,
+			"name" => str_replace("XTREME", "", ucwords($this->Orbcat->field('title', array('`orbcat`.`id`' => $orbcat_id)))),
+		    "orbs" => $this->Orbcat->find('all', array('recursive' => 1, "conditions" => array("`Orbcat`.`id`" => $orbcat_id))),
+		    "orb_card" => null
+		);
+		if (!$orb_id || !$this->Orbcat->Orb->exists($orb_id)  ) {
+			$active_orb = $active_orbcat['orbs'][0]; // orbcard is 1st orb if not set; else, see loop below
 		}
+
+		$active_orbcat['orbs'] = $active_orbcat['orbs'][0]['Orb']; // truncate to just orbs, remove OrbCat
+		$orbcats_list = $this->Orbcat->find('list', array('conditions' => array('`Orbcat`.`primary_menu`' => true)));  // for actual orbcat menu
+
+		// decode json in active orbs list
+		foreach($active_orbcat['orbs'] as $i => $orb) {
+			if ($orb['id'] == $orb_id) $active_orbcat["orb_card"] = $orb; // active orb set here is orb requested
+			$orb['price_matrix'] = json_decode($orb['price_matrix'], true);
+			$orb['config'] = json_decode($orb['config'], true);
+			$orb['url'] = sprintf("menu/%s/%s", $active_orbcat['id'], $orb['id']);
+			$active_orbcat['orbs'][$i] = $orb;
+		}
+		if ($active_orbcat["orb_card"] == null) { $active_orbcat["orb_card"] = $active_orbcat['orbs'][0];}
+
+		$min_orb_count = 5;
+		$empty_orb = array("id" => -1,
+		                   "title" =>
+			               "empty_orb",
+		                   "subtitle" => false,
+		                   "description" => false,
+		                   "price_matrix" => false,
+		                   "config" => false,
+		                   "url" => false);
+		if ( count($active_orbcat['orbs']) < $min_orb_count) {
+			// fills active orb menu with dummy orbs
+			while (count($active_orbcat['orbs'])  != $min_orb_count) {
+				array_push($active_orbcat['orbs'], $empty_orb);
+			}
+		}
+
+		// todo: find out where this is called; I think it's for ajax-loading the orbslist of a new orbcat choice?
 		if ($return) {
 			$this->autorender = false;
-			return $toc;
+			return json_encode($active_orbcat['orbs']);
 		}
-		$orbs = $orbs[0]['Orb'];
-		foreach($subnav as $i => $oc) {
-			$subnav[$i] = array('label' => $oc,
-			                     'url' =>"menu/$i",
-			                     'active' => $i == $id ? true : false
-			);
-		}
-		$here = 'Menu';
-		$this->set(compact('active','orbs','here','topnav','subnav','toc'));
+
+		$this->set(compact('active_orbcat','orbcats_list','here'));
 	}
 }

@@ -1,21 +1,201 @@
-
-ul.orbcard-list {
-    padding:1rem;
+body#menu {
+  background-image : url("../img/menu_bg.xlg.jpg");
+  // todo: media queries for smaller resolutions
 }
 
-li.orbcard {
-  padding:1rem;
-  margin-bottom:1.5rem;
-  color:$dark-grey;
-  border:1px solid rgb(125,125,125);
+li.orbcat {
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size: 60px 60px;
+  &.xtreme-original-pizzas { background-image:url("../img/orbcat_icons/xtreme-original-pizzas.png");}
+  &.xtreme-super-pizzas { background-image:url("../img/orbcat_icons/xtreme-super-pizzas.png");}
+  &.specialty-pizzas { background-image:url("../img/orbcat_icons/specialty-pizzas.png");}
+  &.panzarottis { background-image:url("../img/orbcat_icons/panzarottis.png");}
+  &.assorted-fingers { background-image:url("../img/orbcat_icons/assorted-fingers.png");}
+  &.poutines { background-image:url("../img/orbcat_icons/poutines.png");}
+  &.donairs { background-image:url("../img/orbcat_icons/donairs.png");}
+  &.chicken-and-chips { background-image:url("../img/orbcat_icons/chicken-and-chips.png");}
+  &.fish-and-chips { background-image:url("../img/orbcat_icons/fish-and-chips.png");}
+  &.pasta { background-image:url("../img/orbcat_icons/pasta.png");}
+  &.burgers { background-image:url("../img/orbcat_icons/burgers.png");}
+  &.sandwiches { background-image:url("../img/orbcat_icons/sandwiches.png");}
+  &.pita-wraps { background-image:url("../img/orbcat_icons/pita-wraps.png");}
+  &.subs { background-image:url("../img/orbcat_icons/subs.png");}
+  &.xtreme-subs { background-image:url("../img/orbcat_icons/xtreme-subs.png");}
+  &.beverages { background-image:url("../img/orbcat_icons/beverages.png");}
+  &.salads { background-image:url("../img/orbcat_icons/salads.png");}
+  &.desserts { background-image:url("../img/orbcat_icons/desserts.png");}
+}
+
+main#menu {
+  margin-top : $topbar-height;
+}
+
+#user-activity-panel-wrapper {
+  margin : 0 10 0 0;
+  width  : rem-calc(100);
+}
+
+#user-activity-panel {
+  margin-left : 0;
+  li {
+    @include global-transition(background-color);
+    width            : $user-activity-panel-width;
+    height           : $user-activity-panel-height;
+    background-color : $black-a25;
+    border           : 1px solid $black;
+    border-top       : none;
+    &:hover { background-color: $white-a16;}
+    &:first-of-type {
+      transition: none;
+      background-color : $dark-grey;
+    }
+    &.active {
+      background-color:$white;
+    }
+  }
+}
+
+div#category-nav-wrapper {
+  position : relative;
+  margin   : rem-calc(20);
+}
+
+#orbcat-menu-title {
+  position       : absolute;
+  bottom         : 0;
+  left           : rem-calc(10);
+  margin         : 0 0 rem-calc(-25) 0;
+  letter-spacing : rem-calc(-3);
+  font-size      : rem-calc(60);
+  @include HelveticaBlkCn;
+  color          : $white;
+}
+
+ul#category-nav {
+  width      : rem-calc(850);
+  position   : relative;
+  background : #ac0819; /* Old browsers */
+  background : -moz-linear-gradient(left, #ac0819 0%, #800613 100%); /* FF3.6+ */
+  background : -webkit-gradient(linear, left top, right top, color-stop(0%, #ac0819), color-stop(100%, #800613)); /* Chrome,Safari4+ */
+  background : -webkit-linear-gradient(left, #ac0819 0%, #800613 100%); /* Chrome10+,Safari5.1+ */
+  background : -o-linear-gradient(left, #ac0819 0%, #800613 100%); /* Opera 11.10+ */
+  background : -ms-linear-gradient(left, #ac0819 0%, #800613 100%); /* IE10+ */
+  background : linear-gradient(to right, #ac0819 0%, #800613 100%); /* W3C */
+  filter     : progid:DXImageTransform.Microsoft.gradient(startColorstr='#ac0819', endColorstr='#800613', GradientType=1); /* IE6-9 */
+  padding    : 4px;
+  height     : rem-calc(380);
+
+  li {
+    display             : inline-block;
+    padding             : 0 4px;
+    height              : rem-calc(115);
+    text-align          : center;
+    vertical-align      : text-bottom;
+    a {
+      width       : 100%;
+      color       : $white;
+      font-size   : rem-calc(14px);
+      height      : rem-calc(30);
+      line-height : rem-calc(36);
+      margin-top  : rem-calc(110);
+      @include HelveticaMdCn;
+    }
+  }
+}
+
+#orb-card-wrapper {
+  position : relative;
+  height   : rem-calc(375);
+}
+
+#orb-card-stage {
+  position                   : absolute;
+  left                       : 0;
+  top                        : 0;
+  width                      : rem-calc(1000);
+  border                     : 6px solid $white;
+  border-top-right-radius    : 1000px;
+  border-bottom-right-radius : 1000px;
+  float                      : left;
+  height                     : rem-calc(360);
+  background                 : #f5f5f5; /* Old browsers */
+  background                 : -moz-linear-gradient(45deg, #f5f5f5 0%, #969696 100%); /* FF3.6+ */
+  background                 : -webkit-gradient(linear, left bottom, right top, color-stop(0%, #f5f5f5), color-stop(100%, #969696)); /* Chrome,Safari4+ */
+  background                 : -webkit-linear-gradient(45deg, #f5f5f5 0%, #969696 100%); /* Chrome10+,Safari5.1+ */
+  background                 : -o-linear-gradient(45deg, #f5f5f5 0%, #969696 100%); /* Opera 11.10+ */
+  background                 : -ms-linear-gradient(45deg, #f5f5f5 0%, #969696 100%); /* IE10+ */
+  background                 : linear-gradient(45deg, #f5f5f5 0%, #969696 100%); /* W3C */
+  filter                     : progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#969696', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+}
+div.orb-card {
+  position:relative;
+  height:$orb-card-height;
+  width: $orb-card-width;
+  margin-left:rem-calc(60px);
+  margin-top:rem-calc(15px);
   background-color:$white;
-  border-radius: $big-radius;
-
-
+  padding:rem-calc(10px);
+  z-index:99999;
+}
+ul.orb-card-buttons {
+  margin:0;
+  li {
+    width: rem-calc(85px);
+    height: rem-calc(85px);
+    margin-bottom: rem-calc(21px);
+    &:last-of-type { margin-bottom: none;}
+    &#favorite { background-color:$xtreme-yellow;}
+    &#order { background-color:$xtreme-red;}
+    &#share { background-color:$xtreme-blue;}
+  }
 }
 
-img.orb-card-thumb {
-  width:100%;
-  height:100%;
-  margin: 0 0 1rem 0;
+#orbcat-list {
+  position   : absolute;
+  right      : 0;
+  top        : 0;
+  width      : 600px;
+  float      : right;
+  height     : $focus-pane-height;
+  overflow-y : scroll;
+  overflow-x : hidden;
+  li {
+    padding-left     : 200px;
+    background-color : $xtreme-blue;
+    box-shadow       : inset 15px -5px 8px $black-a33;
+    font-size        : rem-calc(18);
+    height           : rem-calc(60);
+    line-height      : rem-calc(60);
+    @include HelveticaBlkCn;
+    a { color : $white; }
+    &:first-of-type {
+      box-shadow:none;
+      background-color:$xtreme-red;
+      font-size:rem-calc(36);
+    }
+    &:nth-of-type(3) {
+      background-color : $xtreme-orange;
+    }
+  }
+}
+
+
+.orbcat-triangle-outer {
+  position: absolute;
+//  transform: translateY(50%);
+  left:75%;
+	width: 0;
+	height: 0;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-top: 40px solid $white;
+}
+
+.orbcat-triangle-inner {
+      width: 0;
+      height: 0;
+      border-left: 22px solid transparent;
+      border-right: 22px solid transparent;
+      border-top: 26px solid $xtreme-red;
 }

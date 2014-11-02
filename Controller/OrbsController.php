@@ -36,8 +36,12 @@ class OrbsController extends AppController {
 		if (!$this->Orb->exists($id)) {
 			throw new NotFoundException(__('Invalid orb'));
 		}
+		// ajax only if requested as an orbcard
 		$options = array('conditions' => array('Orb.' . $this->Orb->primaryKey => $id));
 		$this->set('orb', $this->Orb->find('first', $options));
+		if ($this->request->is('ajax') ) {
+			$this->render('orbcard', 'ajax');
+		}
 	}
 
 /**
@@ -108,5 +112,6 @@ class OrbsController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+
 
 }

@@ -1,3 +1,9 @@
+body {
+  background-image:url('../img/splash/pizza-bg.jpg');
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-position:fixed;
+}
 ul {
   li {
     list-style-type: none;
@@ -9,7 +15,6 @@ button.unavailable {
   background-image:url("../img/order_coming_soon.png");
   @include portraitBG;
 }
-.image-loader-object { display:none;}
 .tight { @include tightContent();}
 .hidden { display:none;}
 

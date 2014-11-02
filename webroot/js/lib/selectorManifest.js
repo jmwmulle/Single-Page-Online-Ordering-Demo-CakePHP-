@@ -21,6 +21,10 @@ var XSM = {
 		preserveAS: ".preserve-aspect-ratio",
 		scrollable: "*[data-scrolling-target]"
 	},
+	effects: {
+		solidify: ".solidify",
+		activize: ".activize"
+	},
 	load: {
 		dismissLSButton: "#dismiss-loading-screen",
 		pizzaLoaderGIF: "#pizza-loader-gif",

@@ -9,25 +9,26 @@
 ?>
 
 <div class="orb-card">
-	<ul class="or-bcard-buttons">
+	<ul class="orb-card-buttons">
 		<li id="favorite"></li>
 		<li id="order"></li>
 		<li id="share"></li>
 	</ul>
-	<div class="large-4 small-6 columns">
-		<p><?php echo $orb[ 'description' ]; ?></p>
-
-		<ul class="large-block-grid-<?php echo count($orb['price_matrix']);?> price-list">
-			<?php foreach ( $orb[ 'price_matrix' ] as $opt => $price ) { ?>
-				<li>
-					<dl class="text-center">
-						<dt><?php echo $opt == "base" ? " " : ucwords( $opt ); ?></dt>
-						<dd><?php echo money_format("%#3.2n", $price ); ?></dd>
-					</dl>
-				</li>
-			<?php } ?>
-		</ul>
-		<ul id="orbcard-options">
-		</ul>
-	</div>
+	<ul class="orb-card-content tight">
+		<li id="description"><?php echo $orb[ 'description' ]; ?></li>
+		<li id="price-grid">
+			<ul class="large-block-grid-<?php echo count($orb['price_matrix']);?> price-list">
+				<?php foreach ( $orb[ 'price_matrix' ] as $opt => $price ) { ?>
+					<li>
+						<dl class="text-center">
+							<dt><?php echo $opt == "base" ? " " : ucwords( $opt ); ?></dt>
+							<dd><?php echo money_format("%#3.2n", $price ); ?></dd>
+						</dl>
+					</li>
+				<?php } ?>
+			</ul>
+		</li>
+		<li id="orbcard-options">
+		</li>
+	</ul>
 </div>

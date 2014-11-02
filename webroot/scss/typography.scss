@@ -1,37 +1,97 @@
 @font-face {
-  font-family: "Helvetica Neue Condensed Black";
-  src: url("../files/HelveticaNeueLTStd-BlkCn.otf");
+  font-family : "Helvetica Neue Condensed Black";
+  src         : url("../files/HelveticaNeueLTStd-BlkCn.otf");
+}
+
+@font-face {
+  font-family : "Helvetica Neue Medium Condensed";
+  src         : url("../files/HelveticaNeueLTStd-MdCn.otf");
+}
+
+@font-face {
+  font-family : "Helvetica Neue Thin";
+  src         : url("../files/HelveticaNeueLTStd-Th.otf");
+}
+
+@font-face {
+  font-family : "Helvetica Neue Ultra Light";
+  src         : url("../files/HelveticaNeueLTStd-UltLt.otf");
 }
 
 @mixin mouse-memoirs {
-  font-family:"Mouse Memoirs", sans-serif;
+  font-family : "Mouse Memoirs", sans-serif;
 }
 
 @mixin Fredericka {
-  font-family:"Fredericka the Great", sans-serif;
+  font-family : "Fredericka the Great", sans-serif;
 }
 
 @mixin HelveticaBlkCn {
-  font-family:"Helvetica Neue Condensed Black", arial, sans-serif;
+  font-family : "Helvetica Neue Condensed Black", arial, sans-serif;
 }
 
-h1.orb-card, h2.orb-card, h3.orb-card, h4.orb-card, h5.orb-card { @include HelveticaBlkCn;}
+@mixin HelveticaMdCn {
+  font-family : "Helvetica Neue Medium Condensed", arial, sans-serif;
+}
+
+@mixin HelveticaTh {
+  font-family : "Helvetica Neue Thin", arial, sans-serif;
+}
+
+@mixin HelveticaUltLt {
+  font-family : "Helvetica Neue Ultra Light", arial, sans-serif;
+}
+
+h1.orb-card, h2.orb-card, h3.orb-card, h4.orb-card, h5.orb-card { @include HelveticaBlkCn; }
 
 h1.nav {
   @include Fredericka;
-  color:white;
-  font-weight       : normal;
-  margin: $topnav-h1-margin;
-  padding: $topnav-h1-padding;
-  height: $topnav-h1-height;
-  line-height: $topnav-h1-height;
-  &.selected { border-bottom:1px double $white; }
+  color       : white;
+  font-weight : normal;
+  margin      : $topnav-h1-margin;
+  padding     : $topnav-h1-padding;
+  height      : $topnav-h1-height;
+  line-height : $topnav-h1-height;
+  &.selected { border-bottom : 1px double $white; }
   @include disableWithOpacity(0.33);
-  @include globalTrans(text-shadow);
+  @include global-transition(text-shadow);
   &:hover {
-    text-shadow: 0 0 rem-calc(8px) $white;
+    text-shadow : 0 0 rem-calc(8px) $white;
   }
 }
 
+*.body-font-color { color: $body-font-color;}
+span.block {
+  display : block;
+}
 
-$button-font-family: "Helvetica Neue Condensed Black";
+span.header-red {
+  color : $xtreme-red;
+}
+
+span.header-thin {
+  @include HelveticaTh;
+}
+
+#orbcat-menu-title {
+  padding: 0;
+}
+#user-activity-panel {
+  a {
+    @include HelveticaUltLt;
+    @include global-transition(color);
+    text-align  : center;
+    line-height : 0.25 * $user-activity-panel-height;
+    padding-top : 0.25 * $user-activity-panel-height;
+    width: $user-activity-panel-width;
+    height: $user-activity-panel-height;
+    font-size   : $user-activity-panel-font-size;
+    &:hover { color: invert($body-font-color);}
+
+  }
+  h2 {
+    font-size   : $h2-font-size;
+    @include HelveticaBlkCn;
+    line-height : $user-activity-panel-height;
+  }
+}
