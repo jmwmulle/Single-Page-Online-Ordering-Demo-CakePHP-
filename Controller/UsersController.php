@@ -48,16 +48,22 @@ class UsersController extends AppController {
 	public function add() {
 		if ($this->request->is('ajax')) { $this->layout =  "ajax";}
 		if ($this->request->is('post')) {
-			$this->User->create();
-			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('The user has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+			$conditions = array('User.email' => $this->request->data['User']['email']);    
+			if ($this->User->hasAny($conditions)) {
+				$this->Session->setFlash(__('That email address is already taken.'));
+				return $this->redirect(___cakeUrl('pages', 'splash'));
 			} else {
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+				$this->User->create();
+				if ($this->User->save($this->request->data)) {
+					$this->Session->setFlash(__('Account created.'));
+					return $this->redirect(___cakeUrl('pages','splash'));
+				} else {
+					$this->Session->setFlash(__('The account could not be created. Please, try again.'));
+				}
+				$groups = $this->User->Group->find('list');
+				$this->set(compact('groups'));
 			}
 		}
-		$groups = $this->User->Group->find('list');
-		$this->set(compact('groups'));
 	}
 
 /**
@@ -110,19 +116,50 @@ class UsersController extends AppController {
 /*login	*/
 	public function login() {
 	    if ($this->Session->read('Auth.User')) {
-		$this->Session->setFlash('You are logged in!');
+		$this->Session->setFlash('You are already logged in!');
 		return $this->redirect('/');
 	    }
+	    
 	    if ($this->request->is('post')) {
-		if ($this->Auth->login()) {
-		    $this->Session->setFlash(__('Welcome'));
-		    return $this->redirect($this->Auth->redirectUrl());
+		$conditions = array('User.email' => $this->request->data['User']['email']);    
+		if ($this->User->hasAny($conditions)) {    
+			if ($this->Auth->login()) {
+			    $this->Session->setFlash(__('Welcome'));
+			    if ($this->Session->read('storedUser') != null) {
+			    	$exUser = $this->User->find('first', array('conditions' => array('User.email' => $this->request['email'])));
+			    	$exUser['User'] = array_merge($exUser['User'], $this->Session->read('storedUser'));
+			    	$this->Session->write('stashedUser', null);
+			    }
+			    return $this->redirect($this->redirect->__cakeUrl('user', 'edit'));
+			} else {
+			    $this->Session->setFlash(__('Your email or password was incorrect. (Post1)'));
+			    return $this->redirect(___cakeUrl('pages', 'splash'));
+			}
 		} else {
-			$this->Session->setFlash(__('Your username or password was incorrect.'));
+			$this->Session->setFlash(__('Your email or password was incorrect. (Post2)'));
 			return $this->redirect(___cakeUrl('pages', 'splash'));
 		}
 	    }
-		if ($this->Session->read('stashedUser') != null) {
+	    
+	    if ($this->request->is('put')) {
+	    	$conditions = array('User.email' => $this->request->data['User']['email']);    
+		if ($this->User->hasAny($conditions)) {
+			$this->Session->setFlash(__('That email address is already registered.'));
+			return $this->redirect(__cakeUrl('pages', 'splash'));
+		} else {
+			$this->User->create();
+			if ($this->User->save($this->request->data)) {
+				$this->Session->setFlash(__('Account created.'));
+				return $this->redirect(__cakeUrl('pages','splash'));
+			} else {
+				$this->Session->setFlash(__('The account could not be created. Please try again.'));
+			}
+			$groups = $this->User->Group->find('list');
+			$this->set(compact('groups'));
+		}
+	    }
+	    
+	    if ($this->Session->read('stashedUser') != null) {
 			$user = $this->Session->read('stashedUser');
 			$this->Session->write('stashedUser', null);
 			if (!$this->User->save($user)) {
@@ -144,13 +181,10 @@ class UsersController extends AppController {
 				return $this->redirect(___cakeUrl('users','edit',array('id' => $user['User']['id'])));
 			} else {
 				db("Login Failed");
-				$this->Session->setFlash(__('Login failed. Please try again.'));
+				$this->Session->setFlash(__('Login failed. Please try again. (Stashed1)'));
 				return $this->redirect(___cakeUrl('pages', 'splash'));
 			}
-		} else {
-			$this->Session->setFlash(__('Login failed. Please try again.'));
-			return $this->redirect(___cakeUrl('pages', 'splash'));
-		}
+	    } 	
 	}
 
 /*logout*/	
@@ -234,6 +268,6 @@ class UsersController extends AppController {
 	    parent::beforeFilter();
 
 	    // For CakePHP 2.1 and up
-	    $this->Auth->allow();
+	    $this->Auth->allow('add', 'login','logout');
 	}
 }

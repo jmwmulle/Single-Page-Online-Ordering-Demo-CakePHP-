@@ -14,6 +14,11 @@
 	<div class="large-4 small-6 columns thumb">
 		<?php echo $this->Html->image('nothumb.png', array('alt' => ucwords($orb['title'])." menu photo", "class" => "orb-card-thumb"));?>
 		<button class="large expand unavailable">&nbsp;</button>
+                <?php echo $this->Form->create(NULL, array('url' => array('controller' => 'shop', 'action' => 'add'))); ?>
+		<?php echo $this->Form->input('id', array('type' => 'hidden', 'value' => $orb['id'])); ?>
+
+		<?php echo $this->Form->button('Add to Cart', array('class' => 'btn btn-primary addtocart', 'id' => 'addtocart', 'id' => $orb['id']));?>
+		<?php echo $this->Form->end(); ?> 
 	</div>
 	<div class="large-8 small-6 columns">
 		<div class="row">

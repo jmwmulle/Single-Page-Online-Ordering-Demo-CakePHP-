@@ -34,6 +34,8 @@
 
 	Router::connect('/opauth-complete/*', array('controller' => 'users', 'action' => 'opauth_complete'));
 
+	Router::connect('/auth/email', array('controller' => 'users', 'action' => 'login'));
+	
 	#Router::connect('/confirm/*', array('controller' => 'users', 'action' => 'edit'));
 
  //implementing RESTful API
