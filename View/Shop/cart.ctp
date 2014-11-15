@@ -4,11 +4,11 @@
 
 <?php echo $this->Html->script(array('cart.js'), array('inline' => false)); ?>
 
-<h1>Shopping Cart</h1>
+<h1>Your Order</h1>
 
 <?php if(empty($shop['OrderItem'])) : ?>
 
-Shopping Cart is empty
+You haven't ordered anything yet.
 
 <?php else: ?>
 
@@ -25,24 +25,26 @@ Shopping Cart is empty
 	<div class="col col-sm-1">REMOVE</div>
 </div>
 
-<?php $tabindex = 1; ?>
+<?php $tabindex = 1; $size = 0;?>
 <?php foreach ($shop['OrderItem'] as $key => $item): ?>
 
 	<div class="row" id="row-<?php echo $key; ?>">
-		<div class="col col-sm-1"><?php echo $this->Html->image('/images/small/' . $item['Product']['image'], array('class' => 'px60')); ?></div>
+		<!-- <div class="col col-sm-1"><?php echo $this->Html->image('/images/small/' . $item['Orb']['image'], array('class' => 'px60')); ?></div> -->
 		<div class="col col-sm-7">
-			<strong><?php echo $this->Html->link($item['Product']['name'], array('controller' => 'products', 'action' => 'view', 'slug' => $item['Product']['slug'])); ?></strong>
+			<strong><?php echo $this->Html->link($item['Orb']['title'], array('controller' => 'orbs', 'action' => 'view')); ?></strong>
+                        <!-- , 'slug' => $item['Orb']['slug'])); ?></strong> -->
 			<?php
 			$mods = 0;
-			if(isset($item['Product']['productmod_name'])) :
-			$mods = $item['Product']['productmod_id'];
+			if(isset($item['Orb']['title'])) :
+			$mods = $item['Orb']['id'];
 			?>
 			<br />
-			<small><?php echo $item['Product']['productmod_name']; ?></small>
+			<small><?php echo $item['Orb']['productmod_name']; ?></small>
 			<?php endif; ?>
 		</div>
-		<div class="col col-sm-1" id="price-<?php echo $key; ?>"><?php echo $item['Product']['price']; ?></div>
-		<div class="col col-sm-1"><?php echo $this->Form->input('quantity-' . $key, array('div' => false, 'class' => 'numeric form-control input-small', 'label' => false, 'size' => 2, 'maxlength' => 2, 'tabindex' => $tabindex++, 'data-id' => $item['Product']['id'], 'data-mods' => $mods, 'value' => $item['quantity'])); ?></div>
+		<div class="col col-sm-1" id="price-<?php echo $key; ?>"><?php $prices = json_decode($item['Orb']['price_matrix'],true); echo $prices['9in']; ?></div>
+                <div class="col col-sm-1" id="desc-<?php echo $key; ?>"> <?php echo $item['Orb']['description'] ?></div>
+		<div class="col col-sm-1"><?php echo $this->Form->input('quantity-' . $key, array('div' => false, 'class' => 'numeric form-control input-small', 'label' => false, 'size' => 2, 'maxlength' => 2, 'tabindex' => $tabindex++, 'data-id' => $item['Orb']['id'], 'data-mods' => $mods, 'value' => $item['quantity'])); ?></div>
 		<div class="col col-sm-1" id="subtotal_<?php echo $key; ?>"><?php echo $item['subtotal']; ?></div>
 		<div class="col col-sm-1"><span class="remove" id="<?php echo $key; ?>"></span></div>
 	</div>

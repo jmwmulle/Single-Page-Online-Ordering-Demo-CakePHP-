@@ -12,7 +12,7 @@ class ShopController extends AppController {
 
 //////////////////////////////////////////////////
 
-	public $uses = 'orbs';
+	public $uses = 'Orb';
 
 //////////////////////////////////////////////////
 
@@ -34,8 +34,7 @@ class ShopController extends AppController {
 
 	public function add() {
 		if ($this->request->is('post')) {
-
-			$id = $this->request->data['Orb']['id'];
+			$id = $this->request->data['Orbcat']['id'];
 
 			$quantity = isset($this->request->data['Orb']['quantity']) ? $this->request->data['Orb']['quantity'] : null;
 
@@ -44,7 +43,7 @@ class ShopController extends AppController {
 			$product = $this->Cart->add($id, $quantity, $productmodId);
 		}
 		if(!empty($product)) {
-			$this->Session->setFlash($product['Orb']['name'] . ' was added to your shopping cart.', 'flash_success');
+			$this->Session->setFlash($product['Orb']['title'] . ' was added to your shopping cart.', 'flash_success');
 		} else {
 			$this->Session->setFlash('Unable to add this product to your shopping cart.', 'flash_error');
 		}
