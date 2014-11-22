@@ -13,36 +13,38 @@
  */
 
 $this->start('orbcats_menu');?>
-	<div id="category-nav-wrapper" class="inline-wrapper">
-		<ul id="category-nav" class="small-block-grid-6 box-wrapper">
-			<?php
-			foreach ($orbcats_list as $id => $orbcat) {
-				$classes = array("js-link", ___strToSel($orbcat), "orbcat",  );
-				if ($id == $active_orbcat['id']) array_push($classes, "active");
-				if ($orbcat != "XTREME SUBS") $orbcat = str_replace("XTREME", "", $orbcat);
-				?>
-			<li <?php echo ___cD($classes);?> data-url="/xtreme/menu/<?php echo $id;?>">
-				<a class="text-center"><?php echo ucwords($orbcat);?></a>
-			</li>
-			<?php } ?>
-		</ul>
-		<h1 id="orbcat-menu-title">MENU/<?php echo $active_orbcat['name'];?></h1>
-		<div class="orbcat-triangle-outer">
-		</div>
-		<div class="orbat-triangle-inner"></div>
-	</div>
+	><ul id="orbcat-menu" class="small-block-grid-6 float-pane">
+		<?php
+		$m_title = $active_orbcat['name'];
+		foreach ($orbcats_list as $id => $orbcat) {
+			$classes = array("js-link", ___strToSel($orbcat), "orbcat",  );
+			if ($id == $active_orbcat['id']) array_push($classes, "active");
+			if ($orbcat != "XTREME SUBS") $orbcat = str_replace("XTREME", "", $orbcat);
+			?>
+		<li <?php echo ___cD($classes);?> data-url="/xtreme/menu/<?php echo $id;?>">
+			<a class="text-center"><?php echo ucwords($orbcat);?></a>
+		</li>
+		<?php } ?>
+		<li id="orbcat-menu-title">
+			<h1>MENU/<?php echo substr($m_title, 0,1) == " " ? substr($m_title, 1) : $m_title; ?>
+			</h1>
+		</li>
+	</ul>
 <?php
 $this->end('orbcats_menu');
 
 $this->start('active_orbs_menu');?>
 	<h2 class="orbcat-header"><?php echo $active_orbcat['name']?></h2>
-	<ul id="orbcat-list" class="text-center tight l-3">
-		<li><?php echo $active_orbcat['name'];?></li>
+	<ul id="active-orbs-menu" class="text-center tight l-3 activizing">
+		<li>
+			<?php echo $active_orbcat['name'];?>
+			<div class="triangle-down"></div>
+		</li>
 	<?php
 		foreach($active_orbcat['orbs'] as $i => $orb) {
 			if ($orb['id'] != -1) { // ie if it's not a dummy orb
-				$classes = array('jloader');
-				$data = array("url" => $orb['url'], 'target' => '#active_orb_card');
+				$classes = array('orb-card-refresh', $orb['id'] == $active_orbcat['orb_card']['id'] ? 'active' : 'inactive');
+				$data = array("orb" => $orb['id']);
 			}
 		?>
 	<li <?php echo ___dA($data);?> <?php echo ___cD($classes);?>>

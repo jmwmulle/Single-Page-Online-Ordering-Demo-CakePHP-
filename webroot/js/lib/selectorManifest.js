@@ -19,17 +19,21 @@ var XSM = {
 		loadingScreen: "#loadingScreen",
 		jsLink:".js-link",
 		preserveAS: ".preserve-aspect-ratio",
-		scrollable: "*[data-scrolling-target]"
+		scrollable: "*[data-scrolling-target]",
+		activizing_list: "ul.activizing li"
 	},
 	effects: {
 		solidify: ".solidify",
-		activize: ".activize"
 	},
 	load: {
 		dismissLSButton: "#dismiss-loading-screen",
 		pizzaLoaderGIF: "#pizza-loader-gif",
 		loadingMessage: "#loading-message",
 		readyMessage: "#ready-message"
+	},
+	menu: {
+		orb_card_stage: "#orb-card-stage",
+		orb_card_refresh: ".orb-card-refresh"
 	},
 	main: {
 		primaryContent: "#primary-content",

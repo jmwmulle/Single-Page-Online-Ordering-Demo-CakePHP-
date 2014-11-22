@@ -113,5 +113,25 @@ class OrbsController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
+	public function menu_item($id) {
+		if ($this->request->is('ajax') && $this->Orb->exists($id) || true) {
+			$this->layout = 'ajax';
+			$orb = $this->Orb->findById($id);
+			$orb['Orb']['price_matrix'] = json_decode($orb['Orb']['price_matrix'], true);
+			foreach ($orb['Orbextra'] as $i => $orb_extra) {
+				$orb['Orb']['extras'][$i] = array('id' => $orb_extra['id'],
+				                             'title' => $orb_extra['title'],
+				                             'price_matrix' => json_decode($orb_extra['OrbsOrbextra']['pricing_matrix'], true));
+			}
+			unset($orb['Orbcat']);
+			unset($orb['Orbextra']);
+			unset($orb['Order']);
+			unset($orb['Orb']['created']);
+			unset($orb['Orb']['modified']);
+			$orb = $orb['Orb'];
+			$this->set(compact('orb'));
+		}
+	}
+
 
 }

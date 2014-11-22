@@ -151,9 +151,9 @@ window.XBS = {
 		},
 		jq_binds: {
 			has_init_sequence:true,
-			bind_activization: function() {
-				$(XSM.effects.activize).each(function() {
-					$(this).on("click", XBS.layout.activate);
+			bind_activizing_lists: function() {
+				$(XSM.global.activizing_list).each(function() {
+					$(this).on(C.CLK, XBS.layout.activize);
 				});
 
 				return true
@@ -181,12 +181,18 @@ window.XBS = {
 
 				return true;
 			},
+			bind_orbcard_refresh: function() {
+				$(XSM.menu.orb_card_refresh).each(function() {
+					$(this).on(C.CLK, $(this).data(), XBS.layout.refresh_orb_card_stage);
+				});
+			},
 			windowResizeListener: function() {
 				if (XBS.cfg.isSplash) {
 					$(window).on("resize", XBS.splash.render);
 				}
 				return true;
-			},
+			}
+		},
 		style_effects: {
 			has_init_sequence: true,
 			solidify: function () {
@@ -194,8 +200,6 @@ window.XBS = {
 
 				});
 				return true;
-			}
-			
 			}
 		},
 
@@ -226,8 +230,17 @@ window.XBS = {
 			return true;
 		},
 
-		activate: function() {
-
+		activize: function(element) {
+			if (isEvent(element) ) element = element.currentTarget;
+			pr(element);
+			if ($(element).hasClass("inactive")) {
+				$(element).removeClass('inactive')
+					.addClass('active')
+					.siblings("li.active")
+					.each(function() {
+						$(this).removeClass('active').addClass('inactive');
+				});
+			}
 		},
 
 		detach: function(element) {
@@ -270,10 +283,16 @@ window.XBS = {
 		},
 		toggleLoadingScreen: function() {
 			$(XSM.global.loadingScreen).fadeToggle();
+		},
+		refresh_orb_card_stage: function(orb_card_id) {
+			// todo: fallback on ajax fail
+			if (isEvent(orb_card_id)) orb_card_id = orb_card_id.data.orb;
+			$.get("/xtreme/menuitem/" + orb_card_id, function(data) {
+				$(XSM.menu.orb_card_stage).replaceWith(data);
+			});
 		}
 	},
 	splash: {
-		has_init_sequence: true,
 		init: function() {
 			if (!XBS.cfg.isSplash) return true;
 			XBS.fn.execInitSequence(XBS.splash.jq_binds);
@@ -414,42 +433,6 @@ window.XBS = {
 			setTimeout(function() {$(target).trigger(wakeEvent) }, period);
 
 			return target;
-		},
-
-		/**
-		 * sleep method
-		 *
-		 * @period {integer} duration (ms) for which program should wait
-		 * @wakeEvent {mixed} Either an event object or a string name of standard event
-		 * @onWake {function} Function to be executed after sleep period has elapsed
-		 * @target {mixed} CSS selector string or DOM element to be target of wakeEvent
-		 * @returns {boolean}
-		 */
-		load: function(targets, sources) {
-			if (isEvent(arguments[0]) ) {
-				var e = arguments[0];
-				targets = e.data.for;
-				sources = e.data.get;
-			}
-			if (!isArray(targets)) targets = [targets];
-			if (!isArray(sources)) sources = [sources];
-			for (var i = 0; i < targets.length; i++) {
-
-				var target = targets[i];
-				var source = sources[i];
-				$(target).fadeOut(300, function() {
-					if ($(target).data('scrollTarget') != C.UNDEF) {
-						var initialOffset = $(target).data("initialOffset");
-						var currentOffset = $(target).offset().top;
-						// reset scrolling first
-							var topMargin = initialOffset + (initialOffset - currentOffset);
-							$(this).attr('style','').html('');
-					}
-					$(target).load(source, function() { $(this).fadeIn(300);});
-				});
-			}
-			return true;
 		}
 	}
 };
-/* JONO: USE THIS WHEN THE TIME COMES TO ASSESS THE HEIGHT OF ORBCARS ON SCREENL: https://github.com/imakewebthings/jquery-waypoints */

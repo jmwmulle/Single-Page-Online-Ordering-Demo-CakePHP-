@@ -37,7 +37,7 @@
 </head>
 <body id="menu">
 <?php //echo $this->Element("loadingscreen");?>
-<?php echo $this->Element("login");?>
+<?php //echo $this->Element("login");?>
 <?php if (!$this->get("isSplash")) echo $this->element("flash");//todo: perhaps turn this into both the topbar nav AND the flash area? ?>
 <?php $this->start('main');?>
 <nav id="topbar" class="text-center">
@@ -68,24 +68,20 @@
 </nav>
 <main id="menu">
 	<div class="row">
-		<div class="large-12 columns" >
-			<div id="user-activity-panel-wrapper" class="inline-wrapper">
-				<ul id="user-activity-panel" data-activize="{on:'click', child:'li', max:1}" class="vertical text-center activize">
-					<li><h2 class="body-font-color">I AM</h2></li>
-					<li><a class="body-font-color block">Just<br />Browsing</a></li>
-					<li><a class="body-font-color block">Ordering<br />(Delivery)</a></li>
-					<li><a class="body-font-color block">Ordering<br />(Pick-Up)</a></li>
-				</ul>
-			</div>
+		<div class="large-12 columns">
+			<ul id="user-activity-panel" class="show-for-large-up vertical text-center activizing">
+				<li><h2 class="body-font-color">I AM</h2></li>
+				<li class="inactive"><a class="body-font-color block">Just<br />Browsing</a></li>
+				<li class="inactive"><a class="body-font-color block">Ordering<br />(Delivery)</a></li>
+				<li class="inactive"><a class="body-font-color block">Ordering<br />(Pick-Up)</a></li>
+			</ul
 			<?php echo $this->fetch('orbcats_menu'); ?>
 		</div>
-	</div>
-	<div class="row">
-		<div class="small-12 columns">
-			<div id="orb-card-wrapper" class="box-wrapper">
-				<div id="orb-card-stage" class="l-2">
+	</div
+	><div class="row">
+		<div class="large-12 medium-8 small-4 columns">
+			<div id="orb-card-wrapper" class="float-pane">
 				<?php echo $this->fetch('active_orb_card');?>
-				</div>
 				<?php echo $this->fetch('active_orbs_menu');?>
 			</div>
 		</div>

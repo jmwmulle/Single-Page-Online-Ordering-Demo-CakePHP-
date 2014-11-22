@@ -3335,40 +3335,6 @@ div.switch.round {
   div.switch.round label:after {
     border-radius: 2rem; }
 
-table {
-  background: white;
-  margin-bottom: 1.25rem;
-  border: solid 1px #dddddd; }
-  table caption {
-    background: transparent;
-    color: #222222;
-    font-size: 1rem;
-    font-weight: bold; }
-  table thead {
-    background: whitesmoke; }
-    table thead tr th, table thead tr td {
-      padding: 0.5rem 0.625rem 0.625rem;
-      font-size: 0.875rem;
-      font-weight: bold;
-      color: #222222; }
-  table tfoot {
-    background: whitesmoke; }
-    table tfoot tr th, table tfoot tr td {
-      padding: 0.5rem 0.625rem 0.625rem;
-      font-size: 0.875rem;
-      font-weight: bold;
-      color: #222222; }
-  table tr th, table tr td {
-    padding: 0.5625rem 0.625rem;
-    font-size: 0.875rem;
-    color: #222222;
-    text-align: left; }
-  table tr.even, table tr.alt, table tr:nth-of-type(even) {
-    background: #f9f9f9; }
-  table thead tr th, table tfoot tr th, table tfoot tr td, table tbody tr th, table tbody tr td, table tr td {
-    display: table-cell;
-    line-height: 1.125rem; }
-
 .text-left {
   text-align: left !important; }
 
@@ -3591,37 +3557,37 @@ ul, ol, dl {
   font-family: inherit; }
 
 ul {
-  margin-left: 1.1rem; }
+  margin-left: 0; }
   ul.no-bullet {
     margin-left: 0; }
     ul.no-bullet li ul, ul.no-bullet li ol {
-      margin-left: 1.25rem;
+      margin-left: 0;
       margin-bottom: 0;
       list-style: none; }
 
 /* Unordered Lists */
 ul li ul, ul li ol {
-  margin-left: 1.25rem;
+  margin-left: 0;
   margin-bottom: 0; }
 ul.square li ul, ul.circle li ul, ul.disc li ul {
   list-style: inherit; }
 ul.square {
   list-style-type: square;
-  margin-left: 1.1rem; }
+  margin-left: 0; }
 ul.circle {
   list-style-type: circle;
-  margin-left: 1.1rem; }
+  margin-left: 0; }
 ul.disc {
   list-style-type: disc;
-  margin-left: 1.1rem; }
+  margin-left: 0; }
 ul.no-bullet {
   list-style: none; }
 
 /* Ordered Lists */
 ol {
-  margin-left: 1.4rem; }
+  margin-left: 0; }
   ol li ul, ol li ol {
-    margin-left: 1.25rem;
+    margin-left: 0;
     margin-bottom: 0; }
 
 /* Definition Lists */
@@ -4904,25 +4870,6 @@ th.hide-for-touch {
   font-family: "Helvetica Neue Ultra Light";
   src: url("../files/HelveticaNeueLTStd-UltLt.otf"); }
 
-h1.orb-card, h2.orb-card, h3.orb-card, h4.orb-card, h5.orb-card {
-  font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
-
-h1.nav {
-  font-family: "Fredericka the Great", sans-serif;
-  color: white;
-  font-weight: normal;
-  margin: 1.15625rem 0.625rem 0 0.625rem;
-  padding: 0 0 0 0;
-  height: 5.625rem-0 0 0 0-1.15625rem 0.625rem 0 0.625rem;
-  line-height: 5.625rem-0 0 0 0-1.15625rem 0.625rem 0 0.625rem;
-  transition: text-shadow 0.3s ease-out; }
-  h1.nav.selected {
-    border-bottom: 1px double white; }
-  h1.nav.disabled {
-    opacity: 0.33; }
-  h1.nav:hover {
-    text-shadow: 0 0 0.5rem white; }
-
 *.body-font-color {
   color: white; }
 
@@ -4930,14 +4877,17 @@ span.block {
   display: block; }
 
 span.header-red {
-  color: #ac0819; }
+  color: #e02027; }
 
 span.header-thin {
   font-family: "Helvetica Neue Thin", arial, sans-serif; }
 
-#orbcat-menu-title {
-  padding: 0; }
+/**************************************************************
 
+                        MENU
+
+***************************************************************/
+/*      USER ACTIVITY PANEL     */
 #user-activity-panel a {
   font-family: "Helvetica Neue Ultra Light", arial, sans-serif;
   transition: color 0.3s ease-out;
@@ -4953,6 +4903,54 @@ span.header-thin {
   font-size: 2.3125rem;
   font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
   line-height: 6.25rem; }
+
+/*           ORBCAT MENU         */
+#orbcat-menu-title h1 {
+  text-align: left;
+  letter-spacing: -0.1875rem;
+  font-size: 3.75rem;
+  line-height: 4.875rem;
+  font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
+  color: white; }
+
+ul#orbcat-menu li {
+  line-height: 9.375rem;
+  text-align: center; }
+  ul#orbcat-menu li a {
+    transition: color 0.3s ease-out;
+    font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+    color: white;
+    font-size: 0.875rem;
+    line-height: 2.25rem; }
+    ul#orbcat-menu li a:hover {
+      color: #faea06; }
+
+/*          ORB CARD            */
+.orb-card h1, .orb-card h2, .orb-card h3, .orb-card h4, .orb-card h5 {
+  font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
+.orb-card h4#hidden-description {
+  line-height: 0.79063rem;
+  letter-spacing: -0.03125rem;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  right: 0.3125rem;
+  color: #a2a2a2; }
+
+div.orb-card-button {
+  text-align: center; }
+
+div.orb-card-content#description {
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif; }
+div.orb-card-content#price-matrix {
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+  color: #373737; }
+  div.orb-card-content#price-matrix h4 {
+    font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
+    color: #e02027; }
+div.orb-card-content#orb-card-options {
+  background-color: #373737; }
 
 body {
   background-image: url('../img/splash/pizza-bg.jpg');
@@ -4977,22 +4975,21 @@ button.unavailable {
 .hidden {
   display: none; }
 
+.inline {
+  display: inline-block; }
+
 *[data-scrolling-target] {
   background-color: rgba(255, 0, 0, 0.2); }
 
 section {
   margin-bottom: 1rem; }
 
-.inline-wrapper {
-  display: inline-block;
-  vertical-align: top; }
-
 .block {
   display: block; }
 
-.box-wrapper {
-  border: 8px solid white;
-  box-shadow: 5px 5px 35px rgba(0, 0, 0, 0.75); }
+.float-pane {
+  border: 0.5rem solid white;
+  box-shadow: 8px 8px 50px rgba(0, 0, 0, 0.6); }
 
 section.pagespan {
   height: 22.5rem;
@@ -5051,13 +5048,13 @@ ul.vertical li {
     display: none; }
 
 nav#topbar {
-  background-color: #191919;
-  height: 65px;
-  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999; }
+  z-index: 9999;
+  height: 4.0625rem;
+  width: 100%;
+  background-color: #191919; }
 
 nav#subnav {
   width: 300px;
@@ -5372,19 +5369,89 @@ a.close-splash-modal {
           #grand-opening-deal div:first-of-type h3 ul li.email {
             background-image: url('../img/splash/email_icon.png'); }
 
-main#menu.pane {
-  background-image: url("../img/xtreme-red-gradient.png"), url("../img/strange_bullseyes.png");
-  background-repeat: repeat-x, repeat;
-  background-position: top left, top left;
-  background-size: 100% 5.625rem, auto auto; }
+html, nav, body, main, footer {
+  overflow: none; }
 
 body#menu {
-  background-image: url("../img/menu_bg.xlg.jpg"); }
+  background-image: url("../img/menu_bg.xlg.bright.jpg");
+  background-attachment: fixed;
+  overflow: none; }
+
+main#menu {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  margin-top: 5.3125rem;
+  overflow: none; }
+
+/**************************************************************
+
+                        USER ACTIVITY PANEL
+
+***************************************************************/
+ul#user-activity-panel {
+  position: relative;
+  float: left;
+  margin: -1.25rem 1.25rem 0px 0px;
+  width: 6.25rem;
+  vertical-align: top; }
+  ul#user-activity-panel li {
+    transition: background-color 0.3s ease-out;
+    width: 6.25rem;
+    height: 6.25rem;
+    background-color: rgba(0, 0, 0, 0.33);
+    border: 1px solid black;
+    border-top: none; }
+    ul#user-activity-panel li a {
+      transition: color 0.3s ease-out; }
+    ul#user-activity-panel li:hover {
+      background-color: rgba(255, 255, 255, 0.16); }
+    ul#user-activity-panel li:first-of-type {
+      transition: none;
+      background-color: #191919;
+      border-top: 1px solid #191919; }
+    ul#user-activity-panel li.active {
+      background-color: rgba(255, 255, 255, 0.75); }
+      ul#user-activity-panel li.active a {
+        color: #191919; }
+
+/**************************************************************
+
+                        ORBCAT MENU
+
+***************************************************************/
+ul#orbcat-menu {
+  position: relative;
+  width: 50rem;
+  height: 23.75rem;
+  display: inline-block;
+  margin: 0;
+  background: #e02027;
+  /* Old browsers */
+  background: -moz-linear-gradient(45deg, #e02027 0%, #ac0819 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #e02027), color-stop(100%, #ac0819));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg, #e02027 0%, #ac0819 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(45deg, #e02027 0%, #ac0819 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(45deg, #e02027 0%, #ac0819 100%);
+  /* IE10+ */
+  background: linear-gradient(45deg, #e02027 0%, #ac0819 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e02027', endColorstr='#ac0819', GradientType=1);
+  /* IE6-9 fallback on horizontal gradient */ }
 
 li.orbcat {
+  display: inline-block;
+  height: 6.25rem;
+  cursor: pointer;
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: 60px 60px; }
+  background-position: center 0.3125rem;
+  background-size: 60px 60px;
+  box-sizing: border-box; }
   li.orbcat.xtreme-original-pizzas {
     background-image: url("../img/orbcat_icons/xtreme-original-pizzas.png"); }
   li.orbcat.xtreme-super-pizzas {
@@ -5421,138 +5488,150 @@ li.orbcat {
     background-image: url("../img/orbcat_icons/salads.png"); }
   li.orbcat.desserts {
     background-image: url("../img/orbcat_icons/desserts.png"); }
-
-main#menu {
-  margin-top: 65px; }
-
-#user-activity-panel-wrapper {
-  margin: 0 10 0 0;
-  width: 6.25rem; }
-
-#user-activity-panel {
-  margin-left: 0; }
-  #user-activity-panel li {
-    transition: background-color 0.3s ease-out;
-    width: 6.25rem;
-    height: 6.25rem;
-    background-color: rgba(0, 0, 0, 0.33);
-    border: 1px solid black;
-    border-top: none; }
-    #user-activity-panel li:hover {
-      background-color: rgba(255, 255, 255, 0.16); }
-    #user-activity-panel li:first-of-type {
-      transition: none;
-      background-color: #191919; }
-    #user-activity-panel li.active {
-      background-color: white; }
-
-div#category-nav-wrapper {
-  position: relative;
-  margin: 1.25rem; }
+  li.orbcat a {
+    height: 1.875rem;
+    margin-top: 6.875rem; }
 
 #orbcat-menu-title {
+  width: 100%;
+  padding: 0;
   position: absolute;
   bottom: 0;
   left: 0.625rem;
-  margin: 0 0 -1.5625rem 0;
-  letter-spacing: -0.1875rem;
-  font-size: 3.75rem;
-  font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
-  color: white; }
+  margin: 0 0 -1.875rem 0; }
+  #orbcat-menu-title h1 {
+    padding: 0;
+    margin: 0; }
 
-ul#category-nav {
-  width: 53.125rem;
-  position: relative;
-  background: #ac0819;
-  /* Old browsers */
-  background: -moz-linear-gradient(left, #ac0819 0%, #800613 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ac0819), color-stop(100%, #800613));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(left, #ac0819 0%, #800613 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(left, #ac0819 0%, #800613 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(left, #ac0819 0%, #800613 100%);
-  /* IE10+ */
-  background: linear-gradient(to right, #ac0819 0%, #800613 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ac0819', endColorstr='#800613', GradientType=1);
-  /* IE6-9 */
-  padding: 4px;
-  height: 23.75rem; }
-  ul#category-nav li {
-    display: inline-block;
-    padding: 0 4px;
-    height: 7.1875rem;
-    text-align: center;
-    vertical-align: text-bottom; }
-    ul#category-nav li a {
-      width: 100%;
-      color: white;
-      font-size: 0.875rem;
-      height: 1.875rem;
-      line-height: 2.25rem;
-      margin-top: 6.875rem;
-      font-family: "Helvetica Neue Medium Condensed", arial, sans-serif; }
+/**************************************************************
 
+                       ORB LIST / ORB CARD STAGE / ORB CARD
+
+***************************************************************/
 #orb-card-wrapper {
   position: relative;
-  height: 23.4375rem; }
+  height: 23.4375rem;
+  width: 75rem;
+  margin-top: 1.25rem; }
 
 #orb-card-stage {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 62.5rem;
+  left: -0.5rem;
+  top: -0.45rem;
+  width: 53.125rem;
   border: 6px solid white;
   border-top-right-radius: 1000px;
   border-bottom-right-radius: 1000px;
-  float: left;
-  height: 22.5rem;
-  background: whitesmoke;
-  /* Old browsers */
-  background: -moz-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #f5f5f5), color-stop(100%, #969696));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
-  /* IE10+ */
-  background: linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#969696', GradientType=1);
-  /* IE6-9 fallback on horizontal gradient */ }
+  height: 23.4375rem;
+  background-color: #d7d7d7;
+  background-image: url("../img/orb_card.shadow.png");
+  background-repeat: no-repeat;
+  background-position: -0.8875rem 19.75rem;
+  background-size: 45rem 1.5625rem; }
 
 div.orb-card {
   position: relative;
   height: 20rem;
   width: 37.5rem;
-  margin-left: 3.75rem;
-  margin-top: 0.9375rem;
+  margin-left: 3.125rem;
+  margin-top: 1.25rem;
   background-color: white;
   padding: 0.625rem;
   z-index: 99999; }
 
-ul.orb-card-buttons {
-  margin: 0; }
-  ul.orb-card-buttons li {
+.triangle-down {
+  position: absolute;
+  bottom: -12px;
+  left: 30px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent; }
+
+.triangle-right {
+  position: absolute;
+  left: 85px;
+  top: 30px;
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent; }
+
+ul.orb-card {
+  position: relative;
+  width: 100%; }
+  ul.orb-card li.orb-card-row {
+    height: 5.3125rem;
+    margin-bottom: 1.25rem; }
+    ul.orb-card li.orb-card-row div.orb-card-content, ul.orb-card li.orb-card-row div.orb-card-button {
+      display: inline-block; }
+  ul.orb-card div.orb-card-button {
+    position: relative;
+    vertical-align: top;
     width: 5.3125rem;
     height: 5.3125rem;
-    margin-bottom: 1.3125rem; }
-    ul.orb-card-buttons li:last-of-type {
-      margin-bottom: none; }
-    ul.orb-card-buttons li#favorite {
-      background-color: #faea06; }
-    ul.orb-card-buttons li#order {
-      background-color: #ac0819; }
-    ul.orb-card-buttons li#share {
-      background-color: #0779be; }
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease-out; }
+    ul.orb-card div.orb-card-button#favorite {
+      background-color: #faea06;
+      background-image: url('../img/orb_card.icon.fav.png'); }
+      ul.orb-card div.orb-card-button#favorite .triangle-down {
+        border-top: 16px solid #faea06; }
+    ul.orb-card div.orb-card-button#order {
+      background-color: #e02027;
+      background-image: url('../img/orb_card.icon.cart.png'); }
+      ul.orb-card div.orb-card-button#order .triangle-down {
+        border-top: 16px solid #e02027; }
+    ul.orb-card div.orb-card-button#like {
+      background-color: #0779be;
+      background-image: url('../img/orb_card.icon.like.png'); }
+      ul.orb-card div.orb-card-button#like .triangle-right {
+        border-left: 16px solid #0779be; }
+    ul.orb-card div.orb-card-button .triangle-down {
+      transition: border-top 0.3s ease-out; }
+    ul.orb-card div.orb-card-button#favorite:hover, ul.orb-card div.orb-card-button#order:hover, ul.orb-card div.orb-card-button#like:hover {
+      background-color: #b4b4b4; }
+      ul.orb-card div.orb-card-button#favorite:hover .triangle-right, ul.orb-card div.orb-card-button#order:hover .triangle-right, ul.orb-card div.orb-card-button#like:hover .triangle-right {
+        border-left: 16px solid #b4b4b4; }
+      ul.orb-card div.orb-card-button#favorite:hover .triangle-down, ul.orb-card div.orb-card-button#order:hover .triangle-down, ul.orb-card div.orb-card-button#like:hover .triangle-down {
+        border-top: 16px solid #b4b4b4; }
 
-#orbcat-list {
+div.orb-card-content {
+  width: 29.6875rem;
+  margin-left: 1.25rem;
+  position: relative;
+  height: 5.3125rem; }
+  div.orb-card-content#description {
+    background-color: #b4b4b4;
+    padding: 0.625rem; }
+  div.orb-card-content#price-matrix ul {
+    margin-top: -5px;
+    padding: 0;
+    max-height: 58px;
+    overflow-y: auto; }
+    div.orb-card-content#price-matrix ul::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      background-color: white; }
+    div.orb-card-content#price-matrix ul::-webkit-scrollbar {
+      width: 10px;
+      background-color: white; }
+    div.orb-card-content#price-matrix ul::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: #0779be; }
+  div.orb-card-content#price-matrix h4, div.orb-card-content#price-matrix li div {
+    width: 50%;
+    padding: 0;
+    margin: 0;
+    display: inline-block; }
+    div.orb-card-content#price-matrix h4:last-of-type, div.orb-card-content#price-matrix li div:last-of-type {
+      padding-right: 0.9375rem; }
+  div.orb-card-content#price-matrix#orb-card-options {
+    background-color: #373737; }
+
+#active-orbs-menu {
   position: absolute;
   right: 0;
   top: 0;
@@ -5561,35 +5640,39 @@ ul.orb-card-buttons {
   height: 22.5rem;
   overflow-y: scroll;
   overflow-x: hidden; }
-  #orbcat-list li {
+  #active-orbs-menu li {
+    position: relative;
     padding-left: 200px;
     background-color: #0779be;
     box-shadow: inset 15px -5px 8px rgba(0, 0, 0, 0.33);
     font-size: 1.125rem;
     height: 3.75rem;
     line-height: 3.75rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease-out;
     font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
-    #orbcat-list li a {
+    #active-orbs-menu li a {
       color: white; }
-    #orbcat-list li:first-of-type {
+    #active-orbs-menu li:hover {
+      background-color: #1ba6f7; }
+    #active-orbs-menu li:first-of-type {
+      padding-top: 10px;
       box-shadow: none;
-      background-color: #ac0819;
-      font-size: 2.25rem; }
-    #orbcat-list li:nth-of-type(3) {
-      background-color: #ff5900; }
-
-.orbcat-triangle-outer {
-  position: absolute;
-  left: 75%;
-  width: 0;
-  height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-top: 40px solid white; }
+      background-color: #e02027;
+      font-size: 2.25rem;
+      transition: none;
+      cursor: default; }
+    #active-orbs-menu li.active {
+      background-color: #faea06;
+      transition: none;
+      cursor: default; }
+      #active-orbs-menu li.active a {
+        color: #191919;
+        cursor: default; }
 
 .orbcat-triangle-inner {
   width: 0;
   height: 0;
   border-left: 22px solid transparent;
   border-right: 22px solid transparent;
-  border-top: 26px solid #ac0819; }
+  border-top: 26px solid #e02027; }

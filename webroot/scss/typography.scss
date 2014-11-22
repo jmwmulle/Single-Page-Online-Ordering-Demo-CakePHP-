@@ -42,40 +42,21 @@
   font-family : "Helvetica Neue Ultra Light", arial, sans-serif;
 }
 
-h1.orb-card, h2.orb-card, h3.orb-card, h4.orb-card, h5.orb-card { @include HelveticaBlkCn; }
+*.body-font-color { color : $body-font-color; }
 
-h1.nav {
-  @include Fredericka;
-  color       : white;
-  font-weight : normal;
-  margin      : $topnav-h1-margin;
-  padding     : $topnav-h1-padding;
-  height      : $topnav-h1-height;
-  line-height : $topnav-h1-height;
-  &.selected { border-bottom : 1px double $white; }
-  @include disableWithOpacity(0.33);
-  @include global-transition(text-shadow);
-  &:hover {
-    text-shadow : 0 0 rem-calc(8px) $white;
-  }
-}
+span.block { display : block; }
 
-*.body-font-color { color: $body-font-color;}
-span.block {
-  display : block;
-}
+span.header-red { color : $xtreme-red; }
 
-span.header-red {
-  color : $xtreme-red;
-}
+span.header-thin { @include HelveticaTh; }
 
-span.header-thin {
-  @include HelveticaTh;
-}
+/**************************************************************
 
-#orbcat-menu-title {
-  padding: 0;
-}
+                        MENU
+
+***************************************************************/
+
+/*      USER ACTIVITY PANEL     */
 #user-activity-panel {
   a {
     @include HelveticaUltLt;
@@ -83,15 +64,72 @@ span.header-thin {
     text-align  : center;
     line-height : 0.25 * $user-activity-panel-height;
     padding-top : 0.25 * $user-activity-panel-height;
-    width: $user-activity-panel-width;
-    height: $user-activity-panel-height;
+    width       : $user-activity-panel-width;
+    height      : $user-activity-panel-height;
     font-size   : $user-activity-panel-font-size;
-    &:hover { color: invert($body-font-color);}
+    &:hover { color : invert($body-font-color); }
 
   }
   h2 {
     font-size   : $h2-font-size;
     @include HelveticaBlkCn;
     line-height : $user-activity-panel-height;
+  }
+}
+
+/*           ORBCAT MENU         */
+#orbcat-menu-title h1 {
+  text-align     : left;
+  letter-spacing : rem-calc(-3);
+  font-size      : $orbcat-menu-title-font-size;
+  line-height    : $orbcat-menu-title-font-size * 1.3;
+  @include HelveticaBlkCn;
+  color          : $white;
+}
+
+ul#orbcat-menu li {
+  line-height : 1.5 * $orbcat-menu-item-height;
+  text-align  : center;
+  a {
+    @include global-transition(color);
+    @include HelveticaMdCn;
+    color       : $body-font-color;
+    font-size   : rem-calc(14px);
+    line-height : rem-calc(36);
+    &:hover { color : $xtreme-yellow; }
+  }
+}
+
+/*          ORB CARD            */
+.orb-card {
+  h1, h2, h3, h4, h5 { @include HelveticaBlkCn; }
+  h4#hidden-description {
+    line-height    : .55 * $h4-font-size;
+    letter-spacing : rem-calc(-0.5px);
+    padding        : 0;
+    margin         : 0;
+    position       : absolute;
+    bottom         : 0;
+    right          : rem-calc(5px);
+    color          : darken($light-grey, 7%);
+  }
+}
+
+div.orb-card-button {
+  text-align : center;
+}
+
+div.orb-card-content {
+  &#description { @include HelveticaMdCn; }
+  &#price-matrix {
+    @include HelveticaMdCn;
+    color: $text-grey;
+    h4 {
+      @include HelveticaBlkCn;
+      color : $xtreme-red;
+    }
+  }
+  &#orb-card-options {
+    background-color : $text-grey;
   }
 }

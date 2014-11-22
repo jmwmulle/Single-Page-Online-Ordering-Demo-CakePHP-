@@ -108,9 +108,10 @@ class OrbcatsController extends AppController {
 	}
 
 	public function menu($orbcat_id = null, $orb_id = null, $return = false) {
+		if ($this->request->is("ajax")) $this->layout = "ajax";
 		$here = 'Menu';
 		$active_orb = false;
-		if ($this->request->is("ajax")) $this->layout = "ajax";
+
 		$orbcat_id = (!$orbcat_id || !$this->Orbcat->exists($orbcat_id)) ? 1 : $orbcat_id; // default to pizza if null
 		$this->Orbcat->id = $orbcat_id;
 
@@ -129,11 +130,11 @@ class OrbcatsController extends AppController {
 
 		// decode json in active orbs list
 		foreach($active_orbcat['orbs'] as $i => $orb) {
-			if ($orb['id'] == $orb_id) $active_orbcat["orb_card"] = $orb; // active orb set here is orb requested
 			$orb['price_matrix'] = json_decode($orb['price_matrix'], true);
 			$orb['config'] = json_decode($orb['config'], true);
-			$orb['url'] = sprintf("menu/%s/%s", $active_orbcat['id'], $orb['id']);
+			$orb['url'] = sprintf("menuitem/%s", $orb['id']);
 			$active_orbcat['orbs'][$i] = $orb;
+			if ($orb['id'] == $orb_id) $active_orbcat["orb_card"] = $orb; // active orb set here is orb requested
 		}
 		if ($active_orbcat["orb_card"] == null) { $active_orbcat["orb_card"] = $active_orbcat['orbs'][0];}
 

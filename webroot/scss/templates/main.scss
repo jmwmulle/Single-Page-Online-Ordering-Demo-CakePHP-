@@ -6,13 +6,5 @@
 //}
 
 
-main#menu.pane {
-  // strange_bullseyes.jpg -> source: http://subtlepatterns.com, author: Christopher Buecheler (http://cwbuecheler.com)
-  background-image    : url("../img/xtreme-red-gradient.png"), url("../img/strange_bullseyes.png");
-  background-repeat   : repeat-x, repeat;
-  background-position : top left, top left;
-  background-size     : 100% $topnav-height, auto auto;
-}
-
 
 

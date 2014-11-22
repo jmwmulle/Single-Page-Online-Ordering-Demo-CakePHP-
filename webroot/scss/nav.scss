@@ -1,12 +1,12 @@
 //----------------------------------------------------------------------------------------------------------------TOPNAV
 nav#topbar {
-  background-color: $dark-grey;
-  height: $topbar-height;
-  width:100%;
   position:fixed;
   top:0;
   left:0;
   z-index           : 9999;
+  height: $topnav-height;
+  width:100%;
+  background-color: $dark-grey;
 //  box-shadow: 0 5px 8px $black-a15;
 }
 

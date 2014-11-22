@@ -1,15 +1,9 @@
 //FRAMES & CONTAINERS
 section { margin-bottom : 1rem; }
-
-.inline-wrapper {
-  display:inline-block;
-  vertical-align: top;
-}
-
 .block { display: block; }
-.box-wrapper {
-  border:8px solid $white;
-  box-shadow:5px 5px 35px rgba(0,0,0,.75);
+.float-pane {
+  border:$float-pane-border-width solid $white;
+  box-shadow:8px 8px 50px rgba(0,0,0,.6);
 }
 section.pagespan {
   height            : $focus-pane-height;
