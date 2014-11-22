@@ -239,7 +239,11 @@ function pr(obj, label, as_error) {
 	label = !!label && typeof(label) === "string" ? "%c "+ label +" " : '%c';
 	var note_delim = ".";
 	var note_delim_length = note_delim.length;
-	var label_css = "color:rgb(0,150,0); text-transform:uppercase; background-color:rgb(245,245,245); border:1px solid rgb(220,220,220);";
+	if (!as_error) {
+		var label_css = "color:rgb(0,150,0); text-transform:uppercase; background-color:rgb(245,245,245); border:1px solid rgb(220,220,220);";
+	} else {
+		var label_css = "color:rgb(255,0,0); text-transform:uppercase; background-color:rgb(255,245,245); border:1px solid rgb(255,0,0);";
+	}
 	var type_css = "color:rgb(200,200,200); font-style:italics; display:inline-block; width: 12px; min-width:12px; max-width:12px;";
 	var num_css = "color:rgb(0,0,100);";
 	var bool_css = "color:rgb(225,125,80); font-weight: bold";

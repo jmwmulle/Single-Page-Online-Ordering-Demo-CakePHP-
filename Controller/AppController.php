@@ -66,7 +66,7 @@ class AppController extends Controller {
 	static function anchor($string) {
 		$name = AppController::as_file_name( $string );
 
-		return "<a name=\"" . $name . "\">$string</a>";
+		return "<a class=\"hidden\" name=\"" . $name . "\">$string</a>";
 	}
 
 
@@ -107,8 +107,8 @@ class AppController extends Controller {
 
 
 	static function str_to_selector($parts, $type = null) {
-		$pattern = array( "/ /", "/'/", "/_/" );
-		$replace = array( "_", null, "-" );
+		$pattern = array( "/ /", "/'/", "/_/","/&/" );
+		$replace = array( "_", null, "-","and" );
 
 		// if a string is passed, convert to array
 		if ( !is_array( $parts ) ) {

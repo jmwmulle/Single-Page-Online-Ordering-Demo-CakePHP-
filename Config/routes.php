@@ -30,8 +30,13 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	Router::connect('/menu/*', array('controller' => 'orbcats', 'action' => 'menu'));
+<<<<<<< HEAD
 	Router::connect('/users/update', array('controller' => 'users', 'action' => 'edit'));
 	Router::connect('/cart/*', array('controller' => 'shop', 'action' => 'cart'));
+=======
+	Router::connect('/menuitem/*', array('controller' => 'orbs', 'action' => 'menu_item'));
+	Router::connect('/register', array('controller' => 'pages', 'action' => 'signup'));
+>>>>>>> experimental_design
 
 	Router::connect('/opauth-complete/*', array('controller' => 'users', 'action' => 'opauth_complete'));
 

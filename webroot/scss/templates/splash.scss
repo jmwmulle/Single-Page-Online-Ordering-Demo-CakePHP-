@@ -3,11 +3,6 @@
 }
 
 section#splash.pane {
-  position          : fixed;
-  top               : 0;
-  left              : 0;
-  width             : 100%;
-  height            : 100%;
   background-image  : url('../img/splash/pizza-bg.jpg');
   background-size   : cover, 30%;
   background-repeat : no-repeat;
@@ -16,47 +11,6 @@ section#splash.pane {
   transition: background-image 0.3s ease-in-out;
   div, a { position : relative; }
 
-  #grand-opening-deal {
-    display:none;
-    position          : fixed;
-    margin            : 0 auto;
-    z-index           : 9050;
-    background-image  : url('../img/splash/deal.png');
-    background-repeat : no-repeat;
-    background-size   : contain;
-    width             : rem-calc(400px);
-    height            : rem-calc(570px);
-    @include mouse-memoirs;
-    color             : $text-grey;
-    padding-top:rem-calc(120px);
-    padding-left:rem-calc(60px);
-    div:first-of-type {
-      h3, h4 { font-family : inherit; }
-      h3 {
-        text-transform : uppercase;
-        color          : $text-grey;
-        ul {
-          padding : 0;
-          margin  : 0;
-          width   : 60%;
-          display : inline-block;
-          li {
-            list-style-type   : none;
-            display           : inline-block;
-            background-repeat : no-repeat;
-            background-size   : cover;
-            width             : rem-calc(30px);
-            height            : rem-calc(30px);
-            &.facebook { background-image : url('../img/splash/facebook_icon.png'); }
-            &.gplus { background-image : url('../img/splash/gplus_icon.png'); }
-            &.twitter { background-image : url('../img/splash/twitter_icon.png'); }
-            &.email { background-image : url('../img/splash/email_icon.png'); }
-          }
-        }
-      }
-      padding : rem-calc(20px);
-    }
-  }
   a { @include unselectable; }
   .spacer {
     height : spacer-height($splash-content-height);
@@ -158,6 +112,7 @@ section#splash.pane {
   background-color:$black-a75;
   padding-top:3rem;
 }
+
 #splash-modal {
   display:none;
   position:relative;
@@ -198,3 +153,47 @@ a.close-splash-modal {
   line-height:1rem;
   text-align:center;
 }
+
+
+
+#grand-opening-deal {
+    display:none;
+    position          : fixed;
+    margin            : 0 auto;
+    z-index           : 9050;
+    background-image  : url('../img/splash/deal.png');
+    background-repeat : no-repeat;
+    background-size   : contain;
+    width             : rem-calc(400px);
+    height            : rem-calc(570px);
+    @include mouse-memoirs;
+    color             : $text-grey;
+    padding-top:rem-calc(120px);
+    padding-left:rem-calc(60px);
+    div:first-of-type {
+      h3, h4 { font-family : inherit; }
+      h3 {
+        text-transform : uppercase;
+        color          : $text-grey;
+        ul {
+          padding : 0;
+          margin  : 0;
+          width   : 60%;
+          display : inline-block;
+          li {
+            list-style-type   : none;
+            display           : inline-block;
+            background-repeat : no-repeat;
+            background-size   : cover;
+            width             : rem-calc(30px);
+            height            : rem-calc(30px);
+            &.facebook { background-image : url('../img/splash/facebook_icon.png'); }
+            &.gplus { background-image : url('../img/splash/gplus_icon.png'); }
+            &.twitter { background-image : url('../img/splash/twitter_icon.png'); }
+            &.email { background-image : url('../img/splash/email_icon.png'); }
+          }
+        }
+      }
+      padding : rem-calc(20px);
+    }
+  }

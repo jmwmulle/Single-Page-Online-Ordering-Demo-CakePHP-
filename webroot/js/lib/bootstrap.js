@@ -1,246 +1,438 @@
 /**
- * Created by jono on 8/22/14.
- *
- * (X)treme(B)oot(S)trap
- * - global, one-off or otherwise external to Ember functions, vars, layout initialization, etc.
+ * J. Mulle, for XtremePizza, 9/5/14 1:03 AM
+ * www.introspectacle.net
+ * Email: this.impetus@gmail.com
+ * Twitter: @thisimpetus
+ * About.me: about.me/thisimpetus
  */
+var constants = {
+	PX:"px",
+	CLK:"click",
+	UNDEF:"undefined",
+	MOUSEOVER:"mouseover",
+	HOVER: "hover"
+};
+var C = constants;
+
+
+ function InitError(raisedError, message) {
+	 this.prototype = Error.prototype;
+	 this.name = "InitError";
+	 this.message = message ? message : "No additional message provided";
+	 this.raisedError = raisedError;
+	 this.read = function() {
+		 if (raisedError.stackHistory != C.UNDEF) { this.raisedError.stack = this.raisedError.stackHistory; }
+	    //todo: make this not rely on pr() being defined!!
+         pr(this.raisedError.message+". \n\tWith trace: {0}".format(this.raisedError.stack), "InitError > {0}".format(this.raisedError.name), true);
+	 };
+ }
 
 window.XBS = {
 	data: {
-		scrollableElements:[XSM.main.primaryContent, XSM.main.toc, XSM.main.subNav]
+		hostRootDirs: {
+			xDev:"",
+			xProd:"",
+			xLoc:"xtreme"
+		},
+		scrollableElements:[XSM.main.primaryContent, XSM.main.toc, XSM.main.subNav],
+		images:["..img/splash/bluecircle.png",
+		        "..img/splash/deal.png",
+		        "..img/splash/email_icon.png",
+		        "..img/splash/email_icon_hover.png",
+		        "..img/splash/facebook_icon.png",
+		        "..img/splash/facebook_icon_hover.png",
+		        "..img/splash/twitter_icon.png",
+		        "..img/splash/twitter_icon_hover.png",
+		        "..img/splash/gplus_icon.png",
+		        "..img/splash/gplus_icon_hover.png",
+		        "..img/splash/logo.png",
+		        "..img/splash/logo_mini.png",
+		        "..img/splash/menu.png",
+		        "..img/splash/menu_hover.png",
+		        "..img/splash/order.png",
+		        "..img/splash/order_soon.png",
+		        "..img/splash/pizza-bg.jpg",
+		        "..img/splash/logo_mini.png"]
 	},
-	init: function(isSplash) {
-		var initStatus = true;
-		var sitRep = {
-			layoutInit: XBS.layoutInit(isSplash),
-			jqBinds:XBS.jqBinds()
-		};
-
-		for (initEl in sitRep) {
-			if (!(sitRep[initEl] === true)) {
-				initStatus = false;
-				/* I do not know if throwing an error is the best approach, here (I've also made no attempt to catch it).
-				   I do know that if this has failed, the site isn't going any further; could just as easily return false
-				   and be handled elsewhere/later. */
-				throw "Bootstrap failed: "+initEl+" failed.";
-			}
-		}
-
-
-		return initStatus;
+	cfg: {
+		root: null,
+		developmentMode:false,
+		minLoadTime: 1
 	},
-	/**
-	 * jqBinds method
-	 *
-	 * @desc jQuery event binding on page load
-	 * @returns {boolean}
-	 */
-	jqBinds: function() {
-		$(window).on("resize", XBS.scaleSplash);
+	evnt: {
+		wakeFromSleep: eCustom("wakeFromSleep"),
+		assetsLoaded: eCustom("assetsLoaded")
+	},
+	stopwatch: {
+		__sw: new Date(),
+		reset:function() { XBS.stopwatch.startTime = 0},
+		start: function() {
+			var now = XBS.stopwatch.__sw.getTime();
+			XBS.stopwatch.startTime = now;
+			return now;
+		},
+		read: function() { return XBS.stopwatch.__sw.getTime() - XBS.stopwatch.start;},
+		now: function() { return XBS.stopwatch.__sw.getTime();},
+		elapsed: function(period) {
+			var diff = XBS.stopwatch.now() - XBS.stopwatch.startTime;
+			return (period !== C.UNDEF) ? diff > period : diff;
+		},
+		startTime: 0
+	},
 
-		//splash redirects
-		$("section#splash *[data-splash-redirect]").each(function() {
-			var data = $(this).data();
-			$(this).on(data.on,null,{route:data.splashRedirect}, XBS.splashRedirect);
-		});
-		// custom modals for the splash page
-		$("*[data-splash-modal]").each(function() {
-			$(this).on("click", null, $(this).data(), XBS.splashModal);
-		});
 
-		// ajax-binds for nav
-		$(XSM.global.ajaxLink).each(function() {
-				$(this).on("click", null, $(this).data(), XBS.load);
-		});
-		$(XSM.global.jsLink).each(function() {
-			$(this).on("click", function() { window.location.replace($(this).data('url'))});
-		});
-
-		// auto scrolling elements
-		$("*[data-scroll-to]").each(function() {
-				var scroll = $(this).data();
-				var offset = $("ul.orbcard-list").offset().top + 16;
-				var top = $(asId(scroll.scrollTo)).offset().top;
-				$(this).data('top',top);
-
-				$(this).on("click", function() {
-					$(scroll.scrollTarget).animate({marginTop:String(offset+(-1 * scroll.top))+"px"});
+	/*******************************************************************************************************************
+	 *                                                                                                                 *
+	 *                                                     INIT                                                        *
+	 *                                                                                                                 *
+	 *******************************************************************************************************************/
+	init: function(isSplash, host) {
+		XBS.cfg.isSplash = isSplash === true;
+		XBS.fn.setHost(host);
+//		try {
+			XBS.layout.init();
+		//	XBS.splash.init();
+			//XBS.cache.init();
+//		} catch(e) {
+//			if (e instanceof InitError) {
+//				e.read();
+//			} else {
+//				pr(e.message, e.name, true);
+//			}
+//		}
+	},
+	cache: {
+		preloadDone:false,
+		cbDone:false,
+		failed: [],
+		init: function() {
+			return true;
+			//todo: dynamically tie load-screen behavior to template/caching situation
+				$("img.image-loader.preload").each(function() {
+						$(this).cacheImages({
+							debug:true,
+							url:$(this).data("src"),
+							storagePrefix:"xtreme",
+							fail: function() {
+								XBS.cache.failed.push( $(this).data("src") );
+							}
+						});
 				});
-		});
-
-
-		return true;
-	},
-	layoutInit: function(isSplash) {
-		//fix menu & order margins
-		var opad = String($(XSM.splash.menuWrap).innerHeight() * 0.45)+"px";
-		var mpad = String($(XSM.splash.menuWrap).innerHeight() * 0.15)+"px";
-		$(XSM.splash.orderSpacer).css({height:opad});
-		$(XSM.splash.menuSpacer).css({height:mpad});
-
-		$(".preserve-aspect-ratio").each(function() {
-			$(this).removeAttr("style");
-			var data = $(this).data("aspectRatio");
-			XBS.assertAspectRatio(this, Number(data.x) / Number(data.y), data.respect);
-		});
-
-
-		$(".detach").each(function() {
-			XBS.detach(this);
-		});
-
-		if (isSplash) {
-			XBS.scaleSplash();
-		} else {
-			for ( i in XBS.data.scrollableElements ) {
-				XBS.bindScrolling(XBS.data.scrollableElements[i]);
-			}
+			$(window).trigger(XBS.evnt.assetsLoaded);
 		}
-
-		$("#splash").on("mouseover", function() {
-				$("#grand-opening-deal").slideDown();
-				$(this).unbind("hover");
-		});
-
-		return true;
+		/*fetchImages: function() {
+			//todo: callbacks for errors
+			XBS.stopwatch.start();
+			$(XSM.global.imageQueue).loadImages({
+				allLoadedClb:function() { $(window).trigger(XBS.evnt.assetsLoaded);},
+				imgErrorClb: function() {pr(this, "ImageError", true)},
+				imgLoadedClb: function() {pr(this, "ImageLoaded");},
+				noImgClb: function() {pr(this, "No Images!", true)}
+			});
+		}*/
 	},
-	load: function(targets, sources) {
-		if (isEvent(arguments[0]) ) {
-			var e = arguments[0];
-			targets = e.data.for;
-			sources = e.data.get;
-		}
-		if (!isArray(targets)) targets = [targets];
-		if (!isArray(sources)) sources = [sources];
-		for (var i = 0; i < targets.length; i++) {
-
-			var target = targets[i];
-			var source = sources[i];
-			pr([i, target, source], "i,target,source");
-			$(target).fadeOut(300, function() {
-				if ($(target).data('scrollTarget') != "undefined") {
-					var initialOffset = $(target).data("initialOffset");
-					var currentOffset = $(target).offset().top;
-					pr([initialOffset, currentOffset],"initialOffset,currentOffset");
-					// reset scrolling first
-						var topMargin = initialOffset + (initialOffset - currentOffset);
-						$(this).attr('style','').html('');
+	layout: {
+		init: function() {
+			try {
+				XBS.fn.execInitSequence(XBS.layout.jq_binds);
+				if (XBS.cfg.isSplash) {
+					XBS.layout.detachAnimationTargets();
 				}
-				$(target).load(source, function() { $(this).fadeIn(300);});
+			} catch(e) {
+				e.stackHistory = e.stack;
+				pr(e.stackHistory);
+				//todo: list all init exceptions if needed
+				throw new InitError(e);
+			}
+			return true;
+		},
+		detachAnimationTargets: function() {
+			$(XSM.global.detachable).each(function() { XBS.layout.detach(this);});
+		},
+		jq_binds: {
+			has_init_sequence:true,
+			bind_activizing_lists: function() {
+				$(XSM.global.activizing_list).each(function() {
+					$(this).on(C.CLK, XBS.layout.activize);
+				});
+
+				return true
+			},
+			bind_ajax_nav: function() {
+				$(XSM.global.ajaxLink).each(function() {
+					$(this).on(C.CLK, null, $(this).data(), XBS.load);
+				});
+
+				return true;
+			},
+			bindAssetsLoadedListener: function() {
+				if (XBS.cfg.developmentMode) return true;
+				$(window).on(XBS.evnt.assetsLoaded.type, function() {
+//						if (XBS.cfg.execInitSequenced = true) {
+							XBS.layout.readyLoadingScreen();
+//						}
+					});
+				return true;
+			},
+			bindJsLinks: function() {
+				$(XSM.global.jsLink).each(function() {
+					$(this).on(C.CLK, function() { window.location.replace($(this).data('url'))});
+				});
+
+				return true;
+			},
+			bind_orbcard_refresh: function() {
+				$(XSM.menu.orb_card_refresh).each(function() {
+					$(this).on(C.CLK, $(this).data(), XBS.layout.refresh_orb_card_stage);
+				});
+			},
+			windowResizeListener: function() {
+				if (XBS.cfg.isSplash) {
+					$(window).on("resize", XBS.splash.render);
+				}
+				return true;
+			}
+		},
+		style_effects: {
+			has_init_sequence: true,
+			solidify: function () {
+				$(XSM.effects.solidify).each(function() {
+
+				});
+				return true;
+			}
+		},
+
+		assertAspectRatio: function(targets) {
+			if (!targets) targets = XSM.global.preserveAS;
+			$(targets).each(function() {
+				$(this).removeAttr("style");
+				var data = $(this).data("aspectRatio");
+				var ratio = Number(data.x) / Number(data.y);
+				var respect = data.respect;
+
+				/* make sure the ratio is indeed a ratio */
+				if (!isInt(ratio) && !isFloat(ratio)) {
+					var ratioVals = ratio.split("/");
+					if (ratioVals.length !== 2) throw "Invalid value for argument 'ratio'; must be int, float or string matching n/m";
+					ratio = Number(ratioVals[0]) / Number(ratioVals[1]);
+				}
+
+				var dimensions = {width:$(this).innerWidth(), height:$(this).innerHeight()};
+				if (respect != "y") {
+					dimensions.height = dimensions.width / ratio;
+				} else {
+					dimensions.width = dimensions.height * ratio;
+				}
+				$(this).css(dimensions);
+			});
+
+			return true;
+		},
+
+		activize: function(element) {
+			if (isEvent(element) ) element = element.currentTarget;
+			pr(element);
+			if ($(element).hasClass("inactive")) {
+				$(element).removeClass('inactive')
+					.addClass('active')
+					.siblings("li.active")
+					.each(function() {
+						$(this).removeClass('active').addClass('inactive');
+				});
+			}
+		},
+
+		detach: function(element) {
+			var isStatic = $(element).data('static');
+			var height = $(element).innerHeight();
+			$(element).css({height:height});
+			if (isStatic) XBS.layout.fasten(element);
+			return $(element);
+		},
+		fasten: function(selector) {
+			//todo: error handling & logic for objects vs arrays
+			var selectors = ( isArray(selector) ) ? selector : [selector];
+			for (i in selectors) {
+				var sel = selectors[i];
+				var offset = $(sel).offset();
+				var dims = $(sel).css(['height','width']);
+
+				$(sel).css({position:"fixed", top:offset.top, left:offset.left, height:dims.height, width:dims.width}).addClass("fastened");
+			}
+			return  (isArray(selector) ) ? selector : $(selector);
+		},
+		readyLoadingScreen: function() {
+			if (XBS.cfg.developmentMode) {
+				XBS.fn.layout.toggleLoadingScreen();
+				return true;
+			}
+			if (XBS.cfg.isSplash) {
+				$(XSM.load.pizzaLoaderGIF).fadeOut(500, function() {
+					$(XSM.load.loadingMessage).hide("slide",{direction:"right"},300, function() {
+						$(XSM.load.readyMessage).show("slide",300, function() {
+							$(XSM.load.dismissLSButton).fadeToggle();
+						});
+					});
+				});
+			} else {
+				$(XSM.load.pizzaLoaderGIF).fadeOut(500, function() {
+						XBS.layout.toggleLoadingScreen();
+				});
+			}
+		},
+		toggleLoadingScreen: function() {
+			$(XSM.global.loadingScreen).fadeToggle();
+		},
+		refresh_orb_card_stage: function(orb_card_id) {
+			// todo: fallback on ajax fail
+			if (isEvent(orb_card_id)) orb_card_id = orb_card_id.data.orb;
+			$.get("/xtreme/menuitem/" + orb_card_id, function(data) {
+				$(XSM.menu.orb_card_stage).replaceWith(data);
 			});
 		}
-		return true;
 	},
-	bindScrolling: function(selector) {
-		var initialOffset = $(selector).offset().top;
-		$(selector).data("initial-offset",initialOffset);
-		var lastChild = $(selector).last();
-		var lastChildTop = $(lastChild).offset().top;
-		//todo: this won't work because the last child is also the first; it's a wrapper. Your solution was
-		//todo: to add a class, "last-content-child" to the area that could be searched for by jQuery.
-		var currentHeight = $(selector).innerHeight();
-		var maxScroll = currentHeight + window.innerHeight;
-		$(selector).css({height:String(currentHeight + window.innerHeight)+"px"});
-		$(selector).on("mousewheel", function(e) {
-				var marginTopString = $(this).css('marginTop');
-				var marginVal = Number(marginTopString.replace("px", ""));
-				var margin = marginVal + e.deltaY;
-				if (margin > 0) margin = 0;
-				if (margin > maxScroll) margin = maxScroll;
-				$(this).css({marginTop:margin});
-		});
-	},
-
-	scaleSplash: function() {
-		var splashbarTop = $(XSM.splash.splashBar).offset().top;
-		var scaleFactor = 570/splashbarTop;
-		var dealDim = [splashbarTop, scaleFactor *400];
-		var dealLeft = String( (window.innerWidth / 2) + (.8 * $("#order").innerWidth()) ) +"px";
-		$("#grand-opening-deal").css({
-			height:String(1.08 * dealDim[0])+"px",
-			width:String(1.08 * dealDim[1])+"px",
-			left:dealLeft
-		});
-		$(".fastened").attr('style', '').removeClass('fastened');
-		$(".detach").attr('style', '');
-		XBS.layoutInit();
-		return true;
-	},
-	detach: function(element) {
-		var isStatic = $(element).data('static');
-
-		var height = $(element).innerHeight();
-		$(element).css({height:height});
-		if (isStatic) XBS.fasten(element);
-		return $(element);
-	},
-	assertAspectRatio: function(selector, ratio, respect) {
-		// make sure the ratio is indeed a ratio
-		if (!isInt(ratio) && !isFloat(ratio)) {
-			var ratioVals = ratio.split("/");
-			if (ratioVals.length !== 2) throw "Invalid value for argument 'ratio'; must be int, float or string matching n/m";
-			ratio = Number(ratioVals[0]) / Number(ratioVals[1]);
-		}
-
-		var dimensions = {width:$(selector).innerWidth(), height:$(selector).innerHeight()};
-		if (respect != "y") {
-			dimensions.height = dimensions.width / ratio;
-		} else {
-			dimensions.width = dimensions.height * ratio;
-		}
-		$(selector).css(dimensions);
-	},
-	fasten: function(selector) {
-		//todo: error handling & logic for objects vs arrays
-		var selectors = ( isArray(selector) ) ? selector : [selector];
-		for (i in selectors) {
-			var sel = selectors[i];
-			var offset = $(sel).offset();
-			var dims = $(sel).css(['height','width']);
-
-			$(sel).css({position:"fixed", top:offset.top, left:offset.left, height:dims.height, width:dims.width}).addClass("fastened");
-		}
-		return  (isArray(selector) ) ? selector : $(selector);
-	},
-	splashRedirect: function(route) {
-		if (isEvent(route) ) route = route.data.route;
-		XBS.foldSplash(route);
-	},
-	splashModal: function(modalSource) {
-		if (isEvent(arguments[0]) ) modalSource = arguments[0].data.source;
-
-		//window.location.replace(modalSource);
-		$(XSM.splash.modalContent).load(modalSource, function() {
-			$(XSM.splash.modalWrap).fadeIn(500, function() {
-				$(XSM.splash.modal).show('slide');
-			}).on("click", function() {
-				$(XSM.splash.modal).slideUp(300, function() {
-					$(this).html('');
-					$(XSM.splash.modalWrap).fadeOut();
-				})
+	splash: {
+		init: function() {
+			if (!XBS.cfg.isSplash) return true;
+			XBS.fn.execInitSequence(XBS.splash.jq_binds);
+			$(XSM.splash.self).on(C.MOUSEOVER, function() {
+					$(XSM.splash.openingDeal).slideDown();
+					$(this).unbind(C.HOVER);
 			});
-		});
-	},
-	foldSplash: function(route) {
-		XBS.fasten([XSM.splash.splashBar,XSM.splash.logo]);
-		var logo = $(XSM.splash.logo).clone().attr('id', stripCSS(XSM.splash.logoClone));
-		var logoLoc = $(XSM.splash.logo).offset();
-		$(logo).css({position:"fixed",top:logoLoc.top, left:logoLoc.left,zIndex:"9999999"});
-		$(XSM.splash.self).append(logo);
-		$(XSM.splash.logo).remove();
-		$(XSM.splash.splashBar).animate({left:String(-1.1 * window.innerWidth)+"px"}, 300, "easeInCubic",
-			function() {
-				$(this).hide();
-				$(XSM.splash.circleWrap).css({});
-							$(XSM.splash.circle).addClass("flipped");
-				//todo: use modernizr to do this more effectively
-					//		$(XSM.splash.circle).animate({transform:"rotafdteY(640deg)"}, 1000,"linear", function() {
-								$(XSM.splash.logoClone).hide("puff", function() {window.location.replace(route)});
-//								$("#splash").fadeOut();
-					//		});
+			XBS.splash.render();
+
+			return true;
+		},
+		jq_binds: {
+			has_init_sequence: true,
+			splashRedirectListener: function() {
+							$("section#splash *[data-splash-redirect]").each(function() {
+								var data = $(this).data();
+								$(this).on(data.on,null,{route:data.splashRedirect}, XBS.splash.redirect);
+							});
+
+							return true;
+						},
+			splashModalListener: function() {
+				$(XSM.splash.modalLoad).each(function() {
+					$(this).on(C.CLK, null, $(this).data(), XBS.splash.modal);
+				});
+
+				return true;
+			}
+		},
+		render: function() {
+				var splashbarTop = $(XSM.splash.splashBar).offset().top;
+				var scaleFactor = 570/splashbarTop;
+				var dealDim = [splashbarTop, scaleFactor * 400];
+				var dealLeft = String( (window.innerWidth / 2) + (.8 * $(XSM.splash.order).innerWidth()) ) +"px";
+
+				/* ---------------- opening deal temp code ------------------*/
+				$(XSM.splash.openingDeal).css({
+					height:String(1.08 * dealDim[0])+"px",
+					width:String(1.08 * dealDim[1])+"px",
+					left:dealLeft
+				});
+				$(XSM.splash.fastened).attr('style', '').removeClass('fastened');
+				$(XSM.splash.detach).attr('style', '');
+				/* ---------------- opening deal temp code ------------------*/
+
+				$(XSM.splash.orderSpacer).css({height: $(XSM.splash.menuWrap).innerHeight() * 0.45});
+				$(XSM.splash.menuSpacer).css({height: $(XSM.splash.menuWrap).innerHeight() * 0.15});
+				XBS.layout.assertAspectRatio(XSM.splash.preserveAS);
+				return true;
+			},
+		redirect: function(route) {
+			if (isEvent(route) ) route = route.data.route;
+			XBS.splash.fold(route);
+		},
+		modal: function(modalSource) {
+			if (isEvent(arguments[0]) ) modalSource = arguments[0].data.source;
+
+			//window.location.replace(modalSource);
+			$(XSM.splash.modalContent).load(modalSource, function() {
+				$(XSM.splash.modalWrap).fadeIn(500, function() {
+					$(XSM.splash.modal).show('slide');
+				}).on(C.CLK, function() {
+					$(XSM.splash.modal).slideUp(300, function() {
+						$(this).html('');
+						$(XSM.splash.modalWrap).fadeOut();
+					})
+				});
 			});
-		return true;
+		},
+		fold: function(route) {
+			XBS.layout.fasten([XSM.splash.splashBar,XSM.splash.logo]);
+			var logo = $(XSM.splash.logo).clone().attr('id', stripCSS(XSM.splash.logoClone));
+			var logoLoc = $(XSM.splash.logo).offset();
+			$(logo).css({position:"fixed",top:logoLoc.top, left:logoLoc.left,zIndex:"9999999"});
+			$(XSM.splash.self).append(logo);
+			$(XSM.splash.logo).remove();
+			$(XSM.splash.splashBar).animate({left:String(-1.1 * window.innerWidth)+"px"}, 300, "easeInCubic",
+				function() {
+					$(this).hide();
+					$(XSM.splash.circleWrap).css({});
+								$(XSM.splash.circle).addClass("flipped");
+					//todo: use modernizr to do this more effectively
+						//		$(XSM.splash.circle).animate({transform:"rotafdteY(640deg)"}, 1000,"linear", function() {
+									$(XSM.splash.logoClone).hide("puff", function() {window.location.replace(route)});
+	//								$("#splash").fadeOut();
+						//		});
+				});
+			return true;
+		}
+	},
+	fn: {
+		execInitSequence: function(initOb) {
+			if (!exists(initOb.has_init_sequence) ) {
+				throw new TypeError("Object passed to XBS.fn.execInitSequence() does not contain 'has_init_sequence' property.");
+			}
+			var sitRep = {};
+			for (fn in initOb) { if (fn != "has_init_sequence") sitRep[fn] = initOb[fn](); }
+			return sitRep;
+		},
+		offsetToMargin: function(target, offset) {
+
+		},
+		marginToOffset: function(target, margin) {
+
+		},
+		/**
+		 * setHost method
+		 * @desc  Sets the root directory for AJAX references given <host>
+		 * @host <str> string key for host in XBS.data.hostRootDirs
+		 * @throws
+		 * @returns <boolean>
+		 */
+		setHost: function(host) {
+			if (XBS.data.hostRootDirs[host] == C.UNDEF ) {
+				throw new ReferenceError("Error: host '{0}' not found in XBS.data.hostRootDirs.".format(host));
+			} else {
+				XBS.cfg.root = XBS.data.hostRootDirs[host];
+			}
+			return true;
+		},
+
+		/**
+		 * sleep method
+		 *
+		 * @period {integer} duration (ms) for which program should wait
+		 * @wakeEvent {mixed} Either an event object or a string name of standard event
+		 * @onWake {function} Function to be executed after sleep period has elapsed
+		 * @target {mixed} CSS selector string or DOM element to be target of wakeEvent
+		 * @returns {boolean}
+		 */
+		sleep: function(period, wakeEvent, onWake, target) {
+			if (wakeEvent == C.UNDEF) wakeEvent = XBS.evnt.wakeFromSleep;
+			if (isFunction(onWake) ) {
+				// confirmed code reaches these lines and all vars are as expected
+				if (target == C.UNDEF) target = window;
+				$(target).on(wakeEvent.type, onWake);
+			}
+			setTimeout(function() {$(target).trigger(wakeEvent) }, period);
+
+			return target;
+		}
 	}
-}
-
-/* JONO: USE THIS WHEN THE TIME COMES TO ASSESS THE HEIGHT OF ORBCARS ON SCREENL: https://github.com/imakewebthings/jquery-waypoints */
+};
