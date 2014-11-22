@@ -6,6 +6,7 @@ class ShopController extends AppController {
 
 	public $components = array(
 		'Cart',
+		'Security',
 		#'Paypal',
 		#'AuthorizeNet'
 	);
@@ -19,7 +20,8 @@ class ShopController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->disableCache();
-		//$this->Security->validatePost = false;
+		$this->set('loggedIn', $this->Auth->loggedIn());
+		$this->set('user', $this->Auth->user());
 	}
 
 //////////////////////////////////////////////////
