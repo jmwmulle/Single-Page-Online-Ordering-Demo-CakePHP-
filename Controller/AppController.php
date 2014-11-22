@@ -19,6 +19,7 @@ App::uses( 'Controller', 'Controller' );
 App::uses( 'Folder', 'Utility' );
 App::uses( 'File', 'Utility' );
 
+
 /**
  * Application Controller
  * Add your application-wide methods in the class below, your controllers
@@ -28,7 +29,12 @@ App::uses( 'File', 'Utility' );
  * @link           http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-	public $components = array( "Session");
+	public $components = array( "Session", "RequestHandler", 'Acl',
+	                            'Auth' => array(
+		                            'authorize' => array(
+			                            'Actions' => array( 'actionPath' => 'controllers' )
+		                            )
+	                            ), 'Session');
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
 	protected $topnav = array('Menu','Deals','Favs', 'Order',);
@@ -268,27 +274,26 @@ class AppController extends Controller {
 		$this->set("topnav", $this->topnav);
 	}
 
-//	public function beforeFilter() {
-//		//Configure AuthComponent
-//		if (isset($this->request->params['pass'][0]) ) {
-//			if ($this->request->params['pass'][0] == 'home' && $this->Session->read('Auth.User')) {
-//				$this->redirect(___cakeUrl("users","home"));
-//			}
-//		}
-//		$this->Auth->loginAction = array(
-//		  'controller' => 'users',
-//		  'action' => 'login'
-//		);
-//		$this->Auth->logoutRedirect = array(
-//		  'controller' => 'users',
-//		  'action' => 'login'
-//		);
-//			$this->Auth->loginRedirect = array(
-//		  'controller' => 'users',
-//		  'action' => 'home'
-//		);
-//		$this->Auth->allow('*');
-//	}
-
+	public function beforeFilter() {
+		//Configure AuthComponent
+		$this->Auth->allow();
+		if (isset($this->request->params['pass'][0]) ) {
+			if ($this->request->params['pass'][0] == 'home' && $this->Session->read('Auth.User')) {
+				$this->redirect(___cakeUrl("users","home"));
+			}
+		}
+		$this->Auth->loginAction = array(
+		  'controller' => 'users',
+		  'action' => 'login'
+		);
+		$this->Auth->logoutRedirect = array(
+		  'controller' => 'users',
+		  'action' => 'logout'
+		);
+		$this->Auth->loginRedirect = array(
+		  'controller' => 'users',
+		  'action' => 'home'
+		);
+		$this->Auth->allow('display');
+	}	
 }
-

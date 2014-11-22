@@ -107,32 +107,72 @@ class UsersController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
+#register	
 	public function register() {
 		// don't know enough about oAuth to know if this is 1 function or 4 (FB/Twitter/G+/e-mail)
 	}
 
-//	public function login() {
-//
-//	    if ($this->Session->read('Auth.User')) {
-//		$this->Session->setFlash('You are logged in!');
-//		return $this->redirect('/');
-//	    }
-//	    if ($this->request->is('post')) {
-//		if ($this->Auth->login()) {
-//		    return $this->redirect($this->Auth->redirect());
-//		}
-//		$this->Session->setFlash(__('Your username or password was incorrect.'));
-//	    }
-//	}
-//
-//	public function logout() {
-//	    //Leave empty for now.
-//	}
+#login	
+	public function login() {
+	    if ($this->Session->read('Auth.User')) {
+		$this->Session->setFlash('You are logged in!');
+		return $this->redirect('/');
+	    }
+	    if ($this->request->is('post')) {
+		if ($this->Auth->login()) {
+		    return $this->redirect($this->Auth->redirect());
+		}
+		$this->Session->setFlash(__('Your username or password was incorrect.'));
+	    }
+	}
 
-//	public function beforeFilter() {
-//	    parent::beforeFilter();
-//
-//	    // For CakePHP 2.1 and up
-//	    $this->Auth->allow("*");
-//	}
+#logout	
+	public function logout() {
+		$this->Session->setFlash('Good-Bye');
+		$this->redirect($this->Auth->logout());$this->Session->setFlash('Good-Bye');
+		$this->redirect($this->Auth->logout());
+	}
+
+#opauth_complete	
+	public function opauth_complete() {
+		if ($this->data['validated']) {
+			$conditions = array('User.email' => $this->data['auth']['info']['email']);
+			if ($this->User->hasAny($conditions)){
+				if ($this->Auth->login(array('email' => $this->data['auth']['info']['email'], 'password' => $this->data['auth']['uid']))) {
+					return $this->redirect($this->Auth->redirect());
+				} else {
+					db("Login Failed");
+				}
+			} else {
+				$newUser = array('User' => array(
+					'email' => $this->data['auth']['info']['email'],
+					'password' => $this->data['auth']['uid'],
+					'firstname' => $this->data['auth']['info']['first_name'],
+					'lastname' => $this->data['auth']['info']['last_name'],
+					'group_id' => 1
+				));
+				if ($this->User->save($newUser)) {
+				} else {
+					db("Failed to Create User");
+				}
+				$this->Session->setFlash(__('Logged in. Welcome ' + $this->data['auth']['info']['name'] + '.'));
+				return $this->redirect($this->Auth->redirect());
+			}
+		} else {
+			$this->Session->setFlash(__('Login failed. Please try again.'));
+		}
+	}
+
+#home	
+	public function home() {
+		$this->redirect(___cakeUrl('pages','splash'));
+	}
+
+#beforeFilter	
+	public function beforeFilter() {
+	    parent::beforeFilter();
+
+	    // For CakePHP 2.1 and up
+	    $this->Auth->allow();
+	}
 }

@@ -162,4 +162,9 @@ class OrbcatsController extends AppController {
 
 		$this->set(compact('active_orbcat','orbcats_list','here'));
 	}
+
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('index', 'view');
+	}
 }

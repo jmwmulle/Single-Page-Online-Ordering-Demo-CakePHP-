@@ -39,6 +39,7 @@
 <?php //echo $this->Element("loadingscreen");?>
 <?php //echo $this->Element("login");?>
 <?php if (!$this->get("isSplash")) echo $this->element("flash");//todo: perhaps turn this into both the topbar nav AND the flash area? ?>
+
 <?php $this->start('main');?>
 <nav id="topbar" class="text-center">
 	<div class="row">
