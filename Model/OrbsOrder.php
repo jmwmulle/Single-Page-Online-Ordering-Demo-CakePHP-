@@ -1,12 +1,12 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * OrbitsOrder Model
+ * OrbsOrder Model
  *
- * @property Orbit $Orbit
+ * @property Orb $Orb
  * @property Order $Order
  */
-class OrbitsOrder extends AppModel {
+class OrbsOrder extends AppModel {
 
 /**
  * Validation rules
@@ -14,7 +14,7 @@ class OrbitsOrder extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'orbit_id' => array(
+		'orb_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
@@ -54,9 +54,9 @@ class OrbitsOrder extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Orbit' => array(
-			'className' => 'Orbit',
-			'foreignKey' => 'orbit_id',
+		'Orb' => array(
+			'className' => 'Orb',
+			'foreignKey' => 'orb_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
