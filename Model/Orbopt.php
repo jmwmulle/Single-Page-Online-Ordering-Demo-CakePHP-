@@ -1,13 +1,12 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Orb Model
+ * Orbopt Model
  *
- * @property Orbcat $Orbcat
- * @property Orbextra $Orbextra
- * @property Order $Order
+ * @property Pricelist $Pricelist
+ * @property Orb $Orb
  */
-class Orb extends AppModel {
+class Orbopt extends AppModel {
 
 /**
  * Validation rules
@@ -15,6 +14,16 @@ class Orb extends AppModel {
  * @var array
  */
 	public $validate = array(
+		'pricelist_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
 		'title' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
@@ -25,9 +34,9 @@ class Orb extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'subtitle' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+		'meat' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -35,9 +44,9 @@ class Orb extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'description' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+		'veggie' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -45,9 +54,9 @@ class Orb extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'pricelist_id' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+		'sauce' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -55,19 +64,29 @@ class Orb extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'pricedict_id' => array(
-					'notEmpty' => array(
-						'rule' => array('notEmpty'),
-						//'message' => 'Your custom message here',
-						//'allowEmpty' => false,
-						//'required' => false,
-						//'last' => false, // Stop validation after this rule
-						//'on' => 'create', // Limit validation to 'create' or 'update' operations
-					),
-				),
-		'config' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+		'pizza_only' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'premium' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'global' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -78,50 +97,33 @@ class Orb extends AppModel {
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
+
 /**
- * belongsToMany associations
+ * belongsTo associations
  *
  * @var array
  */
-	public $belongsToMany = array(
-		'Ordbit' => array(
-					'className' => 'Orbit',
-					'joinTable' => 'orbs_orbits',
-					'foreignKey' => 'orb_id',
-					'associationForeignKey' => 'orbit_id',
-					'unique' => 'keepExisting',
-					'conditions' => '',
-					'fields' => '',
-					'order' => '',
-					'limit' => '',
-					'offset' => '',
-					'finderQuery' => '',
-				)
+	public $belongsTo = array(
+		'Pricelist' => array(
+			'className' => 'Pricelist',
+			'foreignKey' => 'pricelist_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
 	);
+
 /**
  * hasAndBelongsToMany associations
  *
  * @var array
  */
 	public $hasAndBelongsToMany = array(
-		'Orbcat' => array(
-			'className' => 'Orbcat',
-			'joinTable' => 'orbs_orbcats',
-			'foreignKey' => 'orb_id',
-			'associationForeignKey' => 'orbcat_id',
-			'unique' => 'keepExisting',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-		),
-		'Orbopt' => array(
-			'className' => 'Orbopt',
+		'Orb' => array(
+			'className' => 'Orb',
 			'joinTable' => 'orbs_orbopts',
-			'foreignKey' => 'orb_id',
-			'associationForeignKey' => 'orbopt_id',
+			'foreignKey' => 'orbopt_id',
+			'associationForeignKey' => 'orb_id',
 			'unique' => 'keepExisting',
 			'conditions' => '',
 			'fields' => '',
@@ -129,8 +131,7 @@ class Orb extends AppModel {
 			'limit' => '',
 			'offset' => '',
 			'finderQuery' => '',
-		),
-
+		)
 	);
 
 }

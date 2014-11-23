@@ -1,11 +1,12 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Orbextra Model
+ * OrbsOrbopt Model
  *
  * @property Orb $Orb
+ * @property Orbopt $Orbopt
  */
-class Orbextra extends AppModel {
+class OrbsOrbopt extends AppModel {
 
 /**
  * Validation rules
@@ -13,9 +14,9 @@ class Orbextra extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'title' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+		'orb_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -23,19 +24,9 @@ class Orbextra extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'subtitle' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'description' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+		'orbopt_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -48,24 +39,24 @@ class Orbextra extends AppModel {
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
- * hasAndBelongsToMany associations
+ * belongsTo associations
  *
  * @var array
  */
-	public $hasAndBelongsToMany = array(
+	public $belongsTo = array(
 		'Orb' => array(
 			'className' => 'Orb',
-			'joinTable' => 'orbs_orbextras',
-			'foreignKey' => 'orbextra_id',
-			'associationForeignKey' => 'orb_id',
-			'unique' => 'keepExisting',
+			'foreignKey' => 'orb_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
+			'order' => ''
+		),
+		'Orbopt' => array(
+			'className' => 'Orbopt',
+			'foreignKey' => 'orbopt_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
-
 }
