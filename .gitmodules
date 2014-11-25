@@ -1,12 +1,18 @@
-[submodule "Plugin/OAuth"]
-	path = Plugin/OAuth
-	url = git://github.com/thomseddon/cakephp-oauth-server.git
 [submodule "Plugin/Migrations"]
 	path = Plugin/Migrations
 	url = https://github.com/CakeDC/migrations.git
-[submodule "app/Plugin/DebugKit"]
-	path = app/Plugin/DebugKit
-	url = https://github.com/cakephp/debug_kit.git
 [submodule "Plugin/DebugKit"]
 	path = Plugin/DebugKit
 	url = https://github.com/cakephp/debug_kit.git
+[submodule "Plugin/acl_extras"]
+	path = Plugin/acl_extras
+	url = https://github.com/markstory/acl_extras.git
+[submodule "Plugin/Opauth/Strategy/Google"]
+	path = Plugin/Opauth/Strategy/Google
+	url = https://github.com/opauth/google.git
+[submodule "Plugin/Opauth/Strategy/Twitter"]
+	path = Plugin/Opauth/Strategy/Twitter
+	url = https://github.com/opauth/twitter.git
+[submodule "Plugin/Opauth/Strategy/Facebook"]
+	path = Plugin/Opauth/Strategy/Facebook
+	url = https://github.com/opauth/facebook.git

@@ -108,6 +108,7 @@ class OrbcatsController extends AppController {
 	}
 
 	public function menu($orbcat_id = null, $orb_id = null, $return = false) {
+		exit();
 		if ($this->request->is("ajax")) $this->layout = "ajax";
 		$here = 'Menu';
 		$active_orb = false;
@@ -127,7 +128,7 @@ class OrbcatsController extends AppController {
 
 		$active_orbcat['orbs'] = $active_orbcat['orbs'][0]['Orb']; // truncate to just orbs, remove OrbCat
 		$orbcats_list = $this->Orbcat->find('list', array('conditions' => array('`Orbcat`.`primary_menu`' => true)));  // for actual orbcat menu
-
+		db($active_orbcat);
 		// decode json in active orbs list
 		foreach($active_orbcat['orbs'] as $i => $orb) {
 			$orb['price_matrix'] = json_decode($orb['price_matrix'], true);
