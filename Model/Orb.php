@@ -4,8 +4,7 @@ App::uses('AppModel', 'Model');
  * Orb Model
  *
  * @property Orbcat $Orbcat
- * @property Orbextra $Orbextra
- * @property Order $Order
+ * @property Orbopt $Orbopt
  */
 class Orb extends AppModel {
 
@@ -74,7 +73,7 @@ class Orb extends AppModel {
  * @var array
  */
 	public $belongsToMany = array(
-		'Ordbit' => array(
+		'Orbit' => array(
 					'className' => 'Orbit',
 					'joinTable' => 'orbs_orbits',
 					'foreignKey' => 'orb_id',
@@ -88,6 +87,18 @@ class Orb extends AppModel {
 					'finderQuery' => '',
 				)
 	);
+
+	public $belongsTo = array(
+		'Pricelist' => array(
+			'className' => 'Pricelist',
+			'foreign_key' => 'pricelist_id'
+		),
+		'Pricedict' => array(
+			'className' => 'Pricedict',
+			'foreign_key' => 'pricedict_id'
+		)
+	);
+
 /**
  * hasAndBelongsToMany associations
  *

@@ -4938,6 +4938,9 @@ ul#orbcat-menu li {
   right: 0.3125rem;
   color: #a2a2a2; }
 
+.float-label h1, .float-label h2, .float-label h3, .float-label h4, .float-label h5 {
+  font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
+
 div.orb-card-button {
   text-align: center; }
 
@@ -4951,6 +4954,12 @@ div.orb-card-content#price-matrix {
     color: #e02027; }
 div.orb-card-content#orb-card-options {
   background-color: #373737; }
+
+.orb-size-panel li h3 {
+  color: white;
+  text-align: center; }
+.orb-size-panel li.active h3 {
+  color: #191919; }
 
 body {
   background-image: url('../img/splash/pizza-bg.jpg');
@@ -4977,9 +4986,6 @@ button.unavailable {
 
 .inline {
   display: inline-block; }
-
-*[data-scrolling-target] {
-  background-color: rgba(255, 0, 0, 0.2); }
 
 section {
   margin-bottom: 1rem; }
@@ -5369,21 +5375,17 @@ a.close-splash-modal {
           #grand-opening-deal div:first-of-type h3 ul li.email {
             background-image: url('../img/splash/email_icon.png'); }
 
-html, nav, body, main, footer {
-  overflow: none; }
 
 body#menu {
   background-image: url("../img/menu_bg.xlg.bright.jpg");
-  background-attachment: fixed;
-  overflow: none; }
+  background-attachment: fixed; }
 
 main#menu {
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
-  margin-top: 5.3125rem;
-  overflow: none; }
+  margin-top: 5.3125rem; }
 
 /**************************************************************
 
@@ -5524,20 +5526,88 @@ li.orbcat {
   border-bottom-right-radius: 1000px;
   height: 23.4375rem;
   background-color: #d7d7d7;
-  background-image: url("../img/orb_card.shadow.png");
+  background: whitesmoke;
+  /* Old browsers */
+  background: -moz-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #f5f5f5), color-stop(100%, #969696));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
+  /* IE10+ */
+  background: linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#969696', GradientType=1);
+  /* IE6-9 fallback on horizontal gradient */ }
+
+.float-label {
+  visibility: hidden;
+  position: absolute;
+  z-index: 10;
+  width: 20rem;
+  transform: rotate(270deg);
+  margin-left: 0;
+  left: 0;
+  bottom: 9.53125rem;
+  text-align: center;
+  transition: visibility 0.2s, margin-left 0.3s; }
+  .float-label.exposed {
+    visibility: visible;
+    margin-left: -7.375rem; }
+
+#orb-card-shadow-wrapper {
+  width: 100%;
+  position: absolute;
   background-repeat: no-repeat;
   background-position: -0.8875rem 19.75rem;
-  background-size: 45rem 1.5625rem; }
+  background-size: 45rem 1.5625rem;
+  transition: background-image 0.5s; }
 
 div.orb-card {
-  position: relative;
   height: 20rem;
   width: 37.5rem;
+  position: relative;
   margin-left: 3.125rem;
   margin-top: 1.25rem;
+  -webkit-perspective: 800px;
+  -moz-perspective: 800px;
+  -o-perspective: 800px;
+  perspective: 800px;
+  z-index: 999999; }
+
+div#orb-card-3d-pane {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: -webkit-transform 1s opacity 0.3s;
+  -moz-transition: -moz-transform 1s;
+  -o-transition: -o-transform 1s;
+  transition: transform 1s;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d; }
+  div#orb-card-3d-pane.flipped {
+    transform: rotateY(180deg); }
+
+section.orb-card-face {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   background-color: white;
   padding: 0.625rem;
-  z-index: 99999; }
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d; }
+
+#orb-card-back {
+  transform: rotateY(180deg); }
 
 .triangle-down {
   position: absolute;
@@ -5621,13 +5691,18 @@ div.orb-card-content {
     div.orb-card-content#price-matrix ul::-webkit-scrollbar-thumb {
       border-radius: 4px;
       background-color: #0779be; }
+  div.orb-card-content#price-matrix li {
+    transition: background-color 0.3s ease-out; }
+    div.orb-card-content#price-matrix li:hover {
+      background-color: #e1e1e1; }
   div.orb-card-content#price-matrix h4, div.orb-card-content#price-matrix li div {
     width: 50%;
     padding: 0;
     margin: 0;
-    display: inline-block; }
-    div.orb-card-content#price-matrix h4:last-of-type, div.orb-card-content#price-matrix li div:last-of-type {
-      padding-right: 0.9375rem; }
+    display: inline-block;
+    padding: 0.25rem 0.9375rem 0 0.9375rem; }
+  div.orb-card-content#price-matrix h4:last-of-type {
+    padding-right: 1.5625rem; }
   div.orb-card-content#price-matrix#orb-card-options {
     background-color: #373737; }
 
@@ -5676,3 +5751,18 @@ div.orb-card-content {
   border-left: 22px solid transparent;
   border-right: 22px solid transparent;
   border-top: 26px solid #e02027; }
+
+.orb-size-panel {
+  position: absolute;
+  width: 100%;
+  padding: 0.625rem; }
+  .orb-size-panel li {
+    color: white;
+    transition: background-color 0.3s, color 0.3s; }
+    .orb-size-panel li h3 {
+      padding-top: 0.42188rem;
+      background-color: #0779be; }
+    .orb-size-panel li.active {
+      color: #191919; }
+      .orb-size-panel li.active h3 {
+        background-color: #faea06; }

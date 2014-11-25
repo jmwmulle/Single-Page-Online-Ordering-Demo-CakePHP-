@@ -6,7 +6,7 @@ class ShopController extends AppController {
 
 	public $components = array(
 		'Cart',
-		'Security',
+//		'Security',
 		#'Paypal',
 		#'AuthorizeNet'
 	);
@@ -35,21 +35,23 @@ class ShopController extends AppController {
 //////////////////////////////////////////////////
 
 	public function add() {
-		if ($this->request->is('post')) {
-			$id = $this->request->data['Orbcat']['id'];
-
-			$quantity = isset($this->request->data['Orb']['quantity']) ? $this->request->data['Orb']['quantity'] : null;
-
-			$productmodId = isset($this->request->data['mods']) ? $this->request->data['mods'] : null;
-
-			$product = $this->Cart->add($id, $quantity, $productmodId);
-		}
-		if(!empty($product)) {
-			$this->Session->setFlash($product['Orb']['title'] . ' was added to your shopping cart.', 'flash_success');
+//		db($this->request);
+		if ($this->request->is('ajax')) {
+			$this->layout = "ajax";
+//			$id = $this->request->data['Orb']['id'];
+//
+//			$quantity = isset($this->request->data['Orb']['quantity']) ? $this->request->data['Orb']['quantity'] : null;
+//			// price_rank
+//			$productmodId = isset($this->request->data['Orb']['Orbopts']) ? $this->request->data['Orb']['Orbopts'] : null;
+//			$product = $this->Cart->add($id, $quantity, $productmodId);
+//		}
+//		if(!empty($product)) {
+			$this->set("response", json_encode(array("success" => true, "cart_total" => "pending")));
+//			$this->Session->setFlash($product['Orb']['title'] . ' was added to your shopping cart.', 'flash_success');
 		} else {
 			$this->Session->setFlash('Unable to add this product to your shopping cart.', 'flash_error');
 		}
-		$this->redirect($this->referer());
+//		$this->redirect($this->referer());
 	}
 
 //////////////////////////////////////////////////

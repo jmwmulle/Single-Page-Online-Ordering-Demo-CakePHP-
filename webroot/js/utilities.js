@@ -53,10 +53,12 @@ function isEvent(obj, message) {
 	var w3cKeys = ["bubbles","cancelable","currentTarget","eventPhase","timeStamp","type"];
 	for (i in w3cKeys) {
 		if (!(w3cKeys[i] in obj) ){
-			pr(w3cKeys[i],"isEvent Failed key");
+			return false;
+//			pr(w3cKeys[i],"isEvent Failed key");
+		} else {
+			return true;
 		}
 	}
-	return true;
 }
 
 function isArray(obj) {

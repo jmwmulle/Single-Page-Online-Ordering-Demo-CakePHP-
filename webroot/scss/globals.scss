@@ -18,9 +18,7 @@ button.unavailable {
 .tight { @include tightContent();}
 .hidden { display:none;}
 .inline { display: inline-block;}
-*[data-scrolling-target] {
-  background-color:rgba(255,0,0,.2);
-}
+
 
 
 

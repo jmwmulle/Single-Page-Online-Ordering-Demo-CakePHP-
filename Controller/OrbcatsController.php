@@ -108,7 +108,6 @@ class OrbcatsController extends AppController {
 	}
 
 	public function menu($orbcat_id = null, $orb_id = null, $return = false) {
-		exit();
 		if ($this->request->is("ajax")) $this->layout = "ajax";
 		$here = 'Menu';
 		$active_orb = false;
@@ -119,7 +118,7 @@ class OrbcatsController extends AppController {
 		$active_orbcat = array(
 			"id" => $orbcat_id,
 			"name" => str_replace("XTREME", "", ucwords($this->Orbcat->field('title', array('`orbcat`.`id`' => $orbcat_id)))),
-		    "orbs" => $this->Orbcat->find('all', array('recursive' => 1, "conditions" => array("`Orbcat`.`id`" => $orbcat_id))),
+		    "orbs" => $this->Orbcat->find('all', array('recursive' => 2, "conditions" => array("`Orbcat`.`id`" => $orbcat_id))),
 		    "orb_card" => null
 		);
 		if (!$orb_id || !$this->Orbcat->Orb->exists($orb_id)  ) {
@@ -128,11 +127,9 @@ class OrbcatsController extends AppController {
 
 		$active_orbcat['orbs'] = $active_orbcat['orbs'][0]['Orb']; // truncate to just orbs, remove OrbCat
 		$orbcats_list = $this->Orbcat->find('list', array('conditions' => array('`Orbcat`.`primary_menu`' => true)));  // for actual orbcat menu
-		db($active_orbcat);
-		// decode json in active orbs list
 		foreach($active_orbcat['orbs'] as $i => $orb) {
-			$orb['price_matrix'] = json_decode($orb['price_matrix'], true);
-			$orb['config'] = json_decode($orb['config'], true);
+			// next line drops the 'id' field after combining the pricelist & pricedict into a table
+			$orb['price_table'] = array_filter(array_slice(array_combine($orb['Pricedict'], $orb['Pricelist']), 1));
 			$orb['url'] = sprintf("menuitem/%s", $orb['id']);
 			$active_orbcat['orbs'][$i] = $orb;
 			if ($orb['id'] == $orb_id) $active_orbcat["orb_card"] = $orb; // active orb set here is orb requested
@@ -160,7 +157,7 @@ class OrbcatsController extends AppController {
 			$this->autorender = false;
 			return json_encode($active_orbcat['orbs']);
 		}
-
+//		db($active_orbcat);
 		$this->set(compact('active_orbcat','orbcats_list','here'));
 	}
 

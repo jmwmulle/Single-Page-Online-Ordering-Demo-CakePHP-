@@ -23,7 +23,9 @@ var XSM = {
 		activizing_list: "ul.activizing li"
 	},
 	effects: {
-		solidify: ".solidify",
+		flipped: ".flipped",
+		float_label: ".float-labeled",
+		solidify: ".solidify"
 	},
 	load: {
 		dismissLSButton: "#dismiss-loading-screen",
@@ -33,13 +35,15 @@ var XSM = {
 	},
 	menu: {
 		orb_card_stage: "#orb-card-stage",
-		orb_card_refresh: ".orb-card-refresh"
+		orb_card_refresh: ".orb-card-refresh",
+		add_to_cart_hook:".add-to-cart",
+		orb_card_3d_pane_selector: "#orb-card-3d-pane"
 	},
 	main: {
 		primaryContent: "#primary-content",
 		subNav:"#subnav",
 		toc: "#subnav-toc",
-		tocListItem:"#subnav-toc li"
+		tocListItem:"#subnav-toc li",
 	},
 	splash:{
 		self:"#splash",

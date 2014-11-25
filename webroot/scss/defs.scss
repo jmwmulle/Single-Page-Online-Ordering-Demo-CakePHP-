@@ -84,3 +84,6 @@ $orb-card-row-height:rem-calc(85px);
 $orb-card-button-width:$orb-card-row-height;
 $orb-card-button-height:$orb-card-row-height;
 $orb-card-content-width: $orb-card-inner-width - $orb-card-button-width - $float-pane-margin; // float-pane-margin is used as button/content separation width
+$orb-card-scrollbar-width: rem-calc(10px);
+$orb-card-price-table-padding-right: rem-calc(25px);
+$orb-card-price-table-padding-left: rem-calc(15px);

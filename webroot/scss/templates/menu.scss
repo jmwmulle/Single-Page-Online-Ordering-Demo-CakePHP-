@@ -1,10 +1,10 @@
 html, nav, body, main, footer {
-  overflow:none;
+ // overflow:none;
 }
 body#menu {
   background-image : url("../img/menu_bg.xlg.bright.jpg");
   background-attachment: fixed;
-  overflow: none;
+  //overflow: none;
   // todo: media queries for smaller resolutions
 }
 main#menu {
@@ -13,7 +13,7 @@ main#menu {
   top:0;
   left:0;
   margin-top :$topnav-height + $float-pane-margin;
-  overflow:none;
+  //overflow:none;
 } // in use; content area
 
 /**************************************************************
@@ -131,24 +131,79 @@ li.orbcat {
   border-top-right-radius    : 1000px;
   border-bottom-right-radius : 1000px;
   height                     : rem-calc(375);
-//  @include orb-card-gradient; todo: make this a picture or add a wrapper for the other bg
   background-color:rgb(215,215,215);
-  background-image: url("../img/orb_card.shadow.png");
+  @include orb-card-gradient; //todo: make this a picture or add a wrapper for the other bg
+}
+
+// FLOAT LABELS
+.float-label {
+  visibility:hidden;
+  position:absolute;
+  z-index:10;
+  width: $orb-card-height;
+  transform:rotate(270deg);
+  margin-left: 0;
+  left:0;
+  bottom: ($orb-card-height - $float-pane-margin)/2 + rem-calc(2.5px);
+  text-align:center;
+  transition:visibility 0.2s, margin-left 0.3s;
+  &.exposed {
+    visibility:visible;
+    margin-left: rem-calc(-118px);
+  }
+}
+
+#orb-card-shadow-wrapper {
+  width:100%;
+  position: absolute;
   background-repeat: no-repeat;
   background-position: $orb-card-shadow-position;
   background-size: $orb-card-shadow-size;
+  transition: background-image 0.5s;
 }
 
 div.orb-card {
-  position         : relative;
   height           : $orb-card-height;
   width            : $orb-card-width;
+  position         : relative;
   margin-left      : $orb-card-margin-left; // just offset it a little for aesthetics
   margin-top       : $float-pane-margin;
-  background-color : $white;
-  padding          : $orb-card-padding;
-  z-index          : 99999;
+  -webkit-perspective: 800px;
+          -moz-perspective: 800px;
+            -o-perspective: 800px;
+               perspective: 800px;
+
+  z-index:999999;
 }
+div#orb-card-3d-pane {
+  position:absolute;
+  width:100%;
+  height:100%;
+  -webkit-transition: -webkit-transform 1s opacity 0.3s;
+          -moz-transition: -moz-transform 1s;
+            -o-transition: -o-transform 1s;
+               transition: transform 1s;
+  -webkit-transform-style: preserve-3d;
+        -moz-transform-style: preserve-3d;
+          -o-transform-style: preserve-3d;
+             transform-style: preserve-3d;
+  &.flipped { transform: rotateY( 180deg ); }
+}
+
+section.orb-card-face {
+  display:block;
+  position:absolute;
+  width:100%;
+  height:100%;
+  background-color : $white;
+  padding: $orb-card-padding;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+        -moz-transform-style: preserve-3d;
+          -o-transform-style: preserve-3d;
+             transform-style: preserve-3d;
+}
+#orb-card-back { transform: rotateY( 180deg );}
 
 .triangle-down {
   position     : absolute;
@@ -177,7 +232,6 @@ ul.orb-card {
     height: $orb-card-row-height;
     margin-bottom : $float-pane-margin;
     div.orb-card-content, div.orb-card-button { display:inline-block;}
-//    background-color:rgb(240,240,240);
   }
   div.orb-card-button {
     position: relative;
@@ -221,46 +275,42 @@ div.orb-card-content {
 
   &#description {
     background-color : $light-grey;
-    //height           : $orb-card-row-height;
     padding          : rem-calc(10px);
   }
   &#price-matrix {
-    //max-height: $orb-card-row-height;
     ul {
       margin-top:-5px;
       padding:0;
       max-height:58px;
       overflow-y: auto;
-      &::-webkit-scrollbar-track
-      {
+      &::-webkit-scrollbar-track {
       	box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
         border-radius: 4px;
       	background-color: $white;
       }
-      &::-webkit-scrollbar
-      {
-
+      &::-webkit-scrollbar {
       	width: 10px;
       	background-color: $white;
       }
-      &::-webkit-scrollbar-thumb
-      {
+      &::-webkit-scrollbar-thumb {
         border-radius: 4px;
       	background-color: $xtreme-blue;
       }
+    }
+    li {
+      @include global-transition(background-color);
+      &:hover { background-color: $very-light-grey;}
     }
     h4, li div {
       width : 50%;
       padding:0;
       margin:0;
       display:inline-block;
-      &:last-of-type { padding-right:rem-calc(15px);}
+      padding: 0.25rem ($orb-card-price-table-padding-right - $orb-card-scrollbar-width) 0 $orb-card-price-table-padding-left;
     }
-    &#orb-card-options {
-      background-color:$text-grey;
-    }
+    h4:last-of-type { padding-right: $orb-card-price-table-padding-right; }
+    &#orb-card-options { background-color:$text-grey; }
   }
-
 }
 
 #active-orbs-menu {
@@ -312,3 +362,21 @@ div.orb-card-content {
   border-right : 22px solid transparent;
   border-top   : 26px solid $xtreme-red;
 }
+
+.orb-size-panel {
+  position: absolute;
+  width:100%;
+  padding: $orb-card-padding;
+  li {
+    h3 {
+      padding-top: 0.25 * $h3-font-size;
+      background-color: $xtreme-blue;}
+  color:$white;
+  transition: background-color 0.3s, color 0.3s;
+   &.active {
+     h3 { background-color: $xtreme-yellow;}
+     color:$dark-grey;
+   };
+  }}
+
+
