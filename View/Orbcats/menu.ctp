@@ -16,7 +16,6 @@ $this->start('orbcats_menu');?>
 	><ul id="orbcat-menu" class="small-block-grid-6 float-pane">
 		<?php
 		$m_title = $active_orbcat['name'];
-		db($orbcats_list);
 		foreach ($orbcats_list as $id => $orbcat) {
 			$classes = array("js-link", ___strToSel($orbcat), "orbcat",  );
 			if ($id == $active_orbcat['id']) array_push($classes, "active");

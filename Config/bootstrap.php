@@ -148,22 +148,22 @@ function ___cfName($data) {
 }
 
 CakePlugin::load('AclExtras');
-//CakePlugin::load('Migrations');
-//CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
+CakePlugin::load('Migrations');
+CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
 CakePlugin::load('DebugKit');
 
-//Configure::write('Opauth.Strategy.Google', array(
-//	'client_id' => '355448840085-0b92qc1ksodcd03ca2fidmbfu2iv5f3l.apps.googleusercontent.com',
-//	'client_secret' => 'feuihy7Mm0yQ8IXePb6OjcIT'
-//));
-//
-//Configure::write('Opauth.Strategy.Facebook', array(
-//	'app_id' => '765798036795267',
-//	'app_secret' => '57dfbdff219046eec4c396e52644494c',
-//	'scope' => 'email'
-//));
-//
-//Configure::write('Opauth.Strategy.Twitter', array(
-//	'key' => 'sgFHVzP4WePdImPOxsqF2gAaR',
-//	'secret' => 'IFBJPR4NWyS74yNJ0TwZNdy8dnUOnV55RHrHIJ7ayFlvK4GYYM'
-//));
+Configure::write('Opauth.Strategy.Google', array(
+	'client_id' => '355448840085-0b92qc1ksodcd03ca2fidmbfu2iv5f3l.apps.googleusercontent.com',
+	'client_secret' => 'feuihy7Mm0yQ8IXePb6OjcIT'
+));
+
+Configure::write('Opauth.Strategy.Facebook', array(
+	'app_id' => '765798036795267',
+	'app_secret' => '57dfbdff219046eec4c396e52644494c',
+	'scope' => 'email'
+));
+
+Configure::write('Opauth.Strategy.Twitter', array(
+	'key' => 'sgFHVzP4WePdImPOxsqF2gAaR',
+	'secret' => 'IFBJPR4NWyS74yNJ0TwZNdy8dnUOnV55RHrHIJ7ayFlvK4GYYM'
+));
