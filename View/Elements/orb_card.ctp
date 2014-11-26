@@ -26,7 +26,7 @@
 							<h4 id="hidden-description"><?php echo strtoupper($orb[ 'title' ]); ?></h4>
 						</div>
 					</li>
-				<!-- MIDDLE  ROW -->
+				<!-- MIDDLE  ROW --> 
 					<li class="orb-card-row">
 						<?php $data_array = array("orb-id" => $orb['id'],
 						                          "price-rank" => floor(count($orb['price_table'])/2),
