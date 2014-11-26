@@ -63,10 +63,36 @@ class Orb extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		)
+		),
+		'pricedict_id' => array(
+					'notEmpty' => array(
+						'rule' => array('notEmpty'),
+						//'message' => 'Your custom message here',
+						//'allowEmpty' => false,
+						//'required' => false,
+						//'last' => false, // Stop validation after this rule
+						//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					),
+				)
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
+/**
+ * belongsToMany associations
+ *
+ * @var array
+ */
+
+	public $belongsTo = array(
+		'Pricelist' => array(
+			'className' => 'Pricelist',
+			'foreign_key' => 'pricelist_id'
+		),
+		'Pricedict' => array(
+			'className' => 'Pricedict',
+			'foreign_key' => 'pricedict_id'
+		)
+	);
 
 /**
  * hasAndBelongsToMany associations
@@ -87,11 +113,11 @@ class Orb extends AppModel {
 			'offset' => '',
 			'finderQuery' => '',
 		),
-		'Orbextra' => array(
-			'className' => 'Orbextra',
-			'joinTable' => 'orbs_orbextras',
+		'Orbopt' => array(
+			'className' => 'Orbopt',
+			'joinTable' => 'orbs_orbopts',
 			'foreignKey' => 'orb_id',
-			'associationForeignKey' => 'orbextra_id',
+			'associationForeignKey' => 'orbopt_id',
 			'unique' => 'keepExisting',
 			'conditions' => '',
 			'fields' => '',
@@ -100,19 +126,6 @@ class Orb extends AppModel {
 			'offset' => '',
 			'finderQuery' => '',
 		),
-		'Order' => array(
-			'className' => 'Order',
-			'joinTable' => 'orbs_orders',
-			'foreignKey' => 'orb_id',
-			'associationForeignKey' => 'order_id',
-			'unique' => 'keepExisting',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-		)
 	);
 
 }
