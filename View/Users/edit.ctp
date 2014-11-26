@@ -4,13 +4,10 @@
 		<legend><?php echo __('Edit User'); ?></legend>
 	<?php
 		echo $this->Form->input('email');
-		echo $this->Form->input('group_id');
 		echo $this->Form->input('firstname');
 		echo $this->Form->input('lastname');
-		echo $this->Form->input('twitter_uid');
-		echo $this->Form->input('facebook_uid');
-		echo $this->Form->input('google_uid');
-		echo $this->Form->input('email_verified')
+		echo $this->Form->input('address');
+		echo $this->Form->input('postal_code');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

@@ -45,11 +45,22 @@
 			'email'     => array(
 				'email' => array(
 					'rule' => array( 'email' ),
-					//'message' => 'Your custom message here',
+					'message' => 'Enter your e-mail address',
 					//'allowEmpty' => false,
 					//'required' => false,
 					//'last' => false, // Stop validation after this rule
 					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+			),
+			'address'   => array(
+				'notEmpty' => array(
+					'rule' => array( 'Your Address' ),
+				),
+			),
+			'postal_code' => array(
+				'postal' => array(
+					'rule' => array( 'postal', null, 'ca' ),
+					'message' => 'Your Postal Code',
 				),
 			),
 			'group_id'  => array(
@@ -67,7 +78,7 @@
 					'rule' => array( 'numeric' ),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
-					//'required' => false,
+					'required' => false,
 					//'last' => false, // Stop validation after this rule
 					'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
@@ -77,7 +88,7 @@
 					'rule' => array( 'numeric' ),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
-					//'required' => false,
+					'required' => false,
 					//'last' => false, // Stop validation after this rule
 					'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
@@ -87,7 +98,7 @@
 					'rule' => array( 'numeric' ),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
-					//'required' => false,
+					'required' => false,
 					//'last' => false, // Stop validation after this rule
 					'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
@@ -97,7 +108,7 @@
 					'rule' => array( 'boolean' ),
 					//'message' => 'Your custom message here',
 					//'allowEmpty' => false,
-					//'required' => false,
+					'required' => false,
 					//'last' => false, // Stop validation after this rule
 					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),

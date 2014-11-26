@@ -21,7 +21,17 @@
 			<?php echo h($user['User']['email']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Created'); ?></dt>
+		<dt><?php echo __('Address'); ?></dt>
+		<dd>
+			<?php echo h($user['User']['address']); ?>
+			&nbsp;
+		</dd>
+                <dt><?php echo __('Postal Code'); ?></dt>
+		<dd>
+			<?php echo h($user['User']['postal_code']); ?>
+			&nbsp;
+		</dd>
+                <dt><?php echo __('Created'); ?></dt>
 		<dd>
 			<?php echo h($user['User']['created']); ?>
 			&nbsp;
