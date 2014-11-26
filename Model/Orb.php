@@ -72,21 +72,6 @@ class Orb extends AppModel {
  *
  * @var array
  */
-	public $belongsToMany = array(
-		'Orbit' => array(
-					'className' => 'Orbit',
-					'joinTable' => 'orbs_orbits',
-					'foreignKey' => 'orb_id',
-					'associationForeignKey' => 'orbit_id',
-					'unique' => 'keepExisting',
-					'conditions' => '',
-					'fields' => '',
-					'order' => '',
-					'limit' => '',
-					'offset' => '',
-					'finderQuery' => '',
-				)
-	);
 
 	public $belongsTo = array(
 		'Pricelist' => array(
