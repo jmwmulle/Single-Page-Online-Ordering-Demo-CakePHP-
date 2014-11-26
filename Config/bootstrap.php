@@ -20,7 +20,6 @@
 
 // Setup a 'default' cache configuration for use in the application.
 Cache::config( 'default', array( 'engine' => 'File' ) );
-CakePlugin::load('AclExtras');
 /**
  * The settings below can be used to set additional paths to models, views and controllers.
  * App::build(array(
@@ -146,11 +145,11 @@ function ___asFileName($str) {
 function ___cfName($data) {
 	return AppController::cakeforms_name($data);
 }
-
+CakePlugin::load('DebugKit');
 CakePlugin::load('AclExtras');
 CakePlugin::load('Migrations');
 CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
-CakePlugin::load('DebugKit');
+
 
 Configure::write('Opauth.Strategy.Google', array(
 	'client_id' => '355448840085-0b92qc1ksodcd03ca2fidmbfu2iv5f3l.apps.googleusercontent.com',
