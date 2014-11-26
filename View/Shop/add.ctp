@@ -1,9 +1,11 @@
 <?php
 /**
-	* J. Mulle, for app, 11/12/14 7:46 PM
+ * J. Mulle, for app, 11/25/14 6:56 PM
  * www.introspectacle.net
  * Email: this.impetus@gmail.com
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-echo $this->element('orb_card', array('orb'=>$orb));
+
+echo $response;
+?>

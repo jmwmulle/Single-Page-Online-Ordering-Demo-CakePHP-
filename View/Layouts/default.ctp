@@ -82,7 +82,7 @@
 	</div
 	><div class="row">
 		<?php echo $this->fetch('content');?>
-		<div class="large-12 medium-8 small-4 columns">
+		<div class="large-12  columns">
 			<div id="orb-card-wrapper" class="float-pane">
 				<?php echo $this->fetch('active_orb_card');?>
 				<?php echo $this->fetch('active_orbs_menu');?>

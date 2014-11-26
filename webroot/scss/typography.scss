@@ -114,7 +114,11 @@ ul#orbcat-menu li {
     color          : darken($light-grey, 7%);
   }
 }
-
+.float-label {
+  h1,h2,h3,h4,h5 {
+    @include HelveticaBlkCn;
+  }
+}
 div.orb-card-button {
   text-align : center;
 }
@@ -128,8 +132,22 @@ div.orb-card-content {
       @include HelveticaBlkCn;
       color : $xtreme-red;
     }
+    li div{
+    };
   }
   &#orb-card-options {
     background-color : $text-grey;
+  }
+}
+
+.orb-size-panel {
+  li {
+    h3 {
+      color:$white;
+      text-align:center;
+    }
+  &.active {
+    h3 { color:$dark-grey;}
+  }
   }
 }

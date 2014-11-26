@@ -4,8 +4,7 @@ App::uses('AppModel', 'Model');
  * Orb Model
  *
  * @property Orbcat $Orbcat
- * @property Orbextra $Orbextra
- * @property Order $Order
+ * @property Orbopt $Orbopt
  */
 class Orb extends AppModel {
 

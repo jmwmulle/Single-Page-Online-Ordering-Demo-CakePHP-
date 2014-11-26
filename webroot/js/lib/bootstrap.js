@@ -10,7 +10,11 @@ var constants = {
 	CLK:"click",
 	UNDEF:"undefined",
 	MOUSEOVER:"mouseover",
-	HOVER: "hover"
+	HOVER: "hover",
+	MOUSEENTER: "mouseenter",
+	MOUSEOUT: "mouseout",
+	HIDE: 0,
+	SHOW: 1
 };
 var C = constants;
 
@@ -152,8 +156,8 @@ window.XBS = {
 		jq_binds: {
 			has_init_sequence:true,
 			bind_activizing_lists: function() {
-				$(XSM.global.activizing_list).each(function() {
-					$(this).on(C.CLK, XBS.layout.activize);
+					$("body").on(C.CLK, XSM.global.activizing_list, function(e) {
+						XBS.layout.activize(e.currentTarget);
 				});
 
 				return true
@@ -174,12 +178,28 @@ window.XBS = {
 					});
 				return true;
 			},
-			bindJsLinks: function() {
+			bind_cart_hooks: function() {
+//				$(XSM.menu.add_to_cart_hook).on(C.CLK, null, null, XBS.fn.configure_orb);
+				$("#orb-card-wrapper ").on(C.CLK, ".add-to-cart", null, function(e) {
+						var data = $(e.currentTarget).data();
+						XBS.fn.configure_orb(data.orbId, data.priceRank)});
+			},
+			bind_js_links: function() {
 				$(XSM.global.jsLink).each(function() {
 					$(this).on(C.CLK, function() { window.location.replace($(this).data('url'))});
 				});
 
 				return true;
+			},
+			bind_float_menus: function() {
+				$("body").on(C.MOUSEENTER, XSM.effects.float_label, null, function(e) {
+					var data = $(e.currentTarget).data();
+					XBS.layout.toggle_float_label(data.floatLabel, C.SHOW);
+				});
+				$("body").on(C.MOUSEOUT, XSM.effects.float_label, null, function(e) {
+					var data = $(e.currentTarget).data();
+					XBS.layout.toggle_float_label(data.floatLabel, C.HIDE);
+				});
 			},
 			bind_orbcard_refresh: function() {
 				$(XSM.menu.orb_card_refresh).each(function() {
@@ -231,8 +251,7 @@ window.XBS = {
 		},
 
 		activize: function(element) {
-			if (isEvent(element) ) element = element.currentTarget;
-			pr(element);
+			if (isEvent(arguments[0]) ) element = element.currentTarget;
 			if ($(element).hasClass("inactive")) {
 				$(element).removeClass('inactive')
 					.addClass('active')
@@ -281,13 +300,34 @@ window.XBS = {
 				});
 			}
 		},
+		toggle_float_label: function(float_label, state) {
+			if (state == C.SHOW) {
+				$(asId(float_label)).addClass('exposed');
+			}
+			if (state == C.HIDE) {
+				$(asId(float_label)).removeClass('exposed');
+			}
+			return true;
+		},
 		toggleLoadingScreen: function() {
 			$(XSM.global.loadingScreen).fadeToggle();
+		},
+		toggle_orb_card: function() {
+			$(["favorite-label","order-label","like-label"]).each(function() {
+				XBS.layout.toggle_float_label(this, C.HIDE);});
+			$("#orb-card-shadow-wrapper").addClass("spinning");
+			$(XSM.menu.orb_card_3d_pane_selector).addClass("flipping");
+			$(XSM.menu.orb_card_3d_pane_selector).toggleClass(stripCSS(XSM.effects.flipped));
+			setTimeout(function() {
+				$(XSM.menu.orb_card_3d_pane_selector).removeClass("flipping");
+				$("#orb-card-shadow-wrapper").removeClass("spinning");
+			}, 1000);
 		},
 		refresh_orb_card_stage: function(orb_card_id) {
 			// todo: fallback on ajax fail
 			if (isEvent(orb_card_id)) orb_card_id = orb_card_id.data.orb;
 			$.get("/xtreme/menuitem/" + orb_card_id, function(data) {
+				pr(data);
 				$(XSM.menu.orb_card_stage).replaceWith(data);
 			});
 		}
@@ -391,6 +431,26 @@ window.XBS = {
 			var sitRep = {};
 			for (fn in initOb) { if (fn != "has_init_sequence") sitRep[fn] = initOb[fn](); }
 			return sitRep;
+		},
+		configure_orb: function(orb_id, price_rank) {
+			if (isEvent(arguments[0])) {
+				var data = $(arguments[0].currentTarget).data();
+				orb_id = data.orbId;
+				price_rank = data.priceRank;
+			}
+
+			$(".orb-size-button").each( function() {
+				var this_price = $(this).data('priceRank');
+				pr([this_price, price_rank], "price_rank");
+				if (  this_price == price_rank) {
+					XBS.layout.activize(this); }
+			});
+			XBS.layout.toggle_orb_card()
+		},
+
+		add_to_cart: function() {
+			// ajax out to cart
+			return true;
 		},
 		offsetToMargin: function(target, offset) {
 
