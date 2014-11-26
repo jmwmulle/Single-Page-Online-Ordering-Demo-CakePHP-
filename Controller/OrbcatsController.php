@@ -117,7 +117,7 @@ class OrbcatsController extends AppController {
 
 		$active_orbcat = array(
 			"id" => $orbcat_id,
-			"name" => str_replace("XTREME", "", ucwords($this->Orbcat->field('title', array('`orbcat`.`id`' => $orbcat_id)))),
+			"name" => str_replace("XTREME", "", ucwords($this->Orbcat->field('title', array('`Orbcat`.`id`' => $orbcat_id)))),
 		    "orbs" => $this->Orbcat->find('all', array('recursive' => 2, "conditions" => array("`Orbcat`.`id`" => $orbcat_id))),
 		    "orb_card" => null
 		);
