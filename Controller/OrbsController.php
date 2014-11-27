@@ -125,6 +125,7 @@ class OrbsController extends AppController {
 			$orb['Orb']['Orbopt'] = $orb['Orbopt'];
 			$orb = $orb['Orb'];
 			$this->set(compact('orb'));
+			$this->render();
 		}
 	}
 

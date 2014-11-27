@@ -315,13 +315,9 @@ window.XBS = {
 		toggle_orb_card: function() {
 			$(["favorite-label","order-label","like-label"]).each(function() {
 				XBS.layout.toggle_float_label(this, C.HIDE);});
-			$("#orb-card-shadow-wrapper").addClass("spinning");
 			$(XSM.menu.orb_card_3d_pane_selector).addClass("flipping");
 			$(XSM.menu.orb_card_3d_pane_selector).toggleClass(stripCSS(XSM.effects.flipped));
-			setTimeout(function() {
-				$(XSM.menu.orb_card_3d_pane_selector).removeClass("flipping");
-				$("#orb-card-shadow-wrapper").removeClass("spinning");
-			}, 1000);
+			$("#active-orbs-menu").slideToggle();
 		},
 		refresh_orb_card_stage: function(orb_card_id) {
 			// todo: fallback on ajax fail

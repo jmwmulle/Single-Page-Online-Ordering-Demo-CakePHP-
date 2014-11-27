@@ -26,7 +26,7 @@
 							<h4 id="hidden-description"><?php echo strtoupper($orb[ 'title' ]); ?></h4>
 						</div>
 					</li>
-				<!-- MIDDLE  ROW --> 
+				<!-- MIDDLE  ROW -->
 					<li class="orb-card-row">
 						<?php $data_array = array("orb-id" => $orb['id'],
 						                          "price-rank" => floor(count($orb['price_table'])/2),
@@ -79,19 +79,21 @@
 						<li class="orb-size-button inactive" data-price-rank="<?php echo $rank;?>">
 							<h3><?php echo strtoupper($opt);?></h3></li>
 					<?php };?>
+					<li>
+					<ul>
+						<?php foreach ($orb['Orbopt'] as $opt) {
+							if ($opt['pizza']) {?>
+							<li class="topping" data-opt-id="<?php echo $opt['id'];?>"><?php echo $opt['title'];?></li>
+							<?php }} ?>
+						}?>
+					</ul>
 				</ul>
-				<form id="testorder" action="http://kleinlab.psychology.dal.ca/xtreme/shop/add"  method="POST">
-					<input type="hidden" name="Orb[id]" value="7">
-					<input type="hidden" name="Orb[quantity]" value="7">
-					<select name="Orb[Orbopts]">
-						<option value="3" selected="selected">a</option>
-						<option value="4" selected="selected">b</option>
-						<option value="5" selected="selected">c</option>
-						<option value="6" selected="selected">d</option>
-						<option value="7" selected="selected">e</option>
-						<option value="8" selected="selected">f</option>
-					</select>
-				</form>
+				<?php
+					$this->Form->create('Orb', array('action' => ___cakeUrl('order', 'add_to_cart')));
+					$this->Form->input('id', array('type' => 'hidden', 'value' => $orb['id']));
+					$this->Form->input('quantity', array('type' => 'hidden', 'value' => $orb['id']));
+					$this->Form->input('orbopts', array('type' => 'select', 'options' => $options));
+					$this->Form->end();?>
 				<a class="tiny button" style="position:absolute; bottom:10px; right:10px" onclick="$('#orb-card-3d-pane').removeClass('flipped')">Confirm</a>
 			</section>
 		</div>
