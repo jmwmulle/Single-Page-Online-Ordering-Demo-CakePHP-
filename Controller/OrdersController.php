@@ -1,11 +1,12 @@
 <?php
 App::uses('AppController', 'Controller');
-class ShopController extends AppController {
+class OrdersController extends AppController {
 
 
 	public $components = array(
 		'Cart',
-//		'Security',
+		'Security',
+		'Paginator',
 		#'Paypal',
 		#'AuthorizeNet'
 	);
@@ -56,25 +57,37 @@ class ShopController extends AppController {
 			$orbs = $this->Order->Orb->find('list');
 			$this->set(compact('users', 'orbs'));
 		}
-//	public function add() {
-//		db($this->request);
-//		if ($this->request->is('ajax')) {
-//			$this->layout = "ajax";
-//			$id = $this->request->data['Orb']['id'];
-//
-//			$quantity = isset($this->request->data['Orb']['quantity']) ? $this->request->data['Orb']['quantity'] : null;
-//			// price_rank
-//			$productmodId = isset($this->request->data['Orb']['Orbopts']) ? $this->request->data['Orb']['Orbopts'] : null;
-//			$product = $this->Cart->add($id, $quantity, $productmodId);
-//		}
-//		if(!empty($product)) {
-//			$this->set("response", json_encode(array("success" => true, "cart_total" => "pending")));
-//			$this->Session->setFlash($product['Orb']['title'] . ' was added to your shopping cart.', 'flash_success');
-//		} else {
-//			$this->Session->setFlash('Unable to add this product to your shopping cart.', 'flash_error');
-//		}
-//		$this->redirect($this->referer());
-//	}
+	/**
+	 * add_to_cart method
+	 *
+	 * Adds a new item to the cart session key
+	 *
+	 * @return the item information in AJAX
+	 */ 
+		public function add_to_cart() {
+			if ($this->request->is('ajax')) {
+				$this->layout = "ajax";
+				$id = $this->request->data['Orb']['id'];
+				$quantity = isset($this->request->data['Orb']['quantity']) ? $this->request->data['Orb']['quantity'] : null;
+				$price_rank = isset($this->request->data['price_rank']) ? $this->request->data['price_rank'] : null;
+				$orbopts = isset($this->request->data['Orb']['Orbopts']) ? $this->request->data['Orb']['Orbopts'] : null;
+				$product = $this->Cart->add($id, $quantity, $price_rank, $orbopts);
+			} elseif ($this->request->is('post')) {
+				$id = $this->request->data['Orb']['id'];
+				$quantity = isset($this->request->data['Orb']['quantity']) ? $this->request->data['Orb']['quantity'] : null;
+				$price_rank = isset($this->request->data['price_rank']) ? $this->request->data['price_rank'] : null;
+				$orbopts = isset($this->request->data['Orb']['Orbopts']) ? $this->request->data['Orb']['Orbopts'] : null;
+				$product = $this->Cart->add($id, $quantity, $price_rank, $orbopts);
+
+			}
+			if(!empty($product)) {
+				$this->set("response", json_encode(array("orb" => $product, "success" => true, "cart_total" => "pending")));
+				$this->Session->setFlash($product['Orb']['title'] . ' was added to your shopping cart.', 'flash_success');
+			} else {
+				$this->Session->setFlash('Unable to add this product to your shopping cart.', 'flash_error');
+			}
+			//$this->redirect($this->referer());
+		}
 
 	/**
 	 * edit method
@@ -158,7 +171,7 @@ class ShopController extends AppController {
 			$product = $this->Cart->add($id, $quantity, $productmodId);
 
 		}
-		$cart = $this->Session->read('Shop');
+		$cart = $this->Session->read('Cart');
 		echo json_encode($cart);
 		$this->autoRender = false;
 	}
@@ -172,7 +185,7 @@ class ShopController extends AppController {
 	public function remove($id = null) {
 		$product = $this->Cart->remove($id);
 		if(!empty($product)) {
-			$this->Session->setFlash($product['Orb']['name'] . ' was removed from your shopping cart', 'flash_error');
+			$this->Session->setFlash($product['Orb']['title'] . ' was removed from your shopping cart', 'flash_error');
 		}
 		return $this->redirect(array('action' => 'cart'));
 	}
@@ -192,32 +205,32 @@ class ShopController extends AppController {
 
 
 	public function cart() {
-		$shop = $this->Session->read('Shop');
-		$this->set(compact('shop'));
+		$cart = $this->Session->read('Cart');
+		$this->set(compact('cart'));
 	}
 
 
 	public function address() {
 
-		$shop = $this->Session->read('Shop');
-		if(!$shop['Order']['total']) {
+		$cart = $this->Session->read('Cart');
+		if(!$cart['Order']['total']) {
 			return $this->redirect('/');
 		}
 
 		if ($this->request->is('post')) {
-			$this->loadModel('Order');
+			
 			$this->Order->set($this->request->data);
 			if($this->Order->validates()) {
 				$order = $this->request->data['Order'];
 				$order['order_type'] = 'creditcard';
-				$this->Session->write('Shop.Order', $order + $shop['Order']);
+				$this->Session->write('Shop.Order', $order + $cart['Order']);
 				return $this->redirect(array('action' => 'review'));
 			} else {
 				$this->Session->setFlash('The form could not be saved. Please, try again.', 'flash_error');
 			}
 		}
-		if(!empty($shop['Order'])) {
-			$this->request->data['Order'] = $shop['Order'];
+		if(!empty($cart['Order'])) {
+			$this->request->data['Order'] = $cart['Order'];
 		}
 
 	}
@@ -260,22 +273,19 @@ class ShopController extends AppController {
 
 	public function review() {
 
-		$shop = $this->Session->read('Shop');
+		$cart = $this->Session->read('Cart');
 
-		if(empty($shop)) {
+		if(empty($cart)) {
 			return $this->redirect('/');
 		}
 
 		if ($this->request->is('post')) {
-
-			$this->loadModel('Order');
-
 			$this->Order->set($this->request->data);
 			if($this->Order->validates()) {
-				$order = $shop;
+				$order = $cart;
 				$order['Order']['status'] = 1;
 
-				if($shop['Order']['order_type'] == 'paypal') {
+				if($cart['Order']['order_type'] == 'paypal') {
 					$paypal = $this->Paypal->ConfirmPayment($order['Order']['total']);
 					//debug($resArray);
 					$ack = strtoupper($paypal['ACK']);
@@ -286,7 +296,7 @@ class ShopController extends AppController {
 					//$order['Order']['transaction'] = $paypal['PAYMENTINFO_0_TRANSACTIONID'];
 				}
 
-				if((Configure::read('Settings.AUTHORIZENET_ENABLED') == 1) && $shop['Order']['order_type'] == 'creditcard') {
+				if((Configure::read('Settings.AUTHORIZENET_ENABLED') == 1) && $cart['Order']['order_type'] == 'creditcard') {
 					$payment = array(
 						'creditcard_number' => $this->request->data['Order']['creditcard_number'],
 						'creditcard_month' => $this->request->data['Order']['creditcard_month'],
@@ -294,7 +304,7 @@ class ShopController extends AppController {
 						'creditcard_code' => $this->request->data['Order']['creditcard_code'],
 					);
 					try {
-						$authorizeNet = $this->AuthorizeNet->charge($shop['Order'], $payment);
+						$authorizeNet = $this->AuthorizeNet->charge($cart['Order'], $payment);
 					} catch(Exception $e) {
 						$this->Session->setFlash($e->getMessage());
 						return $this->redirect(array('action' => 'review'));
@@ -306,17 +316,17 @@ class ShopController extends AppController {
 				$save = $this->Order->saveAll($order, array('validate' => 'first'));
 				if($save) {
 
-					$this->set(compact('shop'));
+					$this->set(compact('cart'));
 
 					App::uses('CakeEmail', 'Network/Email');
 					$email = new CakeEmail();
 					$email->from(Configure::read('Settings.ADMIN_EMAIL'))
 							->cc(Configure::read('Settings.ADMIN_EMAIL'))
-							->to($shop['Order']['email'])
+							->to($cart['Order']['email'])
 							->subject('Shop Order')
 							->template('order')
 							->emailFormat('text')
-							->viewVars(array('shop' => $shop))
+							->viewVars(array('shop' => $cart))
 							->send();
 					return $this->redirect(array('action' => 'success'));
 				} else {
@@ -326,42 +336,42 @@ class ShopController extends AppController {
 			}
 		}
 
-		if(($shop['Order']['order_type'] == 'paypal') && !empty($shop['Paypal']['Details'])) {
-			$shop['Order']['first_name'] = $shop['Paypal']['Details']['FIRSTNAME'];
-			$shop['Order']['last_name'] = $shop['Paypal']['Details']['LASTNAME'];
-			$shop['Order']['email'] = $shop['Paypal']['Details']['EMAIL'];
-			$shop['Order']['phone'] = '888-888-8888';
-			$shop['Order']['billing_address'] = $shop['Paypal']['Details']['SHIPTOSTREET'];
-			$shop['Order']['billing_address2'] = '';
-			$shop['Order']['billing_city'] = $shop['Paypal']['Details']['SHIPTOCITY'];
-			$shop['Order']['billing_zip'] = $shop['Paypal']['Details']['SHIPTOZIP'];
-			$shop['Order']['billing_state'] = $shop['Paypal']['Details']['SHIPTOSTATE'];
-			$shop['Order']['billing_country'] = $shop['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
+		if(($cart['Order']['order_type'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
+			$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
+			$cart['Order']['last_name'] = $cart['Paypal']['Details']['LASTNAME'];
+			$cart['Order']['email'] = $cart['Paypal']['Details']['EMAIL'];
+			$cart['Order']['phone'] = '888-888-8888';
+			$cart['Order']['billing_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
+			$cart['Order']['billing_address2'] = '';
+			$cart['Order']['billing_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
+			$cart['Order']['billing_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
+			$cart['Order']['billing_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
+			$cart['Order']['billing_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
 
-			$shop['Order']['shipping_address'] = $shop['Paypal']['Details']['SHIPTOSTREET'];
-			$shop['Order']['shipping_address2'] = '';
-			$shop['Order']['shipping_city'] = $shop['Paypal']['Details']['SHIPTOCITY'];
-			$shop['Order']['shipping_zip'] = $shop['Paypal']['Details']['SHIPTOZIP'];
-			$shop['Order']['shipping_state'] = $shop['Paypal']['Details']['SHIPTOSTATE'];
-			$shop['Order']['shipping_country'] = $shop['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
+			$cart['Order']['shipping_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
+			$cart['Order']['shipping_address2'] = '';
+			$cart['Order']['shipping_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
+			$cart['Order']['shipping_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
+			$cart['Order']['shipping_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
+			$cart['Order']['shipping_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
 
-			$shop['Order']['order_type'] = 'paypal';
+			$cart['Order']['order_type'] = 'paypal';
 
-			$this->Session->write('Shop.Order', $shop['Order']);
+			$this->Session->write('Shop.Order', $cart['Order']);
 		}
 
-		$this->set(compact('shop'));
+		$this->set(compact('cart'));
 
 	}
 
 
 	public function success() {
-		$shop = $this->Session->read('Shop');
+		$cart = $this->Session->read('Cart');
 		$this->Cart->clear();
-		if(empty($shop)) {
+		if(empty($cart)) {
 			return $this->redirect('/');
 		}
-		$this->set(compact('shop'));
+		$this->set(compact('cart'));
 	}
 
 

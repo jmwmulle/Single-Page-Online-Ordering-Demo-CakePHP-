@@ -31,7 +31,7 @@
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 	Router::connect('/menu/*', array('controller' => 'orbcats', 'action' => 'menu'));
 	Router::connect('/users/update', array('controller' => 'users', 'action' => 'edit'));
-	Router::connect('/cart/*', array('controller' => 'shop', 'action' => 'cart'));
+	Router::connect('/cart/*', array('controller' => 'orders', 'action' => 'cart'));
 	Router::connect('/menuitem/*', array('controller' => 'orbs', 'action' => 'menu_item'));
 	Router::connect('/register', array('controller' => 'pages', 'action' => 'signup'));
 
