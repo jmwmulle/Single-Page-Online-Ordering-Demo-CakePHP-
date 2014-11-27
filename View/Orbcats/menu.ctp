@@ -34,24 +34,24 @@ $this->start('orbcats_menu');?>
 $this->end('orbcats_menu');
 
 $this->start('active_orbs_menu');?>
-	<h2 class="orbcat-header"><?php echo $active_orbcat['name']?></h2>
-	<ul id="active-orbs-menu" class="text-center tight l-3 activizing">
-		<li>
-			<?php echo $active_orbcat['name'];?>
-			<div class="triangle-down"></div>
+	<div id="orb-card-stage-right-wrapper">
+		<ul id="active-orbs-menu" class="text-center tight l-3 activizing">
+			<li>
+				<?php echo $active_orbcat['name'];?>
+			</li>
+		<?php
+			foreach($active_orbcat['orbs'] as $i => $orb) {
+				if ($orb['id'] != -1) { // ie if it's not a dummy orb
+					$classes = array('orb-card-refresh', $orb['id'] == $active_orbcat['orb_card']['id'] ? 'active' : 'inactive');
+					$data = array("orb" => $orb['id']);
+				}
+			?>
+		<li <?php echo ___dA($data);?> <?php echo ___cD($classes);?>>
+			<a href="#"><?php echo $orb['id'] == -1 ? "&nbsp" : strtoupper($orb['title']);?></a>
 		</li>
-	<?php
-		foreach($active_orbcat['orbs'] as $i => $orb) {
-			if ($orb['id'] != -1) { // ie if it's not a dummy orb
-				$classes = array('orb-card-refresh', $orb['id'] == $active_orbcat['orb_card']['id'] ? 'active' : 'inactive');
-				$data = array("orb" => $orb['id']);
-			}
-		?>
-	<li <?php echo ___dA($data);?> <?php echo ___cD($classes);?>>
-		<a href="#"><?php echo $orb['id'] == -1 ? "&nbsp" : strtoupper($orb['title']);?></a>
-	</li>
-	<?php }?>
-	</ul>
+		<?php }?>
+		</ul>
+	</div>
 <?php
 $this->end('active_orbs_menu');
 

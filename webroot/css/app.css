@@ -5375,6 +5375,8 @@ a.close-splash-modal {
           #grand-opening-deal div:first-of-type h3 ul li.email {
             background-image: url('../img/splash/email_icon.png'); }
 
+html, nav, body, main, footer {
+  overflow: auto; }
 
 body#menu {
   background-image: url("../img/menu_bg.xlg.bright.jpg");
@@ -5706,7 +5708,7 @@ div.orb-card-content {
   div.orb-card-content#price-matrix#orb-card-options {
     background-color: #373737; }
 
-#active-orbs-menu {
+#orb-card-stage-right-wrapper {
   position: absolute;
   right: 0;
   top: 0;
@@ -5714,8 +5716,9 @@ div.orb-card-content {
   float: right;
   height: 22.5rem;
   overflow-y: scroll;
-  overflow-x: hidden; }
-  #active-orbs-menu li {
+  overflow-x: hidden;
+  background-color: #0779be; }
+  #orb-card-stage-right-wrapper #active-orbs-menu li {
     position: relative;
     padding-left: 200px;
     background-color: #0779be;
@@ -5726,22 +5729,22 @@ div.orb-card-content {
     cursor: pointer;
     transition: background-color 0.3s ease-out;
     font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
-    #active-orbs-menu li a {
+    #orb-card-stage-right-wrapper #active-orbs-menu li a {
       color: white; }
-    #active-orbs-menu li:hover {
+    #orb-card-stage-right-wrapper #active-orbs-menu li:hover {
       background-color: #1ba6f7; }
-    #active-orbs-menu li:first-of-type {
+    #orb-card-stage-right-wrapper #active-orbs-menu li:first-of-type {
       padding-top: 10px;
       box-shadow: none;
       background-color: #e02027;
       font-size: 2.25rem;
       transition: none;
       cursor: default; }
-    #active-orbs-menu li.active {
+    #orb-card-stage-right-wrapper #active-orbs-menu li.active {
       background-color: #faea06;
       transition: none;
       cursor: default; }
-      #active-orbs-menu li.active a {
+      #orb-card-stage-right-wrapper #active-orbs-menu li.active a {
         color: #191919;
         cursor: default; }
 

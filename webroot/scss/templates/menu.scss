@@ -1,5 +1,5 @@
 html, nav, body, main, footer {
- // overflow:none;
+ overflow:auto;
 }
 body#menu {
   background-image : url("../img/menu_bg.xlg.bright.jpg");
@@ -313,7 +313,7 @@ div.orb-card-content {
   }
 }
 
-#active-orbs-menu {
+#orb-card-stage-right-wrapper {
   position   : absolute;
   right      : 0;
   top        : 0;
@@ -322,35 +322,38 @@ div.orb-card-content {
   height     : $focus-pane-height;
   overflow-y : scroll;
   overflow-x : hidden;
-  li {
-    position         : relative;
-    padding-left     : 200px;
-    background-color : $xtreme-blue;
-    box-shadow       : inset 15px -5px 8px $black-a33;
-    font-size        : rem-calc(18);
-    height           : rem-calc(60);
-    line-height      : rem-calc(60);
-    cursor: pointer;
-    @include global-transition(background-color);
-    @include HelveticaBlkCn;
-    a { color : $white; }
-    &:hover { background-color : lighten($xtreme-blue, 15%); }
-    &:first-of-type {
-      padding-top:10px;
-      box-shadow       : none;
-      background-color : $xtreme-red;
-      font-size        : rem-calc(36);
-      transition       : none;
-      cursor: default;
-    }
-    &.active {
-      background-color : $xtreme-yellow;
-      a {
-        color:$dark-grey;
+  background-color: $xtreme-blue;
+  #active-orbs-menu {
+    li {
+      position         : relative;
+      padding-left     : 200px;
+      background-color : $xtreme-blue;
+      box-shadow       : inset 15px -5px 8px $black-a33;
+      font-size        : rem-calc(18);
+      height           : rem-calc(60);
+      line-height      : rem-calc(60);
+      cursor: pointer;
+      @include global-transition(background-color);
+      @include HelveticaBlkCn;
+      a { color : $white; }
+      &:hover { background-color : lighten($xtreme-blue, 15%); }
+      &:first-of-type {
+        padding-top:10px;
+        box-shadow       : none;
+        background-color : $xtreme-red;
+        font-size        : rem-calc(36);
+        transition       : none;
         cursor: default;
       }
-      transition       : none;
-      cursor: default;
+      &.active {
+        background-color : $xtreme-yellow;
+        a {
+          color:$dark-grey;
+          cursor: default;
+        }
+        transition       : none;
+        cursor: default;
+      }
     }
   }
 }
