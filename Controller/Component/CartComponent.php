@@ -28,16 +28,15 @@ class CartComponent extends Component {
 
 //////////////////////////////////////////////////
 
-	public function add($id, $quantity = 1, $productmodId = null) {
-		/*if($productmodId) {
-			$productmod = ClassRegistry::init('Orbextra')->find('first', array(
+	public function add($id, $quantity = 1, $price_rank = 0, $Orbopts = null) {
+		if($Orbopts) {
+			$orbopts = ClassRegistry::init('Orbopts')->find('first', array(
 				'recursive' => -1,
 				'conditions' => array(
-					'Orbmod.id' => $productmodId,
-					'Orbmod.product_id' => $id,
+					'Orbopts.id' => $Orbopts,
 				)
 			));
-	        }*/
+	        }
 
 		if(!is_numeric($quantity)) {
 			$quantity = 1;
@@ -63,25 +62,25 @@ class CartComponent extends Component {
 			return false;
 		}
 
-		if($this->Session->check('Shop.OrderItem.' . $id . '.Orb.productmod_name')) {
-			$productmod['Orbextra']['id'] = $this->Session->read('Shop.OrderItem.' . $id . '.Orb.productmod_id');
-			$productmod['Orbextra']['title'] = $this->Session->read('Shop.OrderItem.' . $id . '.Orb.productmod_name');
-			$productmod['Orbextra']['price_matrix'] = $this->Session->read('Shop.OrderItem.' . $id . '.Orb.price');
+		if($this->Session->check('Cart.OrderItem.' . $id . '.Orb.productmod_name')) {
+			$orbopts['Orbopts']['id'] = $this->Session->read('Cart.OrderItem.' . $id . '.Orb.Orbopts');
+			$orbopts['Orbopts']['title'] = $this->Session->read('Cart.OrderItem.' . $id . '.Orb.productmod_name');
+			$orbopts['Orbopts']['price_matrix'] = $this->Session->read('Cart.OrderItem.' . $id . '.Orb.price');
 
 		}
 
-		if(isset($productmod)) {
-			$product['Orb']['productmod_id'] = $productmod['Orbextra']['id'];
-			$product['Orb']['productmod_name'] = $productmod['Orbextra']['title'];
-			$product['Orb']['price_matrix'] = $productmod['Orbextra']['price_matrix'];
-			$productmodId = $productmod['Orbextra']['id'];
-			$data['productmod_id'] = $product['Orb']['productmod_id'];
+		if(isset($orbopts)) {
+			$product['Orb']['Orbopts'] = $orbopts['Orbopts']['id'];
+			$product['Orb']['pricedict'] = $orbopts['Orbopts']['title'];
+			$product['Orb']['price_matrix'] = $orbopts['Orbopts']['price_matrix'];
+			$Orbopts = $orbopts['Orbopts']['id'];
+			$data['Orbopts'] = $product['Orb']['Orbopts'];
 			$data['productmod_name'] = $product['Orb']['productmod_name'];
 		} else {
-			$product['Orb']['productmod_id'] = '';
+			$product['Orb']['Orbopts'] = '';
 			$product['Orb']['productmod_name'] = '';
-			$productmodId = 0;
-			$data['productmod_id'] = '';
+			$Orbopts = 0;
+			$data['Orbopts'] = '';
 			$data['productmod_name'] = '';
 		}
 
@@ -93,8 +92,8 @@ class CartComponent extends Component {
 		$data['quantity'] = $quantity;
 		$data['subtotal'] = sprintf('%01.2f', $prices['9in'] * $quantity);
 		$data['Orb'] = $product['Orb'];
-		$this->Session->write('Shop.OrderItem.' . $id . '_' . $productmodId, $data);
-		$this->Session->write('Shop.Order.shop', 1);
+		$this->Session->write('Cart.OrderItem.' . $id . '_' . $Orbopts, $data);
+		$this->Session->write('Cart.Order.shop', 1);
 
 		$this->Cart = ClassRegistry::init('Cart');
 
@@ -127,9 +126,9 @@ class CartComponent extends Component {
 //////////////////////////////////////////////////
 
 	public function remove($id) {
-		if($this->Session->check('Shop.OrderItem.' . $id)) {
-			$product = $this->Session->read('Shop.OrderItem.' . $id);
-			$this->Session->delete('Shop.OrderItem.' . $id);
+		if($this->Session->check('Cart.OrderItem.' . $id)) {
+			$product = $this->Session->read('Cart.OrderItem.' . $id);
+			$this->Session->delete('Cart.OrderItem.' . $id);
 
 			ClassRegistry::init('Cart')->deleteAll(
 				array(
@@ -148,14 +147,14 @@ class CartComponent extends Component {
 //////////////////////////////////////////////////
 
 	public function cart() {
-		$shop = $this->Session->read('Shop');
+		$cart = $this->Session->read('Cart');
 		$quantity = 0;
 		$subtotal = 0;
 		$total = 0;
 		$order_item_count = 0;
 
-		if (count($shop['OrderItem']) > 0) {
-			foreach ($shop['OrderItem'] as $item) {
+		if (count($cart['OrderItem']) > 0) {
+			foreach ($cart['OrderItem'] as $item) {
 				$quantity += $item['quantity'];
 				$subtotal += $item['subtotal'];
 				$total += $item['subtotal'];
@@ -165,14 +164,14 @@ class CartComponent extends Component {
 			$d['quantity'] = $quantity;
 			$d['subtotal'] = sprintf('%01.2f', $subtotal);
 			$d['total'] = sprintf('%01.2f', $total);
-			$this->Session->write('Shop.Order', $d + $shop['Order']);
+			$this->Session->write('Cart.Order', $d + $cart['Order']);
 			return true;
 		}
 		else {
 			$d['quantity'] = 0;
 			$d['subtotal'] = 0;
 			$d['total'] = 0;
-			$this->Session->write('Shop.Order', $d + $shop['Order']);
+			$this->Session->write('Cart.Order', $d + $cart['Order']);
 			return false;
 		}
 	}
@@ -181,7 +180,7 @@ class CartComponent extends Component {
 
 	public function clear() {
 		ClassRegistry::init('Cart')->deleteAll(array('Cart.sessionid' => $this->Session->id()), false);
-		$this->Session->delete('Shop');
+		$this->Session->delete('Cart');
 	}
 
 //////////////////////////////////////////////////
