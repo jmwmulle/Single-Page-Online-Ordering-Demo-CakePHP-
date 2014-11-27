@@ -4,16 +4,16 @@ html, nav, body, main, footer {
 body#menu {
   background-image : url("../img/menu_bg.xlg.bright.jpg");
   background-attachment: fixed;
-  //overflow: none;
+  overflow:auto;
   // todo: media queries for smaller resolutions
 }
 main#menu {
-  position: fixed;
+  position: relative;
   width:100%;
   top:0;
   left:0;
   margin-top :$topnav-height + $float-pane-margin;
-  //overflow:none;
+  overflow:auto;
 } // in use; content area
 
 /**************************************************************
