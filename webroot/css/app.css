@@ -96,7 +96,7 @@ select {
   margin-right: auto;
   margin-top: 0;
   margin-bottom: 0;
-  max-width: 87.5rem; }
+  max-width: 75rem; }
   .row:before, .row:after {
     content: " ";
     display: table; }
@@ -4202,7 +4202,7 @@ meta.foundation-mq-topbar {
     .top-bar.expanded {
       background: rgba(255, 255, 255, 0.33); }
   .contain-to-grid .top-bar {
-    max-width: 87.5rem;
+    max-width: 75rem;
     margin: 0 auto;
     margin-bottom: 0; }
   .top-bar-section {
@@ -4896,11 +4896,11 @@ span.header-thin {
   padding-top: 1.5625rem;
   width: 6.25rem;
   height: 6.25rem;
-  font-size: 1.3125rem; }
+  font-size: 1.25rem; }
   #user-activity-panel a:hover {
     color: black; }
 #user-activity-panel h2 {
-  font-size: 2.3125rem;
+  font-size: 1.6875rem;
   font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
   line-height: 6.25rem; }
 
@@ -4908,20 +4908,20 @@ span.header-thin {
 #orbcat-menu-title h1 {
   text-align: left;
   letter-spacing: -0.1875rem;
-  font-size: 3.75rem;
-  line-height: 4.875rem;
+  font-size: 4.75rem;
+  line-height: 6.175rem;
   font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
   color: white; }
 
 ul#orbcat-menu li {
-  line-height: 9.375rem;
+  line-height: 8.90625rem;
   text-align: center; }
   ul#orbcat-menu li a {
     transition: color 0.3s ease-out;
     font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
     color: white;
     font-size: 0.875rem;
-    line-height: 2.25rem; }
+    line-height: 2.375rem; }
     ul#orbcat-menu li a:hover {
       color: #faea06; }
 
@@ -5386,7 +5386,7 @@ main#menu {
   width: 100%;
   top: 0;
   left: 0;
-  margin-top: 5.3125rem;
+  margin-top: 4.0625rem;
   overflow: auto; }
 
 /**************************************************************
@@ -5397,7 +5397,7 @@ main#menu {
 ul#user-activity-panel {
   position: relative;
   float: left;
-  margin: -1.25rem 1.25rem 0px 0px;
+  margin: 0 1.25rem 0px 0px;
   width: 6.25rem;
   vertical-align: top; }
   ul#user-activity-panel li {
@@ -5430,7 +5430,7 @@ ul#orbcat-menu {
   width: 50rem;
   height: 23.75rem;
   display: inline-block;
-  margin: 0;
+  margin-top: 1.25rem;
   background: #e02027;
   /* Old browsers */
   background: -moz-linear-gradient(45deg, #e02027 0%, #ac0819 100%);
@@ -5450,11 +5450,11 @@ ul#orbcat-menu {
 
 li.orbcat {
   display: inline-block;
-  height: 6.25rem;
+  height: 5.9375rem;
   cursor: pointer;
   background-repeat: no-repeat;
   background-position: center 0.3125rem;
-  background-size: 60px 60px;
+  background-size: 3.5625rem;
   box-sizing: border-box; }
   li.orbcat.xtreme-original-pizzas {
     background-image: url("../img/orbcat_icons/xtreme-original-pizzas.png"); }
@@ -5493,8 +5493,8 @@ li.orbcat {
   li.orbcat.desserts {
     background-image: url("../img/orbcat_icons/desserts.png"); }
   li.orbcat a {
-    height: 1.875rem;
-    margin-top: 6.875rem; }
+    height: 2.375rem;
+    margin-top: 7.125rem; }
 
 #orbcat-menu-title {
   width: 100%;
@@ -5502,7 +5502,7 @@ li.orbcat {
   position: absolute;
   bottom: 0;
   left: 0.625rem;
-  margin: 0 0 -1.875rem 0; }
+  margin: 0 0 -2.375rem 0; }
   #orbcat-menu-title h1 {
     padding: 0;
     margin: 0; }
@@ -5516,13 +5516,16 @@ li.orbcat {
   position: relative;
   height: 23.4375rem;
   width: 75rem;
-  margin-top: 1.25rem; }
+  margin-top: 1.25rem;
+  background-color: #0779be; }
 
 #orb-card-stage {
   position: absolute;
   left: -0.5rem;
   top: -0.45rem;
-  width: 53.125rem;
+  width: 75%;
+  max-width: 53.125rem;
+  min-width: 600px;
   border: 6px solid white;
   border-top-right-radius: 1000px;
   border-bottom-right-radius: 1000px;
@@ -5712,13 +5715,17 @@ div.orb-card-content {
   position: absolute;
   right: 0;
   top: 0;
-  width: 600px;
   float: right;
-  height: 22.5rem;
+  background-color: #0779be; }
+
+.orb-card-stage-right-menu {
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: #0779be; }
-  #orb-card-stage-right-wrapper #active-orbs-menu li {
+  width: 600px;
+  height: 22.5rem; }
+  .orb-card-stage-right-menu#toppings-list {
+    float: right; }
+  .orb-card-stage-right-menu li {
     position: relative;
     padding-left: 200px;
     background-color: #0779be;
@@ -5729,22 +5736,39 @@ div.orb-card-content {
     cursor: pointer;
     transition: background-color 0.3s ease-out;
     font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
-    #orb-card-stage-right-wrapper #active-orbs-menu li a {
+    .orb-card-stage-right-menu li a, .orb-card-stage-right-menu li span {
       color: white; }
-    #orb-card-stage-right-wrapper #active-orbs-menu li:hover {
+    .orb-card-stage-right-menu li.topping {
+      padding-right: 1.5625rem; }
+      .orb-card-stage-right-menu li.topping a {
+        width: 30px;
+        height: 60px;
+        padding: 3px;
+        float: right;
+        background-repeat: no-repeat;
+        background-position: center; }
+      .orb-card-stage-right-menu li.topping a.left-side {
+        background-image: url('../img/topping_icon_left.png'); }
+      .orb-card-stage-right-menu li.topping a.right-side {
+        background-image: url('../img/topping_icon_right.png'); }
+      .orb-card-stage-right-menu li.topping a.full {
+        background-image: url('../img/topping_icon_full.png'); }
+      .orb-card-stage-right-menu li.topping a.double {
+        background-image: url('../img/topping_icon_double.png'); }
+    .orb-card-stage-right-menu li:hover {
       background-color: #1ba6f7; }
-    #orb-card-stage-right-wrapper #active-orbs-menu li:first-of-type {
+    .orb-card-stage-right-menu li:first-of-type {
       padding-top: 10px;
       box-shadow: none;
       background-color: #e02027;
       font-size: 2.25rem;
       transition: none;
       cursor: default; }
-    #orb-card-stage-right-wrapper #active-orbs-menu li.active {
+    .orb-card-stage-right-menu li.active {
       background-color: #faea06;
       transition: none;
       cursor: default; }
-      #orb-card-stage-right-wrapper #active-orbs-menu li.active a {
+      .orb-card-stage-right-menu li.active a, .orb-card-stage-right-menu li.active span {
         color: #191919;
         cursor: default; }
 
@@ -5760,11 +5784,13 @@ div.orb-card-content {
   width: 100%;
   padding: 0.625rem; }
   .orb-size-panel li {
-    color: white;
-    transition: background-color 0.3s, color 0.3s; }
+    color: white; }
     .orb-size-panel li h3 {
       padding-top: 0.42188rem;
-      background-color: #0779be; }
+      background-color: #0779be;
+      transition: background-color 0.3s, color 0.3s; }
+      .orb-size-panel li h3:hover {
+        background-color: #1ba6f7; }
     .orb-size-panel li.active {
       color: #191919; }
       .orb-size-panel li.active h3 {

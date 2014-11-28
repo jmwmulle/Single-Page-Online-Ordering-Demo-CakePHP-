@@ -71,7 +71,7 @@ span.header-thin { @include HelveticaTh; }
 
   }
   h2 {
-    font-size   : $h2-font-size;
+    font-size   : $h3-font-size;
     @include HelveticaBlkCn;
     line-height : $user-activity-panel-height;
   }
@@ -95,7 +95,7 @@ ul#orbcat-menu li {
     @include HelveticaMdCn;
     color       : $body-font-color;
     font-size   : rem-calc(14px);
-    line-height : rem-calc(36);
+    line-height : 0.1 * $orbcat-menu-height;
     &:hover { color : $xtreme-yellow; }
   }
 }

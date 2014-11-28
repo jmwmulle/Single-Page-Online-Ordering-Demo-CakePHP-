@@ -12,7 +12,7 @@ main#menu {
   width:100%;
   top:0;
   left:0;
-  margin-top :$topnav-height + $float-pane-margin;
+  margin-top :$topnav-height;
   overflow:auto;
 } // in use; content area
 
@@ -24,8 +24,7 @@ main#menu {
 ul#user-activity-panel {
   position:relative;
   float:left;
-//  display:inline-block !important;
-  margin : -1*$float-pane-margin $float-pane-margin 0px 0px;
+  margin : 0 $float-pane-margin 0px 0px;
   width  : $user-activity-panel-width;
   vertical-align: top;
   li {
@@ -61,8 +60,8 @@ ul#orbcat-menu {
   position   : relative;
   width      : $orbcat-menu-width;
   height     :  $orbcat-menu-height;
-  display:inline-block;
-  margin:0;
+  display: inline-block;
+  margin-top: $float-pane-margin;
   @include orbcat-menu-gradient;
 }
 
@@ -72,7 +71,7 @@ li.orbcat {
   cursor: pointer;
   background-repeat   : no-repeat;
   background-position : center rem-calc(5px);
-  background-size     : 60px 60px;
+  background-size     : $orbcat-menu-icon-size;
   box-sizing:border-box;
   &.xtreme-original-pizzas { background-image : url("../img/orbcat_icons/xtreme-original-pizzas.png"); }
   &.xtreme-super-pizzas { background-image : url("../img/orbcat_icons/xtreme-super-pizzas.png"); }
@@ -93,8 +92,8 @@ li.orbcat {
   &.salads { background-image : url("../img/orbcat_icons/salads.png"); }
   &.desserts { background-image : url("../img/orbcat_icons/desserts.png"); }
   a {
-    height      : rem-calc(30);
-    margin-top  : rem-calc(110);
+    height      : $orbcat-menu-anchor-height;
+    margin-top  : $orbcat-menu-margin-top;
   }
 }
 
@@ -120,13 +119,16 @@ li.orbcat {
   height   : rem-calc(375);
   width: $orb-card-wrapper-width; // active orbs floats right (ie. this - orbcard stage = visible space for active orbs)
   margin-top:$float-pane-margin;
+  background-color: $xtreme-blue;
 }
 
 #orb-card-stage {
   position                   : absolute;
   left                       : -1 * $float-pane-border-width;
   top                        : -0.9 * $float-pane-border-width;
-  width                      : $orb-card-stage-width;
+  width                      : 75%;
+  max-width: $orb-card-stage-width;
+  min-width: 600px;
   border                     : 6px solid $white;
   border-top-right-radius    : 1000px;
   border-bottom-right-radius : 1000px;
@@ -317,46 +319,64 @@ div.orb-card-content {
   position   : absolute;
   right      : 0;
   top        : 0;
-  width      : 600px;
   float      : right;
-  height     : $focus-pane-height;
+  background-color: $xtreme-blue;
+}
+.orb-card-stage-right-menu {
   overflow-y : scroll;
   overflow-x : hidden;
-  background-color: $xtreme-blue;
-  #active-orbs-menu {
-    li {
-      position         : relative;
-      padding-left     : 200px;
-      background-color : $xtreme-blue;
-      box-shadow       : inset 15px -5px 8px $black-a33;
-      font-size        : rem-calc(18);
-      height           : rem-calc(60);
-      line-height      : rem-calc(60);
-      cursor: pointer;
-      @include global-transition(background-color);
-      @include HelveticaBlkCn;
-      a { color : $white; }
-      &:hover { background-color : lighten($xtreme-blue, 15%); }
-      &:first-of-type {
-        padding-top:10px;
-        box-shadow       : none;
-        background-color : $xtreme-red;
-        font-size        : rem-calc(36);
-        transition       : none;
+  width      : 600px;
+  height     : $focus-pane-height;
+  &#toppings-list { float:right;}
+
+  li {
+    position         : relative;
+    padding-left     : 200px;
+    background-color : $xtreme-blue;
+    box-shadow       : inset 15px -5px 8px $black-a33;
+    font-size        : rem-calc(18);
+    height           : rem-calc(60);
+    line-height      : rem-calc(60);
+    cursor: pointer;
+    @include global-transition(background-color);
+    @include HelveticaBlkCn;
+    a, span { color : $white; }
+    &.topping {
+    padding-right:rem-calc(25px);
+       a {
+         width:30px;
+         height:60px;
+         padding:3px;
+         float:right;
+         background-repeat:no-repeat;
+         background-position:center;
+       }
+       a.left-side { background-image: url('../img/topping_icon_left.png');}
+       a.right-side { background-image: url('../img/topping_icon_right.png');}
+       a.full { background-image: url('../img/topping_icon_full.png');}
+       a.double { background-image: url('../img/topping_icon_double.png');}
+     }
+    &:hover { background-color : lighten($xtreme-blue, 15%); }
+    &:first-of-type {
+      padding-top:10px;
+      box-shadow       : none;
+      background-color : $xtreme-red;
+      font-size        : rem-calc(36);
+      transition       : none;
+      cursor: default;
+    }
+    &.active {
+      background-color : $xtreme-yellow;
+      a, span {
+        color:$dark-grey;
         cursor: default;
       }
-      &.active {
-        background-color : $xtreme-yellow;
-        a {
-          color:$dark-grey;
-          cursor: default;
-        }
-        transition       : none;
-        cursor: default;
-      }
+      transition       : none;
+      cursor: default;
     }
   }
 }
+
 
 .orbcat-triangle-inner {
   width        : 0;
@@ -373,13 +393,13 @@ div.orb-card-content {
   li {
     h3 {
       padding-top: 0.25 * $h3-font-size;
-      background-color: $xtreme-blue;}
-  color:$white;
-  transition: background-color 0.3s, color 0.3s;
-   &.active {
-     h3 { background-color: $xtreme-yellow;}
-     color:$dark-grey;
-   };
+      background-color: $xtreme-blue;
+      transition: background-color 0.3s, color 0.3s;
+      &:hover { background-color:lighten($xtreme-blue, 15%);}
+    }
+      color:$white;
+     &.active {
+       h3 { background-color: $xtreme-yellow;}
+       color:$dark-grey;
+     };
   }}
-
-

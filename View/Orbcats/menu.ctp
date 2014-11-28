@@ -35,7 +35,8 @@ $this->end('orbcats_menu');
 
 $this->start('active_orbs_menu');?>
 	<div id="orb-card-stage-right-wrapper">
-		<ul id="active-orbs-menu" class="text-center tight l-3 activizing">
+		<?php $classes = array('text-center', 'tight', 'l-3', 'activizing', 'orb-card-stage-right-menu'); ?>
+		<ul id="active-orbs-menu" <?php echo ___cD($classes);?>>
 			<li>
 				<?php echo $active_orbcat['name'];?>
 			</li>

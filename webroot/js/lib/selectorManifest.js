@@ -20,7 +20,8 @@ var XSM = {
 		jsLink:".js-link",
 		preserveAS: ".preserve-aspect-ratio",
 		scrollable: "*[data-scrolling-target]",
-		activizing_list: "ul.activizing li"
+		activizing_list: "ul.activizing li",
+		multi_activizing: ".multi-activizing"
 	},
 	effects: {
 		flipped: ".flipped",

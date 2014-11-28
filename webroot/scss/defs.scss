@@ -40,7 +40,6 @@
 
 /* TYPOGRAPHY */
 $button-font-family: "Helvetica Neue Condensed Black";
-$user-activity-panel-font-size: rem-calc(21px);
 //-------------------------------------------------------------------------------------------------------------TEMPLATES
 $topnav-height: rem-calc(65px);
 $topnav-h1-padding: 0 0 0 0;
@@ -60,15 +59,20 @@ $big-radius: 16px;
 /*   MENU   */
 $float-pane-margin: rem-calc(20px);
 $float-pane-border-width: rem-calc(8px);
-$user-activity-panel-height: rem-calc(100);
-$user-activity-panel-width: rem-calc(100);
 $orbcat-border-width: 1px;
 $orbcat-border-factor: 10%;
 $orbcat-border-factor-2: 15%;
 $orbcat-menu-width: rem-calc(800px);
 $orbcat-menu-height: rem-calc(380px);
-$orbcat-menu-item-height: rem-calc(100px);
-$orbcat-menu-title-font-size: rem-calc(60px);
+$orbcat-menu-item-height: 0.25 * $orbcat-menu-height;
+$orbcat-menu-icon-size: 0.15 * $orbcat-menu-height;
+$orbcat-menu-title-font-size: 0.2 * $orbcat-menu-height;
+$orbcat-menu-anchor-height: 0.1 * $orbcat-menu-height;
+$orbcat-menu-margin-top: 0.3 * $orbcat-menu-height;
+$user-activity-height: $orbcat-menu-height + $float-pane-margin;
+$user-activity-panel-width: 0.25 * $user-activity-height;
+$user-activity-panel-height: $user-activity-panel-width;
+$user-activity-panel-font-size: 0.2 * $user-activity-panel-width;
 $orb-card-stage-height: rem-calc(360px); // todo: media queries yo
 $orb-card-wrapper-width: rem-calc(1200px);
 $min-orb-list-width: rem-calc(350px);

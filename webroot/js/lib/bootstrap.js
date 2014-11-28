@@ -155,9 +155,21 @@ window.XBS = {
 		},
 		jq_binds: {
 			has_init_sequence:true,
+			bind_confirm_order: function() {
+				$("body").on(C.CLK, ".confirm-order", null, function(e) {
+						XBS.layout.toggle_orb_card()
+				});
+			},
 			bind_activizing_lists: function() {
 					$("body").on(C.CLK, XSM.global.activizing_list, function(e) {
 						XBS.layout.activize(e.currentTarget);
+				});
+
+				return true
+			},
+			bind_multi_activizing_siblings: function() {
+					$("body").on(C.CLK, XSM.global.multi_activizing, function(e) {
+						XBS.layout.multi_activize(e.currentTarget);
 				});
 
 				return true
@@ -246,10 +258,8 @@ window.XBS = {
 				}
 				$(this).css(dimensions);
 			});
-
 			return true;
 		},
-
 		activize: function(element) {
 			if (isEvent(arguments[0]) ) element = element.currentTarget;
 			if ($(element).hasClass("inactive")) {
@@ -261,7 +271,6 @@ window.XBS = {
 				});
 			}
 		},
-
 		detach: function(element) {
 			var isStatic = $(element).data('static');
 			var height = $(element).innerHeight();
@@ -280,6 +289,14 @@ window.XBS = {
 				$(sel).css({position:"fixed", top:offset.top, left:offset.left, height:dims.height, width:dims.width}).addClass("fastened");
 			}
 			return  (isArray(selector) ) ? selector : $(selector);
+		},
+		multi_activize: function(element) {
+			if ($(element).hasClass('active') ) {
+				$(element).removeClass('active').addClass('inactive');
+			} else if ($(element).hasClass('inactive')) {
+				$(element).removeClass('inactive').addClass('active');
+			}
+
 		},
 		readyLoadingScreen: function() {
 			if (XBS.cfg.developmentMode) {
@@ -317,7 +334,10 @@ window.XBS = {
 				XBS.layout.toggle_float_label(this, C.HIDE);});
 			$(XSM.menu.orb_card_3d_pane_selector).addClass("flipping");
 			$(XSM.menu.orb_card_3d_pane_selector).toggleClass(stripCSS(XSM.effects.flipped));
-			$("#active-orbs-menu").slideToggle();
+			$("#active-orbs-menu").slideToggle(500, function() {
+					$("#toppings-list").slideToggle(500);
+			});
+
 		},
 		refresh_orb_card_stage: function(orb_card_id) {
 			// todo: fallback on ajax fail
@@ -437,7 +457,6 @@ window.XBS = {
 
 			$(".orb-size-button").each( function() {
 				var this_price = $(this).data('priceRank');
-				pr([this_price, price_rank], "price_rank");
 				if (  this_price == price_rank) {
 					XBS.layout.activize(this); }
 			});

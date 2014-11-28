@@ -80,23 +80,29 @@
 							<h3><?php echo strtoupper($opt);?></h3></li>
 					<?php };?>
 					<li>
-					<ul>
-						<?php foreach ($orb['Orbopt'] as $opt) {
-							if ($opt['pizza']) {?>
-							<li class="topping" data-opt-id="<?php echo $opt['id'];?>"><?php echo $opt['title'];?></li>
-							<?php }} ?>
-						}?>
-					</ul>
+
 				</ul>
-				<?php
-					$this->Form->create('Orb', array('action' => ___cakeUrl('order', 'add_to_cart')));
-					$this->Form->input('id', array('type' => 'hidden', 'value' => $orb['id']));
-					$this->Form->input('quantity', array('type' => 'hidden', 'value' => $orb['id']));
-					$this->Form->input('orbopts', array('type' => 'select', 'options' => $options));
-					$this->Form->end();?>
-				<a class="tiny button" style="position:absolute; bottom:10px; right:10px" onclick="$('#orb-card-3d-pane').removeClass('flipped')">Confirm</a>
+<!--				--><?php
+//					$options = array("booger", "poop");
+//					$this->Form->create('Orb', array('action' => ___cakeUrl('order', 'add_to_cart')));
+//					$this->Form->input('id', array('type' => 'hidden', 'value' => $orb['id']));
+//					$this->Form->input('quantity', array('type' => 'hidden', 'value' => $orb['id']));
+//					$this->Form->input('orbopts', array('type' => 'select', 'options' => $options));
+//					$this->Form->end();?>
+				<a class="tiny button confirm-order" style="position:absolute; bottom:10px; right:10px">Confirm</a>
 			</section>
 		</div>
 	</div>
 	</div>
-</div>x`
+</div>
+<?php $classes = array("toppings-list", "text-center", "orb-card-stage-right-menu", "hidden");?>
+<ul id="toppings-list" <?php echo ___cD($classes);?>>
+	<li id="toppings-filter">
+		<a class="tiny button">meats</a>
+		<a class="tiny button">veggies</a>
+	</li>
+	<?php foreach ($orb['Orbopt'] as $opt) {
+		if ($opt['pizza']) {
+			echo $this->Element('topping_row', array('opt' => $opt));
+	}} ?>
+</ul>
