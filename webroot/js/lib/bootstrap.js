@@ -16,7 +16,10 @@ var constants = {
 	HIDE: 0,
 	SHOW: 1,
 	DS: "/",
-	BODY: "body"
+	BODY: "body",
+	XDEV: "xDev",
+	XLOC: "xLoc",
+	XPROD: "xProd"
 };
 var C = constants;
 
@@ -341,7 +344,11 @@ window.XBS = {
 		},
 		refresh_active_orbs_menu: function(orbcat_id, orbcat_name) {
 			// todo: fallback on ajax fail
-			var url  = C.DS + XBS.cfg.root + C.DS + XBS.routes.menu + C.DS + orbcat_id
+			if (XBS.cfg.root == c.XLOC) {
+				var url  = C.DS + XBS.cfg.root + C.DS + XBS.routes.menu + C.DS + orbcat_id;
+			} else {
+				var url  = XBS.routes.menu + C.DS + orbcat_id
+			}
 			$.get(url, function(data) {
 				if ( $(XSM.menu.active_orb_name_3d_context).hasClass(XSM.effects.flipped_x) ) {
 					$(XSM.menu.active_orb_name_front_face).html(orbcat_name);
@@ -368,9 +375,12 @@ window.XBS = {
 		},
 		refresh_orb_card_stage: function(orb_card_id) {
 			// todo: fallback on ajax fail
-			$.get(C.DS + XBS.cfg.root + C.DS + XBS.routes.menuitem + C.DS + orb_card_id, function(data) {
-				$(XSM.menu.orb_card_stage).replaceWith(data);
-			});
+			if (XBS.cfg.root == c.XLOC) {
+				var url  = C.DS + XBS.cfg.root + C.DS + XBS.routes.menuitem + C.DS + orb_card_id;
+			} else {
+				var url  = XBS.routes.menuitem + C.DS + orb_card_id
+			}
+			$.get(url, function(data) { $(XSM.menu.orb_card_stage).replaceWith(data); });
 		}
 	},
 	splash: {
