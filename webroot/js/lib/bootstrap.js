@@ -36,7 +36,7 @@ var C = constants;
 window.XBS = {
 	data: {
 		hostRootDirs: {
-			xDev:DS,
+			xDev: C.DS,
 			xProd:"",
 			xLoc:"xtreme"
 		},
