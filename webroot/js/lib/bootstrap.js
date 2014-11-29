@@ -344,7 +344,7 @@ window.XBS = {
 		},
 		refresh_active_orbs_menu: function(orbcat_id, orbcat_name) {
 			// todo: fallback on ajax fail
-			if (XBS.cfg.root == c.XLOC) {
+			if (XBS.cfg.root == C.XLOC) {
 				var url  = C.DS + XBS.cfg.root + C.DS + XBS.routes.menu + C.DS + orbcat_id;
 			} else {
 				var url  = XBS.routes.menu + C.DS + orbcat_id
@@ -375,7 +375,7 @@ window.XBS = {
 		},
 		refresh_orb_card_stage: function(orb_card_id) {
 			// todo: fallback on ajax fail
-			if (XBS.cfg.root == c.XLOC) {
+			if (XBS.cfg.root == C.XLOC) {
 				var url  = C.DS + XBS.cfg.root + C.DS + XBS.routes.menuitem + C.DS + orb_card_id;
 			} else {
 				var url  = XBS.routes.menuitem + C.DS + orb_card_id
