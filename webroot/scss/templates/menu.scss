@@ -65,6 +65,7 @@ ul#orbcat-menu {
   display    : inline-block;
   margin-top : $float-pane-margin;
   @include orbcat-menu-gradient;
+
 }
 
 li.orbcat {
@@ -75,8 +76,9 @@ li.orbcat {
   background-position : center rem-calc(5px);
   background-size     : $orbcat-menu-icon-size;
   box-sizing          : border-box;
-  &.xtreme-original-pizzas { background-image : url("../img/orbcat_icons/xtreme-original-pizzas.png"); }
-  &.xtreme-super-pizzas { background-image : url("../img/orbcat_icons/xtreme-super-pizzas.png"); }
+  transition: background-image 0.3s;
+  &.original-pizzas { background-image : url("../img/orbcat_icons/original-pizzas.png"); }
+  &.super-pizzas { background-image : url("../img/orbcat_icons/super-pizzas.png"); }
   &.specialty-pizzas { background-image : url("../img/orbcat_icons/specialty-pizzas.png"); }
   &.panzarottis { background-image : url("../img/orbcat_icons/panzarottis.png"); }
   &.assorted-fingers { background-image : url("../img/orbcat_icons/assorted-fingers.png"); }
@@ -97,6 +99,26 @@ li.orbcat {
     height     : $orbcat-menu-anchor-height;
     margin-top : $orbcat-menu-margin-top;
   }
+  &:hover, &.active {
+    &.original-pizzas { background-image : url("../img/orbcat_icons/original-pizzas.hover.png"); }
+      &.super-pizzas { background-image : url("../img/orbcat_icons/super-pizzas.hover.png"); }
+      &.specialty-pizzas { background-image : url("../img/orbcat_icons/specialty-pizzas.hover.png"); }
+      &.panzarottis { background-image : url("../img/orbcat_icons/panzarottis.hover.png"); }
+      &.assorted-fingers { background-image : url("../img/orbcat_icons/assorted-fingers.hover.png"); }
+      &.poutines { background-image : url("../img/orbcat_icons/poutines.hover.png"); }
+      &.donairs { background-image : url("../img/orbcat_icons/donairs.hover.png"); }
+      &.chicken-and-chips { background-image : url("../img/orbcat_icons/chicken-and-chips.hover.png"); }
+      &.fish-and-chips { background-image : url("../img/orbcat_icons/fish-and-chips.hover.png"); }
+      &.pasta { background-image : url("../img/orbcat_icons/pasta.hover.png"); }
+      &.burgers { background-image : url("../img/orbcat_icons/burgers.hover.png"); }
+      &.sandwiches { background-image : url("../img/orbcat_icons/sandwiches.hover.png"); }
+      &.pita-wraps { background-image : url("../img/orbcat_icons/pita-wraps.hover.png"); }
+      &.subs { background-image : url("../img/orbcat_icons/subs.hover.png"); }
+      &.xtreme-subs { background-image : url("../img/orbcat_icons/xtreme-subs.hover.png"); }
+      &.beverages { background-image : url("../img/orbcat_icons/beverages.hover.png"); }
+      &.salads { background-image : url("../img/orbcat_icons/salads.hover.png"); }
+      &.desserts { background-image : url("../img/orbcat_icons/desserts.hover.png"); }
+    }
 }
 
 #orbcat-menu-title {

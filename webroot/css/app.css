@@ -4958,17 +4958,17 @@ span.header-thin {
   line-height: 6.175rem;
   color: white; }
 
-ul#orbcat-menu li {
+li.orbcat {
   line-height: 8.90625rem;
   text-align: center; }
-  ul#orbcat-menu li a {
+  li.orbcat a {
     transition: color 0.3s ease-out;
     font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
     color: white;
     font-size: 0.875rem;
     line-height: 2.375rem; }
-    ul#orbcat-menu li a:hover {
-      color: #faea06; }
+  li.orbcat:hover a, li.orbcat.active a {
+    color: #faea06; }
 
 /*          ORB CARD            */
 .orb-card h4#hidden-description {
@@ -5495,11 +5495,12 @@ li.orbcat {
   background-repeat: no-repeat;
   background-position: center 0.3125rem;
   background-size: 3.5625rem;
-  box-sizing: border-box; }
-  li.orbcat.xtreme-original-pizzas {
-    background-image: url("../img/orbcat_icons/xtreme-original-pizzas.png"); }
-  li.orbcat.xtreme-super-pizzas {
-    background-image: url("../img/orbcat_icons/xtreme-super-pizzas.png"); }
+  box-sizing: border-box;
+  transition: background-image 0.3s; }
+  li.orbcat.original-pizzas {
+    background-image: url("../img/orbcat_icons/original-pizzas.png"); }
+  li.orbcat.super-pizzas {
+    background-image: url("../img/orbcat_icons/super-pizzas.png"); }
   li.orbcat.specialty-pizzas {
     background-image: url("../img/orbcat_icons/specialty-pizzas.png"); }
   li.orbcat.panzarottis {
@@ -5535,6 +5536,42 @@ li.orbcat {
   li.orbcat a {
     height: 2.375rem;
     margin-top: 7.125rem; }
+  li.orbcat:hover.original-pizzas, li.orbcat.active.original-pizzas {
+    background-image: url("../img/orbcat_icons/original-pizzas.hover.png"); }
+  li.orbcat:hover.super-pizzas, li.orbcat.active.super-pizzas {
+    background-image: url("../img/orbcat_icons/super-pizzas.hover.png"); }
+  li.orbcat:hover.specialty-pizzas, li.orbcat.active.specialty-pizzas {
+    background-image: url("../img/orbcat_icons/specialty-pizzas.hover.png"); }
+  li.orbcat:hover.panzarottis, li.orbcat.active.panzarottis {
+    background-image: url("../img/orbcat_icons/panzarottis.hover.png"); }
+  li.orbcat:hover.assorted-fingers, li.orbcat.active.assorted-fingers {
+    background-image: url("../img/orbcat_icons/assorted-fingers.hover.png"); }
+  li.orbcat:hover.poutines, li.orbcat.active.poutines {
+    background-image: url("../img/orbcat_icons/poutines.hover.png"); }
+  li.orbcat:hover.donairs, li.orbcat.active.donairs {
+    background-image: url("../img/orbcat_icons/donairs.hover.png"); }
+  li.orbcat:hover.chicken-and-chips, li.orbcat.active.chicken-and-chips {
+    background-image: url("../img/orbcat_icons/chicken-and-chips.hover.png"); }
+  li.orbcat:hover.fish-and-chips, li.orbcat.active.fish-and-chips {
+    background-image: url("../img/orbcat_icons/fish-and-chips.hover.png"); }
+  li.orbcat:hover.pasta, li.orbcat.active.pasta {
+    background-image: url("../img/orbcat_icons/pasta.hover.png"); }
+  li.orbcat:hover.burgers, li.orbcat.active.burgers {
+    background-image: url("../img/orbcat_icons/burgers.hover.png"); }
+  li.orbcat:hover.sandwiches, li.orbcat.active.sandwiches {
+    background-image: url("../img/orbcat_icons/sandwiches.hover.png"); }
+  li.orbcat:hover.pita-wraps, li.orbcat.active.pita-wraps {
+    background-image: url("../img/orbcat_icons/pita-wraps.hover.png"); }
+  li.orbcat:hover.subs, li.orbcat.active.subs {
+    background-image: url("../img/orbcat_icons/subs.hover.png"); }
+  li.orbcat:hover.xtreme-subs, li.orbcat.active.xtreme-subs {
+    background-image: url("../img/orbcat_icons/xtreme-subs.hover.png"); }
+  li.orbcat:hover.beverages, li.orbcat.active.beverages {
+    background-image: url("../img/orbcat_icons/beverages.hover.png"); }
+  li.orbcat:hover.salads, li.orbcat.active.salads {
+    background-image: url("../img/orbcat_icons/salads.hover.png"); }
+  li.orbcat:hover.desserts, li.orbcat.active.desserts {
+    background-image: url("../img/orbcat_icons/desserts.hover.png"); }
 
 #orbcat-menu-title {
   width: 100%;

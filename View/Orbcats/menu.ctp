@@ -13,13 +13,13 @@
  */
 
 $this->start('orbcats_menu');?>
-	><ul id="orbcat-menu" class="small-block-grid-6 float-pane">
+	><ul id="orbcat-menu" class="small-block-grid-6 float-pane activizing">
 		<?php
 		$m_title = $active_orbcat['name'];
 		foreach ($orbcats_list as $id => $orbcat) {
 			$data = array("orbcat" => $id, "orbcat-name" => ucwords($orbcat));
-			$classes = array("orbcat-refresh", ___strToSel($orbcat), "orbcat",  );
-			if ($id == $active_orbcat['id']) array_push($classes, "active");
+			$classes = array("orbcat-refresh", ___strToSel($orbcat), "orbcat",
+			                 $id == $active_orbcat['id'] ? "active" : "inactive" );
 			if ($orbcat != "XTREME SUBS") $orbcat = str_replace("XTREME", "", $orbcat);
 
 			?>

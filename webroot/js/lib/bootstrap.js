@@ -17,9 +17,6 @@ var constants = {
 	SHOW: 1,
 	DS: "/",
 	BODY: "body",
-	XDEV: "xDev",
-	XLOC: "xLoc",
-	XPROD: "xProd"
 };
 var C = constants;
 
@@ -39,7 +36,7 @@ var C = constants;
 window.XBS = {
 	data: {
 		hostRootDirs: {
-			xDev: "development-xtreme-pizza.ca",
+			xDev: "",
 			xProd:"",
 			xLoc:"xtreme"
 		},
@@ -344,7 +341,7 @@ window.XBS = {
 		},
 		refresh_active_orbs_menu: function(orbcat_id, orbcat_name) {
 			// todo: fallback on ajax fail
-			if (XBS.cfg.root == C.XLOC) {
+			if (XBS.cfg.root.length != 0) {
 				var url  = C.DS + XBS.cfg.root + C.DS + XBS.routes.menu + C.DS + orbcat_id;
 			} else {
 				var url  = XBS.routes.menu + C.DS + orbcat_id
@@ -366,7 +363,6 @@ window.XBS = {
 					$(XSM.menu.orbcat_menu_title_subtitle).fadeToggle();
 					setTimeout(function() {
 						$(XSM.menu.orbcat_menu_title_header).animate({'width':"100%"}, 300)
-//						$(XSM.menu.orbcat_menu_title_header).removeClass(XSM.effects.transitioning);
 						$(XSM.menu.active_orbs_menu_item).each(
 							function() { $(this).removeClass('fade-out');}
 						)}, 300);
@@ -375,7 +371,7 @@ window.XBS = {
 		},
 		refresh_orb_card_stage: function(orb_card_id) {
 			// todo: fallback on ajax fail
-			if (XBS.cfg.root == C.XLOC) {
+			if (XBS.cfg.root.length != 0) {
 				var url  = C.DS + XBS.cfg.root + C.DS + XBS.routes.menuitem + C.DS + orb_card_id;
 			} else {
 				var url  = XBS.routes.menuitem + C.DS + orb_card_id

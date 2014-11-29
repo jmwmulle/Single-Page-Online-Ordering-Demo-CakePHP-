@@ -85,7 +85,7 @@ span.header-thin { @include HelveticaTh; }
   color          : $white;
 }
 
-ul#orbcat-menu li {
+li.orbcat {
   line-height : 1.5 * $orbcat-menu-item-height;
   text-align  : center;
   a {
@@ -94,8 +94,11 @@ ul#orbcat-menu li {
     color       : $body-font-color;
     font-size   : rem-calc(14px);
     line-height : 0.1 * $orbcat-menu-height;
-    &:hover { color : $xtreme-yellow; }
   }
+  &:hover, &.active {
+    a { color : $xtreme-yellow; }
+  }
+
 }
 
 /*          ORB CARD            */
