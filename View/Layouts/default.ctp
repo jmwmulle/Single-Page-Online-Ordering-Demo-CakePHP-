@@ -18,6 +18,7 @@
 			"/bower_components/foundation/js/foundation.min",
 			"lib/bootstrap",
 			"application"), array('block' => 'app'));
+		print_r($_SERVER['HTTP_HOST']);
 	?>
 <script type="text/javascript">
 
