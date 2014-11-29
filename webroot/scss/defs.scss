@@ -77,8 +77,11 @@ $orb-card-stage-height: rem-calc(360px); // todo: media queries yo
 $orb-card-wrapper-width: rem-calc(1200px);
 $min-orb-list-width: rem-calc(350px);
 $orb-card-stage-width: $orb-card-wrapper-width - $min-orb-list-width;
-$orb-card-height: rem-calc(320px);
-$orb-card-width: rem-calc(600px);
+$orb-card-stage-menu-width: 0.5 * $orb-card-wrapper-width;
+$orb-card-stage-menu-item-height: 0.2 * $orb-card-stage-height;
+$orb-card-stage-menu-padding-left: 0.33333 * $orb-card-stage-menu-width;
+$orb-card-width:  0.5 * $orb-card-wrapper-width;
+$orb-card-height: 0.533333 * $orb-card-width;
 $orb-card-padding: rem-calc(10px);
 $orb-card-inner-width: $orb-card-width - (2 * $orb-card-padding);
 $orb-card-margin-left: 0.5 * $user-activity-panel-width;

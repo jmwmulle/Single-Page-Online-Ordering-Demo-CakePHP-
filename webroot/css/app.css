@@ -3480,17 +3480,17 @@ p {
 
 /* Default header styles */
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue Condensed Black";
   font-weight: normal;
   font-style: normal;
-  color: #222222;
+  color: white;
   text-rendering: optimizeLegibility;
   margin-top: 0.2rem;
   margin-bottom: 0.5rem;
   line-height: 1.4; }
   h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
     font-size: 60%;
-    color: #6f6f6f;
+    color: white;
     line-height: 0; }
 
 h1 {
@@ -3513,7 +3513,7 @@ h6 {
 
 .subheader {
   line-height: 1.4;
-  color: #6f6f6f;
+  color: white;
   font-weight: normal;
   margin-top: 0.2rem;
   margin-bottom: 0.5rem; }
@@ -3616,15 +3616,15 @@ blockquote {
   blockquote cite {
     display: block;
     font-size: 0.8125rem;
-    color: #555555; }
+    color: white; }
     blockquote cite:before {
       content: "\2014 \0020"; }
     blockquote cite a, blockquote cite a:visited {
-      color: #555555; }
+      color: white; }
 
 blockquote, blockquote p {
   line-height: 1.6;
-  color: #6f6f6f; }
+  color: white; }
 
 /* Microformats */
 .vcard {
@@ -4854,6 +4854,53 @@ th.hide-for-touch {
 /* TYPOGRAPHY */
 /*  SPLASH  */
 /*   MENU   */
+/**************************************************************
+
+                              3D SHIT
+
+***************************************************************/
+.html5-3d-perspective-container {
+  position: relative;
+  -webkit-perspective: 800px;
+  -moz-perspective: 800px;
+  -o-perspective: 800px;
+  perspective: 800px; }
+
+.html5-3d-context {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: -webkit-transform 1s opacity 0.3s;
+  -moz-transition: -moz-transform 1s;
+  -o-transition: -o-transform 1s;
+  transition: transform 1s; }
+  .html5-3d-context.flipped-x {
+    transform: rotateX(180deg); }
+  .html5-3d-context.flipped-y {
+    transform: rotateY(180deg); }
+
+.preserve-3d {
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d; }
+
+.card-face {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  backface-visibility: hidden; }
+
+.back-face-x {
+  transform: rotateX(180deg); }
+
+.back-face-y {
+  transform: rotateY(180deg); }
+
 @font-face {
   font-family: "Helvetica Neue Condensed Black";
   src: url("../files/HelveticaNeueLTStd-BlkCn.otf"); }
@@ -4901,7 +4948,6 @@ span.header-thin {
     color: black; }
 #user-activity-panel h2 {
   font-size: 1.6875rem;
-  font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
   line-height: 6.25rem; }
 
 /*           ORBCAT MENU         */
@@ -4910,7 +4956,6 @@ span.header-thin {
   letter-spacing: -0.1875rem;
   font-size: 4.75rem;
   line-height: 6.175rem;
-  font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
   color: white; }
 
 ul#orbcat-menu li {
@@ -4926,8 +4971,6 @@ ul#orbcat-menu li {
       color: #faea06; }
 
 /*          ORB CARD            */
-.orb-card h1, .orb-card h2, .orb-card h3, .orb-card h4, .orb-card h5 {
-  font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
 .orb-card h4#hidden-description {
   line-height: 0.79063rem;
   letter-spacing: -0.03125rem;
@@ -4938,11 +4981,9 @@ ul#orbcat-menu li {
   right: 0.3125rem;
   color: #a2a2a2; }
 
-.float-label h1, .float-label h2, .float-label h3, .float-label h4, .float-label h5 {
-  font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
-
 div.orb-card-button {
   text-align: center; }
+
 
 div.orb-card-content#description {
   font-family: "Helvetica Neue Medium Condensed", arial, sans-serif; }
@@ -4950,7 +4991,6 @@ div.orb-card-content#price-matrix {
   font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
   color: #373737; }
   div.orb-card-content#price-matrix h4 {
-    font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
     color: #e02027; }
 div.orb-card-content#orb-card-options {
   background-color: #373737; }
@@ -5498,14 +5538,15 @@ li.orbcat {
 
 #orbcat-menu-title {
   width: 100%;
-  padding: 0;
   position: absolute;
+  padding: 0;
   bottom: 0;
   left: 0.625rem;
   margin: 0 0 -2.375rem 0; }
   #orbcat-menu-title h1 {
     padding: 0;
-    margin: 0; }
+    margin: 0;
+    height: 98px; }
 
 /**************************************************************
 
@@ -5552,11 +5593,11 @@ li.orbcat {
   visibility: hidden;
   position: absolute;
   z-index: 10;
-  width: 20rem;
+  width: 19.99999rem;
   transform: rotate(270deg);
   margin-left: 0;
   left: 0;
-  bottom: 9.53125rem;
+  bottom: 9.53124rem;
   text-align: center;
   transition: visibility 0.2s, margin-left 0.3s; }
   .float-label.exposed {
@@ -5567,52 +5608,19 @@ li.orbcat {
   width: 100%;
   position: absolute;
   background-repeat: no-repeat;
-  background-position: -0.8875rem 19.75rem;
+  background-position: -0.8875rem 19.74999rem;
   background-size: 45rem 1.5625rem;
   transition: background-image 0.5s; }
 
-div.orb-card {
-  height: 20rem;
+div#orb-card {
+  height: 19.99999rem;
   width: 37.5rem;
-  position: relative;
   margin-left: 3.125rem;
   margin-top: 1.25rem;
-  -webkit-perspective: 800px;
-  -moz-perspective: 800px;
-  -o-perspective: 800px;
-  perspective: 800px;
   z-index: 999999; }
-
-div#orb-card-3d-pane {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-transition: -webkit-transform 1s opacity 0.3s;
-  -moz-transition: -moz-transform 1s;
-  -o-transition: -o-transform 1s;
-  transition: transform 1s;
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  -o-transform-style: preserve-3d;
-  transform-style: preserve-3d; }
-  div#orb-card-3d-pane.flipped {
-    transform: rotateY(180deg); }
-
-section.orb-card-face {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  padding: 0.625rem;
-  -webkit-backface-visibility: hidden;
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  -o-transform-style: preserve-3d;
-  transform-style: preserve-3d; }
-
-#orb-card-back {
-  transform: rotateY(180deg); }
+  div#orb-card section {
+    background-color: white;
+    padding: 0.625rem; }
 
 .triangle-down {
   position: absolute;
@@ -5621,7 +5629,8 @@ section.orb-card-face {
   width: 0;
   height: 0;
   border-left: 12px solid transparent;
-  border-right: 12px solid transparent; }
+  border-right: 12px solid transparent;
+  z-index: 9998; }
 
 .triangle-right {
   position: absolute;
@@ -5648,6 +5657,7 @@ ul.orb-card {
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
+    z-index: 9999;
     transition: background-color 0.3s ease-out; }
     ul.orb-card div.orb-card-button#favorite {
       background-color: #faea06;
@@ -5721,23 +5731,25 @@ div.orb-card-content {
 .orb-card-stage-right-menu {
   overflow-y: scroll;
   overflow-x: hidden;
-  width: 600px;
-  height: 22.5rem; }
-  .orb-card-stage-right-menu#toppings-list {
-    float: right; }
+  width: 37.5rem;
+  height: 22.5rem;
+  float: right; }
   .orb-card-stage-right-menu li {
     position: relative;
-    padding-left: 200px;
+    padding-left: 12.49988rem;
     background-color: #0779be;
     box-shadow: inset 15px -5px 8px rgba(0, 0, 0, 0.33);
     font-size: 1.125rem;
-    height: 3.75rem;
-    line-height: 3.75rem;
+    height: 4.5rem;
+    line-height: 4.5rem;
     cursor: pointer;
-    transition: background-color 0.3s ease-out;
+    transition: background-color 0.3s, color 0.3s;
     font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
     .orb-card-stage-right-menu li a, .orb-card-stage-right-menu li span {
+      transition: color 0.3s, opacity 0.2s;
       color: white; }
+      .orb-card-stage-right-menu li a.fade-out, .orb-card-stage-right-menu li span.fade-out {
+        opacity: 0; }
     .orb-card-stage-right-menu li.topping {
       padding-right: 1.5625rem; }
       .orb-card-stage-right-menu li.topping a {
@@ -5758,12 +5770,17 @@ div.orb-card-content {
     .orb-card-stage-right-menu li:hover {
       background-color: #1ba6f7; }
     .orb-card-stage-right-menu li:first-of-type {
-      padding-top: 10px;
+      padding: 0;
       box-shadow: none;
-      background-color: #e02027;
-      font-size: 2.25rem;
-      transition: none;
+      background-color: none;
       cursor: default; }
+      .orb-card-stage-right-menu li:first-of-type div#active-orb-name-3d-container {
+        height: 4.5rem;
+        width: 37.5rem; }
+        .orb-card-stage-right-menu li:first-of-type div#active-orb-name-3d-container h2 {
+          background-color: #e02027;
+          padding: 0.625rem 0 0 12.49988rem;
+          margin: 0; }
     .orb-card-stage-right-menu li.active {
       background-color: #faea06;
       transition: none;

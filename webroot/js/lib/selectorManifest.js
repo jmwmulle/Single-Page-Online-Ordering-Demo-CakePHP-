@@ -17,16 +17,18 @@ var XSM = {
 		detachable: ".detach",
 		imageQueue: "#image-loading-queue",
 		loadingScreen: "#loadingScreen",
-		jsLink:".js-link",
 		preserveAS: ".preserve-aspect-ratio",
 		scrollable: "*[data-scrolling-target]",
 		activizing_list: "ul.activizing li",
 		multi_activizing: ".multi-activizing"
 	},
 	effects: {
-		flipped: ".flipped",
+		transitioning: "transitioning",
+		flipped_x: "flipped-x",
+		flipped_y: "flipped-y",
 		float_label: ".float-labeled",
-		solidify: ".solidify"
+		solidify: ".solidify",
+		exposed: "exposed"
 	},
 	load: {
 		dismissLSButton: "#dismiss-loading-screen",
@@ -35,10 +37,19 @@ var XSM = {
 		readyMessage: "#ready-message"
 	},
 	menu: {
+		active_orb_name_front_face: "#active-orb-name-front-face",
+		active_orb_name_back_face: "#active-orb-name-back-face",
+		active_orbs_menu: "#active-orbs-menu",
+		active_orbs_menu_item: "#active-orbs-menu li a",
+		add_to_cart_hook:".add-to-cart",
 		orb_card_stage: "#orb-card-stage",
 		orb_card_refresh: ".orb-card-refresh",
-		add_to_cart_hook:".add-to-cart",
-		orb_card_3d_pane_selector: "#orb-card-3d-pane"
+		orbcat_menu_title_header: "#orbcat-menu-title h1",
+		orbcat_menu_title_subtitle: "#orbcat-menu-title h1 span",
+		orbcat_refresh: ".orbcat-refresh",
+		orb_card_3d_context: "#orb-card-3d-context",
+		active_orb_name_3d_context: "#active-orb-name-3d-context",
+		toppings_list: "#toppings-list"
 	},
 	main: {
 		primaryContent: "#primary-content",

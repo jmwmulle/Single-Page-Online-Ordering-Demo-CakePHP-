@@ -72,7 +72,6 @@ span.header-thin { @include HelveticaTh; }
   }
   h2 {
     font-size   : $h3-font-size;
-    @include HelveticaBlkCn;
     line-height : $user-activity-panel-height;
   }
 }
@@ -83,7 +82,6 @@ span.header-thin { @include HelveticaTh; }
   letter-spacing : rem-calc(-3);
   font-size      : $orbcat-menu-title-font-size;
   line-height    : $orbcat-menu-title-font-size * 1.3;
-  @include HelveticaBlkCn;
   color          : $white;
 }
 
@@ -102,7 +100,6 @@ ul#orbcat-menu li {
 
 /*          ORB CARD            */
 .orb-card {
-  h1, h2, h3, h4, h5 { @include HelveticaBlkCn; }
   h4#hidden-description {
     line-height    : .55 * $h4-font-size;
     letter-spacing : rem-calc(-0.5px);
@@ -114,22 +111,18 @@ ul#orbcat-menu li {
     color          : darken($light-grey, 7%);
   }
 }
-.float-label {
-  h1,h2,h3,h4,h5 {
-    @include HelveticaBlkCn;
-  }
-}
+
 div.orb-card-button {
   text-align : center;
 }
-
+#active-orbs-menu {
+}
 div.orb-card-content {
   &#description { @include HelveticaMdCn; }
   &#price-matrix {
     @include HelveticaMdCn;
     color: $text-grey;
     h4 {
-      @include HelveticaBlkCn;
       color : $xtreme-red;
     }
     li div{

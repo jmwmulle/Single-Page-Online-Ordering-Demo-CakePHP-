@@ -17,16 +17,18 @@ $this->start('orbcats_menu');?>
 		<?php
 		$m_title = $active_orbcat['name'];
 		foreach ($orbcats_list as $id => $orbcat) {
-			$classes = array("js-link", ___strToSel($orbcat), "orbcat",  );
+			$data = array("orbcat" => $id, "orbcat-name" => ucwords($orbcat));
+			$classes = array("orbcat-refresh", ___strToSel($orbcat), "orbcat",  );
 			if ($id == $active_orbcat['id']) array_push($classes, "active");
 			if ($orbcat != "XTREME SUBS") $orbcat = str_replace("XTREME", "", $orbcat);
+
 			?>
-		<li <?php echo ___cD($classes);?> data-url="/xtreme/menu/<?php echo $id;?>">
+		<li <?php echo ___cD($classes);?> <?php echo ___dA($data);?>">
 			<a class="text-center"><?php echo ucwords($orbcat);?></a>
 		</li>
 		<?php } ?>
 		<li id="orbcat-menu-title">
-			<h1>MENU/<?php echo substr($m_title, 0,1) == " " ? substr($m_title, 1) : $m_title; ?>
+			<h1>MENU/<span><?php echo substr($m_title, 0,1) == " " ? substr($m_title, 1) : $m_title; ?></span>
 			</h1>
 		</li>
 	</ul>
@@ -34,25 +36,9 @@ $this->start('orbcats_menu');?>
 $this->end('orbcats_menu');
 
 $this->start('active_orbs_menu');?>
-	<div id="orb-card-stage-right-wrapper">
-		<?php $classes = array('text-center', 'tight', 'l-3', 'activizing', 'orb-card-stage-right-menu'); ?>
-		<ul id="active-orbs-menu" <?php echo ___cD($classes);?>>
-			<li>
-				<?php echo $active_orbcat['name'];?>
-			</li>
-		<?php
-			foreach($active_orbcat['orbs'] as $i => $orb) {
-				if ($orb['id'] != -1) { // ie if it's not a dummy orb
-					$classes = array('orb-card-refresh', $orb['id'] == $active_orbcat['orb_card']['id'] ? 'active' : 'inactive');
-					$data = array("orb" => $orb['id']);
-				}
-			?>
-		<li <?php echo ___dA($data);?> <?php echo ___cD($classes);?>>
-			<a href="#"><?php echo $orb['id'] == -1 ? "&nbsp" : strtoupper($orb['title']);?></a>
-		</li>
-		<?php }?>
-		</ul>
-	</div>
+<div id="orb-card-stage-right-wrapper">
+	<?php echo $this->Element('active_orbs_menu', array('active_orbcat' => $active_orbcat, 'hide_text' => false)); ?>
+</div>
 <?php
 $this->end('active_orbs_menu');
 
