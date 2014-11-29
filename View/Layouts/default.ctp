@@ -18,7 +18,6 @@
 			"/bower_components/foundation/js/foundation.min",
 			"lib/bootstrap",
 			"application"), array('block' => 'app'));
-		print_r($_SERVER['HTTP_HOST']);
 	?>
 <script type="text/javascript">
 
@@ -26,7 +25,7 @@
 					case "kleinlab.psychology.dal.ca":
 						echo "xLoc";
 						break;
-					case "www.development-xtreme-pizza.ca":
+					case "development-xtreme-pizza.ca":
 						echo "xDev";
 						break;
 					default:
