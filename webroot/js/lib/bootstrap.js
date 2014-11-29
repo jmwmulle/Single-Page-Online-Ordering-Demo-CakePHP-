@@ -14,7 +14,9 @@ var constants = {
 	MOUSEENTER: "mouseenter",
 	MOUSEOUT: "mouseout",
 	HIDE: 0,
-	SHOW: 1
+	SHOW: 1,
+	DS: "/",
+	BODY: "body"
 };
 var C = constants;
 
@@ -82,6 +84,10 @@ window.XBS = {
 			return (period !== C.UNDEF) ? diff > period : diff;
 		},
 		startTime: 0
+	},
+	routes: {
+		menu: "menu",
+		menuitem:"menuitem"
 	},
 
 
@@ -193,30 +199,30 @@ window.XBS = {
 			bind_cart_hooks: function() {
 //				$(XSM.menu.add_to_cart_hook).on(C.CLK, null, null, XBS.fn.configure_orb);
 				$("#orb-card-wrapper ").on(C.CLK, ".add-to-cart", null, function(e) {
-						var data = $(e.currentTarget).data();
-						XBS.fn.configure_orb(data.orbId, data.priceRank)});
-			},
-			bind_js_links: function() {
-				$(XSM.global.jsLink).each(function() {
-					$(this).on(C.CLK, function() { window.location.replace($(this).data('url'))});
+						var data = $(e.currentTarget).data('orbId');
+						XBS.fn.configure_orb(data.orbId, data.priceRank)
 				});
-
-				return true;
 			},
 			bind_float_menus: function() {
-				$("body").on(C.MOUSEENTER, XSM.effects.float_label, null, function(e) {
+				$(C.BODY).on(C.MOUSEENTER, XSM.effects.float_label, null, function(e) {
 					var data = $(e.currentTarget).data();
 					XBS.layout.toggle_float_label(data.floatLabel, C.SHOW);
 				});
-				$("body").on(C.MOUSEOUT, XSM.effects.float_label, null, function(e) {
-					var data = $(e.currentTarget).data();
-					XBS.layout.toggle_float_label(data.floatLabel, C.HIDE);
+				$(C.BODY).on(C.MOUSEOUT, XSM.effects.float_label, null, function(e) {
+					XBS.layout.toggle_float_label($(e.currentTarget).data('floatLabel'), C.HIDE);
 				});
 			},
 			bind_orbcard_refresh: function() {
-				$(XSM.menu.orb_card_refresh).each(function() {
-					$(this).on(C.CLK, $(this).data(), XBS.layout.refresh_orb_card_stage);
+				$(C.BODY).on(C.CLK, XSM.menu.orb_card_refresh, null, function(e) {
+					XBS.layout.refresh_orb_card_stage($(e.currentTarget).data('orb'));
 				});
+			},
+			bind_orbcat_refresh: function() {
+				$(C.BODY).on(C.CLK, XSM.menu.orbcat_refresh, null, function(e) {
+					var data = $(e.currentTarget).data();
+					XBS.layout.refresh_active_orbs_menu(data.orbcat, data.orbcatName);
+				});
+				return true;
 			},
 			windowResizeListener: function() {
 				if (XBS.cfg.isSplash) {
@@ -318,32 +324,51 @@ window.XBS = {
 			}
 		},
 		toggle_float_label: function(float_label, state) {
-			if (state == C.SHOW) {
-				$(asId(float_label)).addClass('exposed');
-			}
-			if (state == C.HIDE) {
-				$(asId(float_label)).removeClass('exposed');
-			}
+			if (state == C.SHOW) $(asId(float_label)).addClass(XSM.effects.exposed);
+			if (state == C.HIDE) $(asId(float_label)).removeClass(XSM.effects.exposed);
+
 			return true;
 		},
-		toggleLoadingScreen: function() {
-			$(XSM.global.loadingScreen).fadeToggle();
-		},
+		toggleLoadingScreen: function() { $(XSM.global.loadingScreen).fadeToggle(); },
 		toggle_orb_card: function() {
 			$(["favorite-label","order-label","like-label"]).each(function() {
 				XBS.layout.toggle_float_label(this, C.HIDE);});
-			$(XSM.menu.orb_card_3d_pane_selector).addClass("flipping");
-			$(XSM.menu.orb_card_3d_pane_selector).toggleClass(stripCSS(XSM.effects.flipped));
-			$("#active-orbs-menu").slideToggle(500, function() {
-					$("#toppings-list").slideToggle(500);
+			$(XSM.menu.orb_card_3d_context).toggleClass(stripCSS(XSM.effects.flipped_y));
+			$(XSM.menu.active_orbs_menu).slideToggle(500, function() {
+					$(XSM.menu.toppings_list).slideToggle(500);
 			});
 
 		},
+		refresh_active_orbs_menu: function(orbcat_id, orbcat_name) {
+			// todo: fallback on ajax fail
+			var url  = C.DS + XBS.cfg.root + C.DS + XBS.routes.menu + C.DS + orbcat_id
+			$.get(url, function(data) {
+				if ( $(XSM.menu.active_orb_name_3d_context).hasClass(XSM.effects.flipped_x) ) {
+					$(XSM.menu.active_orb_name_front_face).html(orbcat_name);
+					$(XSM.menu.active_orb_name_3d_context).removeClass(XSM.effects.flipped_x);
+				} else {
+					$(XSM.menu.active_orb_name_back_face).html(orbcat_name);
+					$(XSM.menu.active_orb_name_3d_context).addClass(XSM.effects.flipped_x);
+				}
+				$(XSM.menu.active_orbs_menu_item).each(function() { $(this).addClass('fade-out');});
+
+				$(XSM.menu.orbcat_menu_title_subtitle).fadeToggle();
+				setTimeout(function() {
+					$(XSM.menu.active_orbs_menu).replaceWith(data);
+					$(XSM.menu.orbcat_menu_title_subtitle).html(orbcat_name);
+					$(XSM.menu.orbcat_menu_title_subtitle).fadeToggle();
+					setTimeout(function() {
+						$(XSM.menu.orbcat_menu_title_header).animate({'width':"100%"}, 300)
+//						$(XSM.menu.orbcat_menu_title_header).removeClass(XSM.effects.transitioning);
+						$(XSM.menu.active_orbs_menu_item).each(
+							function() { $(this).removeClass('fade-out');}
+						)}, 300);
+				}, 600);
+			});
+		},
 		refresh_orb_card_stage: function(orb_card_id) {
 			// todo: fallback on ajax fail
-			if (isEvent(orb_card_id)) orb_card_id = orb_card_id.data.orb;
-			$.get("/xtreme/menuitem/" + orb_card_id, function(data) {
-				pr(data);
+			$.get(C.DS + XBS.cfg.root + C.DS + XBS.routes.menuitem + C.DS + orb_card_id, function(data) {
 				$(XSM.menu.orb_card_stage).replaceWith(data);
 			});
 		}

@@ -1,20 +1,24 @@
 html, nav, body, main, footer {
- overflow:auto;
+  overflow : auto;
 }
+
 body#menu {
-  background-image : url("../img/menu_bg.xlg.bright.jpg");
-  background-attachment: fixed;
-  overflow:auto;
+  background-image      : url("../img/menu_bg.xlg.bright.jpg");
+  background-attachment : fixed;
+  overflow              : auto;
   // todo: media queries for smaller resolutions
 }
+
 main#menu {
-  position: relative;
-  width:100%;
-  top:0;
-  left:0;
-  margin-top :$topnav-height;
-  overflow:auto;
-} // in use; content area
+  position   : relative;
+  width      : 100%;
+  top        : 0;
+  left       : 0;
+  margin-top : $topnav-height;
+  overflow   : auto;
+}
+
+// in use; content area
 
 /**************************************************************
 
@@ -22,14 +26,14 @@ main#menu {
 
 ***************************************************************/
 ul#user-activity-panel {
-  position:relative;
-  float:left;
-  margin : 0 $float-pane-margin 0px 0px;
-  width  : $user-activity-panel-width;
-  vertical-align: top;
+  position       : relative;
+  float          : left;
+  margin         : 0 $float-pane-margin 0px 0px;
+  width          : $user-activity-panel-width;
+  vertical-align : top;
   li {
     @include global-transition(background-color);
-    a { @include global-transition(color);}
+    a { @include global-transition(color); }
     width            : $user-activity-panel-width;
     height           : $user-activity-panel-height;
     background-color : $black-a25;
@@ -39,17 +43,15 @@ ul#user-activity-panel {
     &:first-of-type {
       transition       : none;
       background-color : $dark-grey;
-      border-top: 1px solid $dark-grey;
+      border-top       : 1px solid $dark-grey;
     }
     &.active {
       background-color : $white-a75;
       a {
-        color: $dark-grey;}
+        color : $dark-grey; }
     }
   }
 }
-
-
 
 /**************************************************************
 
@@ -59,20 +61,20 @@ ul#user-activity-panel {
 ul#orbcat-menu {
   position   : relative;
   width      : $orbcat-menu-width;
-  height     :  $orbcat-menu-height;
-  display: inline-block;
-  margin-top: $float-pane-margin;
+  height     : $orbcat-menu-height;
+  display    : inline-block;
+  margin-top : $float-pane-margin;
   @include orbcat-menu-gradient;
 }
 
 li.orbcat {
-  display        : inline-block;
-  height         : $orbcat-menu-item-height;
-  cursor: pointer;
+  display             : inline-block;
+  height              : $orbcat-menu-item-height;
+  cursor              : pointer;
   background-repeat   : no-repeat;
   background-position : center rem-calc(5px);
   background-size     : $orbcat-menu-icon-size;
-  box-sizing:border-box;
+  box-sizing          : border-box;
   &.xtreme-original-pizzas { background-image : url("../img/orbcat_icons/xtreme-original-pizzas.png"); }
   &.xtreme-super-pizzas { background-image : url("../img/orbcat_icons/xtreme-super-pizzas.png"); }
   &.specialty-pizzas { background-image : url("../img/orbcat_icons/specialty-pizzas.png"); }
@@ -92,22 +94,25 @@ li.orbcat {
   &.salads { background-image : url("../img/orbcat_icons/salads.png"); }
   &.desserts { background-image : url("../img/orbcat_icons/desserts.png"); }
   a {
-    height      : $orbcat-menu-anchor-height;
-    margin-top  : $orbcat-menu-margin-top;
+    height     : $orbcat-menu-anchor-height;
+    margin-top : $orbcat-menu-margin-top;
   }
 }
 
-
 #orbcat-menu-title {
-  width:100%;
-  h1 { padding:0; margin:0}
-  padding:0;
-  position       : absolute;
-  bottom         : 0;
-  left           : rem-calc(10);
-  margin         : 0 0 $orbcat-menu-title-font-size/-2 0;
-}
+  width    : 100%;
+  position : absolute;
+  padding  : 0;
+  bottom   : 0;
+  left     : rem-calc(10);
+  margin   : 0 0 $orbcat-menu-title-font-size/-2 0;
+  h1 {
+    padding : 0;
+    margin : 0;
+    height:98px;
 
+  }
+}
 
 /**************************************************************
 
@@ -115,11 +120,11 @@ li.orbcat {
 
 ***************************************************************/
 #orb-card-wrapper {
-  position : relative;
-  height   : rem-calc(375);
-  width: $orb-card-wrapper-width; // active orbs floats right (ie. this - orbcard stage = visible space for active orbs)
-  margin-top:$float-pane-margin;
-  background-color: $xtreme-blue;
+  position         : relative;
+  height           : rem-calc(375);
+  width            : $orb-card-wrapper-width; // active orbs floats right (ie. this - orbcard stage = visible space for active orbs)
+  margin-top       : $float-pane-margin;
+  background-color : $xtreme-blue;
 }
 
 #orb-card-stage {
@@ -127,85 +132,55 @@ li.orbcat {
   left                       : -1 * $float-pane-border-width;
   top                        : -0.9 * $float-pane-border-width;
   width                      : 75%;
-  max-width: $orb-card-stage-width;
-  min-width: 600px;
+  max-width                  : $orb-card-stage-width;
+  min-width                  : 600px;
   border                     : 6px solid $white;
   border-top-right-radius    : 1000px;
   border-bottom-right-radius : 1000px;
   height                     : rem-calc(375);
-  background-color:rgb(215,215,215);
+  background-color           : rgb(215, 215, 215);
   @include orb-card-gradient; //todo: make this a picture or add a wrapper for the other bg
 }
 
 // FLOAT LABELS
 .float-label {
-  visibility:hidden;
-  position:absolute;
-  z-index:10;
-  width: $orb-card-height;
-  transform:rotate(270deg);
-  margin-left: 0;
-  left:0;
-  bottom: ($orb-card-height - $float-pane-margin)/2 + rem-calc(2.5px);
-  text-align:center;
-  transition:visibility 0.2s, margin-left 0.3s;
+  visibility  : hidden;
+  position    : absolute;
+  z-index     : 10;
+  width       : $orb-card-height;
+  transform   : rotate(270deg);
+  margin-left : 0;
+  left        : 0;
+  bottom      : ($orb-card-height - $float-pane-margin)/2 + rem-calc(2.5px);
+  text-align  : center;
+  transition  : visibility 0.2s, margin-left 0.3s;
   &.exposed {
-    visibility:visible;
-    margin-left: rem-calc(-118px);
+    visibility  : visible;
+    margin-left : rem-calc(-118px);
   }
 }
 
 #orb-card-shadow-wrapper {
-  width:100%;
-  position: absolute;
-  background-repeat: no-repeat;
-  background-position: $orb-card-shadow-position;
-  background-size: $orb-card-shadow-size;
-  transition: background-image 0.5s;
+  width               : 100%;
+  position            : absolute;
+  background-repeat   : no-repeat;
+  background-position : $orb-card-shadow-position;
+  background-size     : $orb-card-shadow-size;
+  transition          : background-image 0.5s;
 }
 
-div.orb-card {
-  height           : $orb-card-height;
-  width            : $orb-card-width;
-  position         : relative;
-  margin-left      : $orb-card-margin-left; // just offset it a little for aesthetics
-  margin-top       : $float-pane-margin;
-  -webkit-perspective: 800px;
-          -moz-perspective: 800px;
-            -o-perspective: 800px;
-               perspective: 800px;
+div#orb-card {
+  height      : $orb-card-height;
+  width       : $orb-card-width;
+  margin-left : $orb-card-margin-left; // just offset it a little for aesthetics
+  margin-top  : $float-pane-margin;
+  z-index     : 999999;
 
-  z-index:999999;
+  section {
+    background-color : $white;
+    padding          : $orb-card-padding;
+  }
 }
-div#orb-card-3d-pane {
-  position:absolute;
-  width:100%;
-  height:100%;
-  -webkit-transition: -webkit-transform 1s opacity 0.3s;
-          -moz-transition: -moz-transform 1s;
-            -o-transition: -o-transform 1s;
-               transition: transform 1s;
-  -webkit-transform-style: preserve-3d;
-        -moz-transform-style: preserve-3d;
-          -o-transform-style: preserve-3d;
-             transform-style: preserve-3d;
-  &.flipped { transform: rotateY( 180deg ); }
-}
-
-section.orb-card-face {
-  display:block;
-  position:absolute;
-  width:100%;
-  height:100%;
-  background-color : $white;
-  padding: $orb-card-padding;
-  -webkit-backface-visibility: hidden;
-  -webkit-transform-style: preserve-3d;
-        -moz-transform-style: preserve-3d;
-          -o-transform-style: preserve-3d;
-             transform-style: preserve-3d;
-}
-#orb-card-back { transform: rotateY( 180deg );}
 
 .triangle-down {
   position     : absolute;
@@ -215,6 +190,7 @@ section.orb-card-face {
   height       : 0;
   border-left  : 12px solid transparent;
   border-right : 12px solid transparent;
+  z-index:9998;
 }
 
 .triangle-right {
@@ -228,52 +204,52 @@ section.orb-card-face {
 }
 
 ul.orb-card {
-  position:relative;
-  width          : 100%;
+  position : relative;
+  width    : 100%;
   li.orb-card-row {
-    height: $orb-card-row-height;
+    height        : $orb-card-row-height;
     margin-bottom : $float-pane-margin;
-    div.orb-card-content, div.orb-card-button { display:inline-block;}
+    div.orb-card-content, div.orb-card-button { display : inline-block; }
   }
   div.orb-card-button {
-    position: relative;
-    vertical-align: top;
+    position            : relative;
+    vertical-align      : top;
     width               : $orb-card-button-width;
     height              : $orb-card-button-height;
     background-repeat   : no-repeat;
     background-position : center;
-    cursor:pointer;
+    cursor              : pointer;
+    z-index:9999;
     &#favorite {
       background-color : $xtreme-yellow;
       background-image : url('../img/orb_card.icon.fav.png');
-      .triangle-down {border-top : 16px solid $xtreme-yellow;}
+      .triangle-down { border-top : 16px solid $xtreme-yellow; }
     }
     &#order {
       background-color : $xtreme-red;
       background-image : url('../img/orb_card.icon.cart.png');
-      .triangle-down {border-top : 16px solid $xtreme-red;}
+      .triangle-down { border-top : 16px solid $xtreme-red; }
     }
     &#like {
       background-color : $xtreme-blue;
       background-image : url('../img/orb_card.icon.like.png');
-      .triangle-right {border-left : 16px solid $xtreme-blue;}
+      .triangle-right { border-left : 16px solid $xtreme-blue; }
     }
     @include global-transition(background-color);
-    .triangle-down {@include global-transition(border-top);}
+    .triangle-down { @include global-transition(border-top); }
     &#favorite:hover, &#order:hover, &#like:hover {
-      background-color:$light-grey;
-      .triangle-right {border-left: 16px solid $light-grey;}
-      .triangle-down {border-top: 16px solid $light-grey;}
+      background-color : $light-grey;
+      .triangle-right { border-left : 16px solid $light-grey; }
+      .triangle-down { border-top : 16px solid $light-grey; }
     }
   }
 }
 
 div.orb-card-content {
-  width : $orb-card-content-width;
-  margin-left:$float-pane-margin;
-  position: relative;
-  height: $orb-card-row-height;
-
+  width       : $orb-card-content-width;
+  margin-left : $float-pane-margin;
+  position    : relative;
+  height      : $orb-card-row-height;
 
   &#description {
     background-color : $light-grey;
@@ -281,102 +257,112 @@ div.orb-card-content {
   }
   &#price-matrix {
     ul {
-      margin-top:-5px;
-      padding:0;
-      max-height:58px;
-      overflow-y: auto;
+      margin-top : -5px;
+      padding    : 0;
+      max-height : 58px;
+      overflow-y : auto;
       &::-webkit-scrollbar-track {
-      	box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
-        border-radius: 4px;
-      	background-color: $white;
+        box-shadow       : inset 0 0 3px rgba(0, 0, 0, 0.3);
+        border-radius    : 4px;
+        background-color : $white;
       }
       &::-webkit-scrollbar {
-      	width: 10px;
-      	background-color: $white;
+        width            : 10px;
+        background-color : $white;
       }
       &::-webkit-scrollbar-thumb {
-        border-radius: 4px;
-      	background-color: $xtreme-blue;
+        border-radius    : 4px;
+        background-color : $xtreme-blue;
       }
     }
     li {
       @include global-transition(background-color);
-      &:hover { background-color: $very-light-grey;}
+      &:hover { background-color : $very-light-grey; }
     }
     h4, li div {
-      width : 50%;
-      padding:0;
-      margin:0;
-      display:inline-block;
-      padding: 0.25rem ($orb-card-price-table-padding-right - $orb-card-scrollbar-width) 0 $orb-card-price-table-padding-left;
+      width   : 50%;
+      padding : 0;
+      margin  : 0;
+      display : inline-block;
+      padding : 0.25rem ($orb-card-price-table-padding-right - $orb-card-scrollbar-width) 0 $orb-card-price-table-padding-left;
     }
-    h4:last-of-type { padding-right: $orb-card-price-table-padding-right; }
-    &#orb-card-options { background-color:$text-grey; }
+    h4:last-of-type { padding-right : $orb-card-price-table-padding-right; }
+    &#orb-card-options { background-color : $text-grey; }
   }
 }
 
 #orb-card-stage-right-wrapper {
-  position   : absolute;
-  right      : 0;
-  top        : 0;
-  float      : right;
-  background-color: $xtreme-blue;
+  position         : absolute;
+  right            : 0;
+  top              : 0;
+  float            : right;
+  background-color : $xtreme-blue;
 }
+
 .orb-card-stage-right-menu {
   overflow-y : scroll;
   overflow-x : hidden;
-  width      : 600px;
+  width      : $orb-card-stage-menu-width;
   height     : $focus-pane-height;
-  &#toppings-list { float:right;}
-
+  float : right;
   li {
     position         : relative;
-    padding-left     : 200px;
+    padding-left     : $orb-card-stage-menu-padding-left;
     background-color : $xtreme-blue;
     box-shadow       : inset 15px -5px 8px $black-a33;
     font-size        : rem-calc(18);
-    height           : rem-calc(60);
-    line-height      : rem-calc(60);
-    cursor: pointer;
-    @include global-transition(background-color);
+    height           : $orb-card-stage-menu-item-height;
+    line-height      : $orb-card-stage-menu-item-height;
+    cursor           : pointer;
+    transition       : background-color 0.3s, color 0.3s;
     @include HelveticaBlkCn;
-    a, span { color : $white; }
+    a, span {
+      transition : color 0.3s, opacity 0.2s;
+      color      : $white;
+      &.fade-out { opacity : 0; }
+    }
     &.topping {
-    padding-right:rem-calc(25px);
-       a {
-         width:30px;
-         height:60px;
-         padding:3px;
-         float:right;
-         background-repeat:no-repeat;
-         background-position:center;
-       }
-       a.left-side { background-image: url('../img/topping_icon_left.png');}
-       a.right-side { background-image: url('../img/topping_icon_right.png');}
-       a.full { background-image: url('../img/topping_icon_full.png');}
-       a.double { background-image: url('../img/topping_icon_double.png');}
-     }
+      padding-right : rem-calc(25px);
+      a {
+        width               : 30px;
+        height              : 60px;
+        padding             : 3px;
+        float               : right;
+        background-repeat   : no-repeat;
+        background-position : center;
+      }
+      a.left-side { background-image : url('../img/topping_icon_left.png'); }
+      a.right-side { background-image : url('../img/topping_icon_right.png'); }
+      a.full { background-image : url('../img/topping_icon_full.png'); }
+      a.double { background-image : url('../img/topping_icon_double.png'); }
+    }
     &:hover { background-color : lighten($xtreme-blue, 15%); }
     &:first-of-type {
-      padding-top:10px;
+      padding: 0;
       box-shadow       : none;
-      background-color : $xtreme-red;
-      font-size        : rem-calc(36);
-      transition       : none;
-      cursor: default;
+      background-color : none;
+      cursor           : default;
+      div#active-orb-name-3d-container {
+        height: $orb-card-stage-menu-item-height;
+        width: $orb-card-stage-menu-width;
+        h2 {
+          background-color : $xtreme-red;
+          padding: rem-calc(10) 0 0 $orb-card-stage-menu-padding-left;
+          margin: 0;}
+      }
     }
     &.active {
       background-color : $xtreme-yellow;
       a, span {
-        color:$dark-grey;
-        cursor: default;
+        color  : $dark-grey;
+        cursor : default;
       }
       transition       : none;
-      cursor: default;
+      cursor           : default;
     }
+
   }
 }
-
 
 .orbcat-triangle-inner {
   width        : 0;
@@ -387,19 +373,21 @@ div.orb-card-content {
 }
 
 .orb-size-panel {
-  position: absolute;
-  width:100%;
-  padding: $orb-card-padding;
+  position : absolute;
+  width    : 100%;
+  padding  : $orb-card-padding;
   li {
     h3 {
-      padding-top: 0.25 * $h3-font-size;
-      background-color: $xtreme-blue;
-      transition: background-color 0.3s, color 0.3s;
-      &:hover { background-color:lighten($xtreme-blue, 15%);}
+      padding-top      : 0.25 * $h3-font-size;
+      background-color : $xtreme-blue;
+      transition       : background-color 0.3s, color 0.3s;
+      &:hover { background-color : lighten($xtreme-blue, 15%); }
     }
-      color:$white;
-     &.active {
-       h3 { background-color: $xtreme-yellow;}
-       color:$dark-grey;
-     };
-  }}
+    color : $white;
+    &.active {
+      h3 { background-color : $xtreme-yellow; }
+      color : $dark-grey;
+    }
+  ;
+  }
+}

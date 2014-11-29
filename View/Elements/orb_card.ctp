@@ -12,16 +12,16 @@
 	<div id="order-label" class="float-label"><h2>ORDER</h2></div>
 	<div id="like-label" class="float-label"><h2>LIKE</h2></div>
 	<div id="orb-card-shadow-wrapper">
-	<div class="orb-card">
-		<div id="orb-card-3d-pane">
-			<section id="orb-card-front" class="orb-card-face">
+	<div id="orb-card" class="html5-3d-perspective-container">
+		<div id="orb-card-3d-context" class="html5-3d-context preserve-3d">
+			<section id="orb-card-front" class="preserve-3d card-face">
 				<ul class="orb-card">
 				<!-- TOP  ROW --> <?php // every row has a button at left and content at right ;?>
 					<li class="orb-card-row">
-						<div id="favorite" class="orb-card-button float-labeled" data-float-label="favorite-label">
+						<div id="favorite" class="orb-card-button inline float-labeled" data-float-label="favorite-label">
 							<div class="triangle-down"></div>
 						</div
-						><div id="description" class="orb-card-content">
+						><div id="description" class="orb-card-content inline">
 							<p><?php echo $orb[ 'description' ]; ?></p>
 							<h4 id="hidden-description"><?php echo strtoupper($orb[ 'title' ]); ?></h4>
 						</div>
@@ -36,7 +36,7 @@
 						<div id="order" <?php echo ___cD($class_array);?> <?php echo ___dA($data_array);?>>
 							<div class="triangle-down"></div>
 						</div
-						><div id="price-matrix" class="orb-card-content">
+						><div id="price-matrix" class="orb-card-content inline">
 									<h4 id="price-matrix-size" class="text-left">SIZE</h4
 									><h4 id="price-matrix-price" class="text-right">PRICE</h4>
 							<ul class="price-matrix-content">
@@ -53,10 +53,10 @@
 						</div>
 					</li
 					><li class="orb-card-row">
-						<div id="like" class="orb-card-button float-labeled" data-float-label="like-label">
+						<div id="like" class="orb-card-button inline float-labeled" data-float-label="like-label">
 							<div class="triangle-right"></div>
 						</div
-						><div id="orb-card-options" class="orb-card-content">
+						><div id="orb-card-options" class="orb-card-content inline">
 							<ul class="large-block-grid-4">
 								<?php
 									if (is_array($orb['config'] && count($orb['config']) > 0) ) {
@@ -69,7 +69,7 @@
 					</li>
 				</ul>
 			</section>
-			<section id="orb-card-back" class="orb-card-face">
+			<section id="orb-card-back" class="preserve-3d card-face back-face-y">
 				<?php $class_array = array("orb-configuration",
 										  "orb-size-panel",
 										  "activizing",
