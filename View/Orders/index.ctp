@@ -12,7 +12,7 @@
 	</tr>
 	</thead>
 	<tbody>
-	<?php foreach ($orders as $order): ?>
+	<?php foreach ($orders as $order):  db($orders)?>
 	<tr>
 		<td><?php echo h($order['Order']['id']); ?>&nbsp;</td>
 		<td>

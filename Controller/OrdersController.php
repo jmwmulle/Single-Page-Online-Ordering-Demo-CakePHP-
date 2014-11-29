@@ -10,8 +10,8 @@ class OrdersController extends AppController {
 		#'Paypal',
 		#'AuthorizeNet'
 	);
-
-	public $uses = 'Orb';
+	
+	public $uses = array('Orb', 'Orbopt');
 
 	/**
 	 * index method
@@ -19,7 +19,7 @@ class OrdersController extends AppController {
 	 * @return void
 	 */
 		public function index() {
-			$this->Order->recursive = 0;
+			//$this->Order->recursive = 0;
 			$this->set('orders', $this->Paginator->paginate());
 		}
 
@@ -67,24 +67,26 @@ class OrdersController extends AppController {
 		public function add_to_cart() {
 			if ($this->request->is('ajax')) {
 				$this->layout = "ajax";
-				$id = $this->request->data['Orb']['id'];
-				$quantity = isset($this->request->data['Orb']['quantity']) ? $this->request->data['Orb']['quantity'] : null;
+				$id = isset($this->request->data['id']) ? $this->request->data['id'] : null;
+				$quantity = isset($this->request->data['quantity']) ? $this->request->data['quantity'] : null;
 				$price_rank = isset($this->request->data['price_rank']) ? $this->request->data['price_rank'] : null;
-				$orbopts = isset($this->request->data['Orb']['Orbopts']) ? $this->request->data['Orb']['Orbopts'] : null;
+				$orbopts = isset($this->request->data['Orbopts']) ? $this->request->data['Orbopts'] : null;
 				$product = $this->Cart->add($id, $quantity, $price_rank, $orbopts);
 			} elseif ($this->request->is('post')) {
-				$id = $this->request->data['Orb']['id'];
+				$id = isset($this->request->data['Orb']['identity']) ? $this->request->data['Orb']['identity'] : null;
 				$quantity = isset($this->request->data['Orb']['quantity']) ? $this->request->data['Orb']['quantity'] : null;
-				$price_rank = isset($this->request->data['price_rank']) ? $this->request->data['price_rank'] : null;
-				$orbopts = isset($this->request->data['Orb']['Orbopts']) ? $this->request->data['Orb']['Orbopts'] : null;
-				$product = $this->Cart->add($id, $quantity, $price_rank, $orbopts);
-
-			}
+				$price_rank = isset($this->request->data['Orb']['price_rank']) ? $this->request->data['Orb']['price_rank'] : null;
+				$orbopts = isset($this->request->data['Orb']['orbopts']) ? $this->request->data['Orb']['orbopts'] : null;
+				$product = $this->Cart->add($id, $quantity, $price_rank, array($orbopts));
+			} elseif ($this->request->is('get')) {
+				$this->render();
+				return;
+			} 
 			if(!empty($product)) {
 				$this->set("response", json_encode(array("orb" => $product, "success" => true, "cart_total" => "pending")));
 				$this->Session->setFlash($product['Orb']['title'] . ' was added to your shopping cart.', 'flash_success');
 			} else {
-				$this->Session->setFlash('Unable to add this product to your shopping cart.', 'flash_error');
+				$this->set("response", json_encode(array("orb" => null, "success" => false, "cart_total" => null)));
 			}
 			//$this->redirect($this->referer());
 		}
@@ -155,7 +157,7 @@ class OrdersController extends AppController {
 	public function itemupdate() {
 		if ($this->request->is('ajax')) {
 
-			$id = $this->request->data['id'];
+			$id = isset($this->request->data['id']) ? $this->request->data['id'] : null;
 
 			$quantity = isset($this->request->data['quantity']) ? $this->request->data['quantity'] : null;
 

@@ -10,8 +10,8 @@
 echo $response;
 ?>
 
-<?php echo $this->Form->create(NULL, array('url' => array('controller' => 'Orders', 'action' => 'add_to_cart'))); ?>
-<?php echo $this->Form->input('id'); ?>
+<?php echo $this->Form->create(Null, array('url' => array('controller' => 'Orders', 'action' => 'add_to_cart'))); ?>
+<?php echo $this->Form->input('identity'); ?>
 <?php echo $this->Form->input('quantity'); ?>
 <?php echo $this->Form->input('price_rank'); ?>
 <?php echo $this->Form->input('orbopts'); ?>

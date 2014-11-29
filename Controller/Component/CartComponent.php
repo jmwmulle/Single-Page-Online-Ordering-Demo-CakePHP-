@@ -28,15 +28,8 @@ class CartComponent extends Component {
 
 //////////////////////////////////////////////////
 
-	public function add($id, $quantity = 1, $price_rank = 0, $Orbopts = null) {
-		if($Orbopts) {
-			$orbopts = ClassRegistry::init('Orbopts')->find('first', array(
-				'recursive' => -1,
-				'conditions' => array(
-					'Orbopts.id' => $Orbopts,
-				)
-			));
-	        }
+	public function add($id, $quantity = 1, $price_rank = 0, $orbopts_list = null) {
+		
 
 		if(!is_numeric($quantity)) {
 			$quantity = 1;
@@ -52,47 +45,50 @@ class CartComponent extends Component {
 			$this->remove($id);
 			return;
 		}
-
 		$product = $this->controller->Orb->find('first', array(
 			'conditions' => array(
 				'Orb.id' => $id
 			)
 		));
+
+		if($orbopts_list) {
+			foreach ($orbopts_list as $orbopt_id) {
+				$this->controller->Orbopt->Behaviors->load('Containable');
+				$orbopts[$orbopt_id] = $this->controller->Orbopt->find('first', array(
+					'recursive' => 1,
+					'conditions' => array(
+						'Orbopt.id' => $orbopt_id,
+					),
+					'contain' => array(
+						'Pricelist',
+					),
+				));
+			}
+	        }
+		
 		if(empty($product)) {
 			return false;
 		}
 
-		if($this->Session->check('Cart.OrderItem.' . $id . '.Orb.productmod_name')) {
-			$orbopts['Orbopts']['id'] = $this->Session->read('Cart.OrderItem.' . $id . '.Orb.Orbopts');
-			$orbopts['Orbopts']['title'] = $this->Session->read('Cart.OrderItem.' . $id . '.Orb.productmod_name');
-			$orbopts['Orbopts']['price_matrix'] = $this->Session->read('Cart.OrderItem.' . $id . '.Orb.price');
-
+		$opts_prices = 0;
+		if($orbopts) {
+			foreach($orbopts as $orbopt) {
+				$opts_by_val = array_values($orbopt['Pricelist']);
+				$opts_prices += $opts_by_val[$price_rank];
+			}
 		}
 
-		if(isset($orbopts)) {
-			$product['Orb']['Orbopts'] = $orbopts['Orbopts']['id'];
-			$product['Orb']['pricedict'] = $orbopts['Orbopts']['title'];
-			$product['Orb']['price_matrix'] = $orbopts['Orbopts']['price_matrix'];
-			$Orbopts = $orbopts['Orbopts']['id'];
-			$data['Orbopts'] = $product['Orb']['Orbopts'];
-			$data['productmod_name'] = $product['Orb']['productmod_name'];
-		} else {
-			$product['Orb']['Orbopts'] = '';
-			$product['Orb']['productmod_name'] = '';
-			$Orbopts = 0;
-			$data['Orbopts'] = '';
-			$data['productmod_name'] = '';
-		}
-
-		$prices = json_decode($product['Orb']['price_matrix'],true);
+		$prices = array_values($product['Pricelist']);
 
 		$data['product_id'] = $product['Orb']['id'];
 		$data['title'] = $product['Orb']['title'];
-		$data['price'] = $prices['9in'];
+		$data['price'] = $prices[$price_rank];
+		$data['opts_prices'] = $opts_prices;
 		$data['quantity'] = $quantity;
-		$data['subtotal'] = sprintf('%01.2f', $prices['9in'] * $quantity);
+		$data['subtotal'] = sprintf('%01.2f', ($data['price'] + $data['opts_prices']) * $quantity);
+		$data['price_rank'] = $price_rank;
 		$data['Orb'] = $product['Orb'];
-		$this->Session->write('Cart.OrderItem.' . $id . '_' . $Orbopts, $data);
+		$this->Session->write('Cart.OrderItem.' . $id, $data);
 		$this->Session->write('Cart.Order.shop', 1);
 
 		$this->Cart = ClassRegistry::init('Cart');
@@ -101,14 +97,16 @@ class CartComponent extends Component {
 		$cartdata['Cart']['quantity'] = $quantity;
 		$cartdata['Cart']['product_id'] = $product['Orb']['id'];
 		$cartdata['Cart']['title'] = $product['Orb']['title'];
-		$cartdata['Cart']['price'] = $prices['9in'];
-		$cartdata['Cart']['subtotal'] = sprintf('%01.2f', $prices['9in'] * $quantity);
+		$cartdata['Cart']['price'] = $prices[$price_rank]+$opts_prices;
+		$cartdata['Cart']['price_rank'] = $price_rank;
+		$cartdata['Cart']['subtotal'] = sprintf('%01.2f', ($cartdata['Cart']['price']) * $quantity);
 
 		$existing = $this->Cart->find('first', array(
 			'recursive' => -1,
 			'conditions' => array(
 				'Cart.sessionid' => $this->Session->id(),
 				'Cart.product_id' => $product['Orb']['id'],
+				'Cart.price_rank' => $price_rank,
 			)
 		));
 		if($existing) {
@@ -152,17 +150,23 @@ class CartComponent extends Component {
 		$subtotal = 0;
 		$total = 0;
 		$order_item_count = 0;
+		$HST_MULT = 0.15;
+		$HST = 0;
+		$delivery = 3.00;
 
 		if (count($cart['OrderItem']) > 0) {
 			foreach ($cart['OrderItem'] as $item) {
 				$quantity += $item['quantity'];
 				$subtotal += $item['subtotal'];
-				$total += $item['subtotal'];
+				$HST += $item['subtotal']*$HST_MULT;
 				$order_item_count++;
 			}
+			$total = $subtotal+$HST+$delivery;
 			$d['order_item_count'] = $order_item_count;
 			$d['quantity'] = $quantity;
 			$d['subtotal'] = sprintf('%01.2f', $subtotal);
+			$d['HST'] = sprintf('%01.2f', $HST);
+			$d['delivery'] = sprintf('%01.2f', $delivery);
 			$d['total'] = sprintf('%01.2f', $total);
 			$this->Session->write('Cart.Order', $d + $cart['Order']);
 			return true;
