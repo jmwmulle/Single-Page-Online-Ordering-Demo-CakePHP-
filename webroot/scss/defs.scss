@@ -37,8 +37,10 @@
 @mixin global-transition($attr) {
   transition: $attr 0.3s ease-out;
 }
-
-$base-pad-size: rem-calc(15px);
+$global-transition-time: 0.3s;
+$base-padding : rem-calc(15px);
+$medium-padding: ($base-padding/3) * 2;
+$tight-padding: $base-padding/3;
 
 /* TYPOGRAPHY */
 $body-font-size: 1rem;
@@ -66,7 +68,7 @@ $big-radius: 16px;
 $float-pane-margin: rem-calc(20px);
 $float-pane-border-width: rem-calc(8px);
 $menu-top-padding: $topnav-height + $float-pane-margin;
-$menu-height: rem-calc(780px);
+$menu-height: rem-calc(600px);
 $menu-row-height: 0.5 * ($menu-height - 1.5 * $float-pane-margin);
 
   // ORBCAT MENU
@@ -94,6 +96,7 @@ $user-activity-panel-font-size: 0.2 * $user-activity-panel-width;
   // ORB CARD STAGE
 $orb-card-wrapper-width: $row-width - $column-gutter;
 $orb-card-wrapper-height: $menu-row-height;
+$orb-card-wrapper-inner-height: $orb-card-wrapper-height - 2 * $float-pane-border-width;
 $orb-card-wrapper-margin: $float-pane-margin 0 $float-pane-shadow-size 0;
 $min-orb-list-width: 0.33333 * $orb-card-wrapper-width;
 $orb-card-stage-height: $menu-row-height; // todo: media queries yo
@@ -101,25 +104,33 @@ $orb-card-stage-width: $orb-card-wrapper-width - $min-orb-list-width;
 $orb-card-stage-border-width: 0.75 * $float-pane-border-width;
 $orb-card-stage-border: $orb-card-stage-border-width solid $white;
 $orb-card-stage-menu-width: 0.5 * $orb-card-wrapper-width;
+$orb-card-stage-menu-height: $orb-card-wrapper-inner-height;
 $orb-card-stage-menu-item-height: 0.2 * ($orb-card-stage-height - 2 * $orb-card-stage-border-width);
 $orb-card-stage-menu-padding-left: 0.33333 * $orb-card-stage-menu-width;
 
   // ORB CARD
 $orb-card-width:  0.5 * $orb-card-wrapper-width;
-$orb-card-height: 0.533333 * $orb-card-width;
+$orb-card-height: (0.9 * $orb-card-wrapper-height) - $float-pane-border-width; //$orb-card-wrapper-height - 2 * $float-pane-margin;
 $orb-card-padding: rem-calc(10px);
 $orb-card-inner-width: $orb-card-width - (2 * $orb-card-padding);
 $orb-card-margin-left: 0.5 * $user-activity-panel-width;
+$orb-card-vertical-margin:  0.05 * $orb-card-wrapper-height;
+$orb-card-margin: $orb-card-vertical-margin 0 $orb-card-vertical-margin $orb-card-margin-left;
 $orb-card-shadow-position:  ($orb-card-margin-left - (0.107 * $orb-card-width)) ($orb-card-height - rem-calc(4px) );
 $orb-card-shadow-size: $orb-card-width * 1.2 rem-calc(25px) ; // ie. 10% width of orbcard in both directions;
-$orb-card-row-height:rem-calc(85px);
+$orb-card-row-height: ($orb-card-height - 4 * $orb-card-vertical-margin) / 3;
 $orb-card-button-width:$orb-card-row-height;
 $orb-card-button-height:$orb-card-row-height;
 $orb-card-content-width: $orb-card-inner-width - $orb-card-button-width - $float-pane-margin; // float-pane-margin is used as button/content separation width
 $orb-card-scrollbar-width: rem-calc(10px);
 $orb-card-price-table-padding-left: rem-calc(15px);
 $orb-card-price-table-padding-right: $orb-card-price-table-padding-left + $orb-card-scrollbar-width;
-
+$triangle-border-width: rem-calc(12px);
+$triangle-extrude-position: -1 * $triangle-border-width;
+$triangle-center-position: 0.5 * $orb-card-button-width - $triangle-border-width;
+$price-matrix-header-padding: 0 ($orb-card-price-table-padding-right - $orb-card-scrollbar-width) 0 $orb-card-price-table-padding-left;
+$price-matrix-header-height: $h5-font-size;
+$price-matrix-max-height: $orb-card-row-height - $price-matrix-header-height;
 
 /*  MONTHLY  CONTENT  */
 $monthly-content-wrapper-width: $row-width - ($column-gutter + $orbcat-menu-width + 2 * $float-pane-margin + $user-activity-panel-width);

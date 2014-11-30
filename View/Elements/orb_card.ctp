@@ -31,16 +31,16 @@
 						<?php $data_array = array("orb-id" => $orb['id'],
 						                          "price-rank" => floor(count($orb['price_table'])/2),
 						                          "float-label" => "order-label");
-							$class_array = array("orb-card-button", "add-to-cart", "float-labeled");
+							$class_array = array("orb-card-button", "add-to-cart", "float-labeled", "inline");
 						?>
 						<div id="order" <?php echo ___cD($class_array);?> <?php echo ___dA($data_array);?>>
 							<div class="coming-soon-fill"></div>
 							<div class="triangle"></div>
 						</div
 						><div id="price-matrix" class="orb-card-content inline">
-									<h4 id="price-matrix-size" class="text-left">SIZE</h4
-									><h4 id="price-matrix-price" class="text-right">PRICE</h4>
-							<ul class="price-matrix-content">
+									<h5 id="price-matrix-size" class="text-left price-matrix-header">SIZE</h5
+									><h5 id="price-matrix-price" class="text-right price-matrix-header">PRICE</h5
+							><ul class="price-matrix-content">
 							<?php foreach ( $orb[ 'price_table' ] as $opt => $price ) {
 								$data_array = array("orb-id" => $orb['id'],
 								                    "price-rank" => array_search($opt, array_keys($orb[ 'price_table' ])));

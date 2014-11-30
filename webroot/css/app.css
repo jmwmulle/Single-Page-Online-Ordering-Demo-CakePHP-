@@ -4953,37 +4953,37 @@ th.hide-for-touch {
   font-family: "Helvetica Neue Light Condensed", arial, sans-serif;
   transition: color 0.3s, font-family 0.3s;
   text-align: center;
-  line-height: 1.54297rem;
-  padding-top: 1.54297rem;
-  width: 6.17188rem;
-  height: 6.17188rem;
-  font-size: 1.23438rem; }
+  line-height: 1.19141rem;
+  padding-top: 1.19141rem;
+  width: 4.76562rem;
+  height: 4.76562rem;
+  font-size: 0.95312rem; }
   #user-activity-panel a:hover {
     color: black; }
 #user-activity-panel li.active a {
   font-family: "Helvetica Neue Medium Condensed", arial, sans-serif; }
 #user-activity-panel h2 {
   font-size: 1.6875rem;
-  line-height: 6.17188rem; }
+  line-height: 4.76562rem; }
 
 /*           ORBCAT MENU         */
 #orbcat-menu-title h1 {
   text-align: left;
   letter-spacing: -0.1875rem;
-  font-size: 4.6875rem;
-  line-height: 6.09375rem;
+  font-size: 3.5625rem;
+  line-height: 4.63125rem;
   color: white; }
 
 li.orbcat {
-  line-height: 8.78906rem;
+  line-height: 6.67969rem;
   text-align: center; }
   li.orbcat a {
-    transition: color 0.3s ease-out;
+    transition: color 0.3s;
     font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
     color: white;
     font-size: 0.875rem;
-    line-height: 2.34375rem; }
-  li.orbcat:hover a, li.orbcat .active a {
+    line-height: 1.78125rem; }
+  li.orbcat:hover a, li.orbcat.active a {
     color: #faea06; }
 
 /*          ORB CARD            */
@@ -5006,7 +5006,7 @@ div.orb-card-content#description {
 div.orb-card-content#price-matrix {
   font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
   color: #373737; }
-  div.orb-card-content#price-matrix h4 {
+  div.orb-card-content#price-matrix h5 {
     color: #e02027; }
 div.orb-card-content#orb-card-options {
   background-color: #373737; }
@@ -5442,8 +5442,8 @@ a.close-splash-modal {
 #monthly-content-wrapper {
   position: relative;
   float: left;
-  height: 23.4375rem;
-  width: 14.45312rem;
+  height: 17.8125rem;
+  width: 15.85938rem;
   vertical-align: top; }
 
 html, nav, body, main, footer {
@@ -5470,13 +5470,13 @@ main#menu {
 ul#user-activity-panel {
   position: relative;
   float: left;
-  width: 6.17188rem;
+  width: 4.76562rem;
   vertical-align: top;
   margin: -1.25rem 0 0 0; }
   ul#user-activity-panel li {
     transition: background-color 0.3s, background-image 0.3s;
-    width: 6.17188rem;
-    height: 6.17188rem;
+    width: 4.76562rem;
+    height: 4.76562rem;
     background-color: rgba(0, 0, 0, 0.25);
     border: 1px solid black;
     border-top: none; }
@@ -5502,7 +5502,7 @@ ul#orbcat-menu {
   float: left;
   position: relative;
   width: 50rem;
-  height: 23.4375rem;
+  height: 17.8125rem;
   margin: 0 1.25rem;
   vertical-align: top;
   background: #e02027;
@@ -5523,11 +5523,11 @@ ul#orbcat-menu {
   /* IE6-9 fallback on horizontal gradient */ }
 
 li.orbcat {
-  height: 5.85938rem;
+  height: 4.45312rem;
   cursor: pointer;
   background-repeat: no-repeat;
   background-position: center 0.3125rem;
-  background-size: 3.51562rem;
+  background-size: 2.67188rem;
   transition: background-image 0.3s; }
   li.orbcat.original-pizzas {
     background-image: url("../img/orbcat_icons/original-pizzas.png"); }
@@ -5566,8 +5566,8 @@ li.orbcat {
   li.orbcat.desserts {
     background-image: url("../img/orbcat_icons/desserts.png"); }
   li.orbcat a {
-    height: 2.34375rem;
-    margin-top: 7.03125rem; }
+    height: 1.78125rem;
+    margin-top: 5.34375rem; }
   li.orbcat:hover.original-pizzas, li.orbcat.active.original-pizzas {
     background-image: url("../img/orbcat_icons/original-pizzas.hover.png"); }
   li.orbcat:hover.super-pizzas, li.orbcat.active.super-pizzas {
@@ -5610,9 +5610,9 @@ li.orbcat {
   position: relative;
   padding: 0;
   bottom: 0;
-  left: 0.9375rem;
-  transform: translateY(0.9375rem);
-  height: 4.6875rem; }
+  left: 1rem;
+  transform: translateY(0.7125rem);
+  height: 3.5625rem; }
   #orbcat-menu-title h1 {
     padding: 0;
     margin: 0; }
@@ -5624,7 +5624,7 @@ li.orbcat {
 ***************************************************************/
 #orb-card-wrapper {
   position: relative;
-  height: 23.4375rem;
+  height: 17.8125rem;
   width: 73.125rem;
   background-color: #0779be;
   margin: 1.25rem 0 3.125rem 0; }
@@ -5639,7 +5639,7 @@ li.orbcat {
   border: 0.375rem solid white;
   border-top-right-radius: 1000px;
   border-bottom-right-radius: 1000px;
-  height: 23.4375rem;
+  height: 17.8125rem;
   background-color: #d2d2d2;
   background: whitesmoke;
   /* Old browsers */
@@ -5662,30 +5662,21 @@ li.orbcat {
   visibility: hidden;
   position: absolute;
   z-index: 10;
-  width: 19.49999rem;
+  width: 15.53125rem;
   transform: rotate(270deg);
   margin-left: 0;
   left: 0;
-  bottom: 9.28124rem;
+  bottom: 7.29688rem;
   text-align: center;
   transition: visibility 0.2s, margin-left 0.3s; }
   .float-label.exposed {
     visibility: visible;
     margin-left: -7.375rem; }
 
-#orb-card-shadow-wrapper {
-  width: 100%;
-  position: absolute;
-  background-repeat: no-repeat;
-  background-position: -0.82625rem 19.24999rem;
-  background-size: 43.875rem 1.5625rem;
-  transition: background-image 0.5s; }
-
 div#orb-card {
-  height: 19.49999rem;
+  height: 15.53125rem;
   width: 36.5625rem;
-  margin-left: 3.08594rem;
-  margin-top: 1.25rem;
+  margin: 0.89062rem 0 0.89062rem 2.38281rem;
   z-index: 999999; }
   div#orb-card section {
     background-color: white;
@@ -5693,37 +5684,36 @@ div#orb-card {
 
 .triangle {
   position: absolute;
-  bottom: -12px;
-  left: 30px;
+  bottom: -0.75rem;
+  left: 1.24479rem;
   width: 0;
   height: 0;
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
+  border-left: 0.75rem solid transparent;
+  border-right: 0.75rem solid transparent;
+  margin-left: auto;
+  margin-left: right;
   z-index: 1; }
-
-.tr-right {
-  left: 80px;
-  top: 35px;
-  transform: rotate(-90deg); }
+  .triangle.tr-right {
+    right: -1rem;
+    top: 1.65972rem;
+    transform: rotate(-90deg); }
 
 ul.orb-card {
   position: relative;
   width: 100%; }
   ul.orb-card li.orb-card-row {
-    height: 5.3125rem;
+    height: 3.98958rem;
     margin-bottom: 1.25rem; }
-    ul.orb-card li.orb-card-row div.orb-card-content, ul.orb-card li.orb-card-row div.orb-card-button {
-      display: inline-block; }
   ul.orb-card div.orb-card-button {
     position: relative;
     vertical-align: top;
-    width: 5.3125rem;
-    height: 5.3125rem;
+    width: 3.98958rem;
+    height: 3.98958rem;
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
     z-index: 9999;
-    transition: background-color 0.3s ease-out; }
+    transition: background-color 0.3s; }
     ul.orb-card div.orb-card-button#favorite {
       background-color: #faea06;
       background-image: url('../img/orb_card.icon.fav.png'); }
@@ -5747,24 +5737,24 @@ ul.orb-card {
         border-top-color: #b4b4b4; }
 
 div.orb-card-content {
-  width: 28.75rem;
+  width: 30.07292rem;
   margin-left: 1.25rem;
   position: relative;
-  height: 5.3125rem; }
+  height: 3.98958rem; }
   div.orb-card-content#description {
     background-color: #b4b4b4;
     padding: 0.625rem; }
   div.orb-card-content#price-matrix ul {
     margin-top: -5px;
     padding: 0;
-    max-height: 58px;
+    max-height: 2.86458rem;
     overflow-y: auto; }
     div.orb-card-content#price-matrix ul::-webkit-scrollbar-track {
       box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
       border-radius: 4px;
       background-color: white; }
     div.orb-card-content#price-matrix ul::-webkit-scrollbar {
-      width: 10px;
+      width: 0.625rem;
       background-color: white; }
     div.orb-card-content#price-matrix ul::-webkit-scrollbar-thumb {
       border-radius: 4px;
@@ -5773,13 +5763,15 @@ div.orb-card-content {
     transition: background-color 0.3s ease-out; }
     div.orb-card-content#price-matrix li:hover {
       background-color: #e1e1e1; }
-  div.orb-card-content#price-matrix h4, div.orb-card-content#price-matrix li div {
+  div.orb-card-content#price-matrix h5 {
+    height: 1.125rem; }
+  div.orb-card-content#price-matrix h5, div.orb-card-content#price-matrix li div {
     width: 50%;
     padding: 0;
     margin: 0;
     display: inline-block;
-    padding: 0.25rem 0.9375rem 0 0.9375rem; }
-  div.orb-card-content#price-matrix h4:last-of-type {
+    padding: 0 0.9375rem 0 0.9375rem; }
+  div.orb-card-content#price-matrix h5:last-of-type {
     padding-right: 1.5625rem; }
   div.orb-card-content#price-matrix#orb-card-options {
     background-color: #373737; }
@@ -5795,7 +5787,7 @@ div.orb-card-content {
   overflow-y: scroll;
   overflow-x: hidden;
   width: 36.5625rem;
-  height: 22.5rem;
+  height: 16.8125rem;
   float: right; }
   .orb-card-stage-right-menu li {
     position: relative;
@@ -5803,8 +5795,8 @@ div.orb-card-content {
     background-color: #0779be;
     box-shadow: inset 15px -5px 8px rgba(0, 0, 0, 0.33);
     font-size: 1.125rem;
-    height: 4.5375rem;
-    line-height: 4.5375rem;
+    height: 3.4125rem;
+    line-height: 3.4125rem;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
     font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
@@ -5838,7 +5830,7 @@ div.orb-card-content {
       background-color: none;
       cursor: default; }
       .orb-card-stage-right-menu li:first-of-type div#active-orb-name-3d-container {
-        height: 4.5375rem;
+        height: 3.4125rem;
         width: 36.5625rem; }
         .orb-card-stage-right-menu li:first-of-type div#active-orb-name-3d-container h2 {
           background-color: #e02027;

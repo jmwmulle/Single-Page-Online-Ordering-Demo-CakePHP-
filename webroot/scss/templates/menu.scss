@@ -33,7 +33,7 @@ ul#user-activity-panel {
   margin: $user-activity-margin;
 
   li {
-    transition: background-color 0.3s, background-image 0.3s;
+    transition: background-color $global-transition-time, background-image $global-transition-time;
     a { @include global-transition(color); }
     width            : $user-activity-panel-width;
     height           : $user-activity-panel-height;
@@ -77,7 +77,7 @@ li.orbcat {
   background-repeat   : no-repeat;
   background-position : center rem-calc(5px);
   background-size     : $orbcat-menu-icon-size;
-  transition: background-image 0.3s;
+  transition: background-image $global-transition-time;
   &.original-pizzas { background-image : url("../img/orbcat_icons/original-pizzas.png"); }
   &.super-pizzas { background-image : url("../img/orbcat_icons/super-pizzas.png"); }
   &.specialty-pizzas { background-image : url("../img/orbcat_icons/specialty-pizzas.png"); }
@@ -127,7 +127,7 @@ li.orbcat {
   position : relative;
   padding  : 0;
   bottom   : 0;
-  left     : $base-pad-size;
+  left     : $base-padding;
   transform: $orbcat-menu-title-y-adjust;
   height: $orbcat-menu-title-height;
 
@@ -176,27 +176,17 @@ li.orbcat {
   left        : 0;
   bottom      : ($orb-card-height - $float-pane-margin)/2 + rem-calc(2.5px);
   text-align  : center;
-  transition  : visibility 0.2s, margin-left 0.3s;
+  transition  : visibility 0.2s, margin-left $global-transition-time;
   &.exposed {
     visibility  : visible;
     margin-left : rem-calc(-118px);
   }
 }
 
-#orb-card-shadow-wrapper {
-  width               : 100%;
-  position            : absolute;
-  background-repeat   : no-repeat;
-  background-position : $orb-card-shadow-position;
-  background-size     : $orb-card-shadow-size;
-  transition          : background-image 0.5s;
-}
-
 div#orb-card {
   height      : $orb-card-height;
   width       : $orb-card-width;
-  margin-left : $orb-card-margin-left; // just offset it a little for aesthetics
-  margin-top  : $float-pane-margin;
+  margin  : $orb-card-margin;
   z-index     : 999999;
 
   section {
@@ -207,19 +197,20 @@ div#orb-card {
 
 .triangle {
   position     : absolute;
-  bottom       : -12px;
-  left         : 30px;
+  bottom       : $triangle-extrude-position;
+  left         : $triangle-center-position;
   width        : 0;
   height       : 0;
-  border-left  : 12px solid transparent;
-  border-right : 12px solid transparent;
+  border-left  : $triangle-border-width solid transparent;
+  border-right : $triangle-border-width solid transparent;
+  margin-left:auto;
+  margin-left:right;
   z-index:1;
-}
-
-.tr-right {
-  left          : 80px;
-  top           : 35px;
-  transform: rotate(-90deg);
+  &.tr-right {
+    right          : $triangle-extrude-position * 1.333333; // on account of the rotation
+    top           : $triangle-center-position * 1.333333;
+    transform: rotate(-90deg);
+  }
 }
 
 ul.orb-card {
@@ -228,7 +219,6 @@ ul.orb-card {
   li.orb-card-row {
     height        : $orb-card-row-height;
     margin-bottom : $float-pane-margin;
-    div.orb-card-content, div.orb-card-button { display : inline-block; }
   }
   div.orb-card-button {
     position            : relative;
@@ -255,8 +245,8 @@ ul.orb-card {
       background-image : url('../img/orb_card.icon.like.png');
       .triangle { border-top : 16px solid $xtreme-blue; }
     }
-    @include global-transition(background-color);
-    .triangle { transition: border-top-color 0.3s; }
+    transition: background-color $global-transition-time;
+    .triangle { transition: border-top-color $global-transition-time; }
     &#favorite:hover, &#order:hover, &#like:hover {
       background-color : $light-grey;
       .triangle { border-top-color: $light-grey; }
@@ -272,13 +262,13 @@ div.orb-card-content {
 
   &#description {
     background-color : $light-grey;
-    padding          : rem-calc(10px);
+    padding          : $medium-padding;
   }
   &#price-matrix {
     ul {
       margin-top : -5px;
       padding    : 0;
-      max-height : 58px;
+      max-height : $price-matrix-max-height;
       overflow-y : auto;
       &::-webkit-scrollbar-track {
         box-shadow       : inset 0 0 3px rgba(0, 0, 0, 0.3);
@@ -286,7 +276,7 @@ div.orb-card-content {
         background-color : $white;
       }
       &::-webkit-scrollbar {
-        width            : 10px;
+        width            : $medium-padding;
         background-color : $white;
       }
       &::-webkit-scrollbar-thumb {
@@ -298,14 +288,15 @@ div.orb-card-content {
       @include global-transition(background-color);
       &:hover { background-color : $very-light-grey; }
     }
-    h4, li div {
+    h5 { height: $price-matrix-header-height;}
+    h5, li div {
       width   : 50%;
       padding : 0;
       margin  : 0;
       display : inline-block;
-      padding : 0.25rem ($orb-card-price-table-padding-right - $orb-card-scrollbar-width) 0 $orb-card-price-table-padding-left;
+      padding : $price-matrix-header-padding;
     }
-    h4:last-of-type { padding-right : $orb-card-price-table-padding-right; }
+    h5:last-of-type { padding-right : $orb-card-price-table-padding-right; }
     &#orb-card-options { background-color : $text-grey; }
   }
 }
@@ -322,7 +313,7 @@ div.orb-card-content {
   overflow-y : scroll;
   overflow-x : hidden;
   width      : $orb-card-stage-menu-width;
-  height     : $focus-pane-height;
+  height     : $orb-card-stage-menu-height;
   float : right;
 
   li {
@@ -334,10 +325,10 @@ div.orb-card-content {
     height           : $orb-card-stage-menu-item-height;
     line-height      : $orb-card-stage-menu-item-height;
     cursor           : pointer;
-    transition       : background-color 0.3s, color 0.3s;
+    transition       : background-color $global-transition-time, color $global-transition-time;
     @include HelveticaBlkCn;
     a, span {
-      transition : color 0.3s, opacity 0.2s;
+      transition : color $global-transition-time, opacity 0.2s;
       color      : $white;
       &.fade-out { opacity : 0; }
     }
@@ -400,7 +391,7 @@ div.orb-card-content {
     h3 {
       padding-top      : 0.25 * $h3-font-size;
       background-color : $xtreme-blue;
-      transition       : background-color 0.3s, color 0.3s;
+      transition       : background-color $global-transition-time, color $global-transition-time;
       &:hover { background-color : lighten($xtreme-blue, 15%); }
     }
     color : $white;

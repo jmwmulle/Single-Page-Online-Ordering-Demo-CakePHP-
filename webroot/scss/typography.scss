@@ -120,13 +120,13 @@ li.orbcat {
   line-height : 1.5 * $orbcat-menu-item-height;
   text-align  : center;
   a {
-    @include global-transition(color);
+    transition: color $global-transition-time;
     @include HelveticaMdCn;
     color       : $body-font-color;
     font-size   : rem-calc(14px);
     line-height : 0.1 * $orbcat-menu-height;
   }
-  &:hover, .active {
+  &:hover, &.active {
     a { color : $xtreme-yellow; }
   }
 
@@ -156,7 +156,7 @@ div.orb-card-content {
   &#price-matrix {
     @include HelveticaMdCn;
     color: $text-grey;
-    h4 {
+    h5 {
       color : $xtreme-red;
     }
     li div{
