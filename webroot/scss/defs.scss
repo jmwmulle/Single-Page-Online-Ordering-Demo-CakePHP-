@@ -38,16 +38,22 @@
   transition: $attr 0.3s ease-out;
 }
 
+$base-pad-size: rem-calc(15px);
+
 /* TYPOGRAPHY */
+$body-font-size: 1rem;
 $button-font-family: "Helvetica Neue Condensed Black";
-//-------------------------------------------------------------------------------------------------------------TEMPLATES
+
+//-------------------------------------------------------------------------------------------------------------STRUCTURE
 $topnav-height: rem-calc(65px);
 $topnav-h1-padding: 0 0 0 0;
-$topnav-h1-margin: (0.9*$topnav-height - $h1-font-size)/2 rem-calc(10px) 0 rem-calc(10px);
+$topnav-h1-margin: (0.9 * $topnav-height - $h1-font-size)/2 rem-calc(10px) 0 rem-calc(10px);
 $topnav-h1-height: $topnav-height - $topnav-h1-padding - $topnav-h1-margin;
 
 $focus-pane-height: rem-calc(360);
 
+$float-pane-shadow-size: rem-calc(50px);
+$float-pane-shadow-offset: rem-calc(8px);
 
 /*  SPLASH  */
 $splash-content-height: 80%;
@@ -59,27 +65,46 @@ $big-radius: 16px;
 /*   MENU   */
 $float-pane-margin: rem-calc(20px);
 $float-pane-border-width: rem-calc(8px);
+$menu-top-padding: $topnav-height + $float-pane-margin;
+$menu-height: rem-calc(780px);
+$menu-row-height: 0.5 * ($menu-height - 1.5 * $float-pane-margin);
+
+  // ORBCAT MENU
+$orbcat-margin: 0 $float-pane-margin;
 $orbcat-border-width: 1px;
 $orbcat-border-factor: 10%;
 $orbcat-border-factor-2: 15%;
-$orbcat-menu-width: rem-calc(800px);
-$orbcat-menu-height: rem-calc(380px);
+$orbcat-menu-width: 2 * ($row-width / 3);
+$orbcat-menu-height: $menu-row-height;
 $orbcat-menu-item-height: 0.25 * $orbcat-menu-height;
 $orbcat-menu-icon-size: 0.15 * $orbcat-menu-height;
 $orbcat-menu-title-font-size: 0.2 * $orbcat-menu-height;
+$orbcat-menu-title-height: 0.2 * $orbcat-menu-height;
+$orbcat-menu-title-y-adjust: translateY(0.2 * $orbcat-menu-title-height);
 $orbcat-menu-anchor-height: 0.1 * $orbcat-menu-height;
 $orbcat-menu-margin-top: 0.3 * $orbcat-menu-height;
-$user-activity-height: $orbcat-menu-height + $float-pane-margin;
+
+  // USER ACTIVITY AREA
+$user-activity-margin: -1 * $float-pane-margin 0 0 0;
+$user-activity-height: $menu-row-height + $float-pane-margin;
 $user-activity-panel-width: 0.25 * $user-activity-height;
 $user-activity-panel-height: $user-activity-panel-width;
 $user-activity-panel-font-size: 0.2 * $user-activity-panel-width;
-$orb-card-stage-height: rem-calc(360px); // todo: media queries yo
-$orb-card-wrapper-width: rem-calc(1200px);
-$min-orb-list-width: rem-calc(350px);
+
+  // ORB CARD STAGE
+$orb-card-wrapper-width: $row-width - $column-gutter;
+$orb-card-wrapper-height: $menu-row-height;
+$orb-card-wrapper-margin: $float-pane-margin 0 $float-pane-shadow-size 0;
+$min-orb-list-width: 0.33333 * $orb-card-wrapper-width;
+$orb-card-stage-height: $menu-row-height; // todo: media queries yo
 $orb-card-stage-width: $orb-card-wrapper-width - $min-orb-list-width;
+$orb-card-stage-border-width: 0.75 * $float-pane-border-width;
+$orb-card-stage-border: $orb-card-stage-border-width solid $white;
 $orb-card-stage-menu-width: 0.5 * $orb-card-wrapper-width;
-$orb-card-stage-menu-item-height: 0.2 * $orb-card-stage-height;
+$orb-card-stage-menu-item-height: 0.2 * ($orb-card-stage-height - 2 * $orb-card-stage-border-width);
 $orb-card-stage-menu-padding-left: 0.33333 * $orb-card-stage-menu-width;
+
+  // ORB CARD
 $orb-card-width:  0.5 * $orb-card-wrapper-width;
 $orb-card-height: 0.533333 * $orb-card-width;
 $orb-card-padding: rem-calc(10px);
@@ -92,5 +117,14 @@ $orb-card-button-width:$orb-card-row-height;
 $orb-card-button-height:$orb-card-row-height;
 $orb-card-content-width: $orb-card-inner-width - $orb-card-button-width - $float-pane-margin; // float-pane-margin is used as button/content separation width
 $orb-card-scrollbar-width: rem-calc(10px);
-$orb-card-price-table-padding-right: rem-calc(25px);
 $orb-card-price-table-padding-left: rem-calc(15px);
+$orb-card-price-table-padding-right: $orb-card-price-table-padding-left + $orb-card-scrollbar-width;
+
+
+/*  MONTHLY  CONTENT  */
+$monthly-content-wrapper-width: $row-width - ($column-gutter + $orbcat-menu-width + 2 * $float-pane-margin + $user-activity-panel-width);
+$monthly-content-wrapper-height: $orbcat-menu-height;
+
+/*  FOOTER  */
+$footer-height: rem-calc(600px);
+$footer-top-margin: rem-calc(30px);

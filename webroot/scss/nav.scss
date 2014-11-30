@@ -7,56 +7,27 @@ nav#topbar {
   height: $topnav-height;
   width:100%;
   background-color: $dark-grey;
-//  box-shadow: 0 5px 8px $black-a15;
-}
+  vertical-align: middle;
+  overflow:hidden;
 
-//----------------------------------------------------------------------------------------------------------------SUBNAV
-nav#subnav {
-  width: 300px;
-  padding-top : 2rem;
-  text-align  : center;
-  z-index     : 8900;
-  ul {
-    list-style-type : none;
-    text-align      : center;
-    margin          : 0;
-    li {
-      height           : 12rem;
-      border-radius    : 1rem;
-      background-color : darken($xtreme-blue, 10%);
-      box-shadow       : inset 0px 0px 5px $black-a50;
-      margin-bottom    : 1rem;
-      font-size        : 1.5rem;
-      line-height      : 1.75rem;
-      text-align       : text
-    }
+  .splash-logo {
+    background-image: url('../img/splash/logo_mini.png');
+    background-repeat: no-repeat;
+    background-size: auto 0.8 * $topnav-height;
+    background-position: center;
+    padding:rem-calc(10px);
+    height:$topnav-height;
   }
-}
-
-//-------------------------------------------------------------------------------------------------------------------TOC
-nav#subnav-toc {
-  position:fixed;
-  right:0;
-  background-color : $white-a33;
-  box-shadow       : 0px 0px 1rem $black-a15;
-  min-height       : 2000px;
-  z-index          : 8700;
-  ul {
-    @include HelveticaBlkCn;
-    color          : $black;
-    font-weight    : bold;
-    text-transform : uppercase;
-    margin-top     : 2rem;
-    li {
-      font-size     : 0.8rem;
-      line-height   : 1rem;
-      margin-bottom : 2rem;
-      &.neighbour { list-style-image : url("../img/toc_med_square.png"); }
-      &.screen-center { list-style-image : url("../img/toc_lrg_square.png"); }
-    }
+  .columns {
+    height: $topnav-height;
+    vertical-align: middle;
   }
-}
+  #hours-and-location {
+    width:rem-calc(280px); // arbitrary, just large enough to house the text
+    float:right;
+  }
 
+}
 
 nav#login {
   position         : fixed;
@@ -75,7 +46,6 @@ nav#login {
 
   ul#login-options {
     li {
-//      list-style-type   : none;
       @include portraitBG;
       width             : 6rem;
       height            : 6rem;

@@ -2,3 +2,10 @@
 
 
 
+#monthly-content-wrapper {
+  position: relative;
+  float:left;
+  height: $monthly-content-wrapper-height;
+  width: $monthly-content-wrapper-width;
+  vertical-align: top;
+}

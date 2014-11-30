@@ -6,7 +6,6 @@
 	<title>XtremePizza - <?php echo $title_for_layout;?></title>
 	<?php
 		echo $this->Html->meta('icon');
-		//echo $this->Html->css(array("http://fonts.googleapis.com/css?family=Fredericka+the+Great", "http://fonts.googleapis.com/css?family=Indie+Flower","http://fonts.googleapis.com/css?family=Mouse+Memoirs"));
 		echo $this->Html->css(array("/bower_components/foundation/css/normalize",'app'));
 		echo $this->Html->script("/bower_components/modernizr/modernizr");
 		echo $this->Html->script(array("lib/selectorManifest.js",
@@ -41,49 +40,25 @@
 <?php //echo $this->Element("login");?>
 <?php if (!$this->get("isSplash")) echo $this->element("flash");//todo: perhaps turn this into both the topbar nav AND the flash area? ?>
 
-<?php $this->start('main');?>
-<nav id="topbar" class="text-center">
-	<div class="row">
-		<div class="large-4 columns">
-			<ul id="top-bar-social-icons" class="horizontal">
-				<li class="social-icon imgur"></li>
-				<li class="social-icon tumblr"></li>
-				<li class="social-icon twitter"></li>
-				<li class="social-icon email"></li>
-				<li class="social-icon pinterest"></li>
-				<li class="social-icon facebook"></li>
-				<li class="social-icon gplus"></li>
-			</ul>
-		</div>
-		<div class="large-1 columns text-center"><h3>OPEN</h3></div>
-		<div class="large-2 columns text-center"><?php echo $this->Html->image('splash/logo_mini.png');?></div>
-		<div class="large-1 columns text-center"><h3>DELIVERING</h3></div>
-		<div class="large-4 columns">
-		<span class="header-thin block">Sun-Thurs: 11am - 3am&nbsp;&nbsp;&nbsp;&nbsp;
-			<span class="header-red">Fri & Sat:</span> 11am-<span class="header-red">4am</span>
-		</span>
-		<span class="header-thin block">
-			1234 Coburg Road, Halifax, Nova Scotia | 902.404.1600
-		</span>
-		</div>
-	</div>
-</nav>
+<?php
+	$this->start('main');
+	echo $this->Element("top_bar");
+?>
+
 <main id="menu">
 	<div class="row">
 		<div class="large-12 columns">
-			<ul id="user-activity-panel" class="show-for-large-up vertical text-center activizing">
+			<ul id="user-activity-panel" class="show-for-large-up vertical text-center">
 				<li><h2 class="body-font-color">I AM</h2></li>
-				<li class="inactive"><a class="body-font-color block">Just<br />Browsing</a></li>
-				<li class="inactive"><a class="body-font-color block">Ordering<br />(Delivery)</a></li>
-				<li class="inactive"><a class="body-font-color block">Ordering<br />(Pick-Up)</a></li>
+				<li class="active"><a class="body-font-color block">Just<br />Browsing</a></li>
+				<li class="inactive coming-soon"><a class="body-font-color block">Ordering<br />(Delivery)</a></li>
+				<li class="inactive coming-soon"><a class="body-font-color block">Ordering<br />(Pick-Up)</a></li>
 			</ul
-			<?php echo $this->fetch('orbcats_menu'); ?>
-		</div>
+			<?php echo $this->fetch('orbcats_menu').$this->fetch('monthly_content'); ?>></div>
 	</div
-	><div class="row">
-		<?php echo $this->fetch('content');?>
-		<div class="large-12  columns">
-			<div id="orb-card-wrapper" class="float-pane">
+	><div class="row"
+		><div class="large-12  columns"
+			><div id="orb-card-wrapper" class="float-pane">
 				<?php echo $this->fetch('active_orb_card');?>
 				<?php echo $this->fetch('active_orbs_menu');?>
 			</div>

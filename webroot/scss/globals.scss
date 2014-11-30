@@ -19,6 +19,43 @@ button.unavailable {
 .hidden { display:none;}
 .inline { display: inline-block;}
 
+@mixin coming-soon() {
+  transition: background-image 0.2s;
+  background-image: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  > * {
+    transition:opacity 0.2s;
+  }
+  > * {
+    opacity:0.1;
+  }
+  &:hover {
+    background-image: url("../img/coming_soon.png");
+  }
+}
 
+.coming-soon {
+  @include coming-soon;
+}
 
+.coming-soon-fill {
+  position:absolute;
+  top:0;
+  left:0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/coming_soon.png");
+  opacity:0;
+  transition: opacity 0.5s;
+  position:relative;
+  z-index:99999;
+  width:100%;
+  height:100%;
+  &:hover {
+    opacity: 1;
+  }
+}
 

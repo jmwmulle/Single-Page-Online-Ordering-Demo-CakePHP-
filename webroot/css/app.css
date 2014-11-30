@@ -4854,6 +4854,8 @@ th.hide-for-touch {
 /* TYPOGRAPHY */
 /*  SPLASH  */
 /*   MENU   */
+/*  MONTHLY  CONTENT  */
+/*  FOOTER  */
 /**************************************************************
 
                               3D SHIT
@@ -4910,24 +4912,36 @@ th.hide-for-touch {
   src: url("../files/HelveticaNeueLTStd-MdCn.otf"); }
 
 @font-face {
+  font-family: "Helvetica Neue Light Condensed";
+  src: url("../files/HelveticaNeueLTStd-LtCn.otf"); }
+
+@font-face {
   font-family: "Helvetica Neue Thin";
   src: url("../files/HelveticaNeueLTStd-Th.otf"); }
+
+@font-face {
+  font-family: "Helvetica Neue Thin Condensed";
+  src: url("../files/HelveticaNeueLTStd-ThCn.otf"); }
 
 @font-face {
   font-family: "Helvetica Neue Ultra Light";
   src: url("../files/HelveticaNeueLTStd-UltLt.otf"); }
 
-*.body-font-color {
+.body-font-color {
   color: white; }
 
-span.block {
-  display: block; }
-
-span.header-red {
-  color: #e02027; }
-
-span.header-thin {
-  font-family: "Helvetica Neue Thin", arial, sans-serif; }
+#hours-and-location {
+  text-align: right;
+  line-height: 1.25rem;
+  padding-top: 0.25rem;
+  font-family: "Helvetica Neue Thin Condensed", arial, sans-serif; }
+  #hours-and-location span.header-red {
+    color: #e02027; }
+  #hours-and-location li:nth-of-type(2) {
+    padding-top: 0.25rem;
+    font-size: 1.25rem; }
+  #hours-and-location li:last-of-type {
+    font-size: 0.75rem; }
 
 /**************************************************************
 
@@ -4936,38 +4950,40 @@ span.header-thin {
 ***************************************************************/
 /*      USER ACTIVITY PANEL     */
 #user-activity-panel a {
-  font-family: "Helvetica Neue Ultra Light", arial, sans-serif;
-  transition: color 0.3s ease-out;
+  font-family: "Helvetica Neue Light Condensed", arial, sans-serif;
+  transition: color 0.3s, font-family 0.3s;
   text-align: center;
-  line-height: 1.5625rem;
-  padding-top: 1.5625rem;
-  width: 6.25rem;
-  height: 6.25rem;
-  font-size: 1.25rem; }
+  line-height: 1.54297rem;
+  padding-top: 1.54297rem;
+  width: 6.17188rem;
+  height: 6.17188rem;
+  font-size: 1.23438rem; }
   #user-activity-panel a:hover {
     color: black; }
+#user-activity-panel li.active a {
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif; }
 #user-activity-panel h2 {
   font-size: 1.6875rem;
-  line-height: 6.25rem; }
+  line-height: 6.17188rem; }
 
 /*           ORBCAT MENU         */
 #orbcat-menu-title h1 {
   text-align: left;
   letter-spacing: -0.1875rem;
-  font-size: 4.75rem;
-  line-height: 6.175rem;
+  font-size: 4.6875rem;
+  line-height: 6.09375rem;
   color: white; }
 
 li.orbcat {
-  line-height: 8.90625rem;
+  line-height: 8.78906rem;
   text-align: center; }
   li.orbcat a {
     transition: color 0.3s ease-out;
     font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
     color: white;
     font-size: 0.875rem;
-    line-height: 2.375rem; }
-  li.orbcat:hover a, li.orbcat.active a {
+    line-height: 2.34375rem; }
+  li.orbcat:hover a, li.orbcat .active a {
     color: #faea06; }
 
 /*          ORB CARD            */
@@ -5027,6 +5043,36 @@ button.unavailable {
 .inline {
   display: inline-block; }
 
+.coming-soon {
+  transition: background-image 0.2s;
+  background-image: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain; }
+  .coming-soon > * {
+    transition: opacity 0.2s; }
+  .coming-soon > * {
+    opacity: 0.1; }
+  .coming-soon:hover {
+    background-image: url("../img/coming_soon.png"); }
+
+.coming-soon-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("../img/coming_soon.png");
+  opacity: 0;
+  transition: opacity 0.5s;
+  position: relative;
+  z-index: 99999;
+  width: 100%;
+  height: 100%; }
+  .coming-soon-fill:hover {
+    opacity: 1; }
+
 section {
   margin-bottom: 1rem; }
 
@@ -5035,7 +5081,7 @@ section {
 
 .float-pane {
   border: 0.5rem solid white;
-  box-shadow: 8px 8px 50px rgba(0, 0, 0, 0.6); }
+  box-shadow: 0.5rem 0.5rem 3.125rem rgba(0, 0, 0, 0.66); }
 
 section.pagespan {
   height: 22.5rem;
@@ -5054,6 +5100,12 @@ section.pagespan {
 
 .l-3 {
   z-index: 7000; }
+
+footer {
+  position: relative;
+  background-color: #191919;
+  height: 37.5rem;
+  margin-top: 1.875rem; }
 
 .spacer {
   -webkit-touch-callout: none;
@@ -5100,48 +5152,22 @@ nav#topbar {
   z-index: 9999;
   height: 4.0625rem;
   width: 100%;
-  background-color: #191919; }
-
-nav#subnav {
-  width: 300px;
-  padding-top: 2rem;
-  text-align: center;
-  z-index: 8900; }
-  nav#subnav ul {
-    list-style-type: none;
-    text-align: center;
-    margin: 0; }
-    nav#subnav ul li {
-      height: 12rem;
-      border-radius: 1rem;
-      background-color: #055b8d;
-      box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
-      margin-bottom: 1rem;
-      font-size: 1.5rem;
-      line-height: 1.75rem;
-      text-align: text; }
-
-nav#subnav-toc {
-  position: fixed;
-  right: 0;
-  background-color: rgba(255, 255, 255, 0.33);
-  box-shadow: 0px 0px 1rem rgba(0, 0, 0, 0.15);
-  min-height: 2000px;
-  z-index: 8700; }
-  nav#subnav-toc ul {
-    font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
-    color: black;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-top: 2rem; }
-    nav#subnav-toc ul li {
-      font-size: 0.8rem;
-      line-height: 1rem;
-      margin-bottom: 2rem; }
-      nav#subnav-toc ul li.neighbour {
-        list-style-image: url("../img/toc_med_square.png"); }
-      nav#subnav-toc ul li.screen-center {
-        list-style-image: url("../img/toc_lrg_square.png"); }
+  background-color: #191919;
+  vertical-align: middle;
+  overflow: hidden; }
+  nav#topbar .splash-logo {
+    background-image: url('../img/splash/logo_mini.png');
+    background-repeat: no-repeat;
+    background-size: auto 3.25rem;
+    background-position: center;
+    padding: 0.625rem;
+    height: 4.0625rem; }
+  nav#topbar .columns {
+    height: 4.0625rem;
+    vertical-align: middle; }
+  nav#topbar #hours-and-location {
+    width: 17.5rem;
+    float: right; }
 
 nav#login {
   position: fixed;
@@ -5413,6 +5439,13 @@ a.close-splash-modal {
           #grand-opening-deal div:first-of-type h3 ul li.email {
             background-image: url('../img/splash/email_icon.png'); }
 
+#monthly-content-wrapper {
+  position: relative;
+  float: left;
+  height: 23.4375rem;
+  width: 14.45312rem;
+  vertical-align: top; }
+
 html, nav, body, main, footer {
   overflow: auto; }
 
@@ -5426,7 +5459,7 @@ main#menu {
   width: 100%;
   top: 0;
   left: 0;
-  margin-top: 4.0625rem;
+  padding-top: 5.3125rem;
   overflow: auto; }
 
 /**************************************************************
@@ -5437,14 +5470,14 @@ main#menu {
 ul#user-activity-panel {
   position: relative;
   float: left;
-  margin: 0 1.25rem 0px 0px;
-  width: 6.25rem;
-  vertical-align: top; }
+  width: 6.17188rem;
+  vertical-align: top;
+  margin: -1.25rem 0 0 0; }
   ul#user-activity-panel li {
-    transition: background-color 0.3s ease-out;
-    width: 6.25rem;
-    height: 6.25rem;
-    background-color: rgba(0, 0, 0, 0.33);
+    transition: background-color 0.3s, background-image 0.3s;
+    width: 6.17188rem;
+    height: 6.17188rem;
+    background-color: rgba(0, 0, 0, 0.25);
     border: 1px solid black;
     border-top: none; }
     ul#user-activity-panel li a {
@@ -5466,11 +5499,12 @@ ul#user-activity-panel {
 
 ***************************************************************/
 ul#orbcat-menu {
+  float: left;
   position: relative;
   width: 50rem;
-  height: 23.75rem;
-  display: inline-block;
-  margin-top: 1.25rem;
+  height: 23.4375rem;
+  margin: 0 1.25rem;
+  vertical-align: top;
   background: #e02027;
   /* Old browsers */
   background: -moz-linear-gradient(45deg, #e02027 0%, #ac0819 100%);
@@ -5489,13 +5523,11 @@ ul#orbcat-menu {
   /* IE6-9 fallback on horizontal gradient */ }
 
 li.orbcat {
-  display: inline-block;
-  height: 5.9375rem;
+  height: 5.85938rem;
   cursor: pointer;
   background-repeat: no-repeat;
   background-position: center 0.3125rem;
-  background-size: 3.5625rem;
-  box-sizing: border-box;
+  background-size: 3.51562rem;
   transition: background-image 0.3s; }
   li.orbcat.original-pizzas {
     background-image: url("../img/orbcat_icons/original-pizzas.png"); }
@@ -5534,8 +5566,8 @@ li.orbcat {
   li.orbcat.desserts {
     background-image: url("../img/orbcat_icons/desserts.png"); }
   li.orbcat a {
-    height: 2.375rem;
-    margin-top: 7.125rem; }
+    height: 2.34375rem;
+    margin-top: 7.03125rem; }
   li.orbcat:hover.original-pizzas, li.orbcat.active.original-pizzas {
     background-image: url("../img/orbcat_icons/original-pizzas.hover.png"); }
   li.orbcat:hover.super-pizzas, li.orbcat.active.super-pizzas {
@@ -5575,15 +5607,15 @@ li.orbcat {
 
 #orbcat-menu-title {
   width: 100%;
-  position: absolute;
+  position: relative;
   padding: 0;
   bottom: 0;
-  left: 0.625rem;
-  margin: 0 0 -2.375rem 0; }
+  left: 0.9375rem;
+  transform: translateY(0.9375rem);
+  height: 4.6875rem; }
   #orbcat-menu-title h1 {
     padding: 0;
-    margin: 0;
-    height: 98px; }
+    margin: 0; }
 
 /**************************************************************
 
@@ -5593,22 +5625,22 @@ li.orbcat {
 #orb-card-wrapper {
   position: relative;
   height: 23.4375rem;
-  width: 75rem;
-  margin-top: 1.25rem;
-  background-color: #0779be; }
+  width: 73.125rem;
+  background-color: #0779be;
+  margin: 1.25rem 0 3.125rem 0; }
 
 #orb-card-stage {
   position: absolute;
   left: -0.5rem;
   top: -0.45rem;
   width: 75%;
-  max-width: 53.125rem;
+  max-width: 48.75024rem;
   min-width: 600px;
-  border: 6px solid white;
+  border: 0.375rem solid white;
   border-top-right-radius: 1000px;
   border-bottom-right-radius: 1000px;
   height: 23.4375rem;
-  background-color: #d7d7d7;
+  background-color: #d2d2d2;
   background: whitesmoke;
   /* Old browsers */
   background: -moz-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
@@ -5630,11 +5662,11 @@ li.orbcat {
   visibility: hidden;
   position: absolute;
   z-index: 10;
-  width: 19.99999rem;
+  width: 19.49999rem;
   transform: rotate(270deg);
   margin-left: 0;
   left: 0;
-  bottom: 9.53124rem;
+  bottom: 9.28124rem;
   text-align: center;
   transition: visibility 0.2s, margin-left 0.3s; }
   .float-label.exposed {
@@ -5645,21 +5677,21 @@ li.orbcat {
   width: 100%;
   position: absolute;
   background-repeat: no-repeat;
-  background-position: -0.8875rem 19.74999rem;
-  background-size: 45rem 1.5625rem;
+  background-position: -0.82625rem 19.24999rem;
+  background-size: 43.875rem 1.5625rem;
   transition: background-image 0.5s; }
 
 div#orb-card {
-  height: 19.99999rem;
-  width: 37.5rem;
-  margin-left: 3.125rem;
+  height: 19.49999rem;
+  width: 36.5625rem;
+  margin-left: 3.08594rem;
   margin-top: 1.25rem;
   z-index: 999999; }
   div#orb-card section {
     background-color: white;
     padding: 0.625rem; }
 
-.triangle-down {
+.triangle {
   position: absolute;
   bottom: -12px;
   left: 30px;
@@ -5667,16 +5699,12 @@ div#orb-card {
   height: 0;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  z-index: 9998; }
+  z-index: 1; }
 
-.triangle-right {
-  position: absolute;
-  left: 85px;
-  top: 30px;
-  width: 0;
-  height: 0;
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent; }
+.tr-right {
+  left: 80px;
+  top: 35px;
+  transform: rotate(-90deg); }
 
 ul.orb-card {
   position: relative;
@@ -5699,29 +5727,27 @@ ul.orb-card {
     ul.orb-card div.orb-card-button#favorite {
       background-color: #faea06;
       background-image: url('../img/orb_card.icon.fav.png'); }
-      ul.orb-card div.orb-card-button#favorite .triangle-down {
+      ul.orb-card div.orb-card-button#favorite .triangle {
         border-top: 16px solid #faea06; }
     ul.orb-card div.orb-card-button#order {
       background-color: #e02027;
       background-image: url('../img/orb_card.icon.cart.png'); }
-      ul.orb-card div.orb-card-button#order .triangle-down {
+      ul.orb-card div.orb-card-button#order .triangle {
         border-top: 16px solid #e02027; }
     ul.orb-card div.orb-card-button#like {
       background-color: #0779be;
       background-image: url('../img/orb_card.icon.like.png'); }
-      ul.orb-card div.orb-card-button#like .triangle-right {
-        border-left: 16px solid #0779be; }
-    ul.orb-card div.orb-card-button .triangle-down {
-      transition: border-top 0.3s ease-out; }
+      ul.orb-card div.orb-card-button#like .triangle {
+        border-top: 16px solid #0779be; }
+    ul.orb-card div.orb-card-button .triangle {
+      transition: border-top-color 0.3s; }
     ul.orb-card div.orb-card-button#favorite:hover, ul.orb-card div.orb-card-button#order:hover, ul.orb-card div.orb-card-button#like:hover {
       background-color: #b4b4b4; }
-      ul.orb-card div.orb-card-button#favorite:hover .triangle-right, ul.orb-card div.orb-card-button#order:hover .triangle-right, ul.orb-card div.orb-card-button#like:hover .triangle-right {
-        border-left: 16px solid #b4b4b4; }
-      ul.orb-card div.orb-card-button#favorite:hover .triangle-down, ul.orb-card div.orb-card-button#order:hover .triangle-down, ul.orb-card div.orb-card-button#like:hover .triangle-down {
-        border-top: 16px solid #b4b4b4; }
+      ul.orb-card div.orb-card-button#favorite:hover .triangle, ul.orb-card div.orb-card-button#order:hover .triangle, ul.orb-card div.orb-card-button#like:hover .triangle {
+        border-top-color: #b4b4b4; }
 
 div.orb-card-content {
-  width: 29.6875rem;
+  width: 28.75rem;
   margin-left: 1.25rem;
   position: relative;
   height: 5.3125rem; }
@@ -5768,17 +5794,17 @@ div.orb-card-content {
 .orb-card-stage-right-menu {
   overflow-y: scroll;
   overflow-x: hidden;
-  width: 37.5rem;
+  width: 36.5625rem;
   height: 22.5rem;
   float: right; }
   .orb-card-stage-right-menu li {
     position: relative;
-    padding-left: 12.49988rem;
+    padding-left: 12.18738rem;
     background-color: #0779be;
     box-shadow: inset 15px -5px 8px rgba(0, 0, 0, 0.33);
     font-size: 1.125rem;
-    height: 4.5rem;
-    line-height: 4.5rem;
+    height: 4.5375rem;
+    line-height: 4.5375rem;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
     font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
@@ -5812,11 +5838,11 @@ div.orb-card-content {
       background-color: none;
       cursor: default; }
       .orb-card-stage-right-menu li:first-of-type div#active-orb-name-3d-container {
-        height: 4.5rem;
-        width: 37.5rem; }
+        height: 4.5375rem;
+        width: 36.5625rem; }
         .orb-card-stage-right-menu li:first-of-type div#active-orb-name-3d-container h2 {
           background-color: #e02027;
-          padding: 0.625rem 0 0 12.49988rem;
+          padding: 0.625rem 0 0 12.18738rem;
           margin: 0; }
     .orb-card-stage-right-menu li.active {
       background-color: #faea06;

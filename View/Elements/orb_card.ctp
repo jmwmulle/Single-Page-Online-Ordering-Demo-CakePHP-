@@ -11,7 +11,6 @@
 	<div id="favorite-label" class="float-label"><h2>FAVORITE</h2></div>
 	<div id="order-label" class="float-label"><h2>ORDER</h2></div>
 	<div id="like-label" class="float-label"><h2>LIKE</h2></div>
-	<div id="orb-card-shadow-wrapper">
 	<div id="orb-card" class="html5-3d-perspective-container">
 		<div id="orb-card-3d-context" class="html5-3d-context preserve-3d">
 			<section id="orb-card-front" class="preserve-3d card-face">
@@ -19,7 +18,8 @@
 				<!-- TOP  ROW --> <?php // every row has a button at left and content at right ;?>
 					<li class="orb-card-row">
 						<div id="favorite" class="orb-card-button inline float-labeled" data-float-label="favorite-label">
-							<div class="triangle-down"></div>
+							<div class="coming-soon-fill"></div>
+							<div class="triangle"></div>
 						</div
 						><div id="description" class="orb-card-content inline">
 							<p><?php echo $orb[ 'description' ]; ?></p>
@@ -34,7 +34,8 @@
 							$class_array = array("orb-card-button", "add-to-cart", "float-labeled");
 						?>
 						<div id="order" <?php echo ___cD($class_array);?> <?php echo ___dA($data_array);?>>
-							<div class="triangle-down"></div>
+							<div class="coming-soon-fill"></div>
+							<div class="triangle"></div>
 						</div
 						><div id="price-matrix" class="orb-card-content inline">
 									<h4 id="price-matrix-size" class="text-left">SIZE</h4
@@ -54,7 +55,8 @@
 					</li
 					><li class="orb-card-row">
 						<div id="like" class="orb-card-button inline float-labeled" data-float-label="like-label">
-							<div class="triangle-right"></div>
+							<div class="coming-soon-fill"></div>
+							<div class="triangle tr-right"></div>
 						</div
 						><div id="orb-card-options" class="orb-card-content inline">
 							<ul class="large-block-grid-4">
@@ -92,7 +94,6 @@
 				<a class="tiny button confirm-order" style="position:absolute; bottom:10px; right:10px">Confirm</a>
 			</section>
 		</div>
-	</div>
 	</div>
 </div>
 <?php $classes = array("toppings-list", "text-center", "orb-card-stage-right-menu", "hidden");?>
