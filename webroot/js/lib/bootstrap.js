@@ -163,27 +163,6 @@ window.XBS = {
 		},
 		jq_binds: {
 			has_init_sequence:true,
-//			scale_main: function() {
-//
-//				/** CHEAP HACK I WAS TRYING FOR FUN! **/
-//
-//				var win = 0.8 * window.innerHeight - 65;
-//				var main = $("main#splash").innerHeight();
-//				var sf = win / main;
-//				if (win > main) {
-//					var padding_top = (((sf * main - main) + 65) / 2)  + 0.1 * win ;
-//					var margin_bottom = (sf * main - main) + (sf * 50)/ 2 ;
-//				} else {
-//					var padding_top = (((main - sf * main) / 2) + 65) + 0.1 * win ;
-//					var margin_bottom = ((main - sf * main) / 2) + 50 ;
-//				}
-//				$("main#splash").css({
-//					transform:"scale("+sf+","+sf+")",
-//					marginTop:padding_top+ C.PX,
-//					marginBottom:margin_bottom+ C.PX
-//				});
-//				return true;
-//			},
 			bind_confirm_order: function() {
 				$("body").on(C.CLK, ".confirm-order", null, function(e) {
 						XBS.layout.toggle_orb_card()

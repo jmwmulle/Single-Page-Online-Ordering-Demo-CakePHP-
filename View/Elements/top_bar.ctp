@@ -36,7 +36,7 @@
 					<span class="header-red">Fri & Sat:</span> 11am-<span class="header-red">4am</span>
 				</li>
 				<li>902.404.1600</li>
-				<li>1234 Coburg Road, Halifax, Nova Scotia</li>
+				<li>5970 Spring Garden Road, Halifax, Nova Scotia</li>
 			</ul>
 		</div>
 	</div>
