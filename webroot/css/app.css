@@ -5246,35 +5246,35 @@ nav#login {
     max-height: 150px;
     width: 100%; }
 
-section#splash.pane {
+main#splash {
   background-image: url('../img/splash/pizza-bg.jpg');
   background-size: cover, 30%;
   background-repeat: no-repeat;
   z-index: 9000;
   vertical-align: middle;
   transition: background-image 0.3s ease-in-out; }
-  section#splash.pane div, section#splash.pane a {
+  main#splash div, main#splash a {
     position: relative; }
-  section#splash.pane a {
+  main#splash a {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none; }
-  section#splash.pane .spacer {
+  main#splash .spacer {
     height: 10%;
     width: 100%; }
-  section#splash.pane .content {
+  main#splash .content {
     margin: 0;
     height: 80%;
     width: 100%; }
-    section#splash.pane .content .wrapper {
+    main#splash .content .wrapper {
       width: inherit;
       height: 100%; }
-  section#splash.pane #splash-circle-wrapper {
+  main#splash #splash-circle-wrapper {
     width: 100%; }
-  section#splash.pane #splash-circle {
+  main#splash #splash-circle {
     min-height: 25rem;
     height: 100%;
     min-width: 25rem;
@@ -5284,13 +5284,13 @@ section#splash.pane {
     background-size: contain;
     background-repeat: no-repeat;
     transition: transform 1s; }
-    section#splash.pane #splash-circle.flipped {
+    main#splash #splash-circle.flipped {
       ms-transform: rotateY(450deg);
       -webkit-transform: rotateY(450deg);
       transform: rotateY(450deg); }
-  section#splash.pane #menu-wrapper, section#splash.pane #order-wrapper {
+  main#splash #menu-wrapper, main#splash #order-wrapper {
     height: 40%; }
-  section#splash.pane #order, section#splash.pane #menu {
+  main#splash #order, main#splash #menu {
     position: relative;
     display: block;
     width: 15rem;
@@ -5299,23 +5299,23 @@ section#splash.pane {
     background-repeat: no-repeat;
     background-size: contain;
     transition: background-image 0.3s ease-out; }
-  section#splash.pane #order {
+  main#splash #order {
     background-image: url("../img/splash/order_soon.png");
     background-position: center 80%;
     cursor: default; }
-  section#splash.pane #menu {
+  main#splash #menu {
     min-width: 10.9375rem;
     background-image: url("../img/splash/menu.png");
     background-position: center 20%; }
-    section#splash.pane #menu:hover {
+    main#splash #menu:hover {
       background-image: url("../img/splash/menu_hover.png"); }
-  section#splash.pane #splash-bar-wrapper {
+  main#splash #splash-bar-wrapper {
     position: relative;
     width: 100%;
     height: 20%; }
-    section#splash.pane #splash-bar-wrapper .spacer {
+    main#splash #splash-bar-wrapper .spacer {
       height: 5%; }
-  section#splash.pane #splash-bar {
+  main#splash #splash-bar {
     position: relative;
     width: 100%;
     height: 100%;
@@ -5338,13 +5338,13 @@ section#splash.pane {
     border-top: 1px solid #191919;
     border-bottom: 1px solid #191919;
     box-shadow: 0 0 10% black; }
-  section#splash.pane #splash-logo-wrapper {
+  main#splash #splash-logo-wrapper {
     z-index: 9030;
     height: 90%;
     width: auto;
     position: relative;
     margin: 0 auto; }
-  section#splash.pane #splash-logo, section#splash.pane #splash-logo_fasten-clone {
+  main#splash #splash-logo, main#splash #splash-logo_fasten-clone {
     background-image: url('../img/splash/logo.png');
     background-repeat: no-repeat;
     background-position: center center;
@@ -5449,10 +5449,15 @@ a.close-splash-modal {
 html, nav, body, main, footer {
   overflow: auto; }
 
-body#menu {
-  background-image: url("../img/menu_bg.xlg.bright.jpg");
+body {
   background-attachment: fixed;
-  overflow: auto; }
+  background-repeat: no-repeat;
+  background-size: cover; }
+  body .menu {
+    background-image: url("../img/menu_bg.xlg.bright.jpg");
+    overflow: auto; }
+  body .splash {
+    overflow: hidden; }
 
 main#menu {
   position: relative;
@@ -5664,14 +5669,14 @@ li.orbcat {
   z-index: 10;
   width: 15.53125rem;
   transform: rotate(270deg);
-  margin-left: 0;
+  margin: 0;
   left: 0;
-  bottom: 7.29688rem;
+  bottom: 6.875rem;
   text-align: center;
-  transition: visibility 0.2s, margin-left 0.3s; }
+  transition: visibility 0.3s, margin-left 0.3s; }
   .float-label.exposed {
     visibility: visible;
-    margin-left: -7.375rem; }
+    margin-left: -6.07812rem; }
 
 div#orb-card {
   height: 15.53125rem;
@@ -5691,8 +5696,7 @@ div#orb-card {
   border-left: 0.75rem solid transparent;
   border-right: 0.75rem solid transparent;
   margin-left: auto;
-  margin-left: right;
-  z-index: 1; }
+  margin-left: right; }
   .triangle.tr-right {
     right: -1rem;
     top: 1.65972rem;

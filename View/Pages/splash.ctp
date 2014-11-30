@@ -1,4 +1,4 @@
-<section id="splash" class="pane loading">
+<main id="splash" class="pane loading">
 	<div id="splash-modal-wrapper" >
 		<div id="splash-modal">
 			<h1></h1>
@@ -48,4 +48,4 @@
 			</div>
 		</div>
 	</div>
-</section>
+</main>

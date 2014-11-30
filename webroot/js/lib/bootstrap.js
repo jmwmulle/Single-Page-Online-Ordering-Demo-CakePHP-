@@ -101,7 +101,7 @@ window.XBS = {
 		XBS.fn.setHost(host);
 //		try {
 			XBS.layout.init();
-		//	XBS.splash.init();
+			XBS.splash.init();
 			//XBS.cache.init();
 //		} catch(e) {
 //			if (e instanceof InitError) {

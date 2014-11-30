@@ -2,7 +2,7 @@
   @return (100% - $sibling-height) /2;
 }
 
-section#splash.pane {
+main#splash {
   background-image  : url('../img/splash/pizza-bg.jpg');
   background-size   : cover, 30%;
   background-repeat : no-repeat;
