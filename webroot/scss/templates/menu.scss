@@ -2,11 +2,18 @@ html, nav, body, main, footer {
   overflow : auto;
 }
 
-body#menu {
-  background-image      : url("../img/menu_bg.xlg.bright.jpg");
+body {
   background-attachment : fixed;
-  overflow              : auto;
-  // todo: media queries for smaller resolutions
+  background-repeat: no-repeat;
+  background-size:cover;
+  .menu {
+    background-image      : url("../img/menu_bg.xlg.bright.jpg");
+    overflow              : auto;
+  }
+  .splash {
+//    background-image      : url("../img/menu_bg.xlg.bright.jpg");
+    overflow:hidden;
+  }
 }
 
 main#menu {
@@ -172,14 +179,14 @@ li.orbcat {
   z-index     : 10;
   width       : $orb-card-height;
   transform   : rotate(270deg);
-  margin-left : 0;
+  margin:0;
   left        : 0;
-  bottom      : ($orb-card-height - $float-pane-margin)/2 + rem-calc(2.5px);
+  bottom      : $float-label-exposed-bottom;
   text-align  : center;
-  transition  : visibility 0.2s, margin-left $global-transition-time;
+  transition  : visibility $global-transition-time, margin-left $global-transition-time;
   &.exposed {
     visibility  : visible;
-    margin-left : rem-calc(-118px);
+    margin-left : $float-label-exposed-margin;
   }
 }
 
@@ -205,7 +212,6 @@ div#orb-card {
   border-right : $triangle-border-width solid transparent;
   margin-left:auto;
   margin-left:right;
-  z-index:1;
   &.tr-right {
     right          : $triangle-extrude-position * 1.333333; // on account of the rotation
     top           : $triangle-center-position * 1.333333;

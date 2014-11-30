@@ -33,56 +33,17 @@
 					}?>";
 	var isSplash = <?php echo ($this->get("isSplash")) ? 'true' : 'false';?>;
 </script>
+<?php $body_class = array("menu", $this->get("isSplash") ? "splash" : ""); ?>
 </head>
 
-<body id="menu">
-<?php //echo $this->Element("loadingscreen");?>
-<?php //echo $this->Element("login");?>
-<?php if (!$this->get("isSplash")) echo $this->element("flash");//todo: perhaps turn this into both the topbar nav AND the flash area? ?>
+<body <?php echo ___cD($body_class); ?>>
+<?php
+//echo $this->Element("loadingscreen");
+//echo $this->Element("login");
+if (!$this->get("isSplash")) echo $this->element("flash");//todo: perhaps turn this into both the topbar nav AND the flash area?
+echo $this->Element("top_bar"); ?>
 
 <?php
-	$this->start('main');
-	echo $this->Element("top_bar");
-?>
-
-<main id="menu">
-	<div class="row">
-		<div class="large-12 columns">
-			<ul id="user-activity-panel" class="show-for-large-up vertical text-center">
-				<li><h2 class="body-font-color">I AM</h2></li>
-				<li class="active"><a class="body-font-color block">Just<br />Browsing</a></li>
-				<li class="inactive coming-soon"><a class="body-font-color block">Ordering<br />(Delivery)</a></li>
-				<li class="inactive coming-soon"><a class="body-font-color block">Ordering<br />(Pick-Up)</a></li>
-			</ul
-			<?php echo $this->fetch('orbcats_menu').$this->fetch('monthly_content'); ?>></div>
-	</div
-	><div class="row"
-		><div class="large-12  columns"
-			><div id="orb-card-wrapper" class="float-pane">
-				<?php echo $this->fetch('active_orb_card');?>
-				<?php echo $this->fetch('active_orbs_menu');?>
-			</div>
-		</div>
-	</div>
-</main>
-
-
-
-<footer>
-	<section class="pagespan">
-		<div class="row">
-			<div class="large-8 large-centered medium-12 small-12 columns">
-			</div>
-		</div>
-	</section>
-</footer>
-
-
-
-
-
-<?php
-	$this->end('main');
 	$img = array("splash/bluecircle.png",
 				"splash/deal.png",
 				"splash/email_icon.png",
@@ -109,9 +70,19 @@
 	}
 ?></div>
 <?php
-	if ($this->get('isSplash')) echo $this->fetch('content');
+//	if ($this->get('isSplash'))
+	echo $this->fetch('content');
 	echo $this->fetch('main');
 	echo $this->fetch('app');
 ?>
+<footer>
+	<section class="pagespan">
+		<div class="row">
+			<div class="large-8 large-centered medium-12 small-12 columns">
+			</div>
+		</div>
+	</section>
+</footer>
+
 </body>
 </html>

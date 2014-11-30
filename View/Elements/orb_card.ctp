@@ -8,9 +8,9 @@
 	 */
 ?>
 <div id="orb-card-stage" class="l-2">
-	<div id="favorite-label" class="float-label"><h2>FAVORITE</h2></div>
-	<div id="order-label" class="float-label"><h2>ORDER</h2></div>
-	<div id="like-label" class="float-label"><h2>LIKE</h2></div>
+	<div id="favorite-label" class="float-label text-center"><h3>FAVORITE</h3></div>
+	<div id="order-label" class="float-label text-center"><h3>ORDER</h3></div>
+	<div id="like-label" class="float-label text-center"><h3>LIKE</h3></div>
 	<div id="orb-card" class="html5-3d-perspective-container">
 		<div id="orb-card-3d-context" class="html5-3d-context preserve-3d">
 			<section id="orb-card-front" class="preserve-3d card-face">
