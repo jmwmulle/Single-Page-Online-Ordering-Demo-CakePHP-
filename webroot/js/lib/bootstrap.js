@@ -17,6 +17,8 @@ var constants = {
 	SHOW: 1,
 	DS: "/",
 	BODY: "body",
+	ORDER_SPACER_FACTOR: 0.45,
+	MENU_SPACER_FACTOR: 0.15
 };
 var C = constants;
 
@@ -165,19 +167,19 @@ window.XBS = {
 //
 //				/** CHEAP HACK I WAS TRYING FOR FUN! **/
 //
-//				var win = window.innerHeight - 65;
-//				var main = $("main#menu").innerHeight();
+//				var win = 0.8 * window.innerHeight - 65;
+//				var main = $("main#splash").innerHeight();
 //				var sf = win / main;
 //				if (win > main) {
-//					var padding_top = ((sf * main - main) + 65) / 2 ;
+//					var padding_top = (((sf * main - main) + 65) / 2)  + 0.1 * win ;
 //					var margin_bottom = (sf * main - main) + (sf * 50)/ 2 ;
 //				} else {
-//					var padding_top = ((main - sf * main) / 2) + 65;
+//					var padding_top = (((main - sf * main) / 2) + 65) + 0.1 * win ;
 //					var margin_bottom = ((main - sf * main) / 2) + 50 ;
 //				}
-//				$("main#menu").css({
+//				$("main#splash").css({
 //					transform:"scale("+sf+","+sf+")",
-//					paddingTop:padding_top+ C.PX,
+//					marginTop:padding_top+ C.PX,
 //					marginBottom:margin_bottom+ C.PX
 //				});
 //				return true;
@@ -212,7 +214,7 @@ window.XBS = {
 				if (XBS.cfg.developmentMode) return true;
 				$(window).on(XBS.evnt.assetsLoaded.type, function() {
 //						if (XBS.cfg.execInitSequenced = true) {
-							XBS.layout.readyLoadingScreen();
+							XBS.layout.ready_loading_screen();
 //						}
 					});
 				return true;
@@ -248,6 +250,12 @@ window.XBS = {
 				});
 				return true;
 			},
+			bind_splash_links: function() {
+				$(C.BODY).on(C.CLK, XSM.splash.splash_link, null, function(e) {
+					XBS.splash.redirect($(e.currentTarget).data('url'));
+				});
+				return true;
+			},
 			windowResizeListener: function() {
 				if (XBS.cfg.isSplash) {
 					$(window).on("resize", XBS.splash.render);
@@ -265,8 +273,7 @@ window.XBS = {
 			}
 		},
 
-		assertAspectRatio: function(targets) {
-			if (!targets) targets = XSM.global.preserveAS;
+		assert_aspect_ratio: function(targets) {
 			$(targets).each(function() {
 				$(this).removeAttr("style");
 				var data = $(this).data("aspectRatio");
@@ -281,6 +288,7 @@ window.XBS = {
 				}
 
 				var dimensions = {width:$(this).innerWidth(), height:$(this).innerHeight()};
+				pr(dimensions, "dimensions");
 				if (respect != "y") {
 					dimensions.height = dimensions.width / ratio;
 				} else {
@@ -328,9 +336,9 @@ window.XBS = {
 			}
 
 		},
-		readyLoadingScreen: function() {
+		ready_loading_screen: function() {
 			if (XBS.cfg.developmentMode) {
-				XBS.fn.layout.toggleLoadingScreen();
+				XBS.fn.layout.toggle_loading_screen();
 				return true;
 			}
 			if (XBS.cfg.isSplash) {
@@ -343,17 +351,18 @@ window.XBS = {
 				});
 			} else {
 				$(XSM.load.pizzaLoaderGIF).fadeOut(500, function() {
-						XBS.layout.toggleLoadingScreen();
+						XBS.layout.toggle_loading_screen();
 				});
 			}
 		},
+
 		toggle_float_label: function(float_label, state) {
 			if (state == C.SHOW) $(asId(float_label)).addClass(XSM.effects.exposed);
 			if (state == C.HIDE) $(asId(float_label)).removeClass(XSM.effects.exposed);
 
 			return true;
 		},
-		toggleLoadingScreen: function() { $(XSM.global.loadingScreen).fadeToggle(); },
+		toggle_loading_screen: function() { $(XSM.global.loadingScreen).fadeToggle(); },
 		toggle_orb_card: function() {
 			$(["favorite-label","order-label","like-label"]).each(function() {
 				XBS.layout.toggle_float_label(this, C.HIDE);});
@@ -412,20 +421,11 @@ window.XBS = {
 					$(this).unbind(C.HOVER);
 			});
 			XBS.splash.render();
-
 			return true;
 		},
 		jq_binds: {
 			has_init_sequence: true,
-			splashRedirectListener: function() {
-							$("section#splash *[data-splash-redirect]").each(function() {
-								var data = $(this).data();
-								$(this).on(data.on,null,{route:data.splashRedirect}, XBS.splash.redirect);
-							});
-
-							return true;
-						},
-			splashModalListener: function() {
+			splash_modal_listener: function() {
 				$(XSM.splash.modalLoad).each(function() {
 					$(this).on(C.CLK, null, $(this).data(), XBS.splash.modal);
 				});
@@ -434,7 +434,7 @@ window.XBS = {
 			}
 		},
 		render: function() {
-				var splashbarTop = $(XSM.splash.splashBar).offset().top;
+				var splashbarTop = $(XSM.splash.splash_bar).offset().top;
 				var scaleFactor = 570/splashbarTop;
 				var dealDim = [splashbarTop, scaleFactor * 400];
 				var dealLeft = String( (window.innerWidth / 2) + (.8 * $(XSM.splash.order).innerWidth()) ) +"px";
@@ -448,14 +448,16 @@ window.XBS = {
 				$(XSM.splash.fastened).attr('style', '').removeClass('fastened');
 				$(XSM.splash.detach).attr('style', '');
 				/* ---------------- opening deal temp code ------------------*/
-
-				$(XSM.splash.orderSpacer).css({height: $(XSM.splash.menuWrap).innerHeight() * 0.45});
-				$(XSM.splash.menuSpacer).css({height: $(XSM.splash.menuWrap).innerHeight() * 0.15});
-				XBS.layout.assertAspectRatio(XSM.splash.preserveAS);
+			$(".fastened").attr('style', '').removeClass('fastened');
+			$(".detach").attr('style', '');
+			pr($(XSM.splash.order_spacer).innerHeight());
+				$(XSM.splash.order_spacer).css({height: $(XSM.splash.menu_wrapper).innerHeight() * C.ORDER_SPACER_FACTOR});
+			pr($(XSM.splash.order_spacer).innerHeight());
+				$(XSM.splash.menu_spacer).css({height: $(XSM.splash.menu_wrapper).innerHeight() *  C.MENU_SPACER_FACTOR});
+				XBS.layout.assert_aspect_ratio(XSM.splash.preserve_aspect_ratio);
 				return true;
 			},
 		redirect: function(route) {
-			if (isEvent(route) ) route = route.data.route;
 			XBS.splash.fold(route);
 		},
 		modal: function(modalSource) {
@@ -474,13 +476,13 @@ window.XBS = {
 			});
 		},
 		fold: function(route) {
-			XBS.layout.fasten([XSM.splash.splashBar,XSM.splash.logo]);
+			XBS.layout.fasten([XSM.splash.splash_bar,XSM.splash.logo]);
 			var logo = $(XSM.splash.logo).clone().attr('id', stripCSS(XSM.splash.logoClone));
 			var logoLoc = $(XSM.splash.logo).offset();
 			$(logo).css({position:"fixed",top:logoLoc.top, left:logoLoc.left,zIndex:"9999999"});
 			$(XSM.splash.self).append(logo);
 			$(XSM.splash.logo).remove();
-			$(XSM.splash.splashBar).animate({left:String(-1.1 * window.innerWidth)+"px"}, 300, "easeInCubic",
+			$(XSM.splash.splash_bar).animate({left:String(-1.1 * window.innerWidth)+"px"}, 300, "easeInCubic",
 				function() {
 					$(this).hide();
 					$(XSM.splash.circleWrap).css({});

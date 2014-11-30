@@ -17,7 +17,7 @@ var XSM = {
 		detachable: ".detach",
 		imageQueue: "#image-loading-queue",
 		loadingScreen: "#loadingScreen",
-		preserveAS: ".preserve-aspect-ratio",
+		preserve_aspect_ratio: ".preserve-aspect-ratio",
 		scrollable: "*[data-scrolling-target]",
 		activizing_list: "ul.activizing li",
 		multi_activizing: ".multi-activizing"
@@ -59,7 +59,7 @@ var XSM = {
 	},
 	splash:{
 		self:"#splash",
-		cont:"#splash-pane",
+		cont:"#splash",
 		circle:"#splash-circle",
 		circleWrap:"#splash-circle-wrapper",
 		detached: "#splash .detach",
@@ -67,17 +67,18 @@ var XSM = {
 		logo:"#splash-logo",
 		logoClone:"#splash-logo_fasten-clone",
 		menu:"#menu",
-		menuWrap:"#menu-wrapper",
-		menuSpacer:"#menu-wrapper .spacer",
+		menu_wrapper:"#menu-wrapper",
+		menu_spacer:"#menu-wrapper .spacer",
 		modal:"#splash-modal",
 		modalLoad:"*[data-splash-modal]",
 		modalWrap:"#splash-modal-wrapper",
 		modalContent:"#splash-modal .content",
 		openingDeal:"grand-opening-deal",
 		order:"#order",
-		orderSpacer:"#order-wrapper .spacer",
-		preserveAS: "#splash *.preserve-aspect-ratio",
-		splashBar:"#splash-bar"
+		order_spacer:"#order-wrapper .spacer",
+		preserve_aspect_ratio: "#splash *.preserve-aspect-ratio",
+		splash_bar:"#splash-bar",
+		splash_link: ".splash-link"
 	}
 };
 

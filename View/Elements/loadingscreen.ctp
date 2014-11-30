@@ -12,7 +12,7 @@
 		<h1 id="loading-message">Hang tight—we're just getting our menus ready...</h1>
 		<h1 id="ready-message" class="hidden">...and that about does it—all set!</h1>
 	</div>
-	<a href="#" id="dismiss-loading-screen" class="lrg rounded hidden yellow-on-black xtreme-button" onclick="XBS.layout.toggleLoadingScreen()">OK! LET ME IN!</a>
+	<a href="#" id="dismiss-loading-screen" class="lrg rounded hidden yellow-on-black xtreme-button" onclick="XBS.layout.toggle_loading_screen()">OK! LET ME IN!</a>
 	<div id="pizza-loader-gif-wrapper">
 		<?php echo $this->Html->Image("pizza_loader.gif", array("id" => "pizza-loader-gif"));?>
 	</div>

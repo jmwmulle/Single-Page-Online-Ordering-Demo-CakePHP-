@@ -28,9 +28,7 @@
 				<li class="social-icon gplus"></li>
 			</ul>
 		</div>
-		<div class="large-1 columns text-center"><h3>OPEN</h3></div>
-		<div class="large-2 columns text-center splash-logo">&nbsp</div>
-		<div class="large-1 columns text-center"><h3>DELIVERING</h3></div>
+		<div class="large-4 columns"></div>
 		<div class="large-4 columns">
 			<ul id="hours-and-location">
 				<li>

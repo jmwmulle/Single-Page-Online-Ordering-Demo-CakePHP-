@@ -9,19 +9,19 @@
 		</div>
 	</div>
 	<div id="grand-opening-deal" data-splash-modal data-source="register">
-<!--		<div>-->
-<!--			<h3>Join With:-->
-<!--				<ul id="deal-button-panel">-->
-<!--				<li class="facebook"></li>-->
-<!--				<li class="gplus"></li>-->
-<!--				<li class="twitter"></li>-->
-<!--				<li class="email"></li>-->
-<!--				</ul>-->
-<!--			</h3>-->
-<!--			<h4>Free Medium<br />Garlic Fingers</h4>-->
-<!--			<p>When you first order online by signing up for an <a href="#" id="mini-logo"></a> account today!</p>-->
-<!--			<a href="#" id="register-button">OK!</a>-->
-<!--		</div>-->
+		<div>
+			<h3>Join With:
+				<ul id="deal-button-panel">
+				<li class="facebook"></li>
+				<li class="gplus"></li>
+				<li class="twitter"></li>
+				<li class="email"></li>
+				</ul>
+			</h3>
+			<h4>Free Medium<br />Garlic Fingers</h4>
+			<p>When you first order online by signing up for an <a href="#" id="mini-logo"></a> account today!</p>
+			<a href="#" id="register-button">OK!</a>
+		</div>
 	</div>
 	<div class="spacer"></div>
 	<div class="content">
@@ -41,9 +41,9 @@
 					</div>
 				</div>
 				<div id="menu-wrapper" class="wrapper">
-					<?php $menuAttr = array("splash-redirect" => "menu", 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
+					<?php $menuAttr = array("url" => "menu", 'on' => 'click', 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
 					<div class="spacer"></div>
-					<a href="#" id="menu" <?php echo ___dA($menuAttr);?> data-on="click">&nbsp;</a>
+					<a href="#" id="menu" class="splash-link" <?php echo ___dA($menuAttr);?>>&nbsp;</a>
 				</div>
 			</div>
 		</div>

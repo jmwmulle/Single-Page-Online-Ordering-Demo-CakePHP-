@@ -62,7 +62,8 @@ $splash-content-height: 80%;
 $splash-bar-height:20%;
 $splash-logo-height: 90%;
 $big-radius: 16px;
-
+$splash-circle-min-diameter: rem-calc(200px);
+$splash-circle-transition-time: 1s;
 
 /*   MENU   */
 $float-pane-margin: rem-calc(20px);

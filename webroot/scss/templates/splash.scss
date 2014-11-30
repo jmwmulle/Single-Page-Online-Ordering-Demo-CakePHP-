@@ -1,11 +1,11 @@
 @function spacer-height($sibling-height) {
   @return (100% - $sibling-height) /2;
 }
-
+body.splash { //overflow:none; }
+}
 main#splash {
-  background-image  : url('../img/splash/pizza-bg.jpg');
-  background-size   : cover, 30%;
-  background-repeat : no-repeat;
+  width:100%;
+  height:100%;
   z-index           : 9000;
   vertical-align    : middle;
   transition: background-image 0.3s ease-in-out;
@@ -22,21 +22,17 @@ main#splash {
     width  : 100%;
     .wrapper { width:inherit; height:100%;}
   }
-  #splash-circle-wrapper {
-    width:100%;
-
-  }
+  #splash-circle-wrapper { width:100%; }
   #splash-circle {
-    min-height          : rem-calc(400px);
+    min-height          : $splash-circle-min-diameter;
     height              : 100%;
-    min-width           : rem-calc(400px);
+    min-width           : $splash-circle-min-diameter;
     width               : auto;
     background-image    : url('../img/splash/bluecircle.png');
     background-position : center;
     background-size     : contain;
     background-repeat   : no-repeat;
-    transition: transform 1s;
-
+    transition: transform $splash-circle-transition-time;
     &.flipped {
       ms-transform: rotateY(450deg);
       -webkit-transform:rotateY(450deg);
@@ -54,7 +50,7 @@ main#splash {
     margin            : 0 auto;
     background-repeat : no-repeat;
     background-size   : contain;
-    transition        : background-image 0.3s ease-out;
+    transition        : background-image $global-transition-time ease-out;
   }
   #order {
     background-image    : url("../img/splash/order_soon.png");
