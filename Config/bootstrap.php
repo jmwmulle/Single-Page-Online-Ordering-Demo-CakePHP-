@@ -145,7 +145,6 @@ function ___asFileName($str) {
 function ___cfName($data) {
 	return AppController::cakeforms_name($data);
 }
-CakePlugin::load('DebugKit');
 CakePlugin::load('AclExtras');
 CakePlugin::load('Migrations');
 CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
