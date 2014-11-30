@@ -276,7 +276,7 @@ class AppController extends Controller {
 
 	public function beforeFilter() {
 		//Configure AuthComponent
-		$this->Auth->allow();
+//		$this->Auth->allow();
 		if (isset($this->request->params['pass'][0]) ) {
 			if ($this->request->params['pass'][0] == 'home' && $this->Session->read('Auth.User')) {
 				$this->redirect(___cakeUrl("users","home"));
