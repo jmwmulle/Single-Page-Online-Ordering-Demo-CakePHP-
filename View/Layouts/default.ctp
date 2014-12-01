@@ -3,7 +3,7 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<title>XtremePizza - <?php echo $title_for_layout;?></title>
+	<title>XtremePizza</title>
 	<?php
 		echo $this->Html->meta('icon');
 		echo $this->Html->css(array("/bower_components/foundation/css/normalize",'app'));
