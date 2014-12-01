@@ -95,7 +95,6 @@
     font-size   : $user-activity-panel-font-size;
     &:hover {
       color : invert($body-font-color);
-    //  opacity: 0.25;
     }
   }
    li.active {

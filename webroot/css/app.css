@@ -5620,6 +5620,9 @@ li.orbcat {
   padding: 0;
   bottom: 0;
   left: 1rem;
+  -webkit-transform: translateY(0.7125rem);
+  -moz-transform: translateY(0.7125rem);
+  -o-transform: translateY(0.7125rem);
   transform: translateY(0.7125rem);
   height: 3.5625rem; }
   #orbcat-menu-title h1 {
@@ -5672,6 +5675,9 @@ li.orbcat {
   position: absolute;
   z-index: 10;
   width: 15.53125rem;
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
   transform: rotate(270deg);
   margin: 0;
   left: 0;
@@ -5704,6 +5710,10 @@ div#orb-card {
   .triangle.tr-right {
     right: -1rem;
     top: 1.65972rem;
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
     transform: rotate(-90deg); }
 
 ul.orb-card {

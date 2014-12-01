@@ -131,7 +131,10 @@ li.orbcat {
   padding  : 0;
   bottom   : 0;
   left     : $base-padding;
-  transform: $orbcat-menu-title-y-adjust;
+  -webkit-transform : $orbcat-menu-title-y-adjust;
+    -moz-transform    : $orbcat-menu-title-y-adjust;
+    -o-transform      :$orbcat-menu-title-y-adjust;
+    transform         : $orbcat-menu-title-y-adjust;
   height: $orbcat-menu-title-height;
 
   h1 {
@@ -174,6 +177,9 @@ li.orbcat {
   position    : absolute;
   z-index     : 10;
   width       : $orb-card-height;
+-webkit-transform :rotate(270deg);
+   -moz-transform    : rotate(270deg);
+   -o-transform      : rotate(270deg);
   transform   : rotate(270deg);
   margin:0;
   left        : 0;
@@ -211,6 +217,10 @@ div#orb-card {
   &.tr-right {
     right          : $triangle-extrude-position * 1.333333; // on account of the rotation
     top           : $triangle-center-position * 1.333333;
+    -webkit-transform :rotate(-90deg);
+       -moz-transform    : rotate(-90deg);
+       -o-transform      : rotate(-90deg);
+      transform   : rotate(-90deg);
     transform: rotate(-90deg);
   }
 }
