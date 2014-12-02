@@ -1,8 +1,7 @@
 @function spacer-height($sibling-height) {
   @return (100% - $sibling-height) /2;
 }
-body.splash { //overflow:none; }
-}
+
 main#splash {
   width:100%;
   height:100%;
