@@ -187,13 +187,13 @@ class UsersController extends AppController {
 				}
 			} elseif ($command=='update_session') {
 				if ($this->Auth->loggedIn()) {
-					data = json_decode($address);
-					$this->Session->write("User.address"=>data['address'],
-						"User.postal_code"=>data['postal_code'],
+					$data = json_decode($address);
+					$this->Session->write("User.address"=>$data['address'],
+						"User.postal_code"=>$data['postal_code'],
 						"success"=>True);
 					$this->Session->write('User.address_checked', True);
-					$this->set("response", json_encode(array("address"=>data['address'],
-						"postal_code"=>data['postal_code'],
+					$this->set("response", json_encode(array("address"=>$data['address'],
+						"postal_code"=>$data['postal_code'],
 						"success"=>True)));
 				} else {
 					$this->set("response", json_encode(array("address"=>null, "success"=>false,
