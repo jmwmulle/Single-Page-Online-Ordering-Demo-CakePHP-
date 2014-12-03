@@ -202,7 +202,7 @@ class UsersController extends AppController {
 					return null;
 			}
 		} else {
-			return $this->redirect(array('controller'=>'menu', action=>'index'))
+			return $this->redirect(array('controller'=>'menu', action=>'index'));
 		}
 	}
 
