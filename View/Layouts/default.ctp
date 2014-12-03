@@ -37,6 +37,7 @@
 </head>
 
 <body <?php echo ___cD($body_class); ?>>
+<?php echo $this->Element('feedback');?>
 <?php
 //echo $this->Element("loadingscreen");
 //echo $this->Element("login");

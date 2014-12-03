@@ -3,22 +3,23 @@ html, nav, body, main, footer {
 }
 
 body {
-  background-attachment : fixed;
-  background-repeat: no-repeat;
-  background-size:cover;
+//  background-attachment : fixed;
+  background-repeat     : no-repeat;
+  background-size       : cover;
   .menu {
-    background-image      : url("../img/menu_bg.xlg.bright.jpg");
-    overflow              : auto;
+    background-image : url("../img/menu_bg.xlg.bright.jpg");
+    overflow         : auto;
   }
 }
 
 main#menu {
-  position   : relative;
-  width      : 100%;
-  top        : 0;
-  left       : 0;
+  min-height:100%;
+  position    : relative;
+  width       : 100%;
+  top         : 0;
+  left        : 0;
   padding-top : $menu-top-padding;
-  overflow   : auto;
+  overflow    : auto;
 }
 
 // in use; content area
@@ -33,10 +34,10 @@ ul#user-activity-panel {
   float          : left;
   width          : $user-activity-panel-width;
   vertical-align : top;
-  margin: $user-activity-margin;
+  margin         : $user-activity-margin;
 
   li {
-    transition: background-color $global-transition-time, background-image $global-transition-time;
+    transition       : background-color $global-transition-time, background-image $global-transition-time;
     a { @include global-transition(color); }
     width            : $user-activity-panel-width;
     height           : $user-activity-panel-height;
@@ -65,12 +66,12 @@ ul#user-activity-panel {
 
 ***************************************************************/
 ul#orbcat-menu {
-  float:left;
-  position   : relative;
-  width      : $orbcat-menu-width;
-  height     : $orbcat-menu-height;
-  margin : $orbcat-margin;
-  vertical-align: top;
+  float          : left;
+  position       : relative;
+  width          : $orbcat-menu-width;
+  height         : $orbcat-menu-height;
+  margin         : $orbcat-margin;
+  vertical-align : top;
   @include orbcat-menu-gradient;
 }
 
@@ -80,7 +81,7 @@ li.orbcat {
   background-repeat   : no-repeat;
   background-position : center rem-calc(5px);
   background-size     : $orbcat-menu-icon-size;
-  transition: background-image $global-transition-time;
+  transition          : background-image $global-transition-time;
   &.original-pizzas { background-image : url("../img/orbcat_icons/original-pizzas.png"); }
   &.super-pizzas { background-image : url("../img/orbcat_icons/super-pizzas.png"); }
   &.specialty-pizzas { background-image : url("../img/orbcat_icons/specialty-pizzas.png"); }
@@ -105,41 +106,41 @@ li.orbcat {
   }
   &:hover, &.active {
     &.original-pizzas { background-image : url("../img/orbcat_icons/original-pizzas.hover.png"); }
-      &.super-pizzas { background-image : url("../img/orbcat_icons/super-pizzas.hover.png"); }
-      &.specialty-pizzas { background-image : url("../img/orbcat_icons/specialty-pizzas.hover.png"); }
-      &.panzarottis { background-image : url("../img/orbcat_icons/panzarottis.hover.png"); }
-      &.assorted-fingers { background-image : url("../img/orbcat_icons/assorted-fingers.hover.png"); }
-      &.poutines { background-image : url("../img/orbcat_icons/poutines.hover.png"); }
-      &.donairs { background-image : url("../img/orbcat_icons/donairs.hover.png"); }
-      &.chicken-and-chips { background-image : url("../img/orbcat_icons/chicken-and-chips.hover.png"); }
-      &.fish-and-chips { background-image : url("../img/orbcat_icons/fish-and-chips.hover.png"); }
-      &.pasta { background-image : url("../img/orbcat_icons/pasta.hover.png"); }
-      &.burgers { background-image : url("../img/orbcat_icons/burgers.hover.png"); }
-      &.sandwiches { background-image : url("../img/orbcat_icons/sandwiches.hover.png"); }
-      &.pita-wraps { background-image : url("../img/orbcat_icons/pita-wraps.hover.png"); }
-      &.subs { background-image : url("../img/orbcat_icons/subs.hover.png"); }
-      &.xtreme-subs { background-image : url("../img/orbcat_icons/xtreme-subs.hover.png"); }
-      &.beverages { background-image : url("../img/orbcat_icons/beverages.hover.png"); }
-      &.salads { background-image : url("../img/orbcat_icons/salads.hover.png"); }
-      &.desserts { background-image : url("../img/orbcat_icons/desserts.hover.png"); }
-    }
+    &.super-pizzas { background-image : url("../img/orbcat_icons/super-pizzas.hover.png"); }
+    &.specialty-pizzas { background-image : url("../img/orbcat_icons/specialty-pizzas.hover.png"); }
+    &.panzarottis { background-image : url("../img/orbcat_icons/panzarottis.hover.png"); }
+    &.assorted-fingers { background-image : url("../img/orbcat_icons/assorted-fingers.hover.png"); }
+    &.poutines { background-image : url("../img/orbcat_icons/poutines.hover.png"); }
+    &.donairs { background-image : url("../img/orbcat_icons/donairs.hover.png"); }
+    &.chicken-and-chips { background-image : url("../img/orbcat_icons/chicken-and-chips.hover.png"); }
+    &.fish-and-chips { background-image : url("../img/orbcat_icons/fish-and-chips.hover.png"); }
+    &.pasta { background-image : url("../img/orbcat_icons/pasta.hover.png"); }
+    &.burgers { background-image : url("../img/orbcat_icons/burgers.hover.png"); }
+    &.sandwiches { background-image : url("../img/orbcat_icons/sandwiches.hover.png"); }
+    &.pita-wraps { background-image : url("../img/orbcat_icons/pita-wraps.hover.png"); }
+    &.subs { background-image : url("../img/orbcat_icons/subs.hover.png"); }
+    &.xtreme-subs { background-image : url("../img/orbcat_icons/xtreme-subs.hover.png"); }
+    &.beverages { background-image : url("../img/orbcat_icons/beverages.hover.png"); }
+    &.salads { background-image : url("../img/orbcat_icons/salads.hover.png"); }
+    &.desserts { background-image : url("../img/orbcat_icons/desserts.hover.png"); }
+  }
 }
 
 #orbcat-menu-title {
-  width    : 100%;
-  position : relative;
-  padding  : 0;
-  bottom   : 0;
-  left     : $base-padding;
+  width             : 100%;
+  position          : relative;
+  padding           : 0;
+  bottom            : 0;
+  left              : $base-padding;
   -webkit-transform : $orbcat-menu-title-y-adjust;
-    -moz-transform    : $orbcat-menu-title-y-adjust;
-    -o-transform      :$orbcat-menu-title-y-adjust;
-    transform         : $orbcat-menu-title-y-adjust;
-  height: $orbcat-menu-title-height;
+  -moz-transform    : $orbcat-menu-title-y-adjust;
+  -o-transform      : $orbcat-menu-title-y-adjust;
+  transform         : $orbcat-menu-title-y-adjust;
+  height            : $orbcat-menu-title-height;
 
   h1 {
     padding : 0;
-    margin : 0;
+    margin  : 0;
   }
 }
 
@@ -153,7 +154,7 @@ li.orbcat {
   height           : $orb-card-wrapper-height;
   width            : $orb-card-wrapper-width; // active orbs floats right (ie. this - orbcard stage = visible space for active orbs)
   background-color : $xtreme-blue;
-  margin: $orb-card-wrapper-margin;
+  margin           : $orb-card-wrapper-margin;
 }
 
 #orb-card-stage {
@@ -173,19 +174,19 @@ li.orbcat {
 
 // FLOAT LABELS
 .float-label {
-  visibility  : hidden;
-  position    : absolute;
-  z-index     : 10;
-  width       : $orb-card-height;
--webkit-transform :rotate(270deg);
-   -moz-transform    : rotate(270deg);
-   -o-transform      : rotate(270deg);
-  transform   : rotate(270deg);
-  margin:0;
-  left        : 0;
-  bottom      : $float-label-exposed-bottom;
-  text-align  : center;
-  transition  : visibility $global-transition-time, margin-left $global-transition-time;
+  visibility        : hidden;
+  position          : absolute;
+  z-index           : 10;
+  width             : $orb-card-height;
+  -webkit-transform : rotate(270deg);
+  -moz-transform    : rotate(270deg);
+  -o-transform      : rotate(270deg);
+  transform         : rotate(270deg);
+  margin            : 0;
+  left              : 0;
+  bottom            : $float-label-exposed-bottom;
+  text-align        : center;
+  transition        : visibility $global-transition-time, margin-left $global-transition-time;
   &.exposed {
     visibility  : visible;
     margin-left : $float-label-exposed-margin;
@@ -193,10 +194,10 @@ li.orbcat {
 }
 
 div#orb-card {
-  height      : $orb-card-height;
-  width       : $orb-card-width;
+  height  : $orb-card-height;
+  width   : $orb-card-width;
   margin  : $orb-card-margin;
-  z-index     : 999999;
+  z-index : 999999;
 
   section {
     background-color : $white;
@@ -212,16 +213,16 @@ div#orb-card {
   height       : 0;
   border-left  : $triangle-border-width solid transparent;
   border-right : $triangle-border-width solid transparent;
-  margin-left:auto;
-  margin-left:right;
+  margin-left  : auto;
+  margin-left  : right;
   &.tr-right {
-    right          : $triangle-extrude-position * 1.333333; // on account of the rotation
-    top           : $triangle-center-position * 1.333333;
-    -webkit-transform :rotate(-90deg);
-       -moz-transform    : rotate(-90deg);
-       -o-transform      : rotate(-90deg);
-      transform   : rotate(-90deg);
-    transform: rotate(-90deg);
+    right             : $triangle-extrude-position * 1.333333; // on account of the rotation
+    top               : $triangle-center-position * 1.333333;
+    -webkit-transform : rotate(-90deg);
+    -moz-transform    : rotate(-90deg);
+    -o-transform      : rotate(-90deg);
+    transform         : rotate(-90deg);
+    transform         : rotate(-90deg);
   }
 }
 
@@ -240,28 +241,28 @@ ul.orb-card {
     background-repeat   : no-repeat;
     background-position : center;
     cursor              : pointer;
-    z-index:9999;
+    z-index             : 9999;
 
     &#favorite {
       background-color : $xtreme-yellow;
       background-image : url('../img/orb_card.icon.fav.png');
-      .triangle { border-top : 16px solid $xtreme-yellow; }
+      .triangle { border-top : $triangle-border-width solid $xtreme-yellow; }
     }
     &#order {
       background-color : $xtreme-red;
       background-image : url('../img/orb_card.icon.cart.png');
-      .triangle { border-top : 16px solid $xtreme-red; }
+      .triangle { border-top: $triangle-border-width solid $xtreme-red; }
     }
     &#like {
       background-color : $xtreme-blue;
       background-image : url('../img/orb_card.icon.like.png');
-      .triangle { border-top : 16px solid $xtreme-blue; }
+      .triangle { border-top : $triangle-border-width solid $xtreme-blue; }
     }
-    transition: background-color $global-transition-time;
-    .triangle { transition: border-top-color $global-transition-time; }
+    transition          : background-color $global-transition-time;
+    .triangle { transition : border-top-color $global-transition-time; }
     &#favorite:hover, &#order:hover, &#like:hover {
       background-color : $light-grey;
-      .triangle { border-top-color: $light-grey; }
+      .triangle { border-top-color : $light-grey; }
     }
   }
 }
@@ -278,7 +279,7 @@ div.orb-card-content {
   }
   &#price-matrix {
     ul {
-      margin-top : -5px;
+      margin-top : -6px;
       padding    : 0;
       max-height : $price-matrix-max-height;
       overflow-y : auto;
@@ -300,7 +301,7 @@ div.orb-card-content {
       @include global-transition(background-color);
       &:hover { background-color : $very-light-grey; }
     }
-    h5 { height: $price-matrix-header-height;}
+    h5 { height : $price-matrix-header-height; }
     h5, li div {
       width   : 50%;
       padding : 0;
@@ -326,7 +327,7 @@ div.orb-card-content {
   overflow-x : hidden;
   width      : $orb-card-stage-menu-width;
   height     : $orb-card-stage-menu-height;
-  float : right;
+  float      : right;
 
   li {
     position         : relative;
@@ -361,17 +362,17 @@ div.orb-card-content {
     }
     &:hover { background-color : lighten($xtreme-blue, 15%); }
     &:first-of-type {
-      padding: 0;
+      padding          : 0;
       box-shadow       : none;
       background-color : none;
       cursor           : default;
       div#active-orb-name-3d-container {
-        height: $orb-card-stage-menu-item-height;
-        width: $orb-card-stage-menu-width;
+        height : $orb-card-stage-menu-item-height;
+        width  : $orb-card-stage-menu-width;
         h2 {
           background-color : $xtreme-red;
-          padding: rem-calc(10) 0 0 $orb-card-stage-menu-padding-left;
-          margin: 0;}
+          padding          : rem-calc(10) 0 0 $orb-card-stage-menu-padding-left;
+          margin           : 0; }
       }
     }
     &.active {

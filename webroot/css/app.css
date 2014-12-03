@@ -5252,7 +5252,6 @@ nav#login {
     max-height: 150px;
     width: 100%; }
 
-
 main#splash {
   width: 100%;
   height: 100%;
@@ -5456,7 +5455,6 @@ html, nav, body, main, footer {
   overflow: auto; }
 
 body {
-  background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover; }
   body .menu {
@@ -5464,6 +5462,7 @@ body {
     overflow: auto; }
 
 main#menu {
+  min-height: 100%;
   position: relative;
   width: 100%;
   top: 0;
@@ -5736,17 +5735,17 @@ ul.orb-card {
       background-color: #faea06;
       background-image: url('../img/orb_card.icon.fav.png'); }
       ul.orb-card div.orb-card-button#favorite .triangle {
-        border-top: 16px solid #faea06; }
+        border-top: 0.75rem solid #faea06; }
     ul.orb-card div.orb-card-button#order {
       background-color: #e02027;
       background-image: url('../img/orb_card.icon.cart.png'); }
       ul.orb-card div.orb-card-button#order .triangle {
-        border-top: 16px solid #e02027; }
+        border-top: 0.75rem solid #e02027; }
     ul.orb-card div.orb-card-button#like {
       background-color: #0779be;
       background-image: url('../img/orb_card.icon.like.png'); }
       ul.orb-card div.orb-card-button#like .triangle {
-        border-top: 16px solid #0779be; }
+        border-top: 0.75rem solid #0779be; }
     ul.orb-card div.orb-card-button .triangle {
       transition: border-top-color 0.3s; }
     ul.orb-card div.orb-card-button#favorite:hover, ul.orb-card div.orb-card-button#order:hover, ul.orb-card div.orb-card-button#like:hover {
@@ -5763,7 +5762,7 @@ div.orb-card-content {
     background-color: #b4b4b4;
     padding: 0.625rem; }
   div.orb-card-content#price-matrix ul {
-    margin-top: -5px;
+    margin-top: -6px;
     padding: 0;
     max-height: 2.86458rem;
     overflow-y: auto; }
