@@ -29,8 +29,6 @@ class CartComponent extends Component {
 //////////////////////////////////////////////////
 
 	public function add($id, $quantity = 1, $price_rank = 0, $orbopts_list = null) {
-		
-
 		if(!is_numeric($quantity)) {
 			$quantity = 1;
 		}
@@ -51,9 +49,13 @@ class CartComponent extends Component {
 			)
 		));
 
+		if(empty($product)) {
+			return false;
+		}
+
 		if($orbopts_list) {
+			$this->controller->Orbopt->Behaviors->load('Containable');
 			foreach ($orbopts_list as $orbopt_id) {
-				$this->controller->Orbopt->Behaviors->load('Containable');
 				$orbopts[$orbopt_id] = $this->controller->Orbopt->find('first', array(
 					'recursive' => 1,
 					'conditions' => array(
@@ -66,10 +68,6 @@ class CartComponent extends Component {
 			}
 	        }
 		
-		if(empty($product)) {
-			return false;
-		}
-
 		$opts_prices = 0;
 		if($orbopts) {
 			foreach($orbopts as $orbopt) {
@@ -81,6 +79,7 @@ class CartComponent extends Component {
 		$prices = array_values($product['Pricelist']);
 
 		$data['product_id'] = $product['Orb']['id'];
+		$data['orbopts_ids'] = $orbopts_list;
 		$data['title'] = $product['Orb']['title'];
 		$data['price'] = $prices[$price_rank];
 		$data['opts_prices'] = $opts_prices;

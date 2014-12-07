@@ -215,23 +215,17 @@ class UsersController extends AppController {
 	    }
 	    
 	    if ($this->request->is('post')) {
-		$conditions = array('User.email'=>$this->request->data['User']['email']);    
-		if ($this->User->hasAny($conditions)) {    
-			if ($this->Auth->login()) {
-			    $this->Session->setFlash(__('Welcome'));
-			    if ($this->Session->read('storedUser') != null) {
-			    	$exUser = $this->User->find('first', array('conditions'=>array('User.email'=>$this->request['email'])));
-			    	$exUser['User'] = array_merge($exUser['User'], $this->Session->read('storedUser'));
-			    	$this->Session->write('stashedUser', null);
-			    }
-			    return $this->redirect($this->redirect->__cakeUrl('user', 'edit'));
-			} else {
-			    $this->Session->setFlash(__('Your email or password was incorrect. (Post1)'));
-			    return $this->redirect(___cakeUrl('pages', 'splash'));
-			}
+		if ($this->Auth->login()) {
+		    $this->Session->setFlash(__('Welcome'));
+		    if ($this->Session->check('storedUser')) {
+			$exUser = $this->User->find('first', array('conditions'=>array('User.email'=>$this->request['email'])));
+			$exUser['User'] = array_merge($exUser['User'], $this->Session->read('storedUser'));
+			$this->Session->delete('stashedUser');
+		    }
+		    return $this->redirect(__cakeUrl('user', 'edit'));
 		} else {
-			$this->Session->setFlash(__('Your email or password was incorrect. (Post2)'));
-			return $this->redirect(___cakeUrl('pages', 'splash'));
+		    $this->Session->setFlash(__('Your email or password was incorrect.'));
+		    return $this->redirect(___cakeUrl('pages', 'splash'));
 		}
 	    }
 	    
