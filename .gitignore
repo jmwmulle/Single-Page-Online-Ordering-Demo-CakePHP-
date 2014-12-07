@@ -4,6 +4,7 @@
 ._.DS_Store
 tmp/
 tmp/*
+Config/bootstrap.php
 webroot/jonsauce
 webroot/jonsauce/*
 Config/database.php
