@@ -42,6 +42,8 @@ $base-padding : rem-calc(15px);
 $medium-padding: ($base-padding/3) * 2;
 $tight-padding: $base-padding/3;
 
+$scroll-bar-width: rem-calc(10px);
+
 /* TYPOGRAPHY */
 $body-font-size: 1rem;
 $button-font-family: "Helvetica Neue Condensed Black";
@@ -108,6 +110,16 @@ $orb-card-stage-menu-width: 0.5 * $orb-card-wrapper-width;
 $orb-card-stage-menu-height: $orb-card-wrapper-inner-height;
 $orb-card-stage-menu-item-height: 0.2 * ($orb-card-stage-height - 2 * $orb-card-stage-border-width);
 $orb-card-stage-menu-padding-left: 0.33333 * $orb-card-stage-menu-width;
+$topping-right-padding: $base-padding - $scroll-bar-width;
+$topping-icon-bg-diameter: rem-calc(30px);
+$topping-icon-half-bg-width: rem-calc(30px) / 2;
+$topping-icon-button-height: $orb-card-stage-menu-item-height;
+$topping-icon-button-width: $topping-icon-bg-diameter;
+$topping-icon-vertical-padding: ($topping-icon-button-height - $topping-icon-bg-diameter) / 2;
+$topping-icon-full-padding: $topping-icon-vertical-padding;
+$topping-icon-half-padding: $topping-icon-vertical-padding $topping-icon-bg-diameter / 4 + $topping-icon-vertical-padding;
+$topping-text-width: $orb-card-stage-menu-width - ($topping-right-padding + 5 * $topping-icon-button-width);
+
 
   // ORB CARD
 $orb-card-width:  0.5 * $orb-card-wrapper-width;
@@ -134,6 +146,24 @@ $price-matrix-header-height: $h5-font-size;
 $price-matrix-max-height: $orb-card-row-height - $price-matrix-header-height;
 $float-label-exposed-bottom: (0.5 * $orb-card-height) - $orb-card-vertical-margin;
 $float-label-exposed-margin: -0.5 * $orb-card-height + $h3-font-size ;
+//$topping-icon-button-bg-height: 0.8 * $orb-card-stage-menu-item-height - 2 * $tight-padding;
+//$topping-icon-button-bg-width-full: $topping-icon-button-bg-height;
+//$topping-icon-button-bg-width-half: $topping-icon-button-bg-height / 2;
+$topping-icon-cancel-disabled: -15px -65px;
+$topping-icon-cancel-enabled: 15px 65px;
+$topping-icon-cancel-hover: 15px 115px;
+$topping-icon-left-disabled: 65px 15px;
+$topping-icon-left-enabled: 65px 65px;
+$topping-icon-left-hover: 65px 115px;
+$topping-icon-full-disabled: 115px 15px;
+$topping-icon-full-enabled: 115px 65px;
+$topping-icon-full-hover: 115px 115px;
+$topping-icon-double-disabled: 165px 15px;
+$topping-icon-double-enabled: 165px 75px;
+$topping-icon-double-hover: 165px 135px;
+$topping-icon-right-disabled: 205px 15px;
+$topping-icon-right-enabled: 205px 75px;
+$topping-icon-right-hover: 205px 135px;
 
 /*  MONTHLY  CONTENT  */
 $monthly-content-wrapper-width: $row-width - ($column-gutter + $orbcat-menu-width + 2 * $float-pane-margin + $user-activity-panel-width);

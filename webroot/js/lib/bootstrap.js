@@ -18,7 +18,11 @@ var constants = {
 	DS: "/",
 	BODY: "body",
 	ORDER_SPACER_FACTOR: 0.45,
-	MENU_SPACER_FACTOR: 0.15
+	MENU_SPACER_FACTOR: 0.15,
+	DATABASE: "database",
+	SESSION: "session",
+	UPDATE_DB: "update_database",
+	UPDATE_SESSION: "update_session"
 };
 var C = constants;
 
@@ -198,13 +202,13 @@ window.XBS = {
 					});
 				return true;
 			},
-//			bind_cart_hooks: function() {
-////				$(XSM.menu.add_to_cart_hook).on(C.CLK, null, null, XBS.fn.configure_orb);
-//				$("#orb-card-wrapper ").on(C.CLK, ".add-to-cart", null, function(e) {
-//						var data = $(e.currentTarget).data('orbId');
-//						XBS.fn.configure_orb(data.orbId, data.priceRank)
-//				});
-//			},
+			bind_cart_hooks: function() {
+//				$(XSM.menu.add_to_cart_hook).on(C.CLK, null, null, XBS.fn.configure_orb);
+				$("#orb-card-wrapper ").on(C.CLK, ".add-to-cart", null, function(e) {
+						var data = $(e.currentTarget).data('orbId');
+						XBS.fn.configure_orb(data.orbId, data.priceRank)
+				});
+			},
 			bind_float_menus: function() {
 				$(C.BODY).on(C.MOUSEENTER, XSM.effects.float_label, null, function(e) {
 					var data = $(e.currentTarget).data();
@@ -228,6 +232,11 @@ window.XBS = {
 					XBS.layout.refresh_active_orbs_menu(data.orbcat, data.orbcatName);
 				});
 				return true;
+			},
+			bind_orb_opt_toggle: function() {
+				$(C.BODY).on(C.CLK, XSM.menu.topping, null, function(e) {
+					XBS.layout.toggle_orb_opt($(e.currentTarget).data('optId'));
+				});
 			},
 			bind_splash_links: function() {
 				$(C.BODY).on(C.CLK, XSM.splash.splash_link, null, function(e) {
@@ -308,12 +317,12 @@ window.XBS = {
 			return  (isArray(selector) ) ? selector : $(selector);
 		},
 		multi_activize: function(element) {
+			var deactivize_when = $(element).data('deactivizeWhen');
 			if ($(element).hasClass('active') ) {
-				$(element).removeClass('active').addClass('inactive');
+				if (deactivize_when != XSM.effects.active) $(element).removeClass('active').addClass('inactive');
 			} else if ($(element).hasClass('inactive')) {
-				$(element).removeClass('inactive').addClass('active');
+				if (deactivize_when != XSM.effects.inactive) $(element).removeClass('inactive').addClass('active');
 			}
-
 		},
 		ready_loading_screen: function() {
 			if (XBS.cfg.developmentMode) {
@@ -346,10 +355,15 @@ window.XBS = {
 			$(["favorite-label","order-label","like-label"]).each(function() {
 				XBS.layout.toggle_float_label(this, C.HIDE);});
 			$(XSM.menu.orb_card_3d_context).toggleClass(stripCSS(XSM.effects.flipped_y));
-			$(XSM.menu.active_orbs_menu).slideToggle(500, function() {
-					$(XSM.menu.toppings_list).slideToggle(500);
+
+			$(XSM.menu.active_orbs_menu).fadeToggle(500, function() {
+					$(XSM.menu.toppings_list).fadeToggle(500);
 			});
 
+		},
+		toggle_orb_opt: function(opt_id) {
+			var cancel_id = asId("topping-coverage-"+opt_id+"-cancel");
+			$(cancel_id).removeClass('disabled').addClass('enabled');
 		},
 		refresh_active_orbs_menu: function(orbcat_id, orbcat_name) {
 			// todo: fallback on ajax fail

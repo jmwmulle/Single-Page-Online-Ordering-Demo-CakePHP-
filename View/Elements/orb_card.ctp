@@ -99,8 +99,11 @@
 <?php $classes = array("toppings-list", "text-center", "orb-card-stage-right-menu", "hidden");?>
 <ul id="toppings-list" <?php echo ___cD($classes);?>>
 	<li id="toppings-filter">
-		<a class="tiny button">meats</a>
-		<a class="tiny button">veggies</a>
+	<?php foreach( array("meats", "veggies", "premium") as $filter) {
+		$classes = array($filter, "topping-filter", "active", "multi-activizing");
+		$data = array("filter" => $filter, "active" => "false");?>
+		<a <?php echo ___cD($classes);?> <?php echo ___dA($data);?>> <?php echo $filter;?></a>
+		<?php } ?>
 	</li>
 	<?php foreach ($orb['Orbopt'] as $opt) {
 		if ($opt['pizza']) {

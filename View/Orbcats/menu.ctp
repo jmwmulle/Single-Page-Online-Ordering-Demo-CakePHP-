@@ -57,7 +57,7 @@ $this->end('active_orb_card');
 <main id="menu">
 	<div class="row">
 		<div class="large-12 columns">
-			<ul id="user-activity-panel" class="show-for-large-up vertical text-center">
+			<ul id="user-activity-panel" class="show-for-large-up activizing vertical text-center">
 				<li><h2 class="body-font-color">I AM</h2></li>
 				<li class="active"><a class="body-font-color block">Just<br />Browsing</a></li>
 				<li class="inactive coming-soon"><a class="body-font-color block">Ordering<br />(Delivery)</a></li>

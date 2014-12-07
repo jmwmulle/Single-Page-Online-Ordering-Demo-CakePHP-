@@ -6,11 +6,19 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
+	$list_id = sprintf('id="topping-coverage-%s"', $opt['id']);
+	$list_data = array("deactivize-when" => "active", "opt-id" => $opt['id']);
+	$list_classes = array("topping", "multi-activizing", "inactive");
+	$cancel_id = sprintf('id="topping-coverage-%s"', $opt['id']."-cancel");
+	$cancel_data = array("reactivize" => $list_id);
 ?>
-<li class="topping multi-activizing inactive" data-opt-id="<?php echo $opt['id'];?>">
-	<span><?php echo strtoupper($opt['title']);?></span>
-	<a href="#" class="double">&nbsp;</a>
-	<a href="#" class="right-side">&nbsp;</a>
-	<a href="#" class="full">&nbsp;</a>
-	<a href="#" class="left-side">&nbsp;</a>
-</li>
+<li <?php echo $list_id;?> <?php echo ___cD($list_classes);?> <?php echo ___dA($list_data);?>
+	><ul class="inline activizing"
+		><li class="topping-coverage double inactive">&nbsp;</li
+		><li class="topping-coverage right-side inactive">&nbsp;</li
+		><li class="topping-coverage full inactive">&nbsp;</li
+		><li class="topping-coverage left-side inactive">&nbsp;</li
+		><li <?php echo $cancel_id;?> <?php echo ___dA($cancel_data);?> class="cancel inactive disabled">&nbsp;</li
+		><li><h5><?php echo strtoupper($opt['title']);?></h5></li
+	></ul
+></li>

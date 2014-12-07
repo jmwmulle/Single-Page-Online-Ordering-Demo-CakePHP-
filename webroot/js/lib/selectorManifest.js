@@ -28,7 +28,9 @@ var XSM = {
 		flipped_y: "flipped-y",
 		float_label: ".float-labeled",
 		solidify: ".solidify",
-		exposed: "exposed"
+		exposed: "exposed",
+		active: "active",
+		inactive: "inactive"
 	},
 	load: {
 		dismissLSButton: "#dismiss-loading-screen",
@@ -49,7 +51,9 @@ var XSM = {
 		orbcat_refresh: ".orbcat-refresh",
 		orb_card_3d_context: "#orb-card-3d-context",
 		active_orb_name_3d_context: "#active-orb-name-3d-context",
-		toppings_list: "#toppings-list"
+		toppings_list: "#toppings-list",
+		topping: ".topping",
+		topping_cancel: function(selector){ return selector +" ul li.cancel";}
 	},
 	main: {
 		primaryContent: "#primary-content",

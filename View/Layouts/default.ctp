@@ -73,8 +73,8 @@ echo $this->Element("top_bar"); ?>
 <?php
 //	if ($this->get('isSplash'))
 	echo $this->fetch('content');
-	echo $this->fetch('main');
 	echo $this->fetch('app');
+	echo $this->fetch('main');
 ?>
 <footer>
 	<section class="pagespan">

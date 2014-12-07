@@ -148,16 +148,24 @@ li.orbcat {
 div.orb-card-button {
   text-align : center;
 }
-#active-orbs-menu {
+.orb-card-stage-right-menu li {
+  font-size        : $h5-font-size;
+  line-height      : $orb-card-stage-menu-item-height;
+  a, span {
+     transition : color $global-transition-time, opacity 0.2s;
+     color      : $white;
+     &.fade-out { opacity : 0; }
+   }
+  &.active {
+    a, span, h5 { color  : $dark-grey;}
+  }
 }
 div.orb-card-content {
   &#description { @include HelveticaMdCn; }
   &#price-matrix {
     @include HelveticaMdCn;
     color: $text-grey;
-    h5 {
-      color : $xtreme-red;
-    }
+    h5 { color : $xtreme-red; }
     li div{
     };
   }
@@ -167,13 +175,14 @@ div.orb-card-content {
 }
 
 .orb-size-panel {
-  li {
-    h3 {
-      color:$white;
-      text-align:center;
+    li {
+      h3 {
+        color:$white;
+        text-align:center;
+      }
+    &.active {
+      h3 { color:$dark-grey;}
+      color : $dark-grey;
     }
-  &.active {
-    h3 { color:$dark-grey;}
-  }
   }
 }

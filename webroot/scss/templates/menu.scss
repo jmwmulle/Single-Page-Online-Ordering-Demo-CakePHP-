@@ -3,9 +3,10 @@ html, nav, body, main, footer {
 }
 
 body {
-//  background-attachment : fixed;
-  background-repeat     : no-repeat;
-  background-size       : cover;
+  //  background-attachment : fixed;
+  background-repeat : no-repeat;
+  background-size   : cover;
+  padding-top : $menu-top-padding;
   .menu {
     background-image : url("../img/menu_bg.xlg.bright.jpg");
     overflow         : auto;
@@ -13,12 +14,11 @@ body {
 }
 
 main#menu {
-  min-height:100%;
+  min-height  : 100%;
   position    : relative;
   width       : 100%;
   top         : 0;
   left        : 0;
-  padding-top : $menu-top-padding;
   overflow    : auto;
 }
 
@@ -251,7 +251,7 @@ ul.orb-card {
     &#order {
       background-color : $xtreme-red;
       background-image : url('../img/orb_card.icon.cart.png');
-      .triangle { border-top: $triangle-border-width solid $xtreme-red; }
+      .triangle { border-top : $triangle-border-width solid $xtreme-red; }
     }
     &#like {
       background-color : $xtreme-blue;
@@ -323,48 +323,28 @@ div.orb-card-content {
 }
 
 .orb-card-stage-right-menu {
+  position:absolute;
+  right:0;
+  top:0;
   overflow-y : scroll;
   overflow-x : hidden;
-  width      : $orb-card-stage-menu-width;
   height     : $orb-card-stage-menu-height;
-  float      : right;
 
   li {
     position         : relative;
     padding-left     : $orb-card-stage-menu-padding-left;
     background-color : $xtreme-blue;
     box-shadow       : inset 15px -5px 8px $black-a33;
-    font-size        : rem-calc(18);
     height           : $orb-card-stage-menu-item-height;
-    line-height      : $orb-card-stage-menu-item-height;
     cursor           : pointer;
     transition       : background-color $global-transition-time, color $global-transition-time;
     @include HelveticaBlkCn;
-    a, span {
-      transition : color $global-transition-time, opacity 0.2s;
-      color      : $white;
-      &.fade-out { opacity : 0; }
-    }
-    &.topping {
-      padding-right : rem-calc(25px);
-      a {
-        width               : 30px;
-        height              : 60px;
-        padding             : 3px;
-        float               : right;
-        background-repeat   : no-repeat;
-        background-position : center;
-      }
-      a.left-side { background-image : url('../img/topping_icon_left.png'); }
-      a.right-side { background-image : url('../img/topping_icon_right.png'); }
-      a.full { background-image : url('../img/topping_icon_full.png'); }
-      a.double { background-image : url('../img/topping_icon_double.png'); }
-    }
+
     &:hover { background-color : lighten($xtreme-blue, 15%); }
     &:first-of-type {
       padding          : 0;
       box-shadow       : none;
-      background-color : none;
+      background-color : transparent;
       cursor           : default;
       div#active-orb-name-3d-container {
         height : $orb-card-stage-menu-item-height;
@@ -375,26 +355,71 @@ div.orb-card-content {
           margin           : 0; }
       }
     }
-    &.active {
-      background-color : $xtreme-yellow;
-      a, span {
-        color  : $dark-grey;
-        cursor : default;
-      }
-      transition       : none;
-      cursor           : default;
-    }
-
+    &.active {background-color : $xtreme-yellow;}
   }
 }
 
-.orbcat-triangle-inner {
-  width        : 0;
-  height       : 0;
-  border-left  : 22px solid transparent;
-  border-right : 22px solid transparent;
-  border-top   : 26px solid $xtreme-red;
-}
+li.topping {
+    padding-right : $topping-right-padding;
+  h5 {
+    vertical-align: middle;
+    transition: color $global-transition-time;
+  };
+    li {
+      box-shadow: none;
+      background-color: transparent;
+      margin:0;
+      width               : $topping-icon-button-width;
+      height              : $orb-card-stage-menu-item-height;
+      float               : right;
+      padding             : $topping-icon-full-padding;
+      background-size     : auto;
+      background-repeat   : no-repeat;
+      transition          : background-position $global-transition-time;
+      &:hover, &.active { background-color: transparent; }
+      &.topping-coverage { background-image: url('../img/topping_icons.png');}
+
+    &.left-side {
+      background-position : $topping-icon-left-disabled;
+      &:hover { background-position : $topping-icon-left-hover; }
+      &.active { background-position : $topping-icon-left-disabled; }
+    }
+    &.right-side {
+      &:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
+      &.active { background-image : url('../img/topping_icons/topping_icons.png'); }
+    }
+    &.full {
+      background-image : url('../img/topping_icons/topping_icons.png');
+      &:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
+      &.active { background-image : url('../img/topping_icons/topping_icons.png'); }
+    }
+    &.double {
+      background-image : url('../img/topping_icons/topping_icons.png');
+      &:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
+      &.active { background-image : url('../img/topping_icons/topping_icons.png'); }
+    }
+    &.cancel {
+      background-position : $topping-icon-cancel-disabled;
+    }
+    &:last-of-type {
+      width: $topping-text-width;
+      padding-left: $orb-card-stage-menu-padding-left;
+    }
+    }
+  &.active li {
+          &.left-side:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
+          &.right-side:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
+          &.full:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
+          &.double:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
+          &.cancel{
+            &.disabled { background-image : url('../img/topping_icons/topping_icons.png'); }
+            &.enabled {
+                  background-image : url('../img/topping_icons/topping_icons.png');
+              &:hover { background-image : url('../img/topping_icons/topping_icons.png');}
+            }
+          }
+      }
+  }
 
 .orb-size-panel {
   position : absolute;
@@ -410,8 +435,6 @@ div.orb-card-content {
     color : $white;
     &.active {
       h3 { background-color : $xtreme-yellow; }
-      color : $dark-grey;
     }
-  ;
   }
 }
