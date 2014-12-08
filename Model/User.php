@@ -25,42 +25,61 @@
 			'firstname' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
-					//'message' => 'Your custom message here',
+					'message' => 'Please provide your name',
 					//'allowEmpty' => false,
 					//'required' => false,
 					//'last' => false, // Stop validation after this rule
 					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+				'alphaNumeric' => array(
+					'rule' => array('alphaNumeric'),
+					'message' => 'Illegal character(s) in First Name',
 				),
 			),
 			'lastname'  => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
-					//'message' => 'Your custom message here',
+					'message' => 'Please provide your name',
 					//'allowEmpty' => false,
 					//'required' => false,
 					//'last' => false, // Stop validation after this rule
 					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+				'alphaNumeric' => array(
+					'rule' => array('alphaNumeric'),
+					'message' => 'Illegal character(s) in Last Name',
 				),
 			),
 			'email'     => array(
 				'email' => array(
 					'rule' => array( 'email' ),
-					'message' => 'Enter your e-mail address',
+					'message' => 'Please enter a valid e-mail address',
 					//'allowEmpty' => false,
 					//'required' => false,
 					//'last' => false, // Stop validation after this rule
 					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
+				'unique' => array(
+					'rule' => array('isUnique'),
+					'message' => 'Sorry, that email address is already in use.',
+				),
+			),
+			'password'  => array(
+				'password' => array(
+					'rule' => array('lengthBetween', 8, 60),
+					'message' => 'Password must be between 8 and 60 charcters long.',
+				),
 			),
 			'address'   => array(
 				'notEmpty' => array(
-					'rule' => array( 'Your Address' ),
+					'rule' => array('notEmpty'),
+					'message' => 'You must supply your address.',
 				),
 			),
 			'postal_code' => array(
 				'postal' => array(
 					'rule' => array( 'postal', null, 'ca' ),
-					'message' => 'Your Postal Code',
+					'message' => 'You must supply a valid Postal Code.',
 				),
 			),
 			'group_id'  => array(
