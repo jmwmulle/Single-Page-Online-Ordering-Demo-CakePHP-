@@ -20,7 +20,7 @@ $classes = array('text-center', 'tight', 'l-3', 'activizing', 'orb-card-stage-ri
 <?php
 	foreach($active_orbcat['orbs'] as $i => $orb) {
 		if ($orb['id'] != -1) { // ie if it's not a dummy orb
-			$classes = array('orb-card-refresh',
+			$classes = array('orb-card-refresh', 'menu-shadow',
 			                 $orb['id'] == $active_orbcat['orb_card']['id'] ? 'active' : 'inactive'
 			);
 			$data = array("orb" => $orb['id']);

@@ -155,6 +155,35 @@ function eTypeOf(e) { return isEvent(e) ?  e.type : false}
 }
 
 
+function array_intersect(a, b)
+{
+	a = a.sort();
+	b = b.sort();
+  var ai = bi= 0;
+  var result = [];
+
+  while( ai < a.length && bi < b.length ){
+     if      (a[ai] < b[bi] ){ ai++; }
+     else if (a[ai] > b[bi] ){ bi++; }
+     else /* they're equal */
+     {
+       result.push(ai);
+       ai++;
+       bi++;
+     }
+  }
+
+  return result;
+}
+
+
+function asClass(selector) {
+	if (typeof(selector) === "string") {
+		return selector.substring(0,1) === "." ? selector : "."+selector;
+	}
+	return false;
+}
+
 function selToStr(str) {
 	try {
 	  return str.replace("-"," ").replace("_"," ").toTitleCase();

@@ -148,6 +148,7 @@ function ___cfName($data) {
 CakePlugin::load('AclExtras');
 CakePlugin::load('Migrations');
 CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
+CakePlugin::load('DebugKit');
 
 
 Configure::write('Opauth.Strategy.Google', array(

@@ -6,19 +6,20 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-	$list_id = sprintf('id="topping-coverage-%s"', $opt['id']);
-	$list_data = array("deactivize-when" => "active", "opt-id" => $opt['id']);
-	$list_classes = array("topping", "multi-activizing", "inactive");
-	$cancel_id = sprintf('id="topping-coverage-%s"', $opt['id']."-cancel");
-	$cancel_data = array("reactivize" => $list_id);
+	$list_classes = array("topping", 'menu-shadow', "inactive");
+	$icons = array('right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D");
+	$data = array("id" => $opt['id']);
+	foreach (array_slice($opt, 3, -1) as $flag => $value) {
+		if ($value) $data['flags'][] = $flag;
+	}
 ?>
-<li <?php echo $list_id;?> <?php echo ___cD($list_classes);?> <?php echo ___dA($list_data);?>
-	><ul class="inline activizing"
-		><li class="topping-coverage double inactive">&nbsp;</li
-		><li class="topping-coverage right-side inactive">&nbsp;</li
-		><li class="topping-coverage full inactive">&nbsp;</li
-		><li class="topping-coverage left-side inactive">&nbsp;</li
-		><li <?php echo $cancel_id;?> <?php echo ___dA($cancel_data);?> class="cancel inactive disabled">&nbsp;</li
+<li id="<?php echo sprintf("topping-coverage-%s", $opt['id']);?>" <?php echo ___cD($list_classes);?> <?php echo ___dA($data);?>
+	><ul class="inline"
+         <?php foreach($icons as $icon => $value) {
+         $classes = array("topping-coverage", $icon, "icon-$icon", "inactive", "disabled");
+	      if ($icon == "full") $classes[3] = "active";?>
+		><li <?php echo ___cD($classes); ?> data-weight="<?php echo $value;?>"></li
+		<?php } ?>
 		><li><h5><?php echo strtoupper($opt['title']);?></h5></li
 	></ul
 ></li>

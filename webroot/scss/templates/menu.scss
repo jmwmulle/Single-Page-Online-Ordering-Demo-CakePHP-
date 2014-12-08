@@ -6,7 +6,7 @@ body {
   //  background-attachment : fixed;
   background-repeat : no-repeat;
   background-size   : cover;
-  padding-top : $menu-top-padding;
+  padding-top       : $menu-top-padding;
   .menu {
     background-image : url("../img/menu_bg.xlg.bright.jpg");
     overflow         : auto;
@@ -14,12 +14,12 @@ body {
 }
 
 main#menu {
-  min-height  : 100%;
-  position    : relative;
-  width       : 100%;
-  top         : 0;
-  left        : 0;
-  overflow    : auto;
+  min-height : 100%;
+  position   : relative;
+  width      : 100%;
+  top        : 0;
+  left       : 0;
+  overflow   : auto;
 }
 
 // in use; content area
@@ -323,22 +323,20 @@ div.orb-card-content {
 }
 
 .orb-card-stage-right-menu {
-  position:absolute;
-  right:0;
-  top:0;
+  position   : absolute;
+  right      : 0;
+  top        : 0;
   overflow-y : scroll;
   overflow-x : hidden;
   height     : $orb-card-stage-menu-height;
-
+  .menu-shadow { box-shadow       : inset 15px -5px 8px $black-a33;}
   li {
     position         : relative;
     padding-left     : $orb-card-stage-menu-padding-left;
     background-color : $xtreme-blue;
-    box-shadow       : inset 15px -5px 8px $black-a33;
     height           : $orb-card-stage-menu-item-height;
     cursor           : pointer;
     transition       : background-color $global-transition-time, color $global-transition-time;
-    @include HelveticaBlkCn;
 
     &:hover { background-color : lighten($xtreme-blue, 15%); }
     &:first-of-type {
@@ -355,71 +353,54 @@ div.orb-card-content {
           margin           : 0; }
       }
     }
-    &.active {background-color : $xtreme-yellow;}
+    &.active { background-color : $xtreme-yellow; }
+    &.topping {
+      padding-right : $topping-right-padding;
+      li {
+        box-shadow        : none;
+        background-color  : transparent;
+        margin            : 0;
+        width             : $topping-icon-button-width;
+        height            : $orb-card-stage-menu-item-height;
+        float             : right;
+        padding           : $topping-icon-full-padding;
+        background-size   : auto;
+        background-repeat : no-repeat;
+        transition        : background-position $global-transition-time;
+        &:hover, &.active { background-color : transparent; }
+        &:last-of-type {
+          width        : $topping-text-width;
+          padding-left : $orb-card-stage-menu-padding-left;
+        }
+        &.topping-coverage {
+          color      : $white;
+          opacity    : 0.33;
+          transition : color $global-transition-time, opacity $global-transition-time;
+        }
+      }
+      &.active {
+        li.topping-coverage {
+          opacity    : 1;
+          &.active, &:hover { color : $black;}
+        }
+      }
+    }
   }
 }
 
-li.topping {
-    padding-right : $topping-right-padding;
-  h5 {
-    vertical-align: middle;
-    transition: color $global-transition-time;
-  };
-    li {
-      box-shadow: none;
-      background-color: transparent;
-      margin:0;
-      width               : $topping-icon-button-width;
-      height              : $orb-card-stage-menu-item-height;
-      float               : right;
-      padding             : $topping-icon-full-padding;
-      background-size     : auto;
-      background-repeat   : no-repeat;
-      transition          : background-position $global-transition-time;
-      &:hover, &.active { background-color: transparent; }
-      &.topping-coverage { background-image: url('../img/topping_icons.png');}
-
-    &.left-side {
-      background-position : $topping-icon-left-disabled;
-      &:hover { background-position : $topping-icon-left-hover; }
-      &.active { background-position : $topping-icon-left-disabled; }
-    }
-    &.right-side {
-      &:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
-      &.active { background-image : url('../img/topping_icons/topping_icons.png'); }
-    }
-    &.full {
-      background-image : url('../img/topping_icons/topping_icons.png');
-      &:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
-      &.active { background-image : url('../img/topping_icons/topping_icons.png'); }
-    }
-    &.double {
-      background-image : url('../img/topping_icons/topping_icons.png');
-      &:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
-      &.active { background-image : url('../img/topping_icons/topping_icons.png'); }
-    }
-    &.cancel {
-      background-position : $topping-icon-cancel-disabled;
-    }
-    &:last-of-type {
-      width: $topping-text-width;
-      padding-left: $orb-card-stage-menu-padding-left;
-    }
-    }
-  &.active li {
-          &.left-side:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
-          &.right-side:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
-          &.full:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
-          &.double:hover { background-image : url('../img/topping_icons/topping_icons.png'); }
-          &.cancel{
-            &.disabled { background-image : url('../img/topping_icons/topping_icons.png'); }
-            &.enabled {
-                  background-image : url('../img/topping_icons/topping_icons.png');
-              &:hover { background-image : url('../img/topping_icons/topping_icons.png');}
-            }
-          }
-      }
+#toppings-filter {
+  padding-left: $topping-filter-padding-left;
+  width: $orb-card-stage-menu-width;
+  float:right;
+  background-color:$xtreme-red;
+  li {
+    background-color:transparent;
+    padding:0;
+    margin:0;
+    width:$topping-filter-button-width;
   }
+}
+
 
 .orb-size-panel {
   position : absolute;

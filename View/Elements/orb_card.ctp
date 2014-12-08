@@ -79,18 +79,22 @@
 				<ul <?php echo ___cD($class_array);?>>
 					<?php foreach ( array_keys($orb[ 'price_table' ]) as $rank => $opt ) {?>
 						<li class="orb-size-button inactive" data-price-rank="<?php echo $rank;?>">
-							<h3><?php echo strtoupper($opt);?></h3></li>
+							<h3><?php echo strtoupper($opt);?></h3>
+						</li>
 					<?php };?>
 					<li>
-
 				</ul>
-<!--				--><?php
-//					$options = array("booger", "poop");
-//					$this->Form->create('Orb', array('action' => ___cakeUrl('order', 'add_to_cart')));
-//					$this->Form->input('id', array('type' => 'hidden', 'value' => $orb['id']));
-//					$this->Form->input('quantity', array('type' => 'hidden', 'value' => $orb['id']));
-//					$this->Form->input('orbopts', array('type' => 'select', 'options' => $options));
-//					$this->Form->end();?>
+
+<?php
+					echo $this->Form->create('order', array('action' => 'add_to_cart', 'id' => 'orderOrbForm'));
+					echo $this->Form->input('order.orb.id', array('type' => 'hidden', 'value' => $orb['id']));
+					echo $this->Form->input('order.orb.price_rank', array('type' => 'hidden', 'value' => $orb['id']));
+					echo $this->Form->input('order.orb.quantity', array('type' => 'input', 'value' => 1));
+					foreach($orb['Orbopt'] as $opt) {
+						$field_name = sprintf('order.orb.orbopts.%s', $opt['id']);
+						echo $this->Form->input($field_name, array( 'type' => 'hidden', 'value' => -1, 'class' => array('orb-opt-weight')));
+					}
+					echo $this->Form->end();?>
 				<a class="tiny button confirm-order" style="position:absolute; bottom:10px; right:10px">Confirm</a>
 			</section>
 		</div>
@@ -98,14 +102,17 @@
 </div>
 <?php $classes = array("toppings-list", "text-center", "orb-card-stage-right-menu", "hidden");?>
 <ul id="toppings-list" <?php echo ___cD($classes);?>>
-	<li id="toppings-filter">
-	<?php foreach( array("meats", "veggies", "premium") as $filter) {
-		$classes = array($filter, "topping-filter", "active", "multi-activizing");
-		$data = array("filter" => $filter, "active" => "false");?>
-		<a <?php echo ___cD($classes);?> <?php echo ___dA($data);?>> <?php echo $filter;?></a>
+	<li>
+		<ul id="toppings-filter" class="multiactivizing"
+	<?php foreach( array("premium", "meat", "veggie") as $filter) {
+		$classes = array("topping-filter", "active", "inline", "multi-activizing");
+		$data = array("filter" => $filter);?>
+		><li <?php echo ___cD($classes);?> <?php echo ___dA($data);?>><span class="icon-checked"></span> <?php echo strtoupper($filter);?></li
 		<?php } ?>
+		></ul>
 	</li>
-	<?php foreach ($orb['Orbopt'] as $opt) {
+	<?php
+		foreach ($orb['Orbopt'] as $opt) {
 		if ($opt['pizza']) {
 			echo $this->Element('topping_row', array('opt' => $opt));
 	}} ?>

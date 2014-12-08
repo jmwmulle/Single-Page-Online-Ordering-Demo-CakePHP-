@@ -30,7 +30,11 @@ var XSM = {
 		solidify: ".solidify",
 		exposed: "exposed",
 		active: "active",
-		inactive: "inactive"
+		inactive: "inactive",
+		enabled: "enabled",
+		disabled: "disabled",
+		checked: "icon-checked",
+		unchecked: "icon-unchecked"
 	},
 	load: {
 		dismissLSButton: "#dismiss-loading-screen",
@@ -53,7 +57,11 @@ var XSM = {
 		active_orb_name_3d_context: "#active-orb-name-3d-context",
 		toppings_list: "#toppings-list",
 		topping: ".topping",
-		topping_cancel: function(selector){ return selector +" ul li.cancel";}
+		topping_active: ".topping.active",
+		topping_icon: ".topping-coverage",
+		topping_icon_active: ".topping-coverage.active",
+		topping_filter:".topping-filter",
+		orb_opt_weight: ".orb-opt-weight"
 	},
 	main: {
 		primaryContent: "#primary-content",
