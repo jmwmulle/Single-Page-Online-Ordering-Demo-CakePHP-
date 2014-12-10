@@ -6,7 +6,6 @@ body {
   //  background-attachment : fixed;
   background-repeat : no-repeat;
   background-size   : cover;
-  padding-top       : $menu-top-padding;
   .menu {
     background-image : url("../img/menu_bg.xlg.bright.jpg");
     overflow         : auto;
@@ -14,12 +13,13 @@ body {
 }
 
 main#menu {
-  min-height : 100%;
-  position   : relative;
-  width      : 100%;
-  top        : 0;
-  left       : 0;
-  overflow   : auto;
+  min-height  : 100%;
+  position    : relative;
+  width       : 100%;
+  top         : 0;
+  left        : 0;
+  padding-top : $menu-top-padding;
+  overflow    : auto;
 }
 
 // in use; content area
@@ -329,7 +329,7 @@ div.orb-card-content {
   overflow-y : scroll;
   overflow-x : hidden;
   height     : $orb-card-stage-menu-height;
-  .menu-shadow { box-shadow       : inset 15px -5px 8px $black-a33;}
+  .menu-shadow { box-shadow : inset 15px -5px 8px $black-a33; }
   li {
     position         : relative;
     padding-left     : $orb-card-stage-menu-padding-left;
@@ -380,8 +380,8 @@ div.orb-card-content {
       }
       &.active {
         li.topping-coverage {
-          opacity    : 1;
-          &.active, &:hover { color : $black;}
+          opacity : 1;
+          &.active, &:hover { color : $black; }
         }
       }
     }
@@ -389,33 +389,58 @@ div.orb-card-content {
 }
 
 #toppings-filter {
-  padding-left: $topping-filter-padding-left;
-  width: $orb-card-stage-menu-width;
-  float:right;
-  background-color:$xtreme-red;
+  width            : $orb-card-stage-menu-width;
+  height           : $orb-card-stage-menu-item-height;
+  padding          : $tight-padding;
+  padding-left     : $topping-filter-padding-left;
+  float            : right;
+  background-color : $xtreme-red;
   li {
-    background-color:transparent;
-    padding:0;
-    margin:0;
-    width:$topping-filter-button-width;
+    background-color : transparent;
+    padding          : 0;
+    margin           : 0;
+    width            : $topping-filter-button-width;
+    height           : $topping-filter-button-height;
   }
 }
 
-
 .orb-size-panel {
-  position : absolute;
-  width    : 100%;
-  padding  : $orb-card-padding;
+  width   : 100%;
+  padding : 0;
+  margin  : 0;
   li {
+    padding-bottom : 0;
+    &:first-of-type { padding-left : 0; }
+    &:last-of-type { padding-right : 0; }
     h3 {
       padding-top      : 0.25 * $h3-font-size;
       background-color : $xtreme-blue;
       transition       : background-color $global-transition-time, color $global-transition-time;
       &:hover { background-color : lighten($xtreme-blue, 15%); }
     }
-    color : $white;
+    color          : $white;
     &.active {
       h3 { background-color : $xtreme-yellow; }
     }
   }
 }
+
+#orb-order-form {
+  width : $orb-configure-form-width;
+}
+
+#orb-price-total {
+  width : 25%;
+}
+
+.orb-opt-configure-header {
+  background-color:$xtreme-red;
+  padding: $tight-padding + 0.25 * $h3-font-size  0 $tight-padding $base-padding;
+  line-height: $h3-font-size;
+ }
+
+.orb-configuration-field {
+  width:50%;
+  padding: $tight-padding;
+}
+input#orderOrbQuantity { width: 3rem;}

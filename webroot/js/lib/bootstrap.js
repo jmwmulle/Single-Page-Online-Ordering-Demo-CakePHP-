@@ -71,6 +71,10 @@ window.XBS = {
 			premium: [],
 			meat: [],
 			veggie: []
+		},
+		configured_orbs: {
+		},
+		cart: {
 		}
 	},
 	cfg: {
@@ -215,6 +219,18 @@ window.XBS = {
 				$("#orb-card-wrapper ").on(C.CLK, ".add-to-cart", null, function(e) {
 						var data = $(e.currentTarget).data('orbId');
 						XBS.fn.configure_orb(data.orbId, data.priceRank)
+				});
+			},
+			bind_confirm_order: function() {
+				$(C.BODY).on(C.CLK, "#confirm-order-button", null, function() {
+						$.ajax({
+								type:'POST',
+								url:"orders/add_to_cart",
+								data: $("#orderOrbForm").serialize(),
+								success: function(data) {
+									pr(data);
+								}
+						});
 				});
 			},
 			bind_float_menus: function() {
@@ -450,10 +466,16 @@ window.XBS = {
 					setTimeout(function() {
 						$(XSM.menu.orbcat_menu_title_header).animate({'width':"100%"}, 300)
 						$(XSM.menu.active_orbs_menu_item).each(
-							function() { $(this).removeClass('fade-out');}
+							function() {
+								$(this).removeClass('fade-out');
+							}
 						)}, 300);
 				}, 600);
-			});
+			});//.then(function() {
+//				var new_orb = $(".orb-card-refresh:first-of-type").data('orb');
+//				pr(new_orb);
+//				XBS.layout.refresh_orb_card_stage(new_orb);
+//			});
 		},
 		refresh_orb_card_stage: function(orb_card_id) {
 			// todo: fallback on ajax fail
@@ -559,7 +581,6 @@ window.XBS = {
 						XBS.data.toppings_by_flag[flags[i]].push(this);
 					}
 			});
-			pr(XBS.data.toppings_by_flag);
 			 return true;
 		}
 	},

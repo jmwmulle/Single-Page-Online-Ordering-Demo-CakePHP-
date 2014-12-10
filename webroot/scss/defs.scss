@@ -118,8 +118,10 @@ $topping-icon-button-width: $topping-icon-bg-diameter;
 $topping-icon-vertical-padding: ($topping-icon-button-height - $topping-icon-bg-diameter) / 2;
 $topping-icon-full-padding: 0;
 $topping-text-width: $orb-card-stage-menu-width - ($topping-right-padding + 5 * $topping-icon-button-width);
-$topping-filter-padding-left: $orb-card-stage-menu-width  - ($orb-card-wrapper-width - $orb-card-stage-width);
-$topping-filter-button-width: ($orb-card-stage-menu-width - $topping-filter-padding-left) / 3;
+$topping-filter-height: $orb-card-stage-menu-item-height - 2 * $tight-padding;
+$topping-filter-padding-left: $orb-card-stage-menu-width  - ($orb-card-wrapper-width - $orb-card-stage-width) + $base-padding;
+$topping-filter-button-height: $topping-filter-height / 2;
+$topping-filter-button-width: ($orb-card-stage-menu-width - $topping-filter-padding-left - ($base-padding + 2 * $tight-padding)) / 3;
 
   // ORB CARD
 $orb-card-width:  0.5 * $orb-card-wrapper-width;
@@ -146,6 +148,13 @@ $price-matrix-header-height: $h5-font-size;
 $price-matrix-max-height: $orb-card-row-height - $price-matrix-header-height;
 $float-label-exposed-bottom: (0.5 * $orb-card-height) - $orb-card-vertical-margin;
 $float-label-exposed-margin: -0.5 * $orb-card-height + $h3-font-size ;
+
+// ORB CONFIGURATION
+$orb-configure-form-width: 0.75 * $orb-card-inner-width;
+$orb-quantity-wrapper-width: $orb-configure-form-width / 3;
+$orb-preparation-wrapper-width: $orb-configure-form-width;
+$orb-preparation-label-width: 0.33333333 * $orb-preparation-wrapper-width;
+$orb-preparation-field-width: $orb-preparation-wrapper-width - $orb-preparation-label-width;
 
 
 /*  MONTHLY  CONTENT  */

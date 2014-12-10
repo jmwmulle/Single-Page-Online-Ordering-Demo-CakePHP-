@@ -60,12 +60,12 @@
 						</div
 						><div id="orb-card-options" class="orb-card-content inline">
 							<ul class="large-block-grid-4">
-								<?php
-									if (is_array($orb['config'] && count($orb['config']) > 0) ) {
-										foreach ($orb['config'] as $opt) {?>
-									<li class="orb-card-option"><?php echo $opt;?></li>
-									<?php }
-									}?>
+							<?php
+								if (is_array($orb['config'] && count($orb['config']) > 0) ) {
+									foreach ($orb['config'] as $opt) {?>
+								<li class="orb-card-option"><?php echo $opt;?></li>
+								<?php }
+								}?>
 							</ul>
 						</div>
 					</li>
@@ -76,26 +76,39 @@
 										  "orb-size-panel",
 										  "activizing",
 										  sprintf("large-block-grid-%s", count($orb['price_table'])));?>
+				<h3 class="orb-opt-configure-header"><?php echo strtoupper($orb['title']); ?></h3>
 				<ul <?php echo ___cD($class_array);?>>
-					<?php foreach ( array_keys($orb[ 'price_table' ]) as $rank => $opt ) {?>
-						<li class="orb-size-button inactive" data-price-rank="<?php echo $rank;?>">
-							<h3><?php echo strtoupper($opt);?></h3>
-						</li>
-					<?php };?>
-					<li>
+				<?php foreach ( array_keys($orb[ 'price_table' ]) as $rank => $opt ) {?>
+					<li class="orb-size-button inactive" data-price-rank="<?php echo $rank;?>">
+						<h3><?php echo strtoupper($opt);?></h3>
+					</li>
+				<?php };?>
 				</ul>
-
+				<div id="orb-order-form" class="inline">
 <?php
-					echo $this->Form->create('order', array('action' => 'add_to_cart', 'id' => 'orderOrbForm'));
+					echo $this->Form->create('Order', array('action' => 'add_to_cart', 'id' => 'orderOrbForm'));
 					echo $this->Form->input('order.orb.id', array('type' => 'hidden', 'value' => $orb['id']));
-					echo $this->Form->input('order.orb.price_rank', array('type' => 'hidden', 'value' => $orb['id']));
-					echo $this->Form->input('order.orb.quantity', array('type' => 'input', 'value' => 1));
+					echo $this->Form->input('order.orb.price_rank', array('type' => 'hidden', 'value' => $orb['id']));?>
+					<div id="orderOrbPreparationInstructions-wrapper" class="orb-configuration-field inline">
+						<label for="orderOrbPreparationInstructions">PREPARATION INSTRUCTIONS</label
+						><input name="data[order][orb][preparation_instructions]" type="text" id="orderOrbPreparationInstructions">
+					</div
+					><div id="orderOrbQuantity-wrapper" class="inline">
+						<label for="orderOrbQuantity">QUANTIY</label>
+						<input type="text" name="order[Orb][Quantity]" id="orderOrbQuantity" value="1" />
+					</div>
+					<?php //echo $this->Form->input('order.orb.quantity', array('type' => 'input', 'value' => 1, 'label' => strtoupper("quantity"), 'div' => false));
+//					echo $this->Form->label('order.orb.preparation_instructions', strtoupper('preparation instructions'));
+//					echo $this->Form->input('order.orb.preparation_instructions', array('type' => 'input', 'label' => false));
 					foreach($orb['Orbopt'] as $opt) {
 						$field_name = sprintf('order.orb.orbopts.%s', $opt['id']);
 						echo $this->Form->input($field_name, array( 'type' => 'hidden', 'value' => -1, 'class' => array('orb-opt-weight')));
 					}
 					echo $this->Form->end();?>
-				<a class="tiny button confirm-order" style="position:absolute; bottom:10px; right:10px">Confirm</a>
+					<a href="#" class="tiny cancel-order">Cancel</a><a id="confirm-order-button" href="#" class="tiny confirm-order">Confirm</a>
+				</div
+				><div id="orb-price-total" class="inline">
+				</div>
 			</section>
 		</div>
 	</div>
@@ -104,7 +117,7 @@
 <ul id="toppings-list" <?php echo ___cD($classes);?>>
 	<li>
 		<ul id="toppings-filter" class="multiactivizing"
-	<?php foreach( array("premium", "meat", "veggie") as $filter) {
+	<?php foreach( array("premium", "meat", "veggie", "sauce", "cheese", "check all") as $filter) {
 		$classes = array("topping-filter", "active", "inline", "multi-activizing");
 		$data = array("filter" => $filter);?>
 		><li <?php echo ___cD($classes);?> <?php echo ___dA($data);?>><span class="icon-checked"></span> <?php echo strtoupper($filter);?></li

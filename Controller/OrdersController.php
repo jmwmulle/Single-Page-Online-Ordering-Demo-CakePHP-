@@ -5,7 +5,7 @@ class OrdersController extends AppController {
 
 	public $components = array(
 		'Cart',
-		'Security',
+//		'Security',
 		'Paginator',
 		#'Paypal',
 		#'AuthorizeNet'
@@ -65,7 +65,9 @@ class OrdersController extends AppController {
 	 * @return the item information in AJAX
 	 */ 
 		public function add_to_cart() {
-			if ($this->request->is('ajax')) {
+				db($this->request->data());
+			if ($this->request->is('ajax') || true) {
+
 				$this->layout = "ajax";
 				$id = isset($this->request->data['id']) ? $this->request->data['id'] : null;
 				$quantity = isset($this->request->data['quantity']) ? $this->request->data['quantity'] : null;

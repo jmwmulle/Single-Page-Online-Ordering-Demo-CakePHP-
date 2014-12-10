@@ -4595,6 +4595,16 @@ th.hide-for-touch {
   font-family: "Helvetica Neue Ultra Light";
   src: url("../files/HelveticaNeueLTStd-UltLt.otf"); }
 
+form, label {
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+  font-size: 0.875rem; }
+
+input {
+  font-family: "Helvetica Neue Light Condensed", arial, sans-serif !important; }
+
+.dark-grey {
+  color: #191919; }
+
 .body-font-color {
   color: white; }
 
@@ -4703,8 +4713,12 @@ div.orb-card-content#orb-card-options {
   .orb-size-panel li.active h3 {
     color: #191919; }
 
-ul#toppings-filter li.toppings-filter *, ul#toppings-filter li.toppings-filter.active *, ul#toppings-filter li.toppings-filter.inactive * {
-  color: white; }
+ul#toppings-filter * {
+  font-size: 0.875rem !important;
+  line-height: 1rem !important;
+  vertical-align: middle;
+  color: white !important;
+  text-align: left; }
 
 body {
   background-image: url('../img/splash/pizza-bg.jpg');
@@ -5109,8 +5123,7 @@ html, nav, body, main, footer {
 
 body {
   background-repeat: no-repeat;
-  background-size: cover;
-  padding-top: 5.3125rem; }
+  background-size: cover; }
   body .menu {
     background-image: url("../img/menu_bg.xlg.bright.jpg");
     overflow: auto; }
@@ -5121,6 +5134,7 @@ main#menu {
   width: 100%;
   top: 0;
   left: 0;
+  padding-top: 5.3125rem;
   overflow: auto; }
 
 /**************************************************************
@@ -5513,22 +5527,30 @@ div.orb-card-content {
           color: black; }
 
 #toppings-filter {
-  padding-left: 12.18774rem;
   width: 36.5625rem;
+  height: 3.4125rem;
+  padding: 0.3125rem;
+  padding-left: 13.12524rem;
   float: right;
   background-color: #e02027; }
   #toppings-filter li {
     background-color: transparent;
     padding: 0;
     margin: 0;
-    width: 8.12492rem; }
+    width: 7.29159rem;
+    height: 1.39375rem; }
 
 .orb-size-panel {
-  position: absolute;
   width: 100%;
-  padding: 0.625rem; }
+  padding: 0;
+  margin: 0; }
   .orb-size-panel li {
+    padding-bottom: 0;
     color: white; }
+    .orb-size-panel li:first-of-type {
+      padding-left: 0; }
+    .orb-size-panel li:last-of-type {
+      padding-right: 0; }
     .orb-size-panel li h3 {
       padding-top: 0.42188rem;
       background-color: #0779be;
@@ -5537,3 +5559,21 @@ div.orb-card-content {
         background-color: #1ba6f7; }
     .orb-size-panel li.active h3 {
       background-color: #faea06; }
+
+#orb-order-form {
+  width: 26.48438rem; }
+
+#orb-price-total {
+  width: 25%; }
+
+.orb-opt-configure-header {
+  background-color: #e02027;
+  padding: 0.73438rem 0 0.3125rem 1rem;
+  line-height: 1.6875rem; }
+
+.orb-configuration-field {
+  width: 50%;
+  padding: 0.3125rem; }
+
+input#orderOrbQuantity {
+  width: 3rem; }
