@@ -72,12 +72,13 @@ class OrdersController extends AppController {
 				$this->render();
 				return;
 			}
-			foreach ($this->request->data['Order']['Orb'] as $orb) {
+			$products = array();
+			foreach ($this->request->data['Order'] as $orb) {
 				$id = isset($orb['id']) ? $orb['id'] : null;
 				$quantity = isset($orb['quantity']) ? $orb['quantity'] : null;
 				$price_rank = isset($orb['price_rank']) ? $orb['price_rank'] : null;
-				$orbopts = isset($orb['Orbopts']) ? $orb['Orbopts'] : null;
-				$prep_instructions = isset($orb['prep_instructions']) ? $orb['prep_instructions'] : null;
+				$orbopts = isset($orb['Orbopts']) ? $orb['Orbopts'] : array();
+				$prep_instructions = isset($orb['preparation_instructions']) ? $orb['preparation_instructions'] : null;
 				array_push($products,$this->Cart->add($id, $quantity, $price_rank, $orbopts, $prep_instructions));
 			}
 
@@ -88,7 +89,6 @@ class OrdersController extends AppController {
 					$total = null;
 				}
 				$this->set("response", json_encode(array("Order" => array("Orbs" => $products), "success" => true, "cart_total" => $total)));
-				$this->Session->setFlash($products['Orbs'][1]['title'] . ' was added to your shopping cart.', 'flash_success');
 			} else {
 				$this->set("response", json_encode(array("orb" => null, "success" => false, "cart_total" => null)));
 			}
