@@ -67,24 +67,28 @@ class OrdersController extends AppController {
 		public function add_to_cart() {
 			if ($this->request->is('ajax')) {
 				$this->layout = "ajax";
-				$id = isset($this->request->data['id']) ? $this->request->data['id'] : null;
-				$quantity = isset($this->request->data['quantity']) ? $this->request->data['quantity'] : null;
-				$price_rank = isset($this->request->data['price_rank']) ? $this->request->data['price_rank'] : null;
-				$orbopts = isset($this->request->data['Orbopts']) ? $this->request->data['Orbopts'] : null;
-				$product = $this->Cart->add($id, $quantity, $price_rank, $orbopts);
-			} elseif ($this->request->is('post')) {
-				$id = isset($this->request->data['Orb']['identity']) ? $this->request->data['Orb']['identity'] : null;
-				$quantity = isset($this->request->data['Orb']['quantity']) ? $this->request->data['Orb']['quantity'] : null;
-				$price_rank = isset($this->request->data['Orb']['price_rank']) ? $this->request->data['Orb']['price_rank'] : null;
-				$orbopts = isset($this->request->data['Orb']['orbopts']) ? $this->request->data['Orb']['orbopts'] : null;
-				$product = $this->Cart->add($id, $quantity, $price_rank, array($orbopts));
 			} elseif ($this->request->is('get')) {
 				$this->render();
 				return;
-			} 
-			if(!empty($product)) {
-				$this->set("response", json_encode(array("orb" => $product, "success" => true, "cart_total" => "pending")));
-				$this->Session->setFlash($product['Orb']['title'] . ' was added to your shopping cart.', 'flash_success');
+			}
+			foreach ($this->request->data['Order']['Orbs'] as $orb) {
+				$id = isset($orb['id']) ? $orb['id'] : null;
+				$quantity = isset($orb['quantity']) ? $orb['quantity'] : null;
+				$price_rank = isset($orb['price_rank']) ? $orb['price_rank'] : null;
+				$orbopts = isset($orb['Orbopts']) ? $orb['Orbopts'] : null;
+				$prep_instructions = isset($orb['prep_instructions']) ? $orb['prep_instructions'] : null;
+				array_push($products,$this->Cart->add($id, $quantity, $price_rank, $orbopts, $prep_instructions));
+			}
+			
+			 
+			if(!empty($products)) {
+				if ($this->Session->check('Cart.total') {
+					$total = $this->Session->read('Cart.total');
+				} else {
+					$total = null;
+				}
+				$this->set("response", json_encode(array("Order" => array("Orbs" => $products), "success" => true, "cart_total" => $total)));
+				$this->Session->setFlash($products['Orbs'][1]['title'] . ' was added to your shopping cart.', 'flash_success');
 			} else {
 				$this->set("response", json_encode(array("orb" => null, "success" => false, "cart_total" => null)));
 			}
@@ -157,25 +161,20 @@ class OrdersController extends AppController {
 	public function itemupdate() {
 		if ($this->request->is('ajax')) {
 
-			$id = isset($this->request->data['id']) ? $this->request->data['id'] : null;
-
-			$quantity = isset($this->request->data['quantity']) ? $this->request->data['quantity'] : null;
-
-			if(isset($this->request->data['mods']) && ($this->request->data['mods'] > 0)) {
-				$productmodId = $this->request->data['mods'];
-			} else {
-				$productmodId = null;
+			foreach ($this->request->data['Order']['Orbs'] as $orb) {
+				$id = isset($orb['id']) ? $orb['id'] : null;
+				$quantity = isset($orb['quantity']) ? $orb['quantity'] : null;
+				$price_rank = isset($orb['price_rank']) ? $orb['price_rank'] : null;
+				$orbopts = isset($orb['Orbopts']) ? $orb['Orbopts'] : null;
+				$prep_instructions = isset($orb['prep_instructions']) ? $orb['prep_instructions'] : null;
+				array_push($products,$this->Cart->add($id, $quantity, $price_rank, $orbopts, $prep_instructions));
 			}
-
-			// echo $productmodId ;
-			// die;
-
-			$product = $this->Cart->add($id, $quantity, $productmodId);
-
-		}
 		$cart = $this->Session->read('Cart');
 		echo json_encode($cart);
 		$this->autoRender = false;
+		} else {
+			return($this->redirect($___cakeUrl(controller=>'menu', action=>null)));
+		}
 	}
 
 
@@ -213,7 +212,6 @@ class OrdersController extends AppController {
 
 
 	public function address() {
-
 		$cart = $this->Session->read('Cart');
 		if(!$cart['Order']['total']) {
 			return $this->redirect('/');

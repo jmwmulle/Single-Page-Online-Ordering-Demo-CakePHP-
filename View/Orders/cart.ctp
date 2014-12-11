@@ -29,10 +29,8 @@ You haven't ordered anything yet.
 <?php foreach ($cart['OrderItem'] as $key => $item): ?>
 
 	<div class="row" id="row-<?php echo $key; ?>">
-		<!-- <div class="col col-sm-1"><?php echo $this->Html->image('/images/small/' . $item['Orb']['image'], array('class' => 'px60')); ?></div> -->
 		<div class="col col-sm-7">
 			<strong><?php echo $this->Html->link($item['Orb']['title'], array('controller' => 'orbs', 'action' => 'view')); ?></strong>
-                        <!-- , 'slug' => $item['Orb']['slug'])); ?></strong> -->
 			<?php
 			$mods = 0;
 			if(isset($item['Orb']['title'])) :

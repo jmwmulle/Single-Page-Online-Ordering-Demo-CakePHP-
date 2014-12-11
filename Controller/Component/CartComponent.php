@@ -28,7 +28,7 @@ class CartComponent extends Component {
 
 //////////////////////////////////////////////////
 
-	public function add($id, $quantity = 1, $price_rank = 0, $orbopts_list = null) {
+	public function add($id, $quantity = 1, $price_rank = 0, $orbopts_list = null, $prep_instructions) {
 		if(!is_numeric($quantity)) {
 			$quantity = 1;
 		}
@@ -55,7 +55,7 @@ class CartComponent extends Component {
 
 		if($orbopts_list) {
 			$this->controller->Orbopt->Behaviors->load('Containable');
-			foreach ($orbopts_list as $orbopt_id) {
+			foreach (array_keys($orbopts_list) as $orbopt_id) {
 				$orbopts[$orbopt_id] = $this->controller->Orbopt->find('first', array(
 					'recursive' => 1,
 					'conditions' => array(
@@ -82,7 +82,9 @@ class CartComponent extends Component {
 		$data['orbopts_ids'] = $orbopts_list;
 		$data['title'] = $product['Orb']['title'];
 		$data['price'] = $prices[$price_rank];
-		$data['opts_prices'] = $opts_prices;
+		$data['orbopts'] = $orbopts;
+		$data['orbopts_arrangement'] = $orbopts_list
+		$data['prep_instructions'] = $prep_instructions;
 		$data['quantity'] = $quantity;
 		$data['subtotal'] = sprintf('%01.2f', ($data['price'] + $data['opts_prices']) * $quantity);
 		$data['price_rank'] = $price_rank;
@@ -157,6 +159,9 @@ class CartComponent extends Component {
 			foreach ($cart['OrderItem'] as $item) {
 				$quantity += $item['quantity'];
 				$subtotal += $item['subtotal'];
+				foreach ($item['orbopts'] as $opt) {
+					$subtotal += $opt['price_list'][$item['price_index']];
+				}
 				$HST += $item['subtotal']*$HST_MULT;
 				$order_item_count++;
 			}
