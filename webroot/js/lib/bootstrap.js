@@ -24,7 +24,8 @@ var constants = {
 	UPDATE_DB: "update_database",
 	UPDATE_SESSION: "update_session",
 	OPT: "opt",
-	CANCEL: "cancel"
+	CANCEL: "cancel",
+	ORB_CARD_REFRESH: "orb_card_refresh"
 };
 var C = constants;
 
@@ -72,7 +73,7 @@ window.XBS = {
 			meat: [],
 			veggie: []
 		},
-		configured_orbs: {
+		partial_orb_configs: {
 		},
 		cart: {
 		}
@@ -84,7 +85,8 @@ window.XBS = {
 	},
 	evnt: {
 		wakeFromSleep: eCustom("wakeFromSleep"),
-		assetsLoaded: eCustom("assetsLoaded")
+		assetsLoaded: eCustom("assetsLoaded"),
+		orb_card_refresh: eCustom(C.ORB_CARD_REFRESH)
 	},
 	stopwatch: {
 		__sw: new Date(),
@@ -179,6 +181,11 @@ window.XBS = {
 		},
 		jq_binds: {
 			has_init_sequence:true,
+			bind_orb_card_config_archiving: function() {
+				$(C.BODY).on(XBS.evnt.orb_card_refresh, null, null, function(e) {
+					XBS.fn.archive_orb_card_config(e.data);
+				});
+			},
 			bind_confirm_order: function() {
 				$("body").on(C.CLK, ".confirm-order", null, function(e) {
 						XBS.layout.toggle_orb_card()
@@ -267,7 +274,6 @@ window.XBS = {
 			},
 			bind_topping_filter: function() {
 				$(C.BODY).on(C.CLK, XSM.menu.topping_filter, null, function(e) {
-					pr(e.currentTarget);
 					e.stopPropagation();
 					XBS.layout.filter_toppings(e.currentTarget);
 				});
@@ -354,12 +360,19 @@ window.XBS = {
 			}
 			return  (isArray(selector) ) ? selector : $(selector);
 		},
-		filter_toppings: function(filter) {
+		filter_toppings: function(reset) {
 			var active = {premium:null, meat:null, veggie:null};
 			$(XSM.menu.topping_filter).each(function() {
-				active[$(this).data('filter')] = $(this).hasClass(XSM.effects.active);
+				if (reset == true) {
+					$(this).removeClass(XSM.effects.inactive).addClass(XSM.effects.active)
+						.children(asClass(XSM.effects.unchecked)).each(function() {
+							$(this).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
+						});
+					active[$(this).data('filter')] = true;
+				} else {
+					active[$(this).data('filter')] = $(this).hasClass(XSM.effects.active);
+				}
 			});
-			pr(active);
 			$(XSM.menu.topping).hide('fade');
 			for (var filter in active) {
 				if (active[filter]) {
@@ -449,6 +462,9 @@ window.XBS = {
 				var url  = XBS.routes.menu + C.DS + orbcat_id
 			}
 			$.get(url, function(data) {
+
+				var new_orb = $($($.parseHTML(data)).find(".orb-card-refresh")[0]).data('orb');
+
 				if ( $(XSM.menu.active_orb_name_3d_context).hasClass(XSM.effects.flipped_x) ) {
 					$(XSM.menu.active_orb_name_front_face).html(orbcat_name);
 					$(XSM.menu.active_orb_name_3d_context).removeClass(XSM.effects.flipped_x);
@@ -468,14 +484,16 @@ window.XBS = {
 						$(XSM.menu.active_orbs_menu_item).each(
 							function() {
 								$(this).removeClass('fade-out');
+								XBS.layout.refresh_orb_card_stage(new_orb)
+								XBS.layout.filter_toppings(true)
 							}
 						)}, 300);
 				}, 600);
-			});//.then(function() {
-//				var new_orb = $(".orb-card-refresh:first-of-type").data('orb');
-//				pr(new_orb);
-//				XBS.layout.refresh_orb_card_stage(new_orb);
-//			});
+			}).then(function() {
+
+
+//				;
+			});
 		},
 		refresh_orb_card_stage: function(orb_card_id) {
 			// todo: fallback on ajax fail
@@ -484,7 +502,11 @@ window.XBS = {
 			} else {
 				var url  = XBS.routes.menuitem + C.DS + orb_card_id
 			}
-			$.get(url, function(data) { $(XSM.menu.orb_card_stage).replaceWith(data); });
+			$.get(url, function(data) {
+				var new_orb_card_stage = $.parseHTML(data);
+				$(XSM.menu.orb_card_stage).replaceWith(new_orb_card_stage);
+
+			});
 		}
 	},
 	splash: {
