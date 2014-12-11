@@ -56,15 +56,17 @@ class CartComponent extends Component {
 		if($orbopts_list) {
 			$this->controller->Orbopt->Behaviors->load('Containable');
 			foreach (array_keys($orbopts_list) as $orbopt_id) {
-				$orbopts[$orbopt_id] = $this->controller->Orbopt->find('first', array(
-					'recursive' => 1,
-					'conditions' => array(
-						'Orbopt.id' => $orbopt_id,
-					),
-					'contain' => array(
-						'Pricelist',
-					),
-				));
+				if ($orbopts_list[$orbopts_id] != -1) {
+					$orbopts[$orbopt_id] = $this->controller->Orbopt->find('first', array(
+						'recursive' => 1,
+						'conditions' => array(
+							'Orbopt.id' => $orbopt_id,
+						),
+						'contain' => array(
+							'Pricelist',
+						),
+					));
+				}
 			}
 		}
 
