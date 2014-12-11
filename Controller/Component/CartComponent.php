@@ -83,7 +83,7 @@ class CartComponent extends Component {
 		$data['title'] = $product['Orb']['title'];
 		$data['price'] = $prices[$price_rank];
 		$data['orbopts'] = $orbopts;
-		$data['orbopts_arrangement'] = $orbopts_list
+		$data['orbopts_arrangement'] = $orbopts_list;
 		$data['prep_instructions'] = $prep_instructions;
 		$data['quantity'] = $quantity;
 		$data['subtotal'] = sprintf('%01.2f', ($data['price'] + $data['opts_prices']) * $quantity);

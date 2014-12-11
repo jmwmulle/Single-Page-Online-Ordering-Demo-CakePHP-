@@ -65,15 +65,14 @@ class OrdersController extends AppController {
 	 * @return the item information in AJAX
 	 */ 
 		public function add_to_cart() {
-				db($this->request->data());
 			if ($this->request->is('ajax') || true) {
-
 				$this->layout = "ajax";
+
 			} elseif ($this->request->is('get')) {
 				$this->render();
 				return;
 			}
-			foreach ($this->request->data['Order']['Orbs'] as $orb) {
+			foreach ($this->request->data['Order']['Orb'] as $orb) {
 				$id = isset($orb['id']) ? $orb['id'] : null;
 				$quantity = isset($orb['quantity']) ? $orb['quantity'] : null;
 				$price_rank = isset($orb['price_rank']) ? $orb['price_rank'] : null;
@@ -81,10 +80,9 @@ class OrdersController extends AppController {
 				$prep_instructions = isset($orb['prep_instructions']) ? $orb['prep_instructions'] : null;
 				array_push($products,$this->Cart->add($id, $quantity, $price_rank, $orbopts, $prep_instructions));
 			}
-			
-			 
-			if(!empty($products)) {
-				if ($this->Session->check('Cart.total') {
+
+			if (!empty($products)) {
+				if ($this->Session->check('Cart.total') ) {
 					$total = $this->Session->read('Cart.total');
 				} else {
 					$total = null;
@@ -175,7 +173,7 @@ class OrdersController extends AppController {
 		echo json_encode($cart);
 		$this->autoRender = false;
 		} else {
-			return($this->redirect($___cakeUrl(controller=>'menu', action=>null)));
+			return $this->redirect(cakeUrl(array("controller" =>'menu', "action" => null)));
 		}
 	}
 
