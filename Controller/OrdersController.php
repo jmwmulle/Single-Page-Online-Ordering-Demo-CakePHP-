@@ -90,7 +90,7 @@ class OrdersController extends AppController {
 				db($orb);
 			}
 			if (!empty($products)) {
-				if ($this->Session->check('Cart.total') ) {
+				if ($this->Session->check('Cart.Order.total') ) {
 					$total = $this->Session->read('Cart.total');
 				} else {
 					$total = null;
