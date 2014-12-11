@@ -74,12 +74,20 @@ class OrdersController extends AppController {
 			}
 			$products = array();
 			foreach ($this->request->data['Order'] as $orb) {
-				$id = isset($orb['id']) ? $orb['id'] : null;
-				$quantity = isset($orb['quantity']) ? $orb['quantity'] : null;
-				$price_rank = isset($orb['price_rank']) ? $orb['price_rank'] : null;
-				$orbopts = isset($orb['Orbopts']) ? $orb['Orbopts'] : array();
-				$prep_instructions = isset($orb['preparation_instructions']) ? $orb['preparation_instructions'] : null;
+				extract(array_merge(array(
+							"id" => -1,
+							"quantity" => -1,
+							"price_rank" => -1,
+							"orbopts" => array(),
+							"preparation_instructions" => ""),
+							$orb));
+//				$id = isset($orb['id']) ? $orb['id'] : null;
+//				$quantity = isset($orb['quantity']) ? $orb['quantity'] : null;
+//				$price_rank = isset($orb['price_rank']) ? $orb['price_rank'] : null;
+//				$orbopts = isset($orb['Orbopts']) ? $orb['Orbopts'] : array();
+//				$prep_instructions = isset($orb['preparation_instructions']) ? $orb['preparation_instructions'] : null;
 				array_push($products,$this->Cart->add($id, $quantity, $price_rank, $orbopts, $prep_instructions));
+				db($orb);
 			}
 			if (!empty($products)) {
 				if ($this->Session->check('Cart.total') ) {
