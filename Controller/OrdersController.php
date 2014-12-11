@@ -81,7 +81,6 @@ class OrdersController extends AppController {
 				$prep_instructions = isset($orb['preparation_instructions']) ? $orb['preparation_instructions'] : null;
 				array_push($products,$this->Cart->add($id, $quantity, $price_rank, $orbopts, $prep_instructions));
 			}
-
 			if (!empty($products)) {
 				if ($this->Session->check('Cart.Order.total') ) {
 					$total = $this->Session->read('Cart.total');
