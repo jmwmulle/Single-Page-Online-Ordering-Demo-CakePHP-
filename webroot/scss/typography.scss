@@ -124,6 +124,15 @@
   font-family : "Helvetica Neue Ultra Light", arial, sans-serif;
 }
 
+form, label {
+  @include HelveticaMdCn;
+  font-size:rem-calc(14px);
+}
+
+input { font-family : "Helvetica Neue Light Condensed", arial, sans-serif !important; }
+
+.dark-grey { color : $dark-grey; }
+
 .body-font-color { color : $body-font-color; }
 
 #hours-and-location {
@@ -257,8 +266,11 @@ div.orb-card-content {
   }
 }
 
- ul#toppings-filter {
-   li.toppings-filter *, li.toppings-filter.active *, li.toppings-filter.inactive * {
-    color : $white;
-  }
+ul#toppings-filter * {
+  font-size      : rem-calc(14px) !important;
+  line-height    : 1rem !important;
+  vertical-align : middle;
+  color          : $white !important;
+  text-align     : left;
 }
+
