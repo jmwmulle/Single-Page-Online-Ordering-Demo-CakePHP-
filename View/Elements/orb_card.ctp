@@ -87,21 +87,21 @@
 				<div id="orb-order-form" class="inline">
 <?php
 					echo $this->Form->create('Order', array('action' => 'add_to_cart', 'id' => 'orderOrbForm'));
-					echo $this->Form->input('order.orb.id', array('type' => 'hidden', 'value' => $orb['id']));
-					echo $this->Form->input('order.orb.price_rank', array('type' => 'hidden', 'value' => $orb['id']));?>
+					echo $this->Form->input('Order.Orb.id', array('type' => 'hidden', 'value' => $orb['id']));
+					echo $this->Form->input('Order.Orb.price_rank', array('type' => 'hidden', 'value' => $orb['id']));?>
 					<div id="orderOrbPreparationInstructions-wrapper" class="orb-configuration-field inline">
 						<label for="orderOrbPreparationInstructions">PREPARATION INSTRUCTIONS</label
-						><input name="data[order][orb][preparation_instructions]" type="text" id="orderOrbPreparationInstructions">
+						><input name="data[Order][Orb][preparation_instructions]" type="text" id="orderOrbPreparationInstructions">
 					</div
 					><div id="orderOrbQuantity-wrapper" class="inline">
 						<label for="orderOrbQuantity">QUANTIY</label>
-						<input type="text" name="data[order][orb][quantity]" id="orderOrbQuantity" value="1" />
+						<input type="text" name="data[Order][Orb][quantity]" id="orderOrbQuantity" value="1" />
 					</div>
 					<?php //echo $this->Form->input('order.orb.quantity', array('type' => 'input', 'value' => 1, 'label' => strtoupper("quantity"), 'div' => false));
 //					echo $this->Form->label('order.orb.preparation_instructions', strtoupper('preparation instructions'));
 //					echo $this->Form->input('order.orb.preparation_instructions', array('type' => 'input', 'label' => false));
 					foreach($orb['Orbopt'] as $opt) {
-						$field_name = sprintf('order.orb.orbopts.%s', $opt['id']);
+						$field_name = sprintf('Order.Orb.Orbopts.%s', $opt['id']);
 						echo $this->Form->input($field_name, array( 'type' => 'hidden', 'value' => -1, 'class' => array('orb-opt-weight')));
 					}
 					echo $this->Form->end();?>
