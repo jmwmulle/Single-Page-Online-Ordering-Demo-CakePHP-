@@ -95,7 +95,7 @@
 					</div
 					><div id="orderOrbQuantity-wrapper" class="inline">
 						<label for="orderOrbQuantity">QUANTIY</label>
-						<input type="text" name="order[Orb][Quantity]" id="orderOrbQuantity" value="1" />
+						<input type="text" name="data[order][orb][quantity]" id="orderOrbQuantity" value="1" />
 					</div>
 					<?php //echo $this->Form->input('order.orb.quantity', array('type' => 'input', 'value' => 1, 'label' => strtoupper("quantity"), 'div' => false));
 //					echo $this->Form->label('order.orb.preparation_instructions', strtoupper('preparation instructions'));
