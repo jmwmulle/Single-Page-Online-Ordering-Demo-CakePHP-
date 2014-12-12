@@ -81,13 +81,12 @@ class CartComponent extends Component {
 
 		$prices = array_values($product['Pricelist']);
 
-		db(array('id'=>$id, 'quantity'=>$quantity, 'price_rank'=>$price_rank, 'orbopts_list'=>$orbopts_list));
 		$data['product_id'] = $product['Orb']['id'];
 		$data['orbopts_ids'] = $orbopts_list;
 		$data['title'] = $product['Orb']['title'];
 		$data['price'] = $prices[$price_rank];
 		$data['orbopts'] = $orbopts;
-		$data['orbopts_prices'] = empty($opts_prices) ? null : $opts_prices;
+		$data['orbopts_prices'] = empty($opts_prices) ? array() : $opts_prices;
 		$data['orbopts_arrangement'] = $orbopts_list;
 		$data['prep_instructions'] = $prep_instructions;
 		$data['quantity'] = $quantity;
