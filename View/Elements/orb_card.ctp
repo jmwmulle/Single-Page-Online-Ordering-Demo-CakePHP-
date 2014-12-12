@@ -88,7 +88,7 @@
 <?php
 					echo $this->Form->create('Order', array('action' => 'add_to_cart', 'id' => 'orderOrbForm'));
 					echo $this->Form->input('Order.Orb.id', array('type' => 'hidden', 'value' => $orb['id']));
-					echo $this->Form->input('Order.Orb.price_rank', array('type' => 'hidden', 'value' => $orb['id']));?>
+					echo $this->Form->input('Order.Orb.price_rank', array('type' => 'hidden', 'value' => 0));?>
 					<div id="orderOrbPreparationInstructions-wrapper" class="orb-configuration-field inline">
 						<label for="orderOrbPreparationInstructions">PREPARATION INSTRUCTIONS</label
 						><input name="data[Order][Orb][preparation_instructions]" type="text" id="orderOrbPreparationInstructions">
@@ -105,7 +105,7 @@
 						echo $this->Form->input($field_name, array( 'type' => 'hidden', 'value' => -1, 'class' => array('orb-opt-weight')));
 					}
 					echo $this->Form->end();?>
-					<a href="#" class="tiny cancel-order">Cancel</a><a id="confirm-order-button" href="#" class="tiny confirm-order">Confirm</a>
+					<a href="#" class="xtreme-button secondary cancel-order">Cancel</a><a id="confirm-order-button" href="#" class="tiny confirm-order">Confirm</a>
 				</div
 				><div id="orb-price-total" class="inline">
 				</div>
