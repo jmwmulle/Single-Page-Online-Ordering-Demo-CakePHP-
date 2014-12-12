@@ -53,10 +53,11 @@ class CartComponent extends Component {
 			return false;
 		}
 
+		$orbopts = array();
 		if($orbopts_list) {
 			$this->controller->Orbopt->Behaviors->load('Containable');
 			foreach (array_keys($orbopts_list) as $orbopt_id) {
-				if ($orbopts_list[$orbopts_id] != -1) {
+				if ($orbopts_list[$orbopt_id] != -1) {
 					$orbopts[$orbopt_id] = $this->controller->Orbopt->find('first', array(
 						'recursive' => 1,
 						'conditions' => array(
@@ -71,7 +72,7 @@ class CartComponent extends Component {
 		}
 
 		$opts_prices = array();
-		if($orbopts) {
+		if(!empty($orbopts)) {
 			foreach($orbopts as $orbopt) {
 				$opts_by_val = array_values($orbopt['Pricelist']);
 				array_push($opts_prices, $opts_by_val[$price_rank]);
@@ -80,12 +81,13 @@ class CartComponent extends Component {
 
 		$prices = array_values($product['Pricelist']);
 
+		db(array('id'=>$id, 'quantity'=>$quantity, 'price_rank'=>$price_rank, 'orbopts_list'=>$orbopts_list));
 		$data['product_id'] = $product['Orb']['id'];
 		$data['orbopts_ids'] = $orbopts_list;
 		$data['title'] = $product['Orb']['title'];
 		$data['price'] = $prices[$price_rank];
 		$data['orbopts'] = $orbopts;
-		$data['orbopts_prices'] = $opts_prices;
+		$data['orbopts_prices'] = empty($opts_prices) ? null : $opts_prices;
 		$data['orbopts_arrangement'] = $orbopts_list;
 		$data['prep_instructions'] = $prep_instructions;
 		$data['quantity'] = $quantity;
