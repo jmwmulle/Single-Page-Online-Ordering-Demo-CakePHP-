@@ -264,6 +264,11 @@ window.XBS = {
 				});
 				return true;
 			},
+			bind_orbsize_update: function() {
+				$(C.BODY).on(C.CLK, XSM.menu.orb_size_button, null, function(e) {
+					XBS.fn.price_rank_update($(e.currentTarget).data('priceRank'));
+				});
+			},
 			bind_topping_icon_toggle: function() {
 				$(C.BODY).on(C.CLK, XSM.menu.topping_icon, null, function(e) {
 					if ( $(e.currentTarget).hasClass(XSM.effects.enabled) ) {
@@ -628,6 +633,10 @@ window.XBS = {
 					XBS.layout.activize(this); }
 			});
 			XBS.layout.toggle_orb_card()
+		},
+		price_rank_update: function(price_rank) {
+			$(XSM.menu.orb_order_form_price_rank).val(price_rank);
+			return true;
 		},
 		update_orb_form: function() {
 			$(XSM.menu.orb_opt_weight).each(function(){ $(this).val(-1);});

@@ -79,15 +79,9 @@ class OrdersController extends AppController {
 							"quantity" => -1,
 							"price_rank" => -1,
 							"orbopts" => array(),
-							"preparation_instructions" => ""),
+							"prep_instructions" => ""),
 							$orb));
-//				$id = isset($orb['id']) ? $orb['id'] : null;
-//				$quantity = isset($orb['quantity']) ? $orb['quantity'] : null;
-//				$price_rank = isset($orb['price_rank']) ? $orb['price_rank'] : null;
-//				$orbopts = isset($orb['Orbopts']) ? $orb['Orbopts'] : array();
-//				$prep_instructions = isset($orb['preparation_instructions']) ? $orb['preparation_instructions'] : null;
-				array_push($products,$this->Cart->add($id, $quantity, $price_rank, $orbopts, $prep_instructions));
-				db($orb);
+				array_push($products, $this->Cart->add($id, $quantity, $price_rank, $orbopts, $prep_instructions));
 			}
 			if (!empty($products)) {
 				if ($this->Session->check('Cart.Order.total') ) {

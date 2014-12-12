@@ -4801,22 +4801,11 @@ ul.vertical li {
   background-color: #0779be; }
 
 .xtreme-button {
-  font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
-  transition: background-color 0.3s ease-in-out; }
-  .xtreme-button.rounded {
-    border-radius: 1000px; }
-  .xtreme-button.lrg {
-    font-size: 2.3125rem;
-    padding: 1.7108rem 1.5rem 1rem 1.5rem; }
-  .xtreme-button.sml {
-    font-size: 1.125rem; }
-  .xtreme-button.yellow-on-black {
-    background-color: #faea06;
-    color: #191919; }
-    .xtreme-button.yellow-on-black:hover {
-      background-color: white; }
-  .xtreme-button.hidden {
-    display: none; }
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  color: white;
+  background-color: #0779be; }
+  .xtreme-button:hover {
+    background-color: #099bef; }
 
 nav#topbar {
   position: fixed;
@@ -5285,7 +5274,7 @@ li.orbcat {
   position: relative;
   padding: 0;
   bottom: 0;
-  left: 1rem;
+  left: 0.9375rem;
   -webkit-transform: translateY(0.7125rem);
   -moz-transform: translateY(0.7125rem);
   -o-transform: translateY(0.7125rem);
@@ -5568,7 +5557,7 @@ div.orb-card-content {
 
 .orb-opt-configure-header {
   background-color: #e02027;
-  padding: 0.73438rem 0 0.3125rem 1rem;
+  padding: 0.73438rem 0 0.3125rem 0.9375rem;
   line-height: 1.6875rem; }
 
 .orb-configuration-field {

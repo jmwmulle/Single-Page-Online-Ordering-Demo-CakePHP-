@@ -61,7 +61,9 @@ var XSM = {
 		topping_icon: ".topping-coverage",
 		topping_icon_active: ".topping-coverage.active",
 		topping_filter:".topping-filter",
-		orb_opt_weight: ".orb-opt-weight"
+		orb_opt_weight: ".orb-opt-weight",
+		orb_size_button: ".orb-size-button",
+		orb_order_form_price_rank: "#OrderOrbPriceRank"
 	},
 	main: {
 		primaryContent: "#primary-content",
