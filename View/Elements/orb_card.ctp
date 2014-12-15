@@ -83,31 +83,41 @@
 						<h3><?php echo strtoupper($opt);?></h3>
 					</li>
 				<?php };?>
-				</ul>
-				<div id="orb-order-form" class="inline">
-<?php
-					echo $this->Form->create('Order', array('action' => 'add_to_cart', 'id' => 'orderOrbForm'));
-					echo $this->Form->input('Order.Orb.id', array('type' => 'hidden', 'value' => $orb['id']));
-					echo $this->Form->input('Order.Orb.price_rank', array('type' => 'hidden', 'value' => 0));?>
-					<div id="orderOrbPreparationInstructions-wrapper" class="orb-configuration-field inline">
-						<label for="orderOrbPreparationInstructions">PREPARATION INSTRUCTIONS</label
-						><input name="data[Order][Orb][preparation_instructions]" type="text" id="orderOrbPreparationInstructions">
+				</ul
+
+				><div id="order-details" class="orb-card-row"
+					><div id="orb-order-form" class="inline">
+						<?php
+						echo $this->Form->create('Order', array('action' => 'add_to_cart', 'id' => 'orderOrbForm'));
+						echo $this->Form->input('Order.Orb.id', array('type' => 'hidden', 'value' => $orb['id']));
+						echo $this->Form->input('Order.Orb.price_rank', array('type' => 'hidden', 'value' => 0));?>
+						<div id="orderOrbPreparationInstructions-wrapper" class="orb-configuration-field inline">
+							<label for="orderOrbPreparationInstructions">PREPARATION INSTRUCTIONS</label
+							><input name="data[Order][Orb][preparation_instructions]" type="text" id="orderOrbPreparationInstructions">
+						</div
+						><div id="orderOrbQuantity-wrapper" class="inline">
+							<label for="orderOrbQuantity">QUANTIY</label>
+							<input type="text" name="data[Order][Orb][quantity]" id="orderOrbQuantity" value="1" />
+						</div>
+						<?php //echo $this->Form->input('order.orb.quantity', array('type' => 'input', 'value' => 1, 'label' => strtoupper("quantity"), 'div' => false));
+	//					echo $this->Form->label('order.orb.preparation_instructions', strtoupper('preparation instructions'));
+	//					echo $this->Form->input('order.orb.preparation_instructions', array('type' => 'input', 'label' => false));
+						foreach($orb['Orbopt'] as $opt) {
+							$field_name = sprintf('Order.Orb.Orbopts.%s', $opt['id']);
+							echo $this->Form->input($field_name, array( 'type' => 'hidden', 'value' => -1, 'class' => array('orb-opt-weight')));
+						}
+						echo $this->Form->end();?>
 					</div
-					><div id="orderOrbQuantity-wrapper" class="inline">
-						<label for="orderOrbQuantity">QUANTIY</label>
-						<input type="text" name="data[Order][Orb][quantity]" id="orderOrbQuantity" value="1" />
-					</div>
-					<?php //echo $this->Form->input('order.orb.quantity', array('type' => 'input', 'value' => 1, 'label' => strtoupper("quantity"), 'div' => false));
-//					echo $this->Form->label('order.orb.preparation_instructions', strtoupper('preparation instructions'));
-//					echo $this->Form->input('order.orb.preparation_instructions', array('type' => 'input', 'label' => false));
-					foreach($orb['Orbopt'] as $opt) {
-						$field_name = sprintf('Order.Orb.Orbopts.%s', $opt['id']);
-						echo $this->Form->input($field_name, array( 'type' => 'hidden', 'value' => -1, 'class' => array('orb-opt-weight')));
-					}
-					echo $this->Form->end();?>
-					<a href="#" class="xtreme-button secondary cancel-order">Cancel</a><a id="confirm-order-button" href="#" class="tiny confirm-order">Confirm</a>
-				</div
-				><div id="orb-price-total" class="inline">
+					><div id="tiny-toppings-list" class="inline">
+						<label for="">TOPPINGS & OPTIONS</label>
+						<div id="tiny-toppings-list-wrapper"></div
+					></div
+				></div
+
+				><div id="orb-finalize-details" class="inline orb-card-row text-center">
+					<a href="#" class="xtreme-button secondary left cancel-order">Cancel</a>
+					<a id="confirm-order-button" href="#" class="xtreme-button right confirm-order">Confirm</a>
+					<span id="orb-total">Total: $21.50</span>
 				</div>
 			</section>
 		</div>

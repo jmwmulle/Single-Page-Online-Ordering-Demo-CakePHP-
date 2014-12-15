@@ -43,6 +43,7 @@ var XSM = {
 		readyMessage: "#ready-message"
 	},
 	menu: {
+		active_orb_name_3d_context: "#active-orb-name-3d-context",
 		active_orb_name_front_face: "#active-orb-name-front-face",
 		active_orb_name_back_face: "#active-orb-name-back-face",
 		active_orbs_menu: "#active-orbs-menu",
@@ -54,16 +55,17 @@ var XSM = {
 		orbcat_menu_title_subtitle: "#orbcat-menu-title h1 span",
 		orbcat_refresh: ".orbcat-refresh",
 		orb_card_3d_context: "#orb-card-3d-context",
-		active_orb_name_3d_context: "#active-orb-name-3d-context",
+		orb_opt_weight: ".orb-opt-weight",
+		orb_size_button: ".orb-size-button",
+		orb_order_form_price_rank: "#OrderOrbPriceRank",
 		toppings_list: "#toppings-list",
 		topping: ".topping",
 		topping_active: ".topping.active",
 		topping_icon: ".topping-coverage",
 		topping_icon_active: ".topping-coverage.active",
 		topping_filter:".topping-filter",
-		orb_opt_weight: ".orb-opt-weight",
-		orb_size_button: ".orb-size-button",
-		orb_order_form_price_rank: "#OrderOrbPriceRank"
+		tiny_toppings_list_wrapper:"#tiny-toppings-list-wrapper",
+		tiny_topping_list_item: ".tiny_topping_list_item"
 	},
 	main: {
 		primaryContent: "#primary-content",

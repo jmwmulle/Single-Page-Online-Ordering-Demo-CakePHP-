@@ -62,10 +62,7 @@
   content : "g";
 }
 
-@font-face {
-  font-family : "Helvetica Neue Condensed Black";
-  src         : url("../files/HelveticaNeueLTStd-BlkCn.otf");
-}
+
 
 @font-face {
   font-family : "Helvetica Neue Medium Condensed";
@@ -124,7 +121,7 @@
   font-family : "Helvetica Neue Ultra Light", arial, sans-serif;
 }
 
-form, label {
+form, label ,.label-like {
   @include HelveticaMdCn;
   font-size:rem-calc(14px);
 }
@@ -266,11 +263,22 @@ div.orb-card-content {
   }
 }
 
+#tiny-toppings-list {
+  color:$secondary-color;
+  .tiny_topping_list_item {
+    font-size:rem-calc(12px);
+    line-height:rem-calc(16px);
+  }
+}
 ul#toppings-filter * {
   font-size      : rem-calc(14px) !important;
   line-height    : 1rem !important;
   vertical-align : middle;
   color          : $white !important;
   text-align     : left;
+}
+#orb-total {
+  color:$dark-grey;
+  font-size: $h3-font-size;
 }
 

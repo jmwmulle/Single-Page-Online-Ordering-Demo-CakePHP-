@@ -8,7 +8,7 @@
  */
 	$list_classes = array("topping", 'menu-shadow', "inactive");
 	$icons = array('right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D");
-	$data = array("id" => $opt['id']);
+	$data = array("id" => $opt['id'], "name" => strtolower($opt['title']));
 	foreach (array_slice($opt, 3, -1) as $flag => $value) {
 		if ($value) $data['flags'][] = $flag;
 	}

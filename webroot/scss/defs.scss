@@ -150,11 +150,14 @@ $float-label-exposed-bottom: (0.5 * $orb-card-height) - $orb-card-vertical-margi
 $float-label-exposed-margin: -0.5 * $orb-card-height + $h3-font-size ;
 
 // ORB CONFIGURATION
-$orb-configure-form-width: 0.75 * $orb-card-inner-width;
+$orb-preparation-instructions-field-width: rem-calc(175px); // arbitrarily chosen, see next line
+$orb-quantity-field-width: rem-calc(60px); // arbitrarily chosen from min. size needed to fit both fields
+$orb-configure-form-width: $orb-preparation-instructions-field-width + $orb-quantity-field-width;
 $orb-quantity-wrapper-width: $orb-configure-form-width / 3;
 $orb-preparation-wrapper-width: $orb-configure-form-width;
 $orb-preparation-label-width: 0.33333333 * $orb-preparation-wrapper-width;
 $orb-preparation-field-width: $orb-preparation-wrapper-width - $orb-preparation-label-width;
+$tiny-topping-list-width: $orb-card-inner-width - $orb-configure-form-width;
 
 
 /*  MONTHLY  CONTENT  */

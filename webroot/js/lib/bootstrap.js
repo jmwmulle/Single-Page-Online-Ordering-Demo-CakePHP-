@@ -25,7 +25,11 @@ var constants = {
 	UPDATE_SESSION: "update_session",
 	OPT: "opt",
 	CANCEL: "cancel",
-	ORB_CARD_REFRESH: "orb_card_refresh"
+	ORB_CARD_REFRESH: "orb_card_refresh",
+	F: "",
+	D: "x2",
+	R: "x0.5(R)",
+	L: "x0.5(L)"
 };
 var C = constants;
 
@@ -366,7 +370,7 @@ window.XBS = {
 			return  (isArray(selector) ) ? selector : $(selector);
 		},
 		filter_toppings: function(reset) {
-			var active = {premium:null, meat:null, veggie:null};
+			var active = {premium:null, meat:null, veggie:null, sauce:null, cheese:null};
 			$(XSM.menu.topping_filter).each(function() {
 				if (reset == true) {
 					$(this).removeClass(XSM.effects.inactive).addClass(XSM.effects.active)
@@ -639,14 +643,23 @@ window.XBS = {
 			return true;
 		},
 		update_orb_form: function() {
+			var tiny_toppings_list = $("<ul/>").addClass("tiny-topping-list");
+
 			$(XSM.menu.orb_opt_weight).each(function(){ $(this).val(-1);});
 			$(XSM.menu.topping_active).each(function() {
+				var topping_name = $(this).data("name");
 				var weight = $($(this).find(XSM.menu.topping_icon_active)[0]).data('weight');
+
+				var li = $("<li/>").addClass(stripCSS(XSM.menu.tiny_topping_list_item))
+									.text(topping_name + " " + C[weight])
+									.appendTo(tiny_toppings_list);
 				$(asId("orderOrbOrbopts" + $(this).data('id'))).val(weight);
 			});
+
+			$(XSM.menu.tiny_toppings_list_wrapper).html(tiny_toppings_list);
+
+			pr(tiny_toppings_list);
 		},
-
-
 		add_to_cart: function() {
 			// ajax out to cart
 			return true;

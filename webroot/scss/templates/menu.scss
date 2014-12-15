@@ -226,13 +226,15 @@ div#orb-card {
   }
 }
 
+.orb-card-row {
+  width:100%;
+  height        : $orb-card-row-height;
+  margin-bottom : $float-pane-margin;
+}
+
 ul.orb-card {
   position : relative;
   width    : 100%;
-  li.orb-card-row {
-    height        : $orb-card-row-height;
-    margin-bottom : $float-pane-margin;
-  }
   div.orb-card-button {
     position            : relative;
     vertical-align      : top;
@@ -425,22 +427,32 @@ div.orb-card-content {
   }
 }
 
-#orb-order-form {
-  width : $orb-configure-form-width;
+#order-details {
+  & > div { vertical-align: top;}
+  .orb-configuration-field { padding: $tight-padding; }
+  #orb-order-form { width : $orb-configure-form-width; }
+  #tiny-toppings-list {
+    padding: $tight-padding;
+    width : $tiny-topping-list-width;
+    height: rem-calc(65px);
+    overflow: hidden;
+    ul { margin:0;}
+    li {
+      float:left;
+      display:inline-block;
+      padding: 0 $tight-padding;
+      margin: 1px;
+      height: rem-calc(16px);
+      background-color:$light-grey;
+    }
+  }
 }
-
-#orb-price-total {
-  width : 25%;
-}
-
 .orb-opt-configure-header {
   background-color:$xtreme-red;
   padding: $tight-padding + 0.25 * $h3-font-size  0 $tight-padding $base-padding;
   line-height: $h3-font-size;
  }
 
-.orb-configuration-field {
-  width:50%;
-  padding: $tight-padding;
-}
+#orderOrbPreparationInstructions-wrapper { width: rem-calc(175px);}
+#orderOrbQuantity-wrapper { width: rem-calc(60px);}
 input#orderOrbQuantity { width: 3rem;}

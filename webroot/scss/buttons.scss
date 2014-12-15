@@ -46,12 +46,15 @@
   }
 }
 
-.xtreme-button {
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+a.xtreme-button {
+  transition: background-color 0.3s ease-in-out;
   color:$white;
   background-color:$xtreme-blue;
-  &:hover {
-    background-color:lighten($xtreme-blue, 10%);
+  padding: $tight-padding $base-padding;
+  &:hover { background-color:lighten($xtreme-blue, 10%);}
+  &.secondary {
+    background-color: $light-grey;
+    &:hover { background-color:lighten($light-grey, 10%);}
   }
 }
 
