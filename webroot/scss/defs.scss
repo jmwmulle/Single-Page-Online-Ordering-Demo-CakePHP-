@@ -100,6 +100,7 @@ $user-activity-panel-font-size: 0.2 * $user-activity-panel-width;
 $orb-card-wrapper-width: $row-width - $column-gutter;
 $orb-card-wrapper-height: $menu-row-height;
 $orb-card-wrapper-inner-height: $orb-card-wrapper-height - 2 * $float-pane-border-width;
+$orb-card-wrapper-inner-width: $orb-card-wrapper-width - 2 * $float-pane-border-width;
 $orb-card-wrapper-margin: $float-pane-margin 0 $float-pane-shadow-size 0;
 $min-orb-list-width: 0.33333 * $orb-card-wrapper-width;
 $orb-card-stage-height: $menu-row-height; // todo: media queries yo
@@ -158,6 +159,12 @@ $orb-preparation-wrapper-width: $orb-configure-form-width;
 $orb-preparation-label-width: 0.33333333 * $orb-preparation-wrapper-width;
 $orb-preparation-field-width: $orb-preparation-wrapper-width - $orb-preparation-label-width;
 $tiny-topping-list-width: $orb-card-inner-width - $orb-configure-form-width;
+
+  // ORDER-MODAL
+$order-modal-top: 0.25 * $orb-card-wrapper-inner-height;
+$order-modal-height: 0.5 * $orb-card-wrapper-inner-height;
+$order-modal-content-shadow-size: rem-calc(20px);
+$order-modal-content-height: $order-modal-height - 2 * $order-modal-content-shadow-size;
 
 
 /*  MONTHLY  CONTENT  */

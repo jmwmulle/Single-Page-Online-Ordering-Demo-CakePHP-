@@ -1,38 +1,43 @@
-$.fn.scrollTo = function( target, options, callback ){
-  if(typeof options == 'function' && arguments.length == 2){ callback = options; options = target; }
-  var settings = $.extend({
-    scrollTarget  : target,
-    offsetTop     : 50,
-    duration      : 500,
-    easing        : 'swing'
-  }, options);
-  return this.each(function(){
-    var scrollPane = $(this);
-    var scrollTarget = (typeof settings.scrollTarget == "number") ? settings.scrollTarget : $(settings.scrollTarget);
-    var scrollY = (typeof scrollTarget == "number") ? scrollTarget : scrollTarget.offset().top + scrollPane.scrollTop() - parseInt(settings.offsetTop);
-    scrollPane.animate({scrollTop : scrollY }, parseInt(settings.duration), settings.easing, function(){
-      if (typeof callback == 'function') { callback.call(this); }
-    });
-  });
+$.fn.scrollTo = function (target, options, callback) {
+	if (typeof options == 'function' && arguments.length == 2) {
+		callback = options;
+		options = target;
+	}
+	var settings = $.extend({
+		scrollTarget: target,
+		offsetTop: 50,
+		duration: 500,
+		easing: 'swing'
+	}, options);
+	return this.each(function () {
+		var scrollPane = $(this);
+		var scrollTarget = (typeof settings.scrollTarget == "number") ? settings.scrollTarget : $(settings.scrollTarget);
+		var scrollY = (typeof scrollTarget == "number") ? scrollTarget : scrollTarget.offset().top + scrollPane.scrollTop() - parseInt(settings.offsetTop);
+		scrollPane.animate({scrollTop: scrollY }, parseInt(settings.duration), settings.easing, function () {
+			if (typeof callback == 'function') {
+				callback.call(this);
+			}
+		});
+	});
 }
 
 // adds formatting methods to the String primitive
 if (!String.prototype.format) {
-  String.prototype.format = function() {
-    var args = arguments;
-    return this.replace(/{(\d+)}/g, function(match, number) {
-      return typeof args[number] != 'undefined'
-        ? args[number]
-        : match
-      ;
-    });
-  };
+	String.prototype.format = function () {
+		var args = arguments;
+		return this.replace(/{(\d+)}/g, function (match, number) {
+			return typeof args[number] != 'undefined'
+				? args[number]
+				: match
+				;
+		});
+	};
 }
 
 
 if (!String.prototype.toTitleCase) {
 	String.prototype.toTitleCase = function () {
-        return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+		return this.replace(/\w\S*/g, function (txt) {return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	};
 }
 
@@ -49,10 +54,12 @@ function isEvent(obj, message) {
 		pr(obj, "isEvent:" + message);
 	}
 
-	if (typeof(obj) !== "object") { return false;}
-	var w3cKeys = ["bubbles","cancelable","currentTarget","eventPhase","timeStamp","type"];
+	if (typeof(obj) !== "object") {
+		return false;
+	}
+	var w3cKeys = ["bubbles", "cancelable", "currentTarget", "eventPhase", "timeStamp", "type"];
 	for (i in w3cKeys) {
-		if (!(w3cKeys[i] in obj) ){
+		if (!(w3cKeys[i] in obj)) {
 			return false;
 //			pr(w3cKeys[i],"isEvent Failed key");
 		} else {
@@ -66,11 +73,11 @@ function isArray(obj) {
 }
 
 function isFloat(n) {
-    return n === +n && n !== (n|0);
+	return n === +n && n !== (n | 0);
 }
 
 function isInt(n) {
-    return n === +n && n === (n|0);
+	return n === +n && n === (n | 0);
 }
 
 
@@ -82,8 +89,8 @@ function isInt(n) {
  * @returns {boolean}
  */
 function isFunction(obj) {
- var getType = {};
- return obj && getType.toString.call(obj) === '[object Function]';
+	var getType = {};
+	return obj && getType.toString.call(obj) === '[object Function]';
 }
 
 /**
@@ -94,16 +101,17 @@ function isFunction(obj) {
 function isValidJSON(string, parseIf) {
 	try {
 		var o = JSON.parse(string);
-	    /* Handle non-exception-throwing cases:
-	       Neither JSON.parse(false) or JSON.parse(1234) throw errors, hence the type-checking,
-	       but... JSON.parse(null) returns 'null', and typeof null === "object",
-	       so we must check for that, too.
-	       - Matt H, http://stackoverflow.com/questions/3710204/how-to-check-if-a-string-is-a-valid-json-string-in-javascript-without-using-try */
-	    if (o && typeof o === "object" && o !== null) {
-	        return parseIf === true ? o : true;
-	    }
+		/* Handle non-exception-throwing cases:
+		 Neither JSON.parse(false) or JSON.parse(1234) throw errors, hence the type-checking,
+		 but... JSON.parse(null) returns 'null', and typeof null === "object",
+		 so we must check for that, too.
+		 - Matt H, http://stackoverflow.com/questions/3710204/how-to-check-if-a-string-is-a-valid-json-string-in-javascript-without-using-try */
+		if (o && typeof o === "object" && o !== null) {
+			return parseIf === true ? o : true;
+		}
 	}
-	catch (e) { }
+	catch (e) {
+	}
 
 	return false;
 }
@@ -118,15 +126,15 @@ function isValidJSON(string, parseIf) {
  * @returns {*}
  */
 function eCustom(eName, eProperties) {
-			var defaultProps = {"bubbles":true, "cancelable":false, "eventPhase":0, "type":eName};
-			if (typeof(eProperties) == "object") {
-				for (var prop in eProperties) {
-					if (eProperties.hasOwnProperty(prop) ) {
-						defaultProps[prop] = eProperties[prop];
-					}
-				}
+	var defaultProps = {"bubbles": true, "cancelable": false, "eventPhase": 0, "type": eName};
+	if (typeof(eProperties) == "object") {
+		for (var prop in eProperties) {
+			if (eProperties.hasOwnProperty(prop)) {
+				defaultProps[prop] = eProperties[prop];
 			}
-			return jQuery.Event(eName, defaultProps);
+		}
+	}
+	return jQuery.Event(eName, defaultProps);
 }
 
 
@@ -137,7 +145,7 @@ function eCustom(eName, eProperties) {
  * @param e
  * @returns {type|*}
  */
-function eTypeOf(e) { return isEvent(e) ?  e.type : false}
+function eTypeOf(e) { return isEvent(e) ? e.type : false}
 
 
 /**
@@ -147,68 +155,71 @@ function eTypeOf(e) { return isEvent(e) ?  e.type : false}
  * @param selector
  * @returns {*}
  */
- function asId(selector) {
+function asId(selector) {
 	if (typeof(selector) === "string") {
-		return selector.substring(0,1) === "#" ? selector : "#"+selector;
+		return selector.substring(0, 1) === "#" ? selector : "#" + selector;
 	}
 	return false;
 }
 
+function camelcase_to_pep8(str) {
+	return strtolower(str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1_$2').replace(/([a-z\d])([0-9]{1,})/g,'$1_$2'));
+}
 
-function array_intersect(a, b)
-{
+function array_intersect(a, b) {
 	a = a.sort();
 	b = b.sort();
-  var ai = bi= 0;
-  var result = [];
+	var ai = bi = 0;
+	var result = [];
 
-  while( ai < a.length && bi < b.length ){
-     if      (a[ai] < b[bi] ){ ai++; }
-     else if (a[ai] > b[bi] ){ bi++; }
-     else /* they're equal */
-     {
-       result.push(ai);
-       ai++;
-       bi++;
-     }
-  }
+	while (ai < a.length && bi < b.length) {
+		if (a[ai] < b[bi]) {
+			ai++;
+		} else if (a[ai] > b[bi]) {
+			bi++;
+		} else {
+			result.push(ai);
+			ai++;
+			bi++;
+		}
+	}
 
-  return result;
+	return result;
 }
 
 
 function asClass(selector) {
 	if (typeof(selector) === "string") {
-		return selector.substring(0,1) === "." ? selector : "."+selector;
+		return selector.substring(0, 1) === "." ? selector : "." + selector;
 	}
 	return false;
 }
 
 function selToStr(str) {
 	try {
-	  return str.replace("-"," ").replace("_"," ").toTitleCase();
+		return str.replace("-", " ").replace("_", " ").toTitleCase();
 	} catch (e) {
-		pr(e,"ERROR:selToStr()");
+		pr(e, "ERROR:selToStr()");
 		return str;
 	}
 }
 
 
 function stripCSS(selector) {
-	return selector.substring(0,1) == "." || selector.substring(0,1) == "#" ? selector.substring(1) : selector;
+	return selector.substring(0, 1) == "." || selector.substring(0, 1) == "#" ? selector.substring(1) : selector;
 }
 
 
 function matchWindowHeight(selector, padding) {
 	var win_height = window.innerHeight;
-	if ( Object.prototype.toString.call( padding ) === '[object Array]' ) {
-		for (var i =0; i<padding.length; i++) {
+	if (Object.prototype.toString.call(padding) === '[object Array]') {
+		for (var i = 0; i < padding.length; i++) {
 			win_height -= $(padding[i]).innerHeight();
 		}
-	} else if ( typeof(padding) === "int") {
+	} else if (typeof(padding) === "int") {
 		win_height -= $(padding).innerHeight();
 	}
-	else if ( typeof(padding) === "int") {
+	else if (typeof(padding) === "int") {
 		win_height -= padding;
 	}
 	$(selector).css('min-height', win_height);
@@ -222,7 +233,7 @@ function flash(message) {
 		return true;
 	}
 	var m =
-			'   <div id="flash-message" class="text-center error">' +
+		'   <div id="flash-message" class="text-center error">' +
 			'       <span>' + message + '</span>' +
 			'   </div>';
 	$("#" + 'flash-content').html(m);
@@ -234,7 +245,7 @@ function cakeUrl(controller, action, params, debug) {
 	if (params) {
 		if (params.constructor === Array) {
 			var cakeurl = WWW + DS + APP + DS + controller + DS + action + DS + params.join(DS);
-			debug ?  pr(cakeurl) : null;
+			debug ? pr(cakeurl) : null;
 			return cakeurl;
 		}
 		if (params.constructor === Object) {
@@ -243,7 +254,7 @@ function cakeUrl(controller, action, params, debug) {
 				param_string += DS + params[p];
 			}
 			var cakeurl = WWW + DS + APP + DS + controller + DS + action + param_string;
-			debug ?  pr(cakeurl) : null;
+			debug ? pr(cakeurl) : null;
 			return cakeurl;
 		}
 		var cakeurl = WWW + DS + APP + DS + controller + DS + action + DS + params;
@@ -267,7 +278,7 @@ function cakeUrl(controller, action, params, debug) {
  */
 function pr(obj, label, as_error) {
 	var method = as_error === true ? "error" : "log";
-	label = !!label && typeof(label) === "string" ? "%c "+ label +" " : '%c';
+	label = !!label && typeof(label) === "string" ? "%c " + label + " " : '%c';
 	var note_delim = ".";
 	var note_delim_length = note_delim.length;
 	if (!as_error) {
@@ -282,18 +293,33 @@ function pr(obj, label, as_error) {
 	var note_css = "color:#008cba; background-color:rgb(247,247,247); border:1px solid #008cba;";
 	var note_css = "color:#008cba; background-color:rgb(247,247,247); border:1px solid #008cba;";
 
-	if (obj === 0)  {
-		console[method](label + "%c(int) %c", label_css, type_css, num_css,0);
+	if (obj === 0) {
+		console[method](label + "%c(int) %c", label_css, type_css, num_css, 0);
 		return true;
 	}
-	if (obj === 1) { console[method](label + "%c(int) %c%s", label_css, type_css, num_css,1); return true;}
-	if (obj === false) { console[method](label + "%c(bool) %c%s", label_css, type_css, bool_css, "false"); return true;}
-	if (obj === true) { console[method](label + "%c(bool) %c%s", label_css, type_css, bool_css, "true"); return true;}
-	if (obj === null) { console[method](label + "%c(!def) %c%s", label_css, type_css, bool_css, "null"); return true;}
-	if (typeof(obj) === 'undefined') { console[method](label + "%c(!def) %c%s", label_css, type_css, bool_css, "undefined"); return true;}
+	if (obj === 1) {
+		console[method](label + "%c(int) %c%s", label_css, type_css, num_css, 1);
+		return true;
+	}
+	if (obj === false) {
+		console[method](label + "%c(bool) %c%s", label_css, type_css, bool_css, "false");
+		return true;
+	}
+	if (obj === true) {
+		console[method](label + "%c(bool) %c%s", label_css, type_css, bool_css, "true");
+		return true;
+	}
+	if (obj === null) {
+		console[method](label + "%c(!def) %c%s", label_css, type_css, bool_css, "null");
+		return true;
+	}
+	if (typeof(obj) === 'undefined') {
+		console[method](label + "%c(!def) %c%s", label_css, type_css, bool_css, "undefined");
+		return true;
+	}
 	if (typeof(obj) === 'string') {
-		if (obj.substring(0,note_delim_length) === note_delim) {
-			console[method](label + "%c%s",label_css, note_css, " " + obj.substring(1) + " ");
+		if (obj.substring(0, note_delim_length) === note_delim) {
+			console[method](label + "%c%s", label_css, note_css, " " + obj.substring(1) + " ");
 		} else {
 			console[method](label + "%c(str) %c%s", label_css, type_css, str_css, obj);
 		}
@@ -333,14 +359,13 @@ function splitPath(path, separator) {
 	path = path.substr(-1, 1) === separator ? path.substring(0, path.length - 1) : path;
 	path = path.substr(0, 1) === separator ? path.substring(1) : path;
 
-	path = path.replace('\\' + separator,"$DIRECTORY_SEPARATOR").split(separator);
+	path = path.replace('\\' + separator, "$DIRECTORY_SEPARATOR").split(separator);
 	for (var i = 0; i < path.length; i++) {
-		path[i].replace("$DIRECTORY_SEPARATOR",separator);
+		path[i].replace("$DIRECTORY_SEPARATOR", separator);
 	}
 
 	return path;
 }
-
 
 
 function ucfirst(stringName) {
@@ -384,9 +409,8 @@ function exists(varName) {
 }
 
 
-
 function clearForm(formId) {
-	$("#" +formId)[0].reset();
+	$("#" + formId)[0].reset();
 }
 
 function strpad(padstr, pad_length, padchar, direction, decimal_to) {
@@ -395,7 +419,7 @@ function strpad(padstr, pad_length, padchar, direction, decimal_to) {
 	if (decimal_to) {
 		var post_decimal = padstr.split(".")[1];
 		if (post_decimal && post_decimal.length > 0) {
-			padstr += padstr.substring(0,1) != "." ? "." : null;
+			padstr += padstr.substring(0, 1) != "." ? "." : null;
 			for (var i = 0; i < decimal_to; i++) {
 				padstr += toString(0);
 			}
@@ -407,12 +431,12 @@ function strpad(padstr, pad_length, padchar, direction, decimal_to) {
 	}
 	var final = '';
 	if (direction !== -1) {
-		for (var j =0; j < padchar_count; j++) {
+		for (var j = 0; j < padchar_count; j++) {
 			final += padchar;
 		}
 		return final + padstr;
 	} else {
-		for (var j =0; j < padchar_count; j++) {
+		for (var j = 0; j < padchar_count; j++) {
 			padstr += padchar;
 		}
 		return padstr;
@@ -438,11 +462,11 @@ $("#" + "reset-form").click(function () {
 
 
 function obLen(object) {
-	    var size = 0, key;
-	    for (key in object) {
-	        if (object.hasOwnProperty(key)) size++;
-	    }
-	    return size;
+	var size = 0, key;
+	for (key in object) {
+		if (object.hasOwnProperty(key)) size++;
+	}
+	return size;
 }
 
 

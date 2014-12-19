@@ -3,7 +3,6 @@ html, nav, body, main, footer {
 }
 
 body {
-  //  background-attachment : fixed;
   background-repeat : no-repeat;
   background-size   : cover;
   .menu {
@@ -186,6 +185,7 @@ li.orbcat {
   left              : 0;
   bottom            : $float-label-exposed-bottom;
   text-align        : center;
+  text-shadow: 0 0 rem-calc(6px) $black-a33;
   transition        : visibility $global-transition-time, margin-left $global-transition-time;
   &.exposed {
     visibility  : visible;
@@ -447,12 +447,37 @@ div.orb-card-content {
     }
   }
 }
+
 .orb-opt-configure-header {
   background-color:$xtreme-red;
   padding: $tight-padding + 0.25 * $h3-font-size  0 $tight-padding $base-padding;
   line-height: $h3-font-size;
  }
 
-#orderOrbPreparationInstructions-wrapper { width: rem-calc(175px);}
-#orderOrbQuantity-wrapper { width: rem-calc(60px);}
+#OrderOrbPreparationInstructions-wrapper { width: rem-calc(175px);}
+#OrderOrbQuantity-wrapper { width: rem-calc(60px);}
 input#orderOrbQuantity { width: 3rem;}
+
+#order-modal {
+  height: $order-modal-height;
+  width: $orb-card-wrapper-inner-width + rem-calc(2px);
+  position:absolute;
+  top: $order-modal-top;
+  left:0;
+  float:left;
+  overflow-x:hidden;
+  z-index: 8999;
+  margin-left: rem-calc(-2px);
+
+  #order-modal-content {
+    margin-top: $order-modal-content-shadow-size;
+    height: $order-modal-content-height;
+    width: $orb-card-wrapper-width;
+    background-color: $white-a90;
+    box-shadow: 0 0 $base-padding $black-a33;
+    padding: $tight-padding;
+    border-top: 1px solid $text-grey;
+    border-bottom: 1px solid $text-grey;
+    li { padding:0; }
+  }
+}

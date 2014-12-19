@@ -67,10 +67,35 @@ $this->end('active_orb_card');
 	</div
 	><div class="row"
 		><div class="large-12  columns"
-			><div id="orb-card-wrapper" class="float-pane">
+			><div id="orb-card-wrapper" class="float-pane"
+				><div id="order-modal" style="display:none;">
+					<div id="order-modal-content">
+						<div class="row">
+							<h4 class="text-center"><?php echo strtoupper("Success! your cart now tastes better!");?></h4>
+							<div class="large-8 medium-6 small-12 large-centered medium-centered columns">
+								<ul class="small-block-grid-3" class="hn-l-cn">
+									<li class="text-center">
+										<a id="continue-ordering"  href="#" class="modal-link order" data-action="continue_ordering"><?php echo strtoupper("Continue Ordering");?></a>
+									</li>
+									<li class="text-center">
+										<a id="view-order" href=#" class="modal-link order" data-action="view_order"><?php echo strtoupper("View Order");?></a>
+									</li>
+									<li class="text-center">
+										<a id="finish-ordering" href="#" class="modal-link order" data-action="finish_ordering"><?php echo strtoupper("Finish Ordering");?></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
 				<?php echo $this->fetch('active_orb_card');?>
 				<?php echo $this->fetch('active_orbs_menu');?>
 			</div>
 		</div>
 	</div>
 </main>
+<?php
+$this->start('cart');
+
+$this->end('cart');
+?>

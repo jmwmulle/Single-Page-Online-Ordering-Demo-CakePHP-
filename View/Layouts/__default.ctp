@@ -32,12 +32,12 @@
 						echo "xProd";
 						break;
 					}?>";
-	var isSplash = <?php echo ($this->get("isSplash")) ? 'true' : 'false';?>;
+	var isSplash = <?php echo ($this->get("is_splash")) ? 'true' : 'false';?>;
 </script>
 </head>
 <body>
 <?php echo $this->Element("loadingscreen");?>
-<?php if (!$this->get("isSplash")) echo $this->element("flash");//todo: perhaps turn this into both the topbar nav AND the flash area? ?>
+<?php if (!$this->get("is_splash")) echo $this->element("flash");//todo: perhaps turn this into both the topbar nav AND the flash area? ?>
 	<nav id="login">
 		<h2 class="text-center">Sign In!</h2>
 		<ul id="login-options">
@@ -68,7 +68,7 @@
 									  $scrollDownAttr = array('scroll' => 'parent', 'scroll-direction' => 'down');?>
 								<nav class="scroll-area up" <?php echo ___dA($scrollUpAttr);?>></nav>
 									<div id="primary-content" class="large-12 columns content-area" __data-scrolling-target data-initial-offset="0">
-										<?php if (!$this->get('isSplash') ) echo $this->fetch('content');?>
+										<?php if (!$this->get('is_splash') ) echo $this->fetch('content');?>
 									</div>
 								<nav class="scroll-area down" <?php echo ___dA($scrollDownAttr);?>></nav>
 							</div>
@@ -106,7 +106,7 @@
 	}
 ?></div>
 <?php
-	if ($this->get('isSplash')) echo $this->fetch('content');
+	if ($this->get('is_splash')) echo $this->fetch('content');
 	echo $this->fetch('main');
 	echo $this->fetch('app');
 ?>
