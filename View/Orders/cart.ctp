@@ -34,15 +34,17 @@ You haven't ordered anything yet.
 			<?php
 			$mods = 0;
 			if(isset($item['Orb']['title'])) :
-			$mods = $item['Orb']['id'];
-			?>
-			<br />
-			<small><?php echo $item['Orb']['orbopt_name']; ?></small>
+				$mods = $item['Orb']['id'];
+				?>
+				<br />
+				<small><?php foreach($item['orbopts'] as $opt) {echo $opt['title'];} ?></small>
 			<?php endif; ?>
 		</div>
-		<div class="col col-sm-1" id="price-<?php echo $key; ?>"><?php echo $item['Orb']->price_list[$item['price_rank']]; ?></div>
+                <?php echo $this->Form->input('id', array('hiddenField'=>true, 'value'=>$key)); ?>
                 <div class="col col-sm-1" id="desc-<?php echo $key; ?>"> <?php echo $item['Orb']['description'] ?></div>
-		<div class="col col-sm-1"><?php echo $this->Form->input('quantity-' . $key, array('div' => false, 'class' => 'numeric form-control input-small', 'label' => false, 'size' => 2, 'maxlength' => 2, 'tabindex' => $tabindex++, 'data-id' => $item['Orb']['id'], 'data-mods' => $mods, 'value' => $item['quantity'])); ?></div>
+		<div class="col col-sm-1"><?php echo $this->Form->input('preparation_instructions', array('div' => false, 'class' => 'text form-control input-small', 'label' => false, 'size' => 2, 'maxlength' => 144, 'tabindex' => $tabindex++, 'data-id' => $item['Orb']['id'], 'data-mods' => $mods, 'value' => $item['preparation_instructions'])); ?></div>
+                <div class="col col-sm-1"><?php echo $this->Form->input('price_rank', array('div' => false, 'class' => 'numeric form-control input-small', 'label' => false, 'size' => 1, 'maxlength' => 1, 'tabindex' => $tabindex++, 'data-id' => $item['Orb']['id'], 'data-mods' => $mods, 'value' => $item['price_rank'])); ?></div>
+                <div class="col col-sm-1"><?php echo $this->Form->input('quantity', array('div' => false, 'class' => 'numeric form-control input-small', 'label' => false, 'size' => 2, 'maxlength' => 2, 'tabindex' => $tabindex++, 'data-id' => $item['Orb']['id'], 'data-mods' => $mods, 'value' => $item['quantity'])); ?></div>
 		<div class="col col-sm-1" id="subtotal_<?php echo $key; ?>"><?php echo $item['subtotal']; ?></div>
 		<div class="col col-sm-1"><span class="remove" id="<?php echo $key; ?>"></span></div>
 	</div>

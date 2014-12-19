@@ -88,7 +88,7 @@ class CartComponent extends Component {
 		$data['orbopts'] = $orbopts;
 		$data['orbopts_prices'] = empty($opts_prices) ? array() : $opts_prices;
 		$data['orbopts_arrangement'] = $orbopts_list;
-		$data['prep_instructions'] = $prep_instructions;
+		$data['preparation_instructions'] = $prep_instructions;
 		$data['quantity'] = $quantity;
 		$data['subtotal'] = sprintf('%01.2f', ($data['price'] + array_sum($data['orbopts_prices'])) * $quantity);
 		$data['price_rank'] = $price_rank;

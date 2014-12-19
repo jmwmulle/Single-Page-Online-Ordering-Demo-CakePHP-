@@ -200,12 +200,13 @@ class OrdersController extends AppController {
 
 	public function cartupdate() {
 		if ($this->request->is('post')) {
-			foreach($this->request->data['Orb'] as $key => $value) {
-				$p = explode('-', $key);
-				$p = explode('_', $p[1]);
-				$this->Cart->add($p[0], $value, $p[1]);
+			$data = $this->request->data['Orb'];
+			$test = $this->Cart->add($data['id'], $data['quantity'], $data['price_rank'], null, $data['preparation_instructions']);
+		        if ($test) {
+				$this->Session->setFlash('Shopping Cart is updated.', 'flash_success');
+			} else {
+				db('Failed');
 			}
-			$this->Session->setFlash('Shopping Cart is updated.', 'flash_success');
 		}
 		return $this->redirect(array('action' => 'cart'));
 	}
