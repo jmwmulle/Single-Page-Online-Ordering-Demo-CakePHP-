@@ -73,20 +73,18 @@ class OrdersController extends AppController {
 				return;
 			}
 			$products = array();
+
 			foreach ($this->request->data['Order'] as $orb) {
 				extract(array_merge(array(
 							"id" => -1,
 							"quantity" => -1,
 							"price_rank" => 0,
 							"orbopts" => array(),
-							"prep_instructions" => ""),
+							"preparation_instructions" => ""),
 							$orb));
-				$id = array_key_exists('id',$orb) ? $orb['id'] : null;
-				$quantity = array_key_exists('quantity',$orb) ? $orb['quantity'] : null;
-				$price_rank = array_key_exists('price_rank',$orb) ? $orb['price_rank'] : null;
-				$orbopts = array_key_exists('Orbopts',$orb) ? $orb['Orbopts'] : array();
-				$prep_instructions = array_key_exists('preparation_instructions',$orb) ? $orb['preparation_instructions'] : null;
-				array_push($products, $this->Cart->add($id, $quantity, $price_rank, $orbopts, $prep_instructions));
+				$cart = $this->Cart->add($id, $quantity, $price_rank, $orbopts, $preparation_instructions);
+
+				array_push($products, $cart);
 			}
 			if (!empty($products)) {
 				if ($this->Session->check('Cart.Order.total') ) {
@@ -98,7 +96,6 @@ class OrdersController extends AppController {
 			} else {
 				$this->set("response", json_encode(array("orb" => null, "success" => false, "cart_total" => null)));
 			}
-			//$this->redirect($this->referer());
 		}
 
 	/**

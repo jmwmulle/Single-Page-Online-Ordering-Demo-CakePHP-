@@ -55,7 +55,7 @@ class PagesController extends AppController {
 
 		if (!empty($path[0])) {
 			$page = $path[0];
-			if ($page === "splash") $this->set("isSplash", true);
+			if ($page === "splash") $this->set("is_splash", true);
 		}
 		if (!empty($path[1])) {
 			$subpage = $path[1];
