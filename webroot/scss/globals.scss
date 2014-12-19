@@ -18,5 +18,20 @@ button.unavailable {
 .tight { @include tightContent();}
 .hidden { display:none;}
 .inline { display: inline-block;}
-
-
+.true-hidden {
+  visibility: none;
+  display:none;
+  opacity:none;
+}
+#xtreme-modal {
+  position: fixed;
+  top: 100px;
+  left:25%;
+  z-index: 9999999999;
+  width:$row-width;
+  min-height: rem-calc(100px);
+  margin-top:rem-calc(100px);
+  background-color: $xtreme-blue;
+  box-shadow: 0 0 64px $black-a33;
+  h1 { color:$dark-grey; }
+}

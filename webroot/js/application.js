@@ -1,2 +1,2 @@
 $(document).foundation();
-XBS.init(isSplash, host);
+XBS.init(is_splash, page_name, host, cart);

@@ -12,28 +12,28 @@
 
 var XSM = {
 	global:{
+		activizing_list: "ul.activizing li",
 		ajaxLink:".ajax-link",
-		autoScrollers: "*[data-scroll-to]",
 		detachable: ".detach",
 		imageQueue: "#image-loading-queue",
 		loadingScreen: "#loadingScreen",
-		preserve_aspect_ratio: ".preserve-aspect-ratio",
-		scrollable: "*[data-scrolling-target]",
-		activizing_list: "ul.activizing li",
-		multi_activizing: ".multi-activizing"
+		multi_activizing: ".multi-activizing",
+		preserve_aspect_ratio: ".preserve-aspect-ratio"
+
 	},
 	effects: {
-		transitioning: "transitioning",
+		active: "active",
+		checked: "icon-checked",
+		disabled: "disabled",
+		enabled: "enabled",
+		exposed: "exposed",
+		inactive: "inactive",
+		fade_out: "fade-out",
 		flipped_x: "flipped-x",
 		flipped_y: "flipped-y",
-		float_label: ".float-labeled",
-		solidify: ".solidify",
-		exposed: "exposed",
-		active: "active",
-		inactive: "inactive",
-		enabled: "enabled",
-		disabled: "disabled",
-		checked: "icon-checked",
+		float_label: "float-labeled",
+		solidify: "solidify",
+		transitioning: "transitioning",
 		unchecked: "icon-unchecked"
 	},
 	load: {
@@ -47,31 +47,44 @@ var XSM = {
 		active_orb_name_front_face: "#active-orb-name-front-face",
 		active_orb_name_back_face: "#active-orb-name-back-face",
 		active_orbs_menu: "#active-orbs-menu",
+		active_orb: ".orb-card-refresh.active",
 		active_orbs_menu_item: "#active-orbs-menu li a",
 		add_to_cart_hook:".add-to-cart",
+		cancel_order_button: "#cancel-order-button",
+		confirm_order_button: "#confirm-order-button",
+		orb_card_back: "#orb-card-back",
 		orb_card_stage: "#orb-card-stage",
 		orb_card_refresh: ".orb-card-refresh",
+		orb_card_3d_context: "#orb-card-3d-context",
+		orb_card_wrapper: "#orb-card-wrapper",
+		orb_opt_weight: ".orb-opt-weight",
+		orb_order_form: "#orderOrbForm",
+		orb_order_form_inputs: "#orderOrbForm input",
+		orb_order_form_orb_opts: "#orderOrbForm input.orb-opt-weight",
+		orb_order_form_price_rank: "#OrderOrbPriceRank",
+		orb_order_form_prep_instrux: "#OrderOrbPreparationInstructions",
+		orb_order_form_quantity: "#OrderOrbQuantity",
+		orb_size_button: ".orb-size-button",
 		orbcat_menu_title_header: "#orbcat-menu-title h1",
 		orbcat_menu_title_subtitle: "#orbcat-menu-title h1 span",
 		orbcat_refresh: ".orbcat-refresh",
-		orb_card_3d_context: "#orb-card-3d-context",
-		orb_opt_weight: ".orb-opt-weight",
-		orb_size_button: ".orb-size-button",
-		orb_order_form_price_rank: "#OrderOrbPriceRank",
+		orbcat_menu: "#orbcat-menu",
 		toppings_list: "#toppings-list",
 		topping: ".topping",
 		topping_active: ".topping.active",
 		topping_icon: ".topping-coverage",
 		topping_icon_active: ".topping-coverage.active",
 		topping_filter:".topping-filter",
+		tiny_toppings_list: "tiny-topping-list",
 		tiny_toppings_list_wrapper:"#tiny-toppings-list-wrapper",
-		tiny_topping_list_item: ".tiny_topping_list_item"
+		tiny_topping_list_item: ".tiny_topping_list_item",
+		user_activity_panel: "#user-activity-panel"
+
 	},
-	main: {
-		primaryContent: "#primary-content",
-		subNav:"#subnav",
-		toc: "#subnav-toc",
-		tocListItem:"#subnav-toc li",
+	modal: {
+		order_modal:"#order-modal",
+		link: ".modal-link",
+		link_order: ".modal-link.order"
 	},
 	splash:{
 		self:"#splash",
@@ -95,6 +108,9 @@ var XSM = {
 		preserve_aspect_ratio: "#splash *.preserve-aspect-ratio",
 		splash_bar:"#splash-bar",
 		splash_link: ".splash-link"
+	},
+	generated: {
+		order_form_order_opt: function(opt_id) { return asId("OrderOrbOrbopts" + opt_id) }
 	}
 };
 

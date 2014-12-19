@@ -29,6 +29,7 @@ class CartComponent extends Component {
 //////////////////////////////////////////////////
 
 	public function add($id, $quantity = 1, $price_rank = 0, $orbopts_list = null, $prep_instructions = '') {
+
 		if(!is_numeric($quantity)) {
 			$quantity = 1;
 		}
@@ -49,9 +50,9 @@ class CartComponent extends Component {
 			)
 		));
 
-		if(empty($product)) {
-			return false;
-		}
+//		if(empty($product)) {
+//			return false;
+//		}
 
 		$orbopts = array();
 		if($orbopts_list) {
@@ -67,6 +68,7 @@ class CartComponent extends Component {
 							'Pricelist',
 						),
 					));
+					$orbopts[$orbopt_id]['weight'] = $orbopts_list[$orbopt_id];
 				}
 			}
 		}
@@ -88,7 +90,7 @@ class CartComponent extends Component {
 		$data['orbopts'] = $orbopts;
 		$data['orbopts_prices'] = empty($opts_prices) ? array() : $opts_prices;
 		$data['orbopts_arrangement'] = $orbopts_list;
-		$data['prep_instructions'] = $prep_instructions;
+		$data['preparation_instructions'] = $prep_instructions;
 		$data['quantity'] = $quantity;
 		$data['subtotal'] = sprintf('%01.2f', ($data['price'] + array_sum($data['orbopts_prices'])) * $quantity);
 		$data['price_rank'] = $price_rank;

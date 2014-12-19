@@ -118,7 +118,7 @@ class OrbcatsController extends AppController {
 	}
 
 	public function menu($orbcat_id = null, $orb_id = null, $return = false) {
-		$here = 'Menu';
+		$page_name = 'menu';
 
 		$orbcat_id = (!$orbcat_id || !$this->Orbcat->exists($orbcat_id)) ? 1 : $orbcat_id; // default to pizza if null
 		$this->Orbcat->id = $orbcat_id;
@@ -151,7 +151,7 @@ class OrbcatsController extends AppController {
 			}
 		}
 
-		$this->set(compact('active_orbcat','orbcats_list','here'));
+		$this->set(compact('active_orbcat','orbcats_list','page_name'));
 		if ($this->request->is("ajax")) { $this->render('ajax_menu', 'ajax'); }
 	}
 

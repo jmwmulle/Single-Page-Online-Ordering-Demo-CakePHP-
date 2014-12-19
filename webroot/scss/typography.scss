@@ -121,6 +121,9 @@
   font-family : "Helvetica Neue Ultra Light", arial, sans-serif;
 }
 
+.hn-l-cn { @include HelveticaLtCn; }
+.hn-ul-cn { @include HelveticaUltLt;}
+
 form, label ,.label-like {
   @include HelveticaMdCn;
   font-size:rem-calc(14px);
@@ -282,3 +285,17 @@ ul#toppings-filter * {
   font-size: $h3-font-size;
 }
 
+
+#order-modal-content {
+  & * { color: $text-grey;}
+  a.modal-link {
+    @include HelveticaLtCn;
+      font-size:$h4-font-size;
+      transition: color $global-transition-time, text-shadow $global-transition-time;
+    &:hover {
+      color: $xtreme-blue;
+      text-shadow: 0 0 2px $xtreme-blue-a50;
+    }
+
+    }
+}
