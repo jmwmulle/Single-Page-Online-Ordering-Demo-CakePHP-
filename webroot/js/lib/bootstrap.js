@@ -509,6 +509,7 @@ window.XBS = {
 
 				/** topping filtering */
 				$(C.BODY).on(C.CLK, XSM.menu.topping_filter, null, function (e) {
+					pr("listener firing");
 					e.stopPropagation();
 					XBS.menu.filter_toppings(e.currentTarget);
 				});
@@ -561,6 +562,7 @@ window.XBS = {
 			XBS.layout.toggle_orb_card(false)
 		},
 		filter_toppings: function (reset) {
+			pr("being called");
 			var inactive = {};
 			$(XSM.menu.topping_filter).each(function () {
 				if (reset == true) {
