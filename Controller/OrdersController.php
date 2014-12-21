@@ -199,7 +199,6 @@ class OrdersController extends AppController {
 			foreach($this->request->data['Orb'] as $key => $value) {
 				$p = explode('-', $key);
 				$p = explode('_', $p[1]);
-				db($p);
 				$this->Cart->add($p[0], $value, $p[1]);
 			}
 		}
