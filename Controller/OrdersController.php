@@ -150,7 +150,6 @@ class OrdersController extends AppController {
 		parent::beforeFilter();
 		$this->disableCache();
 		$this->set('loggedIn', $this->Auth->loggedIn());
-		$this->set('user', $this->Auth->user());
 	}
 
 

@@ -60,7 +60,7 @@
 					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
 				'unique' => array(
-					'rule' => array('isUnique'),
+					'rule' => array('checkUnique', array('id', 'email'), false),
 					'message' => 'Sorry, that email address is already in use.',
 				),
 			),
@@ -198,5 +198,8 @@
 //			else {
 //				return array( 'Group' => array( 'id' => $groupId ) );
 //			}
-//		}
+		//		}
+		public function checkUnique($ignoredData, $fields, $or = false) {
+			return $this->isUnique($fields, $or);
+		}
 	}

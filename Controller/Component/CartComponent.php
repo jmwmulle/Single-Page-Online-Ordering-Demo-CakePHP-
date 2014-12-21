@@ -39,19 +39,15 @@ class CartComponent extends Component {
 			$quantity = $this->maxQuantity;
 		}
 
-		if($quantity == 0) {
-			$this->remove($orb_id);
-			return;
-		}
 		$orb = $this->controller->Orb->find('first', array(
 			'conditions' => array(
 				'Orb.id' => $orb_id
 			)
 		));
-
-//		if(empty($orb)) {
-//			return false;
-//		}
+		
+		if(empty($orb)) {
+			return false;
+		}
 
 		$orbopts = array();
 		if($orbopts_list) {
@@ -79,17 +75,19 @@ class CartComponent extends Component {
 			}
 		}
 
-		$prices = array_values($orb['Pricelist']);
+		$prices =  array_values($orb['Pricelist']);
 		$size_names = array_values($orb['Pricedict']);
 
 		$matched = False;
+		$current_data = array();
+		$this->Session->write('Test', 'Hello');
 		if ($this->Session->check('Cart.OrderItem')) {
 			$current_data = $this->Session->read('Cart.OrderItem');
-			foreach ($current_data as key => &$item) {
+			foreach ($current_data as $key => &$item) {
 				$cur_item = compact($orbopts_list,$price_rank,$orb_id,$prep_instructions);
 				if ($item == $cur_item) { #Consider making this a hash table for speed
 					if ($quantity == 0) {
-						$this-Session->delete('Cart.OrderItem.' . $key);
+						$this->Session->delete('Cart.OrderItem.' . $key);
 					} else {
 						$item['quantity']=$quantity; 
 						$this->Session->write('Cart.OrderItem.' . $key, $current_data);
@@ -103,8 +101,8 @@ class CartComponent extends Component {
 			$item['orb_id'] = $orb['Orb']['id'];
 			$item['title'] = $orb['Orb']['title'];
 			$item['price_rank'] = $price_rank;
-			$item['base_price'] = $prices[$price_rank];
-			$item['size_name'] = $size_names[$price_rank];
+			$item['base_price'] = $prices[$price_rank+1]; #id is index 0, 1-6 are prices/sizes
+			$item['size_name'] = $size_names[$price_rank+1];
 
 			$item['orbopts_ids'] = $orbopts;
 			$item['orbopts_prices'] = empty($opts_prices) ? array() : $opts_prices;
@@ -112,8 +110,8 @@ class CartComponent extends Component {
 
 			$item['preparation_instructions'] = $prep_instructions;
 			$item['quantity'] = $quantity;
-			$item['subtotal'] = sprintf('%01.2f', ($item['base_price'] + array_sum($data['orbopts_prices'])) * $quantity);
-
+			$item['subtotal'] = sprintf('%01.2f', ($item['base_price'] + array_sum($item['orbopts_prices'])) * $quantity);
+			db($item);
 			$current_data.push($item);
 			$this->Session->write('Cart.OrderItem', $current_data);
 		} else {
