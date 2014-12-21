@@ -121,6 +121,13 @@
   font-family : "Helvetica Neue Ultra Light", arial, sans-serif;
 }
 
+@mixin helvetica_v_center_lh($font-size, $container-height: false) {
+  @if ($container-height == false) {
+    line-height: 1.33 * $font-size;
+  } @else {
+    line-height: $container-height + 0.33 * $font-size;
+  }
+}
 .hn-l-cn { @include HelveticaLtCn; }
 .hn-ul-cn { @include HelveticaUltLt;}
 
@@ -188,14 +195,12 @@ input { font-family : "Helvetica Neue Light Condensed", arial, sans-serif !impor
 }
 
 li.orbcat {
-  line-height : 1.5 * $orbcat-menu-item-height;
+  line-height : 1.65 * $orbcat-menu-item-height;
   text-align  : center;
   a {
-    transition  : color $global-transition-time;
     @include HelveticaMdCn;
     color       : $body-font-color;
     font-size   : rem-calc(14px);
-    line-height : 0.1 * $orbcat-menu-height;
   }
   &:hover, &.active {
     a { color : $xtreme-yellow; }
@@ -217,22 +222,16 @@ li.orbcat {
   }
 }
 
-div.orb-card-button {
-  text-align : center;
-}
+div.orb-card-button { text-align : center; }
 
-.orb-card-stage-right-menu li {
-  @include HelveticaBlkCn;
+#active-orb-name h2 { @include helvetica_v_center_lh($h5-font-size, $orb-card-stage-menu-item-height); }
+.orb-card-stage-menu li {
   font-size   : $h5-font-size;
-  line-height : $orb-card-stage-menu-item-height;
+  @include helvetica_v_center_lh($h5-font-size, $orb-card-stage-menu-item-height);
   a, h5 {
     transition  : color $global-transition-time, opacity 0.2s;
-    color       : $white;
     line-height : inherit;
     &.fade-out { opacity : 0; }
-  }
-  &.active {
-    a, h5 { color : $dark-grey; }
   }
   .topping-coverage {
     font-size      : rem-calc(32px);
@@ -253,17 +252,9 @@ div.orb-card-content {
   }
 }
 
-.orb-size-panel {
-  li {
-    h3 {
-      color      : $white;
-      text-align : center;
-    }
-    &.active {
-      h3 { color : $dark-grey; }
-      color : $dark-grey;
-    }
-  }
+.orb-size-panel li {
+    h3 {@include helvetica_v_center_lh($h3-font-size, 1.333333 * $h3-font-size);}
+    &.active h3 { color : $dark-grey; }
 }
 
 #tiny-toppings-list {

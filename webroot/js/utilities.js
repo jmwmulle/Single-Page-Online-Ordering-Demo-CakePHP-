@@ -376,6 +376,10 @@ function strtolower(stringName) {
 	return stringName.charAt(0).toLowerCase() + stringName.slice(1).toLowerCase();
 }
 
+function str_to_upper(string_name) {
+	return string_name.toUpperCase();
+}
+
 function flip(bool) {
 	if (bool === 0 || bool === 1) {
 		return bool == 0;

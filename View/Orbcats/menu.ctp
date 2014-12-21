@@ -13,7 +13,7 @@
  */
 
 $this->start('orbcats_menu');
-	$orbcat_menu_classes = array("small-block-grid-6", "float-pane", "activizing", "");
+	$orbcat_menu_classes = array("small-block-grid-6", "float-pane", "activizing", "left", "box", "rel");
 ?>><ul id="orbcat-menu" <?php echo ___cD($orbcat_menu_classes);?>>
 		<?php
 		$m_title = $active_orbcat['name'];
@@ -27,7 +27,7 @@ $this->start('orbcats_menu');
 			<a class="text-center"><?php echo ucwords($orbcat);?></a>
 		</li>
 		<?php } ?>
-		<li id="orbcat-menu-title">
+		<li id="orbcat-menu-title" class="stretch box rel downward">
 			<h1>MENU/<span><?php echo substr($m_title, 0, 1) == " " ? substr($m_title, 1) : $m_title; ?></span>
 			</h1>
 		</li>
@@ -42,7 +42,7 @@ $this->start('monthly_content');?>><div id="monthly-content-wrapper" class=""><?
 $this->end('monthly_content');
 
 
-$this->start('active_orbs_menu');?><div id="orb-card-stage-right-wrapper">
+$this->start('active_orbs_menu');?><div id="orb-card-stage-menu" class="box rightward xtreme-blue-bg">
 		<?php echo $this->Element('active_orbs_menu', array('active_orbcat' => $active_orbcat, 'hide_text' => false)); ?>
 	</div>
 <?php
@@ -54,10 +54,10 @@ $this->start('active_orb_card');
 $this->end('active_orb_card');
 ?>
 
-<main id="menu">
+<main id="menu" class="box rel">
 	<div class="row">
 		<div class="large-12 columns">
-			<ul id="user-activity-panel" class="show-for-large-up activizing vertical text-center">
+			<ul id="user-activity-panel" class="show-for-large-up activizing text-center">
 				<li><h2 class="body-font-color">I AM</h2></li>
 				<li class="active"><a class="body-font-color block">Just<br />Browsing</a></li>
 				<li class="inactive coming-soon"><a class="body-font-color block">Ordering<br />(Delivery)</a></li>
@@ -67,8 +67,8 @@ $this->end('active_orb_card');
 	</div
 	><div class="row"
 		><div class="large-12  columns"
-			><div id="orb-card-wrapper" class="float-pane"
-				><div id="order-modal" style="display:none;">
+			><div id="orb-card-wrapper" class="float-pane box rel xtreme-blue-bg"
+				><div id="order-modal" class="box leftward left" style="display:none;">
 					<div id="order-modal-content">
 						<div class="row">
 							<h4 class="text-center"><?php echo strtoupper("Success! your cart now tastes better!");?></h4>

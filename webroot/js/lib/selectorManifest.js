@@ -52,8 +52,11 @@ var XSM = {
 		add_to_cart_hook:".add-to-cart",
 		cancel_order_button: "#cancel-order-button",
 		confirm_order_button: "#confirm-order-button",
+		float_label: "#float-label",
 		orb_card_back: "#orb-card-back",
+		ord_card_back_face: ".ord-card-back-face",
 		orb_card_stage: "#orb-card-stage",
+		orb_card_stage_menu: "#orb-card-stage-menu",
 		orb_card_refresh: ".orb-card-refresh",
 		orb_card_3d_context: "#orb-card-3d-context",
 		orb_card_wrapper: "#orb-card-wrapper",
@@ -79,7 +82,6 @@ var XSM = {
 		tiny_toppings_list_wrapper:"#tiny-toppings-list-wrapper",
 		tiny_topping_list_item: ".tiny_topping_list_item",
 		user_activity_panel: "#user-activity-panel"
-
 	},
 	modal: {
 		order_modal:"#order-modal",

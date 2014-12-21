@@ -83,6 +83,6 @@ $img = array("splash/bluecircle.png",
 	</section>
 </footer>
 
-<?php  ?>
+
 </body>
 </html>

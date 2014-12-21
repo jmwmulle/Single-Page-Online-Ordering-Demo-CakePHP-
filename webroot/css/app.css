@@ -4532,6 +4532,7 @@ th.hide-for-touch {
   -o-transform: rotateY(180deg);
   transform: rotateY(180deg); }
 
+
 @font-face {
   font-family: "xtreme-icons";
   src: url("../files/xtreme-icons/xtreme-icons.eot");
@@ -4665,14 +4666,12 @@ input {
   color: white; }
 
 li.orbcat {
-  line-height: 6.67969rem;
+  line-height: 7.34766rem;
   text-align: center; }
   li.orbcat a {
-    transition: color 0.3s;
     font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
     color: white;
-    font-size: 0.875rem;
-    line-height: 1.78125rem; }
+    font-size: 0.875rem; }
   li.orbcat:hover a, li.orbcat.active a {
     color: #faea06; }
 
@@ -4690,19 +4689,18 @@ li.orbcat {
 div.orb-card-button {
   text-align: center; }
 
-.orb-card-stage-right-menu li {
-  font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
+#active-orb-name h2 {
+  line-height: 3.78375rem; }
+
+.orb-card-stage-menu li {
   font-size: 1.125rem;
-  line-height: 3.4125rem; }
-  .orb-card-stage-right-menu li a, .orb-card-stage-right-menu li h5 {
+  line-height: 3.78375rem; }
+  .orb-card-stage-menu li a, .orb-card-stage-menu li h5 {
     transition: color 0.3s, opacity 0.2s;
-    color: white;
     line-height: inherit; }
-    .orb-card-stage-right-menu li a.fade-out, .orb-card-stage-right-menu li h5.fade-out {
+    .orb-card-stage-menu li a.fade-out, .orb-card-stage-menu li h5.fade-out {
       opacity: 0; }
-  .orb-card-stage-right-menu li.active a, .orb-card-stage-right-menu li.active h5 {
-    color: #191919; }
-  .orb-card-stage-right-menu li .topping-coverage {
+  .orb-card-stage-menu li .topping-coverage {
     font-size: 2rem;
     line-height: 3.4125rem;
     vertical-align: middle; }
@@ -4718,12 +4716,9 @@ div.orb-card-content#orb-card-options {
   background-color: #373737; }
 
 .orb-size-panel li h3 {
-  color: white;
-  text-align: center; }
-.orb-size-panel li.active {
+  line-height: 2.80687rem; }
+.orb-size-panel li.active h3 {
   color: #191919; }
-  .orb-size-panel li.active h3 {
-    color: #191919; }
 
 #tiny-toppings-list {
   color: #191919; }
@@ -4758,8 +4753,8 @@ body {
   background-repeat: no-repeat;
   background-position: fixed; }
 
-ul li {
-  list-style-type: none; }
+li {
+  list-style-type: none !important; }
 
 button.unavailable {
   background-color: #e1e1e1;
@@ -4767,10 +4762,6 @@ button.unavailable {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center; }
-
-.tight {
-  padding: 0;
-  margin: 0; }
 
 .hidden {
   display: none; }
@@ -4782,6 +4773,42 @@ button.unavailable {
   visibility: none;
   display: none;
   opacity: none; }
+
+.flush {
+  padding: 0;
+  margin: 0; }
+
+.b-pad {
+  padding: 0.9375rem; }
+
+.m-pad {
+  padding: 0.625rem; }
+
+.t-pad {
+  padding: 0.3125rem; }
+
+.stretch {
+  width: 100%; }
+
+.box {
+  position: absolute;
+  left: 0;
+  top: 0; }
+  .box.rightward {
+    left: auto;
+    right: 0; }
+  .box.downard {
+    top: default;
+    bottom: 0; }
+  .box.leftward {
+    top: auto; }
+  .box.rel {
+    position: relative; }
+  .box .abs {
+    left: default;
+    right: default;
+    top: default;
+    bottom: default; }
 
 #xtreme-modal {
   position: fixed;
@@ -4803,7 +4830,7 @@ section {
   display: block; }
 
 .float-pane {
-  border: 0.5rem solid white;
+  border: 0.375rem solid white;
   box-shadow: 0.5rem 0.5rem 3.125rem rgba(0, 0, 0, 0.66); }
 
 section.pagespan {
@@ -4820,6 +4847,12 @@ section.pagespan {
 
 .l-2 {
   z-index: 8000; }
+
+.l-2-1 {
+  z-index: 8001; }
+
+.l-2-2 {
+  z-index: 8002; }
 
 .l-3 {
   z-index: 7000; }
@@ -4838,17 +4871,20 @@ footer {
   -ms-user-select: none;
   user-select: none; }
 
-ul.container {
-  margin: 0; }
-
-ul.horizontal li {
-  display: inline-block; }
-
-ul.vertical li {
-  display: block; }
-
-.xtreme-blue {
+.xtreme-blue-bg {
   background-color: #0779be; }
+
+.xtreme-select-list {
+  text-align: center;
+  background-color: #0779be; }
+  .xtreme-select-list:hover {
+    background-color: #1ba6f7; }
+  .xtreme-select-list.active {
+    background-color: #faea06; }
+  .xtreme-select-list a, .xtreme-select-list h1, .xtreme-select-list h2, .xtreme-select-list h3, .xtreme-select-list h4, .xtreme-select-list h5, .xtreme-select-list span {
+    color: white; }
+  .xtreme-select-list.active a, .xtreme-select-list.active h1, .xtreme-select-list.active h2, .xtreme-select-list.active h3, .xtreme-select-list.active h4, .xtreme-select-list.active h5, .xtreme-select-list.active span {
+    color: #191919; }
 
 a.xtreme-button {
   transition: background-color 0.3s ease-in-out;
@@ -4948,8 +4984,6 @@ nav#login {
     text-align: center;
     width: 100%; }
     #loadingScreen section h1 {
-      padding: 0;
-      margin: 0;
       color: #969696;
       font-family: "Indie Flower"; }
   #loadingScreen #load-messages-wrapper {
@@ -5172,12 +5206,12 @@ body {
     background-image: url("../img/menu_bg.xlg.bright.jpg");
     overflow: auto; }
 
+* {
+  transition: background-color 0.3s ease-in-out, background-image 0.3s ease-in-out, color 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+
 main#menu {
   min-height: 100%;
-  position: relative;
   width: 100%;
-  top: 0;
-  left: 0;
   padding-top: 5.3125rem;
   overflow: auto; }
 
@@ -5193,14 +5227,11 @@ ul#user-activity-panel {
   vertical-align: top;
   margin: -1.25rem 0 0 0; }
   ul#user-activity-panel li {
-    transition: background-color 0.3s, background-image 0.3s;
     width: 4.76562rem;
     height: 4.76562rem;
     background-color: rgba(0, 0, 0, 0.25);
     border: 1px solid black;
     border-top: none; }
-    ul#user-activity-panel li a {
-      transition: color 0.3s ease-out; }
     ul#user-activity-panel li:hover {
       background-color: rgba(255, 255, 255, 0.16); }
     ul#user-activity-panel li:first-of-type {
@@ -5218,12 +5249,9 @@ ul#user-activity-panel {
 
 ***************************************************************/
 ul#orbcat-menu {
-  float: left;
-  position: relative;
   width: 50rem;
   height: 17.8125rem;
   margin: 0 1.25rem;
-  vertical-align: top;
   background: #e02027;
   /* Old browsers */
   background: -moz-linear-gradient(45deg, #e02027 0%, #ac0819 100%);
@@ -5246,8 +5274,7 @@ li.orbcat {
   cursor: pointer;
   background-repeat: no-repeat;
   background-position: center 0.3125rem;
-  background-size: 2.67188rem;
-  transition: background-image 0.3s; }
+  background-size: 2.67188rem; }
   li.orbcat.original-pizzas {
     background-image: url("../img/orbcat_icons/original-pizzas.png"); }
   li.orbcat.super-pizzas {
@@ -5325,19 +5352,12 @@ li.orbcat {
     background-image: url("../img/orbcat_icons/desserts.hover.png"); }
 
 #orbcat-menu-title {
-  width: 100%;
-  position: relative;
-  padding: 0;
-  bottom: 0;
   left: 0.9375rem;
   -webkit-transform: translateY(0.7125rem);
   -moz-transform: translateY(0.7125rem);
   -o-transform: translateY(0.7125rem);
   transform: translateY(0.7125rem);
   height: 3.5625rem; }
-  #orbcat-menu-title h1 {
-    padding: 0;
-    margin: 0; }
 
 /**************************************************************
 
@@ -5345,19 +5365,14 @@ li.orbcat {
 
 ***************************************************************/
 #orb-card-wrapper {
-  position: relative;
   height: 17.8125rem;
   width: 73.125rem;
-  background-color: #0779be;
   margin: 1.25rem 0 3.125rem 0; }
 
-#orb-card-stage {
-  position: absolute;
-  left: -0.5rem;
-  top: -0.45rem;
-  width: 75%;
-  max-width: 48.75024rem;
-  min-width: 600px;
+#orb-card-container {
+  left: -0.375rem;
+  top: -0.3375rem;
+  width: 48.75rem;
   border: 0.375rem solid white;
   border-top-right-radius: 1000px;
   border-bottom-right-radius: 1000px;
@@ -5378,107 +5393,99 @@ li.orbcat {
   background: linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
   /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#969696', GradientType=1);
-  /* IE6-9 fallback on horizontal gradient */ }
+  /* IE6-9 fallback on horizontal gradient */
+  padding: 0.89062rem 0 0.89062rem 2.38281rem; }
 
 .float-label {
   visibility: hidden;
-  position: absolute;
-  z-index: 10;
-  width: 15.53125rem;
-  -webkit-transform: rotate(270deg);
-  -moz-transform: rotate(270deg);
-  -o-transform: rotate(270deg);
-  transform: rotate(270deg);
-  margin: 0;
-  left: 0;
-  bottom: 6.875rem;
-  text-align: center;
+  width: 17.0625rem;
+  height: 2.95312rem;
+  -webkit-transform-origin: 100% 0;
+  -moz-transform-origin: 100% 0;
+  -ms-transform-origin: 100% 0;
+  -o-transform-origin: 100% 0;
+  transform-origin: 100% 0;
+  -webkit-transform: rotate(270deg) translate(0, -14.10938rem);
+  -moz-transform: rotate(270deg) translate(0, -14.10938rem);
+  -o-transform: rotate(270deg) translate(0, -14.10938rem);
+  transform: rotate(270deg) translate(0, -14.10938rem);
   text-shadow: 0 0 0.375rem rgba(0, 0, 0, 0.33);
-  transition: visibility 0.3s, margin-left 0.3s; }
+  transition: visibility 150ms, margin-left 150ms; }
   .float-label.exposed {
     visibility: visible;
-    margin-left: -6.07812rem; }
+    margin-left: -2.95312rem; }
+
+#orb-card-stage {
+  height: 17.8125rem;
+  width: 72.375rem; }
 
 div#orb-card {
-  height: 15.53125rem;
-  width: 36.5625rem;
-  margin: 0.89062rem 0 0.89062rem 2.38281rem;
-  z-index: 999999; }
+  height: 15.65625rem;
+  width: 36.5625rem; }
   div#orb-card section {
-    background-color: white;
-    padding: 0.625rem; }
-
-.triangle {
-  position: absolute;
-  bottom: -0.75rem;
-  left: 1.24479rem;
-  width: 0;
-  height: 0;
-  border-left: 0.75rem solid transparent;
-  border-right: 0.75rem solid transparent;
-  margin-left: auto;
-  margin-left: right; }
-  .triangle.tr-right {
-    right: -1rem;
-    top: 1.65972rem;
-    -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg);
-    transform: rotate(-90deg); }
-
-.orb-card-row {
-  width: 100%;
-  height: 3.98958rem;
-  margin-bottom: 1.25rem; }
-
-ul.orb-card {
-  position: relative;
-  width: 100%; }
-  ul.orb-card div.orb-card-button {
+    background-color: white; }
+  div#orb-card .triangle {
+    position: absolute;
+    bottom: -0.75rem;
+    left: 1.23438rem;
+    width: 0;
+    height: 0;
+    border-left: 0.75rem solid transparent;
+    border-right: 0.75rem solid transparent;
+    margin-left: auto;
+    margin-left: right; }
+    div#orb-card .triangle.tr-right {
+      right: -1rem;
+      top: 1.64583rem;
+      -webkit-transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+      -o-transform: rotate(-90deg);
+      transform: rotate(-90deg); }
+  div#orb-card .orb-card-row {
+    height: 3.96875rem;
+    margin-bottom: 1.25rem; }
+  div#orb-card ul.orb-card div.orb-card-button {
     position: relative;
     vertical-align: top;
-    width: 3.98958rem;
-    height: 3.98958rem;
+    width: 3.96875rem;
+    height: 3.96875rem;
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
-    z-index: 9999;
     transition: background-color 0.3s; }
-    ul.orb-card div.orb-card-button#favorite {
+    div#orb-card ul.orb-card div.orb-card-button#favorite {
       background-color: #faea06;
       background-image: url('../img/orb_card.icon.fav.png'); }
-      ul.orb-card div.orb-card-button#favorite .triangle {
+      div#orb-card ul.orb-card div.orb-card-button#favorite .triangle {
         border-top: 0.75rem solid #faea06; }
-    ul.orb-card div.orb-card-button#order {
+    div#orb-card ul.orb-card div.orb-card-button#order {
       background-color: #e02027;
       background-image: url('../img/orb_card.icon.cart.png'); }
-      ul.orb-card div.orb-card-button#order .triangle {
+      div#orb-card ul.orb-card div.orb-card-button#order .triangle {
         border-top: 0.75rem solid #e02027; }
-    ul.orb-card div.orb-card-button#like {
+    div#orb-card ul.orb-card div.orb-card-button#like {
       background-color: #0779be;
       background-image: url('../img/orb_card.icon.like.png'); }
-      ul.orb-card div.orb-card-button#like .triangle {
+      div#orb-card ul.orb-card div.orb-card-button#like .triangle {
         border-top: 0.75rem solid #0779be; }
-    ul.orb-card div.orb-card-button .triangle {
+    div#orb-card ul.orb-card div.orb-card-button .triangle {
       transition: border-top-color 0.3s; }
-    ul.orb-card div.orb-card-button#favorite:hover, ul.orb-card div.orb-card-button#order:hover, ul.orb-card div.orb-card-button#like:hover {
+    div#orb-card ul.orb-card div.orb-card-button#favorite:hover, div#orb-card ul.orb-card div.orb-card-button#order:hover, div#orb-card ul.orb-card div.orb-card-button#like:hover {
       background-color: #b4b4b4; }
-      ul.orb-card div.orb-card-button#favorite:hover .triangle, ul.orb-card div.orb-card-button#order:hover .triangle, ul.orb-card div.orb-card-button#like:hover .triangle {
+      div#orb-card ul.orb-card div.orb-card-button#favorite:hover .triangle, div#orb-card ul.orb-card div.orb-card-button#order:hover .triangle, div#orb-card ul.orb-card div.orb-card-button#like:hover .triangle {
         border-top-color: #b4b4b4; }
 
 div.orb-card-content {
-  width: 30.07292rem;
+  width: 30.09375rem;
   margin-left: 1.25rem;
   position: relative;
-  height: 3.98958rem; }
+  height: 3.96875rem; }
   div.orb-card-content#description {
     background-color: #b4b4b4;
     padding: 0.625rem; }
   div.orb-card-content#price-matrix ul {
     margin-top: -6px;
-    padding: 0;
-    max-height: 2.86458rem;
+    height: 2.84375rem;
     overflow-y: auto; }
     div.orb-card-content#price-matrix ul::-webkit-scrollbar-track {
       box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
@@ -5490,10 +5497,8 @@ div.orb-card-content {
     div.orb-card-content#price-matrix ul::-webkit-scrollbar-thumb {
       border-radius: 4px;
       background-color: #0779be; }
-  div.orb-card-content#price-matrix li {
-    transition: background-color 0.3s ease-out; }
-    div.orb-card-content#price-matrix li:hover {
-      background-color: #e1e1e1; }
+  div.orb-card-content#price-matrix li:hover {
+    background-color: #e1e1e1; }
   div.orb-card-content#price-matrix h5 {
     height: 1.125rem; }
   div.orb-card-content#price-matrix h5, div.orb-card-content#price-matrix li div {
@@ -5507,110 +5512,91 @@ div.orb-card-content {
   div.orb-card-content#price-matrix#orb-card-options {
     background-color: #373737; }
 
-#orb-card-stage-right-wrapper {
-  position: absolute;
-  right: 0;
-  top: 0;
-  float: right;
-  background-color: #0779be; }
+.orb-card-stage-menu-header {
+  height: 3.4125rem;
+  width: 34.17969rem; }
+  .orb-card-stage-menu-header h2, .orb-card-stage-menu-header ul {
+    padding-left: 11.39312rem;
+    background-color: #e02027;
+    margin: 0;
+    border-bottom: 6px solid white; }
 
-.orb-card-stage-right-menu {
-  position: absolute;
-  right: 0;
-  top: 0;
+.orb-card-stage-menu {
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 16.8125rem; }
-  .orb-card-stage-right-menu .menu-shadow {
+  height: 13.65rem;
+  width: 34.17969rem; }
+  .orb-card-stage-menu::-webkit-scrollbar-track {
+    box-shadow: inset 3px 0 5px rgba(0, 0, 0, 0.5);
+    background-color: #033b5c; }
+  .orb-card-stage-menu::-webkit-scrollbar {
+    width: 0.625rem;
+    background-color: white; }
+  .orb-card-stage-menu::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.33);
+    border-right: 2px solid #989898;
+    border-bottom: 2px solid #a0a0a0;
+    background-color: white; }
+  .orb-card-stage-menu .menu-shadow {
     box-shadow: inset 15px -5px 8px rgba(0, 0, 0, 0.33); }
-  .orb-card-stage-right-menu li {
-    position: relative;
-    padding-left: 12.18738rem;
-    background-color: #0779be;
+  .orb-card-stage-menu li {
+    padding-left: 11.39312rem;
     height: 3.4125rem;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s; }
-    .orb-card-stage-right-menu li:hover {
-      background-color: #1ba6f7; }
-    .orb-card-stage-right-menu li:first-of-type {
-      padding: 0;
-      box-shadow: none;
-      background-color: transparent;
-      cursor: default; }
-      .orb-card-stage-right-menu li:first-of-type div#active-orb-name-3d-container {
-        height: 3.4125rem;
-        width: 36.5625rem; }
-        .orb-card-stage-right-menu li:first-of-type div#active-orb-name-3d-container h2 {
-          background-color: #e02027;
-          padding: 0.625rem 0 0 12.18738rem;
-          margin: 0; }
-    .orb-card-stage-right-menu li.active {
-      background-color: #faea06; }
-    .orb-card-stage-right-menu li.topping {
-      padding-right: 0.3125rem; }
-      .orb-card-stage-right-menu li.topping li {
-        box-shadow: none;
-        background-color: transparent;
-        margin: 0;
-        width: 1.875rem;
-        height: 3.4125rem;
-        float: right;
-        padding: 0;
-        background-size: auto;
-        background-repeat: no-repeat;
-        transition: background-position 0.3s; }
-        .orb-card-stage-right-menu li.topping li:hover, .orb-card-stage-right-menu li.topping li.active {
-          background-color: transparent; }
-        .orb-card-stage-right-menu li.topping li:last-of-type {
-          width: 26.875rem;
-          padding-left: 12.18738rem; }
-        .orb-card-stage-right-menu li.topping li.topping-coverage {
-          color: white;
-          opacity: 0.33;
-          transition: color 0.3s, opacity 0.3s; }
-      .orb-card-stage-right-menu li.topping.active li.topping-coverage {
-        opacity: 1; }
-        .orb-card-stage-right-menu li.topping.active li.topping-coverage.active, .orb-card-stage-right-menu li.topping.active li.topping-coverage:hover {
-          color: black; }
+    cursor: pointer; }
+
+li.topping {
+  padding-left: 0;
+  padding-right: 0.3125rem; }
+  li.topping li {
+    box-shadow: none;
+    background-color: transparent;
+    margin: 0;
+    width: 1.875rem;
+    height: 3.4125rem;
+    float: right;
+    padding: 0;
+    background-size: auto;
+    background-repeat: no-repeat; }
+    li.topping li:hover, li.topping li.active {
+      background-color: transparent; }
+    li.topping li.topping-coverage {
+      color: white;
+      opacity: 0.33; }
+    li.topping li:last-of-type {
+      width: 24.49219rem;
+      padding-left: 11.39312rem; }
+  li.topping.active li.topping-coverage {
+    opacity: 1; }
+    li.topping.active li.topping-coverage.active, li.topping.active li.topping-coverage:hover {
+      color: black; }
 
 #toppings-filter {
-  width: 36.5625rem;
+  width: 34.17969rem;
   height: 3.4125rem;
   padding: 0.3125rem;
-  padding-left: 13.12524rem;
+  padding-left: 10.74219rem;
   float: right;
   background-color: #e02027; }
   #toppings-filter li {
     background-color: transparent;
-    padding: 0;
-    margin: 0;
-    width: 7.29159rem;
+    width: 7.29167rem;
     height: 1.39375rem; }
 
-.orb-size-panel {
-  width: 100%;
-  padding: 0;
-  margin: 0; }
-  .orb-size-panel li {
-    padding-bottom: 0;
-    color: white; }
-    .orb-size-panel li:first-of-type {
-      padding-left: 0; }
-    .orb-size-panel li:last-of-type {
-      padding-right: 0; }
-    .orb-size-panel li h3 {
-      padding-top: 0.42188rem;
-      background-color: #0779be;
-      transition: background-color 0.3s, color 0.3s; }
-      .orb-size-panel li h3:hover {
-        background-color: #1ba6f7; }
-    .orb-size-panel li.active h3 {
-      background-color: #faea06; }
+.orb-size-panel li {
+  padding-bottom: 0;
+  padding-top: 0; }
+  .orb-size-panel li h3 {
+    height: 2.25rem; }
+  .orb-size-panel li:first-of-type {
+    padding-left: 0; }
+  .orb-size-panel li:last-of-type {
+    padding-right: 0; }
+  .orb-size-panel li.active h3 {
+    background-color: #faea06; }
 
 #order-details > div {
   vertical-align: top; }
-#order-details .orb-configuration-field {
-  padding: 0.3125rem; }
 #order-details #orb-order-form {
   width: 14.6875rem; }
 #order-details #tiny-toppings-list {
@@ -5643,18 +5629,15 @@ input#orderOrbQuantity {
   width: 3rem; }
 
 #order-modal {
-  height: 8.40625rem;
-  width: 72.25rem;
-  position: absolute;
-  top: 4.20312rem;
-  left: 0;
-  float: left;
+  height: 8.53125rem;
+  width: 72.5rem;
+  top: 4.26562rem;
   overflow-x: hidden;
   z-index: 8999;
   margin-left: -0.125rem; }
   #order-modal #order-modal-content {
     margin-top: 1.25rem;
-    height: 5.90625rem;
+    height: 6.03125rem;
     width: 73.125rem;
     background-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.33);

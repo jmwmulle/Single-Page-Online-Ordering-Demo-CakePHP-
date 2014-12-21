@@ -86,6 +86,7 @@ class OrdersController extends AppController {
 
 				array_push($products, $cart);
 			}
+
 			if (!empty($products)) {
 				if ($this->Session->check('Cart.Order.total') ) {
 					$total = $this->Session->read('Cart.Order.total');

@@ -6,7 +6,7 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-	$list_classes = array("topping", 'menu-shadow', "inactive");
+	$list_classes = array("topping", 'menu-shadow', "inactive", "xtreme-select-list");
 	$icons = array('right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D");
 	$data = array("id" => $opt['id'], "name" => strtolower($opt['title']));
 	foreach (array_slice($opt, 3, -1) as $flag => $value) {
@@ -20,6 +20,6 @@
 	      if ($icon == "full") $classes[3] = "active";?>
 		><li <?php echo ___cD($classes); ?> data-weight="<?php echo $value;?>"></li
 		<?php } ?>
-		><li><h5><?php echo strtoupper($opt['title']);?></h5></li
+		><li><a href="#"><?php echo strtoupper($opt['title']);?></a></li
 	></ul
 ></li>
