@@ -144,6 +144,7 @@ class CartComponent extends Component {
 		$HST_MULT = 0.15;
 		$HST = 0;
 		$delivery = 3.00;
+		$deliverable = false;
 
 		if (count($cart['OrderItem']) > 0) {
 			foreach ($cart['OrderItem'] as $item) {
@@ -159,6 +160,7 @@ class CartComponent extends Component {
 			$d['HST'] = sprintf('%01.2f', $HST);
 			$d['delivery'] = sprintf('%01.2f', $delivery);
 			$d['total'] = sprintf('%01.2f', $total);
+			$d['deliverable'] = $total >= 10.0;
 			$this->Session->write('Cart.Order', $d);
 			return true;
 		}
@@ -166,6 +168,7 @@ class CartComponent extends Component {
 			$d['quantity'] = 0;
 			$d['subtotal'] = 0;
 			$d['total'] = 0;
+			$d['deliverable' = false;
 			$this->Session->write('Cart.Order', $d);
 			return false;
 		}
