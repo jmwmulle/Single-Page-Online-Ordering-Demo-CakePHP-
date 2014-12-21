@@ -23,11 +23,6 @@
   background-position:center;
 }
 
-@mixin tightContent() {
-  padding:0;
-  margin:0;
-}
-
 @mixin disableWithOpacity($opacity: 0.33) {
   &.disabled {
     opacity:$opacity;
@@ -55,7 +50,8 @@ $topnav-h1-margin: (0.9 * $topnav-height - $h1-font-size)/2 rem-calc(10px) 0 rem
 $topnav-h1-height: $topnav-height - $topnav-h1-padding - $topnav-h1-margin;
 
 $focus-pane-height: rem-calc(360);
-
+$float-pane-margin: rem-calc(20px);
+$float-pane-border-width: rem-calc(6px);
 $float-pane-shadow-size: rem-calc(50px);
 $float-pane-shadow-offset: rem-calc(8px);
 
@@ -68,8 +64,7 @@ $splash-circle-min-diameter: rem-calc(200px);
 $splash-circle-transition-time: 1s;
 
 /*   MENU   */
-$float-pane-margin: rem-calc(20px);
-$float-pane-border-width: rem-calc(8px);
+
 $menu-top-padding: $topnav-height + $float-pane-margin;
 $menu-height: rem-calc(600px);
 $menu-row-height: 0.5 * ($menu-height - 1.5 * $float-pane-margin);
@@ -96,21 +91,49 @@ $user-activity-panel-width: 0.25 * $user-activity-height;
 $user-activity-panel-height: $user-activity-panel-width;
 $user-activity-panel-font-size: 0.2 * $user-activity-panel-width;
 
-  // ORB CARD STAGE
+
+// ORB CARD STAGE
+    // ORB CARD WRAPPER
 $orb-card-wrapper-width: $row-width - $column-gutter;
 $orb-card-wrapper-height: $menu-row-height;
 $orb-card-wrapper-inner-height: $orb-card-wrapper-height - 2 * $float-pane-border-width;
 $orb-card-wrapper-inner-width: $orb-card-wrapper-width - 2 * $float-pane-border-width;
 $orb-card-wrapper-margin: $float-pane-margin 0 $float-pane-shadow-size 0;
-$min-orb-list-width: 0.33333 * $orb-card-wrapper-width;
+    // ORB CARD
+$orb-card-container-width: 2 * $orb-card-wrapper-width/3;
+$orb-card-width:  0.5 * $orb-card-wrapper-width;
+$orb-card-height: (0.9 * $orb-card-wrapper-height) - $float-pane-border-width; //$orb-card-wrapper-height - 2 * $float-pane-margin;
+$orb-card-inner-width: $orb-card-width - (2 * $medium-padding);
+$orb-card-margin-left: 0.5 * $user-activity-panel-width;
+$orb-card-vertical-margin:  0.05 * $orb-card-wrapper-height;
+$orb-card-margin: $orb-card-vertical-margin 0 $orb-card-vertical-margin $orb-card-margin-left;
+$orb-card-shadow-position:  ($orb-card-margin-left - (0.107 * $orb-card-width)) ($orb-card-height - rem-calc(4px) );
+$orb-card-shadow-size: $orb-card-width * 1.2 rem-calc(25px) ; // ie. 10% width of orbcard in both directions;
+$orb-card-row-height: ($orb-card-height - (2 * $medium-padding + 2 * $float-pane-margin)) / 3;
+$orb-card-button-width:$orb-card-row-height;
+$orb-card-button-height:$orb-card-row-height;
+$orb-card-content-width: $orb-card-inner-width - $orb-card-button-width - $float-pane-margin; // float-pane-margin is used as button/content separation width
+$orb-card-scrollbar-width: rem-calc(10px);
+$orb-card-price-table-padding-left: rem-calc(15px);
+$orb-card-price-table-padding-right: $orb-card-price-table-padding-left + $orb-card-scrollbar-width;
+
+ // ORB CARD STAGE MENU
 $orb-card-stage-height: $menu-row-height; // todo: media queries yo
-$orb-card-stage-width: $orb-card-wrapper-width - $min-orb-list-width;
-$orb-card-stage-border-width: 0.75 * $float-pane-border-width;
+$orb-card-stage-width: $orb-card-wrapper-inner-width;
+$orb-card-stage-border-width: $float-pane-border-width;
 $orb-card-stage-border: $orb-card-stage-border-width solid $white;
-$orb-card-stage-menu-width: 0.5 * $orb-card-wrapper-width;
-$orb-card-stage-menu-height: $orb-card-wrapper-inner-height;
+$orb-card-stage-menu-width: $orb-card-wrapper-width - ($orb-card-width + $orb-card-margin-left);
 $orb-card-stage-menu-item-height: 0.2 * ($orb-card-stage-height - 2 * $orb-card-stage-border-width);
+$orb-card-stage-menu-height: $orb-card-wrapper-inner-height - $orb-card-stage-menu-item-height;
 $orb-card-stage-menu-padding-left: 0.33333 * $orb-card-stage-menu-width;
+$triangle-border-width: rem-calc(12px);
+
+$triangle-extrude-position: -1 * $triangle-border-width;
+$triangle-center-position: 0.5 * $orb-card-button-width - $triangle-border-width;
+$price-matrix-header-padding: 0 ($orb-card-price-table-padding-right - $orb-card-scrollbar-width) 0 $orb-card-price-table-padding-left;
+$price-matrix-header-height: $h5-font-size;
+$price-matrix-max-height: $orb-card-row-height - $price-matrix-header-height;
+
 $topping-right-padding: $base-padding - $scroll-bar-width;
 $topping-icon-bg-diameter: rem-calc(30px);
 $topping-icon-half-bg-width: rem-calc(30px) / 2;
@@ -120,33 +143,16 @@ $topping-icon-vertical-padding: ($topping-icon-button-height - $topping-icon-bg-
 $topping-icon-full-padding: 0;
 $topping-text-width: $orb-card-stage-menu-width - ($topping-right-padding + 5 * $topping-icon-button-width);
 $topping-filter-height: $orb-card-stage-menu-item-height - 2 * $tight-padding;
-$topping-filter-padding-left: $orb-card-stage-menu-width  - ($orb-card-wrapper-width - $orb-card-stage-width) + $base-padding;
+$topping-filter-padding-left: $orb-card-stage-menu-width  - ($orb-card-wrapper-width / 3) + $base-padding;
 $topping-filter-button-height: $topping-filter-height / 2;
 $topping-filter-button-width: ($orb-card-stage-menu-width - $topping-filter-padding-left - ($base-padding + 2 * $tight-padding)) / 3;
 
-  // ORB CARD
-$orb-card-width:  0.5 * $orb-card-wrapper-width;
-$orb-card-height: (0.9 * $orb-card-wrapper-height) - $float-pane-border-width; //$orb-card-wrapper-height - 2 * $float-pane-margin;
-$orb-card-padding: rem-calc(10px);
-$orb-card-inner-width: $orb-card-width - (2 * $orb-card-padding);
-$orb-card-margin-left: 0.5 * $user-activity-panel-width;
-$orb-card-vertical-margin:  0.05 * $orb-card-wrapper-height;
-$orb-card-margin: $orb-card-vertical-margin 0 $orb-card-vertical-margin $orb-card-margin-left;
-$orb-card-shadow-position:  ($orb-card-margin-left - (0.107 * $orb-card-width)) ($orb-card-height - rem-calc(4px) );
-$orb-card-shadow-size: $orb-card-width * 1.2 rem-calc(25px) ; // ie. 10% width of orbcard in both directions;
-$orb-card-row-height: ($orb-card-height - 4 * $orb-card-vertical-margin) / 3;
-$orb-card-button-width:$orb-card-row-height;
-$orb-card-button-height:$orb-card-row-height;
-$orb-card-content-width: $orb-card-inner-width - $orb-card-button-width - $float-pane-margin; // float-pane-margin is used as button/content separation width
-$orb-card-scrollbar-width: rem-calc(10px);
-$orb-card-price-table-padding-left: rem-calc(15px);
-$orb-card-price-table-padding-right: $orb-card-price-table-padding-left + $orb-card-scrollbar-width;
-$triangle-border-width: rem-calc(12px);
-$triangle-extrude-position: -1 * $triangle-border-width;
-$triangle-center-position: 0.5 * $orb-card-button-width - $triangle-border-width;
-$price-matrix-header-padding: 0 ($orb-card-price-table-padding-right - $orb-card-scrollbar-width) 0 $orb-card-price-table-padding-left;
-$price-matrix-header-height: $h5-font-size;
-$price-matrix-max-height: $orb-card-row-height - $price-matrix-header-height;
+  // FLOAT LABELS
+$float-label-height: $h3-font-size * 1.75;
+$float-label-width: $orb-card-wrapper-inner-height;
+$float-label-transform:  rotate(270deg) translate(0, -1 * ($float-label-width - $float-label-height));
+
+
 $float-label-exposed-bottom: (0.5 * $orb-card-height) - $orb-card-vertical-margin;
 $float-label-exposed-margin: -0.5 * $orb-card-height + $h3-font-size ;
 

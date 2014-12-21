@@ -129,7 +129,6 @@ window.XBS = {
 	 *                                                                                                                 *
 	 *******************************************************************************************************************/
 	init: function (is_splash, page_name, host, cart) {
-//		pr(cart);
 		XBS.data.cart = Cart(cart);
 		XBS.cfg.page_name = page_name;
 		XBS.cfg.is_splash = is_splash === true;
@@ -166,16 +165,6 @@ window.XBS = {
 			});
 			$(window).trigger(XBS.evnt.assetsLoaded);
 		}
-		/*fetchImages: function() {
-		 //todo: callbacks for errors
-		 XBS.stopwatch.start();
-		 $(XSM.global.imageQueue).loadImages({
-		 allLoadedClb:function() { $(window).trigger(XBS.evnt.assetsLoaded);},
-		 imgErrorClb: function() {pr(this, "ImageError", true)},
-		 imgLoadedClb: function() {pr(this, "ImageLoaded");},
-		 noImgClb: function() {pr(this, "No Images!", true)}
-		 });
-		 }*/
 	},
 	layout: {
 		init: function () {
@@ -238,11 +227,10 @@ window.XBS = {
 			},
 			bind_float_menus: function () {
 				$(C.BODY).on(C.MOUSEENTER, asClass(XSM.effects.float_label), null, function (e) {
-					var data = $(e.currentTarget).data();
-					XBS.layout.toggle_float_label(data.floatLabel, C.SHOW);
+					XBS.layout.toggle_float_label($(e.currentTarget).attr('id'), C.SHOW);
 				});
 				$(C.BODY).on(C.MOUSEOUT, asClass(XSM.effects.float_label), null, function (e) {
-					XBS.layout.toggle_float_label($(e.currentTarget).data('floatLabel'), C.HIDE);
+					XBS.layout.toggle_float_label($(e.currentTarget).attr('id'), C.HIDE);
 				});
 
 				return true;
@@ -262,15 +250,6 @@ window.XBS = {
 				if (XBS.cfg.is_splash) {
 					$(window).on("resize", XBS.splash.render);
 				}
-				return true;
-			}
-		},
-		style_effects: {
-			has_init_sequence: true,
-			solidify: function () {
-				$(XSM.effects.solidify).each(function () {
-
-				});
 				return true;
 			}
 		},
@@ -387,23 +366,22 @@ window.XBS = {
 			$(XSM.menu.orb_order_form_prep_instrux).val("");
 			XBS.layout.toggle_orb_card();
 		},
-		toggle_float_label: function (float_label, state) {
-			if (state == C.SHOW) $(asId(float_label)).addClass(XSM.effects.exposed);
-			if (state == C.HIDE) $(asId(float_label)).removeClass(XSM.effects.exposed);
+		toggle_float_label: function (label, state) {
+			if (state == C.SHOW) $(XSM.menu.float_label).html(str_to_upper(label)).addClass(XSM.effects.exposed);
+			if (state == C.HIDE) $(XSM.menu.float_label).removeClass(XSM.effects.exposed).html('');
 
 			return true;
 		},
 		toggle_loading_screen: function () { $(XSM.global.loadingScreen).fadeToggle(); },
 		toggle_orb_card: function (flip_only) {
-			$(["favorite-label", "order-label", "like-label"]).each(function () {
-				XBS.layout.toggle_float_label(this, C.HIDE);
-			});
+			XBS.layout.toggle_float_label(this, C.HIDE);
 			$(XSM.menu.orb_card_3d_context).toggleClass(stripCSS(XSM.effects.flipped_y));
-
 			if (flip_only != true) {
-				$(XSM.menu.active_orbs_menu).fadeToggle(500, function () {
-					$(XSM.menu.toppings_list).fadeToggle(500);
-				});
+					$(XSM.menu.orb_card_stage_menu).hide("fade", null, 500, function () {
+						$("#orb-opts-container").each(function() {
+							$(this).removeClass("hidden");
+						});
+					});
 			}
 		},
 		refresh_active_orbs_menu: function (orbcat_id, orbcat_name) {
@@ -434,11 +412,7 @@ window.XBS = {
 						XBS.menu.filter_toppings(true);
 					}, 300);
 				}, 600);
-			}).then(function () {
-
-
-//				;
-			});
+			}).then( function () { $(C.BODY).trigger(C.ORB_CARD_REFRESH); });
 		},
 		refresh_orb_card_stage: function (orb_card_id) {
 			// todo: fallback on ajax fail
@@ -460,9 +434,7 @@ window.XBS = {
 					$(XSM.menu.orb_card_stage).replaceWith(new_orb_card_stage);
 
 				}
-			}).then(function () {
-				XBS.menu.load_from_cart(orb_card_id);
-			});
+			}).then( function () { XBS.menu.load_from_cart(orb_card_id); });
 
 		}
 	},
@@ -618,9 +590,10 @@ window.XBS = {
 			return true;
 		},
 		 load_from_cart: function (orb_id) {
-			if (!XBS.data.cart.initialized) return;
+			if (!XBS.data.cart.initialized) return false;
 
 			if (XBS.data.cart.has_orb(orb_id)) {
+				pr("getting here");
 				$(XSM.menu.orb_order_form_inputs).each(function () {
 					var val = XBS.data.cart.orb_attr(orb_id, $(this).attr('id'));
 					$(this).val(val);
@@ -668,7 +641,6 @@ window.XBS = {
 			return true;
 		},
 		update_orb_form: function () {
-			pr("getting here");
 			var tiny_toppings_list = $("<ul/>").addClass(selToStr(XSM.menu.tiny_toppings_list));
 
 			//$(XSM.menu.orb_opt_weight).each(function () { $(this).val(-1);});
