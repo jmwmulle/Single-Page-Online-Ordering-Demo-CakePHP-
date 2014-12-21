@@ -5418,6 +5418,8 @@ li.orbcat {
 #orb-card-stage {
   height: 17.8125rem;
   width: 72.375rem; }
+  #orb-card-stage.retracted {
+    width: 48.75rem; }
 
 div#orb-card {
   height: 15.65625rem;

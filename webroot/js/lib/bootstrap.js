@@ -376,6 +376,7 @@ window.XBS = {
 		toggle_orb_card: function (flip_only) {
 			XBS.layout.toggle_float_label(this, C.HIDE);
 			$(XSM.menu.orb_card_3d_context).toggleClass(stripCSS(XSM.effects.flipped_y));
+			$(XSM.menu.orb_card_stage).removeClass('retracted');
 			if (flip_only != true) {
 					$(XSM.menu.orb_card_stage_menu).hide("fade", null, 500, function () {
 						$("#orb-opts-container").each(function() {

@@ -177,6 +177,9 @@ li.orbcat {
 #orb-card-stage {
   height: $orb-card-stage-height;
   width: $orb-card-stage-width;
+  &.retracted {
+      width: $orb-card-container-width;
+    }
 }
 
 div#orb-card {
@@ -332,6 +335,7 @@ li.topping {
     }
   }
 }
+
 #toppings-filter {
   width            : $orb-card-stage-menu-width;
   height           : $orb-card-stage-menu-item-height;

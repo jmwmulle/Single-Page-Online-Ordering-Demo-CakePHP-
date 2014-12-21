@@ -7,7 +7,7 @@
 	 * About.me: about.me/thisimpetus
 	 */
 ?>
-<div id="orb-card-stage" class="l-2 box">
+<div id="orb-card-stage" class="l-2 box retracted">
 	<div id="orb-card-container" class="box abs l-2-2">
 		<h3 id="float-label" class="box float-label text-center"></h3>
 		<div id="orb-card" class="html5-3d-perspective-container box rel flush">
