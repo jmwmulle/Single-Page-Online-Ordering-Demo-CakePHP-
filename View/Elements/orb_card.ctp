@@ -121,12 +121,12 @@
 	<div id="orb-opts-container" class="box rightward l-3 orb-card-back-face hidden">
 		<?php $classes = array("toppings-list", "text-center", "orb-card-stage-menu", "hidden", "xtreme-select-list");?>
 		<div class="orb-card-stage-menu-header box rel rightward">
-			<ul id="toppings-filter" class="multiactivizing"
+			<ul id="toppings-filter" class=""topping-filter, multiactivizing"
 		<?php foreach( array("premium", "meat", "veggie", "sauce", "cheese", "check all") as $filter) {
 			$data = array("filter" => $filter);?>
 			><li <?php echo ___cD($classes);?> <?php echo ___dA($data);?>><span class="icon-checked"></span> <?php echo strtoupper($filter);?></li
 			<?php }
-			$classes = array("box", "rel", "rightward", "stretch", "topping-filter", "active", "orb-card-stage-menu", "multi-activizing", "flush");?>
+			$classes = array("box", "rel", "rightward", "stretch", "active", "orb-card-stage-menu", "multi-activizing", "flush");?>
 			></ul>
 		</div>
 		<ul id="toppings-list" <?php echo ___cD($classes);?>>

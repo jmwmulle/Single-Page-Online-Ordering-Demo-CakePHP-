@@ -111,8 +111,8 @@ class CartComponent extends Component {
 			$item['preparation_instructions'] = $prep_instructions;
 			$item['quantity'] = $quantity;
 			$item['subtotal'] = sprintf('%01.2f', ($item['base_price'] + array_sum($item['orbopts_prices'])) * $quantity);
-			db($item);
-			$current_data.push($item);
+
+			$current_data[] = $item;
 			$this->Session->write('Cart.OrderItem', $current_data);
 		} else {
 			return false;
