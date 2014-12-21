@@ -209,9 +209,9 @@ class UsersController extends AppController {
 
 /*login	*/
 	public function login() {
-	    if ($this->Session->read('Auth.User')) {
+	    if ($this->Auth->loggedIn()) {
 		$this->Session->setFlash('You are already logged in!');
-		return $this->redirect('/');
+		return $this->redirect('/menu');
 	    }
 	    
 	    if ($this->request->is('post')) {
@@ -285,7 +285,7 @@ class UsersController extends AppController {
 
 /*opauth_complete*/	
 	public function opauth_complete() {
-		$this->log("Opauth complete");
+		$this->log("Openauth complete");
 		if ($this->data['validated']) {
 			$this->log($this->data);
 			$creds = $this->data;	
@@ -333,9 +333,9 @@ class UsersController extends AppController {
 					$this->Session->write('stashedUser', null);
 				}
 				$exUser = $this->User->find('first', array('conditions'=>$conditions));
-				if ($this->Auth->login($exUser)) {
+				if ($this->Auth->login(array_merge($exUser, array('id' => $exUser['User']['id'])))) {
 					$this->Session->setFlash(__("Welcome back, " + $exUser['User']['firstname']));
-					return $this->redirect(___cakeUrl('users', 'edit', $this->Auth->user('id')));#array('id'=>$exUser['User']['id'])));
+					return $this->redirect(___cakeUrl('users', 'edit', $this->Auth->user('id')));
 				} else {
 					db('Login failed');
 					$this->Session->setFlash(__('Login failed. Please try again.'));

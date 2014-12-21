@@ -151,7 +151,6 @@ class OrdersController extends AppController {
 		parent::beforeFilter();
 		$this->disableCache();
 		$this->set('loggedIn', $this->Auth->loggedIn());
-		$this->set('user', $this->Auth->user());
 	}
 
 
@@ -201,9 +200,9 @@ class OrdersController extends AppController {
 			foreach($this->request->data['Orb'] as $key => $value) {
 				$p = explode('-', $key);
 				$p = explode('_', $p[1]);
+				db($p);
 				$this->Cart->add($p[0], $value, $p[1]);
 			}
-			$this->Session->setFlash('Shopping Cart is updated.', 'flash_success');
 		}
 		return $this->redirect(array('action' => 'cart'));
 	}
