@@ -224,7 +224,7 @@ li.orbcat {
 
 div.orb-card-button { text-align : center; }
 
-#active-orb-name h2 { @include helvetica_v_center_lh($h5-font-size, $orb-card-stage-menu-item-height); }
+#active-orbcat-menu-header h2 { @include helvetica_v_center_lh($h2-font-size, $orb-card-stage-menu-item-height); }
 .orb-card-stage-menu li {
   font-size   : $h5-font-size;
   @include helvetica_v_center_lh($h5-font-size, $orb-card-stage-menu-item-height);
@@ -233,7 +233,7 @@ div.orb-card-button { text-align : center; }
     line-height : inherit;
     &.fade-out { opacity : 0; }
   }
-  .topping-coverage {
+  .orb-opt-coverage {
     font-size      : rem-calc(32px);
     line-height    : $orb-card-stage-menu-item-height;
     vertical-align : middle;
@@ -257,14 +257,14 @@ div.orb-card-content {
     &.active h3 { color : $dark-grey; }
 }
 
-#tiny-toppings-list {
+#tiny-orb-opts-list {
   color:$secondary-color;
-  .tiny_topping_list_item {
+  .tiny_orb-opt_list_item {
     font-size:rem-calc(12px);
     line-height:rem-calc(16px);
   }
 }
-ul#toppings-filter * {
+ul#orb-opts-filter * {
   font-size      : rem-calc(14px) !important;
   line-height    : 1rem !important;
   vertical-align : middle;

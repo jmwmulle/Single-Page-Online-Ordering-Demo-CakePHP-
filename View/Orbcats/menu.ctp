@@ -35,22 +35,41 @@ $this->start('orbcats_menu');
 <?php
 $this->end('orbcats_menu');
 
+$this->start('order_modal');?>
+	<div id="order-modal" class="box leftward left" style="display:none;">
+		<div id="order-modal-content">
+			<div class="row">
+				<h4 class="text-center"><?php echo strtoupper("Success! your cart now tastes better!");?></h4>
+				<div class="large-8 medium-6 small-12 large-centered medium-centered columns">
+					<ul class="small-block-grid-3" class="hn-l-cn">
+						<li class="text-center">
+							<a id="continue-ordering"  href="#" class="modal-link order" data-action="continue_ordering"><?php echo strtoupper("Continue Ordering");?></a>
+						</li>
+						<li class="text-center">
+							<a id="view-order" href=#" class="modal-link order" data-action="view_order"><?php echo strtoupper("View Order");?></a>
+						</li>
+						<li class="text-center">
+							<a id="finish-ordering" href="#" class="modal-link order" data-action="finish_ordering"><?php echo strtoupper("Finish Ordering");?></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php $this->end('orb_cat_modal');
 
-
-$this->start('monthly_content');?>><div id="monthly-content-wrapper" class=""><?php echo $this->Html->Image('splash/logo.png');?></div
+$this->start('monthly_content');?>><div id="monthly-content-wrapper" class=""><?php echo $this->Html->Image('splash/logo.png');?></div>
 <?php
 $this->end('monthly_content');
 
 
-$this->start('active_orbs_menu');?><div id="orb-card-stage-menu" class="box rightward xtreme-blue-bg">
-		<?php echo $this->Element('active_orbs_menu', array('active_orbcat' => $active_orbcat, 'hide_text' => false)); ?>
-	</div>
-<?php
-$this->end('active_orbs_menu');
+$this->start('active_orbcat_menu');
+	echo $this->Element('active_orbcat_menu', array('active_orbcat' => $active_orbcat, 'hide_text' => false, 'ajax'=> false));
+$this->end('active_orbcat_menu');
 
 $this->start('active_orb_card');
 	// element (instead of inline to view) so it can also be fetched by ajax alone
-	echo $this->Element('orb_card', array('orb' => $active_orbcat['orb_card']));
+	echo $this->Element('orb_card', array('orb' => $active_orbcat['orb_card'], 'ajax' => false));
 $this->end('active_orb_card');
 ?>
 
@@ -63,33 +82,17 @@ $this->end('active_orb_card');
 				<li class="inactive coming-soon"><a class="body-font-color block">Ordering<br />(Delivery)</a></li>
 				<li class="inactive coming-soon"><a class="body-font-color block">Ordering<br />(Pick-Up)</a></li>
 			</ul
-			<?php echo $this->fetch('orbcats_menu').$this->fetch('monthly_content'); ?>></div>
+			<?php echo $this->fetch('orbcats_menu').$this->fetch('monthly_content'); ?></div>
 	</div
 	><div class="row"
 		><div class="large-12  columns"
 			><div id="orb-card-wrapper" class="float-pane box rel xtreme-blue-bg"
-				><div id="order-modal" class="box leftward left" style="display:none;">
-					<div id="order-modal-content">
-						<div class="row">
-							<h4 class="text-center"><?php echo strtoupper("Success! your cart now tastes better!");?></h4>
-							<div class="large-8 medium-6 small-12 large-centered medium-centered columns">
-								<ul class="small-block-grid-3" class="hn-l-cn">
-									<li class="text-center">
-										<a id="continue-ordering"  href="#" class="modal-link order" data-action="continue_ordering"><?php echo strtoupper("Continue Ordering");?></a>
-									</li>
-									<li class="text-center">
-										<a id="view-order" href=#" class="modal-link order" data-action="view_order"><?php echo strtoupper("View Order");?></a>
-									</li>
-									<li class="text-center">
-										<a id="finish-ordering" href="#" class="modal-link order" data-action="finish_ordering"><?php echo strtoupper("Finish Ordering");?></a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
+				>
+				<?php echo $this->fetch('order_modal');?>
 				<?php echo $this->fetch('active_orb_card');?>
-				<?php echo $this->fetch('active_orbs_menu');?>
+				<div id="orb-card-stage-menu-wrapper" class="box rightward xtreme-blue-bg">
+					<?php echo $this->fetch('active_orbcat_menu');?>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -92,6 +92,21 @@ footer {
 .spacer { @include unselectable; }
 
 // DECORATION CLASSES
+.fade-out { opacity:0;}
+
+.slide-left {
+  -webkit-transform: translate(-1 * $orb-card-stage-menu-width, 0);
+  -moz-transform: translate(-1 * $orb-card-stage-menu-width, 0);
+  -o-transform: translate(-1 * $orb-card-stage-menu-width, 0);
+  transform: translate(-1 * $orb-card-stage-menu-width, 0);
+}
+.slide-right {
+  -webkit-transform: translate($orb-card-stage-menu-width, 0);
+  -moz-transform: translate($orb-card-stage-menu-width, 0);
+  -o-transform: translate($orb-card-stage-menu-width, 0);
+  transform: translate($orb-card-stage-menu-width, 0);
+}
+
 .xtreme-blue-bg { background-color : $xtreme-blue; }
 
 .xtreme-select-list {
@@ -138,4 +153,12 @@ footer {
         border-bottom: 2px solid $medium-grey;
         background-color : $white;
       }
+}
+
+#monthly-content-wrapper {
+  position: relative;
+  float:left;
+  height: $monthly-content-wrapper-height;
+  width: $monthly-content-wrapper-width;
+  vertical-align: top;
 }

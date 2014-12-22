@@ -6,17 +6,17 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-	$list_classes = array("topping", 'menu-shadow', "inactive", "xtreme-select-list");
+	$list_classes = array("fade-out", "orb-opt", "inactive", "xtreme-select-list");
 	$icons = array('right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D");
 	$data = array("id" => $opt['id'], "name" => strtolower($opt['title']));
 	foreach (array_slice($opt, 3, -1) as $flag => $value) {
 		if ($value) $data['flags'][] = $flag;
 	}
 ?>
-<li id="<?php echo sprintf("topping-coverage-%s", $opt['id']);?>" <?php echo ___cD($list_classes);?> <?php echo ___dA($data);?>
-	><ul class="inline"
+<li id="<?php echo sprintf("orb-opt-coverage-%s", $opt['id']);?>" <?php echo ___cD($list_classes);?> <?php echo ___dA($data);?>
+	><ul class="stretch inline"
          <?php foreach($icons as $icon => $value) {
-         $classes = array("topping-coverage", $icon, "icon-$icon", "inactive", "disabled");
+         $classes = array("orb-opt-coverage", $icon, "icon-$icon", "inactive", "disabled");
 	      if ($icon == "full") $classes[3] = "active";?>
 		><li <?php echo ___cD($classes); ?> data-weight="<?php echo $value;?>"></li
 		<?php } ?>
