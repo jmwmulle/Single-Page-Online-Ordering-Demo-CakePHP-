@@ -134,18 +134,18 @@ $price-matrix-header-padding: 0 ($orb-card-price-table-padding-right - $orb-card
 $price-matrix-header-height: $h5-font-size;
 $price-matrix-max-height: $orb-card-row-height - $price-matrix-header-height;
 
-$topping-right-padding: $base-padding - $scroll-bar-width;
-$topping-icon-bg-diameter: rem-calc(30px);
-$topping-icon-half-bg-width: rem-calc(30px) / 2;
-$topping-icon-button-height: $orb-card-stage-menu-item-height;
-$topping-icon-button-width: $topping-icon-bg-diameter;
-$topping-icon-vertical-padding: ($topping-icon-button-height - $topping-icon-bg-diameter) / 2;
-$topping-icon-full-padding: 0;
-$topping-text-width: $orb-card-stage-menu-width - ($topping-right-padding + 5 * $topping-icon-button-width);
-$topping-filter-height: $orb-card-stage-menu-item-height - 2 * $tight-padding;
-$topping-filter-padding-left: $orb-card-stage-menu-width  - ($orb-card-wrapper-width / 3) + $base-padding;
-$topping-filter-button-height: $topping-filter-height / 2;
-$topping-filter-button-width: ($orb-card-stage-menu-width - $topping-filter-padding-left - ($base-padding + 2 * $tight-padding)) / 3;
+$orb-opt-right-padding: $base-padding - $scroll-bar-width;
+$orb-opt-icon-bg-diameter: rem-calc(30px);
+$orb-opt-icon-half-bg-width: rem-calc(30px) / 2;
+$orb-opt-icon-button-height: $orb-card-stage-menu-item-height;
+$orb-opt-icon-button-width: $orb-opt-icon-bg-diameter;
+$orb-opt-icon-vertical-padding: ($orb-opt-icon-button-height - $orb-opt-icon-bg-diameter) / 2;
+$orb-opt-icon-full-padding: 0;
+$orb-opt-filter-height: $orb-card-stage-menu-item-height - 2 * $tight-padding;
+$orb-opt-filter-padding-left: $orb-card-stage-menu-width  - ($orb-card-wrapper-width / 3) + $base-padding;
+$orb-opt-filter-button-height: $orb-opt-filter-height / 2;
+$orb-opt-filter-button-width: ($orb-card-stage-menu-width - $orb-opt-filter-padding-left - ($base-padding + 2 * $tight-padding)) / 3;
+$orb-opt-text-width: $orb-card-stage-menu-width - ($orb-opt-right-padding + $orb-opt-filter-padding-left + 5 * $orb-opt-icon-button-width);
 
   // FLOAT LABELS
 $float-label-height: $h3-font-size * 1.75;
@@ -164,7 +164,7 @@ $orb-quantity-wrapper-width: $orb-configure-form-width / 3;
 $orb-preparation-wrapper-width: $orb-configure-form-width;
 $orb-preparation-label-width: 0.33333333 * $orb-preparation-wrapper-width;
 $orb-preparation-field-width: $orb-preparation-wrapper-width - $orb-preparation-label-width;
-$tiny-topping-list-width: $orb-card-inner-width - $orb-configure-form-width;
+$tiny-orb-opt-list-width: $orb-card-inner-width - $orb-configure-form-width;
 
   // ORDER-MODAL
 $order-modal-top: 0.25 * $orb-card-wrapper-inner-height;

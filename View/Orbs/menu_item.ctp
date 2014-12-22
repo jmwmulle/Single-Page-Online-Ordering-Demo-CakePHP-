@@ -6,4 +6,4 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-echo $this->element('orb_card', array('orb'=>$orb));
+echo $this->element('orb_card', array('orb'=>$orb, "ajax" => true));

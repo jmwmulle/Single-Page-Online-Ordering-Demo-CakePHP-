@@ -1,0 +1,80 @@
+#orb-stage-menu-header-container {
+  background-color : $xtreme-red;
+}
+
+.orb-card-stage-menu-header {
+  overflow: hidden;
+  & * { overflow:hidden;}
+  height : $orb-card-stage-menu-item-height;
+  width  : $orb-card-stage-menu-width;
+  h2, ul {
+    padding-left     : $orb-card-stage-menu-padding-left;
+    background-color : $xtreme-red;
+    margin           : 0;
+  }
+}
+
+.orb-card-stage-menu {
+  overflow-y : scroll;
+  overflow-x : hidden;
+  height     : $orb-card-stage-menu-height;
+  width      : $orb-card-stage-menu-width;
+  @include grey_scroll;
+  li {
+    position     : relative;
+    padding-left : $orb-card-stage-menu-padding-left;
+    height       : $orb-card-stage-menu-item-height;
+    box-shadow   : inset 15px -5px 8px $black-a33;
+    cursor       : pointer;
+  }
+}
+
+.orb-opt li {
+  box-shadow        : none;
+  background-color  : transparent;
+  margin            : 0;
+  width             : $orb-opt-icon-button-width;
+  height            : $orb-card-stage-menu-item-height;
+  float             : right;
+  padding           : $orb-opt-icon-full-padding;
+  background-size   : auto;
+  background-repeat : no-repeat;
+  &:hover, &.active { background-color : transparent; }
+  &.orb-opt-coverage {
+    color   : $white;
+    opacity : 0.33;
+  }
+  &:last-of-type {
+    float : left;
+    width : $orb-opt-text-width;
+  }
+}
+
+.orb-opt.active li.orb-opt-coverage {
+  opacity : 1;
+  &:hover { color : $xtreme-red; }
+  &.active { color : $dark-grey; }
+
+}
+
+#orb-opt-filters {
+    width            : $orb-card-stage-menu-width;
+    height           : $orb-card-stage-menu-item-height;
+    padding          : $tight-padding;
+    padding-left     : $orb-opt-filter-padding-left;
+  //  float            : right;
+  //  background-color : $xtreme-red;
+  overflow:hidden;
+  li {
+    overflow:hidden;
+    background-color : transparent;
+    width            : $orb-opt-filter-button-width;
+    height           : $orb-opt-filter-button-height;
+  }
+}
+
+.orb-opt-configure-header {
+  background-color : $xtreme-red;
+  padding          : $tight-padding + 0.25 * $h3-font-size  0 $tight-padding $base-padding;
+  line-height      : $h3-font-size;
+}
