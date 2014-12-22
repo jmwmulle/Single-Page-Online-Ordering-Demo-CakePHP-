@@ -87,6 +87,8 @@ class OrdersController extends AppController {
 				array_push($products, $item);
 			}
 
+			$this->Cart->update();
+
 			if (!empty($products)) {
 				if ($this->Session->check('Cart.Order.total') ) {
 					$total = $this->Session->read('Cart.Order.total');
@@ -172,9 +174,9 @@ class OrdersController extends AppController {
 				$prep_instructions = isset($orb['prep_instructions']) ? $orb['prep_instructions'] : null;
 				array_push($products,$this->Cart->add($id, $quantity, $price_rank, $orbopts, $prep_instructions));
 			}
-		$cart = $this->Session->read('Cart');
-		echo json_encode($cart);
-		$this->autoRender = false;
+			$cart = $this->Session->read('Cart');
+			echo json_encode($cart);
+			$this->autoRender = false;
 		} else {
 			return $this->redirect(cakeUrl(array("controller" =>'menu', "action" => null)));
 		}
@@ -197,10 +199,16 @@ class OrdersController extends AppController {
 
 	public function cartupdate() {
 		if ($this->request->is('post')) {
-			foreach($this->request->data['Orb'] as $key => $value) {
-				$p = explode('-', $key);
-				$p = explode('_', $p[1]);
-				$this->Cart->add($p[0], $value, $p[1]);
+			db($this->request->data);
+			foreach($this->request->data['Orb'] as $args) {
+				extract(array_merge(array(
+							"id" => -1,
+							"quantity" => -1,
+							"price_rank" => 0,
+							"orbopts" => array(),
+							"preparation_instructions" => ""),
+							$args));
+				$this->Cart->add($id, $quantity, $price_rank, $orbopts, $preparation_instructions);
 			}
 		}
 		return $this->redirect(array('action' => 'cart'));
@@ -209,6 +217,7 @@ class OrdersController extends AppController {
 
 	public function cart() {
 		$cart = $this->Session->read('Cart');
+		$this->Cart->update();
 		$this->set(compact('cart'));
 	}
 

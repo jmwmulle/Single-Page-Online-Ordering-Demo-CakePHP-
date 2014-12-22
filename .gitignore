@@ -7,4 +7,5 @@ tmp/*
 Config/bootstrap.php
 webroot/jonsauce
 webroot/jonsauce/*
+status/sfile
 Config/database.php

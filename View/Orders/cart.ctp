@@ -30,21 +30,20 @@ You haven't ordered anything yet.
 
 	<div class="row" id="row-<?php echo $key; ?>">
 		<div class="col col-sm-7">
-			<strong><?php echo $this->Html->link($item['Orb']['title'], array('controller' => 'orbs', 'action' => 'view')); ?></strong>
+			<strong><?php echo $this->Html->link($item['title'], array('controller' => 'orbs', 'action' => 'view')); ?></strong>
 			<?php
-			$mods = 0;
-			if(isset($item['Orb']['title'])) :
-				$mods = $item['Orb']['id'];
+			if(isset($item['title'])) :
 				?>
 				<br />
 				<small><?php foreach($item['orbopts'] as $opt) {echo $opt['title'];} ?></small>
 			<?php endif; ?>
 		</div>
-                <?php echo $this->Form->input('id', array('hiddenField'=>true, 'value'=>$key)); ?>
-                <div class="col col-sm-1" id="desc-<?php echo $key; ?>"> <?php echo $item['Orb']['description'] ?></div>
-		<div class="col col-sm-1"><?php echo $this->Form->input('preparation_instructions', array('div' => false, 'class' => 'text form-control input-small', 'label' => false, 'size' => 2, 'maxlength' => 144, 'tabindex' => $tabindex++, 'data-id' => $item['Orb']['id'], 'data-mods' => $mods, 'value' => $item['preparation_instructions'])); ?></div>
-                <div class="col col-sm-1"><?php echo $this->Form->input('price_rank', array('div' => false, 'class' => 'numeric form-control input-small', 'label' => false, 'size' => 1, 'maxlength' => 1, 'tabindex' => $tabindex++, 'data-id' => $item['Orb']['id'], 'data-mods' => $mods, 'value' => $item['price_rank'])); ?></div>
-                <div class="col col-sm-1"><?php echo $this->Form->input('quantity', array('div' => false, 'class' => 'numeric form-control input-small', 'label' => false, 'size' => 2, 'maxlength' => 2, 'tabindex' => $tabindex++, 'data-id' => $item['Orb']['id'], 'data-mods' => $mods, 'value' => $item['quantity'])); ?></div>
+                <?php echo $this->Form->input('orb_id', array('hiddenField'=>true, 'value'=>$item['orb_id'])); ?>
+		<?php echo $this->Form->input('orbopts', array('hiddenField'=>true, 'value'=>$item['orbopts'])); ?>
+                <div class="col col-sm-1" id="desc-<?php echo $key; ?>"> <?php echo $item['description'] ?></div>
+		<div class="col col-sm-1"><?php echo $this->Form->input('preparation_instructions', array('div' => false, 'class' => 'text form-control input-small', 'label' => false, 'size' => 2, 'maxlength' => 144, 'tabindex' => $tabindex++, 'data-id' => $item['orb_id'], 'value' => $item['preparation_instructions'])); ?></div>
+                <div class="col col-sm-1"><?php echo $this->Form->input('price_rank', array('div' => false, 'class' => 'numeric form-control input-small', 'label' => false, 'size' => 1, 'maxlength' => 1, 'tabindex' => $tabindex++, 'data-id' => $item['orb_id'], 'value' => $item['price_rank'])); ?></div>
+                <div class="col col-sm-1"><?php echo $this->Form->input('quantity', array('div' => false, 'class' => 'numeric form-control input-small', 'label' => false, 'size' => 2, 'maxlength' => 2, 'tabindex' => $tabindex++, 'data-id' => $item['orb_id'], 'value' => $item['quantity'])); ?></div>
 		<div class="col col-sm-1" id="subtotal_<?php echo $key; ?>"><?php echo $item['subtotal']; ?></div>
 		<div class="col col-sm-1"><span class="remove" id="<?php echo $key; ?>"></span></div>
 	</div>

@@ -272,6 +272,9 @@ class AppController extends Controller {
 	}
 
 	public function beforeRender() {
+		$statusFile = new File(APP.'status/sfile');
+		$status = $statusFile->read(true, 'r');
+		$this->set("store_status", $status); 
 		$this->set("topnav", $this->topnav);
 	}
 
