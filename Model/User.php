@@ -76,6 +76,20 @@
 					'message' => 'You must supply your address.',
 				),
 			),
+			'address_2'   => array(
+			),
+			'city'   => array(
+				'alphanumeric' => array(
+					'rule' => array('alphanumeric'),
+					'message' => 'You must supply a city.',
+				),
+			),
+			'province'   => array(
+				'not_empty' => array(
+					'rule' => array('not_empty'),
+					'message' => 'You must supply a province.',
+				),
+			),
 			'postal_code' => array(
 				'postal' => array(
 					'rule' => array( 'postal', null, 'ca' ),
@@ -171,10 +185,7 @@
 				'exclusive'    => '',
 				'finderQuery'  => '',
 				'counterQuery' => ''
-			)
-		);
-		
-		public $hasMany = array(
+			),
 			'Favourite' => array(
 				'className'    => 'Favourite',
 				'foreignKey'   => 'user_id',

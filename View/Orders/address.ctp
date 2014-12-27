@@ -13,13 +13,43 @@
 <div class="row">
 <div class="col col-sm-4">
 
-<?php echo $this->Form->input('first_name', array('class' => 'form-control', 'default' => $user['User']['firstname'])); ?>
+<?php if ($loggedIn): ?>
+<?php echo $this->Form->input('firstname', array('class' => 'form-control', 'default' => $User['firstname'])); ?>
 <br />
-<?php echo $this->Form->input('last_name', array('class' => 'form-control', 'default' => $user['User']['lastname'])); ?>
+<?php echo $this->Form->input('lastname', array('class' => 'form-control', 'default' => $User['lastname'])); ?>
 <br />
-<?php echo $this->Form->input('email', array('class' => 'form-control', 'default' => $user['User']['email'])); ?>
+<?php echo $this->Form->input('email', array('class' => 'form-control', 'default' => $User['email'])); ?>
 <br />
-<?php echo $this->Form->input('phone', array('class' => 'form-control', 'default' => 'This is a test')); ?>
+<?php echo $this->Form->input('phone', array('class' => 'form-control')); ?>
+<br />
+<br />
+
+</div>
+<div class="col col-sm-4">
+
+<?php echo $this->Form->input('billing_address', array('class' => 'form-control', 'default' => $User['address'])); ?>
+<br />
+<?php echo $this->Form->input('billing_address_2', array('class' => 'form-control', 'default' => $User['address_2'])); ?>
+<br />
+<?php echo $this->Form->input('billing_city', array('class' => 'form-control', 'default' => $User['city'])); ?>
+<br />
+<?php echo $this->Form->input('billing_province', array('class' => 'form-control', 'default' => $User['province'])); ?>
+<br />
+<?php echo $this->Form->input('billing_postal_code', array('class' => 'form-control', 'default' => $User['postal_code'])); ?>
+<br />
+<?php echo $this->Form->input('billing_country', array('class' => 'form-control', 'default' => 'Canada')); ?>
+<br />
+<br />
+
+<?php else: ?>
+
+<?php echo $this->Form->input('firstname', array('class' => 'form-control')); ?>
+<br />
+<?php echo $this->Form->input('lastname', array('class' => 'form-control')); ?>
+<br />
+<?php echo $this->Form->input('email', array('class' => 'form-control')); ?>
+<br />
+<?php echo $this->Form->input('phone', array('class' => 'form-control')); ?>
 <br />
 <br />
 
@@ -39,6 +69,8 @@
 <?php echo $this->Form->input('billing_country', array('class' => 'form-control')); ?>
 <br />
 <br />
+<?php endif; ?>
+
 
 <?php echo $this->Form->input('sameaddress', array('type' => 'checkbox', 'label' => 'Copy Billing Address to Delivery?')); ?>
 
