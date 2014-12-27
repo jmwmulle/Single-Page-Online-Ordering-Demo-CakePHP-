@@ -11,7 +11,7 @@ class OrdersController extends AppController {
 		#'AuthorizeNet'
 	);
 	
-	public $uses = array('Orb', 'Orbopt');
+	public $uses = array('Order', 'Orb', 'Orbopt');
 
 	/**
 	 * index method
@@ -248,11 +248,11 @@ class OrdersController extends AppController {
 
 
 	public function step1() {
-		$paymentAmount = $this->Session->read('Shop.Order.total');
+		$paymentAmount = $this->Session->read('Cart.Order.total');
 		if(!$paymentAmount) {
 			return $this->redirect('/');
 		}
-		$this->Session->write('Shop.Order.order_type', 'paypal');
+		$this->Session->write('Cart.Order.order_type', 'delivery');
 		$this->Paypal->step1($paymentAmount);
 	}
 
