@@ -11,7 +11,7 @@ class OrdersController extends AppController {
 		#'AuthorizeNet'
 	);
 	
-	public $uses = array('Orb', 'Orbopt');
+	public $uses = array('User', 'Order', 'Orb', 'Orbopt');
 
 	/**
 	 * index method
@@ -228,13 +228,19 @@ class OrdersController extends AppController {
 			return $this->redirect('/');
 		}
 
+		if ($this->Auth->loggedIn()) {
+			$User = $this->User->find('first', array('conditions' => array(
+				'User.id'=>$this->Session->read('Auth.User.User.id'))));
+			$this->set('User', $User['User']);
+		}
+
 		if ($this->request->is('post')) {
 			
 			$this->Order->set($this->request->data);
 			if($this->Order->validates()) {
 				$order = $this->request->data['Order'];
 				$order['order_type'] = 'creditcard';
-				$this->Session->write('Shop.Order', $order + $cart['Order']);
+				$this->Session->write('Cart.Order', $order + $cart['Order']);
 				return $this->redirect(array('action' => 'review'));
 			} else {
 				$this->Session->setFlash('The form could not be saved. Please, try again.', 'flash_error');
@@ -248,11 +254,11 @@ class OrdersController extends AppController {
 
 
 	public function step1() {
-		$paymentAmount = $this->Session->read('Shop.Order.total');
+		$paymentAmount = $this->Session->read('Cart.Order.total');
 		if(!$paymentAmount) {
 			return $this->redirect('/');
 		}
-		$this->Session->write('Shop.Order.order_type', 'paypal');
+		$this->Session->write('Cart.Order.order_type', 'creditcard');
 		$this->Paypal->step1($paymentAmount);
 	}
 
@@ -331,13 +337,13 @@ class OrdersController extends AppController {
 
 					App::uses('CakeEmail', 'Network/Email');
 					$email = new CakeEmail();
-					$email->from(Configure::read('Settings.ADMIN_EMAIL'))
-							->cc(Configure::read('Settings.ADMIN_EMAIL'))
+					$email->from('xtremepizzahalifax@gmail.com')
+							->cc('xtremepizzahalifax@gmail.com')
 							->to($cart['Order']['email'])
-							->subject('Shop Order')
+							->subject('Xtreme Pizza Order Confirmation')
 							->template('order')
 							->emailFormat('text')
-							->viewVars(array('shop' => $cart))
+							->viewVars(array('cart' => $cart))
 							->send();
 					return $this->redirect(array('action' => 'success'));
 				} else {
