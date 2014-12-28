@@ -8,6 +8,8 @@
 var constants = {
 	PX: "px",
 	CLK: "click",
+	CHECK: "check",
+	UNCHECK: "uncheck",
 	UNDEF: "undefined",
 	MOUSEOVER: "mouseover",
 	HOVER: "hover",
@@ -56,7 +58,7 @@ function InitError(raisedError, message) {
 
 window.XBS = {
 	data: {
-		hostRootDirs: {
+		host_root_dirs: {
 			xDev: "",
 			xProd: "",
 			xLoc: "xtreme"
@@ -79,10 +81,9 @@ window.XBS = {
 		         "..img/splash/order_soon.png",
 		         "..img/splash/pizza-bg.jpg",
 		         "..img/splash/logo_mini.png"],
-		toppings_by_flag: {
-			premium: [],
-			meat: [],
-			veggie: []
+		orb_opts: {
+		},
+		orb_opt_filters: {
 		},
 		current_orb_card: null,
 		partial_orb_configs: {
@@ -134,9 +135,11 @@ window.XBS = {
 		XBS.cfg.is_splash = is_splash === true;
 		XBS.fn.setHost(host);
 //		try {
-		XBS.layout.init();
-		XBS.splash.init();
-		XBS.menu.init();
+		var init_status = { layout: XBS.layout.init(),
+							splash: XBS.splash.init(),
+							menu: XBS.menu.init()
+		};
+		pr(init_status, "init status");
 		//XBS.cache.init();
 //		} catch(e) {
 //			if (e instanceof InitError) {
@@ -169,14 +172,12 @@ window.XBS = {
 	layout: {
 		init: function () {
 //			try {
-			XBS.fn.execInitSequence(XBS.layout.jq_binds);
-			if (XBS.cfg.is_splash) {
-				XBS.layout.detachAnimationTargets();
-			}
+			var sit_rep = XBS.fn.execInitSequence({"XBS.layout.jq_binds": XBS.layout.jq_binds});
+			if (XBS.cfg.is_splash) XBS.layout.detachAnimationTargets();
 //			} catch(e) {
 //				pr(e.stack);
 //				throw new InitError(e); // todo: list all init exceptions if needed
-			return true;
+			return sit_rep;
 		},
 		detachAnimationTargets: function () {
 			$(XSM.global.detachable).each(function () { XBS.layout.detach(this);});
@@ -187,6 +188,8 @@ window.XBS = {
 				$(C.BODY).on(XBS.evnt.orb_card_refresh, null, null, function (e) {
 					XBS.menu.archive_orb_card_config(e.data);
 				});
+
+				return true;
 			},
 			bind_activizing_lists: function () {
 				$("body").on(C.CLK, XSM.global.activizing_list, function (e) {
@@ -218,12 +221,6 @@ window.XBS = {
 				});
 				return true;
 			},
-			bind_cart_hooks: function () {
-				$(C.BODY).on(C.CLK, XSM.menu.add_to_cart, null, function (e) {
-					var data = $(e.currentTarget).data('orbId');
-					XBS.menu.configure_orb(data.orbId, data.priceRank)
-				});
-			},
 			bind_float_menus: function () {
 				$(C.BODY).on(C.MOUSEENTER, asClass(XSM.effects.float_label), null, function (e) {
 					XBS.layout.toggle_float_label($(e.currentTarget).attr('id'), C.SHOW);
@@ -238,6 +235,8 @@ window.XBS = {
 				$(C.BODY).on(C.CLK, XSM.modal.link_order, null, function (e) {
 					XBS.layout.modal_link(C.ORDER_MODAL, $(e.currentTarget).data('action'));
 				});
+
+				return true;
 			},
 			bind_splash_links: function () {
 				$(C.BODY).on(C.CLK, XSM.splash.splash_link, null, function (e) {
@@ -315,13 +314,40 @@ window.XBS = {
 					},
 					view_order: function () {
 						XBS.menu.stash_menu();
+						var url = "orders/review"
+						setTimeout(function() { XBS.layout.launch_modal(url)}, 500);
 					},
 					finish_ordering: function () {
 						XBS.menu.stash_menu();
 					}
+				},
+				primary_modal: {
+
 				}
 			};
 			return modal_actions[modal_type][action]();
+		},
+		launch_modal: function(route) {
+			var pm_width = 0.8 * $(window).innerWidth();
+			var pm_height = 0.6 * $(window).innerHeight();
+			var pm_left = pm_width > 1200 ? ($(window).innerWidth() - 1200) / 2 : 0.1 * $(window).innerWidth();
+			if (pm_width > 1200) pm_width = 1200;
+			if (pm_height < 600) pm_height = 600;
+			$(XSM.global.primary_modal).css({
+					top: 0.2 * $(window).innerHeight(),
+					left: pm_left,
+					width: pm_width,
+					height: pm_height
+				});
+			if (route) {
+				$.get(route, function(data) {
+					$(XSM.global.primary_modal).html(data).removeClass("up-slid");
+				});
+			} else {
+				$(XSM.global.primary_modal).html(XBS.data.cart).removeClass("up-slid");
+			}
+
+			return true;
 		},
 		multi_activize: function (element) {
 			if ($(element).hasClass('active')) {
@@ -355,16 +381,6 @@ window.XBS = {
 				});
 			}
 		},
-		reset_orb_card_stage: function () {
-			XBS.menu.filter_toppings(true);
-			$(XSM.menu.orb_order_form_price_rank).val(0);
-			$(XSM.menu.orb_size_button).each(function () {
-				$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
-			});
-			$(XSM.menu.orb_order_form_quantity).val(1);
-			$(XSM.menu.orb_order_form_prep_instrux).val("");
-			XBS.layout.show_orb_card_front_face();
-		},
 		toggle_float_label: function (label, state) {
 			if (state == C.SHOW) $(XSM.menu.float_label).html(str_to_upper(label)).addClass(XSM.effects.exposed);
 			if (state == C.HIDE) $(XSM.menu.float_label).removeClass(XSM.effects.exposed).html('');
@@ -372,141 +388,34 @@ window.XBS = {
 			return true;
 		},
 
-		toggle_loading_screen: function () { $(XSM.global.loadingScreen).fadeToggle(); },
-
-		show_orb_card_front_face: function() {
-			$(XSM.menu.orb_card_3d_context).removeClass(XSM.effects.flipped_y);
-			$(XSM.menu.orb_opt).addClass(XSM.effects.fade_out);
-			setTimeout( function() {
-				$(XSM.menu.orb_opts_menu_header).addClass(XSM.effects.slide_right);
-				$(XSM.menu.orb_opt).hide();
-				setTimeout(function() {
-					$(XSM.menu.active_orbcat_item).show()
-					setTimeout(function() { $(XSM.menu.active_orbcat_item).removeClass(XSM.effects.fade_out);}, 30);
-					setTimeout(function() {
-						$(XSM.menu.orb_opts_menu_header).hide()
-						$(XSM.menu.active_orbcat_menu_header).show();
-						setTimeout(function() { $(XSM.menu.active_orbcat_menu_header).removeClass(XSM.effects.slide_left);}, 30);
-						$(XSM.menu.orb_card_stage_menu).addClass(XSM.effects.activizing);
-					}, 300);
-				}, 350);
-			}, 300);
-
-			return true;
-		},
-
-		show_orb_card_back_face: function() {
-			$(XSM.menu.orb_card_3d_context).addClass(XSM.effects.flipped_y);
-			$(XSM.menu.active_orbcat_item).addClass(XSM.effects.fade_out);
-			setTimeout( function() {
-				$(XSM.menu.active_orbcat_menu_header).addClass(XSM.effects.slide_left);
-				$(XSM.menu.active_orbcat_item).hide();
-				setTimeout(function() {
-					$(XSM.menu.orb_opt).show()
-					setTimeout(function() {$(XSM.menu.orb_opt).removeClass(XSM.effects.fade_out);}, 30);
-					setTimeout( function() {
-						$(XSM.menu.active_orbcat_menu_header).hide();
-						$(XSM.menu.orb_opts_menu_header).show();
-						setTimeout(function() { $(XSM.menu.orb_opts_menu_header).removeClass(XSM.effects.slide_right);}, 30);
-						$(XSM.menu.orb_card_stage_menu).removeClass(XSM.effects.activizing);
-					}, 300);
-				}, 350);
-			}, 300);
-		},
-
-		refresh_active_orbcat_menu: function (orbcat_id, orbcat_name) {
-			// todo: fallback on ajax fail
-			var url = XBS.routes.menu + C.DS + orbcat_id
-			if (XBS.cfg.root.length != 0) url = C.DS + XBS.cfg.root + C.DS + url;
-
-			$.get(url,function (data) {
-				var active_orbcat_menu = $.parseHTML(data)[1];
-				var active_orb_id = $($(active_orbcat_menu).find(XSM.menu.active_orbcat_item)[0]).data('orb');
-
-				// toggle the header; alternates rotating front-to-back or back-to-front
-				if ($(XSM.menu.active_orb_name_3d_context).hasClass(XSM.effects.flipped_x)) {
-					$(XSM.menu.active_orb_name_front_face).html(orbcat_name);
-					$(XSM.menu.active_orb_name_3d_context).removeClass(XSM.effects.flipped_x);
-				} else {
-					$(XSM.menu.active_orb_name_back_face).html(orbcat_name);
-					$(XSM.menu.active_orb_name_3d_context).addClass(XSM.effects.flipped_x);
-				}
-
-				$(active_orbcat_menu).find(XSM.menu.active_orbcat_item).each(function() {
-					$(this).addClass(XSM.effects.fade_out);
-				});
-				$(XSM.menu.active_orbcat_item).addClass(XSM.effects.fade_out);
-				$(XSM.menu.orbcat_menu_title_subtitle).addClass(XSM.effects.fade_out);
-
-				XBS.layout.refresh_orb_card_stage(active_orb_id);
-				setTimeout(function () {
-					$(XSM.menu.active_orbcat_item).remove()
-					$(XSM.menu.orbcat_menu_title_subtitle).html(orbcat_name).removeClass(XSM.effects.fade_out);
-					setTimeout(function () {
-						$(active_orbcat_menu).find(XSM.menu.active_orbcat_item).each(function() {
-							$(this).appendTo(XSM.menu.orb_card_stage_menu);
-						});
-						setTimeout(function() {$(XSM.menu.active_orbcat_item).removeClass(XSM.effects.fade_out);}, 30);
-						XBS.menu.filter_toppings(true);
-					}, 300);
-				}, 300);
-			}).then( function () { $(C.BODY).trigger(C.ORB_CARD_REFRESH); });
-		},
-
-		refresh_orb_card_stage: function (orb_card_id) {
-			// todo: fallback on ajax fail
-			XBS.data.current_orb_card = orb_card_id;
-			var url = XBS.routes.menuitem + C.DS + orb_card_id
-			if (XBS.cfg.root.length != 0) url = C.DS + XBS.cfg.root + C.DS + url
-
-			$.get(url, function (data) {
-				var orb_card_stage = $.parseHTML(data)[0];
-				var orb_card_stage_menu = $(orb_card_stage).find(XSM.menu.orb_opt_container)[0];
-				var replace_time = $(XSM.menu.orb_card_3d_context).hasClass(XSM.effects.flipped_y) ? 300 : 0;
-
-				// remove orb-opts once extracted so they can be moved to menu
-				$(orb_card_stage).find(XSM.menu.orb_opt_container)[0].remove();
-
-				// hide current orb-card-row contents & orb-card-stage-menu items before replacing
-				$(orb_card_stage).find(XSM.menu.orb_card_content_container).each(
-					function() { $(this).addClass(XSM.effects.fade_out); });
-				$(orb_card_stage_menu).find(XSM.menu.orb_opt).each(function() {$(this).hide();});
-
-				// do replacements and fade items back in
-				setTimeout(function () {
-					XBS.layout.show_orb_card_front_face();
-					setTimeout( function() {
-						$(XSM.menu.orb_card_content_container).addClass(XSM.effects.fade_out);
-						setTimeout( function() {
-							$(XSM.menu.orb_card_stage).replaceWith(orb_card_stage);
-							// this timeout just buys the browser a moment to catch up, otherwise CSS transition doesn't fire
-							setTimeout(function() { $(XSM.menu.orb_card_content_container).removeClass(XSM.effects.fade_out);}, 30);
-							// remove all the orb-opts from the previous item and replace them with the new set
-							$(XSM.menu.orb_opt).remove();
-							$(orb_card_stage_menu).find(XSM.menu.orb_opt).each(function() {
-								$(this).appendTo(XSM.menu.orb_card_stage_menu);
-							});
-						}, 300);
-					}, 300);
-				}, replace_time);
-			}).then( function () { XBS.menu.load_from_cart(orb_card_id); });
-		}
+		toggle_loading_screen: function () { $(XSM.global.loadingScreen).fadeToggle(); }
 	},
 	menu: {
 		init: function () {
 			var init_ok = true;
 			if (XBS.cfg.page_name == C.MENU) {
-				init_ok = XBS.fn.execInitSequence(XBS.menu.jq_binds);
+				init_ok = XBS.fn.execInitSequence(
+					{"XBS.menu.jq_binds": XBS.menu.jq_binds,
+					"XBS.menu.data_structures": XBS.menu.data_structures});
 				try {
-					if (!XBS.data.current_orb_card) {
-						XBS.menu.load_from_cart($(XSM.menu.active_orb).data('orb'));
-					}
-					;
+					if (!XBS.data.current_orb_card) XBS.menu.load_from_cart($(XSM.menu.active_orb).data('orb'));
 				} catch (e) {
-					init_ok = false;
+					init_ok.state = false;
+					init_ok.message = "current_orb_card not set; nothing loaded from cart";
 				}
 			}
 			return  init_ok
+		},
+		data_structures: {
+			has_init_sequence: true,
+			update_orb_opt_filters_list: function(target_state) {
+				if (target_state != C.CHECK && target_state != C.UNCHECK) target_state = C.CHECK;
+				XBS.data.orb_opt_filters = {}
+				$(XSM.menu.orb_opt_filter).each(function() {
+					XBS.data.orb_opt_filters[$(this).data('filter')] = target_state;
+				});
+				return true;
+			}
 		},
 		jq_binds: {
 			has_init_sequence: true,
@@ -515,35 +424,30 @@ window.XBS = {
 				$(XSM.menu.orb_opts_menu_header).hide().removeClass(XSM.effects.hidden);
 				return true;
 			},
-			build_toppings_by_flag: function () {
-				$(XSM.menu.orb_opt).each(function () {
-					var flags = $(this).data('flags');
-					for (i in flags) {
-						if (!isArray(XBS.data.toppings_by_flag[flags[i]])) {
-							XBS.data.toppings_by_flag[flags[i]] = Array();
-						}
-						XBS.data.toppings_by_flag[flags[i]].push(this);
-					}
+			bind_order_api: function () {
+				/** add item to order */
+				$(C.BODY).on(C.CLK, XSM.menu.add_to_cart, null, function (e) {
+					var data = $(e.currentTarget).data('orbId');
+					XBS.menu.configure_orb(data.orbId, data.priceRank)
 				});
-				return true;
-			},
-			bind_cancel_order: function () {
-				$(C.BODY).on(C.CLK, XSM.menu.cancel_order_button, null, XBS.layout.reset_orb_card_stage);
-			},
-			bind_confirm_order: function () {
+
+				/** cancel order button */
+				$(C.BODY).on(C.CLK, XSM.menu.cancel_order_button, null, XBS.menu.reset_orb_card_stage);
+
+				/** confirm order button */
 				$(C.BODY).on(C.CLK, XSM.menu.confirm_order_button, null, XBS.menu.add_to_cart);
 				return true;
 			},
-			bind_orbcard_refresh: function () {
+			bind_content_refreshing: function () {
+				/** orb card stage refreshing */
 				$(C.BODY).on(C.CLK, XSM.menu.active_orbcat_item, null, function (e) {
-					XBS.layout.refresh_orb_card_stage($(e.currentTarget).data('orb'));
+					XBS.menu.refresh_orb_card_stage($(e.currentTarget).data('orb'));
 				});
-				return true;
-			},
-			bind_orbcat_refresh: function () {
-				$(C.BODY).on(C.CLK, XSM.menu.orbcat_refresh, null, function (e) {
+
+				/** orbcat menu refreshing */
+				$(C.BODY).on(C.CLK, XSM.menu.orbcat, null, function (e) {
 					var data = $(e.currentTarget).data();
-					XBS.layout.refresh_active_orbcat_menu(data.orbcat, data.orbcatName);
+					XBS.menu.refresh_active_orbcat_menu(data.orbcat, data.name);
 				});
 				return true;
 			},
@@ -551,25 +455,33 @@ window.XBS = {
 				$(C.BODY).on(C.CLK, XSM.menu.orb_size_button, null, function (e) {
 					XBS.menu.price_rank_update($(e.currentTarget).data('priceRank'));
 				});
+
+				return true;
 			},
 			bind_topping_methods: function () {
 				/** icon toggling */
 				$(C.BODY).on(C.CLK, XSM.menu.orb_opt_icon, null, function (e) {
 					if ($(e.currentTarget).hasClass(XSM.effects.enabled)) {
 						e.stopPropagation();
-						XBS.menu.toggle_topping_icon(e.currentTarget, true);
+						XBS.menu.toggle_orb_opt_icon(e.currentTarget, true);
 					}
 				});
 
 				/** orb_opt toggling */
 				$(C.BODY).on(C.CLK, XSM.menu.orb_opt, null, function (e) {
-					XBS.menu.toggle_topping(e.currentTarget, true);
+					XBS.menu.toggle_orb_opt(e.currentTarget, true);
 				});
 
-				/** orb_opt filtering */
+				/** orb_opt filtering (check all) */
+				$(C.BODY).on(C.CLK, XSM.menu.orb_opt_filter_all, null, function (e) {
+					e.stopPropagation();
+					XBS.menu.filter_orb_opts(false, $(e.currentTarget).data('all'));
+				});
+
+				/** orb_opt filtering (individual) */
 				$(C.BODY).on(C.CLK, XSM.menu.orb_opt_filter, null, function (e) {
 					e.stopPropagation();
-					XBS.menu.filter_toppings(e.currentTarget);
+					XBS.menu.filter_orb_opts(e.currentTarget);
 				});
 
 				return true;
@@ -589,14 +501,16 @@ window.XBS = {
 			$.ajax({
 				type: 'POST',
 				url: "orders/add_to_cart",
-				data: $("#orderOrbForm").serialize(),
+				data: $(XSM.menu.orb_order_form).serialize(),
 				success: function (data) {
 					data = JSON.parse(data);
 					if (data.success == true) {
-						if (XBS.data.current_orb_card) XBS.layout.reset_orb_card_stage();
-						var modal = $("<div/>").addClass("xtreme-modal success").html("<h1>Success!</h1>").hide();
-						$(C.BODY).append(modal);
-						$("#order-modal").show('clip');
+						if (XBS.data.current_orb_card) XBS.menu.reset_orb_card_stage();
+						$(C.BODY).append(function() {
+							return $("<div/>").addClass([stripCSS(XSM.modal.xtreme_modal), XSM.effects.success].join(" "))
+										.html("<h1>Success!</h1>").hide();
+						});
+						$(XSM.modal.order_modal).show('clip');
 					}
 				}
 			});
@@ -608,40 +522,56 @@ window.XBS = {
 				price_rank = data.priceRank;
 			}
 
-			$(".orb-size-button").each(function () {
-				var this_price = $(this).data('priceRank');
-				if (this_price == price_rank) {
-					XBS.layout.activize(this);
-				}
+			$(XSM.menu.orb_size_button).each(function () {
+				if ($(this).data('priceRank') == price_rank) XBS.layout.activize(this);
 			});
-			XBS.layout.show_orb_card_back_face()
+			XBS.menu.show_orb_card_back_face()
 		},
-		filter_toppings: function (reset) {
-			var inactive = {};
-			$(XSM.menu.orb_opt_filter).each(function () {
-				if (reset == true) {
-					$(this).removeClass(XSM.effects.inactive).addClass(XSM.effects.active)
-						.children(asClass(XSM.effects.unchecked)).each(function () {
-							$(this).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
-						});
-					inactive[$(this).data('filter')] = false;
+		reset_orb_opt_filters: function() {
+			$(XSM.menu.orb_opt_filter).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
+			$(XSM.menu.orb_opt_filter_span).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
+			XBS.menu.data_structures.update_orb_opt_filters_list(C.CHECK);
+			return true;
+		},
+		filter_orb_opts: function (target, all) {
+			if (all == C.CHECK) {
+				$(XSM.menu.orb_opt_filter).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
+				$(XSM.menu.orb_opt_filter_span).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
+				XBS.menu.data_structures.update_orb_opt_filters_list(C.CHECK);
+			}
+
+			if (all == C.UNCHECK ) {
+				$(XSM.menu.orb_opt_filter).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+				$(XSM.menu.orb_opt_filter_span).removeClass(XSM.effects.checked).addClass(XSM.effects.unchecked);
+				XBS.menu.data_structures.update_orb_opt_filters_list(C.UNCHECK);
+				pr(XBS.data.orb_opt_filters, "filters post uncheck all");
+			}
+
+			if (target) {
+				var filter = $(target).data('filter');
+				XBS.data.orb_opt_filters[filter] = flip(XBS.data.orb_opt_filters[filter]);
+				var checkbox = $(target).children(XSM.menu.orb_opt_filter_span)[0];
+				if ( $(target).hasClass(XSM.effects.active) ) {
+					$(target).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+					$(checkbox).removeClass(XSM.effects.checked).addClass(XSM.effects.unchecked);
 				} else {
-					inactive[$(this).data('filter')] = $(this).hasClass(XSM.effects.inactive);
+					$(target).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
+					$(checkbox).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
 				}
-			});
-			var toppings_list = $(XSM.menu.orb_opt_filters).children(XSM.menu.orb_opt);
-			$.map(toppings_list, function (topping, index) {
-				var flags = $(topping).data('flags');
-				$(topping).hide("fade", 300);
-				var hide = false;
-				for (var i in flags) {
-					if (flags[i] in inactive && inactive[flags[i]] == true) {
-						hide = true
-						break;
-					}
-				}
-				if (!hide) $(topping).show("fade", 300);
-			});
+			}
+			$(XSM.menu.orb_opt).addClass(XSM.effects.fade_out);
+			setTimeout( function() {
+				$(XSM.menu.orb_opt).show();
+				$.map($(XSM.menu.orb_opt), function (orb_opt, index) {
+					$.map($(orb_opt).data('flags'), function(flag) {
+						if ( flag in XBS.data.orb_opt_filters) {
+						if (XBS.data.orb_opt_filters[flag] == C.UNCHECK) {
+							$(orb_opt).hide();
+						}}
+					});
+				});
+				setTimeout(function() { $(XSM.menu.orb_opt).removeClass(XSM.effects.fade_out); }, 30);
+			},300);
 
 			return true;
 		},
@@ -662,6 +592,158 @@ window.XBS = {
 			$(XSM.menu.orb_order_form_price_rank).val(price_rank);
 			return true;
 		},
+		rebuild_orb_opt_filters: function() {
+			var filter_flags = {};
+			$(XSM.menu.orb_opt_filter).remove();
+			$(XSM.menu.orb_opt).each(function() {
+				$.map($(this).data('flags'), function(flag, index) {
+					if (!filter_flags[flag]) {
+						filter_flags[flag] = true;
+						$(XSM.menu.orb_opt_filters).append(
+							$("<li/>").addClass([stripCSS(XSM.menu.orb_opt_filter), XSM.effects.active].join(" "))
+										.data("filter", flag)
+										.attr("data-filter", flag)
+										.html("<span class='icon-checked'></span>" + str_to_upper(flag))
+						);
+					}
+				});
+			});
+			return true;
+		},
+		refresh_orb_card_stage: function (orb_card_id) {
+			pr(orb_card_id, "refresh_orb_card_stage");
+			// todo: fallback on ajax fail
+			XBS.data.current_orb_card = orb_card_id;
+			var url = XBS.routes.menuitem + C.DS + orb_card_id
+			if (XBS.cfg.root.length != 0) url = C.DS + XBS.cfg.root + C.DS + url
+
+			$.get(url, function (data) {
+				var orb_card_stage = $.parseHTML(data)[0];
+				var orb_opts = $($(orb_card_stage).find(XSM.menu.orb_opt_container)[0]).find(XSM.menu.orb_opt);
+				var replace_time = 0;
+
+				// remove orb-opts once extracted so they can be moved to menu
+				$(orb_card_stage).find(XSM.menu.orb_opt_container)[0].remove();
+
+				// hide current orb-card-row contents & orb-card-stage-menu items before replacing
+				$(orb_card_stage).find(XSM.menu.orb_card_content_container).each(
+					function() { $(this).addClass(XSM.effects.fade_out); });
+				$(orb_opts).each(function() {$(this).addClass(XSM.effects.fadeOut).hide();});
+
+				// do replacements and fade items back in
+				if ($(XSM.menu.orb_card_3d_context).hasClass(XSM.effects.flipped_y) ) {
+					replace_time = 950;
+					XBS.menu.show_orb_card_front_face();
+				}
+				setTimeout(function() {
+						$(XSM.menu.orb_card_content_container).addClass(XSM.effects.fade_out);
+						setTimeout( function() {
+							$(XSM.menu.orb_card_stage).replaceWith(orb_card_stage);
+							// this timeout just buys the browser a moment to catch up, otherwise CSS transition doesn't fire
+							setTimeout(function() { $(XSM.menu.orb_card_content_container).removeClass(XSM.effects.fade_out);}, 30);
+							// remove all the orb-opts from the previous item and replace them with the new set
+							$(XSM.menu.orb_opt).remove();
+							$(orb_opts).find(XSM.menu.orb_opt).each(function() {
+								$(this).appendTo(XSM.menu.orb_card_stage_menu);
+							});
+						}, 300);
+				}, replace_time);
+			}).then( function () {
+				XBS.menu.rebuild_orb_opt_filters();
+				XBS.fn.execInitSequence({"XBS.menu.data_structures": XBS.menu.data_structures})
+				XBS.menu.load_from_cart(orb_card_id);
+			});
+		},
+		refresh_active_orbcat_menu: function (orbcat_id, orbcat_name) {
+			pr([orbcat_id, orbcat_name], "refresh_active_orbcat_menu()");
+			// todo: fallback on ajax fail
+			var url = XBS.routes.menu + C.DS + orbcat_id
+			if (XBS.cfg.root.length != 0) url = C.DS + XBS.cfg.root + C.DS + url;
+
+			$.get(url,function (data) {
+				var active_orbcat_menu = $.parseHTML(data)[1];
+				var active_orb_id = $($(active_orbcat_menu).find(XSM.menu.active_orbcat_item)[0]).data('orb');
+
+				// toggle the header; alternates rotating front-to-back or back-to-front
+				if ($(XSM.menu.active_orb_name_3d_context).hasClass(XSM.effects.flipped_x)) {
+					$(XSM.menu.active_orb_name_front_face).html(orbcat_name);
+					$(XSM.menu.active_orb_name_3d_context).removeClass(XSM.effects.flipped_x);
+				} else {
+					$(XSM.menu.active_orb_name_back_face).html(orbcat_name);
+					$(XSM.menu.active_orb_name_3d_context).addClass(XSM.effects.flipped_x);
+				}
+
+				// hide all active orbcats in new data so they fade-in when shown
+				$(active_orbcat_menu).find(XSM.menu.active_orbcat_item).each(function() {
+					$(this).addClass(XSM.effects.fade_out);
+				});
+				// hide all active orbcats in orb card stage menu before replacing them
+				$(XSM.menu.active_orbcat_item).addClass(XSM.effects.fade_out);
+				$(XSM.menu.orbcat_menu_title_subtitle).addClass(XSM.effects.fade_out);
+
+				XBS.menu.refresh_orb_card_stage(active_orb_id);
+				setTimeout(function () {
+					$(XSM.menu.active_orbcat_item).remove()
+					setTimeout(function () {
+						$(XSM.menu.orbcat_menu_title_subtitle).html(orbcat_name).removeClass(XSM.effects.fade_out);
+						$(active_orbcat_menu).find(XSM.menu.active_orbcat_item).each(function() {
+							$(this).appendTo(XSM.menu.orb_card_stage_menu);
+						});
+						setTimeout(function() {$(XSM.menu.active_orbcat_item).removeClass(XSM.effects.fade_out);}, 30);
+						XBS.menu.filter_orb_opts(false, C.CHECK);
+					}, 300);
+				}, 300);
+			}).then( function () { $(C.BODY).trigger(C.ORB_CARD_REFRESH); });
+		},
+		reset_orb_card_stage: function () {
+			pr("<no args>", "reset_orb_card_stage()");
+			$(XSM.menu.orb_order_form_price_rank).val(0);
+			$(XSM.menu.orb_size_button).each(function () {
+				$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+			});
+			$(XSM.menu.orb_order_form_quantity).val(1);
+			$(XSM.menu.orb_order_form_prep_instrux).val("");
+			XBS.menu.show_orb_card_front_face();
+		},
+		show_orb_card_front_face: function() {
+			$(XSM.menu.orb_card_3d_context).removeClass(XSM.effects.flipped_y);
+			$(XSM.menu.orb_opt).addClass(XSM.effects.fade_out);
+			setTimeout( function() {
+				$(XSM.menu.orb_opts_menu_header).addClass(XSM.effects.slide_right);
+				$(XSM.menu.orb_opt).hide();
+				setTimeout(function() {
+					XBS.menu.reset_orb_opt_filters();
+					$(XSM.menu.active_orbcat_item).show()
+					setTimeout(function() { $(XSM.menu.active_orbcat_item).removeClass(XSM.effects.fade_out);}, 30);
+					setTimeout(function() {
+						$(XSM.menu.orb_opts_menu_header).hide()
+						$(XSM.menu.active_orbcat_menu_header).show();
+						setTimeout(function() { $(XSM.menu.active_orbcat_menu_header).removeClass(XSM.effects.slide_left);}, 30);
+						$(XSM.menu.orb_card_stage_menu).addClass(XSM.effects.activizing);
+					}, 300);
+				}, 300);
+			}, 300);
+
+			return true;
+		},
+		show_orb_card_back_face: function() {
+			$(XSM.menu.orb_card_3d_context).addClass(XSM.effects.flipped_y);
+			$(XSM.menu.active_orbcat_item).addClass(XSM.effects.fade_out);
+			setTimeout( function() {
+				$(XSM.menu.active_orbcat_menu_header).addClass(XSM.effects.slide_left);
+				$(XSM.menu.active_orbcat_item).hide();
+				setTimeout(function() {
+					$(XSM.menu.orb_opt).show()
+					setTimeout(function() {$(XSM.menu.orb_opt).removeClass(XSM.effects.fade_out);}, 30);
+					setTimeout( function() {
+						$(XSM.menu.active_orbcat_menu_header).hide();
+						$(XSM.menu.orb_opts_menu_header).show();
+						setTimeout(function() { $(XSM.menu.orb_opts_menu_header).removeClass(XSM.effects.slide_right);}, 30);
+						$(XSM.menu.orb_card_stage_menu).removeClass(XSM.effects.activizing);
+					}, 300);
+				}, 350);
+			}, 300);
+		},
 		stash_menu: function () {
 			//XBS.layout.fasten([XSM.menu.orb_card_wrapper, XSM.menu.orbcat_menu]);
 			$(XSM.menu.user_activity_panel).removeClass("show-for-large-up")
@@ -675,7 +757,7 @@ window.XBS = {
 					});
 				});
 		},
-		toggle_topping: function (element, trigger_update) {
+		toggle_orb_opt: function (element, trigger_update) {
 			if ($(element).hasClass(XSM.effects.active)) {
 				$(element).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
 				$(element).find(XSM.menu.orb_opt_icon).each(function () {
@@ -691,7 +773,7 @@ window.XBS = {
 			if (trigger_update === true) setTimeout(function() { $(C.BODY).trigger(C.ORDER_UI_UPDATE);}, 300);
 			return true;
 		},
-		toggle_topping_icon: function (element, trigger_update) {
+		toggle_orb_opt_icon: function (element, trigger_update) {
 			XBS.layout.activize(element); // wraps activize so event propagation can be stopped
 			if (trigger_update === true) $(C.BODY).trigger(C.ORDER_UI_UPDATE);
 			return true;
@@ -726,9 +808,9 @@ window.XBS = {
 				var weight = $(this).val();
 				var topping_id = asId("orb_opt-coverage-" + $(this).attr('id').replace("OrderOrbOrbopts", ""));
 				if (weight in weight_dict) {
-					XBS.menu.toggle_topping($(topping_id), false);
+					XBS.menu.toggle_orb_opt($(topping_id), false);
 					var icon = $(topping_id).find(XSM.menu.orb_opt_icon + "[data-weight=" + weight+"]")[0];
-					XBS.menu.toggle_topping_icon(icon, false);
+					XBS.menu.toggle_orb_opt_icon(icon, false);
 				}
 			});
 			var price_rank = $(XSM.menu.orb_order_form_price_rank).val()
@@ -738,7 +820,7 @@ window.XBS = {
 	splash: {
 		init: function () {
 			if (!XBS.cfg.is_splash) return true;
-			XBS.fn.execInitSequence(XBS.splash.jq_binds);
+			XBS.fn.execInitSequence({"XBS.splash.jq_binds": XBS.splash.jq_binds});
 			$(XSM.splash.self).on(C.MOUSEOVER, function () {
 				$(XSM.splash.openingDeal).slideDown();
 				$(this).unbind(C.HOVER);
@@ -818,29 +900,46 @@ window.XBS = {
 		}
 	},
 	fn: {
-		execInitSequence: function (initOb) {
-			if (!exists(initOb.has_init_sequence)) {
-				throw new TypeError("Object passed to XBS.fn.execInitSequence() does not contain 'has_init_sequence' property.");
+		execInitSequence: function (init_list) {
+			var meta_sit_rep = {state: true, report:{}};
+			for (init_ob_name in init_list) {
+				meta_sit_rep.report[init_ob_name] = {};
+				var init_ob = init_list[init_ob_name];
+				if (!exists(init_ob.has_init_sequence) ) {
+					throw new TypeError("Object passed to XBS.fn.execInitSequence() does not contain 'has_init_sequence' property.");
+				}
+				for (fn in init_ob) {
+					if (fn != "has_init_sequence")  {
+						meta_sit_rep.report[init_ob_name][fn] = init_ob[fn]();
+						if (meta_sit_rep.report[init_ob_name][fn] !== true) meta_sit_rep.state = false;
+					}
+				}
 			}
-			var sitRep = {};
-			for (fn in initOb) {
-				if (fn != "has_init_sequence") sitRep[fn] = initOb[fn]();
+			return meta_sit_rep;
+		},
+		route: function(controller, action) {
+			if (controller in XBS.routes) {
+				if (action in XBS.routes[controller]) {
+					var url = XBS.routes[controller][action] + C.DS + orb_card_id
+					if (XBS.cfg.root.length != 0) url = C.DS + XBS.cfg.root + C.DS + url
+					return url;
+				}
 			}
-			return sitRep;
+			 return false;
 		},
 
 		/**
 		 * setHost method
 		 * @desc  Sets the root directory for AJAX references given <host>
-		 * @host <str> string key for host in XBS.data.hostRootDirs
+		 * @host <str> string key for host in XBS.data.host_root_dirs
 		 * @throws
 		 * @returns <boolean>
 		 */
 		setHost: function (host) {
-			if (XBS.data.hostRootDirs[host] == C.UNDEF) {
-				throw new ReferenceError("Error: host '{0}' not found in XBS.data.hostRootDirs.".format(host));
+			if (XBS.data.host_root_dirs[host] == C.UNDEF) {
+				throw new ReferenceError("Error: host '{0}' not found in XBS.data.host_root_dirs.".format(host));
 			} else {
-				XBS.cfg.root = XBS.data.hostRootDirs[host];
+				XBS.cfg.root = XBS.data.host_root_dirs[host];
 			}
 			return true;
 		},

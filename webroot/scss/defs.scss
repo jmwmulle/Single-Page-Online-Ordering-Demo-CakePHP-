@@ -146,6 +146,10 @@ $orb-opt-filter-padding-left: $orb-card-stage-menu-width  - ($orb-card-wrapper-w
 $orb-opt-filter-button-height: $orb-opt-filter-height / 2;
 $orb-opt-filter-button-width: ($orb-card-stage-menu-width - $orb-opt-filter-padding-left - ($base-padding + 2 * $tight-padding)) / 3;
 $orb-opt-text-width: $orb-card-stage-menu-width - ($orb-opt-right-padding + $orb-opt-filter-padding-left + 5 * $orb-opt-icon-button-width);
+$orb-opt-filter-all-height: $orb-card-stage-menu-item-height - 2 * $tight-padding;
+$orb-opt-filter-all-inner-height: $orb-card-stage-menu-item-height - 4 * $tight-padding;
+$orb-opt-filter-all-width: 5.3rem;
+$orb-opt-filter-all-transform-width: $orb-opt-filter-all-width - 0.75rem;
 
   // FLOAT LABELS
 $float-label-height: $h3-font-size * 1.75;

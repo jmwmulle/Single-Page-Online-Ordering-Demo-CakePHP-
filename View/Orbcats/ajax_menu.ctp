@@ -6,5 +6,4 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-echo $this->Element('active_orbcat_menu', array('active_orbcat' => $active_orbcat, 'hide_text' => true));
-?>
+echo $this->Element('active_orbcat_menu', array('active_orbcat' => $active_orbcat, 'ajax' => true));

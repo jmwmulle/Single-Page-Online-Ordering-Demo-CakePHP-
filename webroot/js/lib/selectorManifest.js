@@ -18,8 +18,8 @@ var XSM = {
 		imageQueue: "#image-loading-queue",
 		loadingScreen: "#loadingScreen",
 		multi_activizing: ".multi-activizing",
-		preserve_aspect_ratio: ".preserve-aspect-ratio"
-
+		preserve_aspect_ratio: ".preserve-aspect-ratio",
+		primary_modal: "#primary-modal"
 	},
 	effects: {
 		active: "active",
@@ -37,6 +37,7 @@ var XSM = {
 		flipped_y: "flipped-y",
 		float_label: "float-labeled",
 		solidify: "solidify",
+		success: "success",
 		transitioning: "transitioning",
 		unchecked: "icon-unchecked"
 	},
@@ -66,9 +67,6 @@ var XSM = {
 		orb_card_stage_menu_wrapper: "#orb-card-stage-menu-wrapper",
 		orb_card_3d_context: "#orb-card-3d-context",
 		orb_card_wrapper: "#orb-card-wrapper",
-		orb_opt_weight: ".orb-opt-weight",
-		orb_opt_container: "#orb-opts-container",
-		orb_opts_menu_header: "#orb-opts-menu-header",
 		orb_order_form: "#orderOrbForm",
 		orb_order_form_inputs: "#orderOrbForm input",
 		orb_order_form_orb_opts: "#orderOrbForm input.orb-opt-weight",
@@ -78,20 +76,28 @@ var XSM = {
 		orb_size_button: ".orb-size-button",
 		orbcat_menu_title_header: "#orbcat-menu-title h1",
 		orbcat_menu_title_subtitle: "#orbcat-menu-title h1 span",
-		orbcat_refresh: ".orbcat-refresh",
+		orbcat: ".orbcat",
 		orbcat_menu: "#orbcat-menu",
-		orb_opt_filters: "#orb-opt-filters",
 		orb_opt: ".orb-opt",
 		orb_opt_active: ".orb-opt.active",
+		orb_opt_container: "#orb-opts-container",
 		orb_opt_icon: ".orb-opt-coverage",
 		orb_opt_icon_active: ".orb-opt-coverage.active",
-		orb_opt_filter:".orb-opt-filter",
+		orb_opt_filter: ".orb-opt-filter",
+		orb_opt_filters: "#orb-opt-filters",
+		orb_opt_filter_span: ".orb-opt-filter span",
+		orb_opt_filter_span_checked: ".orb-opt-filter span.icon-checked",
+		orb_opt_filter_span_unchecked: ".orb-opt-filter span.icon-unchecked",
+		orb_opt_filter_all: ".orb-opt-filter-all",
+		orb_opt_weight: ".orb-opt-weight",
+		orb_opts_menu_header: "#orb-opts-menu-header",
 		tiny_orb_opts_list: "tiny-orb-opt-list",
 		tiny_orb_opts_list_wrapper:"#tiny-orb-opts-list-wrapper",
 		tiny_orb_opts_list_item: ".tiny-orb-opts-list-item",
 		user_activity_panel: "#user-activity-panel"
 	},
 	modal: {
+		xtreme_modal: ".xtreme-modal",
 		order_modal:"#order-modal",
 		link: ".modal-link",
 		link_order: ".modal-link.order"

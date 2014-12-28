@@ -7,13 +7,23 @@
  * About.me: about.me/thisimpetus
  */
 
-$classes = array("orb-opt-filter", "inline", "text-left", "orb-card-stage-menu");?>
-><div id="orb-opts-menu-header" class="slide-right hidden box rel orb-card-stage-menu-header">
-	<ul id="orb-opt-filters" class="orb-opt-filter, multiactivizing"
-<?php foreach( array("premium", "meat", "veggie", "sauce", "cheese", "check all") as $filter) {
-	$data = array("filter" => $filter);?>
-	><li <?php echo ___cD($classes);?> <?php echo ___dA($data);?>><span class="icon-checked"></span> <?php echo strtoupper($filter);?></li
-	<?php }
-	$classes = array("box", "rel", "rightward", "stretch", "active", "orb-card-stage-menu", "multi-activizing", "flush");?>
-	></ul>
-</div
+?>
+
+><div id="orb-opts-menu-header" class="slide-right hidden box rel orb-card-stage-menu-header"
+	><ul id="orb-opt-filters" class="multiactivizing"
+<?php
+	$filters =  array("premium", "meat", "veggie", "sauce", "cheese");
+	foreach( $filters  as $filter) {
+		$data = array("filter" => $filter);
+		$classes = array("orb-opt-filter", "active");?>
+		><li <?php echo ___cD($classes);?> <?php echo ___dA($data);?>><span class="icon-checked"></span> <?php echo strtoupper($filter);?></li
+	<?php } ?>
+	><li id="orb-opt-filters-all" class="box rightward"
+		><span class="icon-tab-arrow-l"></span
+		><ul class="flush"
+			><li><a href="#" class="orb-opt-filter-all" data-all="uncheck" >UNCHECK ALL</a></li
+			><li><a href="#" class="orb-opt-filter-all" data-all="check" >CHECK ALL</a></li
+		></ul
+	></li
+	></ul
+></div

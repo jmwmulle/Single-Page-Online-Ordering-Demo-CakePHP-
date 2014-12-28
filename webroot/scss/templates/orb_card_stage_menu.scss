@@ -4,7 +4,7 @@
 
 .orb-card-stage-menu-header {
   overflow: hidden;
-  & * { overflow:hidden;}
+ // & * { overflow:hidden;}
   height : $orb-card-stage-menu-item-height;
   width  : $orb-card-stage-menu-width;
   h2, ul {
@@ -62,19 +62,58 @@
     height           : $orb-card-stage-menu-item-height;
     padding          : $tight-padding;
     padding-left     : $orb-opt-filter-padding-left;
-  //  float            : right;
-  //  background-color : $xtreme-red;
-  overflow:hidden;
+    overflow:hidden;
+    z-index:8010;
   li {
+    cursor:pointer;
+    float:left;
     overflow:hidden;
     background-color : transparent;
     width            : $orb-opt-filter-button-width;
     height           : $orb-opt-filter-button-height;
+    &:hover { color:lighten($xtreme-red, 35%);}
   }
 }
+
 
 .orb-opt-configure-header {
   background-color : $xtreme-red;
   padding          : $tight-padding + 0.25 * $h3-font-size  0 $tight-padding $base-padding;
   line-height      : $h3-font-size;
+}
+
+li#orb-opt-filters-all {
+  height: $orb-opt-filter-all-height;
+  margin: $tight-padding 0;
+  width: $orb-opt-filter-all-width;
+  transform: translate($orb-opt-filter-all-transform-width, 0);
+  border-top-left-radius: $global-radius;
+  border-bottom-left-radius: $global-radius;
+  padding: $tight-padding;
+  padding-left: rem-calc(2px);
+  background-color:$white;
+  box-shadow: -3px 0 3px $black-a25;
+  color: $xtreme-red;
+  &:hover {
+    transform: translate(0, 0);
+    span { color: $xtreme-red; }
+  }
+
+  ul, span {
+    vertical-align:top;
+    padding:0;
+    margin:0;
+    display:inline-block;
+    height: $orb-opt-filter-all-height;
+  }
+  ul {
+    width:4rem;
+    background-color:transparent;
+    padding-left:$tight-padding;
+    li {
+      width:4rem;
+      display:block;
+      height: $orb-opt-filter-all-inner-height / 2;
+    }
+  }
 }

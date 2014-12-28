@@ -17,8 +17,7 @@
 					<!-- TOP  ROW --> <?php // every row has a button at left and content at right ;?>
 						<li class="orb-card-row">
 							<div id="favorite" class="orb-card-button inline float-labeled" data-float-label="favorite-label">
-								<div class="coming-soon-fill"></div>
-								<div class="triangle"></div>
+								<span class="icon-orb-card-favorite"></span>
 							</div
 							><div id="description" class="orb-card-content inline">
 								<div class="orb-card-content-container">
@@ -35,8 +34,7 @@
 								$class_array = array("orb-card-button", "add-to-cart", "float-labeled", "inline");
 							?>
 							<div id="order" <?php echo ___cD($class_array);?> <?php echo ___dA($data_array);?>>
-								<div class="coming-soon-fill"></div>
-								<div class="triangle"></div>
+								<span class="icon-orb-card-cart"></span>
 							</div
 							><div id="price-matrix" class="flush orb-card-content inline">
 								<div class="orb-card-content-container">
@@ -58,8 +56,7 @@
 						</li
 						><li class="orb-card-row">
 							<div id="like" class="orb-card-button inline float-labeled" data-float-label="like-label">
-								<div class="coming-soon-fill"></div>
-								<div class="triangle tr-right"></div>
+								<span class="icon-orb-card-share"></span>
 							</div
 							><div id="orb-card-options" class="orb-card-content inline">
 								<div class="orb-card-content-container">

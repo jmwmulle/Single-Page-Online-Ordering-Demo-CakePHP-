@@ -18,13 +18,11 @@ $this->start('orbcats_menu');
 		<?php
 		$m_title = $active_orbcat['name'];
 		foreach ($orbcats_list as $id => $orbcat) {
-			$orbcat_item_classes = array("orbcat-refresh",
-			                             ___strToSel($orbcat), "orbcat",
-			                             $id == $active_orbcat['id'] ? "active" : "inactive" );
-			$data = array("orbcat" => $id, "orbcat-name" => ucwords($orbcat));
+			$orbcat_item_classes = array("orbcat", $id == $active_orbcat['id'] ? "active" : "inactive" );
+			$data = array("orbcat" => $id, "name" => ucwords($orbcat));
 		?>
 		<li <?php echo ___cD($orbcat_item_classes);?> <?php echo ___dA($data);?>">
-			<a class="text-center"><?php echo ucwords($orbcat);?></a>
+			<a class="text-center"><span class="orbcat-icon icon-<?php echo ___strToSel($orbcat);?>"></span><?php echo ucwords($orbcat);?></a>
 		</li>
 		<?php } ?>
 		<li id="orbcat-menu-title" class="stretch box rel downward">

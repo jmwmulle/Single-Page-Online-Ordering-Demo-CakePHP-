@@ -48,6 +48,7 @@ button.unavailable {
     bottom: default;
   }
 }
+.noverflow { overflow:hidden;}
 
 #xtreme-modal {
   position: fixed;
@@ -153,6 +154,23 @@ footer {
         border-bottom: 2px solid $medium-grey;
         background-color : $white;
       }
+}
+.up-slid {
+  -webkit-transform: translate(0, -1000px);
+  -moz-transform: translate(0, -1000px);
+  -o-transform: translate(0, -1000px);
+  transform: translate(0, -1000px);
+}
+#primary-modal {
+  position:fixed;
+  top:0;
+  left:0;
+  border: $float-pane-border-width solid $white;
+  @include orb-card-gradient;
+  min-width:600px;
+  max-width: $row-width;
+  min-height:600px;
+  max-height:600px;
 }
 
 #monthly-content-wrapper {

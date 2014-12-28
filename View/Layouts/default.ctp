@@ -74,6 +74,7 @@ $img = array("splash/bluecircle.png",
 	echo $this->fetch('app');
 	echo $this->fetch('main');
 ?>
+<?php echo $this->Element('primary_modal'); ;?>
 <footer>
 	<section class="pagespan">
 		<div class="row">

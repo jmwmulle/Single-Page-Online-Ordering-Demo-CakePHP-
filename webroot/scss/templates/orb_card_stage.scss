@@ -29,6 +29,7 @@
   transform-origin         : 100% 0;
   -webkit-transform        : $float-label-transform;
   -moz-transform           : $float-label-transform;
+  -ms-transform           : $float-label-transform;
   -o-transform             : $float-label-transform;
   transform                : $float-label-transform;
   text-shadow              : 0 0 rem-calc(6px) $black-a33;
@@ -64,6 +65,7 @@ div#orb-card {
       top               : $triangle-center-position * 1.333333;
       -webkit-transform : rotate(-90deg);
       -moz-transform    : rotate(-90deg);
+      -ms-transform    : rotate(-90deg);
       -o-transform      : rotate(-90deg);
       transform         : rotate(-90deg);
     }
@@ -83,27 +85,33 @@ div#orb-card {
       background-repeat   : no-repeat;
       background-position : center;
       cursor              : pointer;
-
-      &#favorite {
-        background-color : $xtreme-yellow;
-        background-image : url('../img/orb_card.icon.fav.png');
-        .triangle { border-top : $triangle-border-width solid $xtreme-yellow; }
+      span {
+        display:block;
+        width               : $orb-card-button-width;
+        height              : $orb-card-button-height;
       }
-      &#order {
-        background-color : $xtreme-red;
-        background-image : url('../img/orb_card.icon.cart.png');
-        .triangle { border-top : $triangle-border-width solid $xtreme-red; }
-      }
-      &#like {
-        background-color : $xtreme-blue;
-        background-image : url('../img/orb_card.icon.like.png');
-        .triangle { border-top : $triangle-border-width solid $xtreme-blue; }
-      }
-      transition          : background-color $global-transition-time;
-      .triangle { transition : border-top-color $global-transition-time; }
-      &#favorite:hover, &#order:hover, &#like:hover {
-        background-color : $light-grey;
-        .triangle { border-top-color : $light-grey; }
+      &.bg-icons {
+        &#favorite {
+          background-color : $xtreme-yellow;
+          background-image : url('../img/orb_card.icon.fav.png');
+          .triangle { border-top : $triangle-border-width solid $xtreme-yellow; }
+        }
+        &#order {
+          background-color : $xtreme-red;
+          background-image : url('../img/orb_card.icon.cart.png');
+          .triangle { border-top : $triangle-border-width solid $xtreme-red; }
+        }
+        &#like {
+          background-color : $xtreme-blue;
+          background-image : url('../img/orb_card.icon.like.png');
+          .triangle { border-top : $triangle-border-width solid $xtreme-blue; }
+        }
+        transition          : background-color $global-transition-time;
+        .triangle { transition : border-top-color $global-transition-time; }
+        &#favorite:hover, &#order:hover, &#like:hover {
+          background-color : $light-grey;
+          .triangle { border-top-color : $light-grey; }
+        }
       }
     }
   }

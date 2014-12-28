@@ -1,65 +1,159 @@
 @charset "UTF-8";
 
 @font-face {
-  font-family : "xtreme-icons";
-  src         : url("../files/xtreme-icons/xtreme-icons.eot");
-  src         : url("../files/xtreme-icons/xtreme-icons.eot?#iefix") format("embedded-opentype"), url("../files/xtreme-icons/xtreme-icons.woff") format("woff"), url("../files/xtreme-icons/xtreme-icons.ttf") format("truetype"), url("../files/xtreme-icons/xtreme-icons.svg#xtreme-icons") format("svg");
-  font-weight : normal;
-  font-style  : normal;
+  font-family: "xtreme-icons";
+  src:url("../files/xtreme-icons/xtreme-icons.eot");
+  src:url("../files/xtreme-icons/xtreme-icons.eot?#iefix") format("embedded-opentype"),
+    url("../files/xtreme-icons/xtreme-icons.woff") format("woff"),
+    url("../files/xtreme-icons/xtreme-icons.ttf") format("truetype"),
+    url("../files/xtreme-icons/xtreme-icons.svg#xtreme-icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
 
 }
 
 [data-icon]:before {
-  font-family             : "xtreme-icons" !important;
-  content                 : attr(data-icon);
-  font-style              : normal !important;
-  font-weight             : normal !important;
-  font-variant            : normal !important;
-  text-transform          : none !important;
-  speak                   : none;
-  -webkit-font-smoothing  : antialiased;
-  -moz-osx-font-smoothing : grayscale;
+  font-family: "xtreme-icons" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+//  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
-  font-family             : "xtreme-icons" !important;
-  font-style              : normal !important;
-  font-weight             : normal !important;
-  font-variant            : normal !important;
-  text-transform          : none !important;
-  speak                   : none;
-  //  line-height: 1;
-  -webkit-font-smoothing  : antialiased;
-  -moz-osx-font-smoothing : grayscale;
+  font-family: "xtreme-icons" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+//  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .icon-cancel:before {
-  content : "a";
+  content: "a";
 }
-
 .icon-double:before {
-  content : "b";
+  content: "b";
 }
-
 .icon-full:before {
-  content : "c";
+  content: "c";
 }
-
 .icon-left-side:before {
-  content : "d";
+  content: "d";
 }
-
 .icon-right-side:before {
-  content : "e";
+  content: "e";
 }
-
 .icon-checked:before {
-  content : "f";
+  content: "f";
 }
-
 .icon-unchecked:before {
-  content : "g";
+  content: "g";
+}
+.icon-shopping:before {
+  content: "h";
+}
+.icon-facebook:before {
+  content: "j";
+}
+.icon-gplus:before {
+  content: "k";
+}
+.icon-twitter:before {
+  content: "l";
+}
+.icon-settings:before {
+  content: "m";
+}
+.icon-favorites:before {
+  content: "n";
+}
+.icon-share:before {
+  content: "i";
+}
+.icon-circle-arrow-r:before {
+  content: "o";
+}
+.icon-circle-arrow-l:before {
+  content: "p";
+}
+.icon-tab-arrow-l:before {
+  content: "q";
+}
+.icon-generic-pizza:before {
+  content: "r";
+}
+.icon-salads:before {
+  content: "s";
+}
+.icon-assorted-fingers:before {
+  content: "t";
+}
+.icon-super-pizzas:before {
+  content: "u";
+}
+.icon-specialty-pizzas:before {
+  content: "v";
+}
+.icon-poutines:before {
+  content: "w";
+}
+.icon-pita-wraps:before {
+  content: "x";
+}
+.icon-original-pizzas:before {
+  content: "y";
+}
+.icon-panzarottis:before {
+  content: "z";
+}
+.icon-sandwiches:before {
+  content: "A";
+}
+.icon-subs:before {
+  content: "B";
+}
+.icon-burgers:before {
+  content: "C";
+}
+.icon-donairs:before {
+  content: "D";
+}
+.icon-fish-and-chips:before {
+  content: "E";
+}
+.icon-chicken-and-chips:before {
+  content: "F";
+}
+.icon-xtreme-subs:before {
+  content: "G";
+}
+.icon-desserts:before {
+  content: "H";
+}
+.icon-beverages:before {
+  content: "I";
+}
+.icon-pasta:before {
+  content: "J";
+}
+.icon-orb-card-cart:before {
+  content: "K";
+}
+.icon-orb-card-favorite:before {
+  content: "L";
+}
+.icon-orb-card-share:before {
+  content: "M";
 }
 
 
@@ -195,15 +289,16 @@ input { font-family : "Helvetica Neue Light Condensed", arial, sans-serif !impor
 }
 
 li.orbcat {
-  line-height : 1.65 * $orbcat-menu-item-height;
+//  line-height : 1.65 * $orbcat-menu-item-height;
   text-align  : center;
+  span { font-size:rem-calc(42px);}
   a {
     @include HelveticaMdCn;
     color       : $body-font-color;
     font-size   : rem-calc(14px);
   }
   &:hover, &.active {
-    a { color : $xtreme-yellow; }
+    a, span { color : $xtreme-yellow; }
   }
 
 }
@@ -222,7 +317,14 @@ li.orbcat {
   }
 }
 
-div.orb-card-button { text-align : center; }
+div.orb-card-button span {
+  line-height:1;
+  font-size: $orb-card-button-height * 1.25;
+  &.icon-orb-card-favorite { color:$xtreme-yellow;}
+   &.icon-orb-card-cart { color: $xtreme-red; }
+   &.icon-orb-card-share { color:$xtreme-blue;}
+  &:hover { color: $light-grey !important;}
+}
 
 #active-orbcat-menu-header h2 { @include helvetica_v_center_lh($h2-font-size, $orb-card-stage-menu-item-height); }
 .orb-card-stage-menu li {
@@ -271,6 +373,18 @@ ul#orb-opts-filter * {
   color          : $white !important;
   text-align     : left;
 }
+li#orb-opt-filters-all {
+  span.icon-tab-arrow-l {
+    font-size: 0.8rem;
+    @include helvetica_v_center_lh(0.8rem, $orb-opt-filter-all-inner-height);
+  }
+  a {
+    font-size:0.8rem;
+    color: $text-grey;
+    &:hover { color: lighten($text-grey, 30%);}
+  }
+}
+
 #orb-total {
   color:$dark-grey;
   font-size: $h3-font-size;
