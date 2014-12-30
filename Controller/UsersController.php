@@ -51,7 +51,7 @@ class UsersController extends AppController {
 			$conditions = array('User.email'=>$this->request->data['User']['email']);    
 			if ($this->User->hasAny($conditions)) {
 				$this->Session->setFlash(__('That email address is already taken.'));
-				return $this->redirect(___cakeUrl('pages', 'splash'));
+				return $this->redirect(___cakeUrl('menu', ''));
 			} else {
 				$this->User->create();
 				if ($this->User->save($this->request->data)) {
@@ -226,7 +226,7 @@ class UsersController extends AppController {
 		    return $this->redirect(__cakeUrl('user', 'edit'));
 		} else {
 		    $this->Session->setFlash(__('Your email or password was incorrect.'));
-		    return $this->redirect(___cakeUrl('pages', 'splash'));
+		    return $this->redirect(___cakeUrl('menu', ''));
 		}
 	    }
 	    
@@ -234,7 +234,7 @@ class UsersController extends AppController {
 	    	$conditions = array('User.email'=>$this->request->data['User']['email']);    
 		if ($this->User->hasAny($conditions)) {
 			$this->Session->setFlash(__('That email address is already registered.'));
-			return $this->redirect(__cakeUrl('pages', 'splash'));
+			return $this->redirect(__cakeUrl('menu', ''));
 		} else {
 			$this->User->create();
 			if ($this->User->save($this->request->data)) {
@@ -271,7 +271,7 @@ class UsersController extends AppController {
 			} else {
 				db("Login Failed");
 				$this->Session->setFlash(__('Login failed. Please try again. (Stashed1)'));
-				return $this->redirect(___cakeUrl('pages', 'splash'));
+				return $this->redirect(___cakeUrl('menu', ''));
 			}
 	    } 	
 	}
@@ -281,7 +281,7 @@ class UsersController extends AppController {
 		$this->Session->setFlash('Good-Bye');
 		$this->Auth->logout();
 		$this->Session->write('stashedUser', null);
-		$this->redirect(___cakeUrl('pages', 'splash'));
+		$this->redirect(___cakeUrl('menu', ''));
 	}
 
 /*opauth_complete*/	
@@ -329,7 +329,7 @@ class UsersController extends AppController {
 					if (!$this->User->save($newUser))
 					{
 						$this->Session->setFlash(__('Login failed. Please try again.'));
-						return $this->redirect(___cakeUrl('pages', 'splash'));
+						return $this->redirect(___cakeUrl('menu', ''));
 					}
 					$this->Session->write('stashedUser', null);
 				}
@@ -340,7 +340,7 @@ class UsersController extends AppController {
 				} else {
 					db('Login failed');
 					$this->Session->setFlash(__('Login failed. Please try again.'));
-					return $this->redirect(___cakeUrl('pages', 'splash'));
+					return $this->redirect(___cakeUrl('menu', ''));
 				}
 			} else {
 				$this->Session->write('stashedUser',$newUser);
@@ -356,7 +356,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 	    parent::beforeFilter();
 
-	    $this->Auth->allow('confrim_address', 'opauth_complete', 'order_method', 'add', 'login','logout');
+	    $this->Auth->allow('index','view','confrim_address', 'opauth_complete', 'order_method', 'add', 'login','logout', 'initDB');
 	}
 
 	public function initDB() {
@@ -369,8 +369,8 @@ class UsersController extends AppController {
 	    // allow managers to posts and widgets
 	    $group->id = 2;
 	    $this->Acl->deny($group, 'controllers');
-	    $this->Acl->allow($group, 'controllers/Users/edit');
-
+	    $this->Acl->allow($group, 'controllers/users/edit');
+	    $this->Acl->allow($group, 'controllers/users/index');
 	    // we add an exit to avoid an ugly "missing views" error message
 	    echo "all done";
 	    exit;
