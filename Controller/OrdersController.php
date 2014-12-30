@@ -149,13 +149,7 @@ class OrdersController extends AppController {
 			return $this->redirect(array('action' => 'index'));
 		}
 
-	public function beforeFilter() {
-		parent::beforeFilter();
-		$this->disableCache();
-		$this->set('loggedIn', $this->Auth->loggedIn());
-	}
-
-
+	
 	public function clear() {
 		$this->Cart->clear();
 		$this->Session->setFlash('All item(s) removed from your shopping cart', 'flash_error');
@@ -270,7 +264,7 @@ class OrdersController extends AppController {
 
 		$ack = strtoupper($paypal['ACK']);
 		if($ack == 'SUCCESS' || $ack == 'SUCESSWITHWARNING') {
-			$this->Session->write('Shop.Paypal.Details', $paypal);
+			$this->Session->write('Order.Paypal.Details', $paypal);
 			return $this->redirect(array('action' => 'review'));
 		} else {
 			$ErrorCode = urldecode($paypal['L_ERRORCODE0']);
@@ -300,6 +294,8 @@ class OrdersController extends AppController {
 			$this->Order->set($this->request->data);
 			if($this->Order->validates()) {
 				$order = $cart;
+				$this->Order['detail'] = json_encode($cart);
+				$this->Order['invoice'] = "Not Yet Implemented";
 				$order['Order']['status'] = 1;
 
 				if($cart['Order']['order_type'] == 'paypal') {
@@ -391,5 +387,10 @@ class OrdersController extends AppController {
 		$this->set(compact('cart'));
 	}
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->disableCache();
+		$this->Auth->allow('success', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'step1', 'step2', 'review', 'index', 'view');
+	}
 
 }

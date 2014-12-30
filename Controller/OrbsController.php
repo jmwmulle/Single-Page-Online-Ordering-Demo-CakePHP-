@@ -129,5 +129,9 @@ class OrbsController extends AppController {
 		}
 	}
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('menu_item');
+	}
 
 }
