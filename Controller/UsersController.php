@@ -297,7 +297,7 @@ class UsersController extends AppController {
 					'firstname'=>$creds['auth']['info']['first_name'],
 					'lastname'=>$creds['auth']['info']['last_name'],
 					'email_verified'=>$creds['auth']['raw']['verified_email'],
-					'group_id'=>1
+					'group_id'=>2
 				));
 				$conditions = array('User.google_uid'=>$newUser['User']['google_uid']);
 			} elseif ($prov == 'Twitter') {
@@ -306,7 +306,7 @@ class UsersController extends AppController {
 					'twitter_uid'=>$creds['auth']['uid'],
 					'firstname'=>$split_name[0],
 					'lastname'=>$split_name[1],
-					'group_id'=>1
+					'group_id'=>2
 				));
 				$conditions = array('User.twitter_uid'=>$newUser['User']['twitter_uid']);
 			} elseif ($prov == 'Facebook') {
@@ -316,7 +316,7 @@ class UsersController extends AppController {
 					'firstname'=>$creds['auth']['info']['first_name'],
 					'lastname'=>$creds['auth']['info']['last_name'],
 					'email_verified'=>$creds['auth']['raw']['verified'],
-					'group_id'=>1
+					'group_id'=>2
 				));
 				$conditions = array('User.facebook_uid'=>$newUser['User']['facebook_uid']);
 			}
@@ -355,7 +355,23 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 	    parent::beforeFilter();
 
-	    // For CakePHP 2.1 and up
-	    $this->Auth->allow('add', 'login','logout');
+	    $this->Auth->allow('confrim_address', 'opauth_complete', 'ordering', 'add', 'login','logout');
+	}
+
+	public function initDB() {
+	    $group = $this->User->Group;
+
+	    // Allow admins to everything
+	    $group->id = 1;
+	    $this->Acl->allow($group, 'controllers');
+
+	    // allow managers to posts and widgets
+	    $group->id = 2;
+	    $this->Acl->deny($group, 'controllers');
+	    $this->Acl->allow($group, 'controllers/Users/edit');
+
+	    // we add an exit to avoid an ugly "missing views" error message
+	    echo "all done";
+	    exit;
 	}
 }

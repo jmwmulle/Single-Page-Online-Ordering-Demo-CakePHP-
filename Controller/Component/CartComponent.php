@@ -184,4 +184,9 @@ class CartComponent extends Component {
 
 //////////////////////////////////////////////////
 
+	#public function beforeFilter() {
+#		parent::beforeFilter();
+#		$this->Auth->allow();
+#	}
+
 }
