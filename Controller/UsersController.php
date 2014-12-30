@@ -356,7 +356,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 	    parent::beforeFilter();
 
-	    $this->Auth->allow('confrim_address', 'opauth_complete', 'ordering', 'add', 'login','logout');
+	    $this->Auth->allow('confrim_address', 'opauth_complete', 'order_method', 'add', 'login','logout');
 	}
 
 	public function initDB() {

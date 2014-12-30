@@ -390,7 +390,7 @@ class OrdersController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->disableCache();
-		$this->Auth->allow('success', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'step1', 'step2', 'review', 'index', 'view');
+		$this->Auth->allow('success', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'step1', 'step2', 'review', 'index', 'view');
 	}
 
 }
