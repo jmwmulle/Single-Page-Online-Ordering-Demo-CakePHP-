@@ -5,8 +5,14 @@ body {
   background-position:fixed;
 }
 
-li { list-style-type: none  !important; }
+* { transition : background-color $global-transition-time ease-in-out,
+background-image $global-transition-time ease-in-out,
+color $global-transition-time ease-in-out,
+opacity $global-transition-time ease-in-out,
+transform $global-transition-time ease-in-out; }
 
+li { list-style-type: none  !important; }
+hr { margin: $tight-padding 0 !important;}
 button.unavailable {
   background-color:rgb(225,225,225);
   background-image:url("../img/order_coming_soon.png");
@@ -38,7 +44,7 @@ button.unavailable {
     left:auto;
     right:0;
   }
-  &.downard { top:default; bottom: 0;}
+  &.downward { top:default; bottom: 0;}
   &.leftward { top: auto;}
   &.rel { position: relative; }
   .abs {
@@ -108,6 +114,14 @@ footer {
   transform: translate($orb-card-stage-menu-width, 0);
 }
 
+.slide-up {
+  -webkit-transform: translate(0, -1000px);
+  -moz-transform: translate(0, -1000px);
+  -ms-transform: translate(0, -1000px);
+  -o-transform: translate(0, -1000px);
+  transform: translate(0, -1000px);
+}
+
 .xtreme-blue-bg { background-color : $xtreme-blue; }
 
 .xtreme-select-list {
@@ -155,23 +169,8 @@ footer {
         background-color : $white;
       }
 }
-.up-slid {
-  -webkit-transform: translate(0, -1000px);
-  -moz-transform: translate(0, -1000px);
-  -o-transform: translate(0, -1000px);
-  transform: translate(0, -1000px);
-}
-#primary-modal {
-  position:fixed;
-  top:0;
-  left:0;
-  border: $float-pane-border-width solid $white;
-  @include orb-card-gradient;
-  min-width:600px;
-  max-width: $row-width;
-  min-height:600px;
-  max-height:600px;
-}
+
+
 
 #monthly-content-wrapper {
   position: relative;

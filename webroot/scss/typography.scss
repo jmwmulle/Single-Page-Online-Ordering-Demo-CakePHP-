@@ -37,6 +37,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+span.icon-hn-inline {
+  position: relative; top:0.15em;
+  padding-left: 0.3rem;
+}
 
 .icon-cancel:before {
   content: "a";
@@ -319,7 +323,7 @@ li.orbcat {
 
 div.orb-card-button span {
   line-height:1;
-  font-size: $orb-card-button-height * 1.25;
+  font-size: $orb-card-button-height * 1.275;
   &.icon-orb-card-favorite { color:$xtreme-yellow;}
    &.icon-orb-card-cart { color: $xtreme-red; }
    &.icon-orb-card-share { color:$xtreme-blue;}
@@ -361,9 +365,10 @@ div.orb-card-content {
 
 #tiny-orb-opts-list {
   color:$secondary-color;
+  overflow-y:auto !important;
+  height:rem-calc(32px);
   .tiny_orb-opt_list_item {
-    font-size:rem-calc(12px);
-    line-height:rem-calc(16px);
+    height:rem-calc(16px);
   }
 }
 ul#orb-opts-filter * {
@@ -390,17 +395,12 @@ li#orb-opt-filters-all {
   font-size: $h3-font-size;
 }
 
-
-#order-modal-content {
-  & * { color: $text-grey;}
-  a.modal-link {
-    @include HelveticaLtCn;
-      font-size:$h4-font-size;
-      transition: color $global-transition-time, text-shadow $global-transition-time;
-    &:hover {
-      color: $xtreme-blue;
-      text-shadow: 0 0 2px $xtreme-blue-a50;
-    }
-
-    }
+span.tiny-opt, span.tiny-opt-label {
+  font-size:rem-calc(12px);
+  @include helvetica_v_center_lh( rem-calc(12px), rem-calc(16px));
+  display:inline-block !important;
+   position:relative !important;
 }
+
+ span.tiny-opt-label { top: -3px;}
+ span.tiny-opt { top:-1px; padding-left:3px;}

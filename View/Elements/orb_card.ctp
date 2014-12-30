@@ -123,7 +123,7 @@
 	</div>
 
 <?php if ($ajax) { ?>
-	<div id="orb-opts-container" class="true-hidden">
+	<div id="orb-opts-container" class="true-hidden"
 		<?php
 			echo $this->Element('orb_opts_menu_header');
 			echo $this->Element('orb_opts_list', array('orb' => $orb, 'ul' => true));?>

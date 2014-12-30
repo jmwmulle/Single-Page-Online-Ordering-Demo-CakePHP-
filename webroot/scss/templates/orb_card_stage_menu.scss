@@ -107,11 +107,11 @@ li#orb-opt-filters-all {
     height: $orb-opt-filter-all-height;
   }
   ul {
-    width:4rem;
+    width:5rem;
     background-color:transparent;
     padding-left:$tight-padding;
     li {
-      width:4rem;
+      width:inherit;
       display:block;
       height: $orb-opt-filter-all-inner-height / 2;
     }

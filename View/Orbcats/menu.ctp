@@ -41,13 +41,13 @@ $this->start('order_modal');?>
 				<div class="large-8 medium-6 small-12 large-centered medium-centered columns">
 					<ul class="small-block-grid-3" class="hn-l-cn">
 						<li class="text-center">
-							<a id="continue-ordering"  href="#" class="modal-link order" data-action="continue_ordering"><?php echo strtoupper("Continue Ordering");?></a>
+							<a id="continue-ordering"  href="#" class="modal-link" data-route="continue_ordering"><?php echo strtoupper("Continue Ordering");?></a>
 						</li>
 						<li class="text-center">
-							<a id="view-order" href=#" class="modal-link order" data-action="view_order"><?php echo strtoupper("View Order");?></a>
+							<a id="view-order" href=#" class="modal-link" data-route="view_order"><?php echo strtoupper("View Order");?></a>
 						</li>
 						<li class="text-center">
-							<a id="finish-ordering" href="#" class="modal-link order" data-action="finish_ordering"><?php echo strtoupper("Finish Ordering");?></a>
+							<a id="finish-ordering" href="#" class="modal-link" data-route="finish_ordering"><?php echo strtoupper("Finish Ordering");?></a>
 						</li>
 					</ul>
 				</div>
@@ -72,13 +72,18 @@ $this->end('active_orb_card');
 ?>
 
 <main id="menu" class="box rel">
+	<div id="menu-container" class="box rel">
 	<div class="row">
 		<div class="large-12 columns">
 			<ul id="user-activity-panel" class="show-for-large-up activizing text-center">
 				<li><h2 class="body-font-color">I AM</h2></li>
-				<li class="active"><a class="body-font-color block">Just<br />Browsing</a></li>
-				<li class="inactive coming-soon"><a class="body-font-color block">Ordering<br />(Delivery)</a></li>
-				<li class="inactive coming-soon"><a class="body-font-color block">Ordering<br />(Pick-Up)</a></li>
+				<li class="active default"><a class="body-font-color block">Just<br />Browsing</a></li>
+				<li class="inactive">
+					<a class="body-font-color block modal-link overlay" data-route="order_method/delivery">Ordering<br />(Delivery)</a>
+				</li>
+				<li class="inactive">
+					<a class="body-font-color block modal-link overlay" data-route="order_method/pickup">Ordering<br />(Pick-Up)</a>
+				</li>
 			</ul
 			<?php echo $this->fetch('orbcats_menu').$this->fetch('monthly_content'); ?></div>
 	</div
@@ -93,6 +98,7 @@ $this->end('active_orb_card');
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 </main>
 <?php
