@@ -5,19 +5,6 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-function XtremeRoute(modal, url, arg_count, stash, overlay, stop_propagation, callback) {
-	this.modal = modal;
-	this.modal_content = modal + "-content";
-	this.url = url;
-	this.arg_count = arg_count;
-	this.args = null;
-	this.stash = stash;
-	this.overlay = overlay;
-	this.callback = callback;
-	this.stop_propagation = stop_propagation;
-
-	return this;
-}
 
 window.XBS = {
 	data: {
@@ -74,64 +61,117 @@ window.XBS = {
 	evnt: {
 		wakeFromSleep: eCustom("wakeFromSleep"),
 		assetsLoaded: eCustom("assetsLoaded"),
+		route_launched: eCustom("route_launched"),
 		orb_card_refresh: eCustom(C.ORB_CARD_REFRESH),
 		order_form_update: eCustom(C.ORDER_FORM_UPDATE),
 		order_ui_update: eCustom(C.ORDER_UI_UPDATE)
 	},
 	routes: {
-		menu: new XtremeRoute(false,"menu", null, false, false, false, null),
-		menuitem: new XtremeRoute(false,"menuitem", 1, false, false, false, null),
-		order_method: new XtremeRoute(XSM.modal.primary, "order_method", 1, false, true, false, null),
-		continue_ordering: new XtremeRoute(false, null, null, false, false, true, function() {
-			XBS.menu.show_orb_card_front_face()
-			setTimeout( function() {
-				XBS.layout.dismiss_modal();
-				XBS.menu.reset_orb_card_stage();
-			}, 900);
+		menu: new XtremeRoute({
+			modal: false,
+			url: "menu"
 		}),
-		finish_ordering: new XtremeRoute(XSM.modal.primary, "finish_ordering", 1, true, false, true, null),
-		view_order: new XtremeRoute(XSM.modal.primary, "cart", null, true, false, true, null),
-		submit_order_address: new XtremeRoute(null, null, null, false, false, false, function(){
-			 $("#orderAddressForm").validate({
-				debug:true,
-				rules:{
-					"data[orderAddress][firstname]": "required",
-					"data[orderAddress][phone]": {required: true, phoneUS: true},
-					"data[orderAddress][address]": "required",
-					"data[orderAddress][postal_code]": {required: true, minlength:6, maxlength:7}
-				},
-				messages: {
-					"data[orderAddress][firstname]": "Well we have to call you <em>something!</em>",
-					"data[orderAddress][phone]": {
-						required:"We'll need this in case there's a problem with your order.",
-						phoneUS: "Jusst ten little digits, separated by hyphens if you like..."},
-					"data[orderAddress][address]":"It's, err, <em>delivery</em> after all...",
-					"data[orderAddress][postal_code]": {
-						required: "This is how we check if you're in our delivery area!",
-						minlength: "Prooooobably something like \"A0A 0A0\"...",
-						maxlength: "Prooooobably something like \"A0A 0A0\"..."
+		menuitem: new XtremeRoute({
+			url:"menuitem",
+			params: {orb_id:{value:null, is_url:true}}
+		}),
+		orbcat: new XtremeRoute({
+			params:{
+				id:{value: null},
+				name:{ value: null}
+			},
+			callbacks: {
+				params_set: function() {
+					XBS.menu.refresh_active_orbcat_menu(this.params.id.value, this.params.name.value);
+				}
+			}
+		}),
+		orb: new XtremeRoute({
+			params:{ id:{value: null} },
+			callbacks: { params_set: function() { XBS.menu.refresh_orb_card_stage(this.params.id.value); } }
+		}),
+		order_method: new XtremeRoute({
+			modal: XSM.modal.primary,
+			url: "order_method",
+			behavior: C.OL,
+			params: {method:{value:null, is_url:true}},
+			callbacks: {
+				params_set: function() {
+					if (this.params.method.value == C.PICKUP) {
+						this.url = false;
+						// >>>RESET OWN LAUNCH CALLBACK & LISTENER<<<
+						this.launch_callback = function() { XBS.data.order_method = C.PICKUP; }
+						$(this).on("route_launched", this.launch_callback);
 					}
-				},
-				submitHandler: function() {
-					$.ajax({
-						type:"POST",
-						url:"confirm_address/session",
-						data: $("#orderAddressForm").serialize(),
-						success: function(data) {
-							pr(data);
-							try {
-								data = $.parseJSON(data);
-								XBS.data.user.order_method = data.order_method;
-								XBS.data.user.address = data.address;
-							} catch(e) {
+				}
+			}
+		}),
+		continue_ordering: new XtremeRoute({
+			callbacks:{
+				launch:function() {
+					XBS.menu.show_orb_card_front_face()
+					setTimeout( function() {
+						XBS.layout.dismiss_modal();
+						XBS.menu.reset_orb_card_stage();
+					}, 900);
+				}
+			}
+		}),
+		finish_ordering: new XtremeRoute({
+			modal: XSM.modal.primary,
+			url: "finish_ordering",
+			behavior: C.STASH_STOP
+		}),
+		view_order: new XtremeRoute({
+			modal: XSM.modal.primary,
+			url: "cart",
+			behavior: C.STASH_STOP
+		}),
+		submit_order_address: new XtremeRoute({
+			callbacks: {
+				launch: function(){
+					 $("#orderAddressForm").validate({
+						debug:true,
+						rules:{
+							"data[orderAddress][firstname]": "required",
+							"data[orderAddress][phone]": {required: true, phoneUS: true},
+							"data[orderAddress][address]": "required",
+							"data[orderAddress][postal_code]": {required: true, minlength:6, maxlength:7}
+						},
+						messages: {
+							"data[orderAddress][firstname]": "Well we have to call you <em>something!</em>",
+							"data[orderAddress][phone]": {
+								required:"We'll need this in case there's a problem with your order.",
+								phoneUS: "Jusst ten little digits, separated by hyphens if you like..."},
+							"data[orderAddress][address]":"It's, err, <em>delivery</em> after all...",
+							"data[orderAddress][postal_code]": {
+								required: "This is how we check if you're in our delivery area!",
+								minlength: "Prooooobably something like \"A0A 0A0\"...",
+								maxlength: "Prooooobably something like \"A0A 0A0\"..."
 							}
-							XBS.layout.dismiss_modal();
-							// do something with returned data
+						},
+						submitHandler: function() {
+							$.ajax({
+								type:"POST",
+								url:"confirm_address/session",
+								data: $("#orderAddressForm").serialize(),
+								success: function(data) {
+									pr(data);
+									try {
+										data = $.parseJSON(data);
+										XBS.data.user.order_method = data.order_method;
+										XBS.data.user.address = data.address;
+									} catch(e) {
+									}
+									XBS.layout.dismiss_modal();
+									// do something with returned data
+								}
+							});
 						}
 					});
+					$("#orderAddressForm").submit();
 				}
-			});
-			$("#orderAddressForm").submit();
+			}
 		})
 	},
 
@@ -184,6 +224,31 @@ window.XBS = {
 
 				return true;
 			},
+			init_routing: function() {
+				/** bind routes */
+				$(C.BODY).on(C.CLK, XSM.global.route, null, function (e) {
+					var route = $(e.currentTarget).data('route').split("/")
+					if ( route[0] in XBS.routes ) {
+						var route_ob = jQuery.extend({}, XBS.routes[route[0]], true);
+						route_ob.set_params(route.slice(1));
+						if (route_ob.stop_propagation) e.stopPropagation();
+						XBS.layout.launch_modal(route_ob);
+					}
+				});
+			},
+			init_modals: function () {
+				/** initially hide overlay & bind dismiss-on-click */
+				$(XSM.modal.overlay).addClass(XSM.effects.fade_out).hide().removeClass(XSM.effects.true_hidden);
+				$(C.BODY).on(C.CLK, XSM.modal.overlay, null, XBS.layout.dismiss_modal);
+
+				/** bind close-modal button */
+				$(C.BODY).on(C.CLK, XSM.modal.close_primary, null, function(e) {
+					var on_close = $(XSM.modal.primary).find(XSM.modal.on_close)[0];
+					var action = on_close ? $(on_close).data('action') : false;
+					XBS.layout.dismiss_modal(action);
+					return true;
+				})
+			},
 			bind_activizing_lists: function () {
 				$("body").on(C.CLK, XSM.global.activizing_list, function (e) {
 					XBS.layout.activize(e.currentTarget);
@@ -214,30 +279,6 @@ window.XBS = {
 				});
 
 				return true;
-			},
-			init_modals: function () {
-				/** initially hide overlay & bind dismiss-on-click */
-				$(XSM.modal.overlay).addClass(XSM.effects.fade_out).hide().removeClass(XSM.effects.true_hidden);
-				$(C.BODY).on(C.CLK, XSM.modal.overlay, null, XBS.layout.dismiss_modal);
-
-				/** bind modal-links */
-				$(C.BODY).on(C.CLK, XSM.modal.link, null, function (e) {
-					var route = $(e.currentTarget).data('route').split("/")
-					if ( route[0] in XBS.routes ) {
-						var route_ob = jQuery.extend({}, XBS.routes[route[0]]);
-						route_ob.args = route.slice(1);
-						if (route_ob.stop_propagation) e.stopPropagation();
-						XBS.layout.launch_modal(route_ob);
-					}
-				});
-
-				/** bind close-modal button */
-				$(C.BODY).on(C.CLK, XSM.modal.close_primary, null, function(e) {
-					var on_close = $(XSM.modal.primary).find(XSM.modal.on_close)[0];
-					var action = on_close ? $(on_close).data('action') : false;
-					XBS.layout.dismiss_modal(action);
-					return true;
-				})
 			},
 			bind_splash_links: function () {
 				$(C.BODY).on(C.CLK, XSM.splash.splash_link, null, function (e) {
@@ -335,39 +376,15 @@ window.XBS = {
 		launch_modal: function (route) {
 			pr(route, "launch_modal(route)");
 			var launch_delay;
-			if (route.stash) launch_delay = 1300;
+			if (route.stash) launch_delay = 900;
 			if (route.overlay) launch_delay = 300;
 
-			var url = route.arg_count > 0 ? route.url + C.DS + route.args.join(C.DS) : route.url;
-			pr(url);
-
 			// >>> RESIZE & POSITION PRIMARY IF NEEDED <<<
-			var target_modal_width = 1200 / 12 * 8;
-			var target_modal_height = 600;
-			var target_modal_max_height = 0.8 * $(window).innerHeight();
-
-			if (route.modal == XSM.modal.primary) {
-				var pm_width = 0.8 * $(window).innerWidth();
-				var pm_height = 0.6 * $(window).innerHeight();
-				var pm_left;
-				if (pm_width > target_modal_width) {
-					pm_left = ($(window).innerWidth() - target_modal_width) / 2;
-				} else {
-					pm_left = 0.1 * $(window).innerWidth();
-				}
-				if (pm_width > target_modal_width) pm_width = target_modal_width;
-				if (pm_height < target_modal_height) pm_height = target_modal_height;
-				$(XSM.modal.primary).css({
-					top: 0.2 * $(window).innerHeight(),
-					left: pm_left,
-					width: pm_width,
-					"max-height": target_modal_max_height
-				});
-			}
+			if (route.modal == XSM.modal.primary) XBS.layout.resize_primary_modal()
 
 			// >>> LAUNCH THE MODAL <<<
 			if (route.url) {
-				$.get(url, function (data) {
+				$.get(route.url, function (data) {
 					// >>> DO PRE-LAUNCH EFFECTS <<<
 					if (route.stash) XBS.menu.stash_menu();
 					if (route.overlay) $(XSM.modal.overlay).show().removeClass(XSM.effects.fade_out);
@@ -378,9 +395,9 @@ window.XBS = {
 				})
 				.fail(function() { return false; /* todo: put some shit here */ });
 			}
-			if (route.callback) pr(route.callback());
-
-
+			pr(route.launch_callback);
+			$(route).trigger("route_launched");
+			delete route;
 			return true;
 		},
 		multi_activize: function (element) {
@@ -414,6 +431,25 @@ window.XBS = {
 					XBS.layout.toggle_loading_screen();
 				});
 			}
+		},
+		resize_primary_modal: function() {
+			var target_modal_width = 1200 / 12 * 8;
+			var target_modal_max_height = 0.8 * $(window).innerHeight();
+
+			var pm_width = 0.8 * $(window).innerWidth();
+			var pm_left;
+			if (pm_width > target_modal_width) {
+				pm_left = ($(window).innerWidth() - target_modal_width) / 2;
+			} else {
+				pm_left = 0.1 * $(window).innerWidth();
+			}
+			if (pm_width > target_modal_width) pm_width = target_modal_width;
+			$(XSM.modal.primary).css({
+				top: 0.2 * $(window).innerHeight(),
+				left: pm_left,
+				width: pm_width,
+				"max-height": target_modal_max_height
+			});
 		},
 		toggle_float_label: function (label, state) {
 			if (state == C.SHOW) $(XSM.menu.float_label).html(str_to_upper(label)).addClass(XSM.effects.exposed);
@@ -457,19 +493,6 @@ window.XBS = {
 
 				/** confirm order button */
 				$(C.BODY).on(C.CLK, XSM.menu.confirm_order_button, null, XBS.menu.add_to_cart);
-				return true;
-			},
-			bind_content_refreshing: function () {
-				/** orbcat menu refreshing; fires when an ORBCAT IS CLICKED (ie. TOP MENU) */
-				$(C.BODY).on(C.CLK, XSM.menu.orbcat, null, function (e) {
-					var data = $(e.currentTarget).data();
-					XBS.menu.refresh_active_orbcat_menu(data.orbcat, data.name);
-				});
-
-				/** orb card stage refreshing; fires when an ORB IS CLICKED (ie. BOTTOM MENU) */
-				$(C.BODY).on(C.CLK, XSM.menu.active_orbcat_item, null, function (e) {
-					XBS.menu.refresh_orb_card_stage($(e.currentTarget).data('orb'));
-				});
 				return true;
 			},
 			bind_orbsize_update: function () {
@@ -630,12 +653,14 @@ window.XBS = {
 		refresh_active_orbcat_menu: function (orbcat_id, orbcat_name) {
 			pr([orbcat_id, orbcat_name], "refresh_active_orbcat_menu()");
 			// todo: fallback on ajax fail
-			var url = XBS.routes.menu + C.DS + orbcat_id
+			var url = "menu" + C.DS + orbcat_id
 			if (XBS.cfg.root.length != 0) url = C.DS + XBS.cfg.root + C.DS + url;
 
 			$.get(url,function (data) {
 				var active_orbcat_menu = $.parseHTML(data)[1];
-				var active_orb_id = $($(active_orbcat_menu).find(XSM.menu.active_orbcat_item)[0]).data('orb');
+				var orb_route = $($(active_orbcat_menu).find(XSM.menu.active_orbcat_item)[0]).data('route');
+				var active_orb_id = orb_route.split(C.DS)[1];
+
 
 				// >>> TOGGLE MENU HEADER; alternates rotating front-to-back or back-to-front <<<
 				if ($(XSM.menu.active_orb_name_3d_context).hasClass(XSM.effects.flipped_x)) {
@@ -677,7 +702,7 @@ window.XBS = {
 			pr(orb_card_id, "refresh_orb_card_stage");
 			// todo: fallback on ajax fail
 			XBS.data.current_orb_card = orb_card_id;
-			var url = XBS.routes.menuitem + C.DS + orb_card_id
+			var url = "menuitem" + C.DS + orb_card_id
 			if (XBS.cfg.root.length != 0) url = C.DS + XBS.cfg.root + C.DS + url
 
 			$.get(url, function (data) {
@@ -788,8 +813,8 @@ window.XBS = {
 				$(XSM.menu.orb_card_wrapper).addClass([XSM.effects.slide_left, XSM.effects.fade_out].join(" "));
 				setTimeout(function() {
 					$(XSM.menu.orbcat_menu).addClass([XSM.effects.slide_right, XSM.effects.fade_out].join(" "));
-				}, 500);
-			}, 500);
+				}, 300);
+			}, 300);
 		},
 		unstash_menu: function () {
 			$(XSM.menu.orbcat_menu).removeClass([XSM.effects.slide_right, XSM.effects.fade_out].join(" "));
@@ -797,8 +822,8 @@ window.XBS = {
 				$(XSM.menu.orb_card_wrapper).removeClass([XSM.effects.slide_left, XSM.effects.fade_out].join(" "));
 				setTimeout(function() {
 					$(XSM.menu.user_activity_panel).removeClass(XSM.effects.slide_up);
-				}, 500);
-			}, 500);
+				}, 300);
+			}, 300);
 		},
 		toggle_orb_opt: function (element, trigger_update) {
 

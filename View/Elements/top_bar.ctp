@@ -19,16 +19,16 @@
 	<div class="row">
 		<div class="large-4 columns">
 			<ul id="top-bar-social-icons" class="horizontal">
-				<li class="social-icon imgur"></li>
-				<li class="social-icon tumblr"></li>
-				<li class="social-icon twitter"></li>
-				<li class="social-icon email"></li>
-				<li class="social-icon pinterest"></li>
-				<li class="social-icon facebook"></li>
-				<li class="social-icon gplus"></li>
+				<li class="icon-email inline"></li>
+				<li class="icon-twitter inline"></li>
+				<li class="icon-facebook inline"></li>
+				<li class="icon-gplus inline"></li>
 			</ul>
 		</div>
-		<div class="large-4 columns"></div>
+		<div class="large-4 columns">
+			<a href="#" class="top-bar-link modal-link" data-route="view_order">View Cart</a>
+			<a href="#" class="top-bar-link modal-link" data-route="cart">Checkout</a>
+		</div>
 		<div class="large-4 columns">
 			<ul id="hours-and-location">
 				<li>

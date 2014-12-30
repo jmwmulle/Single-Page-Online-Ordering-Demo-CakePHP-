@@ -5172,7 +5172,7 @@ nav#login {
   /* IE6-9 fallback on horizontal gradient */
   min-width: 600px;
   max-width: 75rem;
-  min-height: 600px;
+  min-height: 200px;
   height: auto;
   z-index: 100001;
   overflow-y: auto;

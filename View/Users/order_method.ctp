@@ -15,7 +15,7 @@
 			<?php if ($method == 'delivery') { ?>
 		<div class="row">
 			<div class="large-4 columns">
-				<?php echo $this->Html->image( 'splash/logo.png' ); ?>
+				<?php echo $this->element("modal_masthead"); ?>
 			</div>
 			<div class="large-8 columns">
 				<h1>Delivery! Yay for sitting!</h1>

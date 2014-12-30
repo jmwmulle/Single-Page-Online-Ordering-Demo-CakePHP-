@@ -35,7 +35,14 @@ var constants = {
 	L: "<span class='icon-left-side tiny-opt icon-hnj-inline'></span>",
 	ORDER: "order",
 	PRIMARY: "primary",
-	WEIGHT: "weight"
+	WEIGHT: "weight",
+	STASH:1,
+	OL:3,
+	STASH_OL:4,
+	STOP:5,
+	STASH_STOP: 6,
+	STOP_OL:8,
+	STASH_OL_STOP:9
 };
 
 var C = constants;

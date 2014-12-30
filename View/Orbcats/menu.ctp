@@ -18,10 +18,10 @@ $this->start('orbcats_menu');
 		<?php
 		$m_title = $active_orbcat['name'];
 		foreach ($orbcats_list as $id => $orbcat) {
-			$orbcat_item_classes = array("orbcat", $id == $active_orbcat['id'] ? "active" : "inactive" );
-			$data = array("orbcat" => $id, "name" => ucwords($orbcat));
+			$orbcat_item_classes = array("orbcat", $id == $active_orbcat['id'] ? "active" : "inactive", "route" );
+			$data = array("route" =>implode(DS,array("orbcat",$id, ucwords($orbcat))));
 		?>
-		<li <?php echo ___cD($orbcat_item_classes);?> <?php echo ___dA($data);?>">
+		<li <?php echo ___cD($orbcat_item_classes);?> <?php echo ___dA($data);?>>
 			<a class="text-center"><span class="orbcat-icon icon-<?php echo ___strToSel($orbcat);?>"></span><?php echo ucwords($orbcat);?></a>
 		</li>
 		<?php } ?>
@@ -41,13 +41,13 @@ $this->start('order_modal');?>
 				<div class="large-8 medium-6 small-12 large-centered medium-centered columns">
 					<ul class="small-block-grid-3" class="hn-l-cn">
 						<li class="text-center">
-							<a id="continue-ordering"  href="#" class="modal-link" data-route="continue_ordering"><?php echo strtoupper("Continue Ordering");?></a>
+							<a id="continue-ordering"  href="#" class="route" data-route="continue_ordering"><?php echo strtoupper("Continue Ordering");?></a>
 						</li>
 						<li class="text-center">
-							<a id="view-order" href=#" class="modal-link" data-route="view_order"><?php echo strtoupper("View Order");?></a>
+							<a id="view-order" href=#" data-route="view_order"><?php echo strtoupper("View Order");?></a>
 						</li>
 						<li class="text-center">
-							<a id="finish-ordering" href="#" class="modal-link" data-route="finish_ordering"><?php echo strtoupper("Finish Ordering");?></a>
+							<a id="finish-ordering" href="#" data-route="finish_ordering"><?php echo strtoupper("Finish Ordering");?></a>
 						</li>
 					</ul>
 				</div>
@@ -90,8 +90,7 @@ $this->end('active_orb_card');
 	><div class="row"
 		><div class="large-12  columns"
 			><div id="orb-card-wrapper" class="float-pane box rel xtreme-blue-bg"
-				>
-				<?php echo $this->fetch('order_modal');?>
+				><?php echo $this->fetch('order_modal');?>
 				<?php echo $this->fetch('active_orb_card');?>
 				<div id="orb-card-stage-menu-wrapper" class="box rightward xtreme-blue-bg">
 					<?php echo $this->fetch('active_orbcat_menu');?>

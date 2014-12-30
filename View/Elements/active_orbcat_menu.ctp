@@ -21,10 +21,10 @@ $classes = array('flush', 'l-3', "box", "rel", "rightward", "stretch", "activizi
 ><ul id="orb-card-stage-menu" <?php echo ___cD($classes);?>><?php
 	foreach($active_orbcat['orbs'] as $i => $orb) {
 		if ($orb['id'] != -1) { // ie if it's not a dummy orb
-			$classes = array('active-orbcat-item', "xtreme-select-list",
+			$classes = array('active-orbcat-item', "xtreme-select-list", "modal-link",
 			                 $orb['id'] == $active_orbcat['orb_card']['id'] ? 'active' : 'inactive'
 			);
-			$data = array("orb" => $orb['id']);
+			$data = array("route" => "orb".DS.$orb['id']);
 		}
 ?><li <?php echo ___dA($data);?> <?php echo ___cD($classes);?>>
 	<a href="#"><?php echo $orb['id'] == -1 ? "&nbsp" : strtoupper($orb['title']);?></a>
