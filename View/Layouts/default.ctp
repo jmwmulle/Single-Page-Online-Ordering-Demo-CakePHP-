@@ -15,6 +15,7 @@
 		                                 "utilities",
 		                                 "/bower_components/foundation/js/foundation.min",
 		                                 "lib/cart",
+		                                 "lib/route",
 		                                 "lib/bootstrap",
 		                                 "vendor/jquery.validate.min",
 		                                 "vendor/additional-methods.min",

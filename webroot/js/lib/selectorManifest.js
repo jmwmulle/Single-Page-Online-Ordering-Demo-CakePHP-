@@ -14,6 +14,7 @@ var XSM = {
 		loadingScreen: "#loadingScreen",
 		multi_activizing: ".multi-activizing",
 		preserve_aspect_ratio: ".preserve-aspect-ratio",
+		route: "*[data-route]"
 	},
 	effects: {
 		active: "active",
@@ -75,7 +76,6 @@ var XSM = {
 		orb_size_button: ".orb-size-button",
 		orbcat_menu_title_header: "#orbcat-menu-title h1",
 		orbcat_menu_title_subtitle: "#orbcat-menu-title h1 span",
-		orbcat: ".orbcat",
 		orbcat_menu: "#orbcat-menu",
 		orb_opt: ".orb-opt",
 		orb_opt_active: ".orb-opt.active",
@@ -97,9 +97,6 @@ var XSM = {
 	},
 	modal: {
 		close_primary: "#close-primary-modal",
-		link: ".modal-link",
-		link_order: ".modal-link.order",
-		link_primary: ".modal-link.primary",
 		on_close: "#on-close",
 		order:"#order-modal",
 		overlay: "#modal-overlay-container",
