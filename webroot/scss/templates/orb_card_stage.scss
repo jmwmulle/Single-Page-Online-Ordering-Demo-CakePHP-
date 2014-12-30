@@ -3,6 +3,13 @@
   width  : $orb-card-wrapper-width; // active orbs floats right (ie. this - orbcard stage = visible space for active orbs)
   margin : $orb-card-wrapper-margin;
   overflow: hidden;
+  &.slide-left {
+     -webkit-transform : translate(-2000px, 0);
+       -moz-transform    : translate(-2000px, 0);
+       -ms-transform    : translate(-2000px, 0);
+       -o-transform      : translate(-2000px, 0);
+       transform         : translate(-2000px, 0);
+   }
 }
 
 #orb-card-container {
@@ -14,6 +21,7 @@
   border-bottom-right-radius : $global-rounded;
   height                     : $orb-card-stage-height;
   @include orb-card-gradient;
+  @include unselectable;
   padding                    : $orb-card-margin;
 }
 
@@ -157,27 +165,6 @@ div.orb-card-content {
 #OrderOrbQuantity-wrapper { width : rem-calc(60px); }
 
 input#orderOrbQuantity { width : 3rem; }
-
-#order-modal {
-  height      : $order-modal-height;
-  width       : $orb-card-wrapper-inner-width + rem-calc(2px);
-  top         : $order-modal-top;
-  overflow-x  : hidden;
-  z-index     : 8999;
-  margin-left : rem-calc(-2px);
-
-  #order-modal-content {
-    margin-top       : $order-modal-content-shadow-size;
-    height           : $order-modal-content-height;
-    width            : $orb-card-wrapper-width;
-    background-color : $white-a90;
-    box-shadow       : 0 0 $base-padding $black-a33;
-    padding          : $tight-padding;
-    border-top       : 1px solid $text-grey;
-    border-bottom    : 1px solid $text-grey;
-    li { padding : 0; }
-  }
-}
 
 .orb-size-panel li {
     padding-bottom : 0;

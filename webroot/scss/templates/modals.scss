@@ -1,0 +1,109 @@
+#modal-overlay-container {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:3000px;
+  background-color:$black-a50;
+  z-index:10000;
+  overflow:hidden;
+}
+
+#close-primary-modal {
+  span {
+    display:inline-block;
+    font-size:rem-calc(12px);
+    &:first-of-type {
+      line-height:rem-calc(24px);
+      @include HelveticaLtCn;
+    }
+  }
+  &:hover span {
+    color:$light-grey;
+  }
+}
+
+#primary-modal {
+  * { color:$text-grey;}
+  position:fixed;
+  top:0;
+  left:0;
+  border: $float-pane-border-width solid $white;
+  @include primary-modal-bg;
+  min-width:600px;
+  max-width: $row-width;
+  min-height:600px;
+  height:auto;
+  z-index:100001;
+  overflow-y:auto;
+  padding: $base-padding;
+  input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], textarea {
+    padding:$tight-padding;
+    padding-top: $medium-padding;
+    margin-bottom:$tight-padding;
+  }
+
+  select, select option { @include  HelveticaLtCn;}
+  div.modal-header {
+    * { font-size:.8rem;}
+    a {
+      color: $xtreme-blue;
+      &:hover { color: lighten($xtreme-blue, 10%); }
+    }
+    @include HelveticaLtCn;
+  }
+  .modal-submit {
+    color: $white;
+    font-size: $h3-font-size;
+    @include HelveticaBlkCn;
+    @include helvetica_v_center_lh($h3-font-size, $h3-font-size + $base-padding);
+    background-color: $xtreme-blue;
+    width:inherit;
+    padding: $base-padding $base-padding 0 $base-padding  ;
+    text-align: center;
+    display:block;
+    &:hover { background-color: lighten($xtreme-blue, 10%);}
+  }
+  input.error {
+    border: 1px solid $error-color;
+  }
+  label.error, label.error * {
+    color: $error-color;
+    @include HelveticaLtCn;
+  }
+}
+
+
+#order-modal {
+  height      : $order-modal-height;
+  width       : $orb-card-wrapper-inner-width + rem-calc(2px);
+  top         : $order-modal-top;
+  overflow-x  : hidden;
+  z-index     : 8999;
+  margin-left : rem-calc(-2px);
+
+  #order-modal-content {
+  * { color: $text-grey;}
+    margin-top       : $order-modal-content-shadow-size;
+    height           : $order-modal-content-height;
+    width            : $orb-card-wrapper-width;
+    background-color : $white-a90;
+    box-shadow       : 0 0 $base-padding $black-a33;
+    padding          : $tight-padding;
+    border-top       : 1px solid $text-grey;
+    border-bottom    : 1px solid $text-grey;
+    li { padding : 0; }
+  }
+  a.modal-link {
+    @include HelveticaLtCn;
+      font-size:$h4-font-size;
+      transition: color $global-transition-time, text-shadow $global-transition-time;
+    &:hover {
+      color: $xtreme-blue;
+      text-shadow: 0 0 2px $xtreme-blue-a50;
+    }
+
+    }
+}
+
+

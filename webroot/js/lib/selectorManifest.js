@@ -1,30 +1,25 @@
 /**
  * Created by jono on 8/22/14.
  * (X)treme(S)elector(M)anifest
- * Organization scheme:
- * globals/
- *      id/
- *      class/
- * templates/
- *      /id
- *      /class
+ *
  */
 
 var XSM = {
 	global:{
 		activizing_list: "ul.activizing li",
+		active_list_item: "li.active",
 		ajaxLink:".ajax-link",
 		detachable: ".detach",
 		imageQueue: "#image-loading-queue",
 		loadingScreen: "#loadingScreen",
 		multi_activizing: ".multi-activizing",
 		preserve_aspect_ratio: ".preserve-aspect-ratio",
-		primary_modal: "#primary-modal"
 	},
 	effects: {
 		active: "active",
 		activizing: "activizing",
 		checked: "icon-checked",
+		active_by_default: "default",
 		disabled: "disabled",
 		enabled: "enabled",
 		exposed: "exposed",
@@ -33,12 +28,15 @@ var XSM = {
 		fade_out: "fade-out",
 		slide_right: "slide-right",
 		slide_left: "slide-left",
+		slide_up: "slide-up",
 		flipped_x: "flipped-x",
 		flipped_y: "flipped-y",
 		float_label: "float-labeled",
+		overlay: "overlay",
 		solidify: "solidify",
 		success: "success",
 		transitioning: "transitioning",
+		true_hidden: "true-hidden",
 		unchecked: "icon-unchecked"
 	},
 	load: {
@@ -68,6 +66,7 @@ var XSM = {
 		orb_card_3d_context: "#orb-card-3d-context",
 		orb_card_wrapper: "#orb-card-wrapper",
 		orb_order_form: "#orderOrbForm",
+		orb_order_form_orb_id: "#OrderOrbId",
 		orb_order_form_inputs: "#orderOrbForm input",
 		orb_order_form_orb_opts: "#orderOrbForm input.orb-opt-weight",
 		orb_order_form_price_rank: "#OrderOrbPriceRank",
@@ -97,10 +96,16 @@ var XSM = {
 		user_activity_panel: "#user-activity-panel"
 	},
 	modal: {
-		xtreme_modal: ".xtreme-modal",
-		order_modal:"#order-modal",
+		close_primary: "#close-primary-modal",
 		link: ".modal-link",
-		link_order: ".modal-link.order"
+		link_order: ".modal-link.order",
+		link_primary: ".modal-link.primary",
+		on_close: "#on-close",
+		order:"#order-modal",
+		overlay: "#modal-overlay-container",
+		primary: "#primary-modal",
+		primary_content: "#primary-modal-content"
+
 	},
 	splash:{
 		self:"#splash",
@@ -126,7 +131,11 @@ var XSM = {
 		splash_link: ".splash-link"
 	},
 	generated: {
-		order_form_order_opt: function(opt_id) { return asId("OrderOrbOrbopts" + opt_id) }
+		order_form_order_opt: function(opt_id) { return asId("OrderOrbOrbopts" + opt_id) },
+		orb_opt_id: function(opt_id) { return asId("orb-opt-coverage-" + opt_id); },
+		orb_opt_icon: function(opt_id, weight) {
+			return $(opt_id).find(XSM.menu.orb_opt_icon + '[data-weight="' + weight + '"]')[0];
+		}
 	}
 };
 

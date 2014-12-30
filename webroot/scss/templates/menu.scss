@@ -11,11 +11,6 @@ body {
   }
 }
 
-* { transition : background-color $global-transition-time ease-in-out,
-background-image $global-transition-time ease-in-out,
-color $global-transition-time ease-in-out,
-opacity $global-transition-time ease-in-out,
-transform $global-transition-time ease-in-out; }
 
 
 main#menu {
@@ -23,6 +18,11 @@ main#menu {
   width       : 100%;
   padding-top : $menu-top-padding;
   overflow    : auto;
+  #menu-container {
+    margin-left:auto;
+    margin-right:auto;
+    width: $row-width + rem-calc(100px);
+  }
 }
 
 
@@ -69,6 +69,13 @@ ul#orbcat-menu {
   height : $orbcat-menu-height;
   margin : $orbcat-margin;
   @include orbcat-menu-gradient;
+  &.slide-right {
+    -webkit-transform : translate(2000px, 0);
+      -moz-transform    : translate(2000px, 0);
+      -ms-transform    : translate(2000px, 0);
+      -o-transform      : translate(2000px, 0);
+      transform         : translate(2000px, 0);
+  }
 }
 
 li.orbcat {
@@ -133,6 +140,7 @@ li.orbcat {
   left              : $base-padding;
   -webkit-transform : $orbcat-menu-title-y-adjust;
   -moz-transform    : $orbcat-menu-title-y-adjust;
+  -ms-transform    : $orbcat-menu-title-y-adjust;
   -o-transform      : $orbcat-menu-title-y-adjust;
   transform         : $orbcat-menu-title-y-adjust;
   height            : $orbcat-menu-title-height;

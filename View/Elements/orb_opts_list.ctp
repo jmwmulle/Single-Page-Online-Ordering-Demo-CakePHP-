@@ -7,8 +7,8 @@
  * About.me: about.me/thisimpetus
  */
 $classes = array("box", "rel", "rightward", "stretch", "active", "orb-card-stage-menu", "multi-activizing", "flush");
-if ($ul) echo sprintf("<ul id='orb-opt-filters' %s>",___cD($classes));
+if ($ul) {?>><ul id='orb-opt-filters' <?php echo ___cD($classes); ?> ><?php }
 foreach ($orb["Orbopt"] as $opt) {
 	if ($opt["pizza"]) echo $this->Element("orb_opt_row", array("opt" => $opt));
 }
-if ($ul) echo "</ul>";
+if ($ul) {?></ul><?php }

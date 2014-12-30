@@ -113,41 +113,42 @@ class UsersController extends AppController {
 		return $this->redirect(array('action'=>'index'));
 	}
 
-/*ordering*/
-	public function ordering($status) {
-		if ($this->request->is('ajax')) {
-			if (!$this->Session->check($address_checked)) {
-				$this->Session->write('User.address_checked', False);
-			}
-			if ($status == 'delivery' or $status=='pickup') {
-				$this->Session->write("Cart.order_type", $status);
-				if ($this->Auth->loggedIn()) {
-					$options = array('conditions'=>array('User.id'=>$this->Auth->user('id')));
-					$this->User->find('first', $options);
-					$add_matches = ($this->Session->read('User.address') == $this->User->address);
-					$pc_matches = ($this->Session->read('User.postal_code') == $this->User->postal_code);
-				} else {
-					$add_matches = null;
-					$pc_matches = null;
+
+	public function order_method($method) {
+			if ($this->request->is('ajax') || true) {
+				if (!$this->Session->check("address_checked")) {
+					$this->Session->write('User.address_checked', False);
 				}
-				$this->set("response", json_encode(array("address_checked"=>$this->Session->read("User.address_checked"),
-					"logged_in"=>$this->Auth->loggedIn(),
-					"address_matches_db"=>$add_matches,
-					"postal_code_matches_db"=>$pc_matches)));
+				if ( in_array($method, array('delivery', 'pickup')) ) {
+					$this->Session->write("Cart.order_type", $method);
+					if ($this->Auth->loggedIn()) {
+						$options = array('conditions'=>array('User.id'=>$this->Auth->user('id')));
+						$this->User->find('first', $options);
+						$address_matches = ($this->Session->read('User.address') == $this->User->address);
+						$postal_code_matches = ($this->Session->read('User.postal_code') == $this->User->postal_code);
+					} else {
+						$address_matches = null;
+						$postal_code_matches = null;
+					}
+					$this->Session->write("User.postal_code_matches", $address_matches);
+					$this->Session->write("User.postal_code_matches", $postal_code_matches);
+					$this->set(compact("method"));
+//					$this->render();
+				} else {
+					return null;
+				}
 			} else {
-				return null;
+				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 			}
-		} else {
-			return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 		}
-	}
 
 /*confirm_address*/
 	public function confirm_address($command, $address = null) {
 		if ($this->request->is('ajax')) {
-			if (!$this->Session->check($address_checked)) {
+			if (!$this->Session->check("address_checked")) {
 				$this->Session->write('User.address_checked', False);
 			}
+			db($this->request->data);
 			if ($command=='database') {
 				if ($this->Auth->loggedIn()) {
 					$options = array('conditions'=>array('User.id'=>$this->Auth->user('id')));

@@ -13,6 +13,7 @@
 @import "nav";
 
 // TEMPLATES                // z-indices
+@import "templates/modals"; // 9999
 @import "templates/loading_screen"; // 9999
 @import "templates/splash"; // 9000-series
 @import "templates/main";   // 8000-series

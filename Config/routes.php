@@ -34,6 +34,8 @@
 	Router::connect('/cart/*', array('controller' => 'orders', 'action' => 'cart'));
 	Router::connect('/menuitem/*', array('controller' => 'orbs', 'action' => 'menu_item'));
 	Router::connect('/register', array('controller' => 'pages', 'action' => 'signup'));
+	Router::connect('/order_method/*', array('controller' => 'users', 'action' => 'order_method'));
+	Router::connect('/confirm_address/*', array('controller' => 'users', 'action' => 'confirm_address'));
 
 	Router::connect('/opauth-complete/*', array('controller' => 'users', 'action' => 'opauth_complete'));
 
