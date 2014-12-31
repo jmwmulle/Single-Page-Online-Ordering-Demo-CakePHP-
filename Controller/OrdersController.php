@@ -210,16 +210,16 @@ class OrdersController extends AppController {
 	public function cart() {
 		$cart = $this->Session->read('Cart');
 		$this->Cart->update();
-		#if ($this->request->is('ajax') {
+		if ($this->request->is('ajax')) {
 			$to_return = array();
-			for ($item in $cart['OrderItem']) {
-				if (!isset($to_return['id'])) {
-					$to_return[int($item['id'])] = array();
+			foreach ($cart['OrderItem'] as $item) {
+				if (!isset($to_return[intval($item['orb_id'])])) {
+					$to_return[intval($item['orb_id'])] = array();
 				}
-				$to_return[int($item['id'])][] = $item['orbopts'];
+				$to_return[intval($item['orb_id'])][] = $item;
 			}
-			db($to_return);
-		#}
+			$cart['OrderItem'] = $to_return;
+		}
 		$this->set(compact('cart'));
 	}
 
