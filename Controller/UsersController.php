@@ -143,7 +143,7 @@ class UsersController extends AppController {
 
 /*add_favourite*/
 	public function add_favourite() {
-		if ($this->request->is('ajax') {
+		if ($this->request->is('ajax')) {
 			if ($this->User->Favourite->save(json_decode($this->request->data))) {
 				return json_encode(array('success' => true));
 			}
@@ -151,12 +151,12 @@ class UsersController extends AppController {
 				return json_encode(array('success' => false));
 			}
 		}
-		return $this->redirect(array('controller'=>'menu', 'action'=>'index'))
+		return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 	}
 
 /*add_favourite*/
 	public function add_address() {
-		if ($this->request->is('ajax') {
+		if ($this->request->is('ajax')) {
 			if ($this->User->Address->save(json_decode($this->request->data))) {
 				return json_encode(array('success' => true));
 			}
@@ -164,7 +164,7 @@ class UsersController extends AppController {
 				return json_encode(array('success' => false));
 			}
 		}
-		return $this->redirect(array('controller'=>'menu', 'action'=>'index'))
+		return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 	}
 
 /*confirm_address*/
@@ -383,7 +383,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 	    parent::beforeFilter();
 
-	    $this->Auth->allow('index','view','confrim_address', 'opauth_complete', 'order_method', 'add', 'login','logout', 'initDB', 'add_favourite', 'add_address');
+	    $this->Auth->allow('index','view','confrim_address', 'opauth_complete', 'order_method', 'add', 'login', 'logout');#, 'initDB');
 	}
 
 	public function initDB() {
@@ -398,6 +398,8 @@ class UsersController extends AppController {
 	    $this->Acl->deny($group, 'controllers');
 	    $this->Acl->allow($group, 'controllers/users/edit');
 	    $this->Acl->allow($group, 'controllers/users/index');
+	    $this->Acl->allow($group, 'controllers/users/add_favourites');
+	    $this->Acl->allow($group, 'controllers/users/add_address');
 	    // we add an exit to avoid an ugly "missing views" error message
 	    echo "all done";
 	    exit;
