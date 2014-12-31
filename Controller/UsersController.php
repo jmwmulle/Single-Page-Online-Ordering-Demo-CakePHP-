@@ -113,7 +113,7 @@ class UsersController extends AppController {
 		return $this->redirect(array('action'=>'index'));
 	}
 
-
+/* order_method */
 	public function order_method($method) {
 			if ($this->request->is('ajax') || true) {
 				if (!$this->Session->check("address_checked")) {
@@ -130,12 +130,11 @@ class UsersController extends AppController {
 						$address_matches = null;
 						$postal_code_matches = null;
 					}
-					$this->Session->write("User.postal_code_matches", $address_matches);
+					$this->Session->write("User.address_matches", $address_matches);
 					$this->Session->write("User.postal_code_matches", $postal_code_matches);
 					$this->set(compact("method"));
-//					$this->render();
 				} else {
-					return null;
+					return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 				}
 			} else {
 				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
@@ -157,12 +156,15 @@ class UsersController extends AppController {
 
 /*confirm_address*/
 	public function confirm_address($command, $address = null) {
-		if ($this->request->is('ajax')) {
+		if ($this->request->is('ajax') || $this->request->is('post')) {
 			if (!$this->Session->check("address_checked")) {
 				$this->Session->write('User.address_checked', False);
 			}
-			db($this->request->data);
-			if ($command=='database') {
+			$data = $this->request->data;
+			if ($this->request->is('ajax')) {
+				$data = json_decode($data);
+			}
+			if ($data['command']=='database') {
 				if ($this->Auth->loggedIn()) {
 					$options = array('conditions'=>array('User.id'=>$this->Auth->user('id')));
 					$this->User->find('first', $options);
@@ -173,7 +175,7 @@ class UsersController extends AppController {
 					$this->set("response", json_encode(array("address"=>null, "success"=>false,
 						"error"=>"User not logged in.")));
 				}
-			} elseif ($command=='session') {
+			} elseif ($data['command']=='session') {
 				if ($this->Session->check('address') & $this->Session->check('postal_code')) {
 					$this->Session->write('User.address_checked', True);
 					$this->set("response", json_encode(array("address"=>$this->Session->read('User.address'),
@@ -182,7 +184,7 @@ class UsersController extends AppController {
 					$this->set("response", json_encode(array("address"=>null, "success"=>False,
 						"error"=>"Address not set.")));
 				}
-			} elseif ($command=='update_database') {
+			} elseif ($data['command']=='update_database') {
 				if ($this->Auth->loggedIn()) {
 					$options = array('conditions'=>array('User.id'=>$this->Auth->user('id')));
 					$this->User->find('first', $options);
@@ -199,9 +201,8 @@ class UsersController extends AppController {
 					$this->set("response", json_encode(array("address"=>null, "success"=>false,
 						"error"=>"User not logged in.")));
 				}
-			} elseif ($command=='update_session') {
+			} elseif ($data['command']=='update_session') {
 				if ($this->Auth->loggedIn()) {
-					$data = json_decode($address);
 					$this->Session->write("User.address",$data['address']);
 					$this->Session->write("User.postal_code",$data['postal_code']);
 					$this->Session->write('User.address_checked', True);
