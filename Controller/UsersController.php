@@ -383,7 +383,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 	    parent::beforeFilter();
 
-	    $this->Auth->allow('index','view','confrim_address', 'opauth_complete', 'order_method', 'add', 'login','logout', 'initDB');
+	    $this->Auth->allow('index','view','confrim_address', 'opauth_complete', 'order_method', 'add', 'login','logout', 'initDB', 'add_favourite', 'add_address');
 	}
 
 	public function initDB() {
