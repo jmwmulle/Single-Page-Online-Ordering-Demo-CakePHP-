@@ -154,6 +154,19 @@ class UsersController extends AppController {
 		return $this->redirect(array('controller'=>'menu', 'action'=>'index'))
 	}
 
+/*add_favourite*/
+	public function add_address() {
+		if ($this->request->is('ajax') {
+			if ($this->User->Address->save(json_decode($this->request->data))) {
+				return json_encode(array('success' => true));
+			}
+			else {
+				return json_encode(array('success' => false));
+			}
+		}
+		return $this->redirect(array('controller'=>'menu', 'action'=>'index'))
+	}
+
 /*confirm_address*/
 	public function confirm_address($command, $address = null) {
 		if ($this->request->is('ajax') || $this->request->is('post')) {

@@ -70,32 +70,6 @@
 					'message' => 'Password must be between 8 and 60 charcters long.',
 				),
 			),
-			'address'   => array(
-				'notEmpty' => array(
-					'rule' => array('notEmpty'),
-					'message' => 'You must supply your address.',
-				),
-			),
-			'address_2'   => array(
-			),
-			'city'   => array(
-				'alphanumeric' => array(
-					'rule' => array('alphanumeric'),
-					'message' => 'You must supply a city.',
-				),
-			),
-			'province'   => array(
-				'notEmpty' => array(
-					'rule' => array('notEmpty'),
-					'message' => 'You must supply a province.',
-				),
-			),
-			'postal_code' => array(
-				'postal' => array(
-					'rule' => array( 'postal', null, 'ca' ),
-					'message' => 'You must supply a valid Postal Code.',
-				),
-			),
 			'group_id'  => array(
 				'numeric' => array(
 					'rule' => array( 'numeric' ),
@@ -198,7 +172,21 @@
 				'exclusive'    => '',
 				'finderQuery'  => '',
 				'counterQuery' => ''
-			)
+			),
+			'Address' => array(
+				'className'    => 'Address',
+				'foreignKey'   => 'user_id',
+				'dependent'    => false,
+				'conditions'   => '',
+				'fields'       => '',
+				'order'        => '',
+				'limit'        => '',
+				'offset'       => '',
+				'exclusive'    => '',
+				'finderQuery'  => '',
+				'counterQuery' => ''
+			),
+
 		);
 
 		public function beforeSave($options = array()) {
