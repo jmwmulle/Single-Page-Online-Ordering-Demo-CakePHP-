@@ -73,7 +73,6 @@ class OrdersController extends AppController {
 				return;
 			}
 			$products = array();
-
 			foreach ($this->request->data['Order'] as $orb) {
 				extract(array_merge(array(
 							"id" => -1,
@@ -88,7 +87,6 @@ class OrdersController extends AppController {
 			}
 
 			$this->Cart->update();
-
 			if (!empty($products)) {
 				if ($this->Session->check('Cart.Order.total') ) {
 					$total = $this->Session->read('Cart.Order.total');

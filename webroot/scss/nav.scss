@@ -1,43 +1,110 @@
 //----------------------------------------------------------------------------------------------------------------TOPNAV
 nav#topbar {
-  position:fixed;
-  top:0;
-  left:0;
-  z-index           : 9999;
-  height: $topnav-height;
-  width:100%;
-  background-color: $dark-grey;
-  vertical-align: middle;
-  overflow:hidden;
-
+  position         : fixed;
+  top              : 0;
+  left             : 0;
+  z-index          : 9999;
+  height           : $topnav-height;
+  width            : 100%;
+  background-color : $dark-grey;
+  vertical-align   : middle;
+  overflow         : hidden;
+  .topbar-social {
+    height      : $topnav-height !important;
+    line-height :$topnav-social-row;
+    font-size   :  $topnav-social-icon-height;
+    .icon-row {
+      height      : $topnav-social-row;
+      hr#topbar-divider {
+        padding:0;
+        margin:0 !important;
+        transform: translate(0, -0.3rem);
+//        margin-top: -0.3rem !important;
+//        margin-bottom: -0.3rem !important;
+        border-style:dotted;
+      }
+    }
+    a {
+      position:relative;
+      top:0;
+      margin:0 3px;
+      span {
+        color      : $white;
+        transition : color $global-transition-time !important;
+      }
+      &:hover span { color : $xtreme-blue; }
+      &.disabled {
+        span {
+          color:$text-grey;
+          &:hover { color: $text-grey;}
+        }
+      }
+    }
+    #topbar-hover-text-label {
+//      border-bottom:1px dotted $white;
+        display    : inline-block;
+        height    : $topnav-social-row;
+//        height     : $topnav-social-row;
+        overflow : hidden;
+        span {
+          position:absolute;
+          top:0;
+          left:0;
+          width:100%;
+          vertical-align: top;
+          display   : inline-block;
+          font-size : 1rem;
+          text-transform: uppercase;
+          @include HelveticaThCn;
+          @include helvetica_v_center_lh(1rem, $topnav-social-row);
+//          transition: transform 0.3s, opacity 0.3s;
+          &.slide-left {
+            -webkit-transform : translate(-400px, 0) !important;
+            -moz-transform    : translate(-200px, 0)!important;
+            -ms-transform     : translate(-200px, 0) !important;
+            -o-transform      : translate(-200px, 0)!important;
+            transform         : translate(-400px, 0)!important;
+          }
+          &.slide-right {
+            -webkit-transform : translate(500px, 0) !important;
+            -moz-transform    : translate(500px, 0) !important;
+            -ms-transform     : translate(500px, 0) !important;
+            -o-transform      : translate(500px, 0) !important;
+            transform         : translate(500px, 0) !important;
+          }
+        }
+      }
+  }
   .splash-logo {
-    background-image: url('../img/splash/logo_mini.png');
-    background-repeat: no-repeat;
-    background-size: auto 0.8 * $topnav-height;
-    background-position: center;
-    padding:rem-calc(10px);
-    height:$topnav-height;
+    background-image    : url('../img/splash/logo_mini.png');
+    background-repeat   : no-repeat;
+    background-size     : auto 0.8 * $topnav-height;
+    background-position : center;
+    padding             : rem-calc(10px);
+    height              : $topnav-height;
   }
   .columns {
-    height: $topnav-height;
-    vertical-align: middle;
+    height         : $topnav-height;
+    vertical-align : middle;
   }
   #hours-and-location {
-    width:rem-calc(280px); // arbitrary, just large enough to house the text
-    float:right;
+    width : rem-calc(280px); // arbitrary, just large enough to house the text
+    float : right;
   }
+
+
 
 }
 
 nav#login {
   position         : fixed;
-  top           : $topbar-height;
+  top              : $topbar-height;
   left             : 0;
   width            : 10%;
   height           : 100%;
   background-color : $black-a33;
   z-index          : 1;
-//  margin-top: $topbar-height;
+  //  margin-top: $topbar-height;
   padding-top      : 2rem;
   h2 {
     color : $white;
@@ -47,12 +114,12 @@ nav#login {
   ul#login-options {
     li {
       @include portraitBG;
-      width             : 6rem;
-      height            : 6rem;
-      padding           : 1.5rem;
-      margin            : 1.5rem;
-      line-height       : 3em;
-      transition        : background-image 300ms ease-out;
+      width       : 6rem;
+      height      : 6rem;
+      padding     : 1.5rem;
+      margin      : 1.5rem;
+      line-height : 3em;
+      transition  : background-image 300ms ease-out;
       &.facebook {
         background-image : url('../img/splash/facebook_icon.png');
         &:hover { background-image : url('../img/splash/facebook_icon.hover.png'); }

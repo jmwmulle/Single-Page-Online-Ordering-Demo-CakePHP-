@@ -48,6 +48,9 @@ $topnav-height: rem-calc(65px);
 $topnav-h1-padding: 0 0 0 0;
 $topnav-h1-margin: (0.9 * $topnav-height - $h1-font-size)/2 rem-calc(10px) 0 rem-calc(10px);
 $topnav-h1-height: $topnav-height - $topnav-h1-padding - $topnav-h1-margin;
+$topnav-social-row: $topnav-height / 2;
+$topnav-social-icon-height: 0.8 * $topnav-social-row;
+
 
 $focus-pane-height: rem-calc(360);
 $float-pane-margin: rem-calc(20px);
