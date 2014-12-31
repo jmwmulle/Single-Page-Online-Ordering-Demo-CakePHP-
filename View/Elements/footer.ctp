@@ -11,7 +11,7 @@
 ><div id="primary-modal" class="slide-up">
 	<div id="primary-modal-content">
 	</div>
-	<a href="#" id="close-primary-modal" class="box rightward"><span>Close</span><span class="icon-cancel icon-hn-inline"></span></a>
+	<a href="#" id="close-modal" data-modal="primary" class="box rightward"><span>Close</span><span class="icon-cancel icon-hn-inline"></span></a>
 </div
 ><footer>
 	<section class="pagespan">

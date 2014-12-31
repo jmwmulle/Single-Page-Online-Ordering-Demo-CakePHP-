@@ -3,6 +3,7 @@
  */
 var constants = {
 	PX: "px",
+	POST: "POST",
 	CLK: "click",
 	CHECK: "check",
 	DELIVERY: "delivery",
@@ -35,7 +36,9 @@ var constants = {
 	L: "<span class='icon-left-side tiny-opt icon-hnj-inline'></span>",
 	ORDER: "order",
 	PRIMARY: "primary",
+	FLASH: "flash",
 	WEIGHT: "weight",
+	REM: 16,
 	STASH:1,
 	OL:3,
 	STASH_OL:4,

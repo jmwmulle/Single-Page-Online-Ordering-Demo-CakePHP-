@@ -290,6 +290,7 @@ input { font-family : "Helvetica Neue Light Condensed", arial, sans-serif !impor
   font-size      : $orbcat-menu-title-font-size;
   line-height    : $orbcat-menu-title-font-size * 1.3;
   color          : $white;
+
 }
 
 li.orbcat {
@@ -300,6 +301,10 @@ li.orbcat {
     @include HelveticaMdCn;
     color       : $body-font-color;
     font-size   : rem-calc(14px);
+    @media #{$small-only} {
+        font-size:0.7rem;
+//        @include helvetica_v_center_lh(1rem,$orbcat-menu-title-font-size);
+      }
   }
   &:hover, &.active {
     a, span { color : $xtreme-yellow; }

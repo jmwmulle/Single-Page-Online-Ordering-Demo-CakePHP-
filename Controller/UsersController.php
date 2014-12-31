@@ -143,7 +143,8 @@ class UsersController extends AppController {
 
 /*add_favourite*/
 	public function add_favourite() {
-		if ($this->request->is('ajax') {
+		return json_encode(array('success' => true));
+		if ($this->request->is('ajax') ) {
 			if ($this->User->Favourite->save(json_decode($this->request->data))) {
 				return json_encode(array('success' => true));
 			}
@@ -151,12 +152,12 @@ class UsersController extends AppController {
 				return json_encode(array('success' => false));
 			}
 		}
-		return $this->redirect(array('controller'=>'menu', 'action'=>'index'))
+		return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 	}
 
 /*add_favourite*/
 	public function add_address() {
-		if ($this->request->is('ajax') {
+		if ($this->request->is('ajax') || $this->request->is('post') ) {
 			if ($this->User->Address->save(json_decode($this->request->data))) {
 				return json_encode(array('success' => true));
 			}
@@ -164,7 +165,7 @@ class UsersController extends AppController {
 				return json_encode(array('success' => false));
 			}
 		}
-		return $this->redirect(array('controller'=>'menu', 'action'=>'index'))
+		return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 	}
 
 /*confirm_address*/

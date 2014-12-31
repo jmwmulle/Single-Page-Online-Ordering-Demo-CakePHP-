@@ -9,7 +9,7 @@
   overflow:hidden;
 }
 
-#close-primary-modal {
+#close-modal {
   span {
     display:inline-block;
     font-size:rem-calc(12px);
@@ -21,7 +21,30 @@
   &:hover span {
     color:$light-grey;
   }
+  .flash {
+    color: $white;
+    &:hover { opacity:0.8;}
+  }
 }
+
+#flash-modal {
+  position: fixed;
+  z-index:10001;
+  width:40rem;
+  height: 6rem;
+  #flash-modal-content {
+    width:100%;
+    border:3px solid white;
+    background-color: $xtreme-blue;
+    border-radius:0.75rem;
+    padding:$base-padding;
+  }
+
+  .slide-up {
+    -webkit-transform: translate(0, -6rem);
+  }
+}
+
 
 #primary-modal {
   * { color:$text-grey;}

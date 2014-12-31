@@ -4,6 +4,13 @@ body {
   background-repeat:no-repeat;
   background-position:fixed;
 }
+#page-content {
+  height:100%;
+  @media #{$large-up} {
+    overflow:hidden;
+   }
+}
+
 
 * { transition : background-color $global-transition-time ease-in-out,
 background-image $global-transition-time ease-in-out,

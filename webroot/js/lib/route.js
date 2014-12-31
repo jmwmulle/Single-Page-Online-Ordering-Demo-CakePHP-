@@ -7,7 +7,7 @@ function XtremeRoute(data) {
 
 	// data
 	this.modal = false;
-	this.url = false;
+	this.url = {};
 	this.params = false;
 
 	// inferred data
@@ -28,7 +28,7 @@ function XtremeRoute(data) {
 		if (param_values.length > 0) {
 			var param_keys = Object.keys(this.params);
 			for (var i = 0; i < param_keys.length; i++) {
-				if (this.params[param_keys[i]].is_url) this.url += C.DS + param_values[i]
+				if (this.params[param_keys[i]].is_url) this.url.url += C.DS + param_values[i]
 				this.params[param_keys[i]].value = param_values[i];
 			}
 			if (this.params_set_callback) this.params_set_callback();

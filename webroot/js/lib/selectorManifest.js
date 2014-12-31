@@ -13,8 +13,10 @@ var XSM = {
 		imageQueue: "#image-loading-queue",
 		loadingScreen: "#loadingScreen",
 		multi_activizing: ".multi-activizing",
+		page_content: "#page-content",
 		preserve_aspect_ratio: ".preserve-aspect-ratio",
-		route: "*[data-route]"
+		route: "*[data-route]",
+		topbar: "#topbar"
 	},
 	effects: {
 		active: "active",
@@ -35,6 +37,7 @@ var XSM = {
 		float_label: "float-labeled",
 		overlay: "overlay",
 		solidify: "solidify",
+		stash: "stash",
 		success: "success",
 		transitioning: "transitioning",
 		true_hidden: "true-hidden",
@@ -90,13 +93,15 @@ var XSM = {
 		orb_opt_filter_all: ".orb-opt-filter-all",
 		orb_opt_weight: ".orb-opt-weight",
 		orb_opts_menu_header: "#orb-opts-menu-header",
+		self:"main#menu",
 		tiny_orb_opts_list: "tiny-orb-opt-list",
 		tiny_orb_opts_list_wrapper:"#tiny-orb-opts-list-wrapper",
 		tiny_orb_opts_list_item: ".tiny-orb-opts-list-item",
 		user_activity_panel: "#user-activity-panel"
 	},
 	modal: {
-		close_primary: "#close-primary-modal",
+		close_modal: "#close-modal",
+		flash: "#flash-modal",
 		on_close: "#on-close",
 		order:"#order-modal",
 		overlay: "#modal-overlay-container",
@@ -125,6 +130,7 @@ var XSM = {
 		order_spacer:"#order-wrapper .spacer",
 		preserve_aspect_ratio: "#splash *.preserve-aspect-ratio",
 		splash_bar:"#splash-bar",
+		splash_bar_wrapper:"#splash-bar-wrapper",
 		splash_link: ".splash-link"
 	},
 	topbar: {

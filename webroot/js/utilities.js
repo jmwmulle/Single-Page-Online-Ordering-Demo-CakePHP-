@@ -148,7 +148,7 @@ $.fn.scrollTo = function (target, options, callback) {
 	 */
 	function eTypeOf(e) { return isEvent(e) ? e.type : false}
 
-
+	function px_to_int(val) { return Number(val.split("px")[0]);}
 	/**
 	 * asId method
 	 *
