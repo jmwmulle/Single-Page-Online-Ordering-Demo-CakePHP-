@@ -9,7 +9,7 @@
 	 */
 	class User extends AppModel {
 
-//		public $actsAs = array( 'Acl' => array( 'type' => 'requester' ) );
+		public $actsAs = array( 'Acl' => array( 'type' => 'requester' ) );
 
 		/**
 		 * Validation rules
@@ -66,7 +66,7 @@
 			),
 			'password'  => array(
 				'password' => array(
-					'rule' => array('lengthBetween', 8, 60),
+					'rule' => array('minLength', '8'),
 					'message' => 'Password must be between 8 and 60 charcters long.',
 				),
 			),
@@ -85,8 +85,8 @@
 				),
 			),
 			'province'   => array(
-				'not_empty' => array(
-					'rule' => array('not_empty'),
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
 					'message' => 'You must supply a province.',
 				),
 			),
@@ -201,31 +201,34 @@
 			)
 		);
 
-//		public function beforeSave($options = array()) {
-//			$this->data[ 'User' ][ 'password' ] = AuthComponent::password(
-//			                                                   $this->data[ 'User' ][ 'password' ]
-//			);
-//
-//			return true;
-//		}
+		public function beforeSave($options = array()) {
+			if (isset($this->data['User']['password'])) {
+				$this->data[ 'User' ][ 'password' ] = AuthComponent::password(
+					$this->data[ 'User' ][ 'password' ]
+				);
+			}
 
-//		public function parentNode() {
-//			if ( !$this->id && empty( $this->data ) ) {
-//				return null;
-//			}
-//			if ( isset( $this->data[ 'User' ][ 'group_id' ] ) ) {
-//				$groupId = $this->data[ 'User' ][ 'group_id' ];
-//			}
-//			else {
-//				$groupId = $this->field( 'group_id' );
-//			}
-//			if ( !$groupId ) {
-//				return null;
-//			}
-//			else {
-//				return array( 'Group' => array( 'id' => $groupId ) );
-//			}
-		//		}
+			return true;
+		}
+
+		public function parentNode() {
+			if ( !$this->id && empty( $this->data ) ) {
+				return null;
+			}
+			if ( isset( $this->data[ 'User' ][ 'group_id' ] ) ) {
+				$groupId = $this->data[ 'User' ][ 'group_id' ];
+			}
+			else {
+				$groupId = $this->field( 'group_id' );
+			}
+			if ( !$groupId ) {
+				return null;
+			}
+			else {
+				return array( 'Group' => array( 'id' => $groupId ) );
+			}
+		}
+			
 		public function checkUnique($ignoredData, $fields, $or = false) {
 			return $this->isUnique($fields, $or);
 		}
