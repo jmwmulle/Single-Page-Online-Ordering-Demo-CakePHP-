@@ -40,6 +40,15 @@ window.XBS = {
 		},
 		cart: {
 		},
+		order:{
+			method: null,
+			address: {
+				address_1: null,
+				address_2: null,
+				postal_code: null,
+				instructions: null
+			}
+		},
 		user: {
 			name: {
 				first:null,
@@ -55,7 +64,7 @@ window.XBS = {
 	},
 	cfg: {
 		root: null,
-		developmentMode: false,
+		developmentMode: true,
 		minLoadTime: 1
 	},
 	evnt: {
@@ -92,18 +101,17 @@ window.XBS = {
 		}),
 		order_method: new XtremeRoute({
 			modal: XSM.modal.primary,
-			url: "order_method",
 			behavior: C.OL,
 			params: {method:{value:null, is_url:true}},
 			callbacks: {
 				params_set: function() {
-					if (this.params.method.value == C.PICKUP) {
-						this.url = false;
-						// >>>RESET OWN LAUNCH CALLBACK & LISTENER<<<
-						this.launch_callback = function() { XBS.data.order_method = C.PICKUP; }
-						$(this).on("route_launched", this.launch_callback);
+					if (this.params.method.value == C.DELIVERY) {
+						this.url = "order_method" + C.DS + C.DELIVERY;
+					} else {
+						delete this.url;
 					}
-				}
+				},
+				launch: function() { XBS.data.order.method = this.params.method.value; }
 			}
 		}),
 		continue_ordering: new XtremeRoute({
@@ -120,11 +128,6 @@ window.XBS = {
 		finish_ordering: new XtremeRoute({
 			modal: XSM.modal.primary,
 			url: "finish_ordering",
-			behavior: C.STASH_STOP
-		}),
-		view_order: new XtremeRoute({
-			modal: XSM.modal.primary,
-			url: "cart",
 			behavior: C.STASH_STOP
 		}),
 		submit_order_address: new XtremeRoute({
@@ -159,7 +162,6 @@ window.XBS = {
 									pr(data);
 									try {
 										data = $.parseJSON(data);
-										XBS.data.user.order_method = data.order_method;
 										XBS.data.user.address = data.address;
 									} catch(e) {
 									}
@@ -172,6 +174,18 @@ window.XBS = {
 					$("#orderAddressForm").submit();
 				}
 			}
+		}),
+		view_order: new XtremeRoute({
+			params: {context:{value:"default", url:false}},
+			modal: XSM.modal.primary,
+			url: "cart",
+			behavior: C.STASH_STOP
+		}),
+		topbar_social: new XtremeRoute({
+			params: {channel: {value:null, url:true}},
+			modal: XSM.modal.social,
+			url: "social",
+			callbacks:{}
 		})
 	},
 
@@ -181,11 +195,9 @@ window.XBS = {
 	 *                                                                                                                 *
 	 *******************************************************************************************************************/
 	init: function (is_splash, page_name, host, cart) {
-
 		XBS.cfg.page_name = page_name;
 		XBS.cfg.is_splash = is_splash === true;
 		XBS.fn.setHost(host);
-//		try {
 		var init_status = {
 			cart: XBS.cart.init(cart),
 			layout: XBS.layout.init(),
@@ -193,14 +205,6 @@ window.XBS = {
 			menu: XBS.menu.init()
 		};
 		pr(init_status, "init status");
-		//XBS.cache.init();
-//		} catch(e) {
-//			if (e instanceof InitError) {
-//				e.read();
-//			} else {
-//				pr(e.message, e.name, true);
-//			}
-//		}
 	},
 	layout: {
 		init: function () {
@@ -230,9 +234,9 @@ window.XBS = {
 					var route = $(e.currentTarget).data('route').split("/")
 					if ( route[0] in XBS.routes ) {
 						var route_ob = jQuery.extend({}, XBS.routes[route[0]], true);
-						route_ob.set_params(route.slice(1));
+						route_ob.init_instance(route.slice(1));
 						if (route_ob.stop_propagation) e.stopPropagation();
-						XBS.layout.launch_modal(route_ob);
+						XBS.layout.launch_route(route_ob);
 					}
 				});
 			},
@@ -285,6 +289,18 @@ window.XBS = {
 					XBS.splash.redirect($(e.currentTarget).data('url'));
 				});
 				return true;
+			},
+			bind_topbar_hover_links: function() {
+				/** show hover-text */
+				$(C.BODY).on(C.MOUSEENTER, XSM.topbar.hover_text_link, null, function(e) {
+					if (!$(e.currentTarget).hasClass(XSM.effects.disabled) ) {
+						pr("firing!");
+						XBS.layout.toggle_topbar_hover_text($(e.currentTarget).data('hover_text'));
+					}
+				});
+				$(C.BODY).on(C.MOUSEOUT, XSM.topbar.hover_text_link, null, function(e) {
+					if (!$(e.currentTarget).hasClass(XSM.effects.disabled) ) XBS.layout.decay_topbar_hover();
+				});
 			},
 			window_resize_listener: function () {
 				if (XBS.cfg.is_splash) {
@@ -373,8 +389,8 @@ window.XBS = {
 			}
 			return  (isArray(selector) ) ? selector : $(selector);
 		},
-		launch_modal: function (route) {
-			pr(route, "launch_modal(route)");
+		launch_route: function (route) {
+			pr(route, "launch_route(route)");
 			var launch_delay;
 			if (route.stash) launch_delay = 900;
 			if (route.overlay) launch_delay = 300;
@@ -382,7 +398,8 @@ window.XBS = {
 			// >>> RESIZE & POSITION PRIMARY IF NEEDED <<<
 			if (route.modal == XSM.modal.primary) XBS.layout.resize_primary_modal()
 
-			// >>> LAUNCH THE MODAL <<<
+			// >>> LAUNCH MODALS IF REQUIRED<<<
+
 			if (route.url) {
 				$.get(route.url, function (data) {
 					// >>> DO PRE-LAUNCH EFFECTS <<<
@@ -395,9 +412,7 @@ window.XBS = {
 				})
 				.fail(function() { return false; /* todo: put some shit here */ });
 			}
-			pr(route.launch_callback);
 			$(route).trigger("route_launched");
-			delete route;
 			return true;
 		},
 		multi_activize: function (element) {
@@ -457,8 +472,36 @@ window.XBS = {
 
 			return true;
 		},
-
-		toggle_loading_screen: function () { $(XSM.global.loadingScreen).fadeToggle(); }
+		toggle_loading_screen: function () { $(XSM.global.loadingScreen).fadeToggle(); },
+		toggle_topbar_hover_text: function(hover_text, state) {
+			if ($(XSM.topbar.hover_text_label_outgoing).html() == hover_text) return;
+			pr([hover_text, state], "toggle_topbar_hover_text(hover_text, state)");
+			$(XSM.topbar.hover_text_label_outgoing).removeClass("decay").addClass(XSM.effects.slide_right);
+			$(XSM.topbar.hover_text_label_incoming).html(hover_text).removeClass(XSM.effects.true_hidden);
+			setTimeout(function() {
+				$(XSM.topbar.hover_text_label_incoming).removeClass(XSM.effects.slide_left);
+				setTimeout(function() {
+					setTimeout(function() {
+						$(XSM.topbar.hover_text_label_outgoing).remove();
+						setTimeout(function() {
+							$(XSM.topbar.hover_text_label_incoming).removeClass("incoming").addClass("outgoing")
+							$(XSM.topbar.hover_text_label).append("<span class='incoming slide-left true-hidden'></span>");
+						}, 10);
+					}, 280);
+				}, 10);
+			}, 10);
+		},
+		decay_topbar_hover: function() {
+			var id = (new Date).getTime();
+			$(XSM.topbar.hover_text_label_outgoing).addClass("decay "+id);
+			setTimeout(function() {
+				$(XSM.topbar.hover_text_label_outgoing + ".decay."+id).addClass(XSM.effects.fade_out);
+				setTimeout(function() {
+					$(XSM.topbar.hover_text_label_outgoing + ".decay."+id).replaceWith(
+						"<span class='outgoing'>Halifax loves pizza and we love halifax!</span>");}, 300);
+			}, 1000);
+			return true;
+		}
 	},
 	menu: {
 		init: function () {
@@ -472,6 +515,7 @@ window.XBS = {
 					init_ok.message = "current_orb_card not set; nothing loaded from cart";
 				}
 			}
+			XBS.menu.update_orb_opt_filters_list(C.CHECK);
 			return  init_ok
 		},
 		jq_binds: {
@@ -550,6 +594,7 @@ window.XBS = {
 				url: "orders/add_to_cart",
 				data: $(XSM.menu.orb_order_form).serialize(),
 				success: function (data) {
+					pr(data);
 					data = JSON.parse(data);
 					if (data.success == true) {
 						XBS.cart.add_to_cart();
@@ -557,6 +602,8 @@ window.XBS = {
 							return $("<div/>").addClass([stripCSS(XSM.modal.order), XSM.effects.success].join(" "))
 								.html("<h1>Success!</h1>").hide();
 						});
+						$("#top-bar-view-cart").removeClass(XSM.effects.disabled)
+							.data('hover_text', "View Your Cart");
 						$(XSM.modal.order).show('clip');
 					}
 				}
@@ -581,6 +628,7 @@ window.XBS = {
 			return true;
 		},
 		filter_orb_opts: function (target, all) {
+			pr([target, all], "filter_orb_opts(target, all)");
 			if (all == C.CHECK) {
 				$(XSM.menu.orb_opt_filter).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
 				$(XSM.menu.orb_opt_filter_span).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
@@ -596,7 +644,11 @@ window.XBS = {
 
 			if (target) {
 				var filter = $(target).data('filter');
-				XBS.data.orb_opt_filters[filter] = flip(XBS.data.orb_opt_filters[filter]);
+				if (XBS.data.orb_opt_filters[filter] == C.CHECK) {
+					XBS.data.orb_opt_filters[filter] = C.UNCHECK;
+				} else {
+					XBS.data.orb_opt_filters[filter] = C.CHECK;
+				}
 				var checkbox = $(target).children(XSM.menu.orb_opt_filter_span)[0];
 				if ($(target).hasClass(XSM.effects.active)) {
 					$(target).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
@@ -740,6 +792,7 @@ window.XBS = {
 						// >>> REPLACE ORBOPTS (REMAIN HIDDEN/ FADED) <<<
 						$(XSM.menu.orb_opt).remove();
 						$(XSM.menu.orb_opt_filters).replaceWith(filters);
+						XBS.menu.update_orb_opt_filters_list(C.CHECK);
 						$(orb_opts).each(function () { $(this).appendTo(XSM.menu.orb_card_stage_menu); });
 						XBS.menu.load_from_cart(orb_card_id);
 					}, 300);

@@ -77,7 +77,7 @@ $this->end('active_orb_card');
 		<div class="large-12 columns">
 			<ul id="user-activity-panel" class="show-for-large-up activizing text-center">
 				<li><h2 class="body-font-color">I AM</h2></li>
-				<li class="active default"><a class="body-font-color block">Just<br />Browsing</a></li>
+				<li class="active default"><a class="body-font-color block" data-route="order_method/browsing">Just<br />Browsing</a></li>
 				<li class="inactive">
 					<a class="body-font-color block modal-link overlay" data-route="order_method/delivery">Ordering<br />(Delivery)</a>
 				</li>

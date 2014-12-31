@@ -13,21 +13,51 @@
  * $here = (str) << currently viewed page,  must exactly match one of the navopts >>
  */
 
+$logged_in = false;
+$twitter_text = $logged_in ? "Tweet about Xtreme!" : "Login via Twitter";
+$gplus_text = $logged_in ? "+1 Xtreme!" : "Login via GooglePlus";
+$fb_text = $logged_in ? "Like Xtreme!" : "Login via Facebook";
+$email_text = $logged_in ? "" : "Login via E-mail";
+$cart_text = $this->Session->read('Cart') ? "View Your Cart" : "";
+$settings_text = $logged_in ? "Account Settings" : "";
+$favorites_text = $logged_in ? "View Your Favorites" : "";
 ?>
 
 <nav id="topbar" class="text-center">
 	<div class="row">
-		<div class="large-4 columns">
-			<ul id="top-bar-social-icons" class="horizontal">
-				<li class="icon-email inline"></li>
-				<li class="icon-twitter inline"></li>
-				<li class="icon-facebook inline"></li>
-				<li class="icon-gplus inline"></li>
-			</ul>
-		</div>
-		<div class="large-4 columns">
-			<a href="#" class="top-bar-link modal-link" data-route="view_order">View Cart</a>
-			<a href="#" class="top-bar-link modal-link" data-route="cart">Checkout</a>
+		<div class="large-3 columns text-center topbar-social">
+			<div class="row">
+				<div class="large-12 columns icon-row">
+					<a href="#" data-route="topbar_social/twitter" data-hover_text="<?php echo $twitter_text;?>">
+						<span class="icon-twitter"></span>
+					</a>
+					<a href="#" data-route="topbar_social/facebook" data-hover_text="<?php echo $fb_text;?>">
+						<span class="icon-facebook"></span>
+					</a>
+					<a href="#" data-route="topbar_social/gplus" data-hover_text="<?php echo $gplus_text;?>">
+						<span class="icon-gplus"></span>
+					</a>
+					<a href="#"<?php if ($logged_in) echo "class='disabled' ";?>data-route="topbar_social/email" data-hover_text="<?php echo $email_text;?>">
+						<span class="icon-original-pizzas"></span>
+					</a>
+					<a  id="top-bar-view-cart" href="#"<?php if (!$this->Session->read('Cart')) echo "class='disabled' ";?>data-route="view_order/topbar" data-hover_text="<?php echo $cart_text;?>">
+						<span class="icon-shopping"></span>
+					</a>
+					<a href="#"<?php if (!$logged_in) echo "class='disabled'";?>data-route="topbar_favorites" data-hover_text="<?php echo $favorites_text;?>">
+						<span class="icon-favorites"></span>
+					</a>
+					<a href="#"<?php if (!$logged_in) echo "class='disabled'";?>data-route="topbar_settings" data-hover_text="<?php echo $settings_text;?>">
+						<span class="icon-settings"></span>
+					</a>
+					<hr id="topbar-divider" />
+				</div>
+			</div>
+			<div class="row">
+				<div id="topbar-hover-text-label" class="large-12 columns text-center">
+					<span class="incoming slide-left"></span>
+					<span class="outgoing">Halifax loves pizza and we love halifax!</span>
+				</div>
+			</div>
 		</div>
 		<div class="large-4 columns">
 			<ul id="hours-and-location">

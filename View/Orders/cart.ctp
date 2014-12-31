@@ -4,6 +4,7 @@
 
 <?php echo $this->Html->script( array( 'cart.js' ), array( 'inline' => false ) );
 //	db($cart);
+
 ?>
 <div class="row">
 	<div class="large-12 columns">
@@ -13,7 +14,7 @@
 			</div>
 			<div class="large-8 columns">
 				<h1>Mmmm... Cart Contents</h1>
-				<h3>Let's see what you're getting </h3>
+				<h3>Couldn't have chosen better ourselves!</h3>
 			</div>
 		</div>
 		<div class="row">
@@ -24,89 +25,116 @@
 				<?php } else { ?>
 			</div>
 		</div>
-		<div class="row">
-			<div class="large-1 large-push-11 columns">
-				<a href="#">Clear Cart</a>
-			</div>
+		<div class="row view-cart-row cart-header">
+			<div class="large-7 columns"><span>ITEM</span></div>
+			<div class="large-2 columns text-center"><span>QUANTITY</span></div>
+			<div class="large-2 columns"><span>PRICE</span></div>
+			<div class="large-1 columns text-center">&nbsp;</div>
 		</div>
-		<div class="row">
-			<ul>
-				<li class="large-7 columns inline">ITEM</li>
-				<li class="large-2 columns inline">QUANTITY</li>
-				<li class="large-2 columns inline">PRICE</li>
-				<li class="large-1 columns inline">&nbsp;</li>
-			</ul>
-		</div>
-		<?php foreach ($cart[ 'OrderItem' ] as $index => $item) { ?>
-		<div class="row">
-			<ul id="order-item-<?php echo $index; ?>">
-				<li class="large-7 columns inline">
-					<div class="row">
-						<div class="large-12 columns">
-							<h3><?php echo $item[ 'title' ]; ?></h3>
-						</div>
+
+		<?php foreach ($cart[ 'OrderItem' ] as $index => $item) {?>
+		<div class="row view-cart-row">
+			<div class="large-12 columns row-wrapper">
+				<div id="order-item-<?php echo $index; ?>" class="row primary-row">
+					<div class="large-7 columns"><span><?php echo $item[ 'title' ]; ?></span></div>
+					<div class="large-2 columns text-center"><span><?php echo $item['quantity'];?></span></div>
+					<div class="large-2 columns "><span><?php echo money_format("%#3.2n", $item['subtotal']);?></span></div>
+					<div class="large-1 columns text-center"><span class="icon-cancel"></div>
+				</div>
+			<?php if ( array_key_exists('orbopts', $item) ) { ?>
+				<div class="row">
+					<div class="large-12 columns secondary-row orbopts">
+						<?php foreach ( $item[ 'orbopts' ] as $opt_id => $opt ) {
+							$opt = $opt['Orbopt'];
+							$opt_weight = $item['orbopts_arrangement'][$opt_id];
+							?>
+							<a href="#" data-route="edit_orbopt_in_cart<?php echo DS.$index.DS.$opt_id;?>">
+							<span class="opt-label"><?php echo $opt[ 'title' ];?>
+							<?php switch($opt_weight) {
+										case "R":
+											echo '<span class="icon-right-side"></span>';
+											break;
+										case "L":
+											echo '<span class="icon-left-side"></span>';
+											break;
+										case "D":
+											echo '<span class="icon-double"></span>';
+											break;
+									}?>
+							</span></a>
+						<?php }?>
 					</div>
-				<?php if ( array_key_exists('orb_opts', $item) ) { ?>
-					<div class="row">
-						<div class="large-12 columns">
-							<ul class="large-block-grid-5">
-							<?php foreach ( $item[ 'orbopts' ] as $opt_id => $opt ) {
-								$opt = $opt['Orbopt'];
-								?>
-								<li><?php echo $opt[ 'title' ];?></li>
-							<?php }?>
-							</ul>
-						</div>
+				</div>
+			<?php }
+			if ( array_key_exists('preparation_instructions', $item) && !empty($item['preparation_instructions']) ) {?>
+				<div class="row">
+					<div class="large-12 columns secondary-row preparation-instructions">
+						<span class="preparation-instructions"><?php echo $item['preparation_instructions'];?></span>
 					</div>
-				<?php }
-					if ( array_key_exists('preparation_instructions', $item) ) {?>
-					<div class="row">
-						<div class="large-12 columns">
-							<span class="preparation-instructions"><?php echo $item['preparation_instructions'];?></span>
-						</div>
-					</div>
-				<?php } ?>
-				</li>
-				<li class="large-2 columns inline"><?php echo $item['quantity'];?></li>
-				<li class="large-2 columns inline"><?php echo money_format("%#3.2n", $item['subtotal']);?></li>
-				<li class="large-1 columns inline"><span class="icon-cancel"></li>
-			</ul>
-			<div class="true-hidden"><?php
-					echo $this->Form->create( null, array( 'url' => ___cakeUrl( 'orders', 'cartupdate' )) );
-					echo $this->Form->input( 'orb_id', array( 'hiddenField' => true, 'value' => $item['orb_id']) );
-					echo $this->Form->input( 'orbopts', array( 'hiddenField' => true, 'value' => $item['orbopts']) );
-					echo $this->Form->input( 'preparation_instructions', array( 'div'     => false,
-					                                                            'class'   => 'text form-control input-small',
-					                                                            'label'   => false,
-					                                                            'data-id' => $item['orb_id'],
-					                                                            'value'   => $item['preparation_instructions'] )
-					);
-					echo $this->Form->input( 'price_rank', array( 'div'     => false,
-					                                              'class'   => 'numeric form-control input-small',
-					                                              'label'   => false,
-					                                              'data-id' => $item['orb_id'],
-					                                              'value'   => $item['price_rank'] ));
-					echo $this->Form->input( 'quantity', array( 'div'     => false,
-					                                            'class'   => 'numeric form-control input-small',
-					                                            'label'   => false,
-					                                            'data-id' => $item[ 'orb_id' ],
-					                                            'value'   => $item[ 'quantity' ]));
-					echo $this->Form->end();
-				?>
-			</div>
-			</div>
+				</div>
 			<?php } ?>
+				<div class="true-hidden"><?php
+						echo $this->Form->create( null, array( 'url' => ___cakeUrl( 'orders', 'cartupdate' )) );
+						echo $this->Form->input( 'orb_id', array( 'hiddenField' => true, 'value' => $item['orb_id']) );
+						echo $this->Form->input( 'orbopts', array( 'hiddenField' => true, 'value' => $item['orbopts']) );
+						echo $this->Form->input( 'preparation_instructions', array( 'div'     => false,
+						                                                            'class'   => 'text form-control input-small',
+						                                                            'label'   => false,
+						                                                            'data-id' => $item['orb_id'],
+						                                                            'value'   => $item['preparation_instructions'] )
+						);
+						echo $this->Form->input( 'price_rank', array( 'div'     => false,
+						                                              'class'   => 'numeric form-control input-small',
+						                                              'label'   => false,
+						                                              'data-id' => $item['orb_id'],
+						                                              'value'   => $item['price_rank'] ));
+						echo $this->Form->input( 'quantity', array( 'div'     => false,
+						                                            'class'   => 'numeric form-control input-small',
+						                                            'label'   => false,
+						                                            'data-id' => $item[ 'orb_id' ],
+						                                            'value'   => $item[ 'quantity' ]));
+						echo $this->Form->end();
+					?>
+				</div>
+			</div>
+		</div>
+			<?php } ?>
+		<div class="row view-cart-row total">
+			<div class="large-9 columns">
+				<div class="row view-cart-row payment">
+					<?php echo $this->Form->create( null, array( 'url' => ___cakeUrl('orders','step1' )) );?>
+					<div class="large-2 columns">
+						<h5>Pay With:</h5>
+					</div>
+					<div class="large-4 columns">
+						<input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0'
+							       align='top' alt='Check out with PayPal'/>
+					</div>
+					<div class="large-2 columns">
+						<span>Debit</span>
+					</div>
+					<div class="large-2 columns">
+						<span>Cash</span>
+					</div>
+					<div class="large-2 columns">
+						<span>Credit</span>
+					</div>
+					<?php echo $this->Form->end();?>
+				</div>
+			</div>
+			<div class="large-3 columns">
+				<ul>
+					<li>Subtotal: <span class="normal" id="subtotal">$<?php echo $cart[ 'Order' ][ 'subtotal' ]; ?></span></li>
+					<li>Sales Tax: <span class="normal" id="HST">$<?php echo $cart[ 'Order' ][ 'HST' ]; ?></span></li>
+					<li>Delivery: <span class="normal" id="delivery">$<?php echo $cart[ 'Order' ][ 'delivery' ]; ?></span></li>
+					<li>Order Total: <span class="red" id="total">$<?php echo $cart[ 'Order' ][ 'total' ]; ?></span></li>
+				</ul>
+			</div>
+		</div>
 		<div class="row">
-<ul>
-	<li>Subtotal: <span class="normal" id="subtotal">$<?php echo $cart[ 'Order' ][ 'subtotal' ]; ?></span></li>
-	<li>Sales Tax: <span class="normal" id="HST">$<?php echo $cart[ 'Order' ][ 'HST' ]; ?></span></li>
-	<li>Delivery: <span class="normal" id="delivery">$<?php echo $cart[ 'Order' ][ 'delivery' ]; ?></span></li>
-	<li>Order Total: <span class="red" id="total">$<?php echo $cart[ 'Order' ][ 'total' ]; ?></span></li>
-	<li><a href="#" data-route="orders/address">CheckOut</a></li>
-</ul>
-	<?php echo $this->Form->create( null, array( 'url' => ___cakeUrl('orders','step1' )) );?>
-	<input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0'
-			       align='top' alt='Check out with PayPal' class="sbumit"/>
-	<?php echo $this->Form->end();
-			}?>
+			<div class="large-12 large-centered columns">
+				<a href="#" class="xtreme-button" data-route="orders/address">CheckOut</a>
+			</div>
+		</div>
+<?php } ?>
 <div id="on-close" class="true-hidden" data-action="unstash"></div>

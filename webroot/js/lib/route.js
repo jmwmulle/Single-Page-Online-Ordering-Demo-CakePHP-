@@ -24,14 +24,15 @@ function XtremeRoute(data) {
 	this.overlay = false;
 	this.stop_propagation = false;
 
-	this.set_params = function(param_values) {
-		pr(param_values, "XtremeRoute.set_params(arg_vals)");
-		var param_keys = Object.keys(this.params);
-		for (var i = 0; i < param_keys.length; i++) {
-			if (this.params[param_keys[i]].is_url) this.url += C.DS + param_values[i]
-			this.params[param_keys[i]].value = param_values[i];
+	this.__set_params = function(param_values) {
+		if (param_values.length > 0) {
+			var param_keys = Object.keys(this.params);
+			for (var i = 0; i < param_keys.length; i++) {
+				if (this.params[param_keys[i]].is_url) this.url += C.DS + param_values[i]
+				this.params[param_keys[i]].value = param_values[i];
+			}
+			if (this.params_set_callback) this.params_set_callback();
 		}
-		if (this.params_set_callback) this.params_set_callback();
 		return true;
 	}
 
@@ -97,6 +98,12 @@ function XtremeRoute(data) {
 		if (this.post_init_callback) this.post_init_callback();
 
 		return true;
+	}
+
+	this.init_instance = function(param_values) {
+		pr(param_values, "XtremeRoute.init_instance(param_values)");
+		if (this.launch_callback) $(this).on("route_launched", this.launch_callback);
+		if (param_values) this.__set_params(param_values);
 	}
 	this.initialized_ok = this.init(data);
 	return this;

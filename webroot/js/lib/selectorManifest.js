@@ -101,8 +101,8 @@ var XSM = {
 		order:"#order-modal",
 		overlay: "#modal-overlay-container",
 		primary: "#primary-modal",
-		primary_content: "#primary-modal-content"
-
+		primary_content: "#primary-modal-content",
+		social: "#social-modal"
 	},
 	splash:{
 		self:"#splash",
@@ -126,6 +126,12 @@ var XSM = {
 		preserve_aspect_ratio: "#splash *.preserve-aspect-ratio",
 		splash_bar:"#splash-bar",
 		splash_link: ".splash-link"
+	},
+	topbar: {
+		hover_text_link: ".topbar-social  a",
+		hover_text_label: "#topbar-hover-text-label",
+		hover_text_label_incoming: "#topbar-hover-text-label span.incoming",
+		hover_text_label_outgoing: "#topbar-hover-text-label span.outgoing"
 	},
 	generated: {
 		order_form_order_opt: function(opt_id) { return asId("OrderOrbOrbopts" + opt_id) },

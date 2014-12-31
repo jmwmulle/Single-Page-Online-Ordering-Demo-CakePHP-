@@ -101,19 +101,6 @@ footer {
 // DECORATION CLASSES
 .fade-out { opacity:0;}
 
-.slide-left {
-  -webkit-transform: translate(-1 * $orb-card-stage-menu-width, 0);
-  -moz-transform: translate(-1 * $orb-card-stage-menu-width, 0);
-  -o-transform: translate(-1 * $orb-card-stage-menu-width, 0);
-  transform: translate(-1 * $orb-card-stage-menu-width, 0);
-}
-.slide-right {
-  -webkit-transform: translate($orb-card-stage-menu-width, 0);
-  -moz-transform: translate($orb-card-stage-menu-width, 0);
-  -o-transform: translate($orb-card-stage-menu-width, 0);
-  transform: translate($orb-card-stage-menu-width, 0);
-}
-
 .slide-up {
   -webkit-transform: translate(0, -1000px);
   -moz-transform: translate(0, -1000px);
