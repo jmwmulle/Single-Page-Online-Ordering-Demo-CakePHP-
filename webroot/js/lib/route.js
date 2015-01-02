@@ -12,7 +12,6 @@ function XtremeRoute(data) {
 
 	// inferred data
 	this.modal_content = false;
-	this.param_count = 0;
 
 	// callbacks
 	this.params_set_callback = false;
@@ -29,6 +28,11 @@ function XtremeRoute(data) {
 			var param_keys = Object.keys(this.params);
 			for (var i = 0; i < param_keys.length; i++) {
 				if (this.params[param_keys[i]].is_url) this.url.url += C.DS + param_values[i]
+				// convert bool strings to bools proper, convert escaped bool strings to basic strings
+				if (param_values[i] === "true") param_values[i] = true;
+				if (param_values[i] === "\true") param_values[i] = "true";
+				if (param_values[i] === "false") param_values[i] = false;
+				if (param_values[i] === "\false") param_values[i] = "false";
 				this.params[param_keys[i]].value = param_values[i];
 			}
 			if (this.params_set_callback) this.params_set_callback();
@@ -105,6 +109,12 @@ function XtremeRoute(data) {
 		if (this.launch_callback) $(this).on("route_launched", this.launch_callback);
 		if (param_values) this.__set_params(param_values);
 	}
+
+	this.set_modal = function (modal) {
+		this.modal = modal;
+		this.modal_content = modal + "-content";
+	};
+
 	this.initialized_ok = this.init(data);
 	return this;
 }

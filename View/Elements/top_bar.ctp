@@ -13,7 +13,7 @@
  * $here = (str) << currently viewed page,  must exactly match one of the navopts >>
  */
 
-$logged_in = false;
+$logged_in = true;
 $twitter_text = $logged_in ? "Tweet about Xtreme!" : "Login via Twitter";
 $gplus_text = $logged_in ? "+1 Xtreme!" : "Login via GooglePlus";
 $fb_text = $logged_in ? "Like Xtreme!" : "Login via Facebook";

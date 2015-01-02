@@ -160,32 +160,56 @@ span.icon-hn-inline {
   content: "M";
 }
 
+@mixin font-faces() {
+  $fonts:
+    ("Helvetica Neue Condensed Black", HelveticaBlkCn, "HelveticaNeueLTStdBlkCn" )
+    ("Helvetica Neue Medium Condensed", HelveticaMdCn, "HelveticaNeueLTStdMdCn")
+    ("Helvetica Neue Light Condensed", HelveticaLtCn, "HelveticaNeueLTStdLtCn")
+    ("Helvetica Neue Thin", HelveticaTh, "HelveticaNeueLTStdTh")
+    ("Helvetica Neue Thin Condensed", HelveticaThCn, "HelveticaNeueLTStdThCn")
+    ("Helvetica Neue Ultra Light", HelveticaUltLt, "HelveticaNeueLTStdUltThCn");
 
+  @each $font in $fonts {
 
-@font-face {
-  font-family : "Helvetica Neue Medium Condensed";
-  src         : url("../files/HelveticaNeueLTStd-MdCn.otf");
+    @font-face {
+      font-family: "#{nth($font, 1)}";
+      src: url('../files/font/#{nth($font, 3)}.otf');
+      src: url('../files/font/#{nth($font, 3)}.eot?#iefix') format('embedded-opentype'),
+           url('../files/font/#{nth($font, 3)}.woff') format('woff'),
+           url('../files/font/#{nth($font, 3)}.ttf') format('truetype'),
+           url('../files/font/#{nth($font, 3)}.svg##{nth($font, 3)}') format('svg');
+      font-weight: normal;
+      font-style: normal;
+     };
+  }
 }
 
-@font-face {
-  font-family : "Helvetica Neue Light Condensed";
-  src         : url("../files/HelveticaNeueLTStd-LtCn.otf");
-}
-
-@font-face {
-  font-family : "Helvetica Neue Thin";
-  src         : url("../files/HelveticaNeueLTStd-Th.otf");
-}
-
-@font-face {
-  font-family : "Helvetica Neue Thin Condensed";
-  src         : url("../files/HelveticaNeueLTStd-ThCn.otf");
-}
-
-@font-face {
-  font-family : "Helvetica Neue Ultra Light";
-  src         : url("../files/HelveticaNeueLTStd-UltLt.otf");
-}
+@include font-faces();
+//
+//@font-face {
+//  font-family : "Helvetica Neue Medium Condensed";
+//  src         : url("../files/HelveticaNeueLTStd-MdCn.otf");
+//}
+//
+//@font-face {
+//  font-family : "Helvetica Neue Light Condensed";
+//  src         : url("../files/HelveticaNeueLTStd-LtCn.otf");
+//}
+//
+//@font-face {
+//  font-family : "Helvetica Neue Thin";
+//  src         : url("../files/HelveticaNeueLTStd-Th.otf");
+//}
+//
+//@font-face {
+//  font-family : "Helvetica Neue Thin Condensed";
+//  src         : url("../files/HelveticaNeueLTStd-ThCn.otf");
+//}
+//
+//@font-face {
+//  font-family : "Helvetica Neue Ultra Light";
+//  src         : url("../files/HelveticaNeueLTStd-UltLt.otf");
+//}
 
 @mixin mouse-memoirs {
   font-family : "Mouse Memoirs", sans-serif;

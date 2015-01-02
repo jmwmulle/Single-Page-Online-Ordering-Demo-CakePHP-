@@ -189,48 +189,6 @@ main#splash {
   padding-top:3rem;
 }
 
-#splash-modal {
-  display:none;
-  position:relative;
-  margin:0 auto;
-  width:50%;
-  height:auto;
-  max-width:rem-calc(800px);
-  min-width: rem-calc(400px);
-  min-height:rem-calc(400px);
-  max-height:75%;
-  background-color:white;
-//  overflow:clip;
-  h1 {
-    width:100%;
-    height:4rem;
-    background-image:url('../img/splash/logo.png');
-    background-size:contain;
-    background-repeat:no-repeat;
-    background-position:1rem top;
-    background-color:$xtreme-blue;
-
-  }
-  .content {
-    padding:1rem;
-    width:100%;
-  }
-}
-
-$close-splash-diameter: 1.2rem;
-a.close-splash-modal {
-  float:right;
-  color:$white;
-  background-color:$dark-grey;
-  border-radius:$global-rounded;
-  width:$close-splash-diameter;
-  height:$close-splash-diameter;
-  line-height:1rem;
-  text-align:center;
-}
-
-
-
 #grand-opening-deal {
     display:none;
     position          : fixed;

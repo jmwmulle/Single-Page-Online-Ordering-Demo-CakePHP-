@@ -1,27 +1,4 @@
 <main id="splash" class="pane loading">
-	<div id="splash-modal-wrapper" >
-		<div id="splash-modal">
-			<div class="content">
-				<h1></h1>
-				<a class="close-splash-modal">&#215;</a>
-			</div>
-		</div>
-	</div>
-<!--	<div id="grand-opening-deal" data-splash-modal data-source="register">-->
-<!--		<div>-->
-<!--			<h3>Join With:-->
-<!--				<ul id="deal-button-panel">-->
-<!--				<li class="facebook"></li>-->
-<!--				<li class="gplus"></li>-->
-<!--				<li class="twitter"></li>-->
-<!--				<li class="email"></li>-->
-<!--				</ul>-->
-<!--			</h3>-->
-<!--			<h4>Free Medium<br />Garlic Fingers</h4>-->
-<!--			<p>When you first order online by signing up for an <a href="#" id="mini-logo"></a> account today!</p>-->
-<!--			<a href="#" id="register-button">OK!</a>-->
-<!--		</div>-->
-<!--	</div>-->
 	<div class="spacer"></div>
 	<div class="content">
 		<div id="splash-circle-wrapper" class="detach wrapper"  data-static="true">
@@ -29,7 +6,7 @@
 				<div id="order-wrapper" class="wrapper preserve-3d">
 					<div class="spacer">&nbsp;</div>
 					<?php $orderAttr = array("splash-redirect" => "pages/order", 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
-					<a href="#" id="order" <?php //echo ___dA($orderAttr);?> data-route="splash_link/order">&nbsp;</a>
+					<a href="#" id="order" <?php //echo ___dA($orderAttr);?> data-route="order_method/splash/launch">&nbsp;</a>
 				</div>
 				<div id="splash-bar-wrapper" class="detach wrapper">
 					<div id="splash-bar" class="detach">

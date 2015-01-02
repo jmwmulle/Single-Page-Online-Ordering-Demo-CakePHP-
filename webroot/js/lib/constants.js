@@ -36,6 +36,7 @@ var constants = {
 	L: "<span class='icon-left-side tiny-opt icon-hnj-inline'></span>",
 	ORDER: "order",
 	PRIMARY: "primary",
+	SPLASH: "splash",
 	FLASH: "flash",
 	WEIGHT: "weight",
 	REM: 16,

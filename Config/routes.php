@@ -29,14 +29,15 @@
  * ...and connect the rest of 'Pages' controller's URLs.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	Router::connect('/splash-order', array('controller' => 'pages', 'action' => 'display', 'splash_order_modal'));
 	Router::connect('/menu/*', array('controller' => 'orbcats', 'action' => 'menu'));
 	Router::connect('/users/update', array('controller' => 'users', 'action' => 'edit'));
 	Router::connect('/cart/*', array('controller' => 'orders', 'action' => 'cart'));
 	Router::connect('/menuitem/*', array('controller' => 'orbs', 'action' => 'menu_item'));
 	Router::connect('/register', array('controller' => 'pages', 'action' => 'signup'));
-	Router::connect('/order_method/*', array('controller' => 'users', 'action' => 'order_method'));
-	Router::connect('/confirm_address/*', array('controller' => 'users', 'action' => 'confirm_address'));
-	Router::connect('/launch_menu/*', array('controller' => 'orbcats', 'action' => 'menu', null, null, true));
+	Router::connect('/order-method/*', array('controller' => 'users', 'action' => 'order_method'));
+	Router::connect('/confirm-address/*', array('controller' => 'users', 'action' => 'confirm_address'));
+	Router::connect('/launch-menu/*', array('controller' => 'orbcats', 'action' => 'menu', null, null, true));
 	Router::connect('/favorite/*', array('controller' => 'users', 'action' => 'add_favourite'));
 
 

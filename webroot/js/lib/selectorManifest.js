@@ -10,6 +10,7 @@ var XSM = {
 		active_list_item: "li.active",
 		ajaxLink:".ajax-link",
 		detachable: ".detach",
+		footer: "footer",
 		imageQueue: "#image-loading-queue",
 		loadingScreen: "#loadingScreen",
 		multi_activizing: ".multi-activizing",
@@ -97,7 +98,8 @@ var XSM = {
 		tiny_orb_opts_list: "tiny-orb-opt-list",
 		tiny_orb_opts_list_wrapper:"#tiny-orb-opts-list-wrapper",
 		tiny_orb_opts_list_item: ".tiny-orb-opts-list-item",
-		user_activity_panel: "#user-activity-panel"
+		user_activity_panel: "#user-activity-panel",
+		user_activity_panel_items: "#user-activity-panel li"
 	},
 	modal: {
 		close_modal: "#close-modal",
@@ -107,7 +109,8 @@ var XSM = {
 		overlay: "#modal-overlay-container",
 		primary: "#primary-modal",
 		primary_content: "#primary-modal-content",
-		social: "#social-modal"
+		social: "#social-modal",
+		splash: "#splash-modal"
 	},
 	splash:{
 		self:"#splash",
