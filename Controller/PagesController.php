@@ -48,6 +48,9 @@ class PagesController extends AppController {
 	public function display() {
 		$path = func_get_args();
 		$count = count($path);
+
+		if ( $this->request->is('ajax') ) $this->layout = "ajax";
+
 		if (!$count) {
 			return $this->redirect('/');
 		}

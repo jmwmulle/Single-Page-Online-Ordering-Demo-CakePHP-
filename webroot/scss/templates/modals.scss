@@ -9,7 +9,7 @@
   overflow:hidden;
 }
 
-#close-primary-modal {
+#close-modal {
   span {
     display:inline-block;
     font-size:rem-calc(12px);
@@ -21,6 +21,39 @@
   &:hover span {
     color:$light-grey;
   }
+  &.flash {
+    span {
+      color: $white;
+      &:last-of-type { padding-right:0.5rem;}
+    }
+    &:hover span { color:$light-grey;}
+  }
+}
+
+#flash-modal {
+  position: fixed;
+  z-index:10001;
+  width:40rem;
+  height: 6rem;
+  #flash-modal-content {
+    width:100%;
+    border:3px solid white;
+    background-color: $xtreme-blue;
+    border-radius:0.75rem;
+    padding:$base-padding;
+  }
+
+  .slide-up {
+    -webkit-transform: translate(0, -6rem);
+  }
+}
+
+#splash-modal {
+  position: fixed;
+  top:0;
+  left:0;
+  z-index:10001;
+  padding:$base-padding;
 }
 
 #primary-modal {
@@ -34,7 +67,7 @@
   max-width: $row-width;
   min-height:200px;
   height:auto;
-  z-index:100001;
+  z-index:10001;
   overflow-y:auto;
   padding: $base-padding;
   input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], textarea {

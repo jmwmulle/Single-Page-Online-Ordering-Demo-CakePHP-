@@ -7,5 +7,3 @@
  * About.me: about.me/thisimpetus
  */
 ?>
-<div id="flash">
-</div>

@@ -41,45 +41,22 @@
 </head>
 
 <body <?php echo ___cD( $body_class ); ?>>
-<?php // db($this->Session->read()); ?>
-<?php echo $this->Element( 'feedback' ); ?>
 <?php
-	//echo $this->Element("loadingscreen");
-	//echo $this->Element("login");
-	if ( !$this->get( "is_splash" ) ) {
-		echo $this->element( "flash" );
-	} //todo: perhaps turn this into both the topbar nav AND the flash area?
+	echo $this->Element( 'feedback' );
+	echo $this->element( "flash_modal" );
 	echo $this->Element( "top_bar" );
-	$img = array( "splash/bluecircle.png",
-	              "splash/deal.png",
-	              "splash/email_icon.png",
-	              "splash/email_icon.hover.png",
-	              "splash/facebook_icon.png",
-	              "splash/facebook_icon.hover.png",
-	              "splash/twitter_icon.png",
-	              "splash/twitter_icon.hover.png",
-	              "splash/gplus_icon.png",
-	              "splash/gplus_icon.hover.png",
-	              "splash/logo.png",
-	              "splash/logo_mini.png",
-	              "splash/menu.png",
-	              "splash/menu_hover.png",
-	              "splash/order.png",
-	              "splash/order_soon.png",
-	              "splash/pizza-bg.jpg",
-	              "splash/logo_mini.png" );?>
-
-
-
-
+?>
+<div id="page-content">
 <?php
 	echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );
 	echo $this->fetch( 'content' );
+?>
+</div>
+<?php
 	echo $this->Element( 'footer' );
 	echo $this->fetch( 'app' );
 	echo $this->fetch( 'main' );
 ?>
-
 </body>
 </html>
 

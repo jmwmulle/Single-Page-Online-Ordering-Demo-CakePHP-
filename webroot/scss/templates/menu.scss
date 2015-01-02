@@ -5,19 +5,26 @@ html, nav, body, main, footer {
 body {
   background-repeat : no-repeat;
   background-size   : cover;
-  .menu {
-    background-image : url("../img/menu_bg.xlg.bright.jpg");
-    overflow         : auto;
-  }
+//  .menu {
+//    background-image : url("../img/menu_bg.xlg.bright.jpg");
+//    overflow         : auto;
+//  }
 }
 
 
 
 main#menu {
+
   min-height  : 100%;
-  width       : 100%;
+  width       : $row-width + 6rem;
+  @media #{$small-only} { width: 40rem; }
+
+//  @media #{$large-up} {
+//    width: $row-width;
+//  }
+  padding: 3rem;
   padding-top : $menu-top-padding;
-  overflow    : auto;
+  overflow-x:hidden;
   #menu-container {
     margin-left:auto;
     margin-right:auto;
@@ -65,9 +72,14 @@ ul#user-activity-panel {
 
 ***************************************************************/
 ul#orbcat-menu {
-  width  : $orbcat-menu-width;
+  width:100%;
+ // @media #{$large-up} { width  : $orbcat-menu-width;}
+
   height : $orbcat-menu-height;
   margin : $orbcat-margin;
+  @media #{$small-only} {
+    margin:0;
+  }
   @include orbcat-menu-gradient;
   &.slide-right {
     -webkit-transform : translate(2000px, 0);
@@ -136,7 +148,8 @@ li.orbcat {
 }
 
 #orbcat-menu-title {
-  width: $orbcat-menu-width;
+  //width: $orbcat-menu-width;
+  width:100%;
   left              : $base-padding;
   -webkit-transform : $orbcat-menu-title-y-adjust;
   -moz-transform    : $orbcat-menu-title-y-adjust;

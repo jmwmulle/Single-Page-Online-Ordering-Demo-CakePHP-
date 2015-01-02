@@ -116,6 +116,9 @@ class OrbcatsController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+	public function ajax_menu() {
+		$this->menu(null, null, true);
+	}
 
 	public function menu($orbcat_id = null, $orb_id = null, $return = false) {
 		$page_name = 'menu';
@@ -152,7 +155,14 @@ class OrbcatsController extends AppController {
 		}
 
 		$this->set(compact('active_orbcat','orbcats_list','page_name'));
-		if ($this->request->is("ajax")) { $this->render('ajax_menu', 'ajax'); }
+		if ($this->request->is("ajax")) {
+			if ($return) {
+				$this->layout = "ajax";
+				$this->render();
+			} else {
+				$this->render('ajax_menu', 'ajax');
+			}
+		}
 	}
 
 	public function beforeFilter() {

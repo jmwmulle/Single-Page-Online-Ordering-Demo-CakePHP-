@@ -13,7 +13,7 @@
  * $here = (str) << currently viewed page,  must exactly match one of the navopts >>
  */
 
-$logged_in = false;
+$logged_in = true;
 $twitter_text = $logged_in ? "Tweet about Xtreme!" : "Login via Twitter";
 $gplus_text = $logged_in ? "+1 Xtreme!" : "Login via GooglePlus";
 $fb_text = $logged_in ? "Like Xtreme!" : "Login via Facebook";
@@ -25,7 +25,7 @@ $favorites_text = $logged_in ? "View Your Favorites" : "";
 
 <nav id="topbar" class="text-center">
 	<div class="row">
-		<div class="large-3 columns text-center topbar-social">
+		<div class="large-3 small-12 columns text-center topbar-social">
 			<div class="row">
 				<div class="large-12 columns icon-row">
 					<a href="#" data-route="topbar_social/twitter" data-hover_text="<?php echo $twitter_text;?>">
@@ -59,7 +59,7 @@ $favorites_text = $logged_in ? "View Your Favorites" : "";
 				</div>
 			</div>
 		</div>
-		<div class="large-4 columns">
+		<div class="large-4 columns show-for-large-up">
 			<ul id="hours-and-location">
 				<li>
 					Sun-Thurs: 11am - 3am&nbsp;&nbsp;&nbsp;&nbsp;

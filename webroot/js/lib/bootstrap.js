@@ -36,6 +36,9 @@ window.XBS = {
 		orb_opt_filters: {
 		},
 		current_orb_card: null,
+		delays: {
+			menu_stash_delay: 900
+		},
 		partial_orb_configs: {
 		},
 		cart: {
@@ -76,12 +79,48 @@ window.XBS = {
 		order_ui_update: eCustom(C.ORDER_UI_UPDATE)
 	},
 	routes: {
+		continue_ordering: new XtremeRoute({
+			callbacks:{
+				launch:function() {
+					XBS.menu.show_orb_card_front_face()
+					setTimeout( function() {
+						XBS.layout.dismiss_modal();
+						XBS.menu.reset_orb_card_stage();
+					}, 900);
+				}
+			}
+		}),
+		fail_flash: new XtremeRoute({
+				modal: XSM.modal.flash,
+				behavior: C.OL,
+				callbacks: {
+					launch: function() {
+						$(this.modal_content).html("<h5>Oh Noes!</h5><p>Something went awry there. Let us know so we can fix it!</p>");
+						$(this.modal).removeClass(XSM.effects.slide_up);
+					}
+				}
+		}),
+		favorite: new XtremeRoute({
+			params: {context: {value:null, url:false}},
+			url: {url: "favorite"},
+			data: false,
+			callbacks: {
+				modal: XSM.modal.flash,
+				params: function() { this.data = $(XSM.menu.orb_order_form).serialize(); },
+				launch: function(e, resp) { pr(resp);}
+			}
+		}),
+		finish_ordering: new XtremeRoute({
+			modal: XSM.modal.primary,
+			url: {url: "finish-ordering"},
+			behavior: C.STASH_STOP
+		}),
 		menu: new XtremeRoute({
 			modal: false,
-			url: "menu"
+			url: {url:"menu"}
 		}),
 		menuitem: new XtremeRoute({
-			url:"menuitem",
+			url: {url: "menuitem"},
 			params: {orb_id:{value:null, is_url:true}}
 		}),
 		orbcat: new XtremeRoute({
@@ -102,37 +141,53 @@ window.XBS = {
 		order_method: new XtremeRoute({
 			modal: XSM.modal.primary,
 			behavior: C.OL,
-			params: {method:{value:null, is_url:true}},
+			params: {
+				method: {value:null, is_url:true},
+				splash_method: {value:null, is_url:false}},
 			callbacks: {
 				params_set: function() {
 					if (this.params.method.value == C.DELIVERY) {
-						this.url = "order_method" + C.DS + C.DELIVERY;
+						this.url.url = "order-method" + C.DS + C.DELIVERY;
+					} else if (this.params.method.value == C.SPLASH) {
+						this.overlay = false;
+						this.modal = XSM.modal.splash;
+						switch (this.params.splash_method.value) {
+							case "launch":
+								this.set_modal(XSM.modal.splash);
+								this.url.url = "splash-order"
+								break;
+							case "delivery":
+								delete this.url;
+								XBS.layout.dismiss_modal(C.SPLASH);
+								setTimeout(function() { XBS.layout.launch_route("order_method/delivery");}, 630);
+								break;
+							case "pickup":
+								delete this.url;
+								XBS.layout.dismiss_modal(C.SPLASH);
+								XBS.splash.fold("order_method/delivery");
+								break;
+							}
 					} else {
 						delete this.url;
 					}
 				},
-				launch: function() { XBS.data.order.method = this.params.method.value; }
+				launch: function(e) { XBS.menu.set_order_method(this.params.method.value); }
 			}
 		}),
-		continue_ordering: new XtremeRoute({
-			callbacks:{
-				launch:function() {
-					XBS.menu.show_orb_card_front_face()
-					setTimeout( function() {
-						XBS.layout.dismiss_modal();
-						XBS.menu.reset_orb_card_stage();
-					}, 900);
+		splash_link: new XtremeRoute({
+			url:{url:"launch-menu"},
+			params: {method: { value: null, url:false}},
+			callbacks: {
+				launch: function() { XBS.splash.fold(this.params.method == 'order')
 				}
 			}
 		}),
-		finish_ordering: new XtremeRoute({
-			modal: XSM.modal.primary,
-			url: "finish_ordering",
-			behavior: C.STASH_STOP
-		}),
 		submit_order_address: new XtremeRoute({
+			params: { is_splash:{value:null, url:false}},
 			callbacks: {
 				launch: function(){
+					pr(this.params);
+					var is_splash = this.params.is_splash.value;
 					 $("#orderAddressForm").validate({
 						debug:true,
 						rules:{
@@ -154,10 +209,29 @@ window.XBS = {
 							}
 						},
 						submitHandler: function() {
+
 							$.ajax({
 								type:"POST",
-								url:"confirm_address/session",
+								url:"confirm-address/session",
 								data: $("#orderAddressForm").serialize(),
+								statusCode: {
+									403: function() {
+										XBS.layout.dismiss_modal(XSM.modal.primary);
+										if (is_splash) {
+											setTimeout( function() {
+											XBS.splash.fold(false);
+											set
+											}, 300);
+
+									}
+
+//										XBS.layout.launch_route(XBS.routes.fail_flash);
+//										if (!launch_triggered) {
+//											launch_triggered = true;
+//											$(route).trigger("route_launched","403_FORBIDDEN")
+//										}
+									}
+								},
 								success: function(data) {
 									pr(data);
 									try {
@@ -165,8 +239,8 @@ window.XBS = {
 										XBS.data.user.address = data.address;
 									} catch(e) {
 									}
-									XBS.layout.dismiss_modal();
-									// do something with returned data
+									XBS.layout.dismiss_modal(XSM.modal.primary);
+									if (this.is_splash.value == true) XBS.splash.fold();
 								}
 							});
 						}
@@ -175,17 +249,17 @@ window.XBS = {
 				}
 			}
 		}),
-		view_order: new XtremeRoute({
-			params: {context:{value:"default", url:false}},
-			modal: XSM.modal.primary,
-			url: "cart",
-			behavior: C.STASH_STOP
-		}),
 		topbar_social: new XtremeRoute({
 			params: {channel: {value:null, url:true}},
 			modal: XSM.modal.social,
-			url: "social",
+			url: {url:"social"},
 			callbacks:{}
+		}),
+		view_order: new XtremeRoute({
+			params: {context:{value:"default", url:false}},
+			modal: XSM.modal.primary,
+			url: {url:"cart"},
+			behavior: C.STASH_STOP
 		})
 	},
 
@@ -211,6 +285,9 @@ window.XBS = {
 //			try {
 			var sit_rep = XBS.fn.execInitSequence({"XBS.layout.jq_binds": XBS.layout.jq_binds});
 			if (XBS.cfg.is_splash) XBS.layout.detachAnimationTargets();
+			var page_content_height = window.innerHeight - ($(XSM.global.topbar).innerHeight() + 3 * C.REM) + C.PX;
+			$(XSM.global.page_content).css({minHeight:page_content_height});
+
 //			} catch(e) {
 //				pr(e.stack);
 //				throw new InitError(e); // todo: list all init exceptions if needed
@@ -231,13 +308,7 @@ window.XBS = {
 			init_routing: function() {
 				/** bind routes */
 				$(C.BODY).on(C.CLK, XSM.global.route, null, function (e) {
-					var route = $(e.currentTarget).data('route').split("/")
-					if ( route[0] in XBS.routes ) {
-						var route_ob = jQuery.extend({}, XBS.routes[route[0]], true);
-						route_ob.init_instance(route.slice(1));
-						if (route_ob.stop_propagation) e.stopPropagation();
-						XBS.layout.launch_route(route_ob);
-					}
+					XBS.layout.launch_route($(e.currentTarget).data('route'));
 				});
 			},
 			init_modals: function () {
@@ -246,10 +317,15 @@ window.XBS = {
 				$(C.BODY).on(C.CLK, XSM.modal.overlay, null, XBS.layout.dismiss_modal);
 
 				/** bind close-modal button */
-				$(C.BODY).on(C.CLK, XSM.modal.close_primary, null, function(e) {
-					var on_close = $(XSM.modal.primary).find(XSM.modal.on_close)[0];
-					var action = on_close ? $(on_close).data('action') : false;
-					XBS.layout.dismiss_modal(action);
+				$(C.BODY).on(C.CLK, XSM.modal.close_modal, null, function(e) {
+					var modal = $(e.currentTarget).data('modal');
+					var action = false;
+					if (modal == XSM.modal.primary)  {
+						var on_close = $(XSM.modal.primary).find(XSM.modal.on_close)[0];
+						if (on_close) action = $(on_close).data('action');
+					}
+
+					XBS.layout.dismiss_modal(modal, action);
 					return true;
 				})
 			},
@@ -351,8 +427,10 @@ window.XBS = {
 			if (isStatic) XBS.layout.fasten(element);
 			return $(element);
 		},
-		dismiss_modal: function(action) {
+		dismiss_modal: function(modal, action) {
 			$(XSM.modal.primary).addClass(XSM.effects.slide_up);
+			$(XSM.modal.flash).addClass(XSM.effects.slide_up);
+			$(XSM.modal.splash).addClass(XSM.effects.slide_up);
 			$(XSM.modal.order).hide('clip');
 			setTimeout(function() {
 				$(XSM.modal.overlay).addClass(XSM.effects.fade_out);
@@ -369,9 +447,10 @@ window.XBS = {
 						});
 						break;
 					case "unstash":
+						XBS.menu.init();
 						XBS.menu.unstash_menu();
 						break;
-					}
+				}
 			}
 
 			return true;
@@ -382,37 +461,88 @@ window.XBS = {
 			for (var i in selectors) {
 				var sel = selectors[i];
 				var offset = $(sel).offset();
-				var dims = [$(sel).outerWidth() + $(sel).css("padding"),
-				            $(sel).outerHeight() + $(sel).css("padding")];
 
-				$(sel).css({position: "fixed", top: offset.top, left: offset.left, height: dims.height, width: dims.width}).addClass("fastened");
+				var dims = {width:Math.floor($(sel).outerWidth() + px_to_int($(sel).css("padding-left"))),
+				            height:Math.floor($(sel).outerHeight() + px_to_int($(sel).css("padding-top")))};
+				var styles = {position: "fixed", top: offset.top, left: offset.left, height: dims.height, width: dims.width};
+				pr(styles)
+				$(sel).css(styles).addClass("fastened");
 			}
 			return  (isArray(selector) ) ? selector : $(selector);
 		},
-		launch_route: function (route) {
-			pr(route, "launch_route(route)");
+		launch_route: function (route_str) {
+			pr(route_str, "launch_route(route)");
+
+			var route_path = route_str.split("/")
+			if ( !route_path[0] in XBS.routes ) return false;
+			var route = jQuery.extend({}, XBS.routes[route_path[0]], true);
+			route.init_instance(route_path.slice(1));
+			if (route.stop_propagation) e.stopPropagation();
 			var launch_delay;
+			var expose_by_removing = false;
 			if (route.stash) launch_delay = 900;
 			if (route.overlay) launch_delay = 300;
+			if (route.modal == XSM.modal.primary) expose_by_removing = XSM.effects.slide_up;
+			if (route.modal == XSM.modal.splash) expose_by_removing = XSM.effects.slide_up;
 
 			// >>> RESIZE & POSITION PRIMARY IF NEEDED <<<
-			if (route.modal == XSM.modal.primary) XBS.layout.resize_primary_modal()
+			XBS.layout.resize_modal(route.modal)
 
 			// >>> LAUNCH MODALS IF REQUIRED<<<
-
 			if (route.url) {
-				$.get(route.url, function (data) {
+				var launch_triggered = false;
+				try {
+				$.ajax({
+					type: "type" in route.url ? route.url.type : C.POST,
+					url: route.url.url,
+					data: "data" in route.url ? route.url.data : null,
+					statusCode: {
+						403: function() {
+							XBS.layout.launch_route(XBS.routes.fail_flash);
+							if (!launch_triggered) {
+								launch_triggered = true;
+								$(route).trigger("route_launched","403_FORBIDDEN")
+							}
+						}
+					},
+					success: function (data) {
 					// >>> DO PRE-LAUNCH EFFECTS <<<
-					if (route.stash) XBS.menu.stash_menu();
-					if (route.overlay) $(XSM.modal.overlay).show().removeClass(XSM.effects.fade_out);
-					setTimeout( function() {
-						$(route.modal_content).html(data)
-						$(route.modal).removeClass(XSM.effects.slide_up);
-					}, launch_delay);
-				})
-				.fail(function() { return false; /* todo: put some shit here */ });
-			}
-			$(route).trigger("route_launched");
+						if (route.stash) XBS.menu.stash_menu();
+						if (route.overlay) $(XSM.modal.overlay).show().removeClass(XSM.effects.fade_out);
+						setTimeout( function() {
+							pr([route, data]);
+							$(route.modal_content).html(data)
+							if (expose_by_removing) $(route.modal).removeClass(expose_by_removing);
+							$(route).trigger("route_launched", data);
+						}, launch_delay);
+					},
+					fail: function() {
+							if ("fail_callback" in route) {
+								route.fail_callback();
+							} else {
+								XBS.layout.launch_route(XBS.routes.fail_flash);
+							}
+							if (!launch_triggered) {
+								launch_triggered = true;
+								$(route).trigger("route_launched","FAIL_TRIGGER")
+							}
+						},
+					always: function() {
+						if (!launch_triggered) {
+							pr("getting heeeere");
+							$(route).trigger("route_launched","FALLBACK_TRIGGER")
+						}
+					}
+				});
+				} catch (e) {
+					XBS.layout.launch_route(XBS.routes.fail_flash);
+					if (!launch_triggered) {
+						launch_triggered = true;
+						$(route).trigger("route_launched","CAUGHT_EXCEPTION")
+					}
+				}
+			} else { $(route).trigger("route_launched", "NO_AJAX"); }
+
 			return true;
 		},
 		multi_activize: function (element) {
@@ -447,23 +577,36 @@ window.XBS = {
 				});
 			}
 		},
-		resize_primary_modal: function() {
-			var target_modal_width = 1200 / 12 * 8;
-			var target_modal_max_height = 0.8 * $(window).innerHeight();
-
-			var pm_width = 0.8 * $(window).innerWidth();
-			var pm_left;
-			if (pm_width > target_modal_width) {
-				pm_left = ($(window).innerWidth() - target_modal_width) / 2;
-			} else {
-				pm_left = 0.1 * $(window).innerWidth();
+		resize_modal: function(modal) {
+			if (!modal) return;
+			var modal_width;
+			var modal_max_height;
+			var modal_left;
+			var modal_top;
+			if (modal == XSM.modal.primary || modal == XSM.modal.splash) {
+				modal_width = 1200 / 12 * 8;
+				modal_max_height = 0.8 * $(window).innerHeight();
+				modal_top = 0.2 * $(window).innerHeight();
+				var pm_width = 0.8 * $(window).innerWidth();
+				if (pm_width > modal_width) {
+					modal_left = ($(window).innerWidth() - modal_width) / 2;
+				} else {
+					modal_left = 0.1 * $(window).innerWidth();
+				}
+				if (pm_width < modal_width) modal_width = pm_width;
 			}
-			if (pm_width > target_modal_width) pm_width = target_modal_width;
-			$(XSM.modal.primary).css({
-				top: 0.2 * $(window).innerHeight(),
-				left: pm_left,
-				width: pm_width,
-				"max-height": target_modal_max_height
+			if (modal == XSM.modal.flash) {
+				modal_width = 40 * C.REM;
+				modal_left = (window.innerWidth / 2) - ( modal_width / 2);
+				modal_max_height = "default";
+				modal_top = 2 * C.REM;
+			}
+
+			$(modal).css({
+				top: modal_top,
+				left: modal_left,
+				width: modal_width,
+				maxHeight: modal_max_height
 			});
 		},
 		toggle_float_label: function (label, state) {
@@ -514,8 +657,18 @@ window.XBS = {
 					init_ok.state = false;
 					init_ok.message = "current_orb_card not set; nothing loaded from cart";
 				}
+				XBS.menu.update_orb_opt_filters_list(C.CHECK);
+
+				if (!is_mobile() ) {
+					pr("running");
+					var page_content_height = $(XSM.global.page_content).innerHeight();
+					$(XSM.global.footer).css({
+						top:$(XSM.global.page_content).innerHeight(),
+					});
+					XBS.layout.fasten(XSM.menu.self).css({overflow:"hidden"});
+				}
 			}
-			XBS.menu.update_orb_opt_filters_list(C.CHECK);
+
 			return  init_ok
 		},
 		jq_binds: {
@@ -526,8 +679,10 @@ window.XBS = {
 				return true;
 			},
 			bind_order_api: function () {
+				pr("there");
 				/** add item to order */
 				$(C.BODY).on(C.CLK, XSM.menu.add_to_cart, null, function (e) {
+					pr("here");
 					var data = $(e.currentTarget).data('orbId');
 					XBS.menu.configure_orb(data.orbId, data.priceRank)
 				});
@@ -812,6 +967,19 @@ window.XBS = {
 			$(C.BODY).trigger(C.ORDER_FORM_UPDATE);
 			$(C.BODY).trigger(C.ORDER_UI_UPDATE);
 		},
+		set_order_method: function(method) {
+			XBS.data.order_method = method;
+			$(XSM.menu.user_activity_panel_items).each(function() {
+				var route = $(this).data('route');
+				if (route) {
+					if (route.split(C.DS)[2] == method)  {
+						$(this).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
+					} else {
+						$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+					}
+				}
+			});
+		},
 		show_orb_card_front_face: function () {
 			pr("<no args>", "show_orb_card_front_face");
 			// >>> START FLIP & FADE OUT ORBOPTS TOGETHER <<<
@@ -1081,20 +1249,7 @@ window.XBS = {
 			}
 		},
 		render: function () {
-			var splashbarTop = $(XSM.splash.splash_bar).offset().top;
-			var scaleFactor = 570 / splashbarTop;
-			var dealDim = [splashbarTop, scaleFactor * 400];
-			var dealLeft = String((window.innerWidth / 2) + (.8 * $(XSM.splash.order).innerWidth())) + "px";
 
-			/* ---------------- opening deal temp code ------------------*/
-			$(XSM.splash.openingDeal).css({
-				height: String(1.08 * dealDim[0]) + "px",
-				width: String(1.08 * dealDim[1]) + "px",
-				left: dealLeft
-			});
-			$(XSM.splash.fastened).attr('style', '').removeClass('fastened');
-			$(XSM.splash.detach).attr('style', '');
-			/* ---------------- opening deal temp code ------------------*/
 			$(".fastened").attr('style', '').removeClass('fastened');
 			$(".detach").attr('style', '');
 			$(XSM.splash.order_spacer).css({height: $(XSM.splash.menu_wrapper).innerHeight() * C.ORDER_SPACER_FACTOR});
@@ -1121,23 +1276,22 @@ window.XBS = {
 			});
 		},
 		fold: function (route) {
-			XBS.layout.fasten([XSM.splash.splash_bar, XSM.splash.logo]);
-			var logo = $(XSM.splash.logo).clone().attr('id', stripCSS(XSM.splash.logoClone));
-			var logoLoc = $(XSM.splash.logo).offset();
-			$(logo).css({position: "fixed", top: logoLoc.top, left: logoLoc.left, zIndex: "9999999"});
-			$(XSM.splash.self).append(logo);
-			$(XSM.splash.logo).remove();
-			$(XSM.splash.splash_bar).animate({left: String(-1.1 * window.innerWidth) + "px"}, 300, "easeInCubic",
-				function () {
-					$(this).hide();
-					$(XSM.splash.circleWrap).css({});
-					$(XSM.splash.circle).addClass("flipped");
-					//todo: use modernizr to do this more effectively
-					//		$(XSM.splash.circle).animate({transform:"rotafdteY(640deg)"}, 1000,"linear", function() {
-					$(XSM.splash.logoClone).hide("puff", function () {window.location.replace(route)});
-					//								$("#splash").fadeOut();
-					//		});
-				});
+			$.get("launch-menu", function(data) {
+				$(XSM.splash.self).addClass(XSM.effects.stash);
+				data = $.parseHTML(data);
+				$($(data).find(XSM.menu.self)[0]).addClass(XSM.effects.true_hidden);
+				$(data).appendTo(XSM.global.page_content);
+				XBS.cfg.page_name = C.MENU;
+				XBS.menu.stash_menu();
+				$(XSM.menu.self).removeClass(XSM.effects.true_hidden);
+				setTimeout(function() {
+					$(XSM.splash.self).remove();
+					XBS.menu.init();
+					XBS.menu.unstash_menu();
+//					if (route) setTimeout(function() { XBS.layout.launch_route(route); }, XBS.data.delays.menu_stash_delay);
+				}, 1600);
+			});
+
 			return true;
 		}
 	},

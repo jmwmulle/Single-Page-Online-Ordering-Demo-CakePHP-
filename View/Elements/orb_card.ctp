@@ -16,7 +16,8 @@
 					<ul class="orb-card">
 					<!-- TOP  ROW --> <?php // every row has a button at left and content at right ;?>
 						<li class="orb-card-row">
-							<div id="favorite" class="orb-card-button inline float-labeled" data-float-label="favorite-label">
+							<?php $data = array("float-label" => "favorite-label", "route" => "favorite/orb_card"); ?>
+							<div id="favorite" class="orb-card-button inline float-labeled" <?php echo ___dA($data); ?>>
 								<span class="icon-orb-card-favorite"></span>
 							</div
 							><div id="description" class="orb-card-content inline">
