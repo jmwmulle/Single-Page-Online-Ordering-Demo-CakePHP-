@@ -169,57 +169,6 @@ class UsersController extends AppController {
 		return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 	}
 
-/*confirm_address*/
-	public function confirm_address($command) {
-		if ($this->request->is('ajax') || $this->request->is('post')) {
-			if (!$this->Session->check("address_checked")) {
-				$this->Session->write('User.address_checked', False);
-			}
-			$data = $this->request->data;
-			if ($command=='database') {
-				if ($this->Auth->loggedIn()) {
-					$options = array('conditions'=>array('Address.user_id'=>$this->Auth->user('id'),'Address.id'=>$data['adddress_id']));
-					$address = $this->Address->find('first', $options);
-					$this->Session->write('User.address_checked', True);
-					$this->Session->write('User.address', $address);
-				} else {
-					$this->set("response", json_encode(array("address"=>null, "success"=>false,
-						"error"=>"User not logged in.")));
-				}
-			} elseif ($command=='session') {
-				if ($this->Session->check('address') & $this->Session->check('postal_code')) {
-					$this->Session->write('User.address_checked', True);
-					$this->set("response", json_encode(array("address"=>$this->Session->read('User.address'),
-						"success"=>True)));
-				} else {
-					$this->set("response", json_encode(array("address"=>null, "success"=>False,
-						"error"=>"Address not set.")));
-				}
-			} elseif ($command=='update_database') {
-				if ($this->Auth->loggedIn()) {
-					$options = array('conditions'=>array('User.id'=>$this->Auth->user('id')));
-					$this->User->find('first', $options);
-				        if ($this->User->Address->save($data)) {
-						$this->set("response", json_encode(array("success"=>True)));
-					} else {
-						$this->set("response", json_encode(array("address"=>null, "success"=>false,
-							"error"=>"Data could not be saved.")));
-					}
-				} else {
-					$this->set("response", json_encode(array("address"=>null, "success"=>false,
-						"error"=>"User not logged in.")));
-				}
-			} elseif ($command=='update_session') {
-				$this->Session->write("User.address",$data['orderAddress']);
-				$this->Session->write('User.address_checked', True);
-				$this->set("response", json_encode(array("success"=>True)));
-			}
-		} else {
-			return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
-		}
-	}
-
-
 /*login	*/
 	public function login() {
 	    if ($this->Auth->loggedIn()) {
@@ -368,7 +317,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 	    parent::beforeFilter();
 
-	    $this->Auth->allow('index','view','confirm_address', 'opauth_complete', 'order_method', 'add', 'login', 'logout');#, 'initDB');
+	    $this->Auth->allow('index', 'view', 'opauth_complete', 'order_method', 'add', 'login', 'logout');#, 'initDB');
 	}
 
 	public function initDB() {
