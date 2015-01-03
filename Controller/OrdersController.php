@@ -11,7 +11,7 @@ class OrdersController extends AppController {
 		#'AuthorizeNet'
 	);
 	
-	public $uses = array('User', 'Order', 'Orb', 'Orbopt');
+	public $uses = array('User', 'Address', 'Order', 'Orb', 'Orbopt');
 
 	/**
 	 * index method
@@ -396,68 +396,59 @@ class OrdersController extends AppController {
 	}
 
 	
-	/*confirm_address*/
-	public function confirm_address($command, $address = null) {
-		return json_encode(array("response" => "success"), true);
+/*confirm_address*/
+	public function confirm_address($command) {
 		if ($this->request->is('ajax') || $this->request->is('post')) {
 			if (!$this->Session->check("address_checked")) {
 				$this->Session->write('Order.address_checked', False);
 			}
 			$data = $this->request->data;
-			if ($this->request->is('ajax')) {
-				$data = json_decode($data);
-			}
-			if ($data['command']=='database') {
+			if ($command=='database') {
 				if ($this->Auth->loggedIn()) {
-					$options = array('conditions'=>array('Order.id'=>$this->Auth->user('id')));
-					$this->User->find('first', $options);
+					$conditions = array('conditions'=>array('Address.user_id'=>$this->Auth->user('id'),'Address.id'=>$data['adddress_id']));
+					$address = $this->Address->find('first', $conditions);
 					$this->Session->write('Order.address_checked', True);
-					$this->Session->write('Order.address', $this->User->address);
-					$this->Session->write('Order.postal_code', $this->User->postal_code);
+					$this->Session->write('Order.address', $address);
 				} else {
-					$this->set("response", json_encode(array("address"=>null, "success"=>false,
+					$this->set("response", json_encode(array("success"=>false,
 						"error"=>"User not logged in.")));
 				}
-			/*} elseif ($data['command']=='session') {
+			} /*elseif ($command=='session') {
 				if ($this->Session->check('address') & $this->Session->check('postal_code')) {
 					$this->Session->write('Order.address_checked', True);
 					$this->set("response", json_encode(array("address"=>$this->Session->read('Order.address'),
-						"postal_code"=>$this->Session->read('Order.postal_code'),"success"=>True)));
+						"success"=>True)));
 				} else {
 					$this->set("response", json_encode(array("address"=>null, "success"=>False,
 						"error"=>"Address not set.")));
-				}*/
-			} elseif ($data['command']=='update_database') {
+				}
+			}*/ elseif ($command=='update_database') {
 				if ($this->Auth->loggedIn()) {
-					$options = array('conditions'=>array('Order.id'=>$this->Auth->user('id')));
-					$this->User->find('first', $options);
-					$this->User->address = $this->Session->read('Order.address');
-					$this->User->postal_code = $this->Session->read('Order.postal_code');
-					if ($this->User->save()) {
-						$this->set("response", json_encode(array("address"=>$this->User->address,
-							"postal_code"=>$this->User->postal_code, "success"=>True)));
+					$conditions = array('conditions'=>array('User.id'=>$this->Auth->user('id')));
+					$this->User->find('first', $conditions);
+					if (array_key_exists()) {
+						$conditions = array('conditions'=>array('Address.user_id'=>$this->Auth->user('id'),
+							'Address.id'=>$data['address_id']));
+						$address = $this->Address->find('first', $conditions);
+						$address = array_merge($address, $data['orderAddress']);
+						$to_save = array('User'=>$this->User,'Address'=>$address);
 					} else {
-						$this->set("response", json_encode(array("address"=>null, "success"=>false,
+						$to_save = array('User'=>$this->User,'Address'=>$data['orderAddress']);
+					}
+					if (Model::saveAssociated($to_save)) {
+						$this->set("response", json_encode(array("success"=>True)));
+					} else {
+						$this->set("response", json_encode(array("success"=>false,
 							"error"=>"Data could not be saved.")));
 					}
 				} else {
-					$this->set("response", json_encode(array("address"=>null, "success"=>false,
+					$this->set("response", json_encode(array("success"=>false,
 						"error"=>"User not logged in.")));
 				}
-			} elseif ($data['command']=='session') {
-				if ($this->Auth->loggedIn()) {
-					$this->Session->write('Order.address',$data['address']);
-					$this->Session->write('Order.postal_code',$data['postal_code']);
-					$this->Session->write('Order.address_checked', True);
-					$this->set("response", json_encode(array("address"=>$data['address'],
-						"postal_code"=>$data['postal_code'],
-						"success"=>True)));
-				} else {
-					$this->set("response", json_encode(array("address"=>null, "success"=>false,
-						"error"=>"User not logged in.")));
-				}
-			} else {
-					return null;
+			} elseif ($command=='session') {
+				$this->Session->write('Order.address',$data['orderAddress']);
+				$this->Session->write('Order.address_checked', True);
+				$this->set("response", json_encode(array("success"=>True)));
 			}
 		} else {
 			return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
