@@ -395,28 +395,28 @@ class OrdersController extends AppController {
 		$this->set(compact('cart'));
 	}
 
-	
+
 /*confirm_address*/
 	public function confirm_address($command) {
 		if ($this->request->is('ajax') || $this->request->is('post')) {
 			if (!$this->Session->check("address_checked")) {
-				$this->Session->write('Order.address_checked', False);
+				$this->Session->write('Cart.Order.address_checked', False);
 			}
 			$data = $this->request->data;
 			if ($command=='database') {
 				if ($this->Auth->loggedIn()) {
 					$conditions = array('conditions'=>array('Address.user_id'=>$this->Auth->user('id'),'Address.id'=>$data['adddress_id']));
 					$address = $this->Address->find('first', $conditions);
-					$this->Session->write('Order.address_checked', True);
-					$this->Session->write('Order.address', $address);
+					$this->Session->write('Cart.Order.address_checked', True);
+					$this->Session->write('Cart.Order.address', $address);
 				} else {
 					$this->set("response", json_encode(array("success"=>false,
 						"error"=>"User not logged in.")));
 				}
 			} /*elseif ($command=='session') {
 				if ($this->Session->check('address') & $this->Session->check('postal_code')) {
-					$this->Session->write('Order.address_checked', True);
-					$this->set("response", json_encode(array("address"=>$this->Session->read('Order.address'),
+					$this->Session->write('Cart.Order.address_checked', True);
+					$this->set("response", json_encode(array("address"=>$this->Session->read('Cart.Order.address'),
 						"success"=>True)));
 				} else {
 					$this->set("response", json_encode(array("address"=>null, "success"=>False,
@@ -446,9 +446,10 @@ class OrdersController extends AppController {
 						"error"=>"User not logged in.")));
 				}
 			} elseif ($command=='session') {
-				$this->Session->write('Order.address',$data['orderAddress']);
-				$this->Session->write('Order.address_checked', True);
+				$this->Session->write('Cart.Order.address',$data['orderAddress']);
+				$this->Session->write('Cart.Order.address_checked', True);
 				$this->set("response", json_encode(array("success"=>True)));
+				db($data);
 			}
 		} else {
 			return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
