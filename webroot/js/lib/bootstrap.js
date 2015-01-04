@@ -117,13 +117,14 @@ window.XBS = {
 			if (route.url.url) {
 				var launch_triggered = false;
 				try {
+				$(XSM.global.loading).removeClass(XSM.effects.fade_out);
 				$.ajax({
 					type: route.url.type ? route.url.type : C.POST,
 					url: route.url.url,
 					data: "data" in route.url ? route.url.data : null,
 					statusCode: {
 						403: function() {
-							XBS.layout.launch_route(XBS.routes.fail_flash);
+							XBS.routing.launch("flash/fail");
 							if (!launch_triggered) {
 								launch_triggered = true;
 								$(route).trigger("route_launched","403_FORBIDDEN")
@@ -132,6 +133,7 @@ window.XBS = {
 					},
 					success: function (data) {
 					// >>> DO PRE-LAUNCH EFFECTS <<<
+						$(XSM.global.loading).addClass(XSM.effects.fade_out);
 						if (route.stash) XBS.menu.stash_menu();
 						if (route.overlay) $(XSM.modal.overlay).show().removeClass(XSM.effects.fade_out);
 						setTimeout( function() {
@@ -146,6 +148,7 @@ window.XBS = {
 						}, launch_delay);
 					},
 					fail: function() {
+						$(XSM.global.loading).addClass(XSM.effects.fade_out);
 							if ("fail_callback" in route) {
 								route.fail_callback();
 							} else {
@@ -157,6 +160,7 @@ window.XBS = {
 							}
 						},
 					always: function() {
+						$(XSM.global.loading).addClass(XSM.effects.fade_out);
 						if (!launch_triggered) {
 							pr("getting heeeere");
 							$(route).trigger("route_launched","FALLBACK_TRIGGER")
@@ -185,7 +189,8 @@ window.XBS = {
 					}
 				}
 			}),
-			fail_flash: new XtremeRoute("fail_flash", {
+			flash: new XtremeRoute("flash", {
+					params: {type: { url_fragment:false}},
 					modal: XSM.modal.flash,
 					behavior: C.OL,
 					callbacks: {
@@ -292,6 +297,13 @@ window.XBS = {
 					}
 				}
 			}),
+			splash_link: new XtremeRoute("splash_link",{
+				url:{url:"launch-menu"},
+				params: {method: { value: null, url_fragment:false}},
+				callbacks: {
+					launch: function() { XBS.splash.fold() }
+				}
+			}),
 			submit_registration: new XtremeRoute("submit_registration", {
 				modal:XSM.modal.primary,
 				url: {url:false, type: C.POST, defer:true},
@@ -306,17 +318,11 @@ window.XBS = {
 					}
 				}
 			}),
-			splash_link: new XtremeRoute("splash_link",{
-				url:{url:"launch-menu"},
-				params: {method: { value: null, url_fragment:false}},
-				callbacks: {
-					launch: function() { XBS.splash.fold() }
-				}
-			}),
 			submit_order_address: new XtremeRoute("submit_order_address",{
-				params: { is_splash:{value:null, url:false}},
+				params: { is_splash:{value:null, url_fragment:false}},
+				url:{url:"confirm-address/session", type: C.GET, defer:false},
 				callbacks: {
-					launch: function(){ XBS.validation.submit_order(this);}
+					launch: function(){ XBS.validation.submit_address(this);}
 				}
 			}),
 			topbar_link: new XtremeRoute("topbar_link",{

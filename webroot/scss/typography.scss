@@ -350,13 +350,17 @@ li.orbcat {
   }
 }
 
-div.orb-card-button span {
-  line-height:1;
-  font-size: $orb-card-button-height * 1.275;
-  &.icon-orb-card-favorite { color:$xtreme-yellow;}
-   &.icon-orb-card-cart { color: $xtreme-red; }
-   &.icon-orb-card-share { color:$xtreme-blue;}
-  &:hover { color: $light-grey !important;}
+div.orb-card-button {
+  span {
+    line-height:1;
+        font-size: $orb-card-button-height * 1.275;
+        &.icon-orb-card-favorite { color:$xtreme-yellow;}
+         &.icon-orb-card-cart { color: $xtreme-red; }
+         &.icon-orb-card-share { color:$xtreme-blue;}
+        &:hover { color: $light-grey !important;}
+  }
+  &.disabled span { color:$light-grey;}
+
 }
 
 #active-orbcat-menu-header h2 { @include helvetica_v_center_lh($h2-font-size, $orb-card-stage-menu-item-height); }

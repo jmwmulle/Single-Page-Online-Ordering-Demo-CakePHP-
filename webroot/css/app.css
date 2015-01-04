@@ -4831,6 +4831,8 @@ div.orb-card-button span {
     color: #0779be; }
   div.orb-card-button span:hover {
     color: #b4b4b4 !important; }
+div.orb-card-button.disabled span {
+  color: #b4b4b4; }
 
 #active-orbcat-menu-header h2 {
   line-height: 4.17563rem; }
@@ -5199,6 +5201,22 @@ nav#login {
       background-image: url('../img/splash/email_icon.png'); }
       nav#login ul#login-options li.email:hover {
         background-image: url('../img/splash/email_icon.hover.png'); }
+
+@-webkit-keyframes loading {
+  0% {
+    text-shadow: none; }
+
+  50% {
+    text-shadow: 0 0 1rem #33b0f8; }
+
+  100% {
+    text-shadow: none; } }
+
+#topbar .loading {
+  -webkit-animation: loading ease-in-out 2s infinite;
+  transition: opacity 0.1s; }
+  #topbar .loading.fade-out {
+    opacity: 0; }
 
 footer#footer {
   width: 100%;
@@ -5916,29 +5934,25 @@ div#orb-card {
       display: block;
       width: 3.96875rem;
       height: 3.96875rem; }
-    div#orb-card ul.orb-card div.orb-card-button.bg-icons {
-      transition: background-color 0.3s; }
-      div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite {
-        background-color: #faea06;
-        background-image: url('../img/orb_card.icon.fav.png'); }
-        div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite .triangle {
-          border-top: 0.75rem solid #faea06; }
-      div#orb-card ul.orb-card div.orb-card-button.bg-icons#order {
-        background-color: #e02027;
-        background-image: url('../img/orb_card.icon.cart.png'); }
-        div#orb-card ul.orb-card div.orb-card-button.bg-icons#order .triangle {
-          border-top: 0.75rem solid #e02027; }
-      div#orb-card ul.orb-card div.orb-card-button.bg-icons#like {
-        background-color: #0779be;
-        background-image: url('../img/orb_card.icon.like.png'); }
-        div#orb-card ul.orb-card div.orb-card-button.bg-icons#like .triangle {
-          border-top: 0.75rem solid #0779be; }
-      div#orb-card ul.orb-card div.orb-card-button.bg-icons .triangle {
-        transition: border-top-color 0.3s; }
-      div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite:hover, div#orb-card ul.orb-card div.orb-card-button.bg-icons#order:hover, div#orb-card ul.orb-card div.orb-card-button.bg-icons#like:hover {
-        background-color: #b4b4b4; }
-        div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite:hover .triangle, div#orb-card ul.orb-card div.orb-card-button.bg-icons#order:hover .triangle, div#orb-card ul.orb-card div.orb-card-button.bg-icons#like:hover .triangle {
-          border-top-color: #b4b4b4; }
+    div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite {
+      background-color: #faea06;
+      background-image: url('../img/orb_card.icon.fav.png'); }
+      div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite .triangle {
+        border-top: 0.75rem solid #faea06; }
+    div#orb-card ul.orb-card div.orb-card-button.bg-icons#order {
+      background-color: #e02027;
+      background-image: url('../img/orb_card.icon.cart.png'); }
+      div#orb-card ul.orb-card div.orb-card-button.bg-icons#order .triangle {
+        border-top: 0.75rem solid #e02027; }
+    div#orb-card ul.orb-card div.orb-card-button.bg-icons#like {
+      background-color: #0779be;
+      background-image: url('../img/orb_card.icon.like.png'); }
+      div#orb-card ul.orb-card div.orb-card-button.bg-icons#like .triangle {
+        border-top: 0.75rem solid #0779be; }
+    div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite:hover, div#orb-card ul.orb-card div.orb-card-button.bg-icons#order:hover, div#orb-card ul.orb-card div.orb-card-button.bg-icons#like:hover {
+      background-color: #b4b4b4; }
+      div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite:hover .triangle, div#orb-card ul.orb-card div.orb-card-button.bg-icons#order:hover .triangle, div#orb-card ul.orb-card div.orb-card-button.bg-icons#like:hover .triangle {
+        border-top-color: #b4b4b4; }
 
 div.orb-card-content {
   width: 30.09375rem;

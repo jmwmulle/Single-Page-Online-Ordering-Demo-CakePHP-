@@ -61,8 +61,8 @@
 ?>
 <script >
   window.___gcfg = {
-    lang: 'zh-CN'
-//    parsetags: 'onload'
+    lang: 'zh-CN',
+    parsetags: 'onload'
   };
 </script>
 </body>

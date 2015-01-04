@@ -65,6 +65,9 @@ $social_route = $logged_in ? "social" : "login";
 				</div>
 			</div>
 		</div>
+		<div class="large-4 large-push-1 columns">
+			<h4 class="loading fade-out">LOADING</h4>
+		</div>
 		<div class="large-4 columns show-for-large-up">
 			<ul id="hours-and-location">
 				<li>
