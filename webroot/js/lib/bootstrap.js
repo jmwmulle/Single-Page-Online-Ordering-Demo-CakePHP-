@@ -1360,7 +1360,7 @@ window.XBS = {
 			var debug_route = 0;
 			if (debug_route > 0) pr(route, "XBS.validation.submit_address(route)", 2);
 			$("#UsersForm").validate({
-				debug:true,
+				debug:false,
 				rules:{
 					"data[Users][firstname]": "required",
 					"data[Users][email]": {required:true, email:true},
