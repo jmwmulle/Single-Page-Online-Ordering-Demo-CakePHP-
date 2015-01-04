@@ -1384,7 +1384,7 @@ window.XBS = {
 				submitHandler: function() {
 					$.ajax({
 						type:route.url.type,
-						url:route.url.url,
+						url:"users/add",
 						data:$("#UsersForm").serialize(),
 						success: function(data) {
 							pr(data);
