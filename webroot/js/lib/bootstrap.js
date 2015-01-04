@@ -210,6 +210,11 @@ window.XBS = {
 				url: {url: "finish-ordering"},
 				behavior: C.STASH_STOP
 			}),
+			login: new XtremeRoute("login", {
+				url: {url:"login"},
+				params: {channel:{url_fragment:true}},
+				callbacks: {}
+			}),
 			menu: new XtremeRoute("menu", {
 				modal: false,
 				url: {url:"menu"}
@@ -256,10 +261,7 @@ window.XBS = {
 			}),
 			register: new XtremeRoute("register",{
 				modal:XSM.modal.primary,
-				params: {
-					channel:{value:null, url:true, defer:true},
-					submit: {value: false, url:false, defer:false}
-				},
+				params: {channel:{value:null, url:true, defer:true}},
 				callbacks: {
 					params_set: function() {
 						if (this.read('channel') == 'email') {
@@ -287,6 +289,20 @@ window.XBS = {
 							);
 						}
 						setTimeout(function() { $(container).removeClass(XSM.effects.slide_left);}, load_time);
+					}
+				}
+			}),
+			submit_registration: new XtremeRoute("submit_registration", {
+				modal:XSM.modal.primary,
+				url: {url:false, type: C.POST, defer:true},
+				params: {channel:{value:false, url_fragment: false}},
+				callbacks: {
+					launch: function() {
+						if (this.read('channel') == "email") {
+							XBS.validation.submit_register(this);
+						} else {
+							this.url.url = "auth" + C.DS + this.read('channel');
+						}
 					}
 				}
 			}),
@@ -1343,7 +1359,6 @@ window.XBS = {
 		submit_register: function(route) {
 			var debug_route = 0;
 			if (debug_route > 0) pr(route, "XBS.validation.submit_address(route)", 2);
-			pr("fuuuuuuu");
 			$("#UsersForm").validate({
 				debug:true,
 				rules:{
@@ -1377,6 +1392,7 @@ window.XBS = {
 					});
 				}
 			});
+			$("#UsersForm").submit();
 		}
 	},
 	fn: {

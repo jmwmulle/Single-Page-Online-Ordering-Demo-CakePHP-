@@ -32,7 +32,7 @@ $social_route = $logged_in ? "social" : "login";
 						<span class="icon-facebook"></span>
 					</a>
 					<a href="#" data-route="topbar_link/<?php echo $social_route;?>/gplus" data-hover_text="<?php echo $gplus_text;?>">
-						<span class="icon-gplus"></span>
+						<span class="icon-gplus g-plusone"></span>
 					</a>
 					<?php if (!$logged_in) {?>
 					<a href="#" data-route="topbar_link/login/email" data-hover_text="Login With Your E-Mail Address">

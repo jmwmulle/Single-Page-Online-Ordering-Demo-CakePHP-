@@ -9,7 +9,6 @@
 
 	$user = $this->Session->read( 'User' );
 	$logged_in = false;
-	db($this->Session->read());
 ?>
 <div class="row">
 	<div class="large-12 columns">
