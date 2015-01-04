@@ -49,23 +49,25 @@ class UsersController extends AppController {
 		if ($this->request->is('ajax')) { $this->layout =  "ajax";}
 
 		if ($this->request->is('post')) {
+			db($this->request->data);
 			$conditions = array('User.email'=>$this->request->data['User']['email']);
 			if ($this->User->hasAny($conditions)) {
-				$this->Session->setFlash(__('That email address is already taken.'));
-				return $this->redirect(___cakeUrl('menu', ''));
+				return json_encode(array('success'=>false, 'error'=>'That email address is already taken.'));
 			} else {
 				$this->User->create();
 				if ($this->User->save($this->request->data)) {
+					$this->User->saveAssociated($this->request->data);
 					$this->Session->setFlash(__('Account created.'));
-					return $this->redirect(___cakeUrl('pages','splash'));
+					$cur_user = $this->User->find('first', array('recursive'=>-1));
+					return json_encode(array('success'=>true, 'User'=>$cur_user));
 				} else {
-					$this->Session->setFlash(__('The account could not be created. Please, try again.'));
+					return json_encode(array('success'=>false));
 				}
-				$groups = $this->User->Group->find('list');
-				$this->set(compact('groups'));
 			}
 		}
 	}
+/*$groups = $this->User->Group->find('list');
+$this->set(compact('groups'));*/
 
 /**
  * edit method
