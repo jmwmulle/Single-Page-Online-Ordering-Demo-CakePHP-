@@ -1325,8 +1325,9 @@ window.XBS = {
 					}
 				},
 				submitHandler: function() {
+					pr(route);
 					$.ajax({
-						type:route.url.type,
+						type:"POST",
 						url:"confirm-address/session",
 						data: $("#orderAddressForm").serialize(),
 						statusCode: {

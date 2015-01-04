@@ -19,7 +19,7 @@ $logged_in = $this->Session->read('Auth');
 					<!-- TOP  ROW --> <?php // every row has a button at left and content at right ;?>
 						<li class="orb-card-row">
 							<?php
-								$classes = array("orb-card-button, inline, float-labeled", $logged_in ? "" : "disabled");
+								$classes = array("orb-card-button", "inline", "float-labeled", $logged_in ? "" : "disabled");
 								$data = array("float-label" => "favorite-label");
 								if ($logged_in) $data["route"] = "favorite/orb_card";
 							?>
