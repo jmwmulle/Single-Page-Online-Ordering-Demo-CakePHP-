@@ -4911,7 +4911,7 @@ body {
 
 #page-content {
   height: 100%; }
-  @media only screen and (min-width:64.063em) {
+  @media only screen and (min-width:90.063em) {
     #page-content {
       overflow: hidden; } }
 

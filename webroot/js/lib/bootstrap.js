@@ -267,10 +267,12 @@ window.XBS = {
 							this.url.type = false;
 						}
 						if ( this.read('submit') ) {
+							pr("yes; submit");
 							this.url.url = 'users/add';
 							this.launch_callback = function() { XBS.validation.submit_register(this);}
 							this.init();
-							pr(this);
+
+
 						}
 					},
 					launch: function() {
@@ -283,7 +285,6 @@ window.XBS = {
 								$("<div/>").addClass([XSM.modal.deferred_content, XSM.effects.slide_left].join(" "))
 									.html(this.deferal_data)
 							);
-	//						load_time += XBS.data.delays.default_js_refresh;
 						}
 						setTimeout(function() { $(container).removeClass(XSM.effects.slide_left);}, load_time);
 					}

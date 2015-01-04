@@ -6,7 +6,7 @@ body {
 }
 #page-content {
   height:100%;
-  @media #{$large-up} {
+  @media #{$xlarge-up} {
     overflow:hidden;
    }
 }
