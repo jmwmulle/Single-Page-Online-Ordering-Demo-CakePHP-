@@ -1386,7 +1386,9 @@ window.XBS = {
 						type:route.url.type,
 						url:route.url.url,
 						data:$("#UsersForm").serialize(),
-						success: function() {},
+						success: function(data) {
+							pr(data);
+						},
 						fail: function() {},
 						always: function(){}
 					});
