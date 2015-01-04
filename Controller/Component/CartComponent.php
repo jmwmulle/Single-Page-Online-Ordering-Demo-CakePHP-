@@ -29,6 +29,8 @@ class CartComponent extends Component {
 
 	public function add($orb_id, $quantity = 1, $price_rank = 0, $orbopts_list = null, $preparation_instructions = '') {
 
+		$position_to_price['F'=>1, 'L'=>0.5, 'R'=>0.5, 'D'=>2];
+
 		if(!is_numeric($quantity)) {
 			$quantity = 1;
 		}
@@ -46,7 +48,11 @@ class CartComponent extends Component {
 		));
 		
 		if(empty($orb)) {
-			return false;
+			return Null;
+		}
+
+		if(($key = array_search(-1, $orbopts_list)) !== false) {
+			unset($orbopts_list[$key]);
 		}
 
 		$orbopts = array();
@@ -69,10 +75,13 @@ class CartComponent extends Component {
 
 		$opts_prices = array();
 		if(!empty($orbopts)) {
-			foreach($orbopts as $orbopt) {
+			foreach($orbopts as $key=>$orbopt) {
 				$opts_by_val = array_values($orbopt['Pricelist']);
-				array_push($opts_prices, $opts_by_val[$price_rank]);
+				array_push($opts_prices, $opts_by_val[$price_rank]*$position_to_price[$orbopts_list[$key]]);
 			}
+		}
+		for ($i=$orb['orbopts_count']; $i>0; $i--;) {
+			$opts_prices[array_keys($array, max($array))[0]] = 0;
 		}
 
 		$prices =  array_values($orb['Pricelist']);
