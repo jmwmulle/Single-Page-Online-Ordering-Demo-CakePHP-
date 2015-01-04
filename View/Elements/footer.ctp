@@ -26,7 +26,7 @@
 
 <div id="primary-modal" class="slide-up">
 	<div class="row">
-		<div id="primary-modal-content"></div>
+		<div id="primary-modal-content" class="large-12 columns"></div>
 		<a href="#" id="close-modal" data-modal="primary" class="box rightward"><span>Close</span><span class="icon-cancel icon-hn-inline"></span></a>
 	</div>
 </div>

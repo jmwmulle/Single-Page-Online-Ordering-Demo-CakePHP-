@@ -35,6 +35,9 @@
   z-index:10001;
   width:40rem;
   height: 6rem;
+  .slide-up {
+      -webkit-transform: translate(0, -6rem);
+    }
   #flash-modal-content {
     width:100%;
     border:3px solid white;
@@ -43,9 +46,6 @@
     padding:$base-padding;
   }
 
-  .slide-up {
-    -webkit-transform: translate(0, -6rem);
-  }
 }
 
 #splash-modal {
@@ -103,6 +103,11 @@
   label.error, label.error * {
     color: $error-color;
     @include HelveticaLtCn;
+  }
+  .deferred-content {
+    &.slide-left {
+      -webkit-transform: translateX(-1500px);
+    }
   }
 }
 

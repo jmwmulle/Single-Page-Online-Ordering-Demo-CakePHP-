@@ -3,60 +3,61 @@
 }
 
 @keyframes stash-splash {
-  90%  { opacity:1;}
-  100% { display:none }
+  90% { opacity : 1; }
+  100% { display : none }
 }
 
-@-webkit-keyframes stashsplash {
-  90%  { opacity:1;}
-  100% { opacity:0; }
+@-webkit-keyframes stash-splash {
+  90% { opacity : 1; }
+  100% { opacity : 0; }
 
 }
 
 @-webkit-keyframes stash-splash-circle {
   75% {
-      -webkit-transform: scale(0.1, 0.1) rotateY(1080deg);
-//      -moz-transform: rotateY(450deg);
-//      -ms-transform: rotateY(450deg);
-//      -o-transform: rotateY(450deg);
-//       transform: rotateY(450deg);
-      }
+    -webkit-transform : scale(0.1, 0.1) rotateY(1080deg);
+    //      -moz-transform: rotateY(450deg);
+    //      -ms-transform: rotateY(450deg);
+    //      -o-transform: rotateY(450deg);
+    //       transform: rotateY(450deg);
+  }
   100% {
-    -webkit-transform: translate(0, -1000px) scale(0.1, 0.1) rotateY(450deg);
+    -webkit-transform : translate(0, -1000px) scale(0.1, 0.1) rotateY(450deg);
   }
 }
 
 @-webkit-keyframes stash-splash-bar {
   99% {
-    -webkit-transform: translate(-3000px, 0);
-    opacity:1;
+    -webkit-transform : translate(-3000px, 0);
+    opacity           : 1;
   }
 
   100% {
-    -webkit-transform: translate(-3000px, 0);
-    opacity:0
+    -webkit-transform : translate(-3000px, 0);
+    opacity           : 0
   }
 }
 
 @-webkit-keyframes stash-splash-order-link {
-  100% { -webkit-transform: translateY(-68px) scale(0.9, 0.9) rotateX(-90deg)}
+  100% { -webkit-transform : translateY(-68px) scale(0.9, 0.9) rotateX(90deg) }
 }
+
 @-webkit-keyframes stash-splash-menu-link {
-  100% { -webkit-transform: translateY(68px) scale(0.9, 0.9) rotateX(90deg)}
+  0% { -webkit-transform-origin : top center; }
+  100% { -webkit-transform : translateY(68px) scale(0.9, 0.9) rotateX(90deg) }
 }
-
-
 
 main#splash {
-  width:100%;
-  height:100%;
+  width             : 100%;
+  height            : 100%;
   z-index           : 9000;
   vertical-align    : middle;
-//  transition: background-image 0.3s ease-in-out;
-  * { transition: none;}
-  transition: none;
-  -webkit-animation: stash-splash 0.1s 1 normal 1.6s paused forwards;
-  animation: stash-splash 0.1s 1 normal 1.6s paused forwards;
+  //  transition: background-image 0.3s ease-in-out;
+  //  * { transition: none;}
+  overflow-x: hidden;
+  transition        : none;
+  -webkit-animation : stash-splash 0.1s 1 normal 1.6s paused forwards;
+  animation         : stash-splash 0.1s 1 normal 1.6s paused forwards;
   div, a { position : relative; }
 
   a { @include unselectable; }
@@ -68,9 +69,9 @@ main#splash {
     margin : 0;
     height : $splash-content-height;
     width  : 100%;
-    .wrapper { width:inherit; height:100%;}
+    .wrapper { width : inherit; height : 100%; }
   }
-  #splash-circle-wrapper { width:100%; }
+  #splash-circle-wrapper { width : 100%; }
   #splash-circle {
     min-height          : $splash-circle-min-diameter;
     height              : 100%;
@@ -80,14 +81,14 @@ main#splash {
     background-position : center;
     background-size     : contain;
     background-repeat   : no-repeat;
-    -webkit-animation: stash-splash-circle 1s ease-in 1 normal 0.6s paused forwards;
-    animation: stash-splash-circle 1s ease-in 1 normal 0.6s paused forwards;
+    -webkit-animation   : stash-splash-circle 1s ease-in 1 normal 0.6s paused forwards;
+    animation           : stash-splash-circle 1s ease-in 1 normal 0.6s paused forwards;
   }
   #menu-wrapper, #order-wrapper {
-    height:40%;
+    height : 40%;
   }
   #order, #menu {
-    position:relative;
+    position          : relative;
     display           : block;
     width             : rem-calc(240px);
     height            : 40%;
@@ -100,133 +101,105 @@ main#splash {
     background-image    : url("../img/splash/order_soon.png");
     background-position : center 80%;
     cursor              : default;
-    -webkit-animation: stash-splash-order-link 0.3s 1 normal 0s paused forwards;
-     animation: stash-splash-order-link 0.3s 1 normal 0s paused forwards;
+    -webkit-animation   : stash-splash-order-link 0.3s 1 normal 0s paused forwards;
+    animation           : stash-splash-order-link 0.3s 1 normal 0s paused forwards;
   }
   #menu {
-    min-width:rem-calc(175px);
+    min-width           : rem-calc(175px);
     background-image    : url("../img/splash/menu.png");
     background-position : center 20%;
     &:hover { background-image : url("../img/splash/menu_hover.png"); }
-    -webkit-animation: stash-splash-menu-link 0.5s ease 1 normal 0s paused forwards;
-     animation: stash-splash-circle 0.5s ease 1 normal 0s paused forwards;
+    -webkit-animation   : stash-splash-menu-link 0.3s 1 normal 0s paused forwards;
+    animation           : stash-splash-menu-link 0.3s 1 normal 0s paused forwards;
   }
   #splash-bar-wrapper {
-    position      : relative;
-    width         : 100%;
-    height        : $splash-bar-height;
+    position          : relative;
+    width             : 100%;
+    height            : $splash-bar-height;
     .spacer { height : spacer-height($splash-logo-height); }
-    -webkit-animation: stash-splash-bar 0.3s linear 1 normal 0.3s paused forwards;
-    animation: stash-splash-bar 0.3s linear 1 normal 0.3s paused forwards;
+    -webkit-animation : stash-splash-bar 0.3s linear 1 normal 0.3s paused forwards;
+    animation         : stash-splash-bar 0.3s linear 1 normal 0.3s paused forwards;
   }
   #splash-bar {
     position      : relative;
     width         : 100%;
-    height:100%;
+    height        : 100%;
     @include splash-bar-gradient;
     border-top    : 1px solid $dark-grey;
     border-bottom : 1px solid $dark-grey;
-    box-shadow:0 0 10% #000;
+    box-shadow    : 0 0 10% #000000;
   }
-  #splash-logo-wrapper {
-    z-index  : 9030;
-    height   : 90%;
+  #splash-bar-content {
+    position : inherit;
+    height   : 100%;
     width    : auto;
-    position : relative;
     margin   : 0 auto;
   }
-  #splash-logo, #splash-logo_fasten-clone {
+
+  #splash-logo-wrapper, #splash-order-delivery-wrapper, #splash-order-pickup-wrapper {
+    position       : relative;
+    display        : inline-block;
+    z-index        : 9030;
+    height         : 100%;
+    width          : auto;
+    vertical-align : top;
+    margin         : 0;
+    padding        : $tight-padding;
+  }
+  #splash-order-delivery-wrapper, #splash-order-pickup-wrapper { padding: 2rem;}
+  #splash-logo {
+    position            : relative;
+    display             : block;
     background-image    : url('../img/splash/logo.png');
     background-repeat   : no-repeat;
     background-position : center center;
     background-size     : contain;
-    height:100%;
-    min-width:rem-calc(175px);
-    margin:0 auto;
+    height              : 100%;
+    min-width           : rem-calc(175px);
+    margin              : 0 auto;
   }
-
-    -webkit-animation-name: stashsplash;
-     -webkit-animation-duration: 3s;
-     -webkit-animation-timing-function: ease;
-     -webkit-animation-iteration-count: 1;
-     -webkit-animation-direction: normal;
-     -webkit-animation-delay: 0;
-     -webkit-animation-play-state: paused;
-     -webkit-animation-fill-mode:forwards;
-
-    animation-name: stashsplash;
-    animation-duration: 3s;
-    animation-timing-function: ease;
-    animation-iteration-count: 1;
-    animation-direction: normal;
-    animation-delay: 0;
-    animation-play-state: paused;
-    animation-fill-mode:forwards;
-
-  &.stash {
-    -webkit-animation-play-state: running;
-    animation-play-state: running;
-    #splash-circle, #splash-bar-wrapper, #order, #menu {
-      -webkit-animation-play-state: running;
-      animation-play-state: running;
+  #splash-order-delivery, #splash-order-pickup {
+    width            : 100%;
+    height           : 100%;
+    display          : inline-block;
+    text-transform   : uppercase;
+    @include HelveticaMdCn;
+    background-color:$white;
+    color:$text-grey;
+    padding          : $base-padding;
+    font-size        : $h1-font-size;
+    border-radius: $global-rounded;
+    box-shadow: 0 0 0.5rem $black-a33;
+    &:hover { color: $xtreme-blue;
+    }
+    &.slide-left {
+      -webkit-transform : translate(-3000px, 0) !important;
+    }
+    &.slide-right {
+      -webkit-transform : translate(3000px, 0);
     }
   }
 
-
-
+  &.stash {
+    -webkit-animation-play-state : running;
+    animation-play-state         : running;
+    #splash-circle, #splash-bar-wrapper, #order, #menu {
+      -webkit-animation-play-state : running;
+      animation-play-state         : running;
+    }
+  }
 
 }
 
 #splash-modal-wrapper {
-  display:none;
-  width:100%;
-  height:100%;
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:10000;
-  background-color:$black-a75;
-  padding-top:3rem;
+  display          : none;
+  width            : 100%;
+  height           : 100%;
+  position         : fixed;
+  top              : 0;
+  left             : 0;
+  z-index          : 10000;
+  background-color : $black-a75;
+  padding-top      : 3rem;
 }
 
-#grand-opening-deal {
-    display:none;
-    position          : fixed;
-    margin            : 0 auto;
-    z-index           : 9050;
-    background-image  : url('../img/splash/deal.png');
-    background-repeat : no-repeat;
-    background-size   : contain;
-    width             : rem-calc(400px);
-    height            : rem-calc(570px);
-    @include mouse-memoirs;
-    color             : $text-grey;
-    padding-top:rem-calc(120px);
-    padding-left:rem-calc(60px);
-    div:first-of-type {
-      h3, h4 { font-family : inherit; }
-      h3 {
-        text-transform : uppercase;
-        color          : $text-grey;
-        ul {
-          padding : 0;
-          margin  : 0;
-          width   : 60%;
-          display : inline-block;
-          li {
-            list-style-type   : none;
-            display           : inline-block;
-            background-repeat : no-repeat;
-            background-size   : cover;
-            width             : rem-calc(30px);
-            height            : rem-calc(30px);
-            &.facebook { background-image : url('../img/splash/facebook_icon.png'); }
-            &.gplus { background-image : url('../img/splash/gplus_icon.png'); }
-            &.twitter { background-image : url('../img/splash/twitter_icon.png'); }
-            &.email { background-image : url('../img/splash/email_icon.png'); }
-          }
-        }
-      }
-      padding : rem-calc(20px);
-    }
-  }

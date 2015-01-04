@@ -39,6 +39,9 @@
 	Router::connect('/confirm-address/*', array('controller' => 'orders', 'action' => 'confirm_address'));
 	Router::connect('/launch-menu/*', array('controller' => 'orbcats', 'action' => 'menu', null, null, true));
 	Router::connect('/favorite/*', array('controller' => 'users', 'action' => 'add_favourite'));
+	Router::connect('/favorites/*', array('controller' => 'users', 'action' => 'favorites'));
+	Router::connect('/settings', array('controller' => 'users', 'action' => 'account'));
+	Router::connect('/sign-up', array('controller' => 'pages', 'action' => 'display', 'sign_up'));
 
 
 	Router::connect('/opauth-complete/*', array('controller' => 'users', 'action' => 'opauth_complete'));

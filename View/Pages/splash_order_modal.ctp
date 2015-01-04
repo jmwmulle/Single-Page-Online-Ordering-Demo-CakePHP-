@@ -8,19 +8,19 @@
  */
 ?>
 
-<div class="row">
-	<div class="large-6 columns">
-		<div class="row">
-			<div class="large-6 large-centered columns">
-				<a href="#" data-route="order_method/splash/delivery">Order for Delivery</a>
-			</div>
-		</div>
-	</div>
-	<div class="large-6 columns">
-		<div class="row">
-			<div class="large-6 large-centered columns">
-				<a href="#" data-route="order_method/splash/pickup">Order for Pick-Up</a>
-			</div>
-		</div>
+<div id="splash-order-method" class="row text-center">
+	<div class="large-12 columns">
+<!--		<div class="row">-->
+<!--			<div class="large-10 large-centered columns">-->
+
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--	<div class="large-6 columns">-->
+<!--		<div class="row">-->
+<!--			<div class="large-10 large-centered columns">-->
+				<a id="splash-order-pickup" href="#" class="slide-right" data-route="order_method/splash/pickup">Order for Pick-Up</a>
+<!--			</div>-->
+<!--		</div>-->
 	</div>
 </div>

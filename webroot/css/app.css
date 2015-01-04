@@ -5241,14 +5241,14 @@ footer#footer {
   z-index: 10001;
   width: 40rem;
   height: 6rem; }
+  #flash-modal .slide-up {
+    -webkit-transform: translate(0, -6rem); }
   #flash-modal #flash-modal-content {
     width: 100%;
     border: 3px solid white;
     background-color: #0779be;
     border-radius: 0.75rem;
     padding: 0.9375rem; }
-  #flash-modal .slide-up {
-    -webkit-transform: translate(0, -6rem); }
 
 #splash-modal {
   position: fixed;
@@ -5318,6 +5318,8 @@ footer#footer {
   #primary-modal label.error, #primary-modal label.error * {
     color: #ec7a7f;
     font-family: "Helvetica Neue Light Condensed", arial, sans-serif; }
+  #primary-modal .deferred-content.slide-left {
+    -webkit-transform: translateX(-1500px); }
 
 #order-modal {
   height: 8.53125rem;
@@ -5432,7 +5434,7 @@ div.view-cart-row.total * {
   100% {
     display: none; } }
 
-@-webkit-keyframes stashsplash {
+@-webkit-keyframes stash-splash {
   90% {
     opacity: 1; }
 
@@ -5457,9 +5459,12 @@ div.view-cart-row.total * {
 
 @-webkit-keyframes stash-splash-order-link {
   100% {
-    -webkit-transform: translateY(-68px) scale(0.9, 0.9) rotateX(-90deg); } }
+    -webkit-transform: translateY(-68px) scale(0.9, 0.9) rotateX(90deg); } }
 
 @-webkit-keyframes stash-splash-menu-link {
+  0% {
+    -webkit-transform-origin: top center; }
+
   100% {
     -webkit-transform: translateY(68px) scale(0.9, 0.9) rotateX(90deg); } }
 
@@ -5468,27 +5473,10 @@ main#splash {
   height: 100%;
   z-index: 9000;
   vertical-align: middle;
+  overflow-x: hidden;
   transition: none;
   -webkit-animation: stash-splash 0.1s 1 normal 1.6s paused forwards;
-  animation: stash-splash 0.1s 1 normal 1.6s paused forwards;
-  -webkit-animation-name: stashsplash;
-  -webkit-animation-duration: 3s;
-  -webkit-animation-timing-function: ease;
-  -webkit-animation-iteration-count: 1;
-  -webkit-animation-direction: normal;
-  -webkit-animation-delay: 0;
-  -webkit-animation-play-state: paused;
-  -webkit-animation-fill-mode: forwards;
-  animation-name: stashsplash;
-  animation-duration: 3s;
-  animation-timing-function: ease;
-  animation-iteration-count: 1;
-  animation-direction: normal;
-  animation-delay: 0;
-  animation-play-state: paused;
-  animation-fill-mode: forwards; }
-  main#splash * {
-    transition: none; }
+  animation: stash-splash 0.1s 1 normal 1.6s paused forwards; }
   main#splash div, main#splash a {
     position: relative; }
   main#splash a {
@@ -5542,8 +5530,8 @@ main#splash {
     min-width: 10.9375rem;
     background-image: url("../img/splash/menu.png");
     background-position: center 20%;
-    -webkit-animation: stash-splash-menu-link 0.5s ease 1 normal 0s paused forwards;
-    animation: stash-splash-circle 0.5s ease 1 normal 0s paused forwards; }
+    -webkit-animation: stash-splash-menu-link 0.3s 1 normal 0s paused forwards;
+    animation: stash-splash-menu-link 0.3s 1 normal 0s paused forwards; }
     main#splash #menu:hover {
       background-image: url("../img/splash/menu_hover.png"); }
   main#splash #splash-bar-wrapper {
@@ -5577,13 +5565,25 @@ main#splash {
     border-top: 1px solid #191919;
     border-bottom: 1px solid #191919;
     box-shadow: 0 0 10% black; }
-  main#splash #splash-logo-wrapper {
-    z-index: 9030;
-    height: 90%;
+  main#splash #splash-bar-content {
+    position: inherit;
+    height: 100%;
     width: auto;
-    position: relative;
     margin: 0 auto; }
-  main#splash #splash-logo, main#splash #splash-logo_fasten-clone {
+  main#splash #splash-logo-wrapper, main#splash #splash-order-delivery-wrapper, main#splash #splash-order-pickup-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 9030;
+    height: 100%;
+    width: auto;
+    vertical-align: top;
+    margin: 0;
+    padding: 0.3125rem; }
+  main#splash #splash-order-delivery-wrapper, main#splash #splash-order-pickup-wrapper {
+    padding: 2rem; }
+  main#splash #splash-logo {
+    position: relative;
+    display: block;
     background-image: url('../img/splash/logo.png');
     background-repeat: no-repeat;
     background-position: center center;
@@ -5591,6 +5591,24 @@ main#splash {
     height: 100%;
     min-width: 10.9375rem;
     margin: 0 auto; }
+  main#splash #splash-order-delivery, main#splash #splash-order-pickup {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    text-transform: uppercase;
+    font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+    background-color: white;
+    color: #373737;
+    padding: 0.9375rem;
+    font-size: 2.75rem;
+    border-radius: 1000px;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.33); }
+    main#splash #splash-order-delivery:hover, main#splash #splash-order-pickup:hover {
+      color: #0779be; }
+    main#splash #splash-order-delivery.slide-left, main#splash #splash-order-pickup.slide-left {
+      -webkit-transform: translate(-3000px, 0) !important; }
+    main#splash #splash-order-delivery.slide-right, main#splash #splash-order-pickup.slide-right {
+      -webkit-transform: translate(3000px, 0); }
   main#splash.stash {
     -webkit-animation-play-state: running;
     animation-play-state: running; }
@@ -5608,48 +5626,6 @@ main#splash {
   z-index: 10000;
   background-color: rgba(0, 0, 0, 0.75);
   padding-top: 3rem; }
-
-#grand-opening-deal {
-  display: none;
-  position: fixed;
-  margin: 0 auto;
-  z-index: 9050;
-  background-image: url('../img/splash/deal.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 25rem;
-  height: 35.625rem;
-  font-family: "Mouse Memoirs", sans-serif;
-  color: #373737;
-  padding-top: 7.5rem;
-  padding-left: 3.75rem; }
-  #grand-opening-deal div:first-of-type {
-    padding: 1.25rem; }
-    #grand-opening-deal div:first-of-type h3, #grand-opening-deal div:first-of-type h4 {
-      font-family: inherit; }
-    #grand-opening-deal div:first-of-type h3 {
-      text-transform: uppercase;
-      color: #373737; }
-      #grand-opening-deal div:first-of-type h3 ul {
-        padding: 0;
-        margin: 0;
-        width: 60%;
-        display: inline-block; }
-        #grand-opening-deal div:first-of-type h3 ul li {
-          list-style-type: none;
-          display: inline-block;
-          background-repeat: no-repeat;
-          background-size: cover;
-          width: 1.875rem;
-          height: 1.875rem; }
-          #grand-opening-deal div:first-of-type h3 ul li.facebook {
-            background-image: url('../img/splash/facebook_icon.png'); }
-          #grand-opening-deal div:first-of-type h3 ul li.gplus {
-            background-image: url('../img/splash/gplus_icon.png'); }
-          #grand-opening-deal div:first-of-type h3 ul li.twitter {
-            background-image: url('../img/splash/twitter_icon.png'); }
-          #grand-opening-deal div:first-of-type h3 ul li.email {
-            background-image: url('../img/splash/email_icon.png'); }
 
 html, nav, body, main, footer {
   overflow: auto; }

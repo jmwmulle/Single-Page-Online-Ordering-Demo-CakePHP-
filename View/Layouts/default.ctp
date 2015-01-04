@@ -43,7 +43,6 @@
 <body <?php echo ___cD( $body_class ); ?>>
 <?php
 	echo $this->Element( 'feedback' );
-	echo $this->element( "flash_modal" );
 	echo $this->Element( "top_bar" );
 ?>
 <div id="page-content">

@@ -47,8 +47,9 @@ class UsersController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('ajax')) { $this->layout =  "ajax";}
+
 		if ($this->request->is('post')) {
-			$conditions = array('User.email'=>$this->request->data['User']['email']);    
+			$conditions = array('User.email'=>$this->request->data['User']['email']);
 			if ($this->User->hasAny($conditions)) {
 				$this->Session->setFlash(__('That email address is already taken.'));
 				return $this->redirect(___cakeUrl('menu', ''));
