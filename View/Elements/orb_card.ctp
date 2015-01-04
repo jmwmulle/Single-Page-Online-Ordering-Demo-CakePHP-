@@ -6,6 +6,8 @@
 	 * Twitter: @thisimpetus
 	 * About.me: about.me/thisimpetus
 	 */
+$logged_in = $this->Session->read('Auth');
+
 ?>
 <div id="orb-card-stage" class="l-2 box retracted">
 	<div id="orb-card-container" class="box abs l-2-2">
@@ -16,8 +18,12 @@
 					<ul class="orb-card">
 					<!-- TOP  ROW --> <?php // every row has a button at left and content at right ;?>
 						<li class="orb-card-row">
-							<?php $data = array("float-label" => "favorite-label", "route" => "favorite/orb_card"); ?>
-							<div id="favorite" class="orb-card-button inline float-labeled" <?php echo ___dA($data); ?>>
+							<?php
+								$classes = array("orb-card-button, inline, float-labeled", $logged_in ? "" : "disabled");
+								$data = array("float-label" => "favorite-label");
+								if ($logged_in) $data["route"] = "favorite/orb_card";
+							?>
+							<div id="favorite" <?php echo __cD($classes);?> <?php echo ___dA($data); ?>>
 								<span class="icon-orb-card-favorite"></span>
 							</div
 							><div id="description" class="orb-card-content inline">
@@ -112,11 +118,9 @@
 							<div id="tiny-orb-opts-list-wrapper"></div
 						></div
 					></div
-
 					><div id="orb-finalize-details" class="inline orb-card-row text-center">
 						<a id="cancel-order-button" href="#" class="xtreme-button secondary left cancel-order">Cancel</a>
 						<a id="confirm-order-button" href="#" class="xtreme-button right confirm-order">Confirm</a>
-						<span id="orb-total">Total: $21.50</span>
 					</div>
 				</section>
 			</div>

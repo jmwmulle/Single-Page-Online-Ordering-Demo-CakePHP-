@@ -123,7 +123,7 @@ window.XBS = {
 					data: "data" in route.url ? route.url.data : null,
 					statusCode: {
 						403: function() {
-							XBS.layout.launch_route(XBS.routes.fail_flash);
+							XBS.routing.launch("flash/fail");
 							if (!launch_triggered) {
 								launch_triggered = true;
 								$(route).trigger("route_launched","403_FORBIDDEN")
@@ -185,7 +185,8 @@ window.XBS = {
 					}
 				}
 			}),
-			fail_flash: new XtremeRoute("fail_flash", {
+			flash: new XtremeRoute("flash", {
+					params: {type: { url_fragment:false}},
 					modal: XSM.modal.flash,
 					behavior: C.OL,
 					callbacks: {
@@ -316,7 +317,7 @@ window.XBS = {
 			submit_order_address: new XtremeRoute("submit_order_address",{
 				params: { is_splash:{value:null, url:false}},
 				callbacks: {
-					launch: function(){ XBS.validation.submit_order(this);}
+					launch: function(){ XBS.validation.submit_address(this);}
 				}
 			}),
 			topbar_link: new XtremeRoute("topbar_link",{
