@@ -23,7 +23,7 @@ $logged_in = $this->Session->read('Auth');
 								$data = array("float-label" => "favorite-label");
 								if ($logged_in) $data["route"] = "favorite/orb_card";
 							?>
-							<div id="favorite" <?php echo __cD($classes);?> <?php echo ___dA($data); ?>>
+							<div id="favorite" <?php echo ___cD($classes);?> <?php echo ___dA($data); ?>>
 								<span class="icon-orb-card-favorite"></span>
 							</div
 							><div id="description" class="orb-card-content inline">
