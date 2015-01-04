@@ -10,7 +10,6 @@
 				</div>
 				<div id="splash-bar-wrapper" class="detach wrapper">
 					<div id="splash-bar" class="detach">
-<!--						<div class="spacer">&nbsp;</div>-->
 						<div id="splash-bar-content" class="text-center"
 							><div id="splash-order-delivery-wrapper">
 								<a id="splash-order-delivery" href="#" class="slide-left"  data-route="order_method/splash/delivery">Delivery</a>
@@ -24,7 +23,7 @@
 						></div>
 					</div>
 				</div>
-				<div id="menu-wrapper" class="wrapper">
+				<div id="menu-wrapper" class="wrapper preserve-3d">
 					<?php $menuAttr = array("route" => "splash_link/menu", 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
 					<div class="spacer"></div>
 					<a href="#" id="menu" <?php echo ___dA($menuAttr);?>>&nbsp;</a>
