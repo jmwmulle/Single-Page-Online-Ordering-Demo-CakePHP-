@@ -114,8 +114,6 @@ div#orb-card {
           background-image : url('../img/orb_card.icon.like.png');
           .triangle { border-top : $triangle-border-width solid $xtreme-blue; }
         }
-        transition          : background-color $global-transition-time;
-        .triangle { transition : border-top-color $global-transition-time; }
         &#favorite:hover, &#order:hover, &#like:hover {
           background-color : $light-grey;
           .triangle { border-top-color : $light-grey; }

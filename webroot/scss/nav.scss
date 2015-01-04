@@ -139,3 +139,15 @@ nav#login {
     }
   }
 }
+
+@-webkit-keyframes loading {
+  0% {text-shadow:none;}
+  50% {text-shadow:0 0 1rem lighten($xtreme-blue,20%);}
+  100% {text-shadow:none;}
+}
+
+#topbar .loading {
+  -webkit-animation : loading ease-in-out 2s infinite;
+  &.fade-out {opacity:0;}
+  transition: opacity 0.1s;
+}
