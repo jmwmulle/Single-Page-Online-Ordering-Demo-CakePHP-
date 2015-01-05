@@ -49,11 +49,11 @@ class UsersController extends AppController {
 		if ($this->request->is('ajax')) { $this->layout =  "ajax";}
 
 		if ($this->request->is('post')) {
-			db($this->request->data);
 			$conditions = array('User.email'=>$this->request->data['User']['email']);
 			if ($this->User->hasAny($conditions)) {
 				return json_encode(array('success'=>false, 'error'=>'That email address is already taken.'));
 			} else {
+				$this->request->data['User']['group_id']=2;
 				$this->User->create();
 				if ($this->User->save($this->request->data)) {
 					$this->User->saveAssociated($this->request->data);
