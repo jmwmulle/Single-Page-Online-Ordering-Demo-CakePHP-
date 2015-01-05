@@ -4690,6 +4690,21 @@ span.icon-hn-inline {
 .icon-orb-card-share:before {
   content: "M"; }
 
+.icon-orb-card-register:before {
+  content: "O"; }
+
+.icon-topbar-email:before {
+  content: "P"; }
+
+.icon-topbar-sign-up:before {
+  content: "Q"; }
+
+.icon-orb-card-share-reveal:before {
+  content: "N"; }
+
+.icon-orb-card-register-reveal:before {
+  content: "R"; }
+
 @font-face {
   font-family: "Helvetica Neue Condensed Black";
   src: url('../files/font/HelveticaNeueLTStdBlkCn.otf');
@@ -4822,17 +4837,24 @@ li.orbcat {
 
 div.orb-card-button span {
   line-height: 1;
-  font-size: 5.06016rem; }
-  div.orb-card-button span.icon-orb-card-favorite {
+  font-size: 5.03039rem; }
+  div.orb-card-button span.icon-orb-card-favorite, div.orb-card-button span.icon-orb-card-register, div.orb-card-button span.icon-orb-card-register-reveal {
     color: #faea06; }
   div.orb-card-button span.icon-orb-card-cart {
     color: #e02027; }
-  div.orb-card-button span.icon-orb-card-share {
+  div.orb-card-button span.icon-orb-card-share, div.orb-card-button span.icon-orb-card-share-reveal {
     color: #0779be; }
   div.orb-card-button span:hover {
     color: #b4b4b4 !important; }
-div.orb-card-button.disabled span {
-  color: #b4b4b4; }
+
+.orb-card-row.swap-width .orb-card-button span {
+  color: #373737; }
+  .orb-card-row.swap-width .orb-card-button span:hover {
+    color: #373737 !important; }
+.orb-card-row.swap-width .orb-card-button a span {
+  font-size: 3.175rem; }
+  .orb-card-row.swap-width .orb-card-button a span:hover {
+    color: white !important; }
 
 #active-orbcat-menu-header h2 {
   line-height: 4.17563rem; }
@@ -5339,14 +5361,15 @@ footer#footer {
   #primary-modal .deferred-content.slide-left {
     -webkit-transform: translateX(-1500px); }
 
-#order-modal {
+#orbcard-modal {
   height: 8.53125rem;
   width: 72.5rem;
   top: 4.26562rem;
   overflow-x: hidden;
   z-index: 8999;
-  margin-left: -0.125rem; }
-  #order-modal #order-modal-content {
+  margin-left: -0.125rem;
+  padding-left: 0 !important; }
+  #orbcard-modal #orbcard-modal-content {
     margin-top: 1.25rem;
     height: 6.03125rem;
     width: 73.125rem;
@@ -5355,15 +5378,15 @@ footer#footer {
     padding: 0.3125rem;
     border-top: 1px solid #373737;
     border-bottom: 1px solid #373737; }
-    #order-modal #order-modal-content * {
+    #orbcard-modal #orbcard-modal-content * {
       color: #373737; }
-    #order-modal #order-modal-content li {
+    #orbcard-modal #orbcard-modal-content li {
       padding: 0; }
-  #order-modal a {
+  #orbcard-modal a {
     font-family: "Helvetica Neue Light Condensed", arial, sans-serif;
     font-size: 1.4375rem;
     transition: color 0.3s, text-shadow 0.3s; }
-    #order-modal a:hover {
+    #orbcard-modal a:hover {
       color: #0779be;
       text-shadow: 0 0 2px rgba(7, 121, 190, 0.5); }
 
@@ -5827,6 +5850,22 @@ li.orbcat {
                        ORB LIST / ORB CARD STAGE / ORB CARD
 
 ***************************************************************/
+@-webkit-keyframes reveal-orb-card-panel {
+  0% {
+    width: 3.96875rem; }
+
+  100% {
+    width: 30.09375rem;
+    background-color: #b4b4b4; } }
+
+@-webkit-keyframes stash-orb-card-panel {
+  0% {
+    width: 30.09375rem;
+    background-color: #b4b4b4; }
+
+  100% {
+    width: 3.96875rem; } }
+
 #orb-card-wrapper {
   height: 17.8125rem;
   width: 73.125rem;
@@ -5901,29 +5940,10 @@ div#orb-card {
   width: 36.5625rem; }
   div#orb-card section {
     background-color: white; }
-  div#orb-card .triangle {
-    position: absolute;
-    bottom: -0.75rem;
-    left: 1.23438rem;
-    width: 0;
-    height: 0;
-    border-left: 0.75rem solid transparent;
-    border-right: 0.75rem solid transparent;
-    margin-left: auto;
-    margin-left: right; }
-    div#orb-card .triangle.tr-right {
-      right: -1rem;
-      top: 1.64583rem;
-      -webkit-transform: rotate(-90deg);
-      -moz-transform: rotate(-90deg);
-      -ms-transform: rotate(-90deg);
-      -o-transform: rotate(-90deg);
-      transform: rotate(-90deg); }
   div#orb-card .orb-card-row {
     height: 3.96875rem;
     margin-bottom: 1.25rem; }
   div#orb-card ul.orb-card div.orb-card-button {
-    position: relative;
     vertical-align: top;
     width: 3.96875rem;
     height: 3.96875rem;
@@ -5931,28 +5951,26 @@ div#orb-card {
     background-position: center;
     cursor: pointer; }
     div#orb-card ul.orb-card div.orb-card-button span {
-      display: block;
+      vertical-align: top;
+      display: inline-block;
       width: 3.96875rem;
       height: 3.96875rem; }
-    div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite {
-      background-color: #faea06;
-      background-image: url('../img/orb_card.icon.fav.png'); }
-      div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite .triangle {
-        border-top: 0.75rem solid #faea06; }
-    div#orb-card ul.orb-card div.orb-card-button.bg-icons#order {
-      background-color: #e02027;
-      background-image: url('../img/orb_card.icon.cart.png'); }
-      div#orb-card ul.orb-card div.orb-card-button.bg-icons#order .triangle {
-        border-top: 0.75rem solid #e02027; }
-    div#orb-card ul.orb-card div.orb-card-button.bg-icons#like {
-      background-color: #0779be;
-      background-image: url('../img/orb_card.icon.like.png'); }
-      div#orb-card ul.orb-card div.orb-card-button.bg-icons#like .triangle {
-        border-top: 0.75rem solid #0779be; }
-    div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite:hover, div#orb-card ul.orb-card div.orb-card-button.bg-icons#order:hover, div#orb-card ul.orb-card div.orb-card-button.bg-icons#like:hover {
-      background-color: #b4b4b4; }
-      div#orb-card ul.orb-card div.orb-card-button.bg-icons#favorite:hover .triangle, div#orb-card ul.orb-card div.orb-card-button.bg-icons#order:hover .triangle, div#orb-card ul.orb-card div.orb-card-button.bg-icons#like:hover .triangle {
-        border-top-color: #b4b4b4; }
+    div#orb-card ul.orb-card div.orb-card-button .orb-card-row-panel {
+      display: inline-block;
+      padding-top: 0.39688rem;
+      width: 30.09375rem;
+      height: 3.96875rem; }
+      div#orb-card ul.orb-card div.orb-card-button .orb-card-row-panel.true-hidden {
+        display: none; }
+      div#orb-card ul.orb-card div.orb-card-button .orb-card-row-panel a, div#orb-card ul.orb-card div.orb-card-button .orb-card-row-panel span {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        text-align: center; }
+    div#orb-card ul.orb-card div.orb-card-button #orb-card-register-panel span, div#orb-card ul.orb-card div.orb-card-button #orb-card-register-panel a {
+      width: 25%; }
+    div#orb-card ul.orb-card div.orb-card-button #orb-card-social-panel span, div#orb-card ul.orb-card div.orb-card-button #orb-card-social-panel a {
+      width: 33%; }
 
 div.orb-card-content {
   width: 30.09375rem;
@@ -5990,6 +6008,28 @@ div.orb-card-content {
     padding-right: 1.5625rem; }
   div.orb-card-content#price-matrix#orb-card-options {
     background-color: #373737; }
+
+ul.orb-card {
+  position: absolute;
+  overflow: hidden !important; }
+
+.orb-card-row.swap-width .orb-card-button {
+  transition: color 0.3s, background-color 0.3s, width 0.5s ease-in-out;
+  width: 35.3125rem !important;
+  background-color: #b4b4b4;
+  position: relative; }
+  .orb-card-row.swap-width .orb-card-button .icon-orb-card-register {
+    background-color: #faea06; }
+  .orb-card-row.swap-width .orb-card-button .icon-orb-card-share {
+    background-color: #0779be; }
+.orb-card-row.swap-width .orb-card-content {
+  position: absolute; }
+
+.orb-card-button.stash {
+  -webkit-animation: stash-orb-card-panel 0.5s ease-in-out normal running forwards; }
+
+#orb-card-row-3 {
+  overflow-y: hidden; }
 
 #OrderOrbPreparationInstructions-wrapper {
   width: 10.9375rem; }

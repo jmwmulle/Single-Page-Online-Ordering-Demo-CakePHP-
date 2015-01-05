@@ -112,15 +112,16 @@
 }
 
 
-#order-modal {
+#orbcard-modal {
   height      : $order-modal-height;
   width       : $orb-card-wrapper-inner-width + rem-calc(2px);
   top         : $order-modal-top;
   overflow-x  : hidden;
   z-index     : 8999;
   margin-left : rem-calc(-2px);
+  padding-left:0 !important;
 
-  #order-modal-content {
+  #orbcard-modal-content {
   * { color: $text-grey;}
     margin-top       : $order-modal-content-shadow-size;
     height           : $order-modal-content-height;

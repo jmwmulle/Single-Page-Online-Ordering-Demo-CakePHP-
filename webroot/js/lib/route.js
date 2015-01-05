@@ -48,10 +48,16 @@ function XtremeRoute(name, data) {
 
 		if ("params" in data) {
 			this.params = {};
-			for (var param in data.params) {
-				this.params[param] = {value:false, url_fragment:false};
-				if ("value" in data.params[param]) this.params[param].value = data.params[param].value;
-				if ("url_fragment" in data.params[param]) this.params[param].url_fragment = data.params[param].url_fragment;
+			if ( isArray(data.params) ) {
+				for (var i = 0; i < data.params.length; i++) {
+					this.params[data.params[i]] = {value:false, url_fragment:false};
+				}
+			} else {
+				for (var param in data.params) {
+					this.params[param] = {value:false, url_fragment:false};
+					if ("value" in data.params[param]) this.params[param].value = data.params[param].value;
+					if ("url_fragment" in data.params[param]) this.params[param].url_fragment = data.params[param].url_fragment;
+				}
 			}
 		}
 		switch ("behavior" in data ? data.behavior : false) {
@@ -121,6 +127,7 @@ function XtremeRoute(name, data) {
 		this.route_name =  "*" + this.route_name;
 		if (this.launch_callback) $(this).on("route_launched", this.launch_callback);
 		if (param_values) this.__set_params(param_values);
+		return true;
 	}
 
 	/**
@@ -216,6 +223,24 @@ function XtremeRoute(name, data) {
 		this.modal = modal;
 		this.modal_content = modal + "-content";
 	};
+
+	/**
+	 * set_callback() set a callback post-initialization and re-init
+	 * @param callback
+	 * @param callback_function
+	 * @returns {*}
+	 */
+	this.set_callback = function(callback, callback_function) {
+		switch (callback) {
+		case "launch":
+			this.launch_callback = callback_function;
+			break;
+		case "params_set":
+			this.params_set_callback = callback_function;
+			break;
+		}
+		return this.init();
+	}
 
 	/**
 	 * unset() safely unsets instance attrs

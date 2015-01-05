@@ -34,9 +34,9 @@ $this->start('orbcats_menu');
 <?php
 $this->end('orbcats_menu');
 
-$this->start('order_modal');?>
-	<div id="order-modal" class="box leftward left small-12 columns" style="display:none;">
-		<div id="order-modal-content">
+$this->start('orb_card_modal');?>
+	<div id="orbcard-modal" class="box leftward left small-12 columns" style="display:none;">
+		<div id="orbcard-modal-content">
 			<div class="row">
 				<h4 class="text-center"><?php echo strtoupper("Success! your cart now tastes better!");?></h4>
 				<div class="large-8 medium-6 small-12 large-centered medium-centered columns">
@@ -55,7 +55,7 @@ $this->start('order_modal');?>
 			</div>
 		</div>
 	</div>
-<?php $this->end('orb_cat_modal');
+<?php $this->end('orb_card_modal');
 
 $this->start('monthly_content');?><div id="monthly-content-wrapper" class=""><?php echo $this->Html->Image('splash/logo.png');?></div>
 <?php
@@ -73,7 +73,6 @@ $this->end('active_orb_card');
 ?>
 <div class="row">
 	<main id="menu" class="large-12 columns<?php if ($this->get( "is_splash" )) echo " fade-out";?>">
-<!--		<div id="menu-container" class="box rel">-->
 		<div class="row">
 			<div class="large-9 small-5 columns">
 				<div class="row">
@@ -89,23 +88,19 @@ $this->end('active_orb_card');
 							</li>
 						</ul>
 					</div>
-
 					<div class="large-11 small-12 columns">
 						<?php echo $this->fetch('orbcats_menu');?>
 					</div>
 				</div>
 			</div>
-
 			<div class="large-3 columns show-for-large-up">
 				<?php echo $this->fetch('monthly_content');?>
 			</div>
 		</div>
-
-
 		<div class="row">
 			<div class="large-12  columns show-for-large-up">
 				<div id="orb-card-wrapper" class="float-pane box rel xtreme-blue-bg"
-					><?php echo $this->fetch('order_modal');?>
+					><?php echo $this->fetch('orb_card_modal');?>
 					<?php echo $this->fetch('active_orb_card');?>
 					<div id="orb-card-stage-menu-wrapper" class="box rightward xtreme-blue-bg">
 						<?php echo $this->fetch('active_orbcat_menu');?>
@@ -113,7 +108,6 @@ $this->end('active_orb_card');
 				</div>
 			</div>
 		</div>
-<!--		</div>-->
 	</main>
 </div>
 <?php

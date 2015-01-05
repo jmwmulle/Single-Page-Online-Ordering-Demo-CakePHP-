@@ -65,9 +65,8 @@ class OrdersController extends AppController {
 	 * @return the item information in AJAX
 	 */ 
 		public function add_to_cart() {
-			if ($this->request->is('ajax') || true) {
+			if ($this->request->is('ajax')) {
 				$this->layout = "ajax";
-
 			} elseif ($this->request->is('get')) {
 				$this->render();
 				return;
@@ -191,7 +190,7 @@ class OrdersController extends AppController {
 
 	public function cartupdate() {
 		if ($this->request->is('post')) {
-			db($this->request->data);
+//			db($this->request->data);
 			foreach($this->request->data['Orb'] as $args) {
 				extract(array_merge(array(
 							"id" => -1,

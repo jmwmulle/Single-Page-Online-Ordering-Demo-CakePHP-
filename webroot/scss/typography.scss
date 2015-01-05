@@ -159,6 +159,22 @@ span.icon-hn-inline {
 .icon-orb-card-share:before {
   content: "M";
 }
+.icon-orb-card-register:before {
+  content: "O";
+}
+.icon-topbar-email:before {
+  content: "P";
+}
+.icon-topbar-sign-up:before {
+  content: "Q";
+}
+.icon-orb-card-share-reveal:before {
+  content: "N";
+}
+.icon-orb-card-register-reveal:before {
+  content: "R";
+}
+
 
 @mixin font-faces() {
   $fonts:
@@ -185,31 +201,6 @@ span.icon-hn-inline {
 }
 
 @include font-faces();
-//
-//@font-face {
-//  font-family : "Helvetica Neue Medium Condensed";
-//  src         : url("../files/HelveticaNeueLTStd-MdCn.otf");
-//}
-//
-//@font-face {
-//  font-family : "Helvetica Neue Light Condensed";
-//  src         : url("../files/HelveticaNeueLTStd-LtCn.otf");
-//}
-//
-//@font-face {
-//  font-family : "Helvetica Neue Thin";
-//  src         : url("../files/HelveticaNeueLTStd-Th.otf");
-//}
-//
-//@font-face {
-//  font-family : "Helvetica Neue Thin Condensed";
-//  src         : url("../files/HelveticaNeueLTStd-ThCn.otf");
-//}
-//
-//@font-face {
-//  font-family : "Helvetica Neue Ultra Light";
-//  src         : url("../files/HelveticaNeueLTStd-UltLt.otf");
-//}
 
 @mixin mouse-memoirs {
   font-family : "Mouse Memoirs", sans-serif;
@@ -353,14 +344,24 @@ li.orbcat {
 div.orb-card-button {
   span {
     line-height:1;
-        font-size: $orb-card-button-height * 1.275;
-        &.icon-orb-card-favorite { color:$xtreme-yellow;}
+        font-size: $orb-card-button-height * 1.2675;
+        &.icon-orb-card-favorite, &.icon-orb-card-register, &.icon-orb-card-register-reveal { color:$xtreme-yellow;}
          &.icon-orb-card-cart { color: $xtreme-red; }
-         &.icon-orb-card-share { color:$xtreme-blue;}
+         &.icon-orb-card-share, &.icon-orb-card-share-reveal { color:$xtreme-blue;}
         &:hover { color: $light-grey !important;}
   }
-  &.disabled span { color:$light-grey;}
-
+}
+.orb-card-row.swap-width {
+ .orb-card-button {
+   span {
+    color: $text-grey;
+    &:hover { color:$text-grey !important; }
+  }
+   a span {
+     font-size: 0.8 * $orb-card-row-height;
+     &:hover { color: $white !important;}
+   }
+ }
 }
 
 #active-orbcat-menu-header h2 { @include helvetica_v_center_lh($h2-font-size, $orb-card-stage-menu-item-height); }

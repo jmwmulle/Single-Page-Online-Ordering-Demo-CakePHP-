@@ -17,15 +17,31 @@ $logged_in = $this->Session->read('Auth');
 				<section id="orb-card-front" class="preserve-3d card-face m-pad">
 					<ul class="orb-card">
 					<!-- TOP  ROW --> <?php // every row has a button at left and content at right ;?>
-						<li class="orb-card-row">
+						<li id="orb-card-row-1" class="orb-card-row">
 							<?php
-								$classes = array("orb-card-button", "inline", "float-labeled", $logged_in ? "" : "disabled");
-								$data = array("float-label" => "favorite-label");
-								if ($logged_in) $data["route"] = "favorite/orb_card";
+								$classes = array("orb-card-button", "inline", "float-labeled");
+								$data = array("float-label" => $logged_in ? "favorite" : "join & favorite");
+								$data["route"] = $logged_in ? "favorite/orb_card" : "orb_card/register";
 							?>
-							<div id="favorite" <?php echo ___cD($classes);?> <?php echo ___dA($data); ?>>
-								<span class="icon-orb-card-favorite"></span>
-							</div
+							<div id="<?php echo $logged_in ? "favorite" : "register";?>" <?php echo ___cD($classes);?> <?php echo ___dA($data); ?>>
+								<span class="<?php echo $logged_in ? "icon-orb-card-favorite" : "icon-orb-card-register";?>"></span
+								<?php if (!$logged_in) {?>
+									><div id="orb-card-register-panel" class="fade-out true-hidden orb-card-row-panel"
+										><a id="orb-card-register-twitter" href="#" data-route="orb_card/register/twitter"
+											><span class="icon-twitter"></span
+										></a
+										><a id="orb-card-register-facebook" href="#" data-route="orb_card/register/facebook"
+											><span class="icon-facebook"></span
+										></a
+										><a id="orb-card-register-gplus" href="#" data-route="orb_card/register/gplus"
+											><span class="icon-gplus"></span
+										></a
+										><a id="orb-card-register-email" href="#" data-route="orb_card/register/email"
+											><span class="icon-topbar-email"></span
+										></a
+									></div
+								<?php } ?>
+							></div
 							><div id="description" class="orb-card-content inline">
 								<div class="orb-card-content-container">
 									<p><?php echo $orb[ "description" ]; ?></p>
@@ -34,10 +50,10 @@ $logged_in = $this->Session->read('Auth');
 							</div>
 						</li>
 					<!-- MIDDLE  ROW -->
-						<li class="orb-card-row">
+						<li id="orb-card-row-2" class="orb-card-row">
 							<?php $data_array = array("orb-id" => $orb["id"],
 							                          "price-rank" => floor(count($orb["price_table"])/2),
-							                          "float-label" => "order-label");
+							                          "float-label" => "order");
 								$class_array = array("orb-card-button", "add-to-cart", "float-labeled", "inline");
 							?>
 							<div id="order" <?php echo ___cD($class_array);?> <?php echo ___dA($data_array);?>>
@@ -61,10 +77,23 @@ $logged_in = $this->Session->read('Auth');
 								</div>
 							</div>
 						</li
-						><li class="orb-card-row">
-							<div id="like" class="orb-card-button inline float-labeled" data-float-label="like-label">
-								<span class="icon-orb-card-share"></span>
-							</div
+						><li id="orb-card-row-3" class="orb-card-row">
+							<div id="like" class="orb-card-button inline float-labeled" data-float-label="share">
+								<span class="icon-orb-card-share" data-route="orb_card/share"></span
+								<?php if (!$logged_in) {?>
+								><div id="orb-card-social-panel" class="fade-out orb-card-row-panel"
+									><a id="orb-card-register-twitter" href="#" data-route="orb_card/share/twitter"
+										><span class="icon-twitter"></span
+									></a
+									><a id="orb-card-register-facebook" href="#" data-route="orb_card/share/facebook"
+										><span class="icon-facebook"></span
+									></a
+									><a id="orb-card-register-gplus" href="#" data-route="orb_card/share/gplus"
+										><span class="icon-gplus"></span
+									></a
+								></div
+							<?php } ?>
+							></div
 							><div id="orb-card-options" class="orb-card-content inline">
 								<div class="orb-card-content-container">
 									<ul class="large-block-grid-4">
@@ -119,8 +148,8 @@ $logged_in = $this->Session->read('Auth');
 						></div
 					></div
 					><div id="orb-finalize-details" class="inline orb-card-row text-center">
-						<a id="cancel-order-button" href="#" class="xtreme-button secondary left cancel-order">Cancel</a>
-						<a id="confirm-order-button" href="#" class="xtreme-button right confirm-order">Confirm</a>
+						<a id="cancel-order-button" href="#" class="xtreme-button secondary left" data-route="orb_card/add_to_cart/cancel">Cancel</a>
+						<a id="confirm-order-button" href="#" class="xtreme-button right" data-route="orb_card/add_to_cart/confirm">Confirm</a>
 					</div>
 				</section>
 			</div>

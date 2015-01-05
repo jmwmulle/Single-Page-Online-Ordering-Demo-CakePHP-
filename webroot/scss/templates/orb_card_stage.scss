@@ -1,3 +1,14 @@
+@-webkit-keyframes reveal-orb-card-panel {
+  0% { width: $orb-card-button-width;}
+  100% { width: $orb-card-content-width;
+        background-color:$light-grey;}
+}
+@-webkit-keyframes stash-orb-card-panel {
+  0% { width: $orb-card-content-width;
+        background-color:$light-grey;}
+  100% { width: $orb-card-button-width;}
+}
+
 #orb-card-wrapper {
   height : $orb-card-wrapper-height;
   width  : $orb-card-wrapper-width; // active orbs floats right (ie. this - orbcard stage = visible space for active orbs)
@@ -58,27 +69,6 @@ div#orb-card {
   // todo: consider putting the shadow back in; then move this BG color up to the orb-card, not the section
   section { background-color : $white; }
 
-  .triangle {
-    position     : absolute;
-    bottom       : $triangle-extrude-position;
-    left         : $triangle-center-position;
-    width        : 0;
-    height       : 0;
-    border-left  : $triangle-border-width solid transparent;
-    border-right : $triangle-border-width solid transparent;
-    margin-left  : auto;
-    margin-left  : right;
-    &.tr-right {
-      right             : $triangle-extrude-position * 1.333333; // on account of the rotation
-      top               : $triangle-center-position * 1.333333;
-      -webkit-transform : rotate(-90deg);
-      -moz-transform    : rotate(-90deg);
-      -ms-transform    : rotate(-90deg);
-      -o-transform      : rotate(-90deg);
-      transform         : rotate(-90deg);
-    }
-  }
-
   .orb-card-row {
     height        : $orb-card-row-height;
     margin-bottom : $float-pane-margin;
@@ -86,38 +76,38 @@ div#orb-card {
 
   ul.orb-card {
     div.orb-card-button {
-      position            : relative; // remove after fixing triangles
       vertical-align      : top;
       width               : $orb-card-button-width;
       height              : $orb-card-button-height;
       background-repeat   : no-repeat;
       background-position : center;
       cursor              : pointer;
+
+
       span {
-        display:block;
+        vertical-align      : top;
+        display:inline-block;
         width               : $orb-card-button-width;
         height              : $orb-card-button-height;
       }
-      &.bg-icons {
-        &#favorite {
-          background-color : $xtreme-yellow;
-          background-image : url('../img/orb_card.icon.fav.png');
-          .triangle { border-top : $triangle-border-width solid $xtreme-yellow; }
+      .orb-card-row-panel {
+        display:inline-block;
+        &.true-hidden { display: none;}
+        padding-top:0.1 * $orb-card-row-height;
+        width:$orb-card-content-width;
+        height: $orb-card-row-height;
+        a, span {
+          display:inline-block;
+          padding:0;
+          margin:0;
+          text-align:center;
         }
-        &#order {
-          background-color : $xtreme-red;
-          background-image : url('../img/orb_card.icon.cart.png');
-          .triangle { border-top : $triangle-border-width solid $xtreme-red; }
-        }
-        &#like {
-          background-color : $xtreme-blue;
-          background-image : url('../img/orb_card.icon.like.png');
-          .triangle { border-top : $triangle-border-width solid $xtreme-blue; }
-        }
-        &#favorite:hover, &#order:hover, &#like:hover {
-          background-color : $light-grey;
-          .triangle { border-top-color : $light-grey; }
-        }
+      }
+      #orb-card-register-panel {
+        span, a { width:25%;}
+      }
+      #orb-card-social-panel {
+        span, a { width:33%;}
       }
     }
   }
@@ -155,6 +145,28 @@ div.orb-card-content {
   }
 }
 
+
+
+ul.orb-card {
+  position:absolute;
+  overflow:hidden !important;
+}
+
+
+
+.orb-card-row.swap-width {
+    .orb-card-button {
+      transition: color $global-transition-time, background-color $global-transition-time, width 0.5s ease-in-out;
+      width: $orb-card-inner-width !important;
+      background-color:$light-grey;
+      position:relative;
+      .icon-orb-card-register { background-color:$xtreme-yellow;}
+      .icon-orb-card-share {background-color:$xtreme-blue;}
+    }
+    .orb-card-content { position: absolute;}
+}
+.orb-card-button.stash { -webkit-animation: stash-orb-card-panel 0.5s ease-in-out normal running forwards; }
+#orb-card-row-3 { overflow-y:hidden;}
 
 
 

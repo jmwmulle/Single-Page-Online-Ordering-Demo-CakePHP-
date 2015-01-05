@@ -31,6 +31,10 @@ window.XBS = {
 		         "..img/splash/order_soon.png",
 		         "..img/splash/pizza-bg.jpg",
 		         "..img/splash/logo_mini.png"],
+		orb_card_animation_queue: {
+			animating:false,
+			queued:0
+		},
 		orb_opts: {
 		},
 		orb_opt_filters: {
@@ -80,7 +84,8 @@ window.XBS = {
 		orb_card_refresh: eCustom(C.ORB_CARD_REFRESH),
 		order_form_update: eCustom(C.ORDER_FORM_UPDATE),
 		order_ui_update: eCustom(C.ORDER_UI_UPDATE),
-		route_request: eCustom(C.ROUTE_REQUEST)
+		route_request: eCustom(C.ROUTE_REQUEST),
+		orb_row_animation_complete: eCustom(C.ORB_ROW_ANIMATION_COMPLETE)
 	},
 	routing: {
 		init: function() {
@@ -89,6 +94,11 @@ window.XBS = {
 					var request = data.request.split(C.DS);
 					if ( this.route(request[0]) ) this.launch(this.route(request[0]), request.slice(1), e);
 				}
+			});
+			$(this).on(C.ORB_ROW_ANIMATION_COMPLETE, function(e, data) {
+				XBS.data.orb_card_animation_queue.animating = false;
+				XBS.data.orb_card_animation_queue.queued -= 1;
+				XBS.menu.toggle_orb_card_row_menu(data.menu, data.finished = C.HIDE ? C.SHOW : C.HIDE);
 			});
 		},
 		route: function(route_name) { return (route_name in this.routes) ? this.routes[route_name] : false},
@@ -242,6 +252,27 @@ window.XBS = {
 			orb: new XtremeRoute("orb",{
 				params:{ id:{value: null} },
 				callbacks: { params_set: function() { XBS.menu.refresh_orb_card_stage(this.params.id.value); } }
+			}),
+			orb_card: new XtremeRoute("orbcard", {
+				params: ["method", "channel"],
+				stop_propagation: true,
+				callbacks: {
+					params_set: function() {
+						var launch = false;
+						if ( in_array(this.read('method'), ['share', 'register']) ) {
+							launch = function() { XBS.menu.toggle_orb_card_row_menu(this.read('method'), null);}
+						};
+						if (this.read('method') == 'add_to_cart') {
+							if (this.read('channel') == 'confirm') {
+								launch = function() {XBS.menu.add_to_cart();}
+							}
+							if (this.read('channel') == 'cancel') {
+								launch = XBS.menu.reset_orb_card_stage();
+							}
+						}
+						if (launch) this.set_callback("launch", launch)
+					}
+				}
 			}),
 			order_method: new XtremeRoute("order_method",{
 				modal: XSM.modal.primary,
@@ -432,10 +463,10 @@ window.XBS = {
 			},
 			bind_float_labels: function () {
 				$(C.BODY).on(C.MOUSEENTER, asClass(XSM.effects.float_label), null, function (e) {
-					XBS.layout.toggle_float_label($(e.currentTarget).attr('id'), C.SHOW);
+					XBS.layout.toggle_float_label($(e.currentTarget).data('float-label'), C.SHOW);
 				});
 				$(C.BODY).on(C.MOUSEOUT, asClass(XSM.effects.float_label), null, function (e) {
-					XBS.layout.toggle_float_label($(e.currentTarget).attr('id'), C.HIDE);
+					XBS.layout.toggle_float_label($(e.currentTarget).data('float-label'), C.HIDE);
 				});
 
 				return true;
@@ -512,7 +543,7 @@ window.XBS = {
 			$(XSM.modal.primary).addClass(XSM.effects.slide_up);
 			$(XSM.modal.flash).addClass(XSM.effects.slide_up);
 			$(XSM.modal.splash).addClass(XSM.effects.slide_up);
-			$(XSM.modal.order).hide('clip');
+			$(XSM.modal.orb_card).hide('clip');
 			setTimeout(function() {
 				$(XSM.modal.overlay).addClass(XSM.effects.fade_out);
 				setTimeout(function() { $(XSM.modal.overlay).hide(); }, 300);
@@ -562,25 +593,6 @@ window.XBS = {
 					.children(asClass(XSM.effects.unchecked)).each(function () {
 						$(this).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
 					});
-			}
-		},
-		ready_loading_screen: function () {
-			if (XBS.cfg.developmentMode) {
-				XBS.fn.layout.toggle_loading_screen();
-				return true;
-			}
-			if (XBS.cfg.is_splash) {
-				$(XSM.load.pizzaLoaderGIF).fadeOut(500, function () {
-					$(XSM.load.loadingMessage).hide("slide", {direction: "right"}, 300, function () {
-						$(XSM.load.readyMessage).show("slide", 300, function () {
-							$(XSM.load.dismissLSButton).fadeToggle();
-						});
-					});
-				});
-			} else {
-				$(XSM.load.pizzaLoaderGIF).fadeOut(500, function () {
-					XBS.layout.toggle_loading_screen();
-				});
 			}
 		},
 		resize_modal: function(modal) {
@@ -686,20 +698,11 @@ window.XBS = {
 				return true;
 			},
 			bind_order_api: function () {
-				pr("there");
 				/** add item to order */
 				$(C.BODY).on(C.CLK, XSM.menu.add_to_cart, null, function (e) {
-					pr("here");
 					var data = $(e.currentTarget).data('orbId');
 					XBS.menu.configure_orb(data.orbId, data.priceRank)
 				});
-
-				/** cancel order button */
-				$(C.BODY).on(C.CLK, XSM.menu.cancel_order_button, null, XBS.menu.reset_orb_card_stage);
-
-				/** confirm order button */
-				$(C.BODY).on(C.CLK, XSM.menu.confirm_order_button, null, XBS.menu.add_to_cart);
-				return true;
 			},
 			bind_orbsize_update: function () {
 				$(C.BODY).on(C.CLK, XSM.menu.orb_size_button, null, function (e) {
@@ -760,13 +763,9 @@ window.XBS = {
 					data = JSON.parse(data);
 					if (data.success == true) {
 						XBS.cart.add_to_cart();
-						$(C.BODY).append(function () {
-							return $("<div/>").addClass([stripCSS(XSM.modal.order), XSM.effects.success].join(" "))
-								.html("<h1>Success!</h1>").hide();
-						});
 						$("#top-bar-view-cart").removeClass(XSM.effects.disabled)
 							.data('hover_text', "View Your Cart");
-						$(XSM.modal.order).show('clip');
+						$(XSM.modal.orb_card).show('clip');
 					}
 				}
 			});
@@ -944,6 +943,10 @@ window.XBS = {
 					replace_time = 950;
 					XBS.menu.show_orb_card_front_face();
 				}
+				$(asClass(XSM.effects.swap_width)).each( function() {
+					replace_time = 800;
+					XBS.menu.toggle_orb_card_row_menu($($(this).children(".orb-card-button")[0]).attr('id'), C.HIDE)
+				});
 				setTimeout(function () {
 					// >>> FADE OUT OUTGOING ORBCARD CONTENT <<<
 					$(XSM.menu.orb_card_content_container).addClass(XSM.effects.fade_out);
@@ -973,6 +976,73 @@ window.XBS = {
 			XBS.menu.show_orb_card_front_face();
 			$(C.BODY).trigger(C.ORDER_FORM_UPDATE);
 			$(C.BODY).trigger(C.ORDER_UI_UPDATE);
+		},
+		toggle_orb_card_row_menu: function(menu, state) {
+			var row;
+			var button;
+			var panel;
+			if (menu == "register") {
+				row = XSM.menu.orb_card_row_1;
+				button = XSM.menu.register_button;
+				panel = XSM.menu.registration_panel;
+			} else {
+				row = XSM.menu.orb_card_row_3;
+				button = XSM.menu.share_button;
+				panel = XSM.menu.social_panel;
+			}
+
+			if ($(panel).hasClass(XSM.effects.true_hidden) ) $(panel).removeClass(XSM.effects.true_hidden);
+			if (!state) state = $(row).hasClass(XSM.effects.swap_width) ? C.HIDE : C.SHOW;
+
+			if (state == C.HIDE) {
+				var wait_for_complete = 0;
+				if (!(XBS.data.orb_card_animation_queue.animating === false) )  {
+					if (XBS.data.orb_card_animation_queue.queued > 1)  {
+						return;
+					}
+					XBS.data.orb_card_animation_queue.queued +=1 ;
+					wait_for_complete = new Date().getTime() - XBS.data.orb_card_animation_queue.start;
+				}
+				setTimeout( function() {
+					XBS.data.orb_card_animation_queue.start = new Date().getTime();
+					if ( !$(row).hasClass(XSM.effects.swap_width) ) return;
+					$(panel).addClass(XSM.effects.fade_out);
+					setTimeout(function() {
+						$(panel).hide();
+						$(button).addClass(XSM.effects.stash);
+						setTimeout(function() {
+							$(row).removeClass(XSM.effects.swap_width);
+							setTimeout(function() { $(button).removeClass(XSM.effects.stash);}, 300);
+							$(XBS).trigger(C.ORB_ROW_ANIMATION_COMPLETE, {menu:menu, finished: C.SHOW});
+						}, 500)
+					}, 300);
+				}, wait_for_complete);
+			}
+
+			if (state == C.SHOW) {
+				var wait_for_complete = 0;
+				if (!(XBS.data.orb_card_animation_queue.animating === false) )  {
+					if (XBS.data.orb_card_animation_queue.queued > 1)  {
+						return;
+					}
+					XBS.data.orb_card_animation_queue.queued +=1 ;
+					wait_for_complete = new Date().getTime() - XBS.data.orb_card_animation_queue.start;
+				}
+				setTimeout( function() {
+					XBS.data.orb_card_animation_queue.start = new Date().getTime();
+					if ( $(row).hasClass(XSM.effects.swap_width) ) return;
+					$(row).addClass(XSM.effects.swap_width);
+					if (!$(panel).hasClass(XSM.effects.fade_out) ) $(panel).addClass(XSM.effects.fade_out);
+					$(panel).show();
+					setTimeout(function() {
+						setTimeout(function() {
+							$(panel).removeClass(XSM.effects.fade_out);}, 300);
+							$(XBS).trigger(C.ORB_ROW_ANIMATION_COMPLETE, {menu:menu, finished: C.HIDE});
+					}, 300)
+				}, wait_for_complete);
+			}
+
+			return true;
 		},
 		set_order_method: function(method) {
 			XBS.data.order_method = method;
@@ -1014,26 +1084,33 @@ window.XBS = {
 			return true;
 		},
 		show_orb_card_back_face: function () {
-			// >>> START FLIP & FADE OUT ORBOPTS TOGETHER <<<
-			$(XSM.menu.orb_card_3d_context).addClass(XSM.effects.flipped_y);
-			$(XSM.menu.active_orbcat_item).addClass(XSM.effects.fade_out);
-			setTimeout(function () {
-				// >>> SLIDE OUT ORBCAT ITEMS HEADER, HIDE ORBCAT ITEMS <<<
-				$(XSM.menu.active_orbcat_menu_header).addClass(XSM.effects.slide_left);
-				$(XSM.menu.active_orbcat_item).hide();
+			var row_menu_hide_time = 0;
+			$(asClass(XSM.effects.swap_width)).each( function() {
+				row_menu_hide_time = 800;
+					XBS.menu.toggle_orb_card_row_menu($($(this).children(".orb-card-button")[0]).attr('id'), C.HIDE)
+			});
+			setTimeout( function() {
+				// >>> START FLIP & FADE OUT ORBOPTS TOGETHER <<<
+				$(XSM.menu.orb_card_3d_context).addClass(XSM.effects.flipped_y);
+				$(XSM.menu.active_orbcat_item).addClass(XSM.effects.fade_out);
 				setTimeout(function () {
-					// >>> SHOW & FADE IN ORBOPTS<<<
-					$(XSM.menu.orb_opt).show()
-					setTimeout(function () {$(XSM.menu.orb_opt).removeClass(XSM.effects.fade_out);}, 30);
+					// >>> SLIDE OUT ORBCAT ITEMS HEADER, HIDE ORBCAT ITEMS <<<
+					$(XSM.menu.active_orbcat_menu_header).addClass(XSM.effects.slide_left);
+					$(XSM.menu.active_orbcat_item).hide();
 					setTimeout(function () {
-						// >>> SLIDE IN FILTER HEADER; REMOVE 'ACTIVIZING' <<<
-						$(XSM.menu.active_orbcat_menu_header).hide();
-						$(XSM.menu.orb_opts_menu_header).show();
-						setTimeout(function () { $(XSM.menu.orb_opts_menu_header).removeClass(XSM.effects.slide_right);}, 30);
-						$(XSM.menu.orb_card_stage_menu).removeClass(XSM.effects.activizing);
+						// >>> SHOW & FADE IN ORBOPTS<<<
+						$(XSM.menu.orb_opt).show()
+						setTimeout(function () {$(XSM.menu.orb_opt).removeClass(XSM.effects.fade_out);}, 30);
+						setTimeout(function () {
+							// >>> SLIDE IN FILTER HEADER; REMOVE 'ACTIVIZING' <<<
+							$(XSM.menu.active_orbcat_menu_header).hide();
+							$(XSM.menu.orb_opts_menu_header).show();
+							setTimeout(function () { $(XSM.menu.orb_opts_menu_header).removeClass(XSM.effects.slide_right);}, 30);
+							$(XSM.menu.orb_card_stage_menu).removeClass(XSM.effects.activizing);
+						}, 300);
 					}, 300);
 				}, 300);
-			}, 300);
+			}, row_menu_hide_time);
 		},
 		stash_menu: function () {
 			$(XSM.menu.user_activity_panel).addClass(XSM.effects.slide_up);
