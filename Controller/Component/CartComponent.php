@@ -106,7 +106,7 @@ class CartComponent extends Component {
 						}	
 						$this->Session->write('Cart.OrderItem.' . $key . '.quantity', $item['quantity']);
 						$this->Session->write('Cart.OrderItem.' . $key . '.subtotal', 
-							sprintf('%01.2f', ($item['base_price'] + array_sum($item['orbopts_prices'])) * $item['quantity']);
+							sprintf('%01.2f', ($item['base_price'] + array_sum($item['orbopts_prices'])) * $item['quantity']));
 						$matched = True;
 						return $item;
 					}
