@@ -202,6 +202,14 @@ div.view-cart-row {
 
 #modal-masthead {
   margin-bottom:1rem;
+  h1 {
+    padding-bottom:0;
+    margin-bottom:0;}
+  h2 {
+    text-align:center;
+    font-size:1.5rem;
+    color:$xtreme-blue;
+  }
 }
 
 /*******   modal pages ********/

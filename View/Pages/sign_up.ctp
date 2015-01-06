@@ -13,7 +13,7 @@
                                                   "subheader" => "We will never share your infos. Ever."));?>
 <div id="registration-method-bar" class="row text-center">
 	<div class="large-4 columns">
-		<h4>LOG IN WITH</h4>
+		<h4 data-route="print/fuck/right/off">LOG IN WITH</h4>
 	</div>
 	<div class="large-2 columns">
 		<a href="#" class="register-link email" data-route="register/email"><span class="icon-topbar-email"></span></a>
