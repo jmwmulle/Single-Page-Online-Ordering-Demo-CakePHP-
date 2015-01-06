@@ -119,7 +119,10 @@ window.XBS = {
 			if (route.stash) launch_delay = 900;
 			if (route.overlay) launch_delay = 300;
 			if (in_array(route.modal, [XSM.modal.primary, XSM.modal.splash]) ) hide_class = XSM.effects.slide_up;
-
+			if (hide_class && !$(route.modal).hasClass(hide_class) ) {
+				launch_delay += 300;
+				XBS.layout.dismiss_modal(route.modal, false);
+			}
 			// >>> RESIZE & POSITION PRIMARY IF NEEDED <<<
 			XBS.layout.resize_modal(route.modal)
 
@@ -241,8 +244,20 @@ window.XBS = {
 			}),
 			login: new XtremeRoute("login", {
 				url: {url:"login"},
-				params: {channel:{url_fragment:true}},
-				callbacks: {}
+				params: {
+					context:{},
+					channel:{url_fragment:true},
+					restore:{},
+				},
+				callbacks: {
+					params_set: function() {
+						var context = this.read('context');
+						var channel = this.read('channel');
+						var restore = this.read('restore');
+						if (context == "topbar") pr("fuck");
+					}
+
+				}
 			}),
 			menu: new XtremeRoute("menu", {
 				modal: false,
@@ -314,7 +329,7 @@ window.XBS = {
 			}),
 			order: new XtremeRoute("order", {
 				params: ["method"],
-				url: { url:"orders/review", type: C.GET, defer:true},
+				url: { url:"review-order", type: C.GET, defer:false},
 				modal: XSM.modal.primary,
 				callbacks: {
 					params_set: function() {
@@ -443,19 +458,6 @@ window.XBS = {
 				url:{url:"confirm-address/session", type: C.GET, defer:false},
 				callbacks: {
 					launch: function(){ XBS.validation.submit_address(this);}
-				}
-			}),
-			topbar_link: new XtremeRoute("topbar_link",{
-				params: {
-					context: {value:null, url_fragment:true},
-					channel: {value:null, url_fragment:true}
-				},
-				url:{url: C.UNSET, type: C.GET},
-				modal: XSM.modal.primary,
-				callbacks:{
-					params_set: function() {
-						if ( !this.read('channel') ) this.url.url = this.read('context');
-					}
 				}
 			}),
 			view_order: new XtremeRoute("view_order",{
