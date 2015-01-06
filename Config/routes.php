@@ -47,6 +47,8 @@
 	Router::connect('/login/facebook', array('controller' => 'auth', 'action' => 'facebook'));
 	Router::connect('/login/gplus', array('controller' => 'auth', 'action' => 'gplus'));
 	Router::connect('/opauth-complete/*', array('controller' => 'users', 'action' => 'opauth_complete'));
+	Router::connect('/clear-cart', array('controller' => 'orders', 'action' => 'clear'));
+
 
 	Router::connect('/auth/email', array('controller' => 'users', 'action' => 'login'));
 	

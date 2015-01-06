@@ -7,7 +7,7 @@ function XtremeRoute(name, data) {
 
 	// data
 	this.modal = false;
-	this.url = {url: false, type: false, deferred:false};
+	this.url = {url: false, type: false, defer:false};
 	this.params = false;
 	this.deferal_data = false;
 
@@ -254,7 +254,10 @@ function XtremeRoute(name, data) {
 				case "url":
 					this.url = {url:false, type:false};
 					break;
-				}
+				case "launch":
+				this.launch_callback = false;
+				break;
+			}
 			return this[attr];
 		}
 		return false;

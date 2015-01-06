@@ -13,21 +13,21 @@
 		<div id="flash-modal-content" class="small-6 columns">
 <!--		--><?php //echo $this->flash();?>
 		</div>
-		<a href="#" id="close-modal" data-modal="flash" class="box rightward flash"><span>Close</span><span class="icon-cancel icon-hn-inline"></span></a>
+		<a href="#" id="close-modal" data-route="close_modal/flash" class="box rightward flash"><span>Close</span><span class="icon-cancel icon-hn-inline"></span></a>
 	</div>
 </div>
 
 <div id="splash-modal" class="slide-up">
 	<div class="row">
 		<div id="splash-modal-content"></div>
-		<a href="#" id="close-modal" data-modal="splash" class="box rightward splash"><span>Close</span><span class="icon-cancel icon-hn-inline"></span></a>
+		<a href="#" id="close-modal" data-route="close_modal/splash" class="box rightward splash"><span>Close</span><span class="icon-cancel icon-hn-inline"></span></a>
 	</div>
 </div>
 
 <div id="primary-modal" class="slide-up">
 	<div class="row">
 		<div id="primary-modal-content" class="large-12 columns"></div>
-		<a href="#" id="close-modal" data-modal="primary" class="box rightward"><span>Close</span><span class="icon-cancel icon-hn-inline"></span></a>
+		<a href="#" id="close-modal" data-route="close_modal/primary" class="box rightward"><span>Close</span><span class="icon-cancel icon-hn-inline"></span></a>
 	</div>
 </div>
 <footer id="footer">

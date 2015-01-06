@@ -36,10 +36,10 @@ $social_route = $logged_in ? "social" : "login";
 					</a>
 					<?php if (!$logged_in) {?>
 					<a href="#" data-route="topbar_link/login/email" data-hover_text="Login With Your E-Mail Address">
-						<span class="icon-original-pizzas"></span>
+						<span class="icon-topbar-email"></span>
 					</a>
 					<a href="#" data-route="topbar_link/sign-up" data-hover_text="Sign-Up To Save You Address & Favorites!">
-						<span class="icon-double"></span>
+						<span class="icon-topbar-sign-up"></span>
 					</a>
 					<?php }
 					if ($logged_in) { ?>
@@ -50,7 +50,7 @@ $social_route = $logged_in ? "social" : "login";
 						<span class="icon-settings"></span>
 					</a>
 					<?php }
-					if (!$this->Session->read('Cart')) {?>
+					if ($this->Session->read('Cart')) {?>
 					<a  id="top-bar-view-cart" href="#" data-route="view_order/topbar" data-hover_text="View Your Cart">
 						<span class="icon-shopping"></span>
 					</a>

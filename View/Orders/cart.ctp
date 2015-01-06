@@ -4,9 +4,10 @@
 
 <?php echo $this->Html->script( array( 'cart.js' ), array( 'inline' => false ) );
 //	db($cart);
+//	db($cart);
 
 ?>
-<div class="row">
+<div class="row modal-header">
 	<div class="large-12 columns">
 		<div class="row">
 			<div class="large-4 columns">
@@ -17,14 +18,18 @@
 				<h3>Couldn't have chosen better ourselves!</h3>
 			</div>
 		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns default-content">
+	<?php if (empty( $cart[ 'OrderItem' ] )) { ?>
 		<div class="row">
 			<div id="empty-cart-message" class="large-8 large-centered columns">
-				<?php if (empty( $cart[ 'OrderItem' ] )) { ?>
 					<p>Well, "nothing" probably won't make for a satisfying meal.</p>
 					<p>But on the upside it's free?</p>
-				<?php } else { ?>
 			</div>
 		</div>
+		<?php } else { ?>
 		<div class="row view-cart-row cart-header">
 			<div class="large-7 columns"><span>ITEM</span></div>
 			<div class="large-2 columns text-center"><span>QUANTITY</span></div>
@@ -32,7 +37,7 @@
 			<div class="large-1 columns text-center">&nbsp;</div>
 		</div>
 
-		<?php foreach ($cart[ 'OrderItem' ] as $index => $item) {?>
+		<?php foreach ($cart[ 'OrderItem' ] as $index => $item) { $item = $item[0]?>
 		<div class="row view-cart-row">
 			<div class="large-12 columns row-wrapper">
 				<div id="order-item-<?php echo $index; ?>" class="row primary-row">
@@ -133,8 +138,12 @@
 		</div>
 		<div class="row">
 			<div class="large-12 large-centered columns">
-				<a href="#" class="xtreme-button" data-route="orders/address">CheckOut</a>
+				<a href="#" class="xtreme-button" data-route="order/clear">Clear Cart</a>
+				<a href="#" class="xtreme-button" data-route="order/review">Finalize Order</a>
 			</div>
 		</div>
 <?php } ?>
+	</div>
+</div>
+<div class="deferred-content slide-left"></div>
 <div id="on-close" class="true-hidden" data-action="unstash"></div>

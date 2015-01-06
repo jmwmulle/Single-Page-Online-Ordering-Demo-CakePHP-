@@ -117,6 +117,7 @@ var XSM = {
 	},
 	modal: {
 		close_modal: "#close-modal",
+		default_content: ".default-content",
 		deferred_content: ".deferred-content",
 		flash: "#flash-modal",
 		on_close: "#on-close",

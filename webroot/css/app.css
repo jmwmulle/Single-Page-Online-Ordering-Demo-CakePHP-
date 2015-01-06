@@ -5281,8 +5281,8 @@ footer#footer {
   z-index: 10001;
   width: 40rem;
   height: 6rem; }
-  #flash-modal .slide-up {
-    -webkit-transform: translate(0, -6rem); }
+  #flash-modal.slide-up {
+    -webkit-transform: translateY(-2000px) !important; }
   #flash-modal #flash-modal-content {
     width: 100%;
     border: 3px solid white;
@@ -5360,6 +5360,8 @@ footer#footer {
     font-family: "Helvetica Neue Light Condensed", arial, sans-serif; }
   #primary-modal .deferred-content.slide-left {
     -webkit-transform: translateX(-1500px); }
+  #primary-modal .default-content.slide-right {
+    -webkit-transform: translateX(1500px); }
 
 #orbcard-modal {
   height: 8.53125rem;

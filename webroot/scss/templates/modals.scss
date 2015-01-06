@@ -35,9 +35,7 @@
   z-index:10001;
   width:40rem;
   height: 6rem;
-  .slide-up {
-      -webkit-transform: translate(0, -6rem);
-    }
+  &.slide-up {-webkit-transform: translateY(-2000px) !important;}
   #flash-modal-content {
     width:100%;
     border:3px solid white;
@@ -107,6 +105,10 @@
   .deferred-content {
     &.slide-left {
       -webkit-transform: translateX(-1500px);
+    }
+  }
+  .default-content {
+    &.slide-right{ -webkit-transform: translateX(1500px);
     }
   }
 }

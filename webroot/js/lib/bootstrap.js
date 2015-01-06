@@ -188,6 +188,19 @@ window.XBS = {
 			return true;
 		},
 		routes: {
+			close_modal: new XtremeRoute("close_modal", {
+				params:["modal", "on_close"],
+				callbacks: {
+					launch: function() {
+						var action = $(XSM.modal[this.read("modal")]).find(XSM.modal.on_close)[0];
+						if (action) {
+							XBS.layout.dismiss_modal(this.read("modal"), $(action).data('action'));
+						} else {
+							XBS.layout.dismiss_modal(this.read("modal"), false);
+						}
+					}
+				}
+			}),
 			continue_ordering: new XtremeRoute("continue_ordering",{
 				callbacks:{
 					launch:function() {
@@ -305,7 +318,6 @@ window.XBS = {
 							this.url.type = false;
 						}
 						if ( this.read('submit') ) {
-							pr("yes; submit");
 							this.url.url = 'users/add';
 							this.launch_callback = function() { XBS.validation.submit_register(this);}
 							this.init();
@@ -325,6 +337,25 @@ window.XBS = {
 							);
 						}
 						setTimeout(function() { $(container).removeClass(XSM.effects.slide_left);}, load_time);
+					}
+				}
+			}),
+			order: new XtremeRoute("review_order", {
+				param: ["method"],
+				url: { url:"orders/review", defer:true},
+				modal: XSM.modal.primary,
+				callbacks: {
+					params_set: function() {
+						if (this.read('method') == "clear") this.url = { url: "clear-cart", type:C.GET, defer:false};
+						this.unset("launch");
+					},
+					launch: function(e, fired_from) {
+						if (this.deferal_data) {
+							$($(this.modal).find(XSM.modal.default_content)[0]).addClass(XSM.effects.slide_right);
+							var deferred_content = $(this.modal).find(XSM.modal.deferred_content)[0];
+							$(deferred_content).html(this.deferal_data);
+							setTimeout(function() { $(deferred_content).removeClass(XSM.effects.slide_right); }, 300);
+						}
 					}
 				}
 			}),
@@ -425,20 +456,7 @@ window.XBS = {
 			init_modals: function () {
 				/** initially hide overlay & bind dismiss-on-click */
 				$(XSM.modal.overlay).addClass(XSM.effects.fade_out).hide().removeClass(XSM.effects.true_hidden);
-				$(C.BODY).on(C.CLK, XSM.modal.overlay, null, XBS.layout.dismiss_modal);
-
-				/** bind close-modal button */
-				$(C.BODY).on(C.CLK, XSM.modal.close_modal, null, function(e) {
-					var modal = $(e.currentTarget).data('modal');
-					var action = false;
-					if (modal == XSM.modal.primary)  {
-						var on_close = $(XSM.modal.primary).find(XSM.modal.on_close)[0];
-						if (on_close) action = $(on_close).data('action');
-					}
-
-					XBS.layout.dismiss_modal(modal, action);
-					return true;
-				})
+//				$(C.BODY).on(C.CLK, XSM.modal.overlay, null, XBS.layout.dismiss_modal);
 			},
 			bind_activizing_lists: function () {
 				$("body").on(C.CLK, XSM.global.activizing_list, function (e) {
@@ -540,6 +558,8 @@ window.XBS = {
 			return $(element);
 		},
 		dismiss_modal: function(modal, action) {
+			var debug_this = 1;
+			if (debug_this > 0) pr([modal, action], "XBS.layout.dismiss_modal(modal, action)", 2);
 			$(XSM.modal.primary).addClass(XSM.effects.slide_up);
 			$(XSM.modal.flash).addClass(XSM.effects.slide_up);
 			$(XSM.modal.splash).addClass(XSM.effects.slide_up);
