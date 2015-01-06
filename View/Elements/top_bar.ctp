@@ -49,12 +49,13 @@ $social_route = $logged_in ? "social" : "login/topbar";
 					<a href="#" data-route="topbar_link/settings" data-hover_text="Account Settings">
 						<span class="icon-settings"></span>
 					</a>
-					<?php }
-					if ($this->Session->read('Cart')) {?>
-					<a  id="top-bar-view-cart" href="#" data-route="view_order/topbar" data-hover_text="View Your Cart">
+					<?php }?>
+					<a  id="top-bar-view-cart" href="#"
+						<?php if ($this->Session->read('Cart')) echo "style='display:none;' class='fade-out' ";?>
+					    data-route="view_order/topbar" data-hover_text="View Your Cart">
 						<span class="icon-shopping"></span>
 					</a>
-					<?php } ?>
+
 					<hr id="topbar-divider" />
 				</div>
 			</div>

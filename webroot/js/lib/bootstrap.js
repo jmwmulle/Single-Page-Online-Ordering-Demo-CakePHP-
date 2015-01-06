@@ -189,6 +189,7 @@ window.XBS = {
 					}
 				}
 			} else { $(route).trigger("route_launched", "NO_AJAX"); }
+			delete route;
 			return true;
 		},
 		routes: {
@@ -243,11 +244,12 @@ window.XBS = {
 				behavior: C.STASH_STOP
 			}),
 			login: new XtremeRoute("login", {
-				url: {url:"login"},
+				url: {url:"login", type: C.POST},
+				modal:XSM.modal.primary,
 				params: {
 					context:{},
 					channel:{url_fragment:true},
-					restore:{},
+					restore:{}
 				},
 				callbacks: {
 					params_set: function() {
@@ -255,6 +257,7 @@ window.XBS = {
 						var channel = this.read('channel');
 						var restore = this.read('restore');
 						if (context == "topbar") pr("fuck");
+						if (channel != "email") this.modal = XSM.modal.flash;
 					}
 
 				}
@@ -337,6 +340,7 @@ window.XBS = {
 							case "clear":
 								this.url = { url: "clear-cart", type:C.GET, defer:false};
 								this.unset("launch");
+								XBS.menu.clear_cart();
 								break;
 							case "view":
 								this.url.url = "cart";
@@ -839,16 +843,27 @@ window.XBS = {
 				url: "orders/add_to_cart",
 				data: $(XSM.menu.orb_order_form).serialize(),
 				success: function (data) {
-					pr(data);
 					data = JSON.parse(data);
 					if (data.success == true) {
 						XBS.cart.add_to_cart();
-						$("#top-bar-view-cart").removeClass(XSM.effects.disabled)
-							.data('hover_text', "View Your Cart");
 						$(XSM.modal.orb_card).show('clip');
+						$(XSM.global.topbar_cart_button).show()
+						setTimeout(function() { $(XSM.global.topbar_cart_button).removeClass(XSM.effects.fade_out);}, 300);
+
+
+
 					}
 				}
 			});
+		},
+		clear_cart: function() {
+			XBS.data.cart = {};
+			$(XSM.global.topbar_cart_button).addClass(XSM.effects.fade_out);
+			setTimeout(function() {
+				$(XSM.global.topbar_cart_button).hide();
+				XBS.menu.unstash_menu();
+			}, 300);
+			return true;
 		},
 		configure_orb: function (orb_id, price_rank) {
 			$(XSM.menu.orb_size_button).each(function () {
