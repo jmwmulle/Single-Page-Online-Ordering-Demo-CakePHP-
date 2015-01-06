@@ -364,8 +364,10 @@ window.XBS = {
 							this.read('bold'),
 							this.read('underline'));
 							$("#js_temp_out").html(print_response);
+							console.log(print_response);
 						} catch(e) {
-							$("#js_temp_out").html(e.toString());
+							console.log(e);
+//							$("#js_temp_out").html(e.toString());
 						}
 					}
 				}

@@ -5441,16 +5441,26 @@ div.view-cart-row.total * {
 #modal-masthead {
   margin-bottom: 1rem; }
   #modal-masthead h1 {
+    color: #0779be;
+    text-shadow: 0 0 0.5rem white;
     padding-bottom: 0;
     margin-bottom: 0; }
   #modal-masthead h2 {
     text-align: center;
+    background-color: #373737;
+    padding: 0.625rem 0.3125rem;
+    border-radius: 1000px;
     font-size: 1.5rem;
-    color: #0779be; }
+    height: 2.75rem;
+    line-height: 1.6825rem;
+    color: #faea06;
+    border: 2px solid white; }
 
 /*******   modal pages ********/
 #registration-method-bar {
   font-size: 3rem; }
+  #registration-method-bar span:hover {
+    color: #0779be; }
 
 #loadingScreen {
   -webkit-touch-callout: none;

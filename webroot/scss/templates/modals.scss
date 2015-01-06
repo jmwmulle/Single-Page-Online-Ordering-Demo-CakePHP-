@@ -203,12 +203,20 @@ div.view-cart-row {
 #modal-masthead {
   margin-bottom:1rem;
   h1 {
+    color:$xtreme-blue;
+    text-shadow: 0 0 0.5rem $white;
     padding-bottom:0;
     margin-bottom:0;}
   h2 {
     text-align:center;
+    background-color:$text-grey;
+    padding:$medium-padding $tight-padding ;
+    border-radius: $global-rounded;
     font-size:1.5rem;
-    color:$xtreme-blue;
+    height:1.5rem + 2* $medium-padding;
+    @include helvetica_v_center_lh(1.5rem, 1.5rem - 0.5 * $medium-padding);
+    color:$xtreme-yellow;
+    border:2px solid $white;
   }
 }
 
@@ -216,4 +224,10 @@ div.view-cart-row {
 //registration
 #registration-method-bar {
 font-size:3rem;
+  span {
+    &:hover {
+      color:$xtreme-blue;
+    }
+      //color:lighten($text-grey, 25%);};
+  }
 }
