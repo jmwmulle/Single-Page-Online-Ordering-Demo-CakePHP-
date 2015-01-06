@@ -291,7 +291,7 @@ $this->set(compact('groups'));*/
 	public function beforeFilter() {
 	    parent::beforeFilter();
 
-	    $this->Auth->allow('index', 'view', 'opauth_complete', 'order_method', 'add', 'login', 'logout');#, 'initDB');
+	    $this->Auth->allow('index', 'view', 'opauth_complete', 'add', 'login', 'logout');#, 'initDB');
 	}
 
 	public function initDB() {

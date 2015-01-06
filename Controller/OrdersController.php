@@ -414,10 +414,11 @@ class OrdersController extends AppController {
                                         if ($this->Auth->loggedIn()) { 
                                                 $options = array('conditions'=>array('User.id'=>$this->Auth->user('id'))); 
                                                 $user = $this->User->find('first', $options); 
-                                                $address_matches = (in_array($this->Session->read('User.Address'),  $user['Address']); 
+                                                $address_matches = in_array($this->Session->read('User.Address'),  $user['Address']); 
                                         } else { 
                                                 $address_matches = null; 
-                                        } 
+					}
+				       db("Was here");	
                                         $this->Session->write("User.address_matches", $address_matches); 
                                         $this->set(compact("method")); 
                                 } else { 
@@ -492,7 +493,7 @@ class OrdersController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->disableCache();
-		$this->Auth->allow('success', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'step1', 'step2', 'review', 'index', 'view');
+		$this->Auth->allow('success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'step1', 'step2', 'review', 'index', 'view');
 	}
 
 }
