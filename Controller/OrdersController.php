@@ -149,8 +149,7 @@ class OrdersController extends AppController {
 	
 	public function clear() {
 		$this->Cart->clear();
-		$this->Session->setFlash('All item(s) removed from your shopping cart', 'flash_error');
-		return $this->redirect('/');
+		$this->set('response', json_encode(array('success' => true)));
 	}
 
 
