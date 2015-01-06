@@ -35,7 +35,7 @@
 	Router::connect('/cart/*', array('controller' => 'orders', 'action' => 'cart'));
 	Router::connect('/menuitem/*', array('controller' => 'orbs', 'action' => 'menu_item'));
 	Router::connect('/register', array('controller' => 'pages', 'action' => 'signup'));
-	Router::connect('/order-method/*', array('controller' => 'users', 'action' => 'order_method'));
+	Router::connect('/order-method/*', array('controller' => 'orders', 'action' => 'order_method'));
 	Router::connect('/confirm-address/*', array('controller' => 'orders', 'action' => 'confirm_address'));
 	Router::connect('/launch-menu/*', array('controller' => 'orbcats', 'action' => 'menu', null, null, true));
 	Router::connect('/favorite/*', array('controller' => 'users', 'action' => 'add_favourite'));

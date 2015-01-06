@@ -230,7 +230,7 @@ class OrdersController extends AppController {
 
 		if ($this->Auth->loggedIn()) {
 			$User = $this->User->find('first', array('conditions' => array(
-				'User.id'=>$this->Session->read('Auth.User.User.id'))));
+				'User.id'=>$this->Session->read('Auth.User.User.id')))); #TODO Investigate why this is two Users deep
 			$this->set('User', $User['User']);
 		}
 
@@ -239,7 +239,7 @@ class OrdersController extends AppController {
 			$this->Order->set($this->request->data);
 			if($this->Order->validates()) {
 				$order = $this->request->data['Order'];
-				$order['order_type'] = 'creditcard';
+				$order['payment_method'] = 'creditcard';
 				$this->Session->write('Cart.Order', $order + $cart['Order']);
 				return $this->redirect(array('action' => 'review'));
 			} else {
@@ -258,7 +258,7 @@ class OrdersController extends AppController {
 		if(!$paymentAmount) {
 			return $this->redirect('/');
 		}
-		$this->Session->write('Cart.Order.order_type', 'creditcard');
+		$this->Session->write('Cart.Order.payment_method', 'creditcard');
 		$this->Paypal->step1($paymentAmount);
 	}
 
@@ -304,7 +304,7 @@ class OrdersController extends AppController {
 				$this->Order->set('invoice', "Not Yet Implemented");
 				$order['Order']['status'] = 1;
 
-				if($cart['Order']['order_type'] == 'paypal') {
+				if($cart['Order']['payment_method'] == 'paypal') {
 					$paypal = $this->Paypal->ConfirmPayment($order['Order']['total']);
 					//debug($resArray);
 					$ack = strtoupper($paypal['ACK']);
@@ -315,7 +315,7 @@ class OrdersController extends AppController {
 					//$order['Order']['transaction'] = $paypal['PAYMENTINFO_0_TRANSACTIONID'];
 				}
 
-				if((Configure::read('Settings.AUTHORIZENET_ENABLED') == 1) && $cart['Order']['order_type'] == 'creditcard') {
+				if((Configure::read('Settings.AUTHORIZENET_ENABLED') == 1) && $cart['Order']['payment_method'] == 'creditcard') {
 					$payment = array(
 						'creditcard_number' => $this->request->data['Order']['creditcard_number'],
 						'creditcard_month' => $this->request->data['Order']['creditcard_month'],
@@ -353,15 +353,19 @@ class OrdersController extends AppController {
 							->emailFormat('text')
 							->viewVars(array('cart' => $cart))
 							->send();*/
-					return $this->redirect(array('action' => 'success'));
+					$this->set('response', json_encode(array('action' => 'success')));
+					$this->render();
+					return;
 				} else {
 					$errors = $this->Order->invalidFields();
 					$this->set(compact('errors'));
+					$this->render();
+					return;
 				}
 			}
 		}
 
-		if(($cart['Order']['order_type'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
+		/*if(($cart['Order']['payment_method'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
 			$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
 			$cart['Order']['last_name'] = $cart['Paypal']['Details']['LASTNAME'];
 			$cart['Order']['email'] = $cart['Paypal']['Details']['EMAIL'];
@@ -380,13 +384,12 @@ class OrdersController extends AppController {
 			$cart['Order']['shipping_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
 			$cart['Order']['shipping_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
 
-			$cart['Order']['order_type'] = 'paypal';
+			$cart['Order']['payment_method'] = 'paypal';
 
 			$this->Session->write('Shop.Order', $cart['Order']);
-		}
-
+		}*/
+		
 		$this->set(compact('cart'));
-
 	}
 
 
@@ -399,6 +402,31 @@ class OrdersController extends AppController {
 		$this->set(compact('cart'));
 	}
 
+
+/* order_method */ 
+        public function order_method($method) { 
+                        if ($this->request->is('ajax') || true) { 
+                                if (!$this->Session->check("address_checked")) { 
+                                        $this->Session->write('Cart.Order.address_checked', False); 
+                                }       
+                                if ( in_array($method, array('delivery', 'pickup')) ) { 
+                                        $this->Session->write("Cart.Order.order_method", $method); 
+                                        if ($this->Auth->loggedIn()) { 
+                                                $options = array('conditions'=>array('User.id'=>$this->Auth->user('id'))); 
+                                                $user = $this->User->find('first', $options); 
+                                                $address_matches = (in_array($this->Session->read('User.Address'),  $user['Address']); 
+                                        } else { 
+                                                $address_matches = null; 
+                                        } 
+                                        $this->Session->write("User.address_matches", $address_matches); 
+                                        $this->set(compact("method")); 
+                                } else { 
+                                        return $this->redirect(array('controller'=>'menu', 'action'=>'index')); 
+                                } 
+                        } else { 
+                                return $this->redirect(array('controller'=>'menu', 'action'=>'index')); 
+                 } 
+	}
 
 /*confirm_address*/
 	public function confirm_address($command) {
@@ -428,10 +456,10 @@ class OrdersController extends AppController {
 				}
 			}*/ elseif ($command=='update_database') {
 				if ($this->Auth->loggedIn()) {
-					$conditions = array('conditions'=>array('User.id'=>$this->Auth->user('id')));
+					$conditions = array('conditions'=>array('User.id'=>$this->Auth->user['id']));
 					$this->User->find('first', $conditions);
-					if (array_key_exists()) {
-						$conditions = array('conditions'=>array('Address.user_id'=>$this->Auth->user('id'),
+					if (array_key_exists('address_id', $data)) {
+						$conditions = array('conditions'=>array('Address.user_id'=>$this->Auth->user['id'],
 							'Address.id'=>$data['address_id']));
 						$address = $this->Address->find('first', $conditions);
 						$address = array_merge($address, $data['orderAddress']);
@@ -439,7 +467,7 @@ class OrdersController extends AppController {
 					} else {
 						$to_save = array('User'=>$this->User,'Address'=>$data['orderAddress']);
 					}
-					if (Model::saveAssociated($to_save)) {
+					if ($this->User->saveAssociated($to_save)) {
 						$this->set("response", json_encode(array("success"=>True)));
 					} else {
 						$this->set("response", json_encode(array("success"=>false,
