@@ -332,12 +332,18 @@ class OrdersController extends AppController {
 					$order['Order']['transaction'] = $authorizeNet[6];
 				}
 
-				$save = $this->Order->saveAll($order, array('validate' => 'first'));
+				if ($this->Auth->loggedIn()) {
+					$this->User->set('id', $this->Auth->user['id']);
+					$this->User->saveAssociated($this->Order);
+				} else {
+					$save = $this->Order->save()
+				}
+				//$save = $this->Order->saveAll($order, array('validate' => 'first'));
 				if($save) {
 
 					$this->set(compact('cart'));
 
-					App::uses('CakeEmail', 'Network/Email');
+					/*App::uses('CakeEmail', 'Network/Email');
 					$email = new CakeEmail();
 					$email->from('xtremepizzahalifax@gmail.com')
 							->cc('xtremepizzahalifax@gmail.com')
@@ -346,7 +352,7 @@ class OrdersController extends AppController {
 							->template('order')
 							->emailFormat('text')
 							->viewVars(array('cart' => $cart))
-							->send();
+							->send();*/
 					return $this->redirect(array('action' => 'success'));
 				} else {
 					$errors = $this->Order->invalidFields();
