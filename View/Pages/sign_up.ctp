@@ -8,15 +8,9 @@
  */
 ?>
 
-<div class="row">
-	<div class="large-4 columns">
-		<?php echo $this->element('modal_masthead');?>
-	</div>
-	<div class="large-8 columns">
-		<h1>Xtreme Membership!</h1>
-		<h3>We will never share your infos. Ever.</h3>
-	</div>
-</div>
+
+<?php echo $this->element('modal_masthead', array('header'=>"Xtreme Membership!",
+                                                  "subheader" => "We will never share your infos. Ever."));?>
 <div id="registration-method-bar" class="row text-center">
 	<div class="large-4 columns">
 		<h4>LOG IN WITH</h4>

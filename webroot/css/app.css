@@ -5438,6 +5438,13 @@ div.view-cart-row.total * {
   font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
   font-size: 0.8rem; }
 
+#modal-masthead {
+  margin-bottom: 1rem; }
+
+/*******   modal pages ********/
+#registration-method-bar {
+  font-size: 3rem; }
+
 #loadingScreen {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

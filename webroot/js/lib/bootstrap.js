@@ -351,6 +351,7 @@ window.XBS = {
 				params:["print_str", "font_id", "alignment", "line_space", "size_w", "size_h", "x_pos", "bold", "underline"],
 				callbacks: {
 					launch: function() {
+						$(C.BODY).append($("<div />").attr('id', 'js_temp_out').css({position:"fixed", top:0, left:0, zIndex:100000,width:400+ C.PX, backgroundColor:"rgb(45,45,45)", color:"white"}));
 						try {
 							print_response = window.JSInterface.printText(
 							this.read('print_str'),
@@ -362,10 +363,9 @@ window.XBS = {
 							this.read('x_pos'),
 							this.read('bold'),
 							this.read('underline'));
-							pr ( print_response, "window.JSInterface.printText()", 2);
+							$("#js_temp_out").html(print_response);
 						} catch(e) {
-							pr("No dice; threw an exception, printing it below, let me know what I need to change.");
-							pr(e, "error");
+							$("#js_temp_out").html(e.toString());
 						}
 					}
 				}

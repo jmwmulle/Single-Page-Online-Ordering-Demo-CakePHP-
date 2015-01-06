@@ -1,10 +1,9 @@
-<?php
-/**
- * J. Mulle, for app, 12/30/14 12:21 PM
- * www.introspectacle.net
- * Email: this.impetus@gmail.com
- * Twitter: @thisimpetus
- * About.me: about.me/thisimpetus
- */
-	echo $this->Html->image( 'splash/logo.png' );
-?>
+<div id="modal-masthead" class="row">
+	<div class="large-4 columns">
+		<?php echo $this->Html->image( 'splash/logo.png' ); ?>
+	</div>
+	<div class="large-8 columns">
+		<h1><?php echo $header;?></h1>
+		<h2><?php echo $subheader; ?></h2>
+	</div>
+</div>
