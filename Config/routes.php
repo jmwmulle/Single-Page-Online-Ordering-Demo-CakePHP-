@@ -49,9 +49,7 @@
 	Router::connect('/opauth-complete/*', array('controller' => 'users', 'action' => 'opauth_complete'));
 	Router::connect('/clear-cart', array('controller' => 'orders', 'action' => 'clear'));
 	Router::connect('/review-order/*', array('controller' => 'orders', 'action' => 'review'));
-	Router::connect('/finalzie-order/*', array('controller' => 'orders', 'action' => 'review'));
-
-
+	Router::connect('/finish-ordering/*', array('controller' => 'orders', 'action' => 'review'));
 
 	Router::connect('/auth/email', array('controller' => 'users', 'action' => 'login'));
 	

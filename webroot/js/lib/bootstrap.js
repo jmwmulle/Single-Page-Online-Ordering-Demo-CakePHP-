@@ -330,7 +330,7 @@ window.XBS = {
 								this.unset("launch");
 								break;
 							case "finalize":
-								this.url.url = "finalize-order";
+								this.url.url = "finish-ordering";
 								this.url.type = C.POST;
 								this.url.defer = true;
 								break;
