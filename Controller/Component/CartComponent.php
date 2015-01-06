@@ -97,11 +97,16 @@ class CartComponent extends Component {
 				$cur_item = compact("price_rank","orb_id","preparation_instructions");
 				$cur_item['orbopts_arrangement'] = $orbopts_list;
 				if (array_intersect_key($item, $cur_item) == $cur_item) { #Consider making this a hash table for speed
-					if ($quantity <= 0) {
+					if ($item['quantity'] + $quantity <= 0) {
 						$this->Session->delete('Cart.OrderItem.' . $key);
 					} else {
-						$item['quantity']+=$quantity; 
+						$item['quantity']+=$quantity;
+						if ($item['quantity'] > $this->maxQuantity) {
+							$this['quantity'] = $this->maxQuantity;
+						}	
 						$this->Session->write('Cart.OrderItem.' . $key . '.quantity', $item['quantity']);
+						$this->Session->write('Cart.OrderItem.' . $key . '.subtotal', 
+							sprintf('%01.2f', ($item['base_price'] + array_sum($item['orbopts_prices'])) * $item['quantity']);
 						$matched = True;
 						return $item;
 					}

@@ -298,11 +298,11 @@ class OrdersController extends AppController {
 		}
 
 		if ($this->request->is('post')) {
-			$this->Order->set($this->request->data);
+			$this->Order->set($this->Session->read('Cart.Order'));
 			if($this->Order->validates()) {
 				$order = $cart;
-				$this->Order['detail'] = json_encode($cart);
-				$this->Order['invoice'] = "Not Yet Implemented";
+				$this->Order->set('detail', json_encode($cart));
+				$this->Order->set('invoice', "Not Yet Implemented");
 				$order['Order']['status'] = 1;
 
 				if($cart['Order']['order_type'] == 'paypal') {

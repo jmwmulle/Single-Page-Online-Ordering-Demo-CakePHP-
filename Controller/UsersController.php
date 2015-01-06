@@ -146,9 +146,8 @@ $this->set(compact('groups'));*/
 
 /*add_favourite*/
 	public function add_favourite() {
-
 		if ($this->request->is('ajax')) {
-			if ($this->User->Favourite->save(json_decode($this->request->data))) {
+			if ($this->User->saveAssociated(json_decode($this->request->data))) {
 				return json_encode(array('success' => true));
 			}
 			else {
