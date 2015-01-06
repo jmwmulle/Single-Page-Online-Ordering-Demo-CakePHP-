@@ -353,15 +353,19 @@ class OrdersController extends AppController {
 							->emailFormat('text')
 							->viewVars(array('cart' => $cart))
 							->send();*/
-					return $this->redirect(array('action' => 'success'));
+					$this->set('response', json_encode(array('action' => 'success')));
+					$this->render();
+					return;
 				} else {
 					$errors = $this->Order->invalidFields();
 					$this->set(compact('errors'));
+					$this->render();
+					return;
 				}
 			}
 		}
 
-		if(($cart['Order']['order_type'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
+		/*if(($cart['Order']['payment_method'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
 			$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
 			$cart['Order']['last_name'] = $cart['Paypal']['Details']['LASTNAME'];
 			$cart['Order']['email'] = $cart['Paypal']['Details']['EMAIL'];
@@ -383,10 +387,9 @@ class OrdersController extends AppController {
 			$cart['Order']['order_type'] = 'paypal';
 
 			$this->Session->write('Shop.Order', $cart['Order']);
-		}
-
+		}*/
+		
 		$this->set(compact('cart'));
-
 	}
 
 
