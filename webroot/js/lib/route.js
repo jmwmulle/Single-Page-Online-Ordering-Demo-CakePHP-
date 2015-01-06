@@ -159,6 +159,7 @@ function XtremeRoute(name, data) {
 	 * @private
 	 */
 	this.__set_params = function(param_values) {
+		pr(this);
 		var debug_this = 0;
 		if (debug_this > 0) pr(param_values, "XtremeRoute::__set_params(param vals)");
 		if (param_values.length > 0) {

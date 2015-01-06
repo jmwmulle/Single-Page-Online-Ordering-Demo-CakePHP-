@@ -340,8 +340,8 @@ window.XBS = {
 					}
 				}
 			}),
-			order: new XtremeRoute("review_order", {
-				param: ["method"],
+			order: new XtremeRoute("order", {
+				params: ["method"],
 				url: { url:"orders/review", defer:true},
 				modal: XSM.modal.primary,
 				callbacks: {
@@ -353,8 +353,9 @@ window.XBS = {
 						if (this.deferal_data) {
 							$($(this.modal).find(XSM.modal.default_content)[0]).addClass(XSM.effects.slide_right);
 							var deferred_content = $(this.modal).find(XSM.modal.deferred_content)[0];
-							$(deferred_content).html(this.deferal_data);
-							setTimeout(function() { $(deferred_content).removeClass(XSM.effects.slide_right); }, 300);
+							setTimeout(function() {
+								$(deferred_content).html(this.deferal_data);
+								$(deferred_content).removeClass(XSM.effects.slide_right); }, 300);
 						}
 					}
 				}
