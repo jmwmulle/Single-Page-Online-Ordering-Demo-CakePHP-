@@ -60,48 +60,7 @@ function XtremeRoute(name, data) {
 				}
 			}
 		}
-		switch ("behavior" in data ? data.behavior : false) {
-			case C.STASH:
-				this.stash = true;
-				this.overlay = false;
-				this.stop_propagation = false;
-				break;
-			case C.OL:
-				this.stash = false;
-				this.overlay = true;
-				this.stop_propagation = false;
-				break;
-			case C.STASH_OL:
-				this.stash = true;
-				this.overlay = true;
-				this.stop_propagation = false;
-				break;
-			case C.STOP:
-				this.stash = false;
-				this.overlay = false;
-				this.stop_propagation = true;
-				break;
-			case C.STASH_STOP:
-				this.stash = true;
-				this.overlay = false;
-				this.stop_propagation = true;
-				break;
-			case C.OL_STOP:
-				this.stash = false;
-				this.overlay = true;
-				this.stop_propagation = true;
-				break;
-			case C.STASH_OL_STOP:
-				this.stash = true;
-				this.overlay = true;
-				this.stop_propagation = true;
-				break;
-			default:
-				this.stash = false;
-				this.overlay = false;
-				this.stop_propagation = false;
-				break;
-		}
+		this.__set_behavior("behavior" in data ? data.behavior : false);
 
 		if ("callbacks" in data) {
 			if ("post_init" in data.callbacks) this.post_init_callback = data.callbacks.post_init
@@ -116,6 +75,53 @@ function XtremeRoute(name, data) {
 
 		return true;
 	}
+
+	this.__set_behavior = function(behavior_mask) {
+		switch (behavior_mask) {
+				case C.STASH:
+					this.stash = true;
+					this.overlay = false;
+					this.stop_propagation = false;
+					break;
+				case C.OL:
+					this.stash = false;
+					this.overlay = true;
+					this.stop_propagation = false;
+					break;
+				case C.STASH_OL:
+					this.stash = true;
+					this.overlay = true;
+					this.stop_propagation = false;
+					break;
+				case C.STOP:
+					this.stash = false;
+					this.overlay = false;
+					this.stop_propagation = true;
+					break;
+				case C.STASH_STOP:
+					this.stash = true;
+					this.overlay = false;
+					this.stop_propagation = true;
+					break;
+				case C.OL_STOP:
+					this.stash = false;
+					this.overlay = true;
+					this.stop_propagation = true;
+					break;
+				case C.STASH_OL_STOP:
+					this.stash = true;
+					this.overlay = true;
+					this.stop_propagation = true;
+					break;
+				default:
+					this.stash = false;
+					this.overlay = false;
+					this.stop_propagation = false;
+					break;
+			}
+		return true;
+	}
+
 
 	/**
 	 * init() instance initiation
@@ -159,7 +165,6 @@ function XtremeRoute(name, data) {
 	 * @private
 	 */
 	this.__set_params = function(param_values) {
-		pr(this);
 		var debug_this = 0;
 		if (debug_this > 0) pr(param_values, "XtremeRoute::__set_params(param vals)");
 		if (param_values.length > 0) {
@@ -279,6 +284,8 @@ function XtremeRoute(name, data) {
 			return null;
 		}
 	};
+
+	this.change_behavior = function(behavior_mask) { this.__set_behavior(behavior_mask); }
 
 	this.__init(name, data);
 	return this;

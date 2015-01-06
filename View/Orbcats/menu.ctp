@@ -45,7 +45,7 @@ $this->start('orb_card_modal');?>
 							<a id="continue-ordering"  href="#" class="route" data-route="continue_ordering"><?php echo strtoupper("Continue Ordering");?></a>
 						</li>
 						<li class="text-center">
-							<a id="view-order" href=#" data-route="view_order"><?php echo strtoupper("View Order");?></a>
+							<a id="view-order" href=#" data-route="order/view"><?php echo strtoupper("View Order");?></a>
 						</li>
 						<li class="text-center">
 							<a id="finish-ordering" href="#" data-route="finish_ordering"><?php echo strtoupper("Finish Ordering");?></a>

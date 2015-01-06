@@ -266,8 +266,8 @@ window.XBS = {
 				params:{ id:{value: null} },
 				callbacks: { params_set: function() { XBS.menu.refresh_orb_card_stage(this.params.id.value); } }
 			}),
-			orb_card: new XtremeRoute("orbcard", {
-				params: ["method", "channel"],
+			orb_card: new XtremeRoute("orb_card", {
+				params: ["method", "channel", "data"],
 				stop_propagation: true,
 				callbacks: {
 					params_set: function() {
@@ -275,6 +275,10 @@ window.XBS = {
 						if ( in_array(this.read('method'), ['share', 'register']) ) {
 							launch = function() { XBS.menu.toggle_orb_card_row_menu(this.read('method'), null);}
 						};
+						if (this.read('method') == 'configure') {
+							pr(this.params);
+							XBS.menu.configure_orb(this.read('channel'), this.read('data'));
+						}
 						if (this.read('method') == 'add_to_cart') {
 							if (this.read('channel') == 'confirm') {
 								launch = function() {XBS.menu.add_to_cart();}
@@ -346,8 +350,16 @@ window.XBS = {
 				modal: XSM.modal.primary,
 				callbacks: {
 					params_set: function() {
-						if (this.read('method') == "clear") this.url = { url: "clear-cart", type:C.GET, defer:false};
-						this.unset("launch");
+						if (this.read('method') == "clear") {
+							this.url = { url: "clear-cart", type:C.GET, defer:false};
+							this.unset("launch");
+						}
+						if (this.read('method') == "view") {
+							this.url.url = "cart";
+							this.url.defer = false;
+							this.change_behavior(C.STASH_STOP);
+							this.unset("launch");
+						}
 					},
 					launch: function(e, fired_from) {
 						if (this.deferal_data) {
@@ -718,13 +730,13 @@ window.XBS = {
 				$(XSM.menu.orb_opts_menu_header).hide().removeClass(XSM.effects.hidden);
 				return true;
 			},
-			bind_order_api: function () {
-				/** add item to order */
-				$(C.BODY).on(C.CLK, XSM.menu.add_to_cart, null, function (e) {
-					var data = $(e.currentTarget).data('orbId');
-					XBS.menu.configure_orb(data.orbId, data.priceRank)
-				});
-			},
+//			bind_order_api: function () {
+//				/** add item to order */
+//				$(C.BODY).on(C.CLK, XSM.menu.add_to_cart, null, function (e) {
+//					var data = $(e.currentTarget).data('orbId');
+//					XBS.menu.configure_orb(data.orbId, data.priceRank)
+//				});
+//			},
 			bind_orbsize_update: function () {
 				$(C.BODY).on(C.CLK, XSM.menu.orb_size_button, null, function (e) {
 					XBS.menu.price_rank_update($(e.currentTarget).data('priceRank'));
@@ -792,13 +804,8 @@ window.XBS = {
 			});
 		},
 		configure_orb: function (orb_id, price_rank) {
-			if (isEvent(arguments[0])) {
-				var data = $(arguments[0].currentTarget).data();
-				orb_id = data.orbId;
-				price_rank = data.priceRank;
-			}
-
 			$(XSM.menu.orb_size_button).each(function () {
+				pr([$(this).data('priceRank'), price_rank]);
 				if ($(this).data('priceRank') == price_rank) XBS.layout.activize(this);
 			});
 			XBS.menu.show_orb_card_back_face()
