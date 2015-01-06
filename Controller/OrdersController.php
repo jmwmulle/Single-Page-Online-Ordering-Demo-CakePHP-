@@ -336,7 +336,7 @@ class OrdersController extends AppController {
 					$this->User->set('id', $this->Auth->user['id']);
 					$this->User->saveAssociated($this->Order);
 				} else {
-					$save = $this->Order->save()
+					$save = $this->Order->save();
 				}
 				//$save = $this->Order->saveAll($order, array('validate' => 'first'));
 				if($save) {
