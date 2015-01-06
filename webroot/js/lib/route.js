@@ -50,13 +50,14 @@ function XtremeRoute(name, data) {
 			this.params = {};
 			if ( isArray(data.params) ) {
 				for (var i = 0; i < data.params.length; i++) {
-					this.params[data.params[i]] = {value:false, url_fragment:false};
+					this.params[data.params[i]] = {value:false, url_fragment:false, post_init:false};
 				}
 			} else {
 				for (var param in data.params) {
-					this.params[param] = {value:false, url_fragment:false};
+					this.params[param] = {value:false, url_fragment:false, post_init: false};
 					if ("value" in data.params[param]) this.params[param].value = data.params[param].value;
 					if ("url_fragment" in data.params[param]) this.params[param].url_fragment = data.params[param].url_fragment;
+					if ("post_init" in data.params[param]) this.params[param].post_init = data.params[param].post_init === true;
 				}
 			}
 		}
@@ -171,6 +172,7 @@ function XtremeRoute(name, data) {
 			var param_keys = Object.keys(this.params);
 			for (var i = 0; i < param_keys.length; i++) {
 				if (!param_values[i]) continue;
+				if (this.params[param_keys[i]].post_init) continue; // was dynamically set and won't be in route str.
 				if (this.params[param_keys[i]].url_fragment) {
 					if ( !this.url_append(param_values[i]) && debug_this > 1) {
 						pr({
@@ -229,6 +231,22 @@ function XtremeRoute(name, data) {
 		this.modal = modal;
 		this.modal_content = modal + "-content";
 	};
+
+	/**
+	 * add_param()
+	 * @param name
+	 * @param value
+	 * @param url_fragment
+	 * @returns {boolean}
+	 */
+	this.add_param = function(name, value, url_fragment) {
+		this.params[name] = {
+			value: value != "undefined" ? value : false,
+			url_fragment: url_fragment === true,
+			post_init:true
+		};
+		return true;
+	}
 
 	/**
 	 * set_callback() set a callback post-initialization and re-init

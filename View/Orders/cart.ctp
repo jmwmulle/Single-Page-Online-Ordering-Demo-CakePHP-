@@ -5,21 +5,10 @@
 <?php echo $this->Html->script( array( 'cart.js' ), array( 'inline' => false ) );
 //	db($cart);
 //	db($cart);
+echo $this->element("modal_masthead", array(
+	"header" => "Mmmm... Cart Contents",
+"subheader" => "Couldn't have chosen better ourselves!")); ?>
 
-?>
-<div class="row modal-header">
-	<div class="large-12 columns">
-		<div class="row">
-			<div class="large-4 columns">
-				<?php echo $this->element("modal_masthead"); ?>
-			</div>
-			<div class="large-8 columns">
-				<h1>Mmmm... Cart Contents</h1>
-				<h3>Couldn't have chosen better ourselves!</h3>
-			</div>
-		</div>
-	</div>
-</div>
 <div class="row">
 	<div class="large-12 columns default-content">
 	<?php if (empty( $cart[ 'OrderItem' ] )) { ?>
@@ -139,7 +128,7 @@
 		<div class="row">
 			<div class="large-12 large-centered columns">
 				<a href="#" class="xtreme-button" data-route="order/clear">Clear Cart</a>
-				<a href="#" class="xtreme-button" data-route="order/review">Finalize Order</a>
+				<a href="#" class="xtreme-button" data-route="order/review">Review My Order</a>
 			</div>
 		</div>
 <?php } ?>

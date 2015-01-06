@@ -16,16 +16,16 @@
 		<h4 data-route="print/fuck/right/off">LOG IN WITH</h4>
 	</div>
 	<div class="large-2 columns">
-		<a href="#" class="register-link email" data-route="register/email"><span class="icon-topbar-email"></span></a>
+		<a href="#" class="register-link email" data-route="register/modal/email"><span class="icon-topbar-email"></span></a>
 	</div>
 	<div class="large-2 columns">
-		<a href="#" class="register-link twitter" data-route="submit_registration/twitter"><span class="icon-twitter"></span></a>
+		<a href="#" class="register-link twitter" data-route="register/modal/twitter"><span class="icon-twitter"></span></a>
 	</div>
 	<div class="large-2 columns">
-		<a href="#" class="register-link facebook" data-route="submit_registration/facebook"><span class="icon-facebook"></span></a>
+		<a href="#" class="register-link facebook" data-route="register/modal/facebook"><span class="icon-facebook"></span></a>
 	</div>
 	<div class="large-2 columns">
-		<a href="#" class="register-link gplus" data-route="submit_registration/gplus"><span class="icon-gplus"></span></a>
+		<a href="#" class="register-link gplus" data-route="register/modal/gplus"><span class="icon-gplus"></span></a>
 	</div>
 	<hr />
 </div>
@@ -89,7 +89,7 @@
 				</div>
 				<div class="row">
 					<div class="large-12 columns">
-						<a href="#" id="submit-order-address" class="box downward rel" data-route="submit_registration/email">
+						<a href="#" id="submit-order-address" class="box downward rel" data-route="register/modal/submit">
 							<?php echo strtoupper( "Sign me up!" ); ?>
 						</a>
 					</div>

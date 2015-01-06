@@ -5,7 +5,7 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-
+window.JSInterface =
 window.XBS = {
 	data: {
 		host_root_dirs: {
@@ -329,6 +329,11 @@ window.XBS = {
 								this.change_behavior(C.STASH_STOP);
 								this.unset("launch");
 								break;
+							case "finalize":
+								this.url.url = "finalize-order";
+								this.url.type = C.POST;
+								this.url.defer = true;
+								break;
 						}
 					},
 					launch: function(e, fired_from) {
@@ -374,24 +379,34 @@ window.XBS = {
 			}),
 			register: new XtremeRoute("register",{
 				modal:XSM.modal.primary,
-				params: {channel:{value:null, url:true, defer:true}},
+				url: {url:"sign-up", type: C.POST, defer:true},
+				params: {
+					context:{},
+					channel:{value:null, url_fragment:true},
+					restore:{},
+					hide_reg:{value:false}
+				},
 				callbacks: {
 					params_set: function() {
-						if (this.read('channel') == 'email') {
-							this.url.url = false;
-							this.url.type = false;
-						}
-						if ( this.read('submit') ) {
-							this.url.url = 'users/add';
-							this.launch_callback = function() { XBS.validation.submit_register(this);}
-							this.init();
+						var context = this.read('context');
+						var channel = this.read('channel');
+						if (context == "modal") {
+							if (channel == 'email') this.url.url = false;
+							if (inArray(channel, ["twitter", "facebook", "gplus"]) ) this.add_param("hide-reg", true, false);
+							if ( channel == 'submit' ) {
+								this.url.url = false;
+								this.set_callback("launch", function() { XBS.validation.submit_register(this);})
+							}
 						}
 					},
 					launch: function() {
 						pr("launch callback firing", this.__debug("calbacks/launch"), 2);
 						var container = $(this.modal).find(XSM.modal.deferred_content)[0];
-						var load_time = 300;
-						$("#registration-method-bar").hide("clip", 300);
+						var load_time = 30;
+						if (this.read('hide_reg') ) {
+							$("#registration-method-bar").hide("clip", 300);
+							load_time = 300;
+						}
 						if (this.deferal_data) {
 							$(container).replaceWith(
 								$("<div/>").addClass([XSM.modal.deferred_content, XSM.effects.slide_left].join(" "))
@@ -1501,7 +1516,7 @@ window.XBS = {
 			var debug_route = 0;
 			if (debug_route > 0) pr(route, "XBS.validation.submit_address(route)", 2);
 			$("#UsersForm").validate({
-				debug:false,
+				debug:true,
 				rules:{
 					"data[Users][firstname]": "required",
 					"data[Users][email]": {required:true, email:true},
