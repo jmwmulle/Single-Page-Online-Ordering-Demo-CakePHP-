@@ -473,6 +473,7 @@
 			}
 		}
 
+
 		/*confirm_address*/
 		public
 		function confirm_address($command) {
