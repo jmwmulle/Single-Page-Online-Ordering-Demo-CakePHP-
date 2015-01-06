@@ -51,10 +51,12 @@ $logged_in = $this->Session->read('Auth');
 						</li>
 					<!-- MIDDLE  ROW -->
 						<li id="orb-card-row-2" class="orb-card-row">
-							<?php $data_array = array("orb-id" => $orb["id"],
+							<?php $data_array = array(
 							                          "price-rank" => floor(count($orb["price_table"])/2),
-							                          "float-label" => "order");
-								$class_array = array("orb-card-button", "add-to-cart", "float-labeled", "inline");
+							                          "float-label" => "order",
+							                          "route" => "orb_card/configure/".$orb['id']
+							);
+								$class_array = array("orb-card-button", "float-labeled", "inline");
 							?>
 							<div id="order" <?php echo ___cD($class_array);?> <?php echo ___dA($data_array);?>>
 								<span class="icon-orb-card-cart"></span>
@@ -65,10 +67,8 @@ $logged_in = $this->Session->read('Auth');
 									><h5 id="price-matrix-price" class="text-right price-matrix-header">PRICE</h5
 									><ul class="price-matrix-content">
 									<?php foreach ( $orb[ "price_table" ] as $opt => $price ) {
-										$data_array = array("orb-id" => $orb["id"],
-										                    "price-rank" => array_search($opt, array_keys($orb[ "price_table" ])));
-									?>
-										<li class="add-to-cart" <?php echo ___dA($data_array);?>>
+										$route = "orb_card/configure/".$orb["id"].DS.array_search($opt, array_keys($orb[ "price_table" ]));?>
+										<li class="add-to-cart" data-route="<?php echo $route?>">
 											<div class="orb-size text-left"><?php echo $opt == "base" ? "Regular" : ucwords( $opt ); ?></div
 											><div class="orb-price text-right"><?php echo money_format("%#3.2n", $price ); ?></div>
 										</li>
