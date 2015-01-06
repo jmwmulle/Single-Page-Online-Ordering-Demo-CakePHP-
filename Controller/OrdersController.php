@@ -426,7 +426,6 @@ class OrdersController extends AppController {
 		} else { 
 			return $this->redirect(array('controller'=>'menu', 'action'=>'index')); 
 		}
-
 	}
 
 /*confirm_address*/
