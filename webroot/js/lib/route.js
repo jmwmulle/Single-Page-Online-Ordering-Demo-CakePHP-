@@ -286,7 +286,7 @@ function XtremeRoute(name, data) {
 	};
 
 	this.change_behavior = function(behavior_mask) { this.__set_behavior(behavior_mask); }
-
+	this.set_deferal_data = function(data) { this.deferal_data = data};
 	this.__init(name, data);
 	return this;
 }

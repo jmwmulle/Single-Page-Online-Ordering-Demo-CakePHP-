@@ -60,12 +60,14 @@
   top:0;
   left:0;
   border: $float-pane-border-width solid $white;
+  -webkit-transition: transform $global-transition-time, height $global-transition-time;
   @include primary-modal-bg;
   min-width:600px;
   max-width: $row-width;
   min-height:200px;
   height:auto;
   z-index:10001;
+  overflow-x:hidden;
   overflow-y:auto;
   padding: $base-padding;
   input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], textarea {
@@ -111,6 +113,7 @@
     &.slide-right{ -webkit-transform: translateX(1500px);
     }
   }
+  &.slide-down { -webkit-transform: translateY(1500px);}
 }
 
 

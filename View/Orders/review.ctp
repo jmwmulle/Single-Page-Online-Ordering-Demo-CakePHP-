@@ -3,68 +3,87 @@
 <?php $this->Html->addCrumb('Order Review'); ?>
 
 <?php echo $this->Html->script(array('shop_review.js'), array('inline' => false)); ?>
-
-<style type="text/css">
-	#ccbox {
-		background: transparent url("<?php echo $this->webroot; ?>img/cards.png");
-		margin: 0 0 10px 0;
-		padding: 0 0 0 150px;
-		width: 0;
-		height: 23px;
-		overflow: hidden;
-	}
-</style>
-
-<h1>Order Review</h1>
-
+<!---->
+<!--<style type="text/css">-->
+<!--	#ccbox {-->
+<!--		background: transparent url("--><?php //echo $this->webroot; ?><!--img/cards.png");-->
+<!--		margin: 0 0 10px 0;-->
+<!--		padding: 0 0 0 150px;-->
+<!--		width: 0;-->
+<!--		height: 23px;-->
+<!--		overflow: hidden;-->
+<!--	}-->
+<!--</style>-->
+<?php //db($this->Session->read());
+	$customer = array('firstname' => 'bob' ,
+                        'lastname' => 'smith',
+                        'email' => "this.impetus@gmail.com",
+                        'phone' => '1902787019'
+	);
+	$order_method = "delivery";
+	$address = array('address_1' => "123 Somewhere St.", 'address_2' => "Apt. 7", "postal_code" => "B0J 2C0");
+?>
 <hr>
 
 <div class="row">
-	<div class="col col-sm-4">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">Customer Info</h3>
+	<div class="large-12 columns">
+		<?php //if (!$this->Session->read('Cart.Order.order_method') ) {?>
+		<?php if ( false ) {?>
+		<div class="row">
+			<div class="large-6 columns">
+				<a href="#" data-route="order_method/review/pickup">Order for Pick-up</a>
 			</div>
-			<div class="panel-body">
-				First Name: <?php echo $cart['Order']['firstname'];?><br />
-				Last Name: <?php echo $cart['Order']['lastname'];?><br />
-				Email: <?php echo $cart['Order']['email'];?><br />
-				Phone: <?php echo $cart['Order']['phone'];?>
-			</div>
-		</div>
-	</div>
-	<div class="col col-sm-4">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">Billing Address</h3>
-			</div>
-			<div class="panel-body">
-				Billing Address: <?php echo $cart['Order']['billing_address'];?><br />
-				Billing Address 2: <?php echo $cart['Order']['billing_address_2'];?><br />
-				Billing City: <?php echo $cart['Order']['billing_city'];?><br />
-				Billing State: <?php echo $cart['Order']['billing_province'];?><br />
-				Billing Zip: <?php echo $cart['Order']['billing_postal_code'];?><br />
-				Billing Country: <?php echo $cart['Order']['billing_country'];?>
+			<div class="large-6 columns">
+				<a href="#" data-route="order_method/review/delivery">Order for Pick-up</a>
 			</div>
 		</div>
-	</div>
-	<div class="col col-sm-4">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">Delivery Address</h3>
+		<?php } else { ?>
+		<div class="row">
+			<div class="large-6 columns">
+				<div class="row">
+					<div class="large-12 columns"><h4 class="panel-title">Customer Information</h4></div>
+				</div>
+				<div class="row">
+					<div class="large-12 columns">
+						Name: <?php echo sprintf("%s %s", $customer['firstname'], $customer['lastname']);?>
+					</div>
+				</div>
+				<?php if (!empty($customer['email']) ) {?>
+				<div class="row">
+					<div class="large-12 columns">
+						Email: <?php echo $customer['email'];?>
+					</div>
+				</div>
+				<?php } ?>
+				<div class="row">
+					<div class="large-12 columns">
+						Phone: <?php echo $customer['phone'];?>
+					</div>
+				</div>
 			</div>
-			<div class="panel-body">
-				Shipping Address: <?php echo $cart['Order']['delivery_address'];?><br />
-				Shipping Address 2: <?php echo $cart['Order']['delivery_address_2'];?><br />
-				Shipping City: <?php echo $cart['Order']['delivery_city'];?><br />
-				Shipping Zip: <?php echo $cart['Order']['delivery_postal_code'];?><br />
+			<div class="large-6 columns">
+				<?php if ($order_method == "delivery") {?>
+				<div class="row">
+					<div class="large-12 columns"><h4 class="panel-title">Delievery Address</h4></div>
+				</div>
+				<div class="row">
+					<div class="large-12 columns">
+						<?php echo $address["address_1"];?>
+						<?php if (!empty($address["address_2"]) ) {?>
+						<?php echo  $address["address_2"];?>
+						<?php }?>
+						<?php echo $address['postal_code']; ?>
+					</div>
+				</div>
+				<?php } else { ?>
+					For Pick Up!
+					<em>Map to Xtreme</em>
+				<?php } ?>
 			</div>
 		</div>
+	<?php } ?>
 	</div>
 </div>
-
-<hr>
-
 <div class="row">
 	<div class="col col-sm-1">#</div>
 	<div class="col col-sm-6">ITEM</div>

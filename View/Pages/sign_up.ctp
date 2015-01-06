@@ -22,7 +22,7 @@
 		<h4>LOG IN WITH</h4>
 	</div>
 	<div class="large-2 columns">
-		<a href="#" class="register-link email" data-route="register/email"><span class="icon-original-pizzas"></span></a>
+		<a href="#" class="register-link email" data-route="register/email"><span class="icon-topbar-email"></span></a>
 	</div>
 	<div class="large-2 columns">
 		<a href="#" class="register-link twitter" data-route="submit_registration/twitter"><span class="icon-twitter"></span></a>

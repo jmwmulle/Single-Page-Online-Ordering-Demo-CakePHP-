@@ -149,12 +149,13 @@ window.XBS = {
 						setTimeout( function() {
 							if (debug_this > 2) pr([route, data], route.__debug("launch/success"));
 							if (route.url.defer)  {
-								route.deferal_data = data;
+								route.set_deferal_data(data);
 							} else {
 								$(route.modal_content).html(data)
 								if (hide_class) $(route.modal).removeClass(hide_class);
 							}
-							$(route).trigger("route_launched");
+							$(route).trigger("route_launched", "TRIGGERED_POST_SUCCESS");
+							pr(route, "route");
 						}, launch_delay);
 					},
 					fail: function() {
@@ -276,7 +277,6 @@ window.XBS = {
 							launch = function() { XBS.menu.toggle_orb_card_row_menu(this.read('method'), null);}
 						};
 						if (this.read('method') == 'configure') {
-							pr(this.params);
 							XBS.menu.configure_orb(this.read('channel'), this.read('data'));
 						}
 						if (this.read('method') == 'add_to_cart') {
@@ -312,6 +312,64 @@ window.XBS = {
 					}
 				}
 			}),
+			order: new XtremeRoute("order", {
+				params: ["method"],
+				url: { url:"orders/review", type: C.GET, defer:true},
+				modal: XSM.modal.primary,
+				callbacks: {
+					params_set: function() {
+						switch (this.read('method') ) {
+							case "clear":
+								this.url = { url: "clear-cart", type:C.GET, defer:false};
+								this.unset("launch");
+								break;
+							case "view":
+								this.url.url = "cart";
+								this.url.defer = false;
+								this.change_behavior(C.STASH_STOP);
+								this.unset("launch");
+								break;
+						}
+					},
+					launch: function(e, fired_from) {
+						if (this.deferal_data) {
+							var data = $.parseHTML(this.deferal_data);
+							$(XSM.modal.primary).addClass(XSM.effects.slide_down);
+							setTimeout(function() {
+								var default_content = $(XSM.modal.primary).find(XSM.modal.default_content)[0];
+								$(default_content).replaceWith(data);
+								$(XSM.modal.primary).hide()
+													.removeClass(XSM.effects.slide_down)
+													.addClass(XSM.effects.slide_up).show();
+								setTimeout(function() {$(XSM.modal.primary).removeClass(XSM.effects.slide_up); }, 30);
+							}, 300);
+						}
+					}
+				}
+			}),
+			print: new XtremeRoute("print", {
+				params:["print_str", "font_id", "alignment", "line_space", "size_w", "size_h", "x_pos", "bold", "underline"],
+				callbacks: {
+					launch: function() {
+						try {
+							print_response = window.JSInterface.printText(
+							this.read('print_str'),
+							this.read('font_id'),
+							this.read('alignment'),
+							this.read('line_space'),
+							this.read('size_w'),
+							this.read('size_h'),
+							this.read('x_pos'),
+							this.read('bold'),
+							this.read('underline'));
+							pr ( print_response, "window.JSInterface.printText()", 2);
+						} catch(e) {
+							pr("No dice; threw an exception, printing it below, let me know what I need to change.");
+							pr(e, "error");
+						}
+					}
+				}
+			}),
 			register: new XtremeRoute("register",{
 				modal:XSM.modal.primary,
 				params: {channel:{value:null, url:true, defer:true}},
@@ -325,8 +383,6 @@ window.XBS = {
 							this.url.url = 'users/add';
 							this.launch_callback = function() { XBS.validation.submit_register(this);}
 							this.init();
-
-
 						}
 					},
 					launch: function() {
@@ -341,34 +397,6 @@ window.XBS = {
 							);
 						}
 						setTimeout(function() { $(container).removeClass(XSM.effects.slide_left);}, load_time);
-					}
-				}
-			}),
-			order: new XtremeRoute("order", {
-				params: ["method"],
-				url: { url:"orders/review", defer:true},
-				modal: XSM.modal.primary,
-				callbacks: {
-					params_set: function() {
-						if (this.read('method') == "clear") {
-							this.url = { url: "clear-cart", type:C.GET, defer:false};
-							this.unset("launch");
-						}
-						if (this.read('method') == "view") {
-							this.url.url = "cart";
-							this.url.defer = false;
-							this.change_behavior(C.STASH_STOP);
-							this.unset("launch");
-						}
-					},
-					launch: function(e, fired_from) {
-						if (this.deferal_data) {
-							$($(this.modal).find(XSM.modal.default_content)[0]).addClass(XSM.effects.slide_right);
-							var deferred_content = $(this.modal).find(XSM.modal.deferred_content)[0];
-							setTimeout(function() {
-								$(deferred_content).html(this.deferal_data);
-								$(deferred_content).removeClass(XSM.effects.slide_right); }, 300);
-						}
 					}
 				}
 			}),

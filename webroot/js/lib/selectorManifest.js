@@ -35,6 +35,7 @@ var XSM = {
 		slide_right: "slide-right",
 		slide_left: "slide-left",
 		slide_up: "slide-up",
+		slide_down: "slide-down",
 		flipped_x: "flipped-x",
 		flipped_y: "flipped-y",
 		float_label: "float-labeled",
