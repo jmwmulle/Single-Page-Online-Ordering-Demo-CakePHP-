@@ -116,34 +116,6 @@ $this->set(compact('groups'));*/
 		return $this->redirect(array('action'=>'index'));
 	}
 
-/* order_method */
-	public function order_method($method) {
-			if ($this->request->is('ajax') || true) {
-				if (!$this->Session->check("address_checked")) {
-					$this->Session->write('User.address_checked', False);
-				}
-				if ( in_array($method, array('delivery', 'pickup')) ) {
-					$this->Session->write("Cart.order_type", $method);
-					if ($this->Auth->loggedIn()) {
-						$options = array('conditions'=>array('User.id'=>$this->Auth->user('id')));
-						$this->User->find('first', $options);
-						$address_matches = ($this->Session->read('User.address') == $this->User->address);
-						$postal_code_matches = ($this->Session->read('User.postal_code') == $this->User->postal_code);
-					} else {
-						$address_matches = null;
-						$postal_code_matches = null;
-					}
-					$this->Session->write("User.address_matches", $address_matches);
-					$this->Session->write("User.postal_code_matches", $postal_code_matches);
-					$this->set(compact("method"));
-				} else {
-					return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
-				}
-			} else {
-				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
-			}
-		}
-
 /*add_favourite*/
 	public function add_favourite() {
 		if ($this->request->is('ajax')) {
