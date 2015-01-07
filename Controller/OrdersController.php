@@ -552,7 +552,6 @@
 			}
 		}
 
-
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->disableCache();
