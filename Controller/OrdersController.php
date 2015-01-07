@@ -451,23 +451,27 @@
         public function order_method($method) { 
 		if ($this->request->is('ajax')) {
 			$this->layout = 'ajax';
-			if (!$this->Session->check("address_checked")) { 
-				$this->Session->write('Cart.Order.address_checked', False); 
-			}       
-			if ( in_array($method, array('delivery', 'pickup')) ) { 
-				$this->Session->write("Cart.Order.order_method", $method); 
-				if ($this->Auth->loggedIn()) { 
-					$options = array('conditions'=>array('User.id'=>$this->Auth->user('id'))); 
-					$user = $this->User->find('first', $options); 
-					$address_matches = in_array($this->Session->read('User.Address'),  $user['Address']); 
-				} else { 
-					$address_matches = null; 
+			if ($this->request->is('POST') ) {
+				if (!$this->Session->check("address_checked")) {
+					$this->Session->write('Cart.Order.address_checked', False);
 				}
-				$this->Session->write("User.address_matches", $address_matches); 
-				$this->set("response", json_encode(array('success'=>true, 'matches'=>$address_matches))); 
-			} else { 
-				$this->set("response", json_encode(array('success'=>false, 'error'=>'Invalid order method'))); 
-			} 
+				if ( in_array($method, array('delivery', 'pickup')) ) {
+					$this->Session->write("Cart.Order.order_method", $method);
+					if ($this->Auth->loggedIn()) {
+						$options = array('conditions'=>array('User.id'=>$this->Auth->user('id')));
+						$user = $this->User->find('first', $options);
+						$address_matches = in_array($this->Session->read('User.Address'),  $user['Address']);
+					} else {
+						$address_matches = null;
+					}
+					$this->Session->write("User.address_matches", $address_matches);
+					$this->set("response", json_encode(array('success'=>true, 'matches'=>$address_matches)));
+				} else {
+					$this->set("response", json_encode(array('success'=>false, 'error'=>'Invalid order method')));
+				}
+			} else {
+				$this->render('order_method', 'ajax');
+			}
 		} else { 
 			return $this->redirect(array('controller'=>'menu', 'action'=>'index')); 
 		}

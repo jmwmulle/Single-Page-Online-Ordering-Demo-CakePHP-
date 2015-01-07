@@ -128,6 +128,7 @@ window.XBS = {
 
 			// >>> LAUNCH MODALS IF REQUIRED<<<
 			if (route.url.url) {
+				pr(route, "route from launch");
 				var launch_triggered = false;
 				try {
 				$(XSM.global.loading).removeClass(XSM.effects.fade_out);
@@ -323,7 +324,6 @@ window.XBS = {
 					params_set: function() {
 						switch (this.read('context') ) {
 						case "review":
-							pr("here");
 								this.url.defer = false;
 								this.url.type = C.GET;
 //								this.set_callback("launch", function(e) {

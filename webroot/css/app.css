@@ -5457,13 +5457,11 @@ div.view-cart-row.total * {
     border: 2px solid white; }
 
 .modal-button {
-  height: 2rem;
   background-color: #0779be;
   color: white !important;
   font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
   text-transform: uppercase;
-  padding: 0.9375rem;
-  line-height: 6.41rem; }
+  padding: 0.9375rem; }
   .modal-button:hover {
     background-color: #099bef; }
 
