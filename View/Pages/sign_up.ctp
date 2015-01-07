@@ -97,4 +97,5 @@
 			</div>
 		</div>
 	</div>
+	<div id="on-close" class="true-hidden" data-action="unstash"></div>
 </div>

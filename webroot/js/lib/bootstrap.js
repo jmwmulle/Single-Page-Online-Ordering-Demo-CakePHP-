@@ -92,7 +92,7 @@ window.XBS = {
 			$(this).on(C.ROUTE_REQUEST, function(e, data) {
 				if ("request" in data) {
 					var request = data.request.split(C.DS);
-					if ( this.route(request[0]) ) this.launch(request[0], request.slice(1), e);
+					if ( this.route(request[0]) ) this.launch(this.route(request[0]), request.slice(1), e);
 				}
 			});
 			$(this).on(C.ORB_ROW_ANIMATION_COMPLETE, function(e, data) {
@@ -108,11 +108,10 @@ window.XBS = {
 			 * @param event
 			 * @returns {boolean}
 			 */
-		launch: function (route_str, params, event) {
+		launch: function (parent_route, params, event) {
 			var debug_this = 2;
-			var route = jQuery.extend({}, XBS.routing.routes[route_str], false);
-			var original_route = jQuery.extend({}, XBS.routing.routes[route_str], false);
-			if (debug_this > 0) pr([route, params, event], "XBS.routing.launch(route, params, event)", 2);
+			if (debug_this > 0) pr([parent_route, params, event], "XBS.routing.launch(parent_route, params, event)", 2);
+			var route = jQuery.extend({}, parent_route, true);
 			route.init(params);
 			if (route.stop_propagation) event.stopPropagation();
 			var launch_delay = 0
@@ -191,7 +190,6 @@ window.XBS = {
 				}
 			} else { $(route).trigger("route_launched", "NO_AJAX"); }
 			delete route;
-			XBS.routing.routes[route_str] = original_route;
 			return true;
 		},
 		routes: {
@@ -246,7 +244,7 @@ window.XBS = {
 				behavior: C.STASH_STOP
 			}),
 			login: new XtremeRoute("login", {
-				url: {url:"auth", type: C.POST},
+				url: {url:false, type: C.POST},
 				modal:XSM.modal.primary,
 				params: {
 					context:{},
@@ -258,11 +256,12 @@ window.XBS = {
 						var context = this.read('context');
 						var channel = this.read('channel');
 						var restore = this.read('restore');
-						if (context == "topbar") pr("fuck");
+//						if (context == "topbar") pr("fuck");
 						if (channel == "email") this.url.url = "login/email";
-
+					},
+					launch: function() {
+						window.location = "http://development.xtreme-pizza.ca/auth/"+this.read('channel');
 					}
-
 				}
 			}),
 			menu: new XtremeRoute("menu", {
@@ -314,22 +313,38 @@ window.XBS = {
 			}),
 			order_method: new XtremeRoute("order_method",{
 				modal: XSM.modal.primary,
+				url: {url:"order-method", type: C.POST, defer:false},
 				behavior: C.OL,
 				params: {
-					method: {value:null, url_fragment:true},
-					splash_method: {value:null, url_fragment:false}},
+					context: {value:null, url_fragment:false},
+					method: {value:null, url_fragment:true}
+				},
 				callbacks: {
 					params_set: function() {
-						if (this.read('method') == C.DELIVERY) {
-							this.url.url = "order-method" + C.DS + C.DELIVERY;
-						} else if (this.read('method') == C.SPLASH) {
-							this.overlay = false;
-							this.modal = XSM.modal.splash;
-							XBS.splash.splash_order(this.read('splash_method'));
-							this.unset('url');
-						} else {
-							this.unset('url');
+						switch (this.read('context') ) {
+						case "review":
+								this.url.defer = true;
+								this.url.type = C.GET;
+								this.set_callback("launch", function(e) {
+									if (this.deferal_data) {
+										XBS.layout.dismiss_modal(XSM.modal.primary, false);
+										setTimeout(function() {XBS.routing.launch(XBS.routing.route('order/review'));
+										}, 300);
+									}
+								});
+								break;
 						}
+//
+//						if (this.read('method') == C.DELIVERY) {
+//							this.url.url = "order-method" + C.DS + C.DELIVERY;
+//						} else if (this.read('context') == C.SPLASH) {
+//							this.overlay = false;
+//							this.modal = XSM.modal.splash;
+//							XBS.splash.splash_order(this.read('splash_method'));
+//							this.unset('url');
+//						} else {
+//							this.unset('url');
+//						}
 					}
 				}
 			}),

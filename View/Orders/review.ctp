@@ -21,21 +21,20 @@
                         'email' => "this.impetus@gmail.com",
                         'phone' => '1902787019'
 	);
-	$order_method = "delivery";
+//	$order_method = "delivery";
 	$address = array('address_1' => "123 Somewhere St.", 'address_2' => "Apt. 7", "postal_code" => "B0J 2C0");
 ?>
 <hr>
 
 <div class="row">
 	<div class="large-12 columns">
-		<?php //if (!$this->Session->read('Cart.Order.order_method') ) {?>
-		<?php if ( false ) {?>
+		<?php if (!$this->Session->read('Cart.Order.order_method') ) {?>
 		<div class="row">
 			<div class="large-6 columns">
-				<a href="#" data-route="order_method/review/pickup">Order for Pick-up</a>
+				<a href="#" class="xtreme-button" data-route="order_method/review/pickup">Order for Pick-up</a>
 			</div>
 			<div class="large-6 columns">
-				<a href="#" data-route="order_method/review/delivery">Order for Pick-up</a>
+				<a href="#"  class="xtreme-button" data-route="order_method/review/delivery">Order for Delivery</a>
 			</div>
 		</div>
 		<?php } else { ?>
@@ -63,7 +62,7 @@
 				</div>
 			</div>
 			<div class="large-6 columns">
-				<?php if ($order_method == "delivery") {?>
+				<?php if ($this->Session->read('Cart.Order.order_method') == "delivery") {?>
 				<div class="row">
 					<div class="large-12 columns"><h4 class="panel-title">Delievery Address</h4></div>
 				</div>

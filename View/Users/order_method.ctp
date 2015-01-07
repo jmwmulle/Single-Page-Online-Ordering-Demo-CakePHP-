@@ -6,7 +6,7 @@
 	 * Twitter: @thisimpetus
 	 * About.me: about.me/thisimpetus
 	 */
-
+	db($$this->Session->read( 'User' ));
 	$user = $this->Session->read( 'User' );
 	$logged_in = false;
 ?>
