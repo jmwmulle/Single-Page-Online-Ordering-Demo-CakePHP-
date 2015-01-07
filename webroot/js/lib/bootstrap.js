@@ -328,7 +328,8 @@ window.XBS = {
 								this.set_callback("launch", function(e) {
 									if (this.deferal_data) {
 										XBS.layout.dismiss_modal(XSM.modal.primary, false);
-										setTimeout(function() {XBS.routing.launch(XBS.routing.route('order/review'));
+										setTimeout(function() {
+											$(XBS).trigger(C.ROUTE_REQUEST, {request:'order/review'});
 										}, 300);
 									}
 								});

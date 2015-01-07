@@ -25,15 +25,15 @@ $social_route = $logged_in ? "social" : "login/topbar";
 		<div class="large-3 small-12 columns text-center topbar-social">
 			<div class="row">
 				<div class="large-12 columns icon-row">
-					<a href="<?php echo $logged_in ? "#" : "http://www.development-xtreme-pizza.ca/auth/twitter";?>"
+					<a href="<?php echo $logged_in ? "#" : "http://development-xtreme-pizza.ca/auth/twitter";?>"
 					   <?php if ($logged_in) echo "data-route='social/twitter'";?> data-hover_text="<?php echo $twitter_text;?>">
 						<span class="icon-twitter"></span>
 					</a>
-					<a href="<?php echo $logged_in ? "#" : "http://www.development-xtreme-pizza.ca/auth/facebook";?>"
+					<a href="<?php echo $logged_in ? "#" : "http://development-xtreme-pizza.ca/auth/facebook";?>"
 					   <?php if ($logged_in) echo "data-route='social/facebook'";?> data-hover_text="<?php echo $fb_text;?>">
 						<span class="icon-facebook"></span>
 					</a>
-					<a href="<?php echo $logged_in ? "#" : "http://www.development-xtreme-pizza.ca/auth/google";?>"
+					<a href="<?php echo $logged_in ? "#" : "http://development-xtreme-pizza.ca/auth/google";?>"
 					   <?php if ($logged_in) echo "data-route='social/google'";?> data-hover_text="<?php echo $gplus_text;?>">
 						<span class="icon-gplus"></span>
 					</a>
