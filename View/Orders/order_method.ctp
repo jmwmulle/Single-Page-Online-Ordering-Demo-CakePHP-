@@ -7,20 +7,15 @@
 	 * About.me: about.me/thisimpetus
 	 */
 	$user = $this->Session->read('Auth.User');
-	$logged_in =  $user ? true : false;
+	if (!$user) $user = array();
+	$logged_in =  empty($user) ? true : false;
 ?>
 <div class="row">
 	<div class="large-12 columns">
 			<?php if ($method == 'delivery') { ?>
-		<div class="row">
-			<div class="large-4 columns">
-				<?php echo $this->element("modal_masthead"); ?>
-			</div>
-			<div class="large-8 columns">
-				<h1>Delivery! Yay for sitting!</h1>
-				<h3>But let's confirm your address, yeah?</h3>
-			</div>
-		</div>
+				<?php echo $this->element("modal_masthead", array(
+				"header" => "Delivery! Yay for sitting!",
+				"subheader" => "But let's confirm your address, yeah?"));?>
 		<div class="row">
 			<div class="large-10 columns modal-header">
 			<?php if ($logged_in) {?>
@@ -109,11 +104,7 @@
 					  echo $this->Form->end(); ?>
 					</div>
 					<div class="large-12 columns">
-<<<<<<< HEAD
 						<a href="#" id="submit-order-address" class="box downward rel modal-submit modal-button" data-route="order_method/submit/true">
-=======
-						<a href="#" id="submit-order-address" class="box downward rel modal-link modal-submit" data-route="submit_order_address/true">
->>>>>>> 5138596ab416606c7081b1acb2d5e1acac332d91
 							<?php echo strtoupper( "OK! To the food!" ); ?>
 						</a>
 					</div>

@@ -348,6 +348,9 @@ window.XBS = {
 								XBS.splash.splash_order(this.read('splash_method'));
 								this.unset('url');
 								break;
+						case "submit":
+							this.url.url = false;
+							this.set_callback("launch", function() { XBS.validation.submit_address(route);});
 						}
 					}
 				}
