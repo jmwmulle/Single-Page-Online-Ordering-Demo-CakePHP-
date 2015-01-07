@@ -6,8 +6,8 @@
 	 * Twitter: @thisimpetus
 	 * About.me: about.me/thisimpetus
 	 */
-	$user = $this->Session->read( 'User' );
-	$logged_in = false;
+	$user = $this->Session->read('Auth.User');
+	$logged_in =  $user ? true : false;
 ?>
 <div class="row">
 	<div class="large-12 columns">

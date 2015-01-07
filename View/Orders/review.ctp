@@ -31,10 +31,10 @@
 		<?php if (!$this->Session->read('Cart.Order.order_method') ) {?>
 		<div class="row">
 			<div class="large-6 columns">
-				<a href="#" class="xtreme-button" data-route="order_method/review/pickup">Order for Pick-up</a>
+				<a href="#" class="modal-button left" data-route="order_method/review/pickup">Order for Pick-up</a>
 			</div>
 			<div class="large-6 columns">
-				<a href="#"  class="xtreme-button" data-route="order_method/review/delivery">Order for Delivery</a>
+				<a href="#"  class="modal-button right expand" data-route="order_method/review/delivery">Order for Delivery</a>
 			</div>
 		</div>
 		<?php } else { ?>
@@ -84,18 +84,6 @@
 	<?php } ?>
 	</div>
 </div>
-<div class="row">
-	<div class="col col-sm-1">#</div>
-	<div class="col col-sm-6">ITEM</div>
-	<div class="col col-sm-1">WEIGHT</div>
-	<div class="col col-sm-1">WEIGHT</div>
-	<div class="col col-sm-1">PRICE</div>
-	<div class="col col-sm-1" style="text-align: right;">QUANTITY</div>
-	<div class="col col-sm-1" style="text-align: right;">SUBTOTAL</div>
-</div>
-
-<br />
-<br />
 
 <?php foreach ($cart['OrderItem'] as $item): ?>
 <div class="row">

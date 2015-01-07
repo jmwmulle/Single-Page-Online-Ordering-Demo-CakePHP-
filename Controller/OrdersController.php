@@ -473,7 +473,7 @@
 				$this->render('order_method', 'ajax');
 			}
 		} else { 
-			return $this->redirect(array('controller'=>'menu', 'action'=>'index')); 
+			return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 		}
 	}
 
