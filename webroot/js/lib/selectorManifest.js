@@ -18,7 +18,8 @@ var XSM = {
 		page_content: "#page-content",
 		preserve_aspect_ratio: ".preserve-aspect-ratio",
 		route: "*[data-route]",
-		topbar: "#topbar"
+		topbar: "#topbar",
+		topbar_cart_button: "#top-bar-view-cart"
 	},
 	effects: {
 		active: "active",

@@ -92,7 +92,7 @@ window.XBS = {
 			$(this).on(C.ROUTE_REQUEST, function(e, data) {
 				if ("request" in data) {
 					var request = data.request.split(C.DS);
-					if ( this.route(request[0]) ) this.launch(this.route(request[0]), request.slice(1), e);
+					if ( this.route(request[0]) ) this.launch(request[0], request.slice(1), e);
 				}
 			});
 			$(this).on(C.ORB_ROW_ANIMATION_COMPLETE, function(e, data) {
@@ -108,18 +108,22 @@ window.XBS = {
 			 * @param event
 			 * @returns {boolean}
 			 */
-		launch: function (route, params, event) {
+		launch: function (route_str, params, event) {
 			var debug_this = 2;
+			var route = jQuery.extend({}, XBS.routing.routes[route_str], false);
+			var original_route = jQuery.extend({}, XBS.routing.routes[route_str], false);
 			if (debug_this > 0) pr([route, params, event], "XBS.routing.launch(route, params, event)", 2);
-			var route = jQuery.extend({}, route, true);
 			route.init(params);
 			if (route.stop_propagation) event.stopPropagation();
 			var launch_delay = 0
 			var hide_class = false;
 			if (route.stash) launch_delay = 900;
 			if (route.overlay) launch_delay = 300;
-			if (in_array(route.modal, [XSM.modal.primary, XSM.modal.splash]) ) hide_class = XSM.effects.slide_up;
-
+			if (in_array(route.modal, [XSM.modal.primary, XSM.modal.splash]))  hide_class = XSM.effects.slide_up;
+			if (hide_class && !$(route.modal).hasClass(hide_class) && route.url.defer == false ) {
+				launch_delay += 300;
+				XBS.layout.dismiss_modal(route.modal, false);
+			}
 			// >>> RESIZE & POSITION PRIMARY IF NEEDED <<<
 			XBS.layout.resize_modal(route.modal)
 
@@ -186,6 +190,8 @@ window.XBS = {
 					}
 				}
 			} else { $(route).trigger("route_launched", "NO_AJAX"); }
+			delete route;
+			XBS.routing.routes[route_str] = original_route;
 			return true;
 		},
 		routes: {
@@ -240,9 +246,24 @@ window.XBS = {
 				behavior: C.STASH_STOP
 			}),
 			login: new XtremeRoute("login", {
-				url: {url:"login"},
-				params: {channel:{url_fragment:true}},
-				callbacks: {}
+				url: {url:"auth", type: C.POST},
+				modal:XSM.modal.primary,
+				params: {
+					context:{},
+					channel:{url_fragment:true},
+					restore:{}
+				},
+				callbacks: {
+					params_set: function() {
+						var context = this.read('context');
+						var channel = this.read('channel');
+						var restore = this.read('restore');
+						if (context == "topbar") pr("fuck");
+						if (channel == "email") this.url.url = "login/email";
+
+					}
+
+				}
 			}),
 			menu: new XtremeRoute("menu", {
 				modal: false,
@@ -314,7 +335,7 @@ window.XBS = {
 			}),
 			order: new XtremeRoute("order", {
 				params: ["method"],
-				url: { url:"orders/review", type: C.GET, defer:true},
+				url: { url:"review-order", type: C.GET, defer:false},
 				modal: XSM.modal.primary,
 				callbacks: {
 					params_set: function() {
@@ -322,6 +343,7 @@ window.XBS = {
 							case "clear":
 								this.url = { url: "clear-cart", type:C.GET, defer:false};
 								this.unset("launch");
+								XBS.menu.clear_cart();
 								break;
 							case "view":
 								this.url.url = "cart";
@@ -372,7 +394,6 @@ window.XBS = {
 							console.log(print_response);
 						} catch(e) {
 							console.log(e);
-//							$("#js_temp_out").html(e.toString());
 						}
 					}
 				}
@@ -388,16 +409,24 @@ window.XBS = {
 				},
 				callbacks: {
 					params_set: function() {
-						var context = this.read('context');
 						var channel = this.read('channel');
-						if (context == "modal") {
-							if (channel == 'email') this.url.url = false;
-							if (inArray(channel, ["twitter", "facebook", "gplus"]) ) this.add_param("hide-reg", true, false);
-							if ( channel == 'submit' ) {
-								this.url.url = false;
-								this.set_callback("launch", function() { XBS.validation.submit_register(this);})
+						switch (this.read('context') ) {
+							case "modal":
+								this.url.defer = true;
+								if (in_array(channel, ['email', "submit"]) ) this.url.url = false;
+								if (in_array(channel, ["twitter", "facebook", "google"]) ) {
+									this.add_param("hide-reg", true, false);
+									this.url.url = "auth/" + channel;
+								}
+								if ( channel == 'submit' ) {
+									this.set_callback("launch", function() { XBS.validation.submit_register(this);})
+								}
+								break;
+							case "topbar":
+								this.url.defer = false;
+								this.unset('launch');
+								break;
 							}
-						}
 					},
 					launch: function() {
 						pr("launch callback firing", this.__debug("calbacks/launch"), 2);
@@ -443,19 +472,6 @@ window.XBS = {
 				url:{url:"confirm-address/session", type: C.GET, defer:false},
 				callbacks: {
 					launch: function(){ XBS.validation.submit_address(this);}
-				}
-			}),
-			topbar_link: new XtremeRoute("topbar_link",{
-				params: {
-					context: {value:null, url_fragment:true},
-					channel: {value:null, url_fragment:true}
-				},
-				url:{url: C.UNSET, type: C.GET},
-				modal: XSM.modal.primary,
-				callbacks:{
-					params_set: function() {
-						if ( !this.read('channel') ) this.url.url = this.read('context');
-					}
 				}
 			}),
 			view_order: new XtremeRoute("view_order",{
@@ -837,16 +853,27 @@ window.XBS = {
 				url: "orders/add_to_cart",
 				data: $(XSM.menu.orb_order_form).serialize(),
 				success: function (data) {
-					pr(data);
 					data = JSON.parse(data);
 					if (data.success == true) {
 						XBS.cart.add_to_cart();
-						$("#top-bar-view-cart").removeClass(XSM.effects.disabled)
-							.data('hover_text', "View Your Cart");
 						$(XSM.modal.orb_card).show('clip');
+						$(XSM.global.topbar_cart_button).show()
+						setTimeout(function() { $(XSM.global.topbar_cart_button).removeClass(XSM.effects.fade_out);}, 300);
+
+
+
 					}
 				}
 			});
+		},
+		clear_cart: function() {
+			XBS.data.cart = {};
+			$(XSM.global.topbar_cart_button).addClass(XSM.effects.fade_out);
+			setTimeout(function() {
+				$(XSM.global.topbar_cart_button).hide();
+				XBS.menu.unstash_menu();
+			}, 300);
+			return true;
 		},
 		configure_orb: function (orb_id, price_rank) {
 			$(XSM.menu.orb_size_button).each(function () {

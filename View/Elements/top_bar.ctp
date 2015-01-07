@@ -17,7 +17,7 @@ $logged_in = false;
 $twitter_text = $logged_in ? "Tweet about Xtreme!" : "Login via Twitter";
 $gplus_text = $logged_in ? "+1 Xtreme!" : "Login via GooglePlus";
 $fb_text = $logged_in ? "Like Xtreme!" : "Login via Facebook";
-$social_route = $logged_in ? "social" : "login";
+$social_route = $logged_in ? "social" : "login/topbar";
 ?>
 
 <nav id="topbar" class="text-center">
@@ -25,20 +25,20 @@ $social_route = $logged_in ? "social" : "login";
 		<div class="large-3 small-12 columns text-center topbar-social">
 			<div class="row">
 				<div class="large-12 columns icon-row">
-					<a href="#" data-route="topbar_link/<?php echo $social_route;?>/twitter" data-hover_text="<?php echo $twitter_text;?>">
+					<a href="#" data-route="<?php echo $social_route;?>/twitter" data-hover_text="<?php echo $twitter_text;?>">
 						<span class="icon-twitter"></span>
 					</a>
-					<a href="#" data-route="topbar_link/<?php echo $social_route;?>/facebook" data-hover_text="<?php echo $fb_text;?>">
+					<a href="#" data-route="<?php echo $social_route;?>/facebook" data-hover_text="<?php echo $fb_text;?>">
 						<span class="icon-facebook"></span>
 					</a>
-					<a href="#" data-route="topbar_link/<?php echo $social_route;?>/gplus" data-hover_text="<?php echo $gplus_text;?>">
+					<a href="#" data-route="<?php echo $social_route;?>/google" data-hover_text="<?php echo $gplus_text;?>">
 						<span class="icon-gplus g-plusone"></span>
 					</a>
 					<?php if (!$logged_in) {?>
-					<a href="#" data-route="topbar_link/login/email" data-hover_text="Login With Your E-Mail Address">
+					<a href="#" data-route="login/topbar/email" data-hover_text="Login With Your E-Mail Address">
 						<span class="icon-topbar-email"></span>
 					</a>
-					<a href="#" data-route="topbar_link/sign-up" data-hover_text="Sign-Up To Save You Address & Favorites!">
+					<a href="#" data-route="register/topbar" data-hover_text="Sign-Up To Save You Address & Favorites!">
 						<span class="icon-topbar-sign-up"></span>
 					</a>
 					<?php }
@@ -49,12 +49,13 @@ $social_route = $logged_in ? "social" : "login";
 					<a href="#" data-route="topbar_link/settings" data-hover_text="Account Settings">
 						<span class="icon-settings"></span>
 					</a>
-					<?php }
-					if ($this->Session->read('Cart')) {?>
-					<a  id="top-bar-view-cart" href="#" data-route="view_order/topbar" data-hover_text="View Your Cart">
+					<?php }?>
+					<a  id="top-bar-view-cart" href="#"
+						<?php if ($this->Session->read('Cart')) echo "style='display:none;' class='fade-out' ";?>
+					    data-route="view_order/topbar" data-hover_text="View Your Cart">
 						<span class="icon-shopping"></span>
 					</a>
-					<?php } ?>
+
 					<hr id="topbar-divider" />
 				</div>
 			</div>

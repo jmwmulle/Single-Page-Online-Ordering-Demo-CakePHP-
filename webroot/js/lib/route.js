@@ -61,6 +61,7 @@ function XtremeRoute(name, data) {
 				}
 			}
 		}
+
 		this.__set_behavior("behavior" in data ? data.behavior : false);
 
 		if ("callbacks" in data) {
@@ -71,7 +72,6 @@ function XtremeRoute(name, data) {
 				$(this).on("route_launched", this.launch_callback);
 			}
 		}
-
 		if (this.post_init_callback) this.post_init_callback();
 
 		return true;
@@ -129,9 +129,10 @@ function XtremeRoute(name, data) {
 	 * @param param_values
 	 */
 	this.init = function(param_values) {
+		$(this).off();
 		var debug_this = 0;
 		if (debug_this > 0) pr(param_values, "XtremeRoute::init_instance(param_values)");
-		this.route_name =  "*" + this.route_name;
+		this.route_name =  "*" + this.route_name + "[" + new Date().getTime() + "]";
 		if (this.launch_callback) $(this).on("route_launched", this.launch_callback);
 		if (param_values) this.__set_params(param_values);
 		return true;
@@ -257,6 +258,7 @@ function XtremeRoute(name, data) {
 	this.set_callback = function(callback, callback_function) {
 		switch (callback) {
 		case "launch":
+			$(this).off(C.ROUTE_LAUNCHED);
 			this.launch_callback = callback_function;
 			break;
 		case "params_set":
@@ -272,14 +274,16 @@ function XtremeRoute(name, data) {
 	 * @returns {*}
 	 */
 	this.unset = function(attr) {
+		if (in_array(attr, ["launch", "params_set", "post_init"])) attr += "_callback";
 		// todo: make this recursive one day so you can unset url.url.etc.
 		if (attr in this) {
 			switch (attr) {
 				case "url":
 					this.url = {url:false, type:false};
 					break;
-				case "launch":
-				this.launch_callback = false;
+				case "launch_callback":
+					$(this).off(C.ROUTE_LAUNCHED);
+					this.launch_callback = false;
 				break;
 			}
 			return this[attr];
