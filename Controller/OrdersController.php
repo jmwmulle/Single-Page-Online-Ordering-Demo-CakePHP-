@@ -171,11 +171,13 @@
 			return $this->redirect( array( 'action' => 'index' ) );
 		}
 
-
-		public function clear() {
-			$this->Cart->clear();
-			$this->set( 'response', json_encode( array( 'success' => true ) ) );
-		}
+	
+	public function clear() {
+		$this->layout = "ajax";
+		$this->Cart->clear();
+		$this->set('response', json_encode(array('success' => true)));
+		$this->autoRender = false;
+	}
 
 
 		public function itemupdate() {
@@ -445,38 +447,34 @@
 		}
 
 
-		/* order_method */
-		public function order_method($method) {
-			if ( $this->request->is( 'ajax' ) || true ) {
-				if ( !$this->Session->check( "address_checked" ) ) {
-					$this->Session->write( 'Cart.Order.address_checked', false );
+/* order_method */ 
+        public function order_method($method) { 
+		if ($this->request->is('ajax')) {
+			$this->layout = 'ajax';
+			if (!$this->Session->check("address_checked")) { 
+				$this->Session->write('Cart.Order.address_checked', False); 
+			}       
+			if ( in_array($method, array('delivery', 'pickup')) ) { 
+				$this->Session->write("Cart.Order.order_method", $method); 
+				if ($this->Auth->loggedIn()) { 
+					$options = array('conditions'=>array('User.id'=>$this->Auth->user('id'))); 
+					$user = $this->User->find('first', $options); 
+					$address_matches = in_array($this->Session->read('User.Address'),  $user['Address']); 
+				} else { 
+					$address_matches = null; 
 				}
-				if ( in_array( $method, array( 'delivery', 'pickup' ) ) ) {
-					$this->Session->write( "Cart.Order.order_method", $method );
-					if ( $this->Auth->loggedIn() ) {
-						$options         = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
-						$user            = $this->User->find( 'first', $options );
-						$address_matches = in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] );
-					}
-					else {
-						$address_matches = null;
-						$this->Session->write( "User.address_matches", $address_matches );
-						$this->set( compact( "method" ) );
-					}
-				}
-				else {
-					return $this->redirect( array( 'controller' => 'menu', 'action' => 'index' ) );
-				}
-			}
-			else {
-				return $this->redirect( array( 'controller' => 'menu', 'action' => 'index' ) );
-			}
+				$this->Session->write("User.address_matches", $address_matches); 
+				$this->set("response", json_encode(array('success'=>true, 'matches'=>$address_matches))); 
+			} else { 
+				$this->set("response", json_encode(array('success'=>false, 'error'=>'Invalid order method'))); 
+			} 
+		} else { 
+			return $this->redirect(array('controller'=>'menu', 'action'=>'index')); 
 		}
+	}
 
-
-		/*confirm_address*/
-		public
-		function confirm_address($command) {
+/*confirm_address*/
+		public function confirm_address($command) {
 			if ( $this->request->is( 'ajax' ) || $this->request->is( 'post' ) ) {
 				if ( !$this->Session->check( "address_checked" ) ) {
 					$this->Session->write( 'Cart.Order.address_checked', false );
@@ -550,8 +548,7 @@
 		}
 
 
-		public
-		function beforeFilter() {
+		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->disableCache();
 			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'step1', 'step2', 'review', 'index', 'view' );
