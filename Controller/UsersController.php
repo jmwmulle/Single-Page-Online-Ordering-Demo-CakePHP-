@@ -283,7 +283,7 @@ $this->set(compact('groups'));*/
 			}
 		} else {
 			$this->Session->setFlash(__('Login failed. Please try again.'));
-			return $this->redirect(___cakeUrl('pages','splash'));
+			return $this->redirect(___cakeUrl('menu','index'));
 		}
 	}
 

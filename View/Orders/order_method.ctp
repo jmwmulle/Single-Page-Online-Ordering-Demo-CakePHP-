@@ -6,7 +6,6 @@
 	 * Twitter: @thisimpetus
 	 * About.me: about.me/thisimpetus
 	 */
-//	db($$this->Session->read( 'User' ));
 	$user = $this->Session->read( 'User' );
 	$logged_in = false;
 ?>
@@ -110,7 +109,11 @@
 					  echo $this->Form->end(); ?>
 					</div>
 					<div class="large-12 columns">
+<<<<<<< HEAD
 						<a href="#" id="submit-order-address" class="box downward rel modal-submit modal-button" data-route="order_method/submit/true">
+=======
+						<a href="#" id="submit-order-address" class="box downward rel modal-link modal-submit" data-route="submit_order_address/true">
+>>>>>>> 5138596ab416606c7081b1acb2d5e1acac332d91
 							<?php echo strtoupper( "OK! To the food!" ); ?>
 						</a>
 					</div>
