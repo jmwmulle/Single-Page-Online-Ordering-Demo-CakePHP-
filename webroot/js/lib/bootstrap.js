@@ -323,29 +323,32 @@ window.XBS = {
 					params_set: function() {
 						switch (this.read('context') ) {
 						case "review":
-								this.url.defer = true;
+							pr("here");
+								this.url.defer = false;
 								this.url.type = C.GET;
-								this.set_callback("launch", function(e) {
-									if (this.deferal_data) {
-										XBS.layout.dismiss_modal(XSM.modal.primary, false);
-										setTimeout(function() {
-											$(XBS).trigger(C.ROUTE_REQUEST, {request:'order/review'});
-										}, 300);
-									}
-								});
+//								this.set_callback("launch", function(e) {
+//									if (this.deferal_data) {
+//										XBS.layout.dismiss_modal(XSM.modal.primary, false);
+//										setTimeout(function() {
+//											$(XBS).trigger(C.ROUTE_REQUEST, {request:'order/review'});
+//										}, 300);
+//									}
+//								});
+								break;
+						case "menu":
+							if (this.read('method') == C.DELIVERY) {
+								this.url.url = "order-method" + C.DS + C.DELIVERY;
+							} else {
+								this.unset('url');
+							}
+							break;
+						case "splash":
+								this.overlay = false;
+								this.modal = XSM.modal.splash;
+								XBS.splash.splash_order(this.read('splash_method'));
+								this.unset('url');
 								break;
 						}
-//
-//						if (this.read('method') == C.DELIVERY) {
-//							this.url.url = "order-method" + C.DS + C.DELIVERY;
-//						} else if (this.read('context') == C.SPLASH) {
-//							this.overlay = false;
-//							this.modal = XSM.modal.splash;
-//							XBS.splash.splash_order(this.read('splash_method'));
-//							this.unset('url');
-//						} else {
-//							this.unset('url');
-//						}
 					}
 				}
 			}),

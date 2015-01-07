@@ -5456,6 +5456,17 @@ div.view-cart-row.total * {
     color: #faea06;
     border: 2px solid white; }
 
+.modal-button {
+  height: 2rem;
+  background-color: #0779be;
+  color: white !important;
+  font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
+  text-transform: uppercase;
+  padding: 0.9375rem;
+  line-height: 6.41rem; }
+  .modal-button:hover {
+    background-color: #099bef; }
+
 /*******   modal pages ********/
 #registration-method-bar {
   font-size: 3rem; }

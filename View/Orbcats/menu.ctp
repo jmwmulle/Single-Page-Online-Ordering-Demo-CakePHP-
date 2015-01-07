@@ -79,12 +79,12 @@ $this->end('active_orb_card');
 					<div class="large-1 columns show-for-large-up">
 						<ul id="user-activity-panel" class="activizing text-center">
 							<li><h2 class="body-font-color">I AM</h2></li>
-							<li class="active default"><a class="body-font-color block" data-route="order_method/browsing">Just<br />Browsing</a></li>
+							<li class="active default"><a class="body-font-color block" data-route="order_method/menu/browsing">Just<br />Browsing</a></li>
 							<li class="inactive">
-								<a class="body-font-color block modal-link overlay" data-route="order_method/delivery">Ordering<br />(Delivery)</a>
+								<a class="body-font-color block modal-link overlay" data-route="order_method/menu/delivery">Ordering<br />(Delivery)</a>
 							</li>
 							<li class="inactive">
-								<a class="body-font-color block modal-link overlay" data-route="order_method/pickup">Ordering<br />(Pick-Up)</a>
+								<a class="body-font-color block modal-link overlay" data-route="order_method/menu/pickup">Ordering<br />(Pick-Up)</a>
 							</li>
 						</ul>
 					</div>

@@ -127,8 +127,8 @@ echo $this->element("modal_masthead", array(
 		</div>
 		<div class="row">
 			<div class="large-12 large-centered columns">
-				<a href="#" class="xtreme-button" data-route="order/clear">Clear Cart</a>
-				<a href="#" class="xtreme-button" data-route="order/review">Review My Order</a>
+				<a href="#" class="modal-button unpopular" data-route="order/clear">Clear Cart</a>
+				<a href="#" class="modal-button" data-route="order/review">Review My Order</a>
 			</div>
 		</div>
 <?php } ?>

@@ -220,6 +220,17 @@ div.view-cart-row {
   }
 }
 
+.modal-button {
+  height: 2rem;
+  background-color:$xtreme-blue;
+  color:$white !important;
+  &:hover {background-color: lighten($xtreme-blue, 10%);}
+  @include HelveticaBlkCn;
+  text-transform: uppercase;
+  padding:$base-padding;
+  @include helvetica_v_center_lh(2rem, 2rem +4 * $base-padding);
+}
+
 /*******   modal pages ********/
 //registration
 #registration-method-bar {
