@@ -59,7 +59,6 @@
 				}
 			}
 			$users = $this->Order->User->find( 'list' );
-			$orbs  = $this->Order->Orb->find( 'list' );
 			$this->set( compact( 'users', 'orbs' ) );
 		}
 
