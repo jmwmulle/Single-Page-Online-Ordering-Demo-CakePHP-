@@ -148,8 +148,10 @@ class OrdersController extends AppController {
 
 	
 	public function clear() {
+		$this->layout = "ajax";
 		$this->Cart->clear();
 		$this->set('response', json_encode(array('success' => true)));
+		$this->autoRender = false;
 	}
 
 
@@ -405,7 +407,8 @@ class OrdersController extends AppController {
 
 /* order_method */ 
         public function order_method($method) { 
-		if ($this->request->is('ajax') || true) { 
+		if ($this->request->is('ajax')) {
+			$this->layout = 'ajax';
 			if (!$this->Session->check("address_checked")) { 
 				$this->Session->write('Cart.Order.address_checked', False); 
 			}       
@@ -419,9 +422,9 @@ class OrdersController extends AppController {
 					$address_matches = null; 
 				}
 				$this->Session->write("User.address_matches", $address_matches); 
-				$this->set(compact("method")); 
+				$this->set("response", json_encode(array('success'=>true, 'matches'=>$address_matches))); 
 			} else { 
-				return $this->redirect(array('controller'=>'menu', 'action'=>'index')); 
+				$this->set("response", json_encode(array('success'=>false, 'error'=>'Invalid order method'))); 
 			} 
 		} else { 
 			return $this->redirect(array('controller'=>'menu', 'action'=>'index')); 
