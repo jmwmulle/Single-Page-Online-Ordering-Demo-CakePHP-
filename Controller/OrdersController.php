@@ -449,8 +449,7 @@
 
 /* order_method */ 
         public function order_method($method) { 
-		if ($this->request->is('ajax')) {
-			$this->layout = 'ajax';
+		if ($this->request->is('post')) {
 			if (!$this->Session->check("address_checked")) { 
 				$this->Session->write('Cart.Order.address_checked', False); 
 			}       
@@ -468,8 +467,8 @@
 			} else { 
 				$this->set("response", json_encode(array('success'=>false, 'error'=>'Invalid order method'))); 
 			} 
-		} else { 
-			return $this->redirect(array('controller'=>'menu', 'action'=>'index')); 
+		} else {
+		       $this->render('order-method', 'ajax');	
 		}
 	}
 
