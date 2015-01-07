@@ -38,7 +38,7 @@
 	</div>
 </div>
 <script>
-setTimeout(function() { window.location("http://development-xtreme-pizza.ca/pages/vendor");}, 20000);
+setTimeout(function() { window.location.assign("http://development-xtreme-pizza.ca/pages/vendor");}, 10000);
 //setTimeout(function() { window.location.assign("http://kleinlab.psychology.dal.ca/xtreme/pages/vendor");}, 10000);
 </script>
 </div>
