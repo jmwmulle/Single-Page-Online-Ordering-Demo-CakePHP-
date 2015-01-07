@@ -449,6 +449,7 @@
 
 /* order_method */ 
         public function order_method($method) { 
+		$this->set('method', $method);
 		if ($this->request->is('ajax')) {
 			$this->layout = 'ajax';
 			if ($this->request->is('POST') ) {
