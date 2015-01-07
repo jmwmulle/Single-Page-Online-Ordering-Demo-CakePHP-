@@ -32,6 +32,7 @@ var constants = {
 	ORB_CARD_REFRESH: "orb_card_refresh",
 	ORDER_FORM_UPDATE: "order_form_update",
 	ORDER_UI_UPDATE: "order_ui_update",
+	ROUTE_LAUNCHED: "route_launched",
 	ROUTE_REQUEST: "route_request",
 	ORB_ROW_ANIMATION_COMPLETE:"orb_row_animation_complete",
 	F: "",

@@ -92,7 +92,7 @@ window.XBS = {
 			$(this).on(C.ROUTE_REQUEST, function(e, data) {
 				if ("request" in data) {
 					var request = data.request.split(C.DS);
-					if ( this.route(request[0]) ) this.launch(this.route(request[0]), request.slice(1), e);
+					if ( this.route(request[0]) ) this.launch(request[0], request.slice(1), e);
 				}
 			});
 			$(this).on(C.ORB_ROW_ANIMATION_COMPLETE, function(e, data) {
@@ -108,18 +108,19 @@ window.XBS = {
 			 * @param event
 			 * @returns {boolean}
 			 */
-		launch: function (route, params, event) {
+		launch: function (route_str, params, event) {
 			var debug_this = 2;
+			var route = jQuery.extend({}, XBS.routing.routes[route_str], false);
+			var original_route = jQuery.extend({}, XBS.routing.routes[route_str], false);
 			if (debug_this > 0) pr([route, params, event], "XBS.routing.launch(route, params, event)", 2);
-			var route = jQuery.extend({}, route, true);
 			route.init(params);
 			if (route.stop_propagation) event.stopPropagation();
 			var launch_delay = 0
 			var hide_class = false;
 			if (route.stash) launch_delay = 900;
 			if (route.overlay) launch_delay = 300;
-			if (in_array(route.modal, [XSM.modal.primary, XSM.modal.splash]) ) hide_class = XSM.effects.slide_up;
-			if (hide_class && !$(route.modal).hasClass(hide_class) ) {
+			if (in_array(route.modal, [XSM.modal.primary, XSM.modal.splash]))  hide_class = XSM.effects.slide_up;
+			if (hide_class && !$(route.modal).hasClass(hide_class) && route.url.defer == false ) {
 				launch_delay += 300;
 				XBS.layout.dismiss_modal(route.modal, false);
 			}
@@ -190,6 +191,7 @@ window.XBS = {
 				}
 			} else { $(route).trigger("route_launched", "NO_AJAX"); }
 			delete route;
+			XBS.routing.routes[route_str] = original_route;
 			return true;
 		},
 		routes: {
@@ -244,7 +246,7 @@ window.XBS = {
 				behavior: C.STASH_STOP
 			}),
 			login: new XtremeRoute("login", {
-				url: {url:"login", type: C.POST},
+				url: {url:"auth", type: C.POST},
 				modal:XSM.modal.primary,
 				params: {
 					context:{},
@@ -257,7 +259,8 @@ window.XBS = {
 						var channel = this.read('channel');
 						var restore = this.read('restore');
 						if (context == "topbar") pr("fuck");
-						if (channel != "email") this.modal = XSM.modal.flash;
+						if (channel == "email") this.url.url = "login/email";
+
 					}
 
 				}
@@ -391,7 +394,6 @@ window.XBS = {
 							console.log(print_response);
 						} catch(e) {
 							console.log(e);
-//							$("#js_temp_out").html(e.toString());
 						}
 					}
 				}
@@ -407,16 +409,24 @@ window.XBS = {
 				},
 				callbacks: {
 					params_set: function() {
-						var context = this.read('context');
 						var channel = this.read('channel');
-						if (context == "modal") {
-							if (channel == 'email') this.url.url = false;
-							if (inArray(channel, ["twitter", "facebook", "gplus"]) ) this.add_param("hide-reg", true, false);
-							if ( channel == 'submit' ) {
-								this.url.url = false;
-								this.set_callback("launch", function() { XBS.validation.submit_register(this);})
+						switch (this.read('context') ) {
+							case "modal":
+								this.url.defer = true;
+								if (in_array(channel, ['email', "submit"]) ) this.url.url = false;
+								if (in_array(channel, ["twitter", "facebook", "google"]) ) {
+									this.add_param("hide-reg", true, false);
+									this.url.url = "auth/" + channel;
+								}
+								if ( channel == 'submit' ) {
+									this.set_callback("launch", function() { XBS.validation.submit_register(this);})
+								}
+								break;
+							case "topbar":
+								this.url.defer = false;
+								this.unset('launch');
+								break;
 							}
-						}
 					},
 					launch: function() {
 						pr("launch callback firing", this.__debug("calbacks/launch"), 2);

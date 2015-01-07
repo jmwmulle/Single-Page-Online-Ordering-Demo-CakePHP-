@@ -31,14 +31,14 @@ $social_route = $logged_in ? "social" : "login/topbar";
 					<a href="#" data-route="<?php echo $social_route;?>/facebook" data-hover_text="<?php echo $fb_text;?>">
 						<span class="icon-facebook"></span>
 					</a>
-					<a href="#" data-route="<?php echo $social_route;?>/gplus" data-hover_text="<?php echo $gplus_text;?>">
+					<a href="#" data-route="<?php echo $social_route;?>/google" data-hover_text="<?php echo $gplus_text;?>">
 						<span class="icon-gplus g-plusone"></span>
 					</a>
 					<?php if (!$logged_in) {?>
 					<a href="#" data-route="login/topbar/email" data-hover_text="Login With Your E-Mail Address">
 						<span class="icon-topbar-email"></span>
 					</a>
-					<a href="#" data-route="sign-up/topbar" data-hover_text="Sign-Up To Save You Address & Favorites!">
+					<a href="#" data-route="register/topbar" data-hover_text="Sign-Up To Save You Address & Favorites!">
 						<span class="icon-topbar-sign-up"></span>
 					</a>
 					<?php }
