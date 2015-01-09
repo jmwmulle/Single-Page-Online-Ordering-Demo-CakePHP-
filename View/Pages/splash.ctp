@@ -6,7 +6,7 @@
 				<div id="order-wrapper" class="wrapper">
 					<div class="spacer">&nbsp;</div>
 					<?php $orderAttr = array("splash-redirect" => "pages/order", 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
-					<a href="#" id="order" <?php //echo ___dA($orderAttr);?> data-route="order_method/splash/launch">&nbsp;</a>
+					<a href="#" id="order" <?php //echo ___dA($orderAttr);?> data-route="splash_order">&nbsp;</a>
 				</div>
 				<div id="splash-bar-wrapper" class="detach wrapper">
 					<div id="splash-bar" class="detach">
@@ -24,7 +24,7 @@
 					</div>
 				</div>
 				<div id="menu-wrapper" class="wrapper preserve-3d">
-					<?php $menuAttr = array("route" => "splash_link/menu", 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
+					<?php $menuAttr = array("route" => "menu", 'aspect-ratio' => array('x'=>380,'y'=>192, 'respect'=> 'y'));?>
 					<div class="spacer"></div>
 					<a href="#" id="menu" <?php echo ___dA($menuAttr);?>>&nbsp;</a>
 				</div>

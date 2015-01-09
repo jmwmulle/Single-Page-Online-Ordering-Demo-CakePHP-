@@ -15,40 +15,39 @@
 <!--		overflow: hidden;-->
 <!--	}-->
 <!--</style>-->
-<?php //db($this->Session->read());
-	$customer = array('firstname' => 'bob' ,
-                        'lastname' => 'smith',
-                        'email' => "this.impetus@gmail.com",
-                        'phone' => '1902787019'
-	);
-//	$order_method = "delivery";
-	$address = array('address_1' => "123 Somewhere St.", 'address_2' => "Apt. 7", "postal_code" => "B0J 2C0");
+<?php
+	$cart = $this->Session->read('Cart');
+	$order = array_key_exists('Order', $cart) ? $cart['Order'] : array();
+	$address = array_key_exists('address', $order) ? $order['address'] : array();
+	$order_method = array_key_exists('order_method', $order) ? $order['order_method'] : false;
 ?>
 <hr>
 
 <div class="row">
-	<div class="large-12 columns">
-		<?php if (!$this->Session->read('Cart.Order.order_method') ) {?>
-		<div class="row">
-			<div class="large-6 columns">
-				<a href="#" class="modal-button left" data-route="order_method/review/pickup">Order for Pick-up</a>
-			</div>
-			<div class="large-6 columns">
-				<a href="#"  class="modal-button right expand" data-route="order_method/review/delivery">Order for Delivery</a>
-			</div>
-		</div>
+	<div class="large-12 large-centered columns">
+		<?php if (!$order_method) {?>
+				<a href="#" class="modal-button bisecting left" data-route="order_method/review/pickup">Order for Pick-up</a
+				><a href="#"  class="modal-button bisecting right" data-route="order_method/review/delivery">Order for Delivery</a>
 		<?php } else { ?>
 		<div class="row">
 			<div class="large-6 columns">
+			<?php if ($order_method == "delivery") {
+					if ( count($address) == 0  ) { ?>
+				<div class="row">
+					<div class="large-12 columns">
+						<a href="#" class="modal-button" data-route="order_method/review/delivery">Set Delivery Address</a>
+					</div>
+				</div>
+				<?php } else {?>
 				<div class="row">
 					<div class="large-12 columns"><h4 class="panel-title">Customer Information</h4></div>
 				</div>
 				<div class="row">
 					<div class="large-12 columns">
-						Name: <?php echo sprintf("%s %s", $customer['firstname'], $customer['lastname']);?>
+						Name: <?php echo sprintf("%s %s", $address['firstname'], $address['lastname']);?>
 					</div>
 				</div>
-				<?php if (!empty($customer['email']) ) {?>
+				<?php if (array_key_exists('email', $address) && !empty($address['email']) ) {?>
 				<div class="row">
 					<div class="large-12 columns">
 						Email: <?php echo $customer['email'];?>
@@ -57,26 +56,33 @@
 				<?php } ?>
 				<div class="row">
 					<div class="large-12 columns">
-						Phone: <?php echo $customer['phone'];?>
+						Phone: <?php echo $address['phone'];?>
 					</div>
 				</div>
+			<?php }
+			}else {?>
+				<div class="row">
+					<div class="large-12 columns">
+						<a href="#" class="modal-button" data-route="order_method/review/delivery">Order for Pickup</a>
+						<span><small>(Click to change)</small></span>
+					</div>
+				</div>
+			<?php }?>
 			</div>
 			<div class="large-6 columns">
 				<?php if ($this->Session->read('Cart.Order.order_method') == "delivery") {?>
 				<div class="row">
-					<div class="large-12 columns"><h4 class="panel-title">Delievery Address</h4></div>
+					<div class="large-12 columns"><h4 class="panel-title">Delivery Address</h4></div>
 				</div>
 				<div class="row">
 					<div class="large-12 columns">
-						<?php echo $address["address_1"];?>
-						<?php if (!empty($address["address_2"]) ) {?>
-						<?php echo  $address["address_2"];?>
-						<?php }?>
+						<?php echo $address["address"];?>
+						<?php if (!empty($address["address_2"]) )echo  $address["address_2"];?>
 						<?php echo $address['postal_code']; ?>
 					</div>
 				</div>
 				<?php } else { ?>
-					For Pick Up!
+					<h4>Order For Pick Up!</h4>
 					<em>Map to Xtreme</em>
 				<?php } ?>
 			</div>
@@ -84,30 +90,21 @@
 	<?php } ?>
 	</div>
 </div>
-
-<?php foreach ($cart['OrderItem'] as $item): ?>
+<hr />
 <div class="row">
-	<div class="col col-sm-6">
-	<?php echo $item['size_name']." "; echo $item['title']; ?>
+	<div class="large-6 columns">
+		<div class="row">
+<?php foreach ($cart['OrderItem'] as $item) { ?>
+			<div class="large-6 columns"> <?php echo $item['size_name']." "; echo $item['title']; ?></div>
+			<div class="large-2 columns"><?php echo $item['quantity']; ?></div>
+			<div class="large-4 columns"><?php echo $item['subtotal']; ?></div>
+		</div>
+<?php } ?>
 	</div>
-	<div class="col col-sm-1" style="text-align: right;"><?php echo $item['quantity']; ?></div>
-	<div class="col col-sm-1" style="text-align: right;">$<?php echo $item['subtotal']; ?></div>
+	<div class="large-6 columns">
+		<h3>Total: <strong>$<?php echo $cart['Order']['total']; ?></strong></h3>
+	</div>
 </div>
-<?php endforeach; ?>
-
-<hr>
-
-<div class="row">
-	<div class="col col-sm-10">Products: <?php echo $cart['Order']['order_item_count']; ?></div>
-	<div class="col col-sm-1" style="text-align: right;">Items: <?php echo $cart['Order']['quantity']; ?></div>
-	<div class="col col-sm-1" style="text-align: right;">Total<br /><strong>$<?php echo $cart['Order']['total']; ?></strong></div>
-</div>
-
-<hr>
-
-<br />
-<br />
-
 <?php echo $this->Form->create('Order'); ?>
 
 <?php if((Configure::read('Settings.AUTHORIZENET_ENABLED') == 1) && $cart['Order']['order_type'] == 'creditcard') : ?>
@@ -170,6 +167,4 @@
 
 <?php echo $this->Form->end(); ?>
 
-<br />
-<br />
-
+<div id="on-close" class="true-hidden" data-action="unstash"></div>

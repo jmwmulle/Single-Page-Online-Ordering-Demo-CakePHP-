@@ -201,34 +201,79 @@ div.view-cart-row {
 }
 
 #modal-masthead {
+  margin-top:0.5rem;
+  padding:0.75rem;
+  background-color: $xtreme-blue;
   margin-bottom:1rem;
+  border-radius: $global-rounded;
+  box-shadow: inset 0 0 1rem $black-a50;
   h1 {
-    color:$xtreme-blue;
-    text-shadow: 0 0 0.5rem $white;
+    font-size:2rem;
+    color:$white;
+    text-shadow: 0 0 0.5rem $white-a50;
     padding-bottom:0;
     margin-bottom:0;}
   h2 {
     text-align:center;
     background-color:$text-grey;
-    padding:$medium-padding $tight-padding ;
+    padding:$tight-padding ;
     border-radius: $global-rounded;
-    font-size:1.5rem;
-    height:1.5rem + 2* $medium-padding;
-    @include helvetica_v_center_lh(1.5rem, 1.5rem - 0.5 * $medium-padding);
+    font-size:1.25rem;
+    height:1.25rem + 2* $tight-padding;
+    @include HelveticaMdCn;
+    @include helvetica_v_center_lh(1.25rem, 1.25rem - 0.5 * $medium-padding);
     color:$xtreme-yellow;
     border:2px solid $white;
+    box-shadow: 0 0 0.333rem $black-a50;
   }
+  img {
+    height: 5.333rem;
+    width:auto;
+  }
+
+
 }
 
 .modal-button {
-//  height: 2rem;
   background-color:$xtreme-blue;
   color:$white !important;
-  &:hover {background-color: lighten($xtreme-blue, 10%);}
-  @include HelveticaBlkCn;
-  text-transform: uppercase;
+  &:hover {
+    background-color: lighten($xtreme-blue, 10%);
+  }
   padding:$base-padding;
-//  @include helvetica_v_center_lh(2rem, 2rem +4 * $base-padding);
+  text-transform: uppercase;
+  text-align: center;
+  @include HelveticaBlkCn;
+  &.cancel {
+    background-color:$light-grey;
+    &:hover {
+      background-color: lighten($light-grey, 10%);
+      color: $xtreme-red!important;
+    }
+  }
+  &.bisecting {
+    width: 50%;
+    &:first-of-type {
+      border-top-left-radius: $global-rounded;
+      border-bottom-left-radius: $global-rounded;
+    }
+    &:last-of-type {
+      border-top-right-radius: $global-rounded;
+      border-bottom-right-radius: $global-rounded;
+    }
+    &.confirm {
+      width:75%;
+      &:hover { text-shadow: 0 0 0.5rem $white;}
+    }
+    &.cancel { width:25%;}
+    .icon-circle-arrow-l {
+      float:left;
+      font-size:2rem;
+    }
+    .icon-circle-arrow-r {
+      float:right;
+      font-size:2rem;}
+  }
 }
 
 /*******   modal pages ********/
