@@ -18,7 +18,7 @@
 				<ul class="pending-order panel">
 					<li></li>
 				</ul>
-				<div class="large button success" data-route="print/">Accept</div>
+				<div class="large button success" data-route="print">Accept</div>
 				<div class="large button alert">Decline</div>
 			</div>
 			<div class="small-4 columns">
@@ -38,7 +38,7 @@
 	</div>
 </div>
 <script>
-setTimeout(function() { window.location.assign("http://development-xtreme-pizza.ca/pages/vendor");}, 10000);
+//setTimeout(function() { window.location.assign("http://development-xtreme-pizza.ca/pages/vendor");}, 10000);
 //setTimeout(function() { window.location.assign("http://kleinlab.psychology.dal.ca/xtreme/pages/vendor");}, 10000);
 </script>
 </div>

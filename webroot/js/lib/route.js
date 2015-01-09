@@ -3,6 +3,7 @@
  */
 
 function XtremeRoute(name, data) {
+	this.route_data = data;
 	this.route_name = "";
 
 	// data
@@ -32,7 +33,8 @@ function XtremeRoute(name, data) {
 	 * @returns {boolean}
 	 * @private
 	 */
-	this.__init = function(name, data) {
+	this.__init = function(name) {
+		data = this.route_data;
 		var debug_this = 0;
 		if (debug_this > 0) pr([name, data], this.__debug("init",["name", "data"]));
 		this.route_name = name;
@@ -309,6 +311,5 @@ function XtremeRoute(name, data) {
 
 	this.change_behavior = function(behavior_mask) { this.__set_behavior(behavior_mask); }
 	this.set_deferal_data = function(data) { this.deferal_data = data};
-	this.__init(name, data);
 	return this;
 }

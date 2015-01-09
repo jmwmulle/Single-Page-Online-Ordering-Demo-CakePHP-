@@ -5463,31 +5463,68 @@ div.view-cart-row.total * {
   font-size: 0.8rem; }
 
 #modal-masthead {
-  margin-bottom: 1rem; }
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background-color: #0779be;
+  margin-bottom: 1rem;
+  border-radius: 1000px;
+  box-shadow: inset 0 0 1rem rgba(0, 0, 0, 0.5); }
   #modal-masthead h1 {
-    color: #0779be;
-    text-shadow: 0 0 0.5rem white;
+    font-size: 2rem;
+    color: white;
+    text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.5);
     padding-bottom: 0;
     margin-bottom: 0; }
   #modal-masthead h2 {
     text-align: center;
     background-color: #373737;
-    padding: 0.625rem 0.3125rem;
+    padding: 0.3125rem;
     border-radius: 1000px;
-    font-size: 1.5rem;
-    height: 2.75rem;
-    line-height: 1.6825rem;
+    font-size: 1.25rem;
+    height: 1.875rem;
+    font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+    line-height: 1.35rem;
     color: #faea06;
-    border: 2px solid white; }
+    border: 2px solid white;
+    box-shadow: 0 0 0.333rem rgba(0, 0, 0, 0.5); }
+  #modal-masthead img {
+    height: 5.333rem;
+    width: auto; }
 
 .modal-button {
   background-color: #0779be;
   color: white !important;
-  font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
+  padding: 0.9375rem;
   text-transform: uppercase;
-  padding: 0.9375rem; }
+  text-align: center;
+  font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
   .modal-button:hover {
     background-color: #099bef; }
+  .modal-button.cancel {
+    background-color: #b4b4b4; }
+    .modal-button.cancel:hover {
+      background-color: #cecece;
+      color: #e02027 !important; }
+  .modal-button.bisecting {
+    width: 50%; }
+    .modal-button.bisecting:first-of-type {
+      border-top-left-radius: 1000px;
+      border-bottom-left-radius: 1000px; }
+    .modal-button.bisecting:last-of-type {
+      border-top-right-radius: 1000px;
+      border-bottom-right-radius: 1000px; }
+    .modal-button.bisecting.confirm {
+      width: 75%; }
+      .modal-button.bisecting.confirm:hover {
+        text-shadow: 0 0 0.5rem white; }
+    .modal-button.bisecting.cancel {
+      width: 25%; }
+    .modal-button.bisecting .icon-circle-arrow-l {
+      float: left;
+      font-size: 2rem; }
+    .modal-button.bisecting .icon-circle-arrow-r {
+      float: right;
+      font-size: 2rem; }
 
 /*******   modal pages ********/
 #registration-method-bar {

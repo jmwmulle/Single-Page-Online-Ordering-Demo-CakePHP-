@@ -94,30 +94,8 @@ echo $this->element("modal_masthead", array(
 		</div>
 			<?php } ?>
 		<div class="row view-cart-row total">
-			<div class="large-9 columns">
-				<div class="row view-cart-row payment">
-					<?php echo $this->Form->create( null, array( 'url' => ___cakeUrl('orders','step1' )) );?>
-					<div class="large-2 columns">
-						<h5>Pay With:</h5>
-					</div>
-					<div class="large-4 columns">
-						<input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0'
-							       align='top' alt='Check out with PayPal'/>
-					</div>
-					<div class="large-2 columns">
-						<span>Debit</span>
-					</div>
-					<div class="large-2 columns">
-						<span>Cash</span>
-					</div>
-					<div class="large-2 columns">
-						<span>Credit</span>
-					</div>
-					<?php echo $this->Form->end();?>
-				</div>
-			</div>
-			<div class="large-3 columns">
-				<ul>
+			<div class="large-12 columns">
+				<ul class="right">
 					<li>Subtotal: <span class="normal" id="subtotal">$<?php echo $cart[ 'Order' ][ 'subtotal' ]; ?></span></li>
 					<li>Sales Tax: <span class="normal" id="HST">$<?php echo $cart[ 'Order' ][ 'HST' ]; ?></span></li>
 					<li>Delivery: <span class="normal" id="delivery">$<?php echo $cart[ 'Order' ][ 'delivery' ]; ?></span></li>
@@ -127,9 +105,9 @@ echo $this->element("modal_masthead", array(
 		</div>
 		<div class="row">
 			<div class="large-12 large-centered columns">
-				<a href="#" class="modal-button unpopular left" data-route="order/clear">Clear Cart</a>
-				<a href="#" class="modal-button right" data-route="order/review">Review My Order</a>
-			</div>
+				<a href="#" class="modal-button bisecting cancel left" data-route="order/clear"><span class="icon-circle-arrow-l"></span>Clear Cart</a
+				><a href="#" class="modal-button bisecting confirm right" data-route="order/review">Review My Order<span class="icon-circle-arrow-r"></span></a
+			></div>
 		</div>
 <?php } ?>
 	</div>

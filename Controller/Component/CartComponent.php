@@ -162,8 +162,11 @@ class CartComponent extends Component {
 		$HST = 0;
 		$delivery = 3.00;
 		$deliverable = false;
-
-		if (count($cart['OrderItem']) > 0) {
+		if (!array_key_exists('OrderItem', $cart) )  {
+			$cart['OrderItem'] = array();
+			$this->Session->wrote('Cart.OrderItem', array());
+		}
+		if ( count($cart['OrderItem']) > 0) {
 			foreach ($cart['OrderItem'] as $item) {
 				$quantity += $item['quantity'];
 				$subtotal += $item['subtotal'];

@@ -54,8 +54,8 @@ $social_route = $logged_in ? "social" : "login/topbar";
 					</a>
 					<?php }?>
 					<a  id="top-bar-view-cart" href="#"
-						<?php if (!$this->Session->read('Cart')) echo "style='display:none;' class='fade-out' ";?>
-					    data-route="view_order/topbar" data-hover_text="View Your Cart">
+						<?php if (!$this->Session->read('Cart.OrderItem')) echo "style='display:none;' class='fade-out' ";?>
+					    data-route="order/view" data-hover_text="View Your Cart">
 						<span class="icon-shopping"></span>
 					</a>
 

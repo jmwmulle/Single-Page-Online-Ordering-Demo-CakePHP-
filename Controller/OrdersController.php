@@ -171,13 +171,13 @@
 			return $this->redirect( array( 'action' => 'index' ) );
 		}
 
-	
-	public function clear() {
-		$this->layout = "ajax";
-		$this->Cart->clear();
-		$this->set('response', json_encode(array('success' => true)));
-		$this->autoRender = false;
-	}
+
+		public function clear() {
+			$this->layout = "ajax";
+			$this->Cart->clear();
+			$this->set( 'response', json_encode( array( 'success' => true ) ) );
+			$this->autoRender = false;
+		}
 
 
 		public function itemupdate() {
@@ -220,7 +220,6 @@
 
 		public function cartupdate() {
 			if ( $this->request->is( 'post' ) ) {
-//			db($this->request->data);
 				foreach ( $this->request->data[ 'Orb' ] as $args ) {
 					extract( array_merge( array(
 								"id"                       => -1,
@@ -244,6 +243,10 @@
 			$this->Cart->update();
 			if ( $this->request->is( 'ajax' ) ) {
 				$to_return = array();
+				if ( !array_key_exists( 'OrderItem', $cart ) ) {
+					$cart[ 'OrderItem' ] = array();
+					$this->Session->wrote( 'Cart.OrderItem', array() );
+				}
 				foreach ( $cart[ 'OrderItem' ] as $item ) {
 					if ( !isset( $to_return[ intval( $item[ 'orb_id' ] ) ] ) ) {
 						$to_return[ intval( $item[ 'orb_id' ] ) ] = array();
@@ -447,105 +450,116 @@
 		}
 
 
-/* order_method */ 
-        public function order_method($method) { 
-		$this->set('method', $method);
-		if ($this->request->is('ajax')) {
-			$this->layout = 'ajax';
-			if ($this->request->is('POST') ) {
-				if (!$this->Session->check("address_checked")) {
-					$this->Session->write('Cart.Order.address_checked', False);
-				}
-				if ( in_array($method, array('delivery', 'pickup')) ) {
-					$this->Session->write("Cart.Order.order_method", $method);
-					if ($this->Auth->loggedIn()) {
-						$options = array('conditions'=>array('User.id'=>$this->Auth->user('id')));
-						$user = $this->User->find('first', $options);
-						$address_matches = in_array($this->Session->read('User.Address'),  $user['Address']);
-					} else {
-						$address_matches = null;
+		/* order_method */
+		public function order_method($method) {
+			$this->set( 'method', $method );
+			if ( $this->request->is( 'ajax' ) ) {
+				$this->layout = 'ajax';
+				if ( $this->request->is( 'POST' ) ) {
+					if ( !$this->Session->check( "address_checked" ) ) {
+						$this->Session->write( 'Cart.Order.address_checked', false );
 					}
-					$this->Session->write("User.address_matches", $address_matches);
-					$this->set("response", json_encode(array('success'=>true, 'matches'=>$address_matches)));
-				} else {
-					$this->set("response", json_encode(array('success'=>false, 'error'=>'Invalid order method')));
-				}
-			} else {
-				$this->render('order_method', 'ajax');
-			}
-		} else { 
-			return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
-		}
-	}
-
-/*confirm_address*/
-		public function confirm_address($command) {
-			if ( $this->request->is( 'ajax' ) || $this->request->is( 'post' ) ) {
-				if ( !$this->Session->check( "address_checked" ) ) {
-					$this->Session->write( 'Cart.Order.address_checked', false );
-				}
-				$data = $this->request->data;
-				if ( $command == 'database' ) {
-					if ( $this->Auth->loggedIn() ) {
-						$conditions = array( 'conditions' => array( 'Address.user_id' => $this->Auth->user( 'id' ),
-						                                            'Address.id'      => $data[ 'adddress_id' ] ) );
-						$address    = $this->Address->find( 'first', $conditions );
-						$this->Session->write( 'Cart.Order.address_checked', true );
-						$this->Session->write( 'Cart.Order.address', $address );
-					}
-					else {
-						$this->set( "response", json_encode( array( "success" => false,
-						                                            "error"   => "User not logged in." )
-							)
+					if ( in_array( $method, array( 'delivery', 'pickup' ) ) ) {
+						$this->Session->write( "Cart.Order.order_method", $method );
+						if ( $this->Auth->loggedIn() ) {
+							$options         = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
+							$user            = $this->User->find( 'first', $options );
+							$address_matches = in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] );
+						}
+						else {
+							$address_matches = null;
+						}
+						$this->Session->write( "User.address_matches", $address_matches );
+						$this->set( "response", array( "success" => true, 'matches' => $address_matches,
+						                               'error'   => false )
 						);
 					}
-				} /*elseif ($command=='session') {
-				if ($this->Session->check('address') & $this->Session->check('postal_code')) {
-					$this->Session->write('Cart.Order.address_checked', True);
-					$this->set("response", json_encode(array("address"=>$this->Session->read('Cart.Order.address'),
-						"success"=>True)));
-				} else {
-					$this->set("response", json_encode(array("address"=>null, "success"=>False,
-						"error"=>"Address not set.")));
+					else {
+						$this->set( "response", array( "success" => false, 'matches' => false,
+						                               'error'   => "Invalid order method" )
+						);
+					}
 				}
-			}*/
-				elseif ( $command == 'update_database' ) {
-					if ( $this->Auth->loggedIn() ) {
-						$conditions = array( 'conditions' => array( 'User.id' => $this->Auth->user[ 'id' ] ) );
-						$this->User->find( 'first', $conditions );
-						if ( array_key_exists( 'address_id', $data ) ) {
-							$conditions = array( 'conditions' => array( 'Address.user_id' => $this->Auth->user[ 'id' ],
-							                                            'Address.id'      => $data[ 'address_id' ] ) );
+				$this->render( 'order_method' );
+			}
+			else {
+				return $this->redirect( array( 'controller' => 'menu', 'action' => 'index' ) );
+			}
+		}
+
+		/*confirm_address*/
+		public function confirm_address($command = null) {
+			if ( $this->request->is( 'ajax' ) ) {
+				if ( $this->request->is( 'post' ) ) {
+					if ( !$this->Session->check( "address_checked" ) ) {
+						$this->Session->write( 'Cart.Order.address_checked', false );
+					}
+
+					$data = $this->request->data;
+					if ( $command == 'database' ) {
+						if ( $this->Auth->loggedIn() ) {
+							$conditions = array( 'conditions' => array( 'Address.user_id' => $this->Auth->user( 'id' ),
+							                                            'Address.id'      => $data[ 'adddress_id' ] ) );
 							$address    = $this->Address->find( 'first', $conditions );
-							$address    = array_merge( $address, $data[ 'orderAddress' ] );
-							$to_save    = array( 'User' => $this->User, 'Address' => $address );
+							$this->Session->write( 'Cart.Order.address_checked', true );
+							$this->Session->write( 'Cart.Order.address', $address );
 						}
 						else {
-							$to_save = array( 'User' => $this->User, 'Address' => $data[ 'orderAddress' ] );
-						}
-						if ( $this->User->saveAssociated( $to_save ) ) {
-							$this->set( "response", json_encode( array( "success" => true ) ) );
-						}
-						else {
-							$this->set( "response", json_encode( array( "success" => false,
-							                                            "error"   => "Data could not be saved." )
-								)
+							$this->set( "response", array( "success" => false,
+							                               "address" => false,
+							                               "error"   => "User not logged in." )
 							);
 						}
 					}
-					else {
-						$this->set( "response", json_encode( array( "success" => false,
-						                                            "error"   => "User not logged in." )
+					elseif ( $command == 'update_database' ) {
+						if ( $this->Auth->loggedIn() ) {
+							$conditions = array( 'conditions' => array( 'User.id' => $this->Auth->user[ 'id' ] ) );
+							$this->User->find( 'first', $conditions );
+							if ( array_key_exists( 'address_id', $data ) ) {
+								$conditions = array( 'conditions' => array( 'Address.user_id' => $this->Auth->user[ 'id' ],
+								                                            'Address.id'      => $data[ 'address_id' ] ) );
+								$address    = $this->Address->find( 'first', $conditions );
+								$address    = array_merge( $address, $data[ 'orderAddress' ] );
+								$to_save    = array( 'User' => $this->User, 'Address' => $address );
+							}
+							else {
+								$to_save = array( 'User' => $this->User, 'Address' => $data[ 'orderAddress' ] );
+							}
+							if ( $this->User->saveAssociated( $to_save ) ) {
+								// I always need all the keys, it's just a lot easier than manually checking
+								$this->set( "response", array( "success" => true,
+								                               "address" => $data[ 'orderAddress' ],
+								                               "error"   => false )
+								);
+							}
+							else {
+								$this->set( "response", array( "success" => false,
+								                               "address" => false,
+								                               "error"   => "Data could not be saved." )
+								);
+							}
+						}
+						else {
+							$this->set( "response", array( "success" => false,
+							                               "address" => false,
+							                               "error"   => "User not logged in." )
+							);
+						}
+					}
+					elseif ( $command == 'session' ) {
+						$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
+						$this->Session->write( 'Cart.Order.address_checked', true );
+						$this->set( "response", array( "success" => true,
+						                               "address" => $data [ 'orderAddress' ],
+						                               "error"   => false
 							)
 						);
 					}
+					$this->render( 'confirm_address_reply' ); // this is the JSON reply; this is more reliable for some reason
 				}
-				elseif ( $command == 'session' ) {
-					$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
-					$this->Session->write( 'Cart.Order.address_checked', true );
-					$this->set( "response", json_encode( array( "success" => true ) ) );
-					db( $data );
-				}
+				else {
+					$this->render( 'confirm_address' );
+				} // this is the confirm address form; no longer in order_method
 			}
 			else {
 				return $this->redirect( array( 'controller' => 'menu', 'action' => 'index' ) );
