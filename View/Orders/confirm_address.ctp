@@ -111,7 +111,7 @@
 					  echo $this->Form->end(); ?>
 					</div>
 					<div class="large-12 columns">
-						<a href="#" id="submit-order-address" class="box downward rel modal-submit modal-button" data-route="order_method/submit">
+						<a href="#" id="submit-order-address" class="box downward rel modal-submit modal-button" data-route="confirm_address/submit/menu">
 							<?php echo strtoupper( "OK! To the food!" ); ?>
 						</a>
 					</div>

@@ -13,24 +13,6 @@ window.XBS = {
 			xProd: "",
 			xLoc: "xtreme"
 		},
-		images: ["..img/splash/bluecircle.png",
-		         "..img/splash/deal.png",
-		         "..img/splash/email_icon.png",
-		         "..img/splash/email_icon_hover.png",
-		         "..img/splash/facebook_icon.png",
-		         "..img/splash/facebook_icon_hover.png",
-		         "..img/splash/twitter_icon.png",
-		         "..img/splash/twitter_icon_hover.png",
-		         "..img/splash/gplus_icon.png",
-		         "..img/splash/gplus_icon_hover.png",
-		         "..img/splash/logo.png",
-		         "..img/splash/logo_mini.png",
-		         "..img/splash/menu.png",
-		         "..img/splash/menu_hover.png",
-		         "..img/splash/order.png",
-		         "..img/splash/order_soon.png",
-		         "..img/splash/pizza-bg.jpg",
-		         "..img/splash/logo_mini.png"],
 		orb_card_animation_queue: {
 			animating:false,
 			queued:0
@@ -238,7 +220,7 @@ window.XBS = {
 									XBS.validation.submit_address(this, secondary_launch);}
 								);
 							}
-						}
+						},
 					}
 				}),
 				close_modal: new XtremeRoute("close_modal", {
@@ -307,7 +289,7 @@ window.XBS = {
 							if (channel == "email") this.url.url = "login/email";
 						},
 						launch: function() {
-							window.location = "http://development.xtreme-pizza.ca/auth/"+this.read('channel');
+							window.location = "http://development-xtreme-pizza.ca/auth/"+this.read('channel');
 						}
 					}
 				}),
@@ -390,6 +372,7 @@ window.XBS = {
 									}
 								}
 							} else if ("error" in response) { route = "flash/"+response.error; }
+							pr(route, 'request');
 							$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:route});
 						}
 
@@ -613,19 +596,18 @@ window.XBS = {
 				return true
 			},
 			bind_multi_activizing_siblings: function () {
-				$("body").on(C.CLK, XSM.global.multi_activizing, function (e) {
+				$(C.BODY).on(C.CLK, XSM.global.multi_activizing, function (e) {
 					XBS.layout.multi_activize(e.currentTarget);
 				});
 
 				return true
 			},
-			bind_ajax_nav: function () {
-				$(XSM.global.ajaxLink).each(function () {
-					$(this).on(C.CLK, null, $(this).data(), XBS.load);
-				});
-
-				return true;
-			},
+//			bind_ajax_nav: function () {
+//				$(XSM.global.ajaxLink).each(function () {
+//					$(this).on(C.CLK, null, $(this).data(), XBS.load);
+//				});
+//				return true;
+//			},
 			bind_float_labels: function () {
 				$(C.BODY).on(C.MOUSEENTER, asClass(XSM.effects.float_label), null, function (e) {
 					XBS.layout.toggle_float_label($(e.currentTarget).data('float-label'), C.SHOW);
@@ -854,7 +836,6 @@ window.XBS = {
 					XBS.layout.fasten(XSM.menu.self).css({overflow:"hidden"});
 				}
 			}
-
 			return  init_ok
 		},
 		jq_binds: {
@@ -864,13 +845,6 @@ window.XBS = {
 				$(XSM.menu.orb_opts_menu_header).hide().removeClass(XSM.effects.hidden);
 				return true;
 			},
-//			bind_order_api: function () {
-//				/** add item to order */
-//				$(C.BODY).on(C.CLK, XSM.menu.add_to_cart, null, function (e) {
-//					var data = $(e.currentTarget).data('orbId');
-//					XBS.menu.configure_orb(data.orbId, data.priceRank)
-//				});
-//			},
 			bind_orbsize_update: function () {
 				$(C.BODY).on(C.CLK, XSM.menu.orb_size_button, null, function (e) {
 					XBS.menu.price_rank_update($(e.currentTarget).data('priceRank'));
@@ -1417,9 +1391,7 @@ window.XBS = {
 				return null
 			}
 		},
-
-		tally: function () {
-		},
+		tally: function () {},
 		cancel_config: function(orb_id) { XBS.cart.configuring[orb_id] = jQuery.extend({}, XBS.cart.empty_config); },
 		has_configuration_started: function(orb_id) { return XBS.cart.has_orb(orb_id, true); },
 		has_orb: function (orb_id, in_configuring) {
@@ -1449,7 +1421,7 @@ window.XBS = {
 		},
 		add_to_cart: function(orb_id) {
 			if ( !XBS.cart.has_orb(orb_id, true) ) {
-				XBS.cart.configuring[orb_id] =jQuery.extend({}, XBS.cart.empty_config);
+				XBS.cart.configuring[orb_id] = jQuery.extend({}, XBS.cart.empty_config);
 			}
 			return true;
 		},
@@ -1571,29 +1543,13 @@ window.XBS = {
 						type: C.POST,
 						url:"confirm-address/session",
 						data: $("#orderAddressForm").serialize(),
-						statusCode: {
-							403: function() {
-								XBS.layout.dismiss_modal(XSM.modal.primary);
-								if (is_splash) {
-									setTimeout( function() {
-									XBS.splash.fold(false);
-									setTimeout( function() {
-										if (debug_this > 2) pr("Calling set_order_method", "XBS.validation.submit_address()", 3);
-										XBS.menu.set_order_method(C.DELIVERY);
-										} ,XBS.data.delays.fold_splash);
-									}, 300);
-								}
-							}
-						},
 						success: function(data) {
-							pr(data, "response_from_order");
 							try {
 								data = $.parseJSON(data);
 								XBS.data.user.address = data.address;
 							} catch(e) {
 							}
 							XBS.layout.dismiss_modal(XSM.modal.primary);
-							pr(secondary_route);
 							if ( secondary_route ) {
 								setTimeout(function() {
 									$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:secondary_route});
@@ -1636,7 +1592,7 @@ window.XBS = {
 						url:"users/add",
 						data:$("#UsersForm").serialize(),
 						success: function(data) {
-							pr(data);
+							//todo: handle... this?
 						},
 						fail: function() {},
 						always: function(){}

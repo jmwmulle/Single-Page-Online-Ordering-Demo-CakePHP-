@@ -76,7 +76,7 @@
 				</div>
 				<div class="row">
 					<div class="large-12 columns">
-						<?php echo $address["address"];?>
+						<?php echo $address["address_1"];?>
 						<?php if (!empty($address["address_2"]) )echo  $address["address_2"];?>
 						<?php echo $address['postal_code']; ?>
 					</div>
