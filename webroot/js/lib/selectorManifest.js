@@ -127,8 +127,10 @@ var XSM = {
 		overlay: "#modal-overlay-container",
 		primary: "#primary-modal",
 		primary_content: "#primary-modal-content",
+		primary_deferred_content: "#primary-modal-content .deferred-content",
 		social: "#social-modal",
-		splash: "#splash-modal"
+		splash: "#splash-modal",
+		submit_order_address: "#submit-order-address"
 	},
 	splash:{
 		self:"#splash",
@@ -163,12 +165,23 @@ var XSM = {
 		hover_text_label_incoming: "#topbar-hover-text-label span.incoming",
 		hover_text_label_outgoing: "#topbar-hover-text-label span.outgoing"
 	},
+	footer: {
+		self:"footer#footer"
+	},
 	generated: {
 		order_form_order_opt: function(opt_id) { return asId("OrderOrbOrbopts" + opt_id) },
 		orb_card_row_content: function(row) { return "#orb-card-row-"+row+" div.orb-card-content" },
 		orb_opt_id: function(opt_id) { return asId("orb-opt-coverage-" + opt_id); },
 		orb_opt_icon: function(opt_id, weight) {
 			return $(opt_id).find(XSM.menu.orb_opt_icon + '[data-weight="' + weight + '"]')[0];
+		},
+		order_address_button: function(route) {
+			var message;
+			if (route == "menu") message = "OK! TO THE FOOD!";
+			if (route == "review") message = "BACK TO CHECKOUT";
+
+			return '<a href="#" id="submit-order-address" data-route="confirm_address/submit/'+route+'"' +
+					' class="box downward rel modal-submit">' + message + '</a>';
 		}
 	}
 };

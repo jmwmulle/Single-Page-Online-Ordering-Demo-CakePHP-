@@ -14,6 +14,7 @@
  */
 
 $logged_in =  $this->Session->read('Auth.User') ? true : false;
+$logged_in = true;
 $twitter_text = $logged_in ? "Tweet about Xtreme!" : "Login via Twitter";
 $gplus_text = $logged_in ? "+1 Xtreme!" : "Login via GooglePlus";
 $fb_text = $logged_in ? "Like Xtreme!" : "Login via Facebook";
@@ -35,7 +36,7 @@ $social_route = $logged_in ? "social" : "login/topbar";
 					</a>
 					<a href="<?php echo $logged_in ? "#" : "http://development-xtreme-pizza.ca/auth/google";?>"
 					   <?php if ($logged_in) echo "data-route='social/google'";?> data-hover_text="<?php echo $gplus_text;?>">
-						<span class="icon-gplus"></span>
+						<span class="icon-gplus  g-plusone"></span>
 					</a>
 					<?php if (!$logged_in) {?>
 					<a href="#" data-route="login/topbar/email" data-hover_text="Login With Your E-Mail Address">

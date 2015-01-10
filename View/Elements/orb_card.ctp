@@ -27,16 +27,16 @@ $logged_in = $this->Session->read('Auth');
 								<span class="<?php echo $logged_in ? "icon-orb-card-favorite" : "icon-orb-card-register";?>"></span
 								<?php if (!$logged_in) {?>
 									><div id="orb-card-register-panel" class="fade-out true-hidden orb-card-row-panel"
-										><a id="orb-card-register-twitter" href="#" data-route="orb_card/register/twitter"
+										><a id="orb-card-register-twitter" href="http://development-xtreme-pizza.ca/auth/twitter"
 											><span class="icon-twitter"></span
 										></a
-										><a id="orb-card-register-facebook" href="#" data-route="orb_card/register/facebook"
+										><a id="orb-card-register-facebook" href="http://development-xtreme-pizza.ca/auth/facebook"
 											><span class="icon-facebook"></span
 										></a
-										><a id="orb-card-register-gplus" href="#" data-route="orb_card/register/gplus"
+										><a id="orb-card-register-gplus" href="http://development-xtreme-pizza.ca/auth/google"
 											><span class="icon-gplus"></span
 										></a
-										><a id="orb-card-register-email" href="#" data-route="orb_card/register/email"
+										><a id="orb-card-register-email" href="#" data-route="register/orb_card/email/"
 											><span class="icon-topbar-email"></span
 										></a
 									></div
@@ -82,8 +82,8 @@ $logged_in = $this->Session->read('Auth');
 								<span class="icon-orb-card-share" data-route="orb_card/share"></span
 								<?php if (!$logged_in) {?>
 								><div id="orb-card-social-panel" class="fade-out orb-card-row-panel"
-									><a id="orb-card-register-twitter" href="#" data-route="orb_card/share/twitter"
-										><span class="icon-twitter"></span
+									><a id="orb-card-register-twitter" href="https://twitter.com/intent/tweet?screen_name=XtremePizza&text=XtremePizza!%20Halifax!%20Delicious!%20This%20menu%20is%20huge! #XtremePizza #XtremePizzaHalifax #iheartbigmenus" class="twitter-mention-button" data-routse="orb_card/share/twitter"
+										><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script><span class="icon-twitter"></span
 									></a
 									><a id="orb-card-register-facebook" href="#" data-route="orb_card/share/facebook"
 										><span class="icon-facebook"></span

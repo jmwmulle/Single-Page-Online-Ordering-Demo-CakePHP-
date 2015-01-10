@@ -201,7 +201,7 @@ div.view-cart-row {
 }
 
 #modal-masthead {
-  margin-top:0.5rem;
+  margin:0.5rem 0 1rem 0;
   padding:0.75rem;
   background-color: $xtreme-blue;
   margin-bottom:1rem;
@@ -235,21 +235,23 @@ div.view-cart-row {
 }
 
 .modal-button {
+  font-size:1.33333rem;
   background-color:$xtreme-blue;
-  color:$white !important;
-  &:hover {
-    background-color: lighten($xtreme-blue, 10%);
+  &.full-width {
+    width: 100%;
+    display:block;
   }
+
+  &:hover { background-color: lighten($xtreme-blue, 10%); }
   padding:$base-padding;
   text-transform: uppercase;
   text-align: center;
   @include HelveticaBlkCn;
-  &.cancel {
-    background-color:$light-grey;
-    &:hover {
-      background-color: lighten($light-grey, 10%);
-      color: $xtreme-red!important;
-    }
+  span {
+    color:$white !important;
+    display:inline-block;
+    -webkit-transform: translateY(0.25rem);
+    &.text { -webkit-transform: translateY(0.25rem); }
   }
   &.bisecting {
     width: 50%;
@@ -261,6 +263,7 @@ div.view-cart-row {
       border-top-right-radius: $global-rounded;
       border-bottom-right-radius: $global-rounded;
     }
+    &.confirm, &.cancel { .text { -webkit-transform: translateY(0.5rem) !important; }}
     &.confirm {
       width:75%;
       &:hover { text-shadow: 0 0 0.5rem $white;}
@@ -274,16 +277,55 @@ div.view-cart-row {
       float:right;
       font-size:2rem;}
   }
+  &.cancel {
+      background-color:$light-grey;
+      &:hover {
+        background-color: lighten($light-grey, 10%);
+        span { color: $xtreme-red!important;}
+      }
+    }
+  &.active {
+    background-color: $xtreme-yellow;
+    span { color:$text-grey !important;}
+    &:hover {
+      background-color:lighten($light-grey, 10%);
+      span { color: $xtreme-red !important;}
+    }
+  }
 }
 
 /*******   modal pages ********/
 //registration
 #registration-method-bar {
-font-size:3rem;
-  span {
-    &:hover {
-      color:$xtreme-blue;
+  margin:0 10%;
+  background-color: $text-grey;
+  padding: 0.5rem;
+  height:5rem;
+  font-size:3rem;
+  transition: margin 0.3s ease-out, width 0.3s ease-out, font-size 0.3s ease-out, line-height 0.3s ease-out,padding 0.3s ease-out;
+  h4 { @include HelveticaThCn ;}
+  a, h4 {
+    height:5rem;
+    line-height:4rem;
+    display: inline-block;
+    vertical-align:top;
+  }
+  * { color:$white;}
+  a.active {
+    border-radius: $global-rounded;
+    span { color:$xtreme-yellow!important;}
+  }
+  a span, a.active span {
+    &:hover { color:$xtreme-yellow !important ;}
+  }
+  &.diminish {
+    margin:0;
+    font-size:1.5rem;
+    height:2rem;
+    padding:0.25rem;
+    a, h4 {
+      height:1.5rem;
+      line-height:1.5rem;
     }
-      //color:lighten($text-grey, 25%);};
   }
 }

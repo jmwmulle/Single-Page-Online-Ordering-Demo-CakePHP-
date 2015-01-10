@@ -26,13 +26,13 @@
 <div class="row">
 	<div class="large-12 large-centered columns">
 		<?php if (!$order_method) {?>
-				<a href="#" class="modal-button bisecting left" data-route="order_method/review/pickup">Order for Pick-up</a
-				><a href="#"  class="modal-button bisecting right" data-route="order_method/review/delivery">Order for Delivery</a>
+				<a href="#" class="modal-button bisecting left" data-route="order_method/review/pickup"><span class="text">Order for Pick-up</span></a
+				><a href="#"  class="modal-button bisecting right" data-route="order_method/review/delivery"><span class="text">Order for Delivery</span></a>
 		<?php } else { ?>
 		<div class="row">
+		<?php if ($order_method == "delivery") { ?>
 			<div class="large-6 columns">
-			<?php if ($order_method == "delivery") {
-					if ( count($address) == 0  ) { ?>
+				<?php if ( count($address) == 0  ) { ?>
 				<div class="row">
 					<div class="large-12 columns">
 						<a href="#" class="modal-button" data-route="order_method/review/delivery">Set Delivery Address</a>
@@ -59,33 +59,25 @@
 						Phone: <?php echo $address['phone'];?>
 					</div>
 				</div>
-			<?php }
-			}else {?>
-				<div class="row">
-					<div class="large-12 columns">
-						<a href="#" class="modal-button" data-route="order_method/review/delivery">Order for Pickup</a>
-						<span><small>(Click to change)</small></span>
-					</div>
-				</div>
 			<?php }?>
 			</div>
 			<div class="large-6 columns">
-				<?php if ($this->Session->read('Cart.Order.order_method') == "delivery") {?>
 				<div class="row">
 					<div class="large-12 columns"><h4 class="panel-title">Delivery Address</h4></div>
 				</div>
 				<div class="row">
 					<div class="large-12 columns">
-						<?php echo $address["address_1"];?>
+						<?php echo $address["address"];?>
 						<?php if (!empty($address["address_2"]) )echo  $address["address_2"];?>
 						<?php echo $address['postal_code']; ?>
 					</div>
 				</div>
-				<?php } else { ?>
-					<h4>Order For Pick Up!</h4>
-					<em>Map to Xtreme</em>
-				<?php } ?>
 			</div>
+		<?php } else { ?>
+			<div class="large-12 columns">
+				<a href="#" class="modal-button full-width active" data-route="order_method/review/delivery"><span class="text">Order is for Pick-Up</span></a>
+			</div>
+		<?php } ?>
 		</div>
 	<?php } ?>
 	</div>

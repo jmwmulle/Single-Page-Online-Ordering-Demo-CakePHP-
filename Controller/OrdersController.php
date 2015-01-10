@@ -455,7 +455,7 @@
 			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = 'ajax';
 				if ( $this->request->is( 'POST' ) ) {
-					if ( !$this->Session->check( "address_checked" ) ) {
+					if ( !$this->Session->read( "Cart.Order.address_checked" ) ) {
 						$this->Session->write( 'Cart.Order.address_checked', false );
 					}
 					if ( in_array( $method, array( 'delivery', 'pickup' ) ) ) {

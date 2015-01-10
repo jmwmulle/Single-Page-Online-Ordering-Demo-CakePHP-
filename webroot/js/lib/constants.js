@@ -21,6 +21,8 @@ var constants = {
 	BODY: "body",
 	ORDER_SPACER_FACTOR: 0.45,
 	MENU_SPACER_FACTOR: 0.15,
+	BACK_FACE: "back_face",
+	FRONT_FACE: "front_face",
 	MENU: "menu",
 	DATABASE: "database",
 	SESSION: "session",

@@ -11,24 +11,36 @@
 
 <?php echo $this->element('modal_masthead', array('header'=>"Xtreme Membership!",
                                                   "subheader" => "We will never share your infos. Ever."));?>
-<div id="registration-method-bar" class="row text-center">
-	<div class="large-4 columns">
-		<h4 data-route="print/fuck/right/off">LOG IN WITH</h4>
+<div class="row text-center">
+	<div class="large-12 large-centered columns">
+		<div class="row">
+			<div id="registration-method-bar">
+				<div class="large-4 columns">
+					<h4 data-route="print/fuck/right/off">LOG IN WITH</h4>
+				</div>
+				<div class="large-2 columns">
+					<a href="#" class="register-link email" data-route="register/modal/email"><span class="icon-topbar-email"></span></a>
+				</div>
+				<div class="large-2 columns">
+					<a href="http://development-xtreme-pizza.ca/auth/twitter" class="register-link twitter">
+						<span class="icon-twitter"></span>
+					</a>
+				</div>
+				<div class="large-2 columns">
+					<a href="http://development-xtreme-pizza.ca/auth/facebook" class="register-link facebook">
+						<span class="icon-facebook"></span>
+					</a>
+				</div>
+				<div class="large-2 columns">
+					<a href="http://development-xtreme-pizza.ca/auth/google" class="register-link gplus">
+						<span class="icon-gplus"></span>
+					</a>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="large-2 columns">
-		<a href="#" class="register-link email" data-route="register/modal/email"><span class="icon-topbar-email"></span></a>
-	</div>
-	<div class="large-2 columns">
-		<a href="#" class="register-link twitter" data-route="register/modal/twitter"><span class="icon-twitter"></span></a>
-	</div>
-	<div class="large-2 columns">
-		<a href="#" class="register-link facebook" data-route="register/modal/facebook"><span class="icon-facebook"></span></a>
-	</div>
-	<div class="large-2 columns">
-		<a href="#" class="register-link gplus" data-route="register/modal/gplus"><span class="icon-gplus"></span></a>
-	</div>
-	<hr />
 </div>
+<hr />
 <div class="deferred-content slide-left">
 	<?php echo $this->Form->create('Users', array('action' => false, 'inputDefaults' => array("div" => false)));?>
 	<div id="register-by-email-form" class="row">

@@ -105,8 +105,8 @@ echo $this->element("modal_masthead", array(
 		</div>
 		<div class="row">
 			<div class="large-12 large-centered columns">
-				<a href="#" class="modal-button bisecting cancel left" data-route="order/clear"><span class="icon-circle-arrow-l"></span>Clear Cart</a
-				><a href="#" class="modal-button bisecting confirm right" data-route="order/review">Review My Order<span class="icon-circle-arrow-r"></span></a
+				<a href="#" class="modal-button bisecting cancel left" data-route="order/clear"><span class="icon-circle-arrow-l icon"></span><span class="text">Clear Cart</span></a
+				><a href="#" class="modal-button bisecting confirm right" data-route="order/review"><span class="text">Review My Order</span><span class="icon-circle-arrow-r icon"></span></a
 			></div>
 		</div>
 <?php } ?>

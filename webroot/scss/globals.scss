@@ -1,3 +1,9 @@
+
+@media #{$large-up} {
+  body, html, main, nav {
+    overflow:hidden !important;
+  }
+}
 body {
   background-image:url('../img/splash/pizza-bg.jpg');
   background-size:cover;

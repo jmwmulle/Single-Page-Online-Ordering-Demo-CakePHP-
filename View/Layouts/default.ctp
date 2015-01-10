@@ -4,8 +4,7 @@
 	<?php echo $this->Html->charset(); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<title>XtremePizza</title>
-<!--	<script src="https://apis.google.com/js/platform.js" async defer></script>-->
-<!--	<script>  {"parsetags": "explicit"}</script>-->
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
 	<?php
 		echo $this->Html->meta( 'icon' );
 		echo $this->Html->css( "app" );
@@ -60,10 +59,10 @@
 	echo $this->fetch( 'main' );
 ?>
 <script >
-//  window.___gcfg = {
-//    lang: 'zh-CN',
-//    parsetags: 'onload'
-//  };
+  window.___gcfg = {
+    lang: 'zh-CN',
+    parsetags: 'onload'
+  };
 </script>
 </body>
 </html>

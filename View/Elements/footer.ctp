@@ -31,19 +31,24 @@
 	</div>
 </div>
 <footer id="footer">
+	<div id="footer-reveal" data-route="footer/show">
+		<span class="icon-full one"></span>
+		<span class="icon-full two"></span>
+		<span class="icon-full three"></span>
+	</div>
 	<section class="pagespan">
-		<div class="row">
+		<div id="footer-content" class="row">
 			<div class="large-12 large-centered medium-8 small-4 columns">
 				<div class="row">
-					<div class="large-6 large-centered text-center columns">
-						<h2>Xtreme Pizza</h2>
+					<div class="large-12 large-centered text-center columns">
+						<?php echo $this->Html->image("logo_footer.svg", array('id' => 'footer-logo')); ?>
 					</div>
 				</div>
 				<div class="row">
-					<div class="large-4 columns disclaimer">
-						<?php echo $this->Html->image("semiosis.png"); ?>
-						<h5>Design by Semiosis Designs (J. Mulle)</h5>
-						<h5>Ordering & Client Management Software from J. Mulle & R. Story</h5>
+					<div id="designer-plug" class="large-12 large-centered text-center columns">
+						<?php echo $this->Html->image("semiosis.png", array('id' => "semiosis-design-logo")); ?>
+						<span>Design by Semiosis Designs (J. Mulle)</span>
+						<span>Ordering & Client Management Software from J. Mulle & R. Story</span>
 					</div>
 					<div class="large-8 columns">
 					</div>

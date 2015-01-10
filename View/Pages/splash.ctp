@@ -31,4 +31,5 @@
 			</div>
 		</div>
 	</div>
+	<div id="splash-top-logo"></div>
 </main>

@@ -8,59 +8,63 @@
 	 */
 	$cart = $this->Session->read('Cart');
 	$logged_in = $this->Session->read('Auth.User') ? true : false;
-	$address = array();
+	$user = $logged_in ? $this->Session->read('Auth.User') : array();
+	$logged_in = true;
+	$address = array("firstname" => "Jonathan", "lastname" => "Mulle");
+	$user = array("Addresses" => array("3157 South St.", "9650 Bland St", "1 Queen St"));
 	if (array_key_exists('Order', $cart)) {
 		if (array_key_exists('address', $cart['Order'])) $address = $cart['order_address'];
 	}
+	$update_command = "session";
 ?>
 <div class="row">
 	<div class="large-12 columns">
-			<?php if ($cart['Order']['order_method'] == 'delivery') { ?>
-				<?php echo $this->element("modal_masthead", array(
-				"header" => "Delivery! Yay for sitting!",
-				"subheader" => "But let's confirm your address, yeah?"));?>
+	<?php echo $this->element("modal_masthead", array(
+								"header" => "Delivery! Yay for sitting!",
+								"subheader" => "But let's confirm your address, yeah?"));?>
 		<div class="row">
 			<div class="large-10 columns modal-header">
-			<?php if ($logged_in) {?>
+			<?php if (!$logged_in) {?>
 					<span>Already have an address on file? <a href="#" class="modal-link" data-route="login-from-modal">Sign In</a>
 						 and load it up!
 					</span>
-			<?php } else { ?>
-
-				<ul class=" disabled inline">
-					<li class="inline active activizing">This is my address—update it please!</li>
-					<li class="inline activizing">I'm just using this address  for today's order.</li>
-				</ul>
+			<?php } else {?>
+				<h3 class="inline"> <?php echo $address['firstname']; ?></h3>
+				<h3 class="inline"> <?php echo $address['lastname']; ?></h3>
 			<?php } ?>
 			</div>
 			<div class="large-2 columns modal-header">
-				<a href="#" class="reset-form" data-form="testForm">Reset Form</a> |
+				<a href="#" class="reset-form" data-form="testForm">Reset Form</a>
 			</div>
-
 		</div>
 		<hr />
-		<?php echo $this->Form->create( 'orderAddress', array( 'action' => false, 'inputDefaults' => array("div" => false) ) ); ?>
+		<?php echo $this->Form->create( 'orderAddress', array( 'action' => false, 'inputDefaults' => array("div" => false) ) );?>
+		<?php if (!$logged_in) {?>
 		<div class="row">
 			<div class="large-6 columns">
-				<?php echo $this->Form->input( 'firstname', array(
-						'value' => array_key_exists("firstname", $address) ? $address['firstname'] : null)); ?>
+				<?php echo $this->Form->input( 'firstname');?>
 			</div>
 			<div class="large-6 columns">
-				<?php echo $this->Form->input( 'lastname', array(
-						'value' => array_key_exists("lastname", $address) ? $address['lastname'] : null)); ?>
+				<?php echo $this->Form->input( 'lastname');?>
 			</div>
 		</div>
+		<?php } ?>
 		<div class="row">
-			<div class="large-6 columns">
+			<div class="large-<?php echo array_key_exists('Addresses', $user) ? "3" : "6";?>  columns">
 				<?php echo $this->Form->input( 'phone', array(
 						'label' => "Phone Number",
 						'value' => array_key_exists("phonenumber", $address) ? $address['phonenumber'] : null)); ?>
 			</div>
-			<div class="large-6 columns">
+			<div class="large-<?php echo array_key_exists('Addresses', $user) ? "3" : "6";?>  columns">
 				<?php echo $this->Form->input( 'confirmation', array( 'type' => 'select',
-				                                                      'label' => "Receive Order Confirmation By",
+				                                                      'label' => "Order Confirmation From",
 				                                                      'options' => array("E-mail", "SMS")) ); ?>
 			</div>
+			<?php if ( array_key_exists('Addresses', $user) ) {?>
+				<div class="large-6 columns">
+					<?php echo $this->Form->input('User.Address', array('options' => $user['Addresses']));?>
+				</div>
+			<?php }?>
 		</div>
 		<div class="row">
 			<div class="large-12 columns">
@@ -118,7 +122,6 @@
 				</div>
 			</div>
 		</div>
-		<?php } ?>
 	</div>
 	<div id="on-close" class="true-hidden" data-action="reset-user-activity"></div>
 </div>

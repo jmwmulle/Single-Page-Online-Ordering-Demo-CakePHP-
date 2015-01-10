@@ -13,6 +13,7 @@ window.XBS = {
 			xProd: "",
 			xLoc: "xtreme"
 		},
+		orb_card_out_face: C.FRONT_FACE,
 		orb_card_animation_queue: {
 			animating:false,
 			queued:0
@@ -23,7 +24,9 @@ window.XBS = {
 		},
 		current_orb_card: null,
 		delays: {
+			global_transition: 300,
 			default_js_refresh: 30,
+			orb_card_row_toggle: 800,
 			menu_stash_delay: 900,
 			fold_splash: 3000,
 			splash_set_order_method: 3900
@@ -93,7 +96,10 @@ window.XBS = {
 			if (route.stop_propagation) event.stopPropagation();
 			var launch_delay = 0
 			var hide_class = false;
-			if (route.stash) launch_delay = 900;
+			if (route.stash) {
+				launch_delay = 900;
+				if (XBS.data.orb_card_out_face == C.BACK_FACE) launch_delay += 960;
+			}
 			if (route.overlay) launch_delay = 300;
 			if (in_array(route.modal, [XSM.modal.primary, XSM.modal.splash]))  hide_class = XSM.effects.slide_up;
 			if (hide_class && !$(route.modal).hasClass(hide_class) && route.url.defer == false ) {
@@ -176,19 +182,20 @@ window.XBS = {
 					params: ['context', 'restore'],
 					callbacks: {
 						params_set: function() {
+							var on_close = "<div id='on-close' class='true-hidden' data-action='unstash'></div>";
 							switch (this.read('context') ) {
 								case "review":
 									this.set_callback("launch", function(e) {
 										var data  = this.deferal_data;
 										var modal = this.modal;
 										var modal_content = this.modal_content;
-										pr(data, "defer deets");
 										XBS.layout.dismiss_modal(modal, false);
 										setTimeout(function(){
 											$(modal_content).html(data);
-											var new_button=  '<a href="#" id="submit-order-address" data-route="confirm_address/submit/review"'
-												+ ' class="box downward rel modal-submit">Back To Checkout</a>';
-											$("#submit-order-address").replaceWith(new_button);
+											$(XSM.modal.on_close).replaceWith(on_close);
+											$(XSM.modal.submit_order_address).replaceWith(
+												XSM.generated.order_address_button('review')
+											);
 											setTimeout(function() { $(modal).removeClass(XSM.effects.slide_up);}, 30);
 										}, 600);
 									});
@@ -201,9 +208,10 @@ window.XBS = {
 										XBS.layout.dismiss_modal(modal, false);
 										setTimeout(function(){
 											$(modal_content).html(data);
-											var new_button =  '<a href="#" id="submit-order-address" data-route="confirm_address/submit/menu"'
-												+ ' class="box downward rel modal-submit">OK! TO THE FOOD!</a>';
-											$("#submit-order-address").replaceWith(new_button);
+											$(XSM.modal.submit_order_address).replaceWith(
+												XSM.generated.order_address_button('menu')
+											);
+											$(XSM.modal.on_close).replaceWith(on_close);
 											setTimeout(function() { $(modal).removeClass(XSM.effects.slide_up);}, 30);
 										}, 600);
 									});
@@ -220,7 +228,7 @@ window.XBS = {
 									XBS.validation.submit_address(this, secondary_launch);}
 								);
 							}
-						},
+						}
 					}
 				}),
 				close_modal: new XtremeRoute("close_modal", {
@@ -272,6 +280,24 @@ window.XBS = {
 					modal: XSM.modal.primary,
 					url: {url: "finish-ordering"},
 					behavior: C.STASH_STOP
+				}),
+				footer: new XtremeRoute("footer", {
+					params: ["method"],
+					callbacks: {
+						launch: function() {
+							if ($(XSM.global.footer).hasClass('reveal') ) {
+								$(XSM.global.footer).addClass('stow');
+								setTimeout(function(){
+									$(XSM.global.footer).removeClass('reveal');
+									setTimeout(function(){
+										$(XSM.global.footer).removeClass('stow');}, 30);
+								},30);
+							}
+							if (!$(XSM.global.footer).hasClass('reveal') ) {
+								$(XSM.global.footer).addClass('reveal');
+							}
+						}
+					}
 				}),
 				login: new XtremeRoute("login", {
 					url: {url:false, type: C.POST},
@@ -379,16 +405,21 @@ window.XBS = {
 					}
 				}),
 				order: new XtremeRoute("order", {
-					params: ["method"],
+					params: ["method", "context"],
 					url: { url:"review-order", type: C.GET, defer:false},
 					modal: XSM.modal.primary,
 					callbacks: {
 						params_set: function() {
 							switch (this.read('method') ) {
 								case "clear":
-									this.url = { url: "clear-cart", type:C.GET, defer:false};
-									this.unset("launch");
-									XBS.menu.clear_cart();
+									this.url = { url: "clear-cart", type:C.GET, defer:true};
+									this.set_callback("launch", function() {
+										if (this.deferal_data) {
+											// todo: handle cart-clearance verification
+										}
+										XBS.menu.clear_cart();
+										XBS.layout.dismiss_modal(XSM.modal.primary);
+									});
 									break;
 								case "view":
 									this.url.url = "cart";
@@ -448,7 +479,7 @@ window.XBS = {
 					url: {url:"sign-up", type: C.POST, defer:true},
 					params: {
 						context:{},
-						channel:{value:null, url_fragment:true},
+						channel:{value:null, url_fragment:false},
 						restore:{},
 						hide_reg:{value:false}
 					},
@@ -471,23 +502,40 @@ window.XBS = {
 									this.url.defer = false;
 									this.unset('launch');
 									break;
-								}
+							case "orb_card":
+								this.set_callback("launch", function() {
+									var data = this.deferal_data;
+									$(XSM.modal.primary_content).html(data);
+									$($(XSM.modal.primary).find(".register-link.email")[0]).addClass(XSM.effects.active);
+									XBS.menu.toggle_orb_card_row_menu("register", C.HIDE);
+									setTimeout( function() {
+										$(XSM.modal.primary).removeClass(XSM.effects.slide_up);
+										setTimeout( function() {
+											$("#registration-method-bar").addClass("diminish");
+											setTimeout( function() {
+												$(XSM.modal.primary_deferred_content).removeClass(XSM.effects.slide_left);
+											}, XBS.data.delays.global_transition);
+										}, XBS.data.delays.global_transition);
+									}, XBS.data.delays.orb_card_row_toggle);
+								});
+								break;
+							}
 						},
 						launch: function() {
 							pr("launch callback firing", this.__debug("calbacks/launch"), 2);
 							var container = $(this.modal).find(XSM.modal.deferred_content)[0];
 							var load_time = 30;
-							if (this.read('hide_reg') ) {
-								$("#registration-method-bar").hide("clip", 300);
-								load_time = 300;
-							}
-							if (this.deferal_data) {
-								$(container).replaceWith(
-									$("<div/>").addClass([XSM.modal.deferred_content, XSM.effects.slide_left].join(" "))
-										.html(this.deferal_data)
-								);
-							}
-							setTimeout(function() { $(container).removeClass(XSM.effects.slide_left);}, load_time);
+							$("#registration-method-bar").addClass("diminish");
+							setTimeout(function() {
+								$(".register-link.email").addClass(XSM.effects.active);
+								if (this.deferal_data) {
+									$(container).replaceWith(
+										$("<div/>").addClass([XSM.modal.deferred_content, XSM.effects.slide_left].join(" "))
+											.html(this.deferal_data)
+									);
+								}
+								setTimeout(function() { $(container).removeClass(XSM.effects.slide_left);}, load_time);
+							}, 300);
 						}
 					}
 				}),
@@ -750,10 +798,10 @@ window.XBS = {
 			var modal_max_height;
 			var modal_left;
 			var modal_top;
-			if (modal == XSM.modal.primary || modal == XSM.modal.splash) {
+			if (modal == XSM.modal.primary) {
 				modal_width = 1200 / 12 * 8;
 				modal_max_height = 0.8 * $(window).innerHeight();
-				modal_top = 0.2 * $(window).innerHeight();
+				modal_top = 0.1 * $(window).innerHeight();
 				var pm_width = 0.8 * $(window).innerWidth();
 				if (pm_width > modal_width) {
 					modal_left = ($(window).innerWidth() - modal_width) / 2;
@@ -1214,6 +1262,7 @@ window.XBS = {
 			});
 		},
 		show_orb_card_front_face: function () {
+			XBS.data.orb_card_out_face = C.FRONT_FACE;
 			pr("<no args>", "show_orb_card_front_face");
 			// >>> START FLIP & FADE OUT ORBOPTS TOGETHER <<<
 			$(XSM.menu.orb_card_3d_context).removeClass(XSM.effects.flipped_y);
@@ -1240,6 +1289,7 @@ window.XBS = {
 			return true;
 		},
 		show_orb_card_back_face: function () {
+			XBS.data.orb_card_out_face = C.BACK_FACE;
 			var row_menu_hide_time = 0;
 			$(asClass(XSM.effects.swap_width)).each( function() {
 				row_menu_hide_time = 800;
@@ -1269,13 +1319,20 @@ window.XBS = {
 			}, row_menu_hide_time);
 		},
 		stash_menu: function () {
-			$(XSM.menu.user_activity_panel).addClass(XSM.effects.slide_up);
-			setTimeout(function() {
-				$(XSM.menu.orb_card_wrapper).addClass([XSM.effects.slide_left, XSM.effects.fade_out].join(" "));
+			var orb_card_timeout = 0;
+			if (XBS.data.orb_card_out_face == C.BACK_FACE) {
+				orb_card_timeout = 960;
+				XBS.menu.show_orb_card_front_face();
+			}
+			setTimeout( function() {
+				$(XSM.menu.user_activity_panel).addClass(XSM.effects.slide_up);
 				setTimeout(function() {
-					$(XSM.menu.orbcat_menu).addClass([XSM.effects.slide_right, XSM.effects.fade_out].join(" "));
+					$(XSM.menu.orb_card_wrapper).addClass([XSM.effects.slide_left, XSM.effects.fade_out].join(" "));
+					setTimeout(function() {
+						$(XSM.menu.orbcat_menu).addClass([XSM.effects.slide_right, XSM.effects.fade_out].join(" "));
+					}, 300);
 				}, 300);
-			}, 300);
+			}, orb_card_timeout);
 		},
 		unstash_menu: function () {
 			$(XSM.menu.orbcat_menu).removeClass([XSM.effects.slide_right, XSM.effects.fade_out].join(" "));
