@@ -17,9 +17,7 @@ var XSM = {
 		multi_activizing: ".multi-activizing",
 		page_content: "#page-content",
 		preserve_aspect_ratio: ".preserve-aspect-ratio",
-		route: "*[data-route]",
-		topbar: "#topbar",
-		topbar_cart_button: "#top-bar-view-cart"
+		route: "*[data-route]"
 	},
 	effects: {
 		active: "active",
@@ -160,6 +158,10 @@ var XSM = {
 		splash_link: ".splash-link"
 	},
 	topbar: {
+		self: "#topbar",
+		social_loading: "#social-loading",
+		icon_row: "#topbar .icon-row",
+		topbar_cart_button: "#top-bar-view-cart",
 		hover_text_link: ".topbar-social  a",
 		hover_text_label: "#topbar-hover-text-label",
 		hover_text_label_incoming: "#topbar-hover-text-label span.incoming",
@@ -169,9 +171,9 @@ var XSM = {
 		self:"footer#footer"
 	},
 	generated: {
-		order_form_order_opt: function(opt_id) { return asId("OrderOrbOrbopts" + opt_id) },
+		order_form_order_opt: function(opt_id) { return as_id("OrderOrbOrbopts" + opt_id) },
 		orb_card_row_content: function(row) { return "#orb-card-row-"+row+" div.orb-card-content" },
-		orb_opt_id: function(opt_id) { return asId("orb-opt-coverage-" + opt_id); },
+		orb_opt_id: function(opt_id) { return as_id("orb-opt-coverage-" + opt_id); },
 		orb_opt_icon: function(opt_id, weight) {
 			return $(opt_id).find(XSM.menu.orb_opt_icon + '[data-weight="' + weight + '"]')[0];
 		},

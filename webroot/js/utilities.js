@@ -154,13 +154,13 @@ $.fn.scrollTo = function (target, options, callback) {
 
 	function px_to_int(val) { return Number(val.split("px")[0]);}
 	/**
-	 * asId method
+	 * as_id method
 	 *
 	 * @desc
 	 * @param selector
 	 * @returns {*}
 	 */
-	function asId(selector) {
+	function as_id(selector) {
 		if (typeof(selector) === "string") {
 			return selector.substring(0, 1) === "#" ? selector : "#" + selector;
 		}

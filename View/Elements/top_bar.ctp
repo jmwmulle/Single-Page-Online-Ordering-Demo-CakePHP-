@@ -23,17 +23,28 @@ $social_route = $logged_in ? "social" : "login/topbar";
 
 <nav id="topbar" class="text-center">
 	<div class="row">
-		<div class="large-3 small-12 columns text-center topbar-social">
+		<div class="large-4 small-12 columns text-center topbar-social">
 			<div class="row">
-				<div class="large-12 columns icon-row">
+				<div id="social-loading" class="large-12 columns">
+					<span class="one icon-full"></span>
+					<span class="two icon-full"></span>
+					<span class="three icon-full"></span>
+				</div>
+				<div class="large-12 columns icon-row fade-out true-hidden">
 					<a href="<?php echo $logged_in ? "#" : "http://development-xtreme-pizza.ca/auth/twitter";?>"
 					   <?php if ($logged_in) echo "data-route='social/twitter'";?> data-hover_text="<?php echo $twitter_text;?>">
 						<span class="icon-twitter"></span>
 					</a>
-					<a href="<?php echo $logged_in ? "#" : "http://development-xtreme-pizza.ca/auth/facebook";?>"
-					   <?php if ($logged_in) echo "data-route='social/facebook'";?> data-hover_text="<?php echo $fb_text;?>">
+					<?php if (!$logged_in) { ?>
+					<a href="<?php if ($logged_in) {
+						echo "http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fdevelopment-xtreme-pizza.ca&width&layout=button_count&action=recommend&show_faces=true&share=true&height=21";
+					} else { echo "http://development-xtreme-pizza.ca/auth/facebook";}?>" data-hover_text="<?php echo $fb_text;?>">
 						<span class="icon-facebook"></span>
 					</a>
+					<?php } else { ?>
+					<div class="fb-like" data-href="http://development-xtreme-pizza.ca" data-width="48px" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+<!--						<fb:like href="http://development-xtreme-pizza.ca" layout="button_count" action="recommend" show_faces="true" share="true"></fb:like>-->
+					<?php } ?>
 					<a href="<?php echo $logged_in ? "#" : "http://development-xtreme-pizza.ca/auth/google";?>"
 					   <?php if ($logged_in) echo "data-route='social/google'";?> data-hover_text="<?php echo $gplus_text;?>">
 						<span class="icon-gplus  g-plusone"></span>
