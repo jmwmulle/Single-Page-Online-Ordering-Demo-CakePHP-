@@ -68,7 +68,6 @@ function XtremeRoute(name, data) {
 
 		this.__set_behavior("behavior" in data ? data.behavior : false);
 
-		pr(this.__stop_propagation, "this.__stop");
 		if ("callbacks" in data) {
 			if ("post_init" in data.callbacks) this.post_init_callback = data.callbacks.post_init
 			if ("params_set" in data.callbacks) this.params_set_callback = data.callbacks.params_set
@@ -83,7 +82,7 @@ function XtremeRoute(name, data) {
 	}
 
 	this.__set_behavior = function(behavior_mask) {
-		var debug_this = 1;
+		var debug_this = 0;
 		if (debug_this > 0) pr(behavior_mask, "Route::__set_behavior(behavior_mask)", 2);
 		switch (behavior_mask) {
 				case C.STASH:

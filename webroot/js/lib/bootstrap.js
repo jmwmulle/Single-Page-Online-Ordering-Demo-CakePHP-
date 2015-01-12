@@ -76,13 +76,11 @@ window.XBS = {
 		init: function() {
 			// From the DOM
 			$(C.BODY).on(C.CLK, XSM.global.route, null, function (e) {
-				pr(e, "launch event");
 				$(XBS.routing).trigger(C.ROUTE_REQUEST,{request:$(e.currentTarget).data('route'), trigger: e});
 			});
 
 			// Manual requests
 			$(this).on(C.ROUTE_REQUEST, function(e, data) {
-				pr(data, "man req");
 				var route = this.route(data.request, data.trigger);
 				if (route) this.launch(route, e);
 			});
@@ -354,8 +352,10 @@ window.XBS = {
 						params_set: function() {
 							switch (this.read('layer')) {
 								case 'weight':
-									this.trigger.event.stopPropagation();
-									XBS.menu.toggle_orb_opt_icon( this.trigger.element, false);
+									if ($(this.trigger.element).hasClass(XSM.effects.enabled) ) {
+										this.trigger.event.stopPropagation();
+										XBS.menu.toggle_orb_opt_icon( this.trigger.element, false);
+									}
 									break;
 								case "opt":
 									XBS.menu.toggle_orb_opt(this.read('element'), false);
@@ -600,8 +600,6 @@ window.XBS = {
 				var route = routes[request[0]];
 				route.__init(request[0], event);
 				route.init(request.slice(1));
-				pr(route.stop_propagation(), "route.storp");
-
 				return route;
 			}
 			return false;
