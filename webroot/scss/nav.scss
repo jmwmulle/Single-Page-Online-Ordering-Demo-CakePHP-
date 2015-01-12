@@ -1,4 +1,9 @@
-//----------------------------------------------------------------------------------------------------------------TOPNAV
+@-webkit-keyframes loading-dots {
+  0% { opacity:0; }
+  50% { opacity: 1;}
+  100% { opacity: 0;}
+}
+
 nav#topbar {
   position         : fixed;
   top              : 0;
@@ -13,7 +18,21 @@ nav#topbar {
     height      : $topnav-height !important;
     line-height :$topnav-social-row;
     font-size   :  $topnav-social-icon-height;
+    #social-loading {
+      span{
+        font-size: .75rem;
+        line-height:$topbar-height;
+      }
+      span.one { -webkit-animation : loading-dots 1s ease-in-out infinite normal 0s running forwards;}
+      span.two { -webkit-animation : loading-dots 1s ease-in-out infinite normal 0.333s running forwards;}
+      span.three { -webkit-animation : loading-dots 1s ease-in-out infinite normal 0.666s running forwards;}
+    }
     .icon-row {
+      .fb-like {
+        vertical-align:top;
+        margin-top: -0.3rem;
+      }
+      #__plusone_0 { max-width: 3rem;}
       height      : $topnav-social-row;
       hr#topbar-divider {
         padding:0;
