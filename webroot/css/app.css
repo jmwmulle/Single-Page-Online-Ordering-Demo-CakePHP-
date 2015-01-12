@@ -5177,7 +5177,9 @@ nav#topbar {
         vertical-align: top;
         margin-top: -0.3rem; }
       nav#topbar .topbar-social .icon-row #__plusone_0 {
-        max-width: 3rem; }
+        width: 3rem !important; }
+      nav#topbar .topbar-social .icon-row #twitter-widget-0 {
+        width: 4rem !important; }
       nav#topbar .topbar-social .icon-row hr#topbar-divider {
         padding: 0;
         margin: 0 !important;

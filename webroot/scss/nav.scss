@@ -32,7 +32,8 @@ nav#topbar {
         vertical-align:top;
         margin-top: -0.3rem;
       }
-      #__plusone_0 { max-width: 3rem;}
+      #__plusone_0 { width: 3rem !important;}
+      #twitter-widget-0 { width: 4rem !important;}
       height      : $topnav-social-row;
       hr#topbar-divider {
         padding:0;
