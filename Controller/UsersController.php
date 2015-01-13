@@ -119,6 +119,7 @@ $this->set(compact('groups'));*/
 /*add_favourite*/
 	public function add_favourite() {
 		if ($this->request->is('ajax')) {
+			$this->User->id = $this->Auth->user['id'];
 			if ($this->User->saveAssociated(json_decode($this->request->data))) {
 				return json_encode(array('success' => true));
 			}
@@ -133,11 +134,11 @@ $this->set(compact('groups'));*/
 	public function add_address() {
 
 		if ($this->request->is('ajax')) {
-			if ($this->User->Address->save(json_decode($this->request->data))) {
-				return json_encode(array('success' => true));
+			if ($this->User->saveAssocaited($this->request->data)) {
+				return json_encode(array('success' => true, 'error' => false));
 			}
 			else {
-				return json_encode(array('success' => false));
+				return json_encode(array('success' => false, 'error' => 'Could not save address'));
 			}
 		}
 		return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
