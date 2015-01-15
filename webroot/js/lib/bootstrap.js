@@ -74,14 +74,15 @@ window.XBS = {
 	},
 	routing: {
 		init: function() {
-			$(this).on(C.ROUTE_REQUEST, function(e, data) {
-				var route = this.route(data.request);
-				if (route) this.launch(route, e);
+			// From the DOM
+			$(C.BODY).on(C.CLK, XSM.global.route, null, function (e) {
+				$(XBS.routing).trigger(C.ROUTE_REQUEST,{request:$(e.currentTarget).data('route'), trigger: e});
 			});
-			$(this).on(C.ORB_ROW_ANIMATION_COMPLETE, function(e, data) {
-				XBS.data.orb_card_animation_queue.animating = false;
-				XBS.data.orb_card_animation_queue.queued -= 1;
-				XBS.menu.toggle_orb_card_row_menu(data.menu, data.finished = C.HIDE ? C.SHOW : C.HIDE);
+
+			// Manual requests
+			$(this).on(C.ROUTE_REQUEST, function(e, data) {
+				var route = this.route(data.request, data.trigger);
+				if (route) this.launch(route, e);
 			});
 		},
 		/**
@@ -90,10 +91,9 @@ window.XBS = {
 			 * @param event
 			 * @returns {boolean}
 			 */
-		launch: function (route, event) {
+		launch: function (route) {
 			var debug_this = 0;
-			if (debug_this > 0) pr([parent_route, params, event], "XBS.routing.launch(parent_route, params, event)", 2);
-			if (route.stop_propagation) event.stopPropagation();
+			if (debug_this > 0) pr([parent_route, params], "XBS.routing.launch(parent_route, params, event)", 2);
 			var launch_delay = 0
 			var hide_class = false;
 			if (route.stash) {
@@ -174,7 +174,7 @@ window.XBS = {
 			delete route;
 			return true;
 		},
-		route: function(request) {
+		route: function(request, event) {
 			var routes = {
 				confirm_address: new XtremeRoute("confirm_address", {
 					modal: XSM.modal.primary,
@@ -345,6 +345,25 @@ window.XBS = {
 					params:{ id:{value: null} },
 					callbacks: { params_set: function() { XBS.menu.refresh_orb_card_stage(this.params.id.value); } }
 				}),
+				orb_opt: new XtremeRoute("orb_opt", {
+					params: ["layer", "element", "title", "weight"],
+					behavior: C.STOP,
+					callbacks: {
+						params_set: function() {
+							switch (this.read('layer')) {
+								case 'weight':
+									if ($(this.trigger.element).hasClass(XSM.effects.enabled) ) {
+										this.trigger.event.stopPropagation();
+										XBS.menu.toggle_orb_opt_icon( this.trigger.element, false);
+									}
+									break;
+								case "opt":
+									XBS.menu.toggle_orb_opt(this.read('element'), false);
+									break;
+								}
+							}
+						}
+				}),
 				orb_card: new XtremeRoute("orb_card", {
 					params: ["method", "channel", "data"],
 					stop_propagation: true,
@@ -381,6 +400,7 @@ window.XBS = {
 						launch: function() {
 							var route = "flash/We weren't able to reach the store to place a delivery request. But you can always try calling!"
 							var response = $.parseJSON(this.deferal_data);
+							var trigger = this.trigger.event;
 							if ("success" in response && response.success === true) {
 								XBS.data.order_method = this.read('method');
 								if (this.read('method') == "delivery") {
@@ -398,8 +418,7 @@ window.XBS = {
 									}
 								}
 							} else if ("error" in response) { route = "flash/"+response.error; }
-							pr(route, 'request');
-							$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:route});
+							$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:route, trigger:trigger});
 						}
 
 					}
@@ -579,7 +598,7 @@ window.XBS = {
 			var request = request.split(C.DS);
 			if (request[0] in routes) {
 				var route = routes[request[0]];
-				route.__init(request[0]);
+				route.__init(request[0], event);
 				route.init(request.slice(1));
 				return route;
 			}
@@ -611,6 +630,19 @@ window.XBS = {
 			if (XBS.cfg.is_splash) XBS.layout.detachAnimationTargets();
 			var page_content_height = window.innerHeight - ($(XSM.global.topbar).innerHeight() + 3 * C.REM) + C.PX;
 			$(XSM.global.page_content).css({minHeight:page_content_height});
+			setTimeout(function() {
+				$(XSM.topbar.social_loading).addClass(XSM.effects.fade_out);
+				setTimeout(function() {
+					$(XSM.topbar.social_loading).hide(XSM.effects.fade_out);
+					setTimeout(function() {
+						$(XSM.topbar.icon_row).removeClass(XSM.effects.true_hidden)
+						setTimeout(function() {
+							$(XSM.topbar.icon_row).removeClass(XSM.effects.fade_out);
+						}, 30);
+					}, 300);
+				}, 300);
+			}, 1000);
+
 			return sit_rep;
 		},
 		detachAnimationTargets: function () {
@@ -624,12 +656,6 @@ window.XBS = {
 				});
 
 				return true;
-			},
-			init_routing: function() {
-				/** bind routes */
-				$(C.BODY).on(C.CLK, XSM.global.route, null, function (e) {
-					$(XBS.routing).trigger(C.ROUTE_REQUEST,{request:$(e.currentTarget).data('route')});
-				});
 			},
 			init_modals: function () {
 				/** initially hide overlay & bind dismiss-on-click */
@@ -650,12 +676,6 @@ window.XBS = {
 
 				return true
 			},
-//			bind_ajax_nav: function () {
-//				$(XSM.global.ajaxLink).each(function () {
-//					$(this).on(C.CLK, null, $(this).data(), XBS.load);
-//				});
-//				return true;
-//			},
 			bind_float_labels: function () {
 				$(C.BODY).on(C.MOUSEENTER, asClass(XSM.effects.float_label), null, function (e) {
 					XBS.layout.toggle_float_label($(e.currentTarget).data('float-label'), C.SHOW);
@@ -876,11 +896,7 @@ window.XBS = {
 				XBS.menu.update_orb_opt_filters_list(C.CHECK);
 
 				if (!is_mobile() ) {
-					pr("running");
-					var page_content_height = $(XSM.global.page_content).innerHeight();
-					$(XSM.global.footer).css({
-						top:$(XSM.global.page_content).innerHeight(),
-					});
+					$(XSM.global.footer).css( {top:$(XSM.global.page_content).innerHeight()} );
 					XBS.layout.fasten(XSM.menu.self).css({overflow:"hidden"});
 				}
 			}
@@ -901,19 +917,6 @@ window.XBS = {
 				return true;
 			},
 			bind_topping_methods: function () {
-				/** icon toggling */
-				$(C.BODY).on(C.CLK, XSM.menu.orb_opt_icon, null, function (e) {
-					if ($(e.currentTarget).hasClass(XSM.effects.enabled)) {
-						e.stopPropagation();
-						XBS.menu.toggle_orb_opt_icon(e.currentTarget, true);
-					}
-				});
-
-				/** orb_opt toggling */
-				$(C.BODY).on(C.CLK, XSM.menu.orb_opt, null, function (e) {
-					XBS.menu.toggle_orb_opt(e.currentTarget, true);
-				});
-
 				/** orb_opt filtering (check all) */
 				$(C.BODY).on(C.CLK, XSM.menu.orb_opt_filter_all, null, function (e) {
 					e.stopPropagation();
@@ -971,8 +974,9 @@ window.XBS = {
 			return true;
 		},
 		configure_orb: function (orb_id, price_rank) {
+			var debug_this = 0;
+			if (debug_this > 1) pr([orb_id, price_rank], "XBS.menu.configure_orb(orb_id, price_rank)", 2);
 			$(XSM.menu.orb_size_button).each(function () {
-				pr([$(this).data('priceRank'), price_rank]);
 				if ($(this).data('priceRank') == price_rank) XBS.layout.activize(this);
 			});
 			XBS.menu.show_orb_card_back_face()
@@ -1059,6 +1063,7 @@ window.XBS = {
 		 * @param orbcat_name
 		 */
 		refresh_active_orbcat_menu: function (orbcat_id, orbcat_name) {
+
 			pr([orbcat_id, orbcat_name], "refresh_active_orbcat_menu()");
 			// todo: fallback on ajax fail
 			var url = "menu" + C.DS + orbcat_id
@@ -1068,7 +1073,6 @@ window.XBS = {
 				var active_orbcat_menu = $.parseHTML(data)[1];
 				var orb_route = $($(active_orbcat_menu).find(XSM.menu.active_orbcat_item)[0]).data('route');
 				var active_orb_id = orb_route.split(C.DS)[1];
-
 
 				// >>> TOGGLE MENU HEADER; alternates rotating front-to-back or back-to-front <<<
 				if ($(XSM.menu.active_orb_name_3d_context).hasClass(XSM.effects.flipped_x)) {
@@ -1262,8 +1266,9 @@ window.XBS = {
 			});
 		},
 		show_orb_card_front_face: function () {
+			var debug_this = 0;
+			if (debug_this > 0) pr("<no args>", "XBS.menu.show_orb_card_front_face()", 2);
 			XBS.data.orb_card_out_face = C.FRONT_FACE;
-			pr("<no args>", "show_orb_card_front_face");
 			// >>> START FLIP & FADE OUT ORBOPTS TOGETHER <<<
 			$(XSM.menu.orb_card_3d_context).removeClass(XSM.effects.flipped_y);
 			$(XSM.menu.orb_opt).addClass(XSM.effects.fade_out);
@@ -1336,6 +1341,10 @@ window.XBS = {
 		},
 		unstash_menu: function () {
 			$(XSM.menu.orbcat_menu).removeClass([XSM.effects.slide_right, XSM.effects.fade_out].join(" "));
+			// todo: this is a bit of a hack; the over-all logic should preclude this next line, but,
+			// todo: "activizing" gets toggled during the orbcard flip, and if it's in the wrong state, toggles inversely
+			// todo: making orb-opts unselectable
+			$(XSM.menu.orb_card_stage_menu).addClass(XSM.effects.activizing);
 			setTimeout(function() {
 				$(XSM.menu.orb_card_wrapper).removeClass([XSM.effects.slide_left, XSM.effects.fade_out].join(" "));
 				setTimeout(function() {
@@ -1345,14 +1354,14 @@ window.XBS = {
 			XBS.menu.set_order_method();
 		},
 		toggle_orb_opt: function (element, trigger_update) {
-
+			var debug_this = 1;
+			if (debug_this > 0) pr([element, trigger_update], "XBS.menu.toggle_orb_opt(element, trigger_update)", 2);
 			if ($(element).hasClass(XSM.effects.active)) {
 				$(element).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
 				$(element).find(XSM.menu.orb_opt_icon).each(function () {
 					$(this).removeClass(XSM.effects.enabled).addClass(XSM.effects.disabled);
 				});
 			} else {
-				pr($(element));
 				$(element).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
 				$(element).find(XSM.menu.orb_opt_icon).each(function () {
 					$(this).removeClass(XSM.effects.disabled).addClass(XSM.effects.enabled);
@@ -1363,6 +1372,8 @@ window.XBS = {
 			return true;
 		},
 		toggle_orb_opt_icon: function (element, trigger_update) {
+			var debug_this = 1;
+			if (debug_this > 0) pr([element, trigger_update], "XBS.menu.toggle_orb_opt_icon(element, trigger_update)", 2);
 			XBS.layout.activize(element); // wraps activize so event propagation can be stopped
 			if (trigger_update === true) $(C.BODY).trigger(C.ORDER_UI_UPDATE);
 			return true;
@@ -1506,7 +1517,8 @@ window.XBS = {
 			return false;
 		},
 		configure: function () {
-//			try {
+			var debug_this = 1;
+			if (debug_this > 0) pr("<no args>", "XBS.cart.configure()", 2);
 				var orb_id = $(XSM.menu.orb_order_form_orb_id).val();
 				if ( !(orb_id in XBS.cart.configuring) ) XBS.cart.configuring[orb_id] = jQuery.extend({}, XBS.cart.empty_config);
 				XBS.cart.configuring[orb_id].quantity = $(XSM.menu.orb_order_form_quantity).val();
@@ -1516,12 +1528,7 @@ window.XBS = {
 					var opt_id = XBS.cart.from_attribute_id_str($(this).attr('id')).opt_id;
 					XBS.cart.configuring[orb_id].orbopts[opt_id] = $(this).val();
 				});
-			pr("ok");
 				return true;
-//			} catch(e) {
-//				pr(e.message, "XBS.cart.configure", true)
-//				return false;
-//			}
 		}
 	},
 	splash: {
@@ -1609,7 +1616,7 @@ window.XBS = {
 							XBS.layout.dismiss_modal(XSM.modal.primary);
 							if ( secondary_route ) {
 								setTimeout(function() {
-									$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:secondary_route});
+									$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:secondary_route, trigger:route.trigger.event});
 								}, 300);
 							}
 						}

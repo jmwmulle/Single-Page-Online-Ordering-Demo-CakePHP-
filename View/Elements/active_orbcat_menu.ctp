@@ -21,7 +21,7 @@ $classes = array('flush', 'l-3', "box", "rel", "rightward", "stretch", "activizi
 ><ul id="orb-card-stage-menu" <?php echo ___cD($classes);?>><?php
 	foreach($active_orbcat['orbs'] as $i => $orb) {
 		if ($orb['id'] != -1) { // ie if it's not a dummy orb
-			$classes = array('active-orbcat-item', "xtreme-select-list", "modal-link",
+			$classes = array('active-orbcat-item', "xtreme-select-list",
 			                 $orb['id'] == $active_orbcat['orb_card']['id'] ? 'active' : 'inactive'
 			);
 			$data = array("route" => "orb".DS.$orb['id']);

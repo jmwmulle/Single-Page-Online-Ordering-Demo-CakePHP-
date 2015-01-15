@@ -5138,6 +5138,16 @@ a.xtreme-button {
     a.xtreme-button.secondary:hover {
       background-color: #cecece; }
 
+@-webkit-keyframes loading-dots {
+  0% {
+    opacity: 0; }
+
+  50% {
+    opacity: 1; }
+
+  100% {
+    opacity: 0; } }
+
 nav#topbar {
   position: fixed;
   top: 0;
@@ -5152,8 +5162,24 @@ nav#topbar {
     height: 4.0625rem !important;
     line-height: 2.03125rem;
     font-size: 1.625rem; }
+    nav#topbar .topbar-social #social-loading span {
+      font-size: 0.75rem;
+      line-height: 65px; }
+    nav#topbar .topbar-social #social-loading span.one {
+      -webkit-animation: loading-dots 1s ease-in-out infinite normal 0s running forwards; }
+    nav#topbar .topbar-social #social-loading span.two {
+      -webkit-animation: loading-dots 1s ease-in-out infinite normal 0.333s running forwards; }
+    nav#topbar .topbar-social #social-loading span.three {
+      -webkit-animation: loading-dots 1s ease-in-out infinite normal 0.666s running forwards; }
     nav#topbar .topbar-social .icon-row {
       height: 2.03125rem; }
+      nav#topbar .topbar-social .icon-row .fb-like {
+        vertical-align: top;
+        margin-top: -0.3rem; }
+      nav#topbar .topbar-social .icon-row #__plusone_0 {
+        width: 3rem !important; }
+      nav#topbar .topbar-social .icon-row #twitter-widget-0 {
+        width: 4rem !important; }
       nav#topbar .topbar-social .icon-row hr#topbar-divider {
         padding: 0;
         margin: 0 !important;

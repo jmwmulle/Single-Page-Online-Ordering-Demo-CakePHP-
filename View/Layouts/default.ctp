@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -19,6 +20,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 ?>
 <!DOCTYPE html>
 <html>
+=======
+<!doctype html>
+<html class="no-js" lang="en" xmlns:fb="http://ogp.me/ns/fb#">
+>>>>>>> 84aaf84a3da8fbf84eeb0d9655f4b1cd70499835
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
@@ -42,6 +47,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		</div>
 		<div id="content">
 
+<<<<<<< HEAD
 			<?php echo $this->Session->flash(); ?>
 
 			<?php echo $this->fetch('content'); ?>
@@ -59,5 +65,38 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		</div>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>
+=======
+<body <?php echo ___cD( $body_class ); ?>>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+<?php
+	echo $this->Element( 'feedback' );
+	echo $this->Element( "top_bar" );
+?>
+<div id="page-content">
+
+<?php
+	echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );
+	echo $this->fetch( 'content' );
+?>
+</div>
+<?php
+	echo $this->Element( 'footer' );
+	echo $this->fetch( 'app' );
+	echo $this->fetch( 'main' );
+?>
+<script >
+  window.___gcfg = {
+    lang: 'zh-CN',
+    parsetags: 'onload'
+  };
+</script>
+>>>>>>> 84aaf84a3da8fbf84eeb0d9655f4b1cd70499835
 </body>
 </html>

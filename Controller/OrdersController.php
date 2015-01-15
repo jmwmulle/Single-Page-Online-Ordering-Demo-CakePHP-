@@ -454,7 +454,7 @@
 			$this->set( 'method', $method );
 			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = 'ajax';
-				if ( $this->request->is( 'POST' ) ) {
+				if ( $this->request->is( 'post' ) ) {
 					if ( !$this->Session->read( "Cart.Order.address_checked" ) ) {
 						$this->Session->write( 'Cart.Order.address_checked', false );
 					}
@@ -546,7 +546,13 @@
 						}
 					}
 					elseif ( $command == 'session' ) {
-						$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
+						if (!empty($data['orderAddress'])) {
+							$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
+							$this->Session->write( 'User.address', $data[ 'orderAddress' ] );
+							$this->Session->write( 'ThisIsNotARealKey.address', $data[ 'orderAddress' ] );
+						} else {
+							$this->Session->write('Cart.Order.triedToSetEmptyAddress', True);
+						}
 						$this->Session->write( 'Cart.Order.address_checked', true );
 						$this->set( "response", array( "success" => true,
 						                               "address" => $data [ 'orderAddress' ],
