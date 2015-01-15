@@ -73,24 +73,28 @@ class CartComponent extends Component {
 			}
 		}
 
-		$opts_prices = array();
+		$regular_opts_prices = array();
+		$premium_opts_prices = array();
 		if(!empty($orbopts)) {
 			foreach($orbopts as $key=>$orbopt) {
 				$opts_by_val = array_values($orbopt['Pricelist']);
-				array_push($opts_prices, $opts_by_val[$price_rank]*$position_to_price[$orbopts_list[$key]]);
+
+				#Check if Sauce and not Xtra
+				if (!$orbopt['Sauce'] or ($orbopts_list[$key] == D)) {
+					if ($orbopt['Premium']) {
+						array_push($premium_opts_prices, $opts_by_val[$price_rank]*$position_to_price[$orbopts_list[$key]]);
+					} else {
+						array_push($regular_opts_prices, $opts_by_val[$price_rank]*$position_to_price[$orbopts_list[$key]]);
+					}
+				} 
 			}
 		}
-		for ($i=$orb['Orb']['orbopts_count']; $i>0; $i--) {
-			$mins = array_keys($array, max($array));
-			$opts_prices[$mins[0]] = 0;
-		}
-
+		
 		$prices =  array_values($orb['Pricelist']);
 		$size_names = array_values($orb['Pricedict']);
 
 		$matched = False;
 		$current_data = array();
-		$this->Session->write('Test', 'Hello');
 		if ($this->Session->check('Cart.OrderItem')) {
 			$current_data = $this->Session->read('Cart.OrderItem');
 			foreach ($current_data as $key => $item) {
@@ -113,6 +117,10 @@ class CartComponent extends Component {
 				}
 			}
 		}
+		$regular_orbopts_prices = array_slice(rsort($regular_orbopts_prices),$orb['Orb']['orbopts_count']);
+		$premium_orbopts_prices = array_slice(rsort($premium_orbopts_prices),$orb['Orb']['premium_orbopts_count']);
+		$orbopts_prices = array_merge($regular_orbopts_prices, $premium_orbopts_prices);
+
 		if(!$matched && $quantity > 0) {
 			$item['orb_id'] = $orb['Orb']['id'];
 			$item['title'] = $orb['Orb']['title'];
