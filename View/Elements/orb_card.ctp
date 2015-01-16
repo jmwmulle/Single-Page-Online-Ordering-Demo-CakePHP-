@@ -7,7 +7,6 @@
 	 * About.me: about.me/thisimpetus
 	 */
 $logged_in = $this->Session->read('Auth');
-
 ?>
 <div id="orb-card-stage" class="l-2 box retracted">
 	<div id="orb-card-container" class="box abs l-2-2">
@@ -159,7 +158,7 @@ $logged_in = $this->Session->read('Auth');
 <?php if ($ajax) { ?>
 	<div id="orb-opts-container" class="true-hidden"
 		<?php
-			echo $this->Element('orb_opts_menu_header');
+			echo $this->Element('orb_opts_menu_header', array('filters' => $orb['filters']));
 			echo $this->Element('orb_opts_list', array('orb' => $orb, 'ul' => true));?>
 	</div>
 <?php } ?>

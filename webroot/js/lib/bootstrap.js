@@ -1119,6 +1119,7 @@ window.XBS = {
 
 			$.get(url, function (data) {
 				var orb_card_stage = $.parseHTML(data)[0];
+
 				// >>> EXTRACT ORB OPTS <<<
 				var orb_opts = $($(orb_card_stage).find(XSM.menu.orb_opt_container)[0]).find(XSM.menu.orb_opt);
 				var filters = $(orb_card_stage).find(XSM.menu.orb_opt_filters)[0];

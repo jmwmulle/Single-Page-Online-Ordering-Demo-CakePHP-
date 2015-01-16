@@ -156,7 +156,23 @@ footer {
   text-align:center;
   background-color: $xtreme-blue;
   &:hover { background-color : lighten($xtreme-blue, 15%) }
-  &.active { background-color:$xtreme-yellow; }
+  &.sauce {
+    background-color: $sauce-opt-bg-color;
+    &:hover { background-color: lighten($sauce-opt-bg-color, 15%);}
+  }
+  &.cheese {
+   background-color: $cheese-opt-bg-color;
+   &:hover { background-color: lighten($cheese-opt-bg-color, 15%);}
+ }
+  &.veggie {
+   background-color: $veggie-opt-bg-color;
+   &:hover { background-color: lighten($veggie-opt-bg-color, 15%);}
+ }
+  &.meat {
+    background-color: $meat-opt-bg-color;
+    &:hover { background-color: lighten($meat-opt-bg-color, 15%);}
+  }
+  &.active { background-color:$xtreme-yellow !important; }
   a, h1, h2, h3, h4, h5, span { color: $white;}
   &.active {
     a, h1, h2, h3, h4, h5, span { color: $dark-grey;}
