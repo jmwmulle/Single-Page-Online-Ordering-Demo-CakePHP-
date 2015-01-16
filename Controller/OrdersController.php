@@ -244,7 +244,7 @@
 				$to_return = array();
 				if ( !array_key_exists( 'OrderItem', $cart ) ) {
 					$cart[ 'OrderItem' ] = array();
-					$this->Session->wrote( 'Cart.OrderItem', array() );
+					$this->Session->write( 'Cart.OrderItem', array() );
 				}
 				foreach ( $cart[ 'OrderItem' ] as $item ) {
 					if ( !isset( $to_return[ intval( $item[ 'orb_id' ] ) ] ) ) {
@@ -328,12 +328,12 @@
 
 
 		public function review() {
-
+			$this->layout = "ajax";
 			$cart = $this->Session->read( 'Cart' );
+			$this->set('session', $cart);
+			$this->render();
 
-			if ( empty( $cart ) ) {
-				return $this->redirect( '/' );
-			}
+			if ( empty( $cart ) ) return $this->redirect( '/' );
 
 			if ( $this->request->is( 'post' ) ) {
 				$this->Order->set( $this->Session->read( 'Cart.Order' ) );

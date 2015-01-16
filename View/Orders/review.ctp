@@ -1,20 +1,12 @@
-<?php echo $this->set('title_for_layout', 'Order Review'); ?>
-
+<?php
+	echo json_encode(array($session, $this->Session->read('Cart')));
+	die();
+	?>
 <?php $this->Html->addCrumb('Order Review'); ?>
 <?php echo $this->Element('modal_masthead', array('header' => "Review Your Order",
                                                  'subheader' => "So close to food you can almost taste it..."));?>
 <?php echo $this->Html->script(array('shop_review.js'), array('inline' => false)); ?>
-<!---->
-<!--<style type="text/css">-->
-<!--	#ccbox {-->
-<!--		background: transparent url("--><?php //echo $this->webroot; ?><!--img/cards.png");-->
-<!--		margin: 0 0 10px 0;-->
-<!--		padding: 0 0 0 150px;-->
-<!--		width: 0;-->
-<!--		height: 23px;-->
-<!--		overflow: hidden;-->
-<!--	}-->
-<!--</style>-->
+
 <?php
 	$cart = $this->Session->read('Cart');
 	$order = array_key_exists('Order', $cart) ? $cart['Order'] : array();

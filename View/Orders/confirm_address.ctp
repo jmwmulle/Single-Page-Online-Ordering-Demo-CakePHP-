@@ -9,8 +9,7 @@
 	$cart = $this->Session->read('Cart');
 	$logged_in = $this->Session->read('Auth.User') ? true : false;
 	$user = $logged_in ? $this->Session->read('Auth.User.User') : array();
-	$logged_in = true;
-	$address = array("firstname" => "Jonathan", "lastname" => "Mulle");
+	#$logged_in = true;
 	#$user = array("Addresses" => array("3157 South St.", "9650 Bland St", "1 Queen St"));
 	if (array_key_exists('Order', $cart)) {
 		if (array_key_exists('address', $cart['Order'])) $address = $cart['Order']['address'];
