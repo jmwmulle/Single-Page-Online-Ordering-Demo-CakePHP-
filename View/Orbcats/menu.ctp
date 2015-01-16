@@ -11,7 +11,7 @@
  * $here
  * $orbcats_list
  */
-
+$cart
 $this->start('orbcats_menu');
 	$orbcat_menu_classes = array("large-block-grid-6", "small-block-grid-3", "float-pane", "activizing", "left", "box", "rel");
 ?>
