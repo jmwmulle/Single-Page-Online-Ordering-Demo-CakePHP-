@@ -181,6 +181,7 @@ class CartComponent extends Component {
 				$HST += $item['subtotal']*$HST_MULT;
 				$order_item_count++;
 			}
+			$d = array_key_exists('Order', $cart) ? $cart['Order'] : array();
 			$total = $subtotal+$HST+$delivery;
 			$d['order_item_count'] = $order_item_count;
 			$d['quantity'] = $quantity;
@@ -189,12 +190,6 @@ class CartComponent extends Component {
 			$d['delivery'] = sprintf('%01.2f', $delivery);
 			$d['total'] = sprintf('%01.2f', $total);
 			$d['deliverable'] = $total >= 10.0;
-			if (array_key_exists("Order", $cart)) {
-				if (array_key_exists('address', $cart['Order']) ) {
-					$d['address'] = $cart['Order']['address'];
-					$d['address_checked'] = $cart['Order']['address_checked'];
-				}
-			}
 			$this->Session->write('Cart.Order', $d);
 			return true;
 		}
