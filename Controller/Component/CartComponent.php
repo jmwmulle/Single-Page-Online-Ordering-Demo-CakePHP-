@@ -174,6 +174,7 @@ class CartComponent extends Component {
 			$cart['OrderItem'] = array();
 			$this->Session->write('Cart.OrderItem', array());
 		}
+		$d = array_key_exists('Order', $cart) ? $cart['Order'] : array();
 		if ( count($cart['OrderItem']) > 0) {
 			foreach ($cart['OrderItem'] as $item) {
 				$quantity += $item['quantity'];
@@ -181,7 +182,6 @@ class CartComponent extends Component {
 				$HST += $item['subtotal']*$HST_MULT;
 				$order_item_count++;
 			}
-			$d = array_key_exists('Order', $cart) ? $cart['Order'] : array();
 			$total = $subtotal+$HST+$delivery;
 			$d['order_item_count'] = $order_item_count;
 			$d['quantity'] = $quantity;
