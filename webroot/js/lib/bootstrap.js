@@ -451,11 +451,6 @@ window.XBS = {
 									this.url.type = C.POST;
 									this.url.defer = true;
 									break;
-							case "review":
-								this.url.defer = true;
-								this.set_callback('launch', function() {
-									pr($.parseJSON(this.deferal_data));
-								});
 							}
 						},
 						launch: function(e, fired_from) {

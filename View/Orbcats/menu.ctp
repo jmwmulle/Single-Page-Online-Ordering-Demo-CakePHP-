@@ -11,7 +11,7 @@
  * $here
  * $orbcats_list
  */
-$cart = $this->Session->read('cart');
+$order = $this->Session->read('Cart.Order');
 $this->start('orbcats_menu');
 	$orbcat_menu_classes = array("large-block-grid-6", "small-block-grid-3", "float-pane", "activizing", "left", "box", "rel");
 ?>
@@ -42,7 +42,7 @@ $this->start('orb_card_modal');?>
 				<div class="large-8 medium-6 small-12 large-centered medium-centered columns">
 					<ul class="small-block-grid-3" class="hn-l-cn">
 						<li class="text-center">
-							<a id="continue-ordering"  href="#" class="route" data-route="continue_ordering"><?php echo strtoupper("Continue Ordering");?></a>
+							<a id="continue-ordering"  href="#" data-route="continue_ordering"><?php echo strtoupper("Continue Ordering");?></a>
 						</li>
 						<li class="text-center">
 							<a id="view-order" href=#" data-route="order/view"><?php echo strtoupper("View Order");?></a>
@@ -79,6 +79,7 @@ $this->end('active_orb_card');
 					<div class="large-1 columns show-for-large-up">
 						<ul id="user-activity-panel" class="activizing text-center">
 							<li><h2 class="body-font-color">I AM</h2></li>
+							<?php $order_method = array_key_exists('order_method', $order) ? $order['order_method']: false; ?>
 							<li class="active default"><a class="body-font-color block" data-route="order_method/menu/browsing">Just<br />Browsing</a></li>
 							<li class="inactive">
 								<a class="body-font-color block modal-link overlay" data-route="order_method/menu/delivery">Ordering<br />(Delivery)</a>
