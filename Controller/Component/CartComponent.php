@@ -172,7 +172,7 @@ class CartComponent extends Component {
 		$deliverable = false;
 		if (!array_key_exists('OrderItem', $cart) )  {
 			$cart['OrderItem'] = array();
-			$this->Session->wrote('Cart.OrderItem', array());
+			$this->Session->write('Cart.OrderItem', array());
 		}
 		if ( count($cart['OrderItem']) > 0) {
 			foreach ($cart['OrderItem'] as $item) {
@@ -189,6 +189,12 @@ class CartComponent extends Component {
 			$d['delivery'] = sprintf('%01.2f', $delivery);
 			$d['total'] = sprintf('%01.2f', $total);
 			$d['deliverable'] = $total >= 10.0;
+			if (array_key_exists("Order", $cart)) {
+				if (array_key_exists('address', $cart['Order']) ) {
+					$d['address'] = $cart['Order']['address'];
+					$d['address_checked'] = $cart['Order']['address_checked'];
+				}
+			}
 			$this->Session->write('Cart.Order', $d);
 			return true;
 		}
