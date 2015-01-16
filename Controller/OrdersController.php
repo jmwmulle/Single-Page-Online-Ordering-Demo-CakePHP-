@@ -545,8 +545,7 @@
 					elseif ( $command == 'session' ) {
 						if (!empty($data['orderAddress'])) {
 							$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
-							$this->Session->write( 'User.address', $data[ 'orderAddress' ] );
-							$this->Session->write( 'ThisIsNotARealKey.address', $data[ 'orderAddress' ] );
+							$this->Session->write( 'Card.Order.delibery_instructions', $data[ 'instructions' ] );
 						} else {
 							$this->Session->write('Cart.Order.triedToSetEmptyAddress', True);
 						}
