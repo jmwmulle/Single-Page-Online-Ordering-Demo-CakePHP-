@@ -8,12 +8,12 @@
 	 */
 	$cart = $this->Session->read('Cart');
 	$logged_in = $this->Session->read('Auth.User') ? true : false;
-	$user = $logged_in ? $this->Session->read('Auth.User') : array();
+	$user = $logged_in ? $this->Session->read('Auth.User.User') : array();
 	$logged_in = true;
 	$address = array("firstname" => "Jonathan", "lastname" => "Mulle");
-	$user = array("Addresses" => array("3157 South St.", "9650 Bland St", "1 Queen St"));
+	#$user = array("Addresses" => array("3157 South St.", "9650 Bland St", "1 Queen St"));
 	if (array_key_exists('Order', $cart)) {
-		if (array_key_exists('address', $cart['Order'])) $address = $cart['order_address'];
+		if (array_key_exists('address', $cart['Order'])) $address = $cart['Order']['address'];
 	}
 	$update_command = "session";
 ?>
@@ -29,8 +29,8 @@
 						 and load it up!
 					</span>
 			<?php } else {?>
-				<h3 class="inline"> <?php echo $address['firstname']; ?></h3>
-				<h3 class="inline"> <?php echo $address['lastname']; ?></h3>
+				<h3 class="inline"> <?php echo $user['firstname']; ?></h3>
+				<h3 class="inline"> <?php echo $user['lastname']; ?></h3>
 			<?php } ?>
 			</div>
 			<div class="large-2 columns modal-header">
@@ -53,7 +53,7 @@
 			<div class="large-<?php echo array_key_exists('Addresses', $user) ? "3" : "6";?>  columns">
 				<?php echo $this->Form->input( 'phone', array(
 						'label' => "Phone Number",
-						'value' => array_key_exists("phonenumber", $address) ? $address['phonenumber'] : null)); ?>
+						'value' => array_key_exists("phone", $address) ? $address['phone'] : null)); ?>
 			</div>
 			<div class="large-<?php echo array_key_exists('Addresses', $user) ? "3" : "6";?>  columns">
 				<?php echo $this->Form->input( 'confirmation', array( 'type' => 'select',
