@@ -329,3 +329,11 @@ div.view-cart-row {
     }
   }
 }
+
+// ORDER/ REVIEW
+
+#micro-cart-contents  {
+  font-size: 0.75rem;
+  @include HelveticaMdCn;
+  line-height: 1rem;
+}

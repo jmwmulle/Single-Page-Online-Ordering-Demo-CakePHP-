@@ -1,7 +1,4 @@
-<?php
-	echo json_encode(array($session, $this->Session->read('Cart')));
-	die();
-	?>
+
 <?php $this->Html->addCrumb('Order Review'); ?>
 <?php echo $this->Element('modal_masthead', array('header' => "Review Your Order",
                                                  'subheader' => "So close to food you can almost taste it..."));?>
@@ -36,7 +33,7 @@
 				</div>
 				<div class="row">
 					<div class="large-12 columns">
-						Name: <?php echo sprintf("%s %s", $address['first_name'], $address['last_name']);?>
+						Name: <?php echo sprintf("%s %s", $address['firstname'], $address['lastname']);?>
 					</div>
 				</div>
 				<?php if (array_key_exists('email', $address) && !empty($address['email']) ) {?>
@@ -76,9 +73,9 @@
 </div>
 <hr />
 <div class="row">
-	<div class="large-6 columns">
-		<div class="row">
+	<div id="micro-cart-contents" class="large-6 columns">
 <?php foreach ($cart['OrderItem'] as $item) { ?>
+		<div class="row">
 			<div class="large-6 columns"> <?php echo $item['size_name']." "; echo $item['title']; ?></div>
 			<div class="large-2 columns"><?php echo $item['quantity']; ?></div>
 			<div class="large-4 columns"><?php echo $item['subtotal']; ?></div>
@@ -87,6 +84,11 @@
 	</div>
 	<div class="large-6 columns">
 		<h3>Total: <strong>$<?php echo $cart['Order']['total']; ?></strong></h3>
+	</div>
+</div>
+<div class="row">
+	<div class="large-12 columns">
+		<a href="#" class="modal-button full-width" data-route="order/finalize"><span class="text">Confirm & Order</span></a>
 	</div>
 </div>
 <?php echo $this->Form->create('Order'); ?>
@@ -106,7 +108,7 @@
 <br />
 
 <div class="row">
-	<div class="col col-sm-2">
+	<div class="large-4 columns">
 		<?php echo $this->Form->input('creditcard_month', array(
 			'label' => 'Expiration Month',
 			'class' => 'form-control',
@@ -135,20 +137,12 @@
 	</div>
 </div>
 
-<br />
-
 <div class="row">
-	<div class="col col-sm-2">
+	<div class="large-6 columns">
 		<?php echo $this->Form->input('creditcard_code', array('label' => 'Card Security Code', 'class' => 'form-control', 'maxLength' => 4)); ?>
 	</div>
 </div>
-
-<br />
-
 <?php endif; ?>
-
-<?php echo $this->Form->button('Submit Order', array('class' => 'btn btn-primary', 'ecape' => false)); ?>
-
 <?php echo $this->Form->end(); ?>
 
 <div id="on-close" class="true-hidden" data-action="unstash"></div>

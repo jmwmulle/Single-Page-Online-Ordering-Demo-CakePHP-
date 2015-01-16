@@ -328,14 +328,12 @@
 
 
 		public function review() {
-			$this->layout = "ajax";
 			$cart = $this->Session->read( 'Cart' );
-			$this->set('session', $cart);
-			$this->render();
 
 			if ( empty( $cart ) ) return $this->redirect( '/' );
 
-			if ( $this->request->is( 'post' ) ) {
+			if ($this->request->is('ajax') && $this->request->is( 'post' ) ) {
+				$this->layout = 'ajax';
 				$this->Order->set( $this->Session->read( 'Cart.Order' ) );
 				if ( $this->Order->validates() ) {
 					$order = $cart;
@@ -383,7 +381,6 @@
 					}
 					//$save = $this->Order->saveAll($order, array('validate' => 'first'));
 					if ( $save ) {
-
 						$this->set( compact( 'cart' ) );
 
 						/*App::uses('CakeEmail', 'Network/Email');
@@ -396,15 +393,15 @@
 								->emailFormat('text')
 								->viewVars(array('cart' => $cart))
 								->send();*/
-						$this->set( 'response', json_encode( array( 'action' => 'success' ) ) );
-						$this->render();
+						$this->set( 'response', array( 'success' => true, "error" => false ) );
+						$this->render('finalize_order');
 
 						return;
 					}
 					else {
 						$errors = $this->Order->invalidFields();
-						$this->set( compact( 'errors' ) );
-						$this->render();
+						$this->set('response', array( 'success' => false, "error" => $errors ));
+						$this->render('finalize_order');
 
 						return;
 					}

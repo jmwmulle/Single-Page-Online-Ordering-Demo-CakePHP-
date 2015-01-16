@@ -5707,6 +5707,11 @@ div.view-cart-row.total * {
       height: 1.5rem;
       line-height: 1.5rem; }
 
+#micro-cart-contents {
+  font-size: 0.75rem;
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+  line-height: 1rem; }
+
 #loadingScreen {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

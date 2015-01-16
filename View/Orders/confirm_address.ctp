@@ -9,11 +9,7 @@
 	$cart = $this->Session->read('Cart');
 	$logged_in = $this->Session->read('Auth.User') ? true : false;
 	$user = $logged_in ? $this->Session->read('Auth.User.User') : array();
-	#$logged_in = true;
-	#$user = array("Addresses" => array("3157 South St.", "9650 Bland St", "1 Queen St"));
-	if (array_key_exists('Order', $cart)) {
-		if (array_key_exists('address', $cart['Order'])) $address = $cart['Order']['address'];
-	}
+	$address = $this->Session->read('Cart.Order.address');
 	$update_command = "session";
 ?>
 <div class="row">
@@ -41,10 +37,10 @@
 		<?php if (!$logged_in) {?>
 		<div class="row">
 			<div class="large-6 columns">
-				<?php echo $this->Form->input( 'firstname');?>
+				<?php echo $this->Form->input( 'firstname', array('value' => $address ? $address['firstname'] : null));?>
 			</div>
 			<div class="large-6 columns">
-				<?php echo $this->Form->input( 'lastname');?>
+				<?php echo $this->Form->input( 'lastname', array('value' => $address ? $address['lastname'] : null));?>
 			</div>
 		</div>
 		<?php } ?>
@@ -52,7 +48,7 @@
 			<div class="large-<?php echo array_key_exists('Addresses', $user) ? "3" : "6";?>  columns">
 				<?php echo $this->Form->input( 'phone', array(
 						'label' => "Phone Number",
-						'value' => array_key_exists("phone", $address) ? $address['phone'] : null)); ?>
+						'value' => $address ? $address['phone'] : null)); ?>
 			</div>
 			<div class="large-<?php echo array_key_exists('Addresses', $user) ? "3" : "6";?>  columns">
 				<?php echo $this->Form->input( 'confirmation', array( 'type' => 'select',
@@ -60,9 +56,9 @@
 				                                                      'options' => array("E-mail", "SMS")) ); ?>
 			</div>
 			<?php if ( array_key_exists('Addresses', $user) ) {?>
-				<div class="large-6 columns">
-					<?php echo $this->Form->input('User.Address', array('options' => $user['Addresses']));?>
-				</div>
+			<div class="large-6 columns">
+				<?php echo $this->Form->input('User.Address', array('options' => $user['Addresses']));?>
+			</div>
 			<?php }?>
 		</div>
 		<div class="row">
@@ -98,8 +94,9 @@
 		</div>
 		<div class="row">
 			<div class="large-6 columns">
-				<?php echo $this->Form->input( 'instructions', array('type'  => 'textarea',
+				<?php echo $this->Form->input( 'delivery_instructions', array('type'  => 'textarea',
 					                                                'label' => 'Delivery Instructions',
+					                                                'value' => $addres ? $address['delivery_instructions'] : null,
 				                                                    'placeholder' => "Let our driver know about those hard-to-find stairs, or that pesky pet leopard in your back yard..."
 					) );?>
 			</div>
@@ -107,9 +104,9 @@
 				<div class="row">
 					<div class="large-12 columns">
 					<?php echo $this->Form->input( 'delivery_time' ); ?>
-				<?php echo $this->Form->input( 'city', array( 'type' => 'hidden',
+					<?php echo $this->Form->input( 'city', array( 'type' => 'hidden',
 				                                              'value' => array_key_exists('city', $address) ? $address['city'] : 'Halifax' ) );?>
-				<?php echo $this->Form->input( 'province', array( 'type' => 'hidden',
+					<?php echo $this->Form->input( 'province', array( 'type' => 'hidden',
 				                                                  'value' => 'Nova Scotia'  ));
 					  echo $this->Form->end(); ?>
 					</div>
