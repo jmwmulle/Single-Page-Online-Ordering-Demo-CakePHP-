@@ -36,7 +36,7 @@
 				</div>
 				<div class="row">
 					<div class="large-12 columns">
-						Name: <?php echo sprintf("%s %s", $address['firstname'], $address['lastname']);?>
+						Name: <?php echo sprintf("%s %s", $address['first_name'], $address['last_name']);?>
 					</div>
 				</div>
 				<?php if (array_key_exists('email', $address) && !empty($address['email']) ) {?>
