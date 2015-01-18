@@ -450,9 +450,9 @@
 					if ( !$this->Session->read( "Cart.Order.address_checked" ) ) {
 						$this->Session->write( 'Cart.Order.address_checked', false );
 					}
-					if ( in_array( $method, array( 'delivery', 'pickup' ) ) ) {
+					if ( in_array( $method, array( 'delivery', 'pickup', 'just_browsing' ) ) ) {
 						$this->Session->write( "Cart.Order.order_method", $method );
-						if ( $this->Auth->loggedIn() ) {
+						if ( $this->Auth->loggedIn() and $method == 'delivery') {
 							$options         = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
 							$user            = $this->User->find( 'first', $options );
 							$address_matches = in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] );
@@ -603,6 +603,6 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->disableCache();
-			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'step1', 'step2', 'review', 'index', 'view' );
+			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'review', 'index', 'view', 'getPending', 'setStatus', 'getStatus');
 		}
 	}
