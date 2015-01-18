@@ -69,12 +69,9 @@
 		 * @return the item information in AJAX
 		 */
 		public function add_to_cart() {
-			if ( $this->request->is( 'ajax' ) ) {
-				$this->layout = "ajax";
-			}
-			elseif ( $this->request->is( 'get' ) ) {
+//			if ( $this->request->is( 'ajax' ) ) $this->layout = "ajax";
+			if ( $this->request->is( 'get' ) ) {
 				$this->render();
-
 				return;
 			}
 			$products = array();
@@ -89,7 +86,6 @@
 					)
 				);
 				$item = $this->Cart->add( $id, $quantity, $price_rank, $orbopts, $preparation_instructions );
-
 				array_push( $products, $item );
 			}
 

@@ -420,14 +420,17 @@ window.JSInterface =
 								var launch = false;
 								if (in_array(this.read('method'), ['share', 'register'])) {
 									launch = function () { XBS.menu.toggle_orb_card_row_menu(this.read('method'), null);}
-								}
-								;
+								};
 								if (this.read('method') == 'configure') {
 									XBS.menu.configure_orb(this.read('channel'), this.read('data'));
 								}
 								if (this.read('method') == 'add_to_cart') {
 									if (this.read('channel') == 'confirm') {
-										launch = function () {XBS.menu.add_to_cart();}
+										this.url.defer = true
+										launch = function() {
+											pr(this.deferal_data);
+										};
+//										launch = function () {XBS.menu.add_to_cart();}
 									}
 									if (this.read('channel') == 'cancel') {
 										launch = XBS.menu.reset_orb_card_stage();

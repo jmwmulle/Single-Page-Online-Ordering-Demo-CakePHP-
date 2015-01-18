@@ -126,6 +126,7 @@ class OrbsController extends AppController {
 			$orb['Orb']['price_table'] = array_filter(array_slice(array_combine($orb['Pricedict'], $orb['Pricelist']), 1));
 			$orb['Orb']['Orbopt'] = $orb['Orbopt'];
 			$orb = $orb['Orb'];
+
 			foreach($orb['Orbopt'] as $opt) {
 				foreach ($filters as $filter => $count) {
 					if ($opt[$filter]) $filters[$filter]++;
@@ -136,8 +137,11 @@ class OrbsController extends AppController {
 			}
 
 			$orb['filters'] = array_keys($filters);
+
 			$this->set(compact('orb'));
 			$this->render();
+		} else {
+			$this->redirect(___cakeUrl('orbcats', 'menu'));
 		}
 	}
 

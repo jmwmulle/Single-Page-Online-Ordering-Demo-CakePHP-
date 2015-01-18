@@ -6,7 +6,7 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-
+pr($filters);
 ?>
 
 ><div id="orb-opts-menu-header" class="slide-right hidden box rel orb-card-stage-menu-header"
@@ -20,7 +20,7 @@
 	><li id="orb-opt-filters-all" class="box rightward"
 		><span class="icon-tab-arrow-l"></span
 		><ul class="flush"
-			><li><a href="#" class="orb-opt-filter-all" data-all="uncheck" >UNCHECK ALL</a></li
+			><li><a href="#" class="orb-opt-filter-all" data-all="uncheck">UNCHECK ALL</a></li
 			><li><a href="#" class="orb-opt-filter-all" data-all="check" >CHECK ALL</a></li
 		></ul
 	></li
