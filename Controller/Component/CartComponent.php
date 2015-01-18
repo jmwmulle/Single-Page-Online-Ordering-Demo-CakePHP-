@@ -116,9 +116,11 @@ class CartComponent extends Component {
 				}
 			}
 		}
-		$regular_orbopts_prices = array_slice(rsort($regular_orbopts_prices),$orb['Orb']['orbopts_count']);
-		$premium_orbopts_prices = array_slice(rsort($premium_orbopts_prices),$orb['Orb']['premium_orbopts_count']);
-		$orbopts_prices = array_merge($regular_orbopts_prices, $premium_orbopts_prices);
+		rsort($regular_opts_prices);
+		rsort($premium_opts_prices);
+		$regular_opts_prices = array_slice($regular_opts_prices,$orb['Orb']['opt_count']);
+		$premium_opts_prices = array_slice($premium_opts_prices,$orb['Orb']['premium_count']);
+		$orbopts_prices = array_merge($regular_opts_prices, $premium_opts_prices);
 
 		if(!$matched && $quantity > 0) {
 			$item['orb_id'] = $orb['Orb']['id'];
