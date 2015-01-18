@@ -329,29 +329,6 @@
 				$cart = $this->Session->read( 'Cart' );
 
 				if ( empty( $cart ) ) return $this->redirect( '/' );
-
-			    if ($this->request->is( 'post' ) ) {
-					$this->Order->set( $this->Session->read( 'Cart.Order' ) );
-					if ( $this->Order->validates() ) {
-						$order = $cart;
-						$this->Order->set( 'detail', json_encode( $cart ) );
-						$this->Order->set( 'invoice', "Not Yet Implemented" );
-						$order[ 'Order' ][ 'status' ] = 1;
-
-						if ( $cart[ 'Order' ][ 'payment_method' ] == 'paypal' ) {
-							$paypal = $this->Paypal->ConfirmPayment( $order[ 'Order' ][ 'total' ] );
-							//debug($resArray);
-							$ack = strtoupper( $paypal[ 'ACK' ] );
-							if ( $ack == 'SUCCESS' || $ack == 'SUCCESSWITHWARNING' ) {
-								$order[ 'Order' ][ 'status' ] = 2;
-							}
-							$order[ 'Order' ][ 'authorization' ] = $paypal[ 'ACK' ];
-							//$order['Order']['transaction'] = $paypal['PAYMENTINFO_0_TRANSACTIONID'];
-
-					$this->set( compact( 'cart' ) );
-						}
-					}
-			    }
 			} else {
 				$this->redirect("/menu");
 			}
@@ -453,9 +430,6 @@
 			}*/
 
 				$this->set( compact( 'cart' ) );
-			} else {
-				$this->redirect('/menu');
-				}
 			} else {
 				return $this->redirect(array('controller'=>'menu', 'action'=>''));
 			}
