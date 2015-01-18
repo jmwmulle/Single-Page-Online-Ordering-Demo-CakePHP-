@@ -120,10 +120,8 @@ class OrbcatsController extends AppController {
 		$this->menu(null, null, true);
 	}
 
-	public function menu($orbcat_id = null, $orb_id = null, $return = false) {
+	public function menu($orbcat_id = null, $orb_id = null) {
 		$page_name = 'menu';
-
-//		$this->layout = "menu";
 
 		$orbcat_id = (!$orbcat_id || !$this->Orbcat->exists($orbcat_id)) ? 1 : $orbcat_id; // default to pizza if null
 		$this->Orbcat->id = $orbcat_id;
@@ -144,20 +142,22 @@ class OrbcatsController extends AppController {
 			// next line drops the 'id' field after combining the pricelist & pricedict into a table
 			$orb['price_table'] = array_filter(array_slice(array_combine($orb['Pricedict'], $orb['Pricelist']), 1));
 			$active_orbcat['orbs'][$i] = $orb;
-			if ($orb['id'] == $orb_id) $active_orbcat["orb_card"] = $orb; // active orb set here is orb requested
+			if ($orb['id'] == $orb_id) $active_orbcat["orb_card"] = $orb; // active orb set here if orb requested
 		}
 		if ($active_orbcat["orb_card"] == null) { $active_orbcat["orb_card"] = $active_orbcat['orbs'][0];}
 
 		$filters =  array("premium" => 0, "meat" => 0, "veggie" => 0, "sauce" => 0, "cheese" => 0);
+
 		foreach($active_orbcat["orb_card"]['Orbopt'] as $opt) {
 			foreach ($filters as $filter => $count) {
 				if ($opt[$filter]) $filters[$filter]++;
 			}
 		}
-		foreach ($filters as $filter => $count) {
-			if ($count == 0) unset($filters[$filter]);
-		}
-		$active_orbcat["orb_card"]['filters'] = count($filters) > 0 ? array_keys($filters) : array();
+
+		foreach ($filters as $filter => $count) if ( !($count > 0) ) unset($filters[$filter]);
+
+		$active_orbcat["orb_card"]['filters'] = array_keys($filters);
+
 		if ( count($active_orbcat['orbs']) < $this->min_orb_count) {
 			// fills active orb menu with dummy orbs
 			while (count($active_orbcat['orbs']) != $this->min_orb_count) {
@@ -166,12 +166,7 @@ class OrbcatsController extends AppController {
 		}
 		$this->set(compact('active_orbcat','orbcats_list','page_name'));
 		if ($this->request->is("ajax")) {
-			if ($return) {
-				$this->layout = "ajax";
-				$this->render();
-			} else {
-				$this->render('ajax_menu', 'ajax');
-			}
+			$this->render('ajax_menu', 'ajax');
 		}
 	}
 

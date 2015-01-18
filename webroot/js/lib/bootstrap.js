@@ -426,11 +426,11 @@ window.JSInterface =
 								}
 								if (this.read('method') == 'add_to_cart') {
 									if (this.read('channel') == 'confirm') {
-										this.url.defer = true
-										launch = function() {
-											pr(this.deferal_data);
-										};
-//										launch = function () {XBS.menu.add_to_cart();}
+//										this.url.defer = true
+//										launch = function() {
+//											pr(this.deferal_data);
+//										};
+										launch = function () {XBS.menu.add_to_cart();}
 									}
 									if (this.read('channel') == 'cancel') {
 										launch = XBS.menu.reset_orb_card_stage();
@@ -1002,18 +1002,17 @@ window.JSInterface =
 			add_to_cart: function () {
 				// todo: ajax fallbacks
 				$.ajax({
-					type: 'POST',
+					type: C.POST,
 					url: "orders/add_to_cart",
 					data: $(XSM.menu.orb_order_form).serialize(),
 					success: function (data) {
+						pr(data);
 						data = JSON.parse(data);
 						if (data.success == true) {
 							XBS.cart.add_to_cart();
 							$(XSM.modal.orb_card).show('clip');
 							$(XSM.global.topbar_cart_button).show()
 							setTimeout(function () { $(XSM.global.topbar_cart_button).removeClass(XSM.effects.fade_out);}, 300);
-
-
 						}
 					}
 				});

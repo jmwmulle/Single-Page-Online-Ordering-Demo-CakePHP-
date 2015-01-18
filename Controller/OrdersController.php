@@ -69,7 +69,7 @@
 		 * @return the item information in AJAX
 		 */
 		public function add_to_cart() {
-//			if ( $this->request->is( 'ajax' ) ) $this->layout = "ajax";
+			if ( $this->request->is( 'ajax' ) ) $this->layout = "ajax";
 			if ( $this->request->is( 'get' ) ) {
 				$this->render();
 				return;
@@ -101,8 +101,7 @@
 				                                            "success" => true, "cart_total" => $total )
 					)
 				);
-			}
-			else {
+			} else {
 				$this->set( "response", json_encode( array( "orb" => null, "success" => false, "cart_total" => null )
 					)
 				);

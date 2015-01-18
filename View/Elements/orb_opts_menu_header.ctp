@@ -6,7 +6,6 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-pr($filters);
 ?>
 
 ><div id="orb-opts-menu-header" class="slide-right hidden box rel orb-card-stage-menu-header"
