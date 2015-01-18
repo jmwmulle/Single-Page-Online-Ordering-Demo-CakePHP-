@@ -13,7 +13,7 @@
  */
 $order = $this->Session->read('Cart.Order') ? $this->Session->read('Cart.Order') : array();
 $this->start('orbcats_menu');
-	$orbcat_menu_classes = array("large-block-grid-6", "small-block-grid-3", "float-pane", "activizing", "left", "box", "rel");
+$orbcat_menu_classes = array("large-block-grid-6", "small-block-grid-3", "float-pane", "activizing", "left", "box", "rel");
 ?>
 <ul id="orbcat-menu" <?php echo ___cD($orbcat_menu_classes);?>>
 	<?php

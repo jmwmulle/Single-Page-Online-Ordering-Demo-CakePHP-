@@ -6,7 +6,6 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-pr($filters);
 ?>
 
 ><div id="orb-opts-menu-header" class="slide-right hidden box rel orb-card-stage-menu-header"
@@ -26,5 +25,5 @@ pr($filters);
 	></li
 	></ul
 <?php } else { ?>
-		<h2>Nothing to see here!</h2
+		><h2>Nothing to see here!</h2
 <?php }?>></div

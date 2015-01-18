@@ -6572,7 +6572,8 @@ input#orderOrbQuantity {
   padding: 0.3125rem;
   padding-left: 10.74219rem;
   overflow: hidden;
-  z-index: 8010; }
+  z-index: 8010;
+  background-color: transparent !important; }
   #orb-opt-filters li {
     cursor: pointer;
     float: left;

@@ -43,9 +43,6 @@
 </head>
 
 <body <?php echo ___cD( $body_class ); ?>>
-<!--<div style="position: fixed; top:0; left:0; padding:1rem; z-index:99999999;">-->
-<!--	--><?php //pr($this->Session->read()); ?>
-<!--</div>-->
 <?php
 	echo $this->Element( 'feedback' );
 	echo $this->Element( "top_bar" );

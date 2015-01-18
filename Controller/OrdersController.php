@@ -70,10 +70,10 @@
 		 */
 		public function add_to_cart() {
 //			if ( $this->request->is( 'ajax' ) ) $this->layout = "ajax";
-			if ( $this->request->is( 'get' ) ) {
-				$this->render();
-				return;
-			}
+			//if ( $this->request->is( 'get' ) ) {
+			//	$this->render();
+			//	return;
+			//}
 			$products = array();
 			foreach ( $this->request->data[ 'Order' ] as $orb ) {
 				extract( array_merge( array(
@@ -88,7 +88,6 @@
 				$item = $this->Cart->add( $id, $quantity, $price_rank, $orbopts, $preparation_instructions );
 				array_push( $products, $item );
 			}
-
 			$this->Cart->update();
 			if ( !empty( $products ) ) {
 				if ( $this->Session->check( 'Cart.Order.total' ) ) {
@@ -97,12 +96,12 @@
 				else {
 					$total = null;
 				}
+				
 				$this->set( "response", json_encode( array( "Order"   => array( "Orbs" => $products ),
 				                                            "success" => true, "cart_total" => $total )
 					)
 				);
-			}
-			else {
+			} else {
 				$this->set( "response", json_encode( array( "orb" => null, "success" => false, "cart_total" => null )
 					)
 				);
@@ -451,9 +450,9 @@
 					if ( !$this->Session->read( "Cart.Order.address_checked" ) ) {
 						$this->Session->write( 'Cart.Order.address_checked', false );
 					}
-					if ( in_array( $method, array( 'delivery', 'pickup' ) ) ) {
+					if ( in_array( $method, array( 'delivery', 'pickup', 'just_browsing' ) ) ) {
 						$this->Session->write( "Cart.Order.order_method", $method );
-						if ( $this->Auth->loggedIn() ) {
+						if ( $this->Auth->loggedIn() and $method == 'delivery') {
 							$options         = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
 							$user            = $this->User->find( 'first', $options );
 							$address_matches = in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] );
@@ -563,11 +562,39 @@
 			}
 		}
 
+		public function getStatus($id) {
+			if ($this->request->is('ajax')) {
+				$conditions = array('conditions' => array('Order.id' => $id));
+				if ($this->Order->find('first', $conditions)) {
+					$this->set('response', array('success'=>true, 'status'=>$this->Order['status'], 'error'=>Null));
+				} else {
+					$this->set('response', array('success'=>false, 'status'=>Null, 'error'=>'Order not found.'));
+				}
+			} else {
+				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
+			}
+		}
+
+		public function setStatus($id, $status) {
+			if ($this->request->is('ajax')) {
+				$conditions = array('conditions' => array('Order.id' => $id));
+				if ($this->Order->find('first', $conditions)) {
+					$this->Order->set('status', $status);
+					if ($this->Order->save()) {
+						$this->set('response', array('success'=>true, 'error'=>Null));
+					} else {
+						$this->set('response', array('success'=>false, 'error'=>'Failed to save updated order.'));
+					}
+                                } else {
+                                        $this->set('response', array('success'=>false, 'error'=>'Order not found.'));
+                                }
+			}
+		}
+
 		public function getPending() {
-			if ($this->request->is('ajax') {
+			if ($this->request->is('ajax')) {
 				$conditions = array( 'conditions' => array( 'Order.status' => 0));
 				$this->set('Orders', $this->Order->find('all', $conditions));
-				return;
 			} else {
 				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 			}
@@ -576,6 +603,6 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->disableCache();
-			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'step1', 'step2', 'review', 'index', 'view' );
+			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'review', 'index', 'view', 'getPending', 'setStatus', 'getStatus');
 		}
 	}
