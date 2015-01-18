@@ -96,7 +96,7 @@
 				if ( $this->User->save( $this->request->data ) ) {
 					$this->Session->setFlash( __( 'The user has been saved.' ) );
 
-					return $this->redirect( array( 'action' => 'index' ) );
+					return $this->redirect( array( 'controller' => 'menu', 'action' => '') );
 				}
 				else {
 					$this->Session->setFlash( __( 'The user could not be saved. Please, try again.' ) );
@@ -304,7 +304,7 @@
 						$this->Session->write( 'stashedUser', null );
 					}
 					$exUser = $this->User->find( 'first', array( 'conditions' => $conditions ) );
-					if ( $this->Auth->login( array_merge( $exUser, array( 'id' => $exUser[ 'User' ][ 'id' ] ) ) ) ) {
+					if ( $this->Auth->login( $exUser['User'] ) ) {
 						$this->Session->setFlash( __( "Welcome back, " + $exUser[ 'User' ][ 'firstname' ] ) );
 
 						return $this->redirect( ___cakeUrl( 'users', 'edit', $this->Auth->user( 'id' ) ) );
@@ -339,11 +339,11 @@
 			$group = $this->User->Group;
 
 			// Allow admins to everything
-			$group->id = 1;
+			$group->id = 2;
 			$this->Acl->allow( $group, 'controllers' );
 
 			// allow managers to posts and widgets
-			$group->id = 2;
+			$group->id = 1;
 			$this->Acl->deny( $group, 'controllers' );
 			$this->Acl->allow( $group, 'controllers/users/edit' );
 			$this->Acl->allow( $group, 'controllers/users/index' );

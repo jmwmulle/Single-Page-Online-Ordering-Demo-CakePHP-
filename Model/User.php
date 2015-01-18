@@ -9,7 +9,7 @@
 	 */
 	class User extends AppModel {
 
-		public $actsAs = array( 'Acl' => array( 'type' => 'requester' ) );
+		public $actsAs = array( 'Acl' => array( 'type' => 'requester', 'enable' => false) );
 
 		/**
 		 * Validation rules
@@ -215,6 +215,12 @@
 			else {
 				return array( 'Group' => array( 'id' => $groupId ) );
 			}
+		}
+
+		public function bindNode() {
+			$data = AuthComponent::user();
+			return array('model' => 'Group', 'foreign_key' => $data['User']['group_id']);
+		
 		}
 			
 		public function checkUnique($ignoredData, $fields, $or = false) {
