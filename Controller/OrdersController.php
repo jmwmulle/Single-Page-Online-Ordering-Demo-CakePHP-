@@ -562,11 +562,39 @@
 			}
 		}
 
+		public function getStatus($id) {
+			if ($this->request->is('ajax')) {
+				$conditions = array('conditions' => array('Order.id' => $id));
+				if ($this->Order->find('first', $conditions)) {
+					$this->set('response', array('success'=>true, 'status'=>$this->Order['status'], 'error'=>Null));
+				} else {
+					$this->set('response', array('success'=>false, 'status'=>Null, 'error'=>'Order not found.'));
+				}
+			} else {
+				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
+			}
+		}
+
+		public function setStatus($id, $status) {
+			if ($this->request->is('ajax')) {
+				$conditions = array('conditions' => array('Order.id' => $id));
+				if ($this->Order->find('first', $conditions)) {
+					$this->Order->set('status', $status);
+					if ($this->Order->save()) {
+						$this->set('response', array('success'=>true, 'error'=>Null));
+					} else {
+						$this->set('response', array('success'=>false, 'error'=>'Failed to save updated order.'));
+					}
+                                } else {
+                                        $this->set('response', array('success'=>false, 'error'=>'Order not found.'));
+                                }
+			}
+		}
+
 		public function getPending() {
 			if ($this->request->is('ajax')) {
 				$conditions = array( 'conditions' => array( 'Order.status' => 0));
 				$this->set('Orders', $this->Order->find('all', $conditions));
-				return;
 			} else {
 				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
 			}
