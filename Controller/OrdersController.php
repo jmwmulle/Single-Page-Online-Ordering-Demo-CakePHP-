@@ -70,10 +70,11 @@
 		 */
 		public function add_to_cart() {
 //			if ( $this->request->is( 'ajax' ) ) $this->layout = "ajax";
-			if ( $this->request->is( 'get' ) ) {
-				$this->render();
-				return;
-			}
+			//if ( $this->request->is( 'get' ) ) {
+			//	$this->render();
+			//	return;
+			//}
+			db($this->request->data);
 			$products = array();
 			foreach ( $this->request->data[ 'Order' ] as $orb ) {
 				extract( array_merge( array(
@@ -88,7 +89,8 @@
 				$item = $this->Cart->add( $id, $quantity, $price_rank, $orbopts, $preparation_instructions );
 				array_push( $products, $item );
 			}
-
+			db(json_encode( array( "Order"   => array( "Orbs" => $products ),
+				                                                                            "success" => true, "cart_total" => $total)));
 			$this->Cart->update();
 			if ( !empty( $products ) ) {
 				if ( $this->Session->check( 'Cart.Order.total' ) ) {
@@ -97,6 +99,7 @@
 				else {
 					$total = null;
 				}
+				
 				$this->set( "response", json_encode( array( "Order"   => array( "Orbs" => $products ),
 				                                            "success" => true, "cart_total" => $total )
 					)
@@ -564,7 +567,7 @@
 		}
 
 		public function getPending() {
-			if ($this->request->is('ajax') {
+			if ($this->request->is('ajax')) {
 				$conditions = array( 'conditions' => array( 'Order.status' => 0));
 				$this->set('Orders', $this->Order->find('all', $conditions));
 				return;
