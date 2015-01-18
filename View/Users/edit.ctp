@@ -7,11 +7,6 @@
                 echo $this->Form->input('email');
 		echo $this->Form->input('firstname');
 		echo $this->Form->input('lastname');
-		echo $this->Form->input('address');
-		echo $this->Form->input('address_2');
-		echo $this->Form->input('city');
-		echo $this->Form->input('province');
-		echo $this->Form->input('postal_code');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

@@ -327,6 +327,36 @@
 
 			if ( empty( $cart ) ) return $this->redirect( '/' );
 
+			
+
+			/*if(($cart['Order']['payment_method'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
+				$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
+				$cart['Order']['last_name'] = $cart['Paypal']['Details']['LASTNAME'];
+				$cart['Order']['email'] = $cart['Paypal']['Details']['EMAIL'];
+				$cart['Order']['phone'] = '888-888-8888';
+				$cart['Order']['billing_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
+				$cart['Order']['billing_address2'] = '';
+				$cart['Order']['billing_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
+				$cart['Order']['billing_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
+				$cart['Order']['billing_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
+				$cart['Order']['billing_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
+
+				$cart['Order']['shipping_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
+				$cart['Order']['shipping_address2'] = '';
+				$cart['Order']['shipping_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
+				$cart['Order']['shipping_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
+				$cart['Order']['shipping_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
+				$cart['Order']['shipping_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
+
+				$cart['Order']['payment_method'] = 'paypal';
+
+				$this->Session->write('Shop.Order', $cart['Order']);
+			}*/
+
+			$this->set( compact( 'cart' ) );
+		}
+
+		public function finalize() {
 			if ($this->request->is('ajax') && $this->request->is( 'post' ) ) {
 				$this->layout = 'ajax';
 				$this->Order->set( $this->Session->read( 'Cart.Order' ) );
@@ -334,14 +364,14 @@
 					$order = $cart;
 					$this->Order->set( 'detail', json_encode( $cart ) );
 					$this->Order->set( 'invoice', "Not Yet Implemented" );
-					$order[ 'Order' ][ 'status' ] = 1;
+					$order[ 'Order' ][ 'status' ] = $ORDER_PENDING;
 
 					if ( $cart[ 'Order' ][ 'payment_method' ] == 'paypal' ) {
 						$paypal = $this->Paypal->ConfirmPayment( $order[ 'Order' ][ 'total' ] );
 						//debug($resArray);
 						$ack = strtoupper( $paypal[ 'ACK' ] );
 						if ( $ack == 'SUCCESS' || $ack == 'SUCCESSWITHWARNING' ) {
-							$order[ 'Order' ][ 'status' ] = 2;
+							$order[ 'Order' ][ 'status' ] = $ORDER_PAID;
 						}
 						$order[ 'Order' ][ 'authorization' ] = $paypal[ 'ACK' ];
 						//$order['Order']['transaction'] = $paypal['PAYMENTINFO_0_TRANSACTIONID'];
@@ -401,33 +431,9 @@
 						return;
 					}
 				}
+			} else {
+				return $this->redirect(array('controller'=>'menu', 'action'=>''));
 			}
-
-			/*if(($cart['Order']['payment_method'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
-				$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
-				$cart['Order']['last_name'] = $cart['Paypal']['Details']['LASTNAME'];
-				$cart['Order']['email'] = $cart['Paypal']['Details']['EMAIL'];
-				$cart['Order']['phone'] = '888-888-8888';
-				$cart['Order']['billing_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
-				$cart['Order']['billing_address2'] = '';
-				$cart['Order']['billing_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
-				$cart['Order']['billing_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
-				$cart['Order']['billing_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
-				$cart['Order']['billing_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
-
-				$cart['Order']['shipping_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
-				$cart['Order']['shipping_address2'] = '';
-				$cart['Order']['shipping_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
-				$cart['Order']['shipping_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
-				$cart['Order']['shipping_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
-				$cart['Order']['shipping_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
-
-				$cart['Order']['payment_method'] = 'paypal';
-
-				$this->Session->write('Shop.Order', $cart['Order']);
-			}*/
-
-			$this->set( compact( 'cart' ) );
 		}
 
 
@@ -562,7 +568,7 @@
 			}
 		}
 
-		public function getStatus($id) {
+		public function get_status($id) {
 			if ($this->request->is('ajax')) {
 				$conditions = array('conditions' => array('Order.id' => $id));
 				if ($this->Order->find('first', $conditions)) {
@@ -575,7 +581,7 @@
 			}
 		}
 
-		public function setStatus($id, $status) {
+		public function set_status($id, $status) {
 			if ($this->request->is('ajax')) {
 				$conditions = array('conditions' => array('Order.id' => $id));
 				if ($this->Order->find('first', $conditions)) {
@@ -591,9 +597,9 @@
 			}
 		}
 
-		public function getPending() {
+		public function get_pending() {
 			if ($this->request->is('ajax')) {
-				$conditions = array( 'conditions' => array( 'Order.status' => 0));
+				$conditions = array( 'conditions' => array( 'Order.status' => $ORDER_PENDING));
 				$this->set('Orders', $this->Order->find('all', $conditions));
 			} else {
 				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
