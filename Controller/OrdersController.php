@@ -323,85 +323,82 @@
 
 
 		public function review() {
-			$cart = $this->Session->read( 'Cart' );
-
-			if ( empty( $cart ) ) return $this->redirect( '/' );
-
-			if ($this->request->is('ajax') && $this->request->is( 'post' ) ) {
+			if ($this->request->is('ajax') ) {
 				$this->layout = 'ajax';
-				$this->Order->set( $this->Session->read( 'Cart.Order' ) );
-				if ( $this->Order->validates() ) {
-					$order = $cart;
-					$this->Order->set( 'detail', json_encode( $cart ) );
-					$this->Order->set( 'invoice', "Not Yet Implemented" );
-					$order[ 'Order' ][ 'status' ] = 1;
+				$cart = $this->Session->read( 'Cart' );
 
-					if ( $cart[ 'Order' ][ 'payment_method' ] == 'paypal' ) {
-						$paypal = $this->Paypal->ConfirmPayment( $order[ 'Order' ][ 'total' ] );
-						//debug($resArray);
-						$ack = strtoupper( $paypal[ 'ACK' ] );
-						if ( $ack == 'SUCCESS' || $ack == 'SUCCESSWITHWARNING' ) {
-							$order[ 'Order' ][ 'status' ] = 2;
+				if ( empty( $cart ) ) return $this->redirect( '/' );
+
+			    if ($this->request->is( 'post' ) ) {
+					$this->Order->set( $this->Session->read( 'Cart.Order' ) );
+					if ( $this->Order->validates() ) {
+						$order = $cart;
+						$this->Order->set( 'detail', json_encode( $cart ) );
+						$this->Order->set( 'invoice', "Not Yet Implemented" );
+						$order[ 'Order' ][ 'status' ] = 1;
+
+						if ( $cart[ 'Order' ][ 'payment_method' ] == 'paypal' ) {
+							$paypal = $this->Paypal->ConfirmPayment( $order[ 'Order' ][ 'total' ] );
+							//debug($resArray);
+							$ack = strtoupper( $paypal[ 'ACK' ] );
+							if ( $ack == 'SUCCESS' || $ack == 'SUCCESSWITHWARNING' ) {
+								$order[ 'Order' ][ 'status' ] = 2;
+							}
+							$order[ 'Order' ][ 'authorization' ] = $paypal[ 'ACK' ];
+							//$order['Order']['transaction'] = $paypal['PAYMENTINFO_0_TRANSACTIONID'];
 						}
-						$order[ 'Order' ][ 'authorization' ] = $paypal[ 'ACK' ];
-						//$order['Order']['transaction'] = $paypal['PAYMENTINFO_0_TRANSACTIONID'];
-					}
 
-					if ( ( Configure::read( 'Settings.AUTHORIZENET_ENABLED' ) == 1 ) &&
-					     $cart[ 'Order' ][ 'payment_method' ] == 'creditcard'
-					) {
-						$payment = array(
-							'creditcard_number' => $this->request->data[ 'Order' ][ 'creditcard_number' ],
-							'creditcard_month'  => $this->request->data[ 'Order' ][ 'creditcard_month' ],
-							'creditcard_year'   => $this->request->data[ 'Order' ][ 'creditcard_year' ],
-							'creditcard_code'   => $this->request->data[ 'Order' ][ 'creditcard_code' ],
-						);
-						try {
-							$authorizeNet = $this->AuthorizeNet->charge( $cart[ 'Order' ], $payment );
-						} catch ( Exception $e ) {
-							$this->Session->setFlash( $e->getMessage() );
+						if ( (Configure::read( 'Settings.AUTHORIZENET_ENABLED' ) == 1 ) && $cart[ 'Order' ][ 'payment_method' ] == 'creditcard') {
+							$payment = array(
+								'creditcard_number' => $this->request->data[ 'Order' ][ 'creditcard_number' ],
+								'creditcard_month'  => $this->request->data[ 'Order' ][ 'creditcard_month' ],
+								'creditcard_year'   => $this->request->data[ 'Order' ][ 'creditcard_year' ],
+								'creditcard_code'   => $this->request->data[ 'Order' ][ 'creditcard_code' ],
+							);
+							try {
+								$authorizeNet = $this->AuthorizeNet->charge( $cart[ 'Order' ], $payment );
+							} catch ( Exception $e ) {
+								$this->Session->setFlash( $e->getMessage() );
 
-							return $this->redirect( array( 'action' => 'review' ) );
+								return $this->redirect( array( 'action' => 'review' ) );
+							}
+							$order[ 'Order' ][ 'authorization' ] = $authorizeNet[ 4 ];
+							$order[ 'Order' ][ 'transaction' ]   = $authorizeNet[ 6 ];
 						}
-						$order[ 'Order' ][ 'authorization' ] = $authorizeNet[ 4 ];
-						$order[ 'Order' ][ 'transaction' ]   = $authorizeNet[ 6 ];
-					}
 
-					if ( $this->Auth->loggedIn() ) {
-						$this->User->set( 'id', $this->Auth->user[ 'id' ] );
-						$this->User->saveAssociated( $this->Order );
-					}
-					else {
-						$save = $this->Order->save();
-					}
-					//$save = $this->Order->saveAll($order, array('validate' => 'first'));
-					if ( $save ) {
-						$this->set( compact( 'cart' ) );
+						if ( $this->Auth->loggedIn() ) {
+							$this->User->set( 'id', $this->Auth->user[ 'id' ] );
+							$this->User->saveAssociated( $this->Order );
+						} else {
+							$save = $this->Order->save();
+						}
+						//$save = $this->Order->saveAll($order, array('validate' => 'first'));
+						if ( $save ) {
+							$this->set( compact( 'cart' ) );
 
-						/*App::uses('CakeEmail', 'Network/Email');
-						$email = new CakeEmail();
-						$email->from('xtremepizzahalifax@gmail.com')
-								->cc('xtremepizzahalifax@gmail.com')
-								->to($cart['Order']['email'])
-								->subject('Xtreme Pizza Order Confirmation')
-								->template('order')
-								->emailFormat('text')
-								->viewVars(array('cart' => $cart))
-								->send();*/
-						$this->set( 'response', array( 'success' => true, "error" => false ) );
-						$this->render('finalize_order');
+							/*App::uses('CakeEmail', 'Network/Email');
+							$email = new CakeEmail();
+							$email->from('xtremepizzahalifax@gmail.com')
+									->cc('xtremepizzahalifax@gmail.com')
+									->to($cart['Order']['email'])
+									->subject('Xtreme Pizza Order Confirmation')
+									->template('order')
+									->emailFormat('text')
+									->viewVars(array('cart' => $cart))
+									->send();*/
+							$this->set( 'response', array( 'success' => true, "error" => false ) );
+							$this->render('finalize_order');
 
-						return;
-					}
-					else {
-						$errors = $this->Order->invalidFields();
-						$this->set('response', array( 'success' => false, "error" => $errors ));
-						$this->render('finalize_order');
+							return;
+						} else {
+							$errors = $this->Order->invalidFields();
+							$this->set('response', array( 'success' => false, "error" => $errors ));
+							$this->render('finalize_order');
 
-						return;
+							return;
+						}
 					}
-				}
-			}
+			    }
 
 			/*if(($cart['Order']['payment_method'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
 				$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
@@ -427,7 +424,10 @@
 				$this->Session->write('Shop.Order', $cart['Order']);
 			}*/
 
-			$this->set( compact( 'cart' ) );
+				$this->set( compact( 'cart' ) );
+			} else {
+				$this->redirect('/menu');
+			}
 		}
 
 

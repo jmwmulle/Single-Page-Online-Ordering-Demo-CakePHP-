@@ -689,9 +689,9 @@ window.JSInterface =
 							setTimeout(function () {
 								$(XSM.topbar.icon_row).removeClass(XSM.effects.fade_out);
 							}, 30);
-						}, 300);
-					}, 300);
-				}, 1000);
+						}, 0);
+					}, 0);
+				}, 0);
 
 				return sit_rep;
 			},

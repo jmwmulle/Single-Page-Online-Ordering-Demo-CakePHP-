@@ -5,6 +5,7 @@
 <?php echo $this->Html->script(array('shop_review.js'), array('inline' => false)); ?>
 
 <?php
+	$credit_card_available = Configure::read('Settings.AUTHORIZENET_ENABLED') == 1;
 	$cart = $this->Session->read('Cart');
 	$order = array_key_exists('Order', $cart) ? $cart['Order'] : array();
 	$address = array_key_exists('address', $order) ? $order['address'] : array();
@@ -20,35 +21,37 @@
 		<?php } else { ?>
 		<div class="row">
 		<?php if ($order_method == "delivery") { ?>
-			<div class="large-6 columns">
-				<?php if ( count($address) == 0  ) { ?>
-				<div class="row">
-					<div class="large-12 columns">
-						<a href="#" class="modal-button" data-route="order_method/review/delivery">Set Delivery Address</a>
-					</div>
+				<?php if ( empty($address) ) { ?>
+				<div class="large-12 columns">
+					<a href="#" class="modal-button bisecting cancel left" data-route="order_method/review/just_browsing">
+						<span class="text">Change</span>
+					</a>
+					<a href="#" class="modal-button bisecting confirm right" data-route="order_method/review/delivery">
+						<span class="text">Set Delivery Address</span>
+					</a>
 				</div>
 				<?php } else {?>
-				<div class="row">
-					<div class="large-12 columns"><h4 class="panel-title">Customer Information</h4></div>
-				</div>
-				<div class="row">
-					<div class="large-12 columns">
-						Name: <?php echo sprintf("%s %s", $address['firstname'], $address['lastname']);?>
+				<div class="large-6 columns">
+					<div class="row">
+						<div class="large-12 columns"><h4 class="panel-title">Customer Information</h4></div>
 					</div>
-				</div>
+					<div class="row">
+						<div class="large-12 columns">
+							Name: <?php echo sprintf("%s %s", $address['firstname'], $address['lastname']);?>
+						</div>
+					</div>
 				<?php if (array_key_exists('email', $address) && !empty($address['email']) ) {?>
-				<div class="row">
-					<div class="large-12 columns">
-						Email: <?php echo $customer['email'];?>
+					<div class="row">
+						<div class="large-12 columns">
+							Email: <?php echo $customer['email'];?>
+						</div>
 					</div>
-				</div>
 				<?php } ?>
-				<div class="row">
-					<div class="large-12 columns">
-						Phone: <?php echo $address['phone'];?>
+					<div class="row">
+						<div class="large-12 columns">
+							Phone: <?php echo $address['phone'];?>
+						</div>
 					</div>
-				</div>
-			<?php }?>
 			</div>
 			<div class="large-6 columns">
 				<div class="row">
@@ -62,9 +65,10 @@
 					</div>
 				</div>
 			</div>
-		<?php } else { ?>
+			<?php }
+			} else { ?>
 			<div class="large-12 columns">
-				<a href="#" class="modal-button full-width active" data-route="order_method/review/delivery"><span class="text">Order is for Pick-Up</span></a>
+				<a href="#" class="modal-button full-width active" data-route="order_method/review/just_browsing"><span class="text">Order is for Pick-Up</span></a>
 			</div>
 		<?php } ?>
 		</div>
@@ -86,15 +90,27 @@
 		<h3>Total: <strong>$<?php echo $cart['Order']['total']; ?></strong></h3>
 	</div>
 </div>
+<?php if ($order_method == "delivery") {?>
+<div id="payment-method" class="row">
+	<div class="large-12 columns">
+		<a id="order-payment-cash" href="#" class="modal-button bisecting left active activizing" data-route="order/payment/cash">
+			<span class="text">Cash</span>
+		</a>
+		<a id="order-payment-cash" href="#" class="modal-button bisecting right activizing"  data-route="order/payment/debit">
+			<span class="text">Debit at your Door</span>
+		</a>
+	</div>
+</div>
+<?php } ?>
 <div class="row">
 	<div class="large-12 columns">
-		<a href="#" class="modal-button full-width" data-route="order/finalize"><span class="text">Confirm & Order</span></a>
+		<a href="#" class="modal-button bisecting cancel left" data-route="order/clear"><span class="text">Cancel Order</span></a>
+		<a href="#" class="modal-button bisecting confirm right" data-route="order/finalize"><span class="text">Confirm & Order</span></a>
 	</div>
 </div>
 <?php echo $this->Form->create('Order'); ?>
 
-<?php if((Configure::read('Settings.AUTHORIZENET_ENABLED') == 1) && $cart['Order']['order_type'] == 'creditcard') : ?>
-
+<?php if ($credit_card_available) {?>
 <div id="ccbox">
 	Credit Card Type.
 </div>
@@ -142,7 +158,9 @@
 		<?php echo $this->Form->input('creditcard_code', array('label' => 'Card Security Code', 'class' => 'form-control', 'maxLength' => 4)); ?>
 	</div>
 </div>
-<?php endif; ?>
-<?php echo $this->Form->end(); ?>
+<?php }
+	echo $this->Form->input('payment_method', array('type' => 'hidden', 'value' => 'cash'));
+	echo $this->Form->end();
+?>
 
 <div id="on-close" class="true-hidden" data-action="unstash"></div>
