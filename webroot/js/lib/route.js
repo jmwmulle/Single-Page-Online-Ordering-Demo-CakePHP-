@@ -7,9 +7,9 @@ function XtremeRoute(name, data) {
 	// data
 	this.route_name = "";
 
-	this.trigger = {event:false, element: false};
+	this.trigger = {event: false, element: false};
 	this.modal = false;
-	this.url = {url: false, type: false, defer:false};
+	this.url = {url: false, type: false, defer: false};
 	this.params = false;
 	this.deferal_data = false;
 
@@ -34,11 +34,11 @@ function XtremeRoute(name, data) {
 	 * @returns {boolean}
 	 * @private
 	 */
-	this.__init = function(name, e) {
-		this.trigger = {event:e, element: e.currentTarget};
+	this.__init = function (name, e) {
+		this.trigger = {event: e, element: e.currentTarget};
 		data = this.route_data;
 		var debug_this = 0;
-		if (debug_this > 0) pr([name, data], this.__debug("init",["name", "data"]));
+		if (debug_this > 0) pr([name, data], this.__debug("init", ["name", "data"]));
 		this.route_name = name;
 		if ("modal" in data) {
 			this.modal = data.modal;
@@ -52,13 +52,13 @@ function XtremeRoute(name, data) {
 
 		if ("params" in data) {
 			this.params = {};
-			if ( isArray(data.params) ) {
+			if (isArray(data.params)) {
 				for (var i = 0; i < data.params.length; i++) {
-					this.params[data.params[i]] = {value:false, url_fragment:false, post_init:false};
+					this.params[data.params[i]] = {value: false, url_fragment: false, post_init: false};
 				}
 			} else {
 				for (var param in data.params) {
-					this.params[param] = {value:false, url_fragment:false, post_init: false};
+					this.params[param] = {value: false, url_fragment: false, post_init: false};
 					if ("value" in data.params[param]) this.params[param].value = data.params[param].value;
 					if ("url_fragment" in data.params[param]) this.params[param].url_fragment = data.params[param].url_fragment;
 					if ("post_init" in data.params[param]) this.params[param].post_init = data.params[param].post_init === true;
@@ -81,51 +81,51 @@ function XtremeRoute(name, data) {
 		return true;
 	}
 
-	this.__set_behavior = function(behavior_mask) {
+	this.__set_behavior = function (behavior_mask) {
 		var debug_this = 0;
 		if (debug_this > 0) pr(behavior_mask, "Route::__set_behavior(behavior_mask)", 2);
 		switch (behavior_mask) {
-				case C.STASH:
-					this.stash = true;
-					this.overlay = false;
-					this.__stop_propagation = false;
-					break;
-				case C.OL:
-					this.stash = false;
-					this.overlay = true;
-					this.__stop_propagation = false;
-					break;
-				case C.STASH_OL:
-					this.stash = true;
-					this.overlay = true;
-					this.__stop_propagation = false;
-					break;
-				case C.STOP:
-					this.stash = false;
-					this.overlay = false;
-					this.__stop_propagation = true;
-					break;
-				case C.STASH_STOP:
-					this.stash = true;
-					this.overlay = false;
-					this.__stop_propagation = true;
-					break;
-				case C.OL_STOP:
-					this.stash = false;
-					this.overlay = true;
-					this.__stop_propagation = true;
-					break;
-				case C.STASH_OL_STOP:
-					this.stash = true;
-					this.overlay = true;
-					this.__stop_propagation = true;
-					break;
-				default:
-					this.stash = false;
-					this.overlay = false;
-					this.__stop_propagation = false;
-					break;
-			}
+			case C.STASH:
+				this.stash = true;
+				this.overlay = false;
+				this.__stop_propagation = false;
+				break;
+			case C.OL:
+				this.stash = false;
+				this.overlay = true;
+				this.__stop_propagation = false;
+				break;
+			case C.STASH_OL:
+				this.stash = true;
+				this.overlay = true;
+				this.__stop_propagation = false;
+				break;
+			case C.STOP:
+				this.stash = false;
+				this.overlay = false;
+				this.__stop_propagation = true;
+				break;
+			case C.STASH_STOP:
+				this.stash = true;
+				this.overlay = false;
+				this.__stop_propagation = true;
+				break;
+			case C.OL_STOP:
+				this.stash = false;
+				this.overlay = true;
+				this.__stop_propagation = true;
+				break;
+			case C.STASH_OL_STOP:
+				this.stash = true;
+				this.overlay = true;
+				this.__stop_propagation = true;
+				break;
+			default:
+				this.stash = false;
+				this.overlay = false;
+				this.__stop_propagation = false;
+				break;
+		}
 		return true;
 	}
 
@@ -134,11 +134,11 @@ function XtremeRoute(name, data) {
 	 * init() instance initiation
 	 * @param param_values
 	 */
-	this.init = function(param_values) {
+	this.init = function (param_values) {
 		$(this).off();
 		var debug_this = 0;
 		if (debug_this > 0) pr(param_values, "XtremeRoute::init_instance(param_values)");
-		this.route_name =  "*" + this.route_name + "[" + new Date().getTime() + "]";
+		this.route_name = "*" + this.route_name + "[" + new Date().getTime() + "]";
 		if (this.launch_callback) $(this).on("route_launched", this.launch_callback);
 		if (param_values) this.__set_params(param_values);
 		return true;
@@ -148,7 +148,7 @@ function XtremeRoute(name, data) {
 	 * toString() re-implementing prototype method
 	 * @returns {string}
 	 */
-	this.toString = function() { return "XtremeRoute["+this.route_name+"]";}
+	this.toString = function () { return "XtremeRoute[" + this.route_name + "]";}
 
 	/**
 	 * __debug() gives method string for printing to console
@@ -157,9 +157,9 @@ function XtremeRoute(name, data) {
 	 * @returns {string}
 	 * @private
 	 */
-	this.__debug = function(method_str, args) {
+	this.__debug = function (method_str, args) {
 		if (!!args) {
-			if (isArray(args)) args =  args.join(", ");
+			if (isArray(args)) args = args.join(", ");
 			return this.toString() + "::" + method_str + "(" + args + ")"
 		} else {
 			return this.toString() + "::" + method_str + "#"
@@ -172,7 +172,7 @@ function XtremeRoute(name, data) {
 	 * @returns {boolean}
 	 * @private
 	 */
-	this.__set_params = function(param_values) {
+	this.__set_params = function (param_values) {
 		var debug_this = 0;
 		if (debug_this > 0) pr(param_values, "XtremeRoute::__set_params(param vals)");
 		if (param_values.length > 0) {
@@ -181,12 +181,12 @@ function XtremeRoute(name, data) {
 				if (!param_values[i]) continue;
 				if (this.params[param_keys[i]].post_init) continue; // was dynamically set and won't be in route str.
 				if (this.params[param_keys[i]].url_fragment) {
-					if ( !this.url_append(param_values[i]) && debug_this > 1) {
+					if (!this.url_append(param_values[i]) && debug_this > 1) {
 						pr({
 								param: param_keys[i],
 								value: param_values[i],
 								params: this.params,
-								values:param_values},
+								values: param_values},
 							"Route::url_append() failed", true);
 					}
 				}
@@ -200,7 +200,7 @@ function XtremeRoute(name, data) {
 		}
 
 		if (this.params_set_callback) {
-			if (debug_this > 1) pr("Executing params_set callback.","XtremeRoute::__set_params()");
+			if (debug_this > 1) pr("Executing params_set callback.", "XtremeRoute::__set_params()");
 			if (debug_this > 2) pr(this.params, "XtremeRoute::__set_params()");
 			this.params_set_callback();
 		}
@@ -213,14 +213,14 @@ function XtremeRoute(name, data) {
 	 * @param fragment
 	 * @returns {boolean}
 	 */
-	this.url_append = function(fragment) {
+	this.url_append = function (fragment) {
 		var debug_this = 0;
 		if (debug_this > 0) pr(fragment, "Route::url_append(fragment)");
 		if (typeof(fragment) == "string") {
 			if (debug_this > 1) pr("fragment length > 0; proceeding", "Route::url_append()");
 			if (typeof(fragment) == "string") {
 				if (debug_this > 1) pr("this.url.url length > 0; appending", "Route::url_append()");
-				 this.url.url += C.DS + fragment;
+				this.url.url += C.DS + fragment;
 			} else {
 				if (debug_this > 1) pr("this.url.url length didn't exist; creating", "Route::url_append()");
 				this.url.url = fragment;
@@ -246,11 +246,11 @@ function XtremeRoute(name, data) {
 	 * @param url_fragment
 	 * @returns {boolean}
 	 */
-	this.add_param = function(name, value, url_fragment) {
+	this.add_param = function (name, value, url_fragment) {
 		this.params[name] = {
 			value: value != "undefined" ? value : false,
 			url_fragment: url_fragment === true,
-			post_init:true
+			post_init: true
 		};
 		return true;
 	}
@@ -261,15 +261,15 @@ function XtremeRoute(name, data) {
 	 * @param callback_function
 	 * @returns {*}
 	 */
-	this.set_callback = function(callback, callback_function) {
+	this.set_callback = function (callback, callback_function) {
 		switch (callback) {
-		case "launch":
-			$(this).off(C.ROUTE_LAUNCHED);
-			this.launch_callback = callback_function;
-			break;
-		case "params_set":
-			this.params_set_callback = callback_function;
-			break;
+			case "launch":
+				$(this).off(C.ROUTE_LAUNCHED);
+				this.launch_callback = callback_function;
+				break;
+			case "params_set":
+				this.params_set_callback = callback_function;
+				break;
 		}
 		return this.init();
 	}
@@ -279,18 +279,21 @@ function XtremeRoute(name, data) {
 	 * @param attr
 	 * @returns {*}
 	 */
-	this.unset = function(attr) {
+	this.unset = function (attr) {
 		if (in_array(attr, ["launch", "params_set", "post_init"])) attr += "_callback";
 		// todo: make this recursive one day so you can unset url.url.etc.
 		if (attr in this) {
 			switch (attr) {
 				case "url":
-					this.url = {url:false, type:false};
+					this.url = {url: false, type: false, defer: false};
 					break;
 				case "launch_callback":
 					$(this).off(C.ROUTE_LAUNCHED);
 					this.launch_callback = false;
-				break;
+					break;
+				case 'modal':
+					this.modal = false;
+					break;
 			}
 			return this[attr];
 		}
@@ -302,8 +305,8 @@ function XtremeRoute(name, data) {
 	 * @param param_str
 	 * @returns {*}
 	 */
-	this.read = function(param_str) {
-		var debug_this =  0;
+	this.read = function (param_str) {
+		var debug_this = 0;
 		if (debug_this > 0) pr(param_str, "XtremRoute::read(param_str)");
 		if (param_str in this.params) {
 			if (debug_this > 1) pr("param_str found in this.params", "XtremeRoute::read()");
@@ -313,12 +316,12 @@ function XtremeRoute(name, data) {
 		}
 	};
 
-	this.stop_propagation = function() {
+	this.stop_propagation = function () {
 		if (this.__stop_propagation) this.trigger.event.stopPropagation();
 		return this.__stop_propagation;
 	}
 
-	this.change_behavior = function(behavior_mask) { this.__set_behavior(behavior_mask); }
-	this.set_deferal_data = function(data) { this.deferal_data = data};
+	this.change_behavior = function (behavior_mask) { this.__set_behavior(behavior_mask); }
+	this.set_deferal_data = function (data) { this.deferal_data = data};
 	return this;
 }

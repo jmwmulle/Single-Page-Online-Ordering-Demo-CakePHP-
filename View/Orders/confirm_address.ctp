@@ -17,20 +17,33 @@
 	<?php echo $this->element("modal_masthead", array(
 								"header" => "Delivery! Yay for sitting!",
 								"subheader" => "But let's confirm your address, yeah?"));?>
+
 		<div class="row">
-			<div class="large-10 columns modal-header">
-			<?php if (!$logged_in) {?>
-					<span>Already have an address on file? <a href="#" class="modal-link" data-route="login-from-modal">Sign In</a>
-						 and load it up!
-					</span>
-			<?php } else {?>
-				<h3 class="inline"> <?php echo $user['firstname']; ?></h3>
-				<h3 class="inline"> <?php echo $user['lastname']; ?></h3>
-			<?php } ?>
-			</div>
-			<div class="large-2 columns modal-header">
-				<a href="#" class="reset-form" data-form="testForm">Reset Form</a>
-			</div>
+			<div class="large-12 columns">
+				<div class="row">
+					<div class="large-10 columns modal-header">
+					<?php if (!$logged_in) {?>
+							<span>Already have an address on file? <a href="#" data-route="login/confirm-address">Sign In</a>
+								 and load it up!
+							</span>
+					<?php } else {?>
+						<h3 class="inline"> <?php echo $user['firstname']; ?></h3>
+						<h3 class="inline"> <?php echo $user['lastname']; ?></h3>
+					<?php } ?>
+					</div>
+					<div class="large-2 columns modal-header">
+						<a href="#" class="reset-form" data-form="testForm">Reset Form</a>
+					</div>
+				</div>
+				<div id="confirm-address-login-panel" class="row true-hidden">
+					<div class="large-12 columns">
+						<a href="#" data-route="login/confirm-address/twitter"><span class="icon-twitter"></span></a
+						><a href="#" data-route="login/confirm-address/facebook"><span class="icon-facebook"></span></a
+						><a href="#" data-route="login/confirm-address/gplus"><span class="icon-gplus"></span></a
+						><a href="#" data-route="login/confirm-address/email"><span class="icon-topbar-email"></span></a
+						></div>
+					</div>
+				</div>
 		</div>
 		<hr />
 		<?php echo $this->Form->create( 'orderAddress', array( 'action' => false, 'inputDefaults' => array("div" => false) ) );?>
@@ -65,21 +78,21 @@
 			<div class="large-12 columns">
 				<?php echo $this->Form->input( 'address', array(
 						'label' => "Street Address Line 1",
-						'value' => array_key_exists("address", $address) ? $address['address'] : null)); ?>
+						'value' => $address ? $address['address'] : null)); ?>
 			</div>
 		</div>
 		<div class="row">
 			<div class="large-12 columns">
 				<?php echo $this->Form->input( 'address_2', array(
 						'label' => "Street Address Line 2 (optional)",
-						'value' => array_key_exists("address_2", $address) ? $address['address_2'] : null)); ?>
+						'value' => $address ? $address['address_2'] : null)); ?>
 			</div>
 		</div>
 		<div class="row">
 			<div class="large-6 columns">
 				<?php
 					$buildings =  array( 'House', 'Apartment', 'Office/Other');
-					$selected = array_key_exists("building_type", $address) ? $address['building_type'] : 0;
+					$selected = $address ? $address['building_type'] : 0;
 					echo $this->Form->input( 'building_type', array( 'type'    => 'select',
 				                                                       'options' => $buildings,
 				                                                       'selected' => $selected )
@@ -89,14 +102,14 @@
 			<div class="large-6 columns">
 				<?php echo $this->Form->input( 'postal_code', array(
 						'label' => 'Postal Code',
-						'value' => array_key_exists("postal_code", $address) ? $address['postal_code'] : null)); ?>
+						'value' => $address ? $address['postal_code'] : null)); ?>
 			</div>
 		</div>
 		<div class="row">
 			<div class="large-6 columns">
 				<?php echo $this->Form->input( 'delivery_instructions', array('type'  => 'textarea',
 					                                                'label' => 'Delivery Instructions',
-					                                                'value' => $addres ? $address['delivery_instructions'] : null,
+					                                                'value' => $address ? $address['delivery_instructions'] : null,
 				                                                    'placeholder' => "Let our driver know about those hard-to-find stairs, or that pesky pet leopard in your back yard..."
 					) );?>
 			</div>
@@ -105,7 +118,7 @@
 					<div class="large-12 columns">
 					<?php echo $this->Form->input( 'delivery_time' ); ?>
 					<?php echo $this->Form->input( 'city', array( 'type' => 'hidden',
-				                                              'value' => array_key_exists('city', $address) ? $address['city'] : 'Halifax' ) );?>
+				                                              'value' => $address ? $address['city'] : 'Halifax' ) );?>
 					<?php echo $this->Form->input( 'province', array( 'type' => 'hidden',
 				                                                  'value' => 'Nova Scotia'  ));
 					  echo $this->Form->end(); ?>

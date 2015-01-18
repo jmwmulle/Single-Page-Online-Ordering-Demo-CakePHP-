@@ -117,6 +117,7 @@ var XSM = {
 	},
 	modal: {
 		close_modal: "#close-modal",
+		confirm_address_login_panel: "#confirm-address-login-panel",
 		default_content: ".default-content",
 		deferred_content: ".deferred-content",
 		flash: "#flash-modal",

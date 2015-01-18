@@ -11,7 +11,7 @@
  * $here
  * $orbcats_list
  */
-$order = $this->Session->read('Cart.Order');
+$order = $this->Session->read('Cart.Order') ? $this->Session->read('Cart.Order') : array();
 $this->start('orbcats_menu');
 	$orbcat_menu_classes = array("large-block-grid-6", "small-block-grid-3", "float-pane", "activizing", "left", "box", "rel");
 ?>

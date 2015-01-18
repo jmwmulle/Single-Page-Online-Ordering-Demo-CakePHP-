@@ -73,7 +73,6 @@ $social_route = $logged_in ? "social" : "login/topbar";
 					    data-route="order/view" data-hover_text="View Your Cart">
 						<span class="icon-shopping"></span>
 					</a>
-
 					<hr id="topbar-divider" />
 				</div>
 			</div>
@@ -85,7 +84,10 @@ $social_route = $logged_in ? "social" : "login/topbar";
 			</div>
 		</div>
 		<div class="large-3 large-push-1 columns">
-			<h4 class="loading fade-out">LOADING</h4>
+<!--			<h4 class="loading fade-out">LOADING</h4>-->
+			<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+			   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+			</svg>
 		</div>
 		<div class="large-4 columns show-for-large-up">
 			<ul id="hours-and-location">
