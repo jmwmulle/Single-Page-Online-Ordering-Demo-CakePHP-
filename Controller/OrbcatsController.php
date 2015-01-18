@@ -120,10 +120,12 @@ class OrbcatsController extends AppController {
 		$this->menu(null, null, true);
 	}
 
-	public function menu($orbcat_id = null, $orb_id = null) {
+	public function menu($orbcat_id = null, $orb_id = null, $return = false) {
 		$page_name = 'menu';
 
-		$orbcat_id = (!$orbcat_id || !$this->Orbcat->exists($orbcat_id)) ? 1 : $orbcat_id; // default to pizza if null
+//		$this->layout = "menu";
+
+		$orbcat_id = (!$orbcat_id || !$this->Orbcat->exists($orbcat_id)) ? 16 : $orbcat_id; // default to pizza if null
 		$this->Orbcat->id = $orbcat_id;
 
 		$active_orbcat_title = strtoupper($this->Orbcat->field('title', array('`Orbcat`.`id`' => $orbcat_id)));
@@ -142,7 +144,7 @@ class OrbcatsController extends AppController {
 			// next line drops the 'id' field after combining the pricelist & pricedict into a table
 			$orb['price_table'] = array_filter(array_slice(array_combine($orb['Pricedict'], $orb['Pricelist']), 1));
 			$active_orbcat['orbs'][$i] = $orb;
-			if ($orb['id'] == $orb_id) $active_orbcat["orb_card"] = $orb; // active orb set here if orb requested
+			if ($orb['id'] == $orb_id) $active_orbcat["orb_card"] = $orb; // active orb set here is orb requested
 		}
 		if ($active_orbcat["orb_card"] == null) { $active_orbcat["orb_card"] = $active_orbcat['orbs'][0];}
 
@@ -166,7 +168,12 @@ class OrbcatsController extends AppController {
 		}
 		$this->set(compact('active_orbcat','orbcats_list','page_name'));
 		if ($this->request->is("ajax")) {
-			$this->render('ajax_menu', 'ajax');
+			if ($return) { // ie. if "menu" is being delivered from splash via ajax
+				$this->layout = "ajax";
+				$this->render();
+			} else {
+				$this->render('ajax_menu', 'ajax'); // ie. if orbcat menu is just being updated from within menu
+			}
 		}
 	}
 

@@ -8,7 +8,7 @@
  */
 ?>
 
-><div id="orb-opts-menu-header" class="slide-right hidden box rel orb-card-stage-menu-header"
+<div id="orb-opts-menu-header" class="slide-right hidden box rel orb-card-stage-menu-header"
 	<?php if (!empty($filters) ) { ?>><ul id="orb-opt-filters" class="multiactivizing"
 <?php
 	foreach( $filters  as $filter) {
@@ -26,4 +26,4 @@
 	></ul
 <?php } else { ?>
 		<h2>Nothing to see here!</h2
-<?php }?>></div
+<?php }?>></div>
