@@ -9,6 +9,7 @@ var constants = {
 	CHECK: "check",
 	DELIVERY: "delivery",
 	PICKUP: "pickup",
+	JUST_BROWSING:"just_browsing",
 	UNCHECK: "uncheck",
 	UNDEF: "undefined",
 	MOUSEOVER: "mouseover",

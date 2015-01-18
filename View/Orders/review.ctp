@@ -13,24 +13,32 @@
 ?>
 <hr>
 
-<div class="row">
-	<div class="large-12 large-centered columns">
-		<?php if (!$order_method) {?>
+
+<?php switch ($order_method) {
+	case "just_browsing": ?>
+		<div class="row">
+			<div class="large-12 large-centered columns">
 				<a href="#" class="modal-button bisecting left" data-route="order_method/review/pickup"><span class="text">Order for Pick-up</span></a
 				><a href="#"  class="modal-button bisecting right" data-route="order_method/review/delivery"><span class="text">Order for Delivery</span></a>
-		<?php } else { ?>
-		<div class="row">
-		<?php if ($order_method == "delivery") { ?>
-				<?php if ( empty($address) ) { ?>
-				<div class="large-12 columns">
-					<a href="#" class="modal-button bisecting cancel left" data-route="order_method/review/just_browsing">
-						<span class="text">Change</span>
-					</a>
-					<a href="#" class="modal-button bisecting confirm right" data-route="order_method/review/delivery">
-						<span class="text">Set Delivery Address</span>
-					</a>
-				</div>
-				<?php } else {?>
+			</div>
+		</div>
+<?php break;
+	case "delivery": ?>
+	<?php if ( empty($address) ) { ?>
+	<div class="row">
+		<div class="large-12 columns">
+			<a href="#" class="modal-button bisecting cancel left" data-route="order_method/review/just_browsing">
+				<span class="text">Change</span>
+			</a>
+			<a href="#" class="modal-button bisecting confirm right" data-route="order_method/review/delivery">
+				<span class="text">Set Delivery Address</span>
+			</a>
+		</div>
+	</div>
+	<?php } else {?>
+	<div class="row">
+		<div class="large-8 large-centered columns">
+			<div class="row">
 				<div class="large-6 columns">
 					<div class="row">
 						<div class="large-12 columns"><h4 class="panel-title">Customer Information</h4></div>
@@ -52,29 +60,39 @@
 							Phone: <?php echo $address['phone'];?>
 						</div>
 					</div>
-			</div>
-			<div class="large-6 columns">
-				<div class="row">
-					<div class="large-12 columns"><h4 class="panel-title">Delivery Address</h4></div>
 				</div>
-				<div class="row">
-					<div class="large-12 columns">
-						<?php echo $address["address"];?>
-						<?php if (!empty($address["address_2"]) )echo  $address["address_2"];?>
-						<?php echo $address['postal_code']; ?>
+				<div class="large-6 columns">
+					<div class="row">
+						<div class="large-12 columns"><h4 class="panel-title">Delivery Address</h4></div>
+					</div>
+					<div class="row">
+						<div class="large-12 columns">
+							<?php echo $address["address"];?>
+							<?php if (!empty($address["address_2"]) )echo  $address["address_2"];?>
+							<?php echo $address['postal_code']; ?>
+						</div>
 					</div>
 				</div>
 			</div>
-			<?php }
-			} else { ?>
-			<div class="large-12 columns">
-				<a href="#" class="modal-button full-width active" data-route="order_method/review/just_browsing"><span class="text">Order is for Pick-Up</span></a>
-			</div>
-		<?php } ?>
 		</div>
-	<?php } ?>
 	</div>
-</div>
+	<div class="row">
+		<div class="large-12 columns">
+			<a href="#" data-route="order_method/review/just_browsing"><span class="icon-tab-arrow-l"></span><span class="text">Cancel Delivery</span></a>
+		</div>
+	</div>
+	<?php } ?>
+<?php break;
+	case "pickup":?>
+	<div class="row">
+		<div class="large-12 columns">
+			<a href="#" class="modal-button full-width active" data-route="order_method/review/just_browsing">
+				<span class="text">Order is for Pick-Up</span>
+			</a>
+		</div>
+	</div>
+<?php break;} ?>
+
 <hr />
 <div class="row">
 	<div id="micro-cart-contents" class="large-6 columns">
@@ -87,25 +105,36 @@
 <?php } ?>
 	</div>
 	<div class="large-6 columns">
-		<h3>Total: <strong>$<?php echo $cart['Order']['total']; ?></strong></h3>
+		<?php if ($order_method == "delivery") {?>
+		<div id="payment-method" class="row">
+			<div class="large-12 columns">
+				<ul class="large-block-grid-2 activizing">
+					<li id="order-payment-cash" class="active " data-route="payment_method/review_modal/cash">
+						<span class="text">Cash</span>
+					</li>
+					<li id="order-payment-cash" class="inactive" data-route="payment_method/review_modal/debit">
+						<span class="text">Debit</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<?php }?>
+		<div class="row">
+			<div class="large-12 columns">
+				<h3>Total: <strong>$<?php echo $cart['Order']['total']; ?></strong></h3>
+			</div>
+		</div>
 	</div>
 </div>
-<?php if ($order_method == "delivery") {?>
-<div id="payment-method" class="row">
-	<div class="large-12 columns">
-		<a id="order-payment-cash" href="#" class="modal-button bisecting left active activizing" data-route="order/payment/cash">
-			<span class="text">Cash</span>
-		</a>
-		<a id="order-payment-cash" href="#" class="modal-button bisecting right activizing"  data-route="order/payment/debit">
-			<span class="text">Debit at your Door</span>
-		</a>
-	</div>
-</div>
-<?php } ?>
+
 <div class="row">
 	<div class="large-12 columns">
-		<a href="#" class="modal-button bisecting cancel left" data-route="order/clear"><span class="text">Cancel Order</span></a>
-		<a href="#" class="modal-button bisecting confirm right" data-route="order/finalize"><span class="text">Confirm & Order</span></a>
+		<a href="#" class="modal-button bisecting cancel left" data-route="order/clear">
+			<span class="text">Cancel Order</span>
+		</a>
+		<a id="finalize-order-button" href="#" class="modal-button bisecting confirm right disabled" data-route="order/finalize">
+			<span class="text">Confirm & Order</span>
+		</a>
 	</div>
 </div>
 <?php echo $this->Form->create('Order'); ?>

@@ -81,7 +81,7 @@ $this->end('active_orb_card');
 							<li><h2 class="body-font-color">I AM</h2></li>
 							<?php $order_method = array_key_exists('order_method', $order) ? $order['order_method']: false; ?>
 							<li class="<?php echo !$order_method ? "active" : "inactive";?> default"
-								><a class="body-font-color block" data-route="order_method/menu/browsing">Just<br />Browsing</a
+								><a class="body-font-color block" data-route="order_method/menu/just_browsing">Just<br />Browsing</a
 									></li>
 							<li class="<?php echo $order_method == "delivery" ?"active" : "inactive"; ?>"
 								><a class="body-font-color block modal-link overlay" data-route="order_method/menu/delivery">Ordering<br />(Delivery)</a

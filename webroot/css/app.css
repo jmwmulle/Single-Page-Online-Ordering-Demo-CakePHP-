@@ -5759,11 +5759,11 @@ div.view-cart-row.total * {
     .modal-button.bisecting.confirm .text, .modal-button.bisecting.cancel .text {
       -webkit-transform: translateY(0.5rem) !important; }
     .modal-button.bisecting.confirm {
-      width: 75%; }
+      width: 66%; }
       .modal-button.bisecting.confirm:hover {
         text-shadow: 0 0 0.5rem white; }
     .modal-button.bisecting.cancel {
-      width: 25%; }
+      width: 33%; }
     .modal-button.bisecting .icon-circle-arrow-l {
       float: left;
       font-size: 2rem; }
@@ -5784,6 +5784,12 @@ div.view-cart-row.total * {
       background-color: #cecece; }
       .modal-button.active:hover span {
         color: #e02027 !important; }
+  .modal-button.disabled, .modal-button.disabled:hover {
+    cursor: default;
+    background-color: #cecece; }
+    .modal-button.disabled span, .modal-button.disabled a, .modal-button.disabled:hover span, .modal-button.disabled:hover a {
+      color: #b4b4b4 !important;
+      text-shadow: none; }
 
 /*******   modal pages ********/
 #registration-method-bar {

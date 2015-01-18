@@ -266,10 +266,10 @@ div.view-cart-row {
     }
     &.confirm, &.cancel { .text { -webkit-transform: translateY(0.5rem) !important; }}
     &.confirm {
-      width:75%;
+      width:66%;
       &:hover { text-shadow: 0 0 0.5rem $white;}
     }
-    &.cancel { width:25%;}
+    &.cancel { width:33%;}
     .icon-circle-arrow-l {
       float:left;
       font-size:2rem;
@@ -291,6 +291,14 @@ div.view-cart-row {
     &:hover {
       background-color:lighten($light-grey, 10%);
       span { color: $xtreme-red !important;}
+    }
+  }
+  &.disabled, &.disabled:hover {
+    cursor:default;
+    background-color: lighten($light-grey, 10%);
+    span, a {
+      color:$light-grey !important;
+      text-shadow:none;
     }
   }
 }

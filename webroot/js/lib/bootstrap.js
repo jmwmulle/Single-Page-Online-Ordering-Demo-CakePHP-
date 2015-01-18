@@ -36,13 +36,14 @@ window.JSInterface =
 			cart: {
 			},
 			order: {
-				method: null,
+				method: C.JUST_BROWSING,
 				address: {
 					address_1: null,
 					address_2: null,
 					postal_code: null,
 					instructions: null
-				}
+				},
+				payment: null
 			},
 			user: {
 				name: {
@@ -76,7 +77,9 @@ window.JSInterface =
 			init: function () {
 				// From the DOM
 				$(C.BODY).on(C.CLK, XSM.global.route, null, function (e) {
-					$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: $(e.currentTarget).data('route'), trigger: e});
+					if ( !$(e.currentTarget).hasClass(XSM.effects.disabled) ) {
+						$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: $(e.currentTarget).data('route'), trigger: e});
+					}
 				});
 
 				// Manual requests
@@ -436,49 +439,13 @@ window.JSInterface =
 							}
 						}
 					}),
-					order_method: new XtremeRoute("order_method", {
-						modal: XSM.modal.primary,
-						modal: false,
-						url: {url: "order-method", type: C.POST, defer: true},
-						params: {
-							context: {value: null, url_fragment: false},
-							method: {value: null, url_fragment: true}
-						},
-						callbacks: {
-							launch: function () {
-								var route = "flash/We weren't able to reach the store to place a delivery request. But you can always try calling!"
-						 		var response = $.parseJSON(this.deferal_data);
-								var trigger = this.trigger.event;
-								if ("success" in response && response.success === true) {
-									XBS.data.order_method = this.read('method');
-									if (this.read('method') == "delivery") {
-										route = "confirm_address/" + this.read('context')
-									} else {
-										switch (this.read('context')) {
-											case "splash":
-												route = "menu";
-												break;
-											case "review":
-												route = "order/review";
-												break;
-											case "menu":
-												return true;
-										}
-									}
-								} else if ("error" in response) {
-									route = "flash/" + response.error;
-								}
-								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: route, trigger: trigger});
-							}
-
-						}
-					}),
 					order: new XtremeRoute("order", {
 						params: ["method", "context"],
 						url: { url: "review-order", type: C.GET, defer: false},
 						modal: XSM.modal.primary,
 						callbacks: {
 							params_set: function () {
+								pr(this.read('method'),  "order::method");
 								switch (this.read('method')) {
 									case "clear":
 										this.url = { url: "clear-cart", type: C.GET, defer: true};
@@ -513,8 +480,61 @@ window.JSInterface =
 										$(XSM.modal.primary).hide()
 											.removeClass(XSM.effects.slide_down)
 											.addClass(XSM.effects.slide_up).show();
-										setTimeout(function () {$(XSM.modal.primary).removeClass(XSM.effects.slide_up); }, 30);
+										setTimeout(function () {
+											$(XSM.modal.primary).removeClass(XSM.effects.slide_up);
+										}, 30);
 									}, 300);
+								} else {
+									XBS.cart.validate_order_review();
+								}
+							}
+						}
+					}),
+					order_method: new XtremeRoute("order_method", {
+						modal: XSM.modal.primary,
+						modal: false,
+						url: {url: "order-method", type: C.POST, defer: true},
+						params: {
+							context: {value: null, url_fragment: false},
+							method: {value: null, url_fragment: true}
+						},
+						callbacks: {
+							launch: function () {
+								var route = "flash/We weren't able to reach the store to place a delivery request. But you can always try calling!"
+						        var response = $.parseJSON(this.deferal_data);
+								var trigger = this.trigger.event;
+								if ("success" in response && response.success === true) {
+									XBS.data.order.method = this.read('method');
+									if (this.read('method') == "delivery") {
+										route = "confirm_address/" + this.read('context')
+									} else {
+										switch (this.read('context')) {
+											case "splash":
+												route = "menu";
+												break;
+											case "review":
+												route = "order/review";
+												break;
+											case "menu":
+												return true;
+										}
+									}
+								} else if ("error" in response) {
+									route = "flash/" + response.error;
+								}
+								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: route, trigger: trigger});
+							}
+						}
+					}),
+					payment_method: new XtremeRoute("payment_method", {
+						params: ['context', 'method'],
+						callbacks: {
+							params_set: function() {
+								switch (this.read('context') ) {
+									case "review_modal":
+										XBS.data.order.payment = this.read('method');
+										$(XSM.modal.payment_method_input).val(this.read('method'));
+										break;
 								}
 							}
 						}
@@ -951,6 +971,7 @@ window.JSInterface =
 						XBS.layout.fasten(XSM.menu.self).css({overflow: "hidden"});
 					}
 				}
+				XBS.menu.set_order_method();
 				return  init_ok
 			},
 			jq_binds: {
@@ -1009,7 +1030,6 @@ window.JSInterface =
 							$(XSM.topbar.topbar_cart_button).show()
 							setTimeout(function () {
 								$(XSM.topbar.topbar_cart_button).removeClass(XSM.effects.fade_out);
-								exit();
 							}, 300);
 						}
 					}
@@ -1297,26 +1317,27 @@ window.JSInterface =
 				return true;
 			},
 			set_order_method: function (method) {
-				if (!method) {
-					if (XBS.data.order_method) {
-						method = XBS.data.order_method;
-					} else {
-						return false;
-					}
-				} else {
-					XBS.data.order_method = method;
+				var check_DOM_for_method = true;
+				if (method) {
+					check_DOM_for_method = false
+					XBS.data.order.method = method;
 				}
 				$(XSM.menu.user_activity_panel_items).each(function () {
-					pr(method, "method");
 					var route = $($(this).children()[0]).data('route');
 					if (route) {
-						if (route.split(C.DS)[2] == method) {
-							$(this).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
+						if (!check_DOM_for_method) {
+							if (route.split(C.DS)[2] == method) {
+								$(this).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
+							} else {
+								$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+							}
 						} else {
-							$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+							pr("check_dom true");
+							if ($(this).hasClass('active') ) XBS.data.order.method = route.split(C.DS)[2];
 						}
 					}
 				});
+				pr(XBS.data.order);
 			},
 			show_orb_card_front_face: function () {
 				var debug_this = 0;
@@ -1582,6 +1603,19 @@ window.JSInterface =
 					XBS.cart.configuring[orb_id].orbopts[opt_id] = $(this).val();
 				});
 				return true;
+			},
+			validate_order_review: function() {
+				var valid = true;
+				XBS.data.order.payment = $(XSM.modal.payment_method_input).val();
+				if (XBS.data.order.method == C.JUST_BROWSING) valid = false;
+				if (XBS.data.order.method == C.DELIVERY ) {
+					if ( !XBS.data.order.address) valid = false;
+					if ( !XBS.data.order.payment) valid = false;
+				}
+				if (valid) {
+					$(XSM.modal.finalize_order_button).removeClass(XSM.effects.disabled);
+				}
+				pr(XBS.data.order);
 			}
 		},
 		splash: {
@@ -1661,6 +1695,7 @@ window.JSInterface =
 							url: "confirm-address/session",
 							data: $("#orderAddressForm").serialize(),
 							success: function (data) {
+								pr(data, 'confirm_address_validation');
 								try {
 									data = $.parseJSON(data);
 									XBS.data.user.address = data.address;
