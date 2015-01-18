@@ -89,33 +89,4 @@
 		 */
 		public $hasOne = 'Orb';
 		
-
-//		public function beforeSave($options = array()) {
-//			$this->data[ 'User' ][ 'password' ] = AuthComponent::password(
-//			                                                   $this->data[ 'User' ][ 'password' ]
-//			);
-//
-//			return true;
-//		}
-
-//		public function parentNode() {
-//			if ( !$this->id && empty( $this->data ) ) {
-//				return null;
-//			}
-//			if ( isset( $this->data[ 'User' ][ 'group_id' ] ) ) {
-//				$groupId = $this->data[ 'User' ][ 'group_id' ];
-//			}
-//			else {
-//				$groupId = $this->field( 'group_id' );
-//			}
-//			if ( !$groupId ) {
-//				return null;
-//			}
-//			else {
-//				return array( 'Group' => array( 'id' => $groupId ) );
-//			}
-		//		}
-		public function checkUnique($ignoredData, $fields, $or = false) {
-			return $this->isUnique($fields, $or);
-		}
 	}

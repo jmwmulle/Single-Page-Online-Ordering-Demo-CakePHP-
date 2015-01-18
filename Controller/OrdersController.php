@@ -323,6 +323,7 @@
 
 
 		public function review() {
+
 			if ($this->request->is('ajax') ) {
 				$this->layout = 'ajax';
 				$cart = $this->Session->read( 'Cart' );
@@ -346,6 +347,32 @@
 							}
 							$order[ 'Order' ][ 'authorization' ] = $paypal[ 'ACK' ];
 							//$order['Order']['transaction'] = $paypal['PAYMENTINFO_0_TRANSACTIONID'];
+
+					$this->set( compact( 'cart' ) );
+						}
+					}
+			    }
+			} else {
+				$this->redirect("/menu");
+			}
+		}
+
+		public function finalize() {
+			if ($this->request->is('ajax') && $this->request->is( 'post' ) ) {
+				$this->layout = 'ajax';
+				$this->Order->set( $this->Session->read( 'Cart.Order' ) );
+				if ( $this->Order->validates() ) {
+					$order = $cart;
+					$this->Order->set( 'detail', json_encode( $cart ) );
+					$this->Order->set( 'invoice', "Not Yet Implemented" );
+					$order[ 'Order' ][ 'status' ] = ORDER_PENDING;
+
+					if ( $cart[ 'Order' ][ 'payment_method' ] == 'paypal' ) {
+						$paypal = $this->Paypal->ConfirmPayment( $order[ 'Order' ][ 'total' ] );
+						//debug($resArray);
+						$ack = strtoupper( $paypal[ 'ACK' ] );
+						if ( $ack == 'SUCCESS' || $ack == 'SUCCESSWITHWARNING' ) {
+							$order[ 'Order' ][ 'status' ] = ORDER_PAID;
 						}
 
 						if ( (Configure::read( 'Settings.AUTHORIZENET_ENABLED' ) == 1 ) && $cart[ 'Order' ][ 'payment_method' ] == 'creditcard') {
@@ -398,6 +425,7 @@
 							return;
 						}
 					}
+
 			    }
 
 			/*if(($cart['Order']['payment_method'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
@@ -427,6 +455,9 @@
 				$this->set( compact( 'cart' ) );
 			} else {
 				$this->redirect('/menu');
+				}
+			} else {
+				return $this->redirect(array('controller'=>'menu', 'action'=>''));
 			}
 		}
 
@@ -562,7 +593,7 @@
 			}
 		}
 
-		public function getStatus($id) {
+		public function get_status($id) {
 			if ($this->request->is('ajax')) {
 				$conditions = array('conditions' => array('Order.id' => $id));
 				if ($this->Order->find('first', $conditions)) {
@@ -575,7 +606,7 @@
 			}
 		}
 
-		public function setStatus($id, $status) {
+		public function set_status($id, $status) {
 			if ($this->request->is('ajax')) {
 				$conditions = array('conditions' => array('Order.id' => $id));
 				if ($this->Order->find('first', $conditions)) {
@@ -591,9 +622,9 @@
 			}
 		}
 
-		public function getPending() {
+		public function get_pending() {
 			if ($this->request->is('ajax')) {
-				$conditions = array( 'conditions' => array( 'Order.status' => 0));
+				$conditions = array( 'conditions' => array( 'Order.status' => $ORDER_PENDING));
 				$this->set('Orders', $this->Order->find('all', $conditions));
 			} else {
 				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
