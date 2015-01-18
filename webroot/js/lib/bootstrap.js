@@ -426,10 +426,6 @@ window.JSInterface =
 								}
 								if (this.read('method') == 'add_to_cart') {
 									if (this.read('channel') == 'confirm') {
-//										this.url.defer = true
-//										launch = function() {
-//											pr(this.deferal_data);
-//										};
 										launch = function () {XBS.menu.add_to_cart();}
 									}
 									if (this.read('channel') == 'cancel') {
@@ -451,7 +447,7 @@ window.JSInterface =
 						callbacks: {
 							launch: function () {
 								var route = "flash/We weren't able to reach the store to place a delivery request. But you can always try calling!"
-								var response = $.parseJSON(this.deferal_data);
+						 		var response = $.parseJSON(this.deferal_data);
 								var trigger = this.trigger.event;
 								if ("success" in response && response.success === true) {
 									XBS.data.order_method = this.read('method');
@@ -1006,22 +1002,24 @@ window.JSInterface =
 					url: "orders/add_to_cart",
 					data: $(XSM.menu.orb_order_form).serialize(),
 					success: function (data) {
-						pr(data);
 						data = JSON.parse(data);
 						if (data.success == true) {
 							XBS.cart.add_to_cart();
 							$(XSM.modal.orb_card).show('clip');
-							$(XSM.global.topbar_cart_button).show()
-							setTimeout(function () { $(XSM.global.topbar_cart_button).removeClass(XSM.effects.fade_out);}, 300);
+							$(XSM.topbar.topbar_cart_button).show()
+							setTimeout(function () {
+								$(XSM.topbar.topbar_cart_button).removeClass(XSM.effects.fade_out);
+								exit();
+							}, 300);
 						}
 					}
 				});
 			},
 			clear_cart: function () {
 				XBS.data.cart = {};
-				$(XSM.global.topbar_cart_button).addClass(XSM.effects.fade_out);
+				$(XSM.topbar.topbar_cart_button).addClass(XSM.effects.fade_out);
 				setTimeout(function () {
-					$(XSM.global.topbar_cart_button).hide();
+					$(XSM.topbar.topbar_cart_button).hide();
 					XBS.menu.unstash_menu();
 				}, 300);
 				return true;
@@ -1116,15 +1114,15 @@ window.JSInterface =
 			 * @param orbcat_name
 			 */
 			refresh_active_orbcat_menu: function (orbcat_id, orbcat_name) {
-
 				pr([orbcat_id, orbcat_name], "refresh_active_orbcat_menu()");
 				// todo: fallback on ajax fail
 				var url = "menu" + C.DS + orbcat_id
 				if (XBS.cfg.root.length != 0) url = C.DS + XBS.cfg.root + C.DS + url;
 
+
 				$.get(url,function (data) {
 					var active_orbcat_menu = $.parseHTML(data)[1];
-					var orb_route = $($(active_orbcat_menu).find(XSM.menu.active_orbcat_item)[0]).data('route');
+					var orb_route = $($(data).find(XSM.menu.active_orbcat_item)[0]).data('route');
 					var active_orb_id = orb_route.split(C.DS)[1];
 
 					// >>> TOGGLE MENU HEADER; alternates rotating front-to-back or back-to-front <<<

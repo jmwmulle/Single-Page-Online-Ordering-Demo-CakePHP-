@@ -144,7 +144,7 @@ class OrbcatsController extends AppController {
 			// next line drops the 'id' field after combining the pricelist & pricedict into a table
 			$orb['price_table'] = array_filter(array_slice(array_combine($orb['Pricedict'], $orb['Pricelist']), 1));
 			$active_orbcat['orbs'][$i] = $orb;
-			if ($orb['id'] == $orb_id) $active_orbcat["orb_card"] = $orb; // active orb set here is orb requested
+			if ($orb['id'] == $orb_id) $active_orbcat["orb_card"] = $orb; // active orb set here if orb requested
 		}
 		if ($active_orbcat["orb_card"] == null) { $active_orbcat["orb_card"] = $active_orbcat['orbs'][0];}
 
