@@ -123,6 +123,8 @@ class OrbcatsController extends AppController {
 	public function menu($orbcat_id = null, $orb_id = null, $return = false) {
 		$page_name = 'menu';
 
+//		$this->layout = "menu";
+
 		$orbcat_id = (!$orbcat_id || !$this->Orbcat->exists($orbcat_id)) ? 1 : $orbcat_id; // default to pizza if null
 		$this->Orbcat->id = $orbcat_id;
 
@@ -135,6 +137,7 @@ class OrbcatsController extends AppController {
 		    "orb_card" => null
 		);
 
+
 		$active_orbcat['orbs'] = $active_orbcat['orbs'][0]['Orb']; // truncate to just orbs, remove OrbCat
 		$orbcats_list = $this->Orbcat->find('list', array('conditions' => array('`Orbcat`.`primary_menu`' => true)));  // for actual orbcat menu
 		foreach($active_orbcat['orbs'] as $i => $orb) {
@@ -145,15 +148,22 @@ class OrbcatsController extends AppController {
 		}
 		if ($active_orbcat["orb_card"] == null) { $active_orbcat["orb_card"] = $active_orbcat['orbs'][0];}
 
-
-
+		$filters =  array("premium" => 0, "meat" => 0, "veggie" => 0, "sauce" => 0, "cheese" => 0);
+		foreach($active_orbcat["orb_card"]['Orbopt'] as $opt) {
+			foreach ($filters as $filter => $count) {
+				if ($opt[$filter]) $filters[$filter]++;
+			}
+		}
+		foreach ($filters as $filter => $count) {
+			if ($count == 0) unset($filters[$filter]);
+		}
+		$active_orbcat["orb_card"]['filters'] = count($filters) > 0 ? array_keys($filters) : array();
 		if ( count($active_orbcat['orbs']) < $this->min_orb_count) {
 			// fills active orb menu with dummy orbs
 			while (count($active_orbcat['orbs']) != $this->min_orb_count) {
 				array_push($active_orbcat['orbs'], $this->empty_orb);
 			}
 		}
-
 		$this->set(compact('active_orbcat','orbcats_list','page_name'));
 		if ($this->request->is("ajax")) {
 			if ($return) {

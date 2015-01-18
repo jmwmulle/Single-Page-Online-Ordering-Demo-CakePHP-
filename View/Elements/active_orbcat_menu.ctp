@@ -14,7 +14,7 @@
 	</div
 <?php
 	// when loading from the server, spare the client-side js by writing this here from the outset; ajax-loading done different
-	if (!$ajax) echo $this->Element('orb_opts_menu_header');
+	if (!$ajax) echo $this->Element('orb_opts_menu_header', array('filters' => $active_orbcat['orb_card']['filters']));
 
 $classes = array('flush', 'l-3', "box", "rel", "rightward", "stretch", "activizing", 'orb-card-stage-menu', 'text-center'); ?>
 ></div

@@ -60,6 +60,7 @@
     float : left;
     width : $orb-opt-text-width;
   }
+
 }
 
 .orb-opt.active li.orb-opt-coverage {
@@ -76,6 +77,7 @@
     padding-left     : $orb-opt-filter-padding-left;
     overflow:hidden;
     z-index:8010;
+//  background-color:$text-grey !important;
   li {
     cursor:pointer;
     float:left;

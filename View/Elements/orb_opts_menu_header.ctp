@@ -10,9 +10,8 @@
 ?>
 
 ><div id="orb-opts-menu-header" class="slide-right hidden box rel orb-card-stage-menu-header"
-	><ul id="orb-opt-filters" class="multiactivizing"
+	<?php if (!empty($filters) ) { ?>><ul id="orb-opt-filters" class="multiactivizing"
 <?php
-	$filters =  array("premium", "meat", "veggie", "sauce", "cheese");
 	foreach( $filters  as $filter) {
 		$data = array("filter" => $filter);
 		$classes = array("orb-opt-filter", "active");?>
@@ -26,4 +25,6 @@
 		></ul
 	></li
 	></ul
-></div
+<?php } else { ?>
+		<h2>Nothing to see here!</h2
+<?php }?>></div

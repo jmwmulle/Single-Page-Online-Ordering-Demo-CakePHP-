@@ -4639,10 +4639,10 @@ span.icon-hn-inline {
 .icon-specialty-pizzas:before {
   content: "v"; }
 
-.icon-poutines:before {
+.icon-fries-and-poutines:before {
   content: "w"; }
 
-.icon-pita-wraps:before {
+.icon-pitas-and-sandwiches:before {
   content: "x"; }
 
 .icon-original-pizzas:before {
@@ -4651,7 +4651,7 @@ span.icon-hn-inline {
 .icon-panzarottis:before {
   content: "z"; }
 
-.icon-sandwiches:before {
+.icon-sandwhiches:before {
   content: "A"; }
 
 .icon-subs:before {
@@ -4675,7 +4675,7 @@ span.icon-hn-inline {
 .icon-desserts:before {
   content: "H"; }
 
-.icon-beverages:before {
+.icon-drinks-and-sauces:before {
   content: "I"; }
 
 .icon-pasta:before {
@@ -5112,8 +5112,24 @@ footer {
   background-color: #0779be; }
   .xtreme-select-list:hover {
     background-color: #1ba6f7; }
+  .xtreme-select-list.sauce {
+    background-color: #20a0ae; }
+    .xtreme-select-list.sauce:hover {
+      background-color: #3fcfdc; }
+  .xtreme-select-list.cheese {
+    background-color: #b22dad; }
+    .xtreme-select-list.cheese:hover {
+      background-color: #d557d0; }
+  .xtreme-select-list.veggie {
+    background-color: #32a514; }
+    .xtreme-select-list.veggie:hover {
+      background-color: #4ce421; }
+  .xtreme-select-list.meat {
+    background-color: #ff7320; }
+    .xtreme-select-list.meat:hover {
+      background-color: #ffa26d; }
   .xtreme-select-list.active {
-    background-color: #faea06; }
+    background-color: #faea06 !important; }
   .xtreme-select-list a, .xtreme-select-list h1, .xtreme-select-list h2, .xtreme-select-list h3, .xtreme-select-list h4, .xtreme-select-list h5, .xtreme-select-list span {
     color: white; }
   .xtreme-select-list.active a, .xtreme-select-list.active h1, .xtreme-select-list.active h2, .xtreme-select-list.active h3, .xtreme-select-list.active h4, .xtreme-select-list.active h5, .xtreme-select-list.active span {
@@ -5690,6 +5706,11 @@ div.view-cart-row.total * {
     #registration-method-bar.diminish a, #registration-method-bar.diminish h4 {
       height: 1.5rem;
       line-height: 1.5rem; }
+
+#micro-cart-contents {
+  font-size: 0.75rem;
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+  line-height: 1rem; }
 
 #loadingScreen {
   -webkit-touch-callout: none;

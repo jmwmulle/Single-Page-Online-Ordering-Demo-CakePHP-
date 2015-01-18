@@ -244,7 +244,7 @@
 				$to_return = array();
 				if ( !array_key_exists( 'OrderItem', $cart ) ) {
 					$cart[ 'OrderItem' ] = array();
-					$this->Session->wrote( 'Cart.OrderItem', array() );
+					$this->Session->write( 'Cart.OrderItem', array() );
 				}
 				foreach ( $cart[ 'OrderItem' ] as $item ) {
 					if ( !isset( $to_return[ intval( $item[ 'orb_id' ] ) ] ) ) {
@@ -328,14 +328,12 @@
 
 
 		public function review() {
-
 			$cart = $this->Session->read( 'Cart' );
 
-			if ( empty( $cart ) ) {
-				return $this->redirect( '/' );
-			}
+			if ( empty( $cart ) ) return $this->redirect( '/' );
 
-			if ( $this->request->is( 'post' ) ) {
+			if ($this->request->is('ajax') && $this->request->is( 'post' ) ) {
+				$this->layout = 'ajax';
 				$this->Order->set( $this->Session->read( 'Cart.Order' ) );
 				if ( $this->Order->validates() ) {
 					$order = $cart;
@@ -383,7 +381,6 @@
 					}
 					//$save = $this->Order->saveAll($order, array('validate' => 'first'));
 					if ( $save ) {
-
 						$this->set( compact( 'cart' ) );
 
 						/*App::uses('CakeEmail', 'Network/Email');
@@ -396,15 +393,15 @@
 								->emailFormat('text')
 								->viewVars(array('cart' => $cart))
 								->send();*/
-						$this->set( 'response', json_encode( array( 'action' => 'success' ) ) );
-						$this->render();
+						$this->set( 'response', array( 'success' => true, "error" => false ) );
+						$this->render('finalize_order');
 
 						return;
 					}
 					else {
 						$errors = $this->Order->invalidFields();
-						$this->set( compact( 'errors' ) );
-						$this->render();
+						$this->set('response', array( 'success' => false, "error" => $errors ));
+						$this->render('finalize_order');
 
 						return;
 					}
@@ -548,8 +545,7 @@
 					elseif ( $command == 'session' ) {
 						if (!empty($data['orderAddress'])) {
 							$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
-							$this->Session->write( 'User.address', $data[ 'orderAddress' ] );
-							$this->Session->write( 'ThisIsNotARealKey.address', $data[ 'orderAddress' ] );
+							$this->Session->write( 'Card.Order.delibery_instructions', $data[ 'instructions' ] );
 						} else {
 							$this->Session->write('Cart.Order.triedToSetEmptyAddress', True);
 						}

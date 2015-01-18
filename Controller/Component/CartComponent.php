@@ -172,8 +172,9 @@ class CartComponent extends Component {
 		$deliverable = false;
 		if (!array_key_exists('OrderItem', $cart) )  {
 			$cart['OrderItem'] = array();
-			$this->Session->wrote('Cart.OrderItem', array());
+			$this->Session->write('Cart.OrderItem', array());
 		}
+		$d = array_key_exists('Order', $cart) ? $cart['Order'] : array();
 		if ( count($cart['OrderItem']) > 0) {
 			foreach ($cart['OrderItem'] as $item) {
 				$quantity += $item['quantity'];
