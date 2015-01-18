@@ -33,18 +33,6 @@ window.JSInterface =
 			},
 			partial_orb_configs: {
 			},
-			cart: {
-			},
-			order: {
-				method: C.JUST_BROWSING,
-				address: {
-					address_1: null,
-					address_2: null,
-					postal_code: null,
-					instructions: null
-				},
-				payment: null
-			},
 			user: {
 				name: {
 					first: null,
@@ -467,6 +455,15 @@ window.JSInterface =
 										this.url.url = "finish-ordering";
 										this.url.type = C.POST;
 										this.url.defer = true;
+										this.set_callback("launch", function() {
+											var data = this.deferal_data;
+											if (!data.error) {
+												$(XBS.routing).trigger(C.ROUTE_REQUEST, {
+													request:"/pending_order"+ C.DS + data.order_id + C.DS + "launching",
+													trigger:this.trigger.event
+												});
+											}
+										});
 										break;
 								}
 							},
@@ -504,7 +501,7 @@ window.JSInterface =
 						        var response = $.parseJSON(this.deferal_data);
 								var trigger = this.trigger.event;
 								if ("success" in response && response.success === true) {
-									XBS.data.order.method = this.read('method');
+									XBS.cart.order.method = this.read('method');
 									if (this.read('method') == "delivery") {
 										route = "confirm_address/" + this.read('context')
 									} else {
@@ -532,9 +529,43 @@ window.JSInterface =
 							params_set: function() {
 								switch (this.read('context') ) {
 									case "review_modal":
-										XBS.data.order.payment = this.read('method');
+										XBS.cart.order.payment = this.read('method');
 										$(XSM.modal.payment_method_input).val(this.read('method'));
 										break;
+								}
+							}
+						}
+					}),
+					pending_order: new XtremeRoute("pending_order", {
+						params:{
+							order_id: {value:null, url_fragment:true},
+							status: {value:null, url_fragment:false}
+						},
+						modal: XSM.modal.primary,
+						url: {url:"order-confirmation", defer: true, type: C.POST},
+						callbacks: {
+							params_set: function() {
+								switch (this.read('status') ) {
+									case "launching":
+										this.url.defer = false;
+										this.set_callback("launch", function() {
+											$(XBS.routing).trigger(C.ROUTE_REQUEST, {
+												request: "pending_order"+ C.DS + this.read('order_id' + C.DS + 'check'),
+												trigger:this.trigger.event
+											});
+										});
+										break;
+								}
+							},
+							launch: function() {
+								var data = this.deferal_data;
+								if (data.status = "pending") {
+									setTimeout(function() {
+										$(XBS.routing).trigger(C.ROUTE_REQUEST, {
+											request: "pending_order"+ C.DS + this.read('order_id' + C.DS + 'check'),
+											trigger:this.trigger.event
+										});
+									}, 3000);
 								}
 							}
 						}
@@ -1320,7 +1351,7 @@ window.JSInterface =
 				var check_DOM_for_method = true;
 				if (method) {
 					check_DOM_for_method = false
-					XBS.data.order.method = method;
+					XBS.cart.order.method = method;
 				}
 				$(XSM.menu.user_activity_panel_items).each(function () {
 					var route = $($(this).children()[0]).data('route');
@@ -1333,11 +1364,11 @@ window.JSInterface =
 							}
 						} else {
 							pr("check_dom true");
-							if ($(this).hasClass('active') ) XBS.data.order.method = route.split(C.DS)[2];
+							if ($(this).hasClass('active') ) XBS.cart.order.method = route.split(C.DS)[2];
 						}
 					}
 				});
-				pr(XBS.data.order);
+				pr(XBS.cart.order);
 			},
 			show_orb_card_front_face: function () {
 				var debug_this = 0;
@@ -1504,6 +1535,16 @@ window.JSInterface =
 		},
 		cart: {
 			orbs: {}, // CONFIRMED BY SERVER
+			order: {
+				method: C.JUST_BROWSING,
+				address: {
+					address_1: null,
+					address_2: null,
+					postal_code: null,
+					instructions: null
+				},
+				payment: null
+			},
 			configuring: {orbopts: {}}, // ORB_ID: {CONFIG}
 			initialized: false,
 			empty_config: {
@@ -1522,14 +1563,16 @@ window.JSInterface =
 			},
 
 			init: function (cart_details) {
-				var debug_this = false;
-				if (debug_this) pr(cart_details, "cart details");
+				var debug_this = 1;
+				if (debug_this > 0 ) pr(cart_details, "XBS.cart.init(cart details)", 2);
 				try {
+					XBS.cart.order = cart_details.Order;
 					XBS.cart.orbs = Object.keys(cart_details.OrderItem).length > 0 ? cart_details.OrderItem : {};
 					XBS.cart.initialized = true;
 					XBS.cart.configuring = {};
 					return true;
 				} catch (e) {
+					// todo: any errors here are CRUCIAL, deal with them
 					return null
 				}
 			},
@@ -1606,16 +1649,17 @@ window.JSInterface =
 			},
 			validate_order_review: function() {
 				var valid = true;
-				XBS.data.order.payment = $(XSM.modal.payment_method_input).val();
-				if (XBS.data.order.method == C.JUST_BROWSING) valid = false;
-				if (XBS.data.order.method == C.DELIVERY ) {
-					if ( !XBS.data.order.address) valid = false;
-					if ( !XBS.data.order.payment) valid = false;
+				XBS.cart.order.payment = $(XSM.modal.payment_method_input).val();
+				if (XBS.cart.order.method == C.JUST_BROWSING) valid = false;
+				if (XBS.cart.order.method == C.DELIVERY ) {
+					if ( !XBS.cart.order.address) valid = false;
+					if ( !XBS.cart.order.payment) valid = false;
 				}
 				if (valid) {
 					$(XSM.modal.finalize_order_button).removeClass(XSM.effects.disabled);
 				}
-				pr(XBS.data.order);
+				pr(XBS.cart.order);
+				pr(XBS.cart.order);
 			}
 		},
 		splash: {

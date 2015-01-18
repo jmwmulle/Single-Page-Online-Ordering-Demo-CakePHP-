@@ -540,7 +540,7 @@
 					elseif ( $command == 'session' ) {
 						if (!empty($data['orderAddress'])) {
 							$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
-							$this->Session->write( 'Card.Order.delivery_instructions', $data[ 'delivery_instructions' ] );
+							$this->Session->write( 'Card.Order.delivery_instructions', $data[ 'orderAddress' ][ 'delivery_instructions' ] );
 						} else {
 							$this->Session->write('Cart.Order.triedToSetEmptyAddress', True);
 						}
