@@ -563,6 +563,16 @@
 			}
 		}
 
+		public function getPending() {
+			if ($this->request->is('ajax') {
+				$conditions = array( 'conditions' => array( 'Order.status' => 0));
+				$this->set('Orders', $this->Order->find('all', $conditions));
+				return;
+			} else {
+				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
+			}
+		}
+
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->disableCache();
