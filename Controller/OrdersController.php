@@ -491,7 +491,7 @@
 					if ( $command == 'database' ) {
 						if ( $this->Auth->loggedIn() ) {
 							$conditions = array( 'conditions' => array( 'Address.user_id' => $this->Auth->user( 'id' ),
-							                                            'Address.id'      => $data[ 'adddress_id' ] ) );
+							                                            'Address.id'      => $data[ 'address_id' ] ) );
 							$address    = $this->Address->find( 'first', $conditions );
 							$this->Session->write( 'Cart.Order.address_checked', true );
 							$this->Session->write( 'Cart.Order.address', $address );
@@ -541,7 +541,7 @@
 					elseif ( $command == 'session' ) {
 						if (!empty($data['orderAddress'])) {
 							$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
-							$this->Session->write( 'Card.Order.delibery_instructions', $data[ 'instructions' ] );
+							$this->Session->write( 'Card.Order.delivery_instructions', $data[ 'delivery_instructions' ] );
 						} else {
 							$this->Session->write('Cart.Order.triedToSetEmptyAddress', True);
 						}
