@@ -74,8 +74,6 @@
 			//	$this->render();
 			//	return;
 			//}
-			db($this->request->data);
-
 			$products = array();
 			foreach ( $this->request->data[ 'Order' ] as $orb ) {
 				extract( array_merge( array(
@@ -90,8 +88,6 @@
 				$item = $this->Cart->add( $id, $quantity, $price_rank, $orbopts, $preparation_instructions );
 				array_push( $products, $item );
 			}
-			db(json_encode( array( "Order"   => array( "Orbs" => $products ),
-				                                                                            "success" => true, "cart_total" => $total)));
 			$this->Cart->update();
 			if ( !empty( $products ) ) {
 				if ( $this->Session->check( 'Cart.Order.total' ) ) {
