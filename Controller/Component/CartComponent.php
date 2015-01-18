@@ -112,7 +112,6 @@ class CartComponent extends Component {
 						$this->Session->write('Cart.OrderItem.' . $key . '.subtotal', 
 							sprintf('%01.2f', ($item['base_price'] + array_sum($item['orbopts_prices'])) * $item['quantity']));
 						$matched = True;
-						return $item;
 					}
 				}
 			}
@@ -142,7 +141,7 @@ class CartComponent extends Component {
 			$this->Session->write('Cart.OrderItem', $current_data);
 			return $item;
 		} else {
-			return false;
+			return Null;
 		}
 	}
 
@@ -174,7 +173,6 @@ class CartComponent extends Component {
 			$cart['OrderItem'] = array();
 			$this->Session->write('Cart.OrderItem', array());
 		}
-		$d = array_key_exists('Order', $cart) ? $cart['Order'] : array();
 		if ( count($cart['OrderItem']) > 0) {
 			foreach ($cart['OrderItem'] as $item) {
 				$quantity += $item['quantity'];
@@ -183,22 +181,19 @@ class CartComponent extends Component {
 				$order_item_count++;
 			}
 			$total = $subtotal+$HST+$delivery;
-			$d['order_item_count'] = $order_item_count;
-			$d['quantity'] = $quantity;
-			$d['subtotal'] = sprintf('%01.2f', $subtotal);
-			$d['HST'] = sprintf('%01.2f', $HST);
-			$d['delivery'] = sprintf('%01.2f', $delivery);
-			$d['total'] = sprintf('%01.2f', $total);
-			$d['deliverable'] = $total >= 10.0;
-			$this->Session->write('Cart.Order', $d);
+			$this->Session->write('Cart.Order.order_item_count', $order_item_count);
+			$this->Session->write('Cart.Order.quantity', $quantity);
+			$this->Session->write('Cart.Order.subtotal', sprintf('%01.2f', $subtotal));
+			$this->Session->write('Cart.Order.HST', sprintf('%01.2f', $HST));
+			$this->Session->write('Cart.Order.delivery', $total >= 10.0 ? sprintf('%01.2f', $delivery) : '0.0');
+			$this->Session->write('Cart.Order.total', sprintf('%01.2f', $total));
+			$this->Session->write('Cart.Order.deliverable', $total >= 10.0);
 			return true;
-		}
-		else {
-			$d['quantity'] = 0;
-			$d['subtotal'] = 0;
-			$d['total'] = 0;
-			$d['deliverable'] = false;
-			$this->Session->write('Cart.Order', $d);
+		} else {
+			$this->Session->write('Cart.Order.quantity', 0);
+			$this->Session->write('Cart.Order.subtotal', 0);
+			$this->Session->write('Cart.Order.total', 0);
+			$this->Session->write('Cart.Order.deliverable', false);
 			return false;
 		}
 	}
