@@ -182,12 +182,13 @@ class CartComponent extends Component {
 				$HST += $item['subtotal']*$HST_MULT;
 				$order_item_count++;
 			}
+			$delivery = $total >= 10.0 ? $delivery : 0)
 			$total = $subtotal+$HST+$delivery;
 			$this->Session->write('Cart.Order.order_item_count', $order_item_count);
 			$this->Session->write('Cart.Order.quantity', $quantity);
 			$this->Session->write('Cart.Order.subtotal', sprintf('%01.2f', $subtotal));
 			$this->Session->write('Cart.Order.HST', sprintf('%01.2f', $HST));
-			$this->Session->write('Cart.Order.delivery', $total >= 10.0 ? sprintf('%01.2f', $delivery) : '0.0');
+			$this->Session->write('Cart.Order.delivery', sprintf('%01.2f', $delivery));
 			$this->Session->write('Cart.Order.total', sprintf('%01.2f', $total));
 			$this->Session->write('Cart.Order.deliverable', $total >= 10.0);
 			if (!$this->Session->check('Cart.Order.order_method')) {
