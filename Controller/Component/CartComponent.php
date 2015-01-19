@@ -182,7 +182,7 @@ class CartComponent extends Component {
 				$HST += $item['subtotal']*$HST_MULT;
 				$order_item_count++;
 			}
-			$delivery = $total >= 10.0 ? $delivery : 0)
+			$delivery = $subtotal >= 10.0 ? 0.00 : 3.00;
 			$total = $subtotal+$HST+$delivery;
 			$this->Session->write('Cart.Order.order_item_count', $order_item_count);
 			$this->Session->write('Cart.Order.quantity', $quantity);
