@@ -392,13 +392,13 @@
 									->send();*/
 							$this->set( 'response', array( 'success' => true,
 							                               "order_id" => $this->Order->id,
-															"error" => false ) );
+											"error" => false ) );
 							$this->render('finalize_order');
-
+							$this->Session->destroy('Cart');
 							return;
 						} else {
 							$errors = $this->Order->invalidFields();
-							$this->set('response', array( 'success' => false,"order_id" => false, "error" => $errors ));
+							$this->set('response', array( 'success' => false, "order_id" => false, "error" => $errors ));
 							$this->render('finalize_order');
 							return;
 						}
