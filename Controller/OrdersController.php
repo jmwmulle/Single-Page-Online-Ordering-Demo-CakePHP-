@@ -337,7 +337,7 @@
 		public function finalize() {
 			if ( $this->request->is('ajax') ) {
 				$this->layout = 'ajax';
-				$response = array('success' => null, 'error' => null, 'order_id' => null);
+				$response = array('success', 'error', 'order_id');
 			    if ($this->request->is( 'post' ) ) {
 				    $payment_method = $this->request->data['Order']['payment_method'];
 				    if (in_array($payment_method, array(CREDIT_CARD, CASH, DEBIT)) ) {
@@ -438,7 +438,7 @@
 								->viewVars(array('cart' => $cart))
 								->send();*/
 							$response = array_combine($response, array( true, false, $this->Order->id));
-							$this->Session->destroy('Cart');
+//							$this->Session->destroy('Cart');
 						} else {
 							$response = array_combine( $response, array(false, $this->Order->invalidFields(), false));
 						}
