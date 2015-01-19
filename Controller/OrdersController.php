@@ -621,6 +621,7 @@
 				} else {
 					$this->set('response', array('success'=>false, 'status'=>Null, 'error'=>'Order not found.'));
 				}
+				return $this->render();
 			}
 			$this->redirect( "/menu" );
 		}
