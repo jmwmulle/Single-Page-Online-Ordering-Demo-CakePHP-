@@ -495,7 +495,7 @@
 
 		/*confirm_address*/
 		public function confirm_address($command = null) {
-			if ( $this->request->is( 'ajax' ) ) {
+			if ( $this->request->is( 'ajax') ) {
 				if ( $this->request->is( 'post' ) ) {
 					if ( !$this->Session->check( "Cart.Order.address_checked" ) ) {
 						$this->Session->write( 'Cart.Order.address_checked', false );
@@ -618,6 +618,6 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->disableCache();
-			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'review', 'index', 'view', 'get_pending', 'set_status', 'get_status');
+			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'review', 'index', 'view', 'get_pending', 'set_status', 'get_status','finalize');
 		}
 	}
