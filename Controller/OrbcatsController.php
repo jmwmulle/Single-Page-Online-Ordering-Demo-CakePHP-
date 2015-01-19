@@ -139,12 +139,13 @@ class OrbcatsController extends AppController {
 
 
 		$active_orbcat['orbs'] = $active_orbcat['orbs'][0]['Orb']; // truncate to just orbs, remove OrbCat
-		$orbcats_list = $this->Orbcat->find('all', array('recursive' => -1,
-				'fields' => array('title','subtitle'),
+		$orbcats = $this->Orbcat->find('all', array('recursive' => -1,
+				'fields' => array('id','title','subtitle'),
 		                                                 'conditions' => array('`Orbcat`.`primary_menu`' => true)));  // for actual orbcat menu
-		foreach ($orbcats_list as $i => $orbcat) {
+		$orbcats_list = array();
+		foreach ($orbcats as $i => $orbcat) {
 			$orbcat = $orbcat['Orbcat'];
-			$orbcats_list[$i] = $orbcat['subtitle'] ?  $orbcat['subtitle']." ".$orbcat['title'] : $orbcat['title'];
+			$orbcats_list[$orbcat['id']] = $orbcat['subtitle'] ?  $orbcat['subtitle']." ".$orbcat['title'] : $orbcat['title'];
 		}
 		foreach($active_orbcat['orbs'] as $i => $orb) {
 			// next line drops the 'id' field after combining the pricelist & pricedict into a table

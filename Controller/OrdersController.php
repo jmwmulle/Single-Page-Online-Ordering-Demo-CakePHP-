@@ -449,16 +449,15 @@
 
 		/* order_method */
 		public function order_method($method) {
-			$this->set( 'method', $method );
 			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = 'ajax';
 				if ( $this->request->is( 'post' ) ) {
 					if ( !$this->Session->read( "Cart.Order.address_checked" ) ) {
 						$this->Session->write( 'Cart.Order.address_checked', false );
 					}
-					if ( in_array( $method, array( 'delivery', 'pickup', 'just_browsing' ) ) ) {
+					if ( in_array( $method, array( DELIVERY, PICKUP, JUST_BROWSING) ) ) {
 						$this->Session->write( "Cart.Order.order_method", $method );
-						if ( $this->Auth->loggedIn() and $method == 'delivery') {
+						if ( $this->Auth->loggedIn() and $method == DELIVERY) {
 							$options         = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
 							$user            = $this->User->find( 'first', $options );
 							$address_matches = in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] );
@@ -467,12 +466,14 @@
 							$address_matches = null;
 						}
 						$this->Session->write( "User.address_matches", $address_matches );
-						$this->set( "response", array( "success" => true, 'matches' => $address_matches,
+						$this->set( "response", array( "success" => true,
+						                               'matches' => $address_matches,
 						                               'error'   => false )
 						);
 					}
 					else {
-						$this->set( "response", array( "success" => false, 'matches' => false,
+						$this->set( "response", array( "success" => false,
+						                               'matches' => false,
 						                               'error'   => "Invalid order method" )
 						);
 					}
@@ -480,7 +481,7 @@
 				$this->render( 'order_method' );
 			}
 			else {
-				return $this->redirect( array( 'controller' => 'menu', 'action' => 'index' ) );
+				return $this->redirect('/menu');
 			}
 		}
 
@@ -488,10 +489,9 @@
 		public function confirm_address($command = null) {
 			if ( $this->request->is( 'ajax' ) ) {
 				if ( $this->request->is( 'post' ) ) {
-					if ( !$this->Session->check( "address_checked" ) ) {
+					if ( !$this->Session->check( "Cart.Order.address_checked" ) ) {
 						$this->Session->write( 'Cart.Order.address_checked', false );
 					}
-
 					$data = $this->request->data;
 					if ( $command == 'database' ) {
 						if ( $this->Auth->loggedIn() ) {
@@ -547,7 +547,6 @@
 						if (!empty($data['orderAddress'])) {
 							$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
 							$this->Session->write( 'Cart.Order.email', $data['orderAddress']['email']);
-							$this->Session->destroy( 'Cart.Order.address.email' );
 							$this->Session->write( 'Cart.Order.delivery_instructions', $data[ 'orderAddress' ][ 'delivery_instructions' ] );
 						} else {
 							$this->Session->write('Cart.Order.triedToSetEmptyAddress', True);

@@ -412,11 +412,11 @@ window.XBS = {
 								case 'weight':
 									if ($(this.trigger.element).hasClass(XSM.effects.enabled)) {
 										this.trigger.event.stopPropagation();
-										XBS.menu.toggle_orb_opt_icon(this.trigger.element, false);
+										XBS.menu.toggle_orb_opt_icon(this.trigger.element, true);
 									}
 									break;
 								case "opt":
-									XBS.menu.toggle_orb_opt(this.read('element'), false);
+									XBS.menu.toggle_orb_opt(this.read('element'), true);
 									break;
 							}
 						}
@@ -1377,6 +1377,10 @@ window.XBS = {
 			} else {
 				method = XBS.data.order.order_method;
 			}
+			if (!method) {
+				XBS.data.order.order_method = C.JUST_BROWSING;
+				method = C.JUST_BROWSING;
+			}
 
 			$(XSM.menu.user_activity_panel_items).each(function () {
 				var route = $($(this).children()[0]).data('route');
@@ -1718,7 +1722,7 @@ window.XBS = {
 		submit_address: function (route, secondary_route) {
 			var debug_this = 2;
 			if (debug_this > 0) pr(route, "XBS.validation.submit_address(route)", 2);
-			var context = route.read("content");
+			var context = route.read("context");
 			var method = route.read("method");
 			$("#orderAddressForm").validate({
 				debug: false,
