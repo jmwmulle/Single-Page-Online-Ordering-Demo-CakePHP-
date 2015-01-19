@@ -23,7 +23,7 @@ window.XBS = {
 		orb_opt_filters: {
 		},
 		order: {
-			method: C.JUST_BROWSING,
+			order_method: C.JUST_BROWSING,
 			address: {
 				address_1: null,
 				address_2: null,
@@ -1372,7 +1372,6 @@ window.XBS = {
 			return true;
 		},
 		set_order_method: function (method) {
-			pr(XBS.data.order, 'xbs.data.order');
 			if (method)  {
 				XBS.data.order.order_method = method;
 			} else {
@@ -1658,7 +1657,6 @@ window.XBS = {
 			return true;
 		},
 		validate_order_review: function() {
-			pr(XBS.data.order);
 			var valid = true;
 			XBS.data.order.payment = $(XSM.modal.payment_method_input).val();
 			if (XBS.data.order.order_method == C.JUST_BROWSING) valid = false;
