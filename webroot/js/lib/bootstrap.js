@@ -1363,12 +1363,13 @@ window.JSInterface =
 								$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
 							}
 						} else {
-							pr("check_dom true");
-							if ($(this).hasClass('active') ) XBS.cart.order.method = route.split(C.DS)[2];
+							if (XBS.cart.initialized) {
+								if ($(this).hasClass(XSM.effects.active) ) XBS.cart.order.method = route.split(C.DS)[2];
+							}
 						}
 					}
 				});
-				pr(XBS.cart.order);
+
 			},
 			show_orb_card_front_face: function () {
 				var debug_this = 0;
