@@ -477,9 +477,8 @@ window.XBS = {
 										type:C.POST
 									}
 									this.set_callback("launch", function() {
-										var data = this.deferal_data;
-										pr(data, "XBS.routing::order/finalize->data", 2);
-										die();
+										var data = $.parseJSON(this.deferal_data);
+										var trigger = this.trigger;
 										if (!data.error) {
 											if (data.order_id) {
 												var route = "pending_order"+ C.DS + data.order_id + C.DS + "launching";
@@ -489,7 +488,6 @@ window.XBS = {
 												});
 											}
 										}
-
 									});
 									break;
 								case "review":
@@ -577,7 +575,7 @@ window.XBS = {
 					url: {url:"order-confirmation", defer: true, type: C.POST},
 					callbacks: {
 						params_set: function() {
-							pr(this);
+							pr("zomfg you guys");
 							switch (this.read('status') ) {
 								case "launching":
 									this.url.defer = false;
@@ -593,11 +591,12 @@ window.XBS = {
 						launch: function() {
 							var data = this.deferal_data;
 							if (data.status = "pending") {
+								var request = {
+									request: "pending_order"+ C.DS + this.read('order_id' + C.DS + 'check'),
+									trigger: this.trigger
+								};
 								setTimeout(function() {
-									$(XBS.routing).trigger(C.ROUTE_REQUEST, {
-										request: "pending_order"+ C.DS + this.read('order_id' + C.DS + 'check'),
-										trigger:this.trigger.event
-									});
+									$(XBS.routing).trigger(C.ROUTE_REQUEST, request);
 								}, 3000);
 							}
 						}
