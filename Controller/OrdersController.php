@@ -380,22 +380,21 @@
 						if ( $save ) {
 							$this->set( compact( 'cart' ) );
 
-							/*App::uses('CakeEmail', 'Network/Email');
-							$email = new CakeEmail();
-							$email->from('xtremepizzahalifax@gmail.com')
-									->cc('xtremepizzahalifax@gmail.com')
-									->to($cart['Order']['email'])
-									->subject('Xtreme Pizza Order Confirmation')
-									->template('order')
-									->emailFormat('text')
-									->viewVars(array('cart' => $cart))
-									->send();*/
+						/*App::uses('CakeEmail', 'Network/Email');
+						$email = new CakeEmail();
+						$email->from('xtremepizzahalifax@gmail.com')
+								->cc('xtremepizzahalifax@gmail.com')
+								->to($cart['Order']['email'])
+								->subject('Xtreme Pizza Order Confirmation')
+								->template('order')
+								->emailFormat('text')
+								->viewVars(array('cart' => $cart))
+								->send();*/
 							$this->set( 'response', array( 'success' => true,
-							                               "order_id" => $this->Order->id,
-											"error" => false ) );
-							$this->render('finalize_order');
+									       "order_id" => $this->Order['id'],
+										"error" => false ) );
 							$this->Session->destroy('Cart');
-							return;
+							$this->render('finalize_order');
 						} else {
 							$errors = $this->Order->invalidFields();
 							$this->set('response', array( 'success' => false, "order_id" => false, "error" => $errors ));
@@ -547,7 +546,7 @@
 					elseif ( $command == 'session' ) {
 						if (!empty($data['orderAddress'])) {
 							$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
-							$this->Session->write( 'Card.Order.delivery_instructions', $data[ 'orderAddress' ][ 'delivery_instructions' ] );
+							$this->Session->write( 'Cart.Order.delivery_instructions', $data[ 'orderAddress' ][ 'delivery_instructions' ] );
 						} else {
 							$this->Session->write('Cart.Order.triedToSetEmptyAddress', True);
 						}
