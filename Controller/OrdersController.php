@@ -601,7 +601,7 @@
 			if ($this->request->is('ajax')) {
 				$conditions = array('conditions' => array('Order.id' => $id));
 				if ($this->Order->find('first', $conditions)) {
-					$this->set('response', array('success'=>true, 'status'=>$this->Order['status'], 'error'=>Null));
+					$this->set('response', array('success'=>true, 'status'=>$this->Order->status, 'error'=>Null));
 				} else {
 					$this->set('response', array('success'=>false, 'status'=>Null, 'error'=>'Order not found.'));
 				}
