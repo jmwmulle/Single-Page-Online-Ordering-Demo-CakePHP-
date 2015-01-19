@@ -18,7 +18,7 @@
 				<ul class="pending-order panel">
 					<li></li>
 				</ul>
-				<div class="large button success" data-route="print">Accept</div>
+				<div class="large button success" onClick="showDialog('Order Approved!', 'Status')" data-route="print">Accept</div>
 				<div class="large button alert">Decline</div>
 			</div>
 			<div class="small-4 columns">
@@ -38,6 +38,21 @@
 	</div>
 </div>
 <script>
+//String message, String title
+function showDialog(message, title) {
+	Android.showDialog(message, title);
+}
+//String text, int font_id, String alignment, int line_space, int size_w, int size_h, int x_pos, boolean bold, boolean underline
+function printText(text, font_id, alignment, line_space, size_w, size_h, x_pos, bold, underline){
+	Android.printText(text, font_id, alignment, line_space, size_w, size_h, x_pos, bold, underline);
+}
+
+//boolean feed
+function cut(feed) {
+	Android.cut(feed);
+}
+
+var cart = {};
 //setTimeout(function() { window.location.assign("http://development-xtreme-pizza.ca/pages/vendor");}, 10000);
 //setTimeout(function() { window.location.assign("http://kleinlab.psychology.dal.ca/xtreme/pages/vendor");}, 10000);
 </script>
