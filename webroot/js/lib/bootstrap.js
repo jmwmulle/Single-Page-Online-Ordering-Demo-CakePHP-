@@ -470,27 +470,26 @@ window.XBS = {
 									this.unset("launch");
 									break;
 								case "finalize":
-									this.unset('url');
-									this.unset('launch');
-									this.unset('modal');
+									this.url = {
+										url: "orders" + C.DS + "finalize",
+										defer:true,
+										data:$("#OrderReviewForm").serialize(),
+										type:C.POST
+									}
 									this.set_callback("launch", function() {
-										var trigger = this.trigger;
-										$.ajax({
-											url:"orders/finalize",
-											type: C.POST,
-											data: $("#OrderReviewForm").serialize(),
-											success: function(data){
-												data = $.parseJSON(data);
-												if (!data.error) {
-													if (data.order_id) {
-														var route = "pending_order"+ C.DS + data.order_id + C.DS + "launching";
-														$(XBS.routing).trigger(C.ROUTE_REQUEST, {
-															request: route,
-															trigger: trigger.event
-														});
-													}
-												}
-											}});
+										var data = this.deferal_data;
+										pr(data, "XBS.routing::order/finalize->data", 2);
+										die();
+										if (!data.error) {
+											if (data.order_id) {
+												var route = "pending_order"+ C.DS + data.order_id + C.DS + "launching";
+												$(XBS.routing).trigger(C.ROUTE_REQUEST, {
+													request: route,
+													trigger: trigger.event
+												});
+											}
+										}
+
 									});
 									break;
 								case "review":
