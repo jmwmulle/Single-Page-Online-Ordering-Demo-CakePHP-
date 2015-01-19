@@ -24,14 +24,13 @@
 	$email = $this->Session->read('Cart.Order.email');
 	$address = array_merge($__address, $this->Session->read('Cart.Order.address'));
 	$update_command = "session";
-
 ?>
+
 <div class="row">
 	<div class="large-12 columns">
 	<?php echo $this->element("modal_masthead", array(
 								"header" => "Delivery! Yay for sitting!",
 								"subheader" => "But let's confirm your address, yeah?"));?>
-
 		<div class="row">
 			<div class="large-12 columns">
 				<div class="row">
