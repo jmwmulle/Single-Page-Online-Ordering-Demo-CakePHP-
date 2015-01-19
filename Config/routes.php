@@ -48,6 +48,7 @@
 	Router::connect('/review-order', array('controller' => 'orders', 'action' => 'review'));
 	Router::connect('/finish-ordering/*', array('controller' => 'orders', 'action' => 'review'));
 	Router::connect('/order-confirmation/*', array('controller' => 'orders', 'action' => 'get_status'));
+	Router::connect('/sd', array('controller' => 'orbcats', 'action' => 'resession'));
 
 	Router::connect('/auth/email', array('controller' => 'users', 'action' => 'login'));
 	

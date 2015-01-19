@@ -120,6 +120,11 @@ class OrbcatsController extends AppController {
 		$this->menu(null, null, true);
 	}
 
+	public function resession() {
+		$this->Session->destroy();
+		$this->redirect("/menu");
+	}
+
 	public function menu($orbcat_id = null, $orb_id = null, $return = false) {
 		$page_name = 'menu';
 
