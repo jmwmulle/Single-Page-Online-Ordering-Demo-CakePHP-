@@ -414,7 +414,7 @@
 
 						if ( $this->Auth->loggedIn() ) {
 							$this->User->set( 'id', $this->Auth->user[ 'id' ] );
-							$save = $this->User->saveAssociated( $this->Order );
+							$save = $this->User->saveAssociated( array("User"=>$this->User, "Order"=>$this->Order) );
 						} else {
 							$order = array('Order' => array('user_id' => -1,
 							                                'state' => 0,
