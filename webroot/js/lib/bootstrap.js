@@ -1368,24 +1368,19 @@ window.XBS = {
 			return true;
 		},
 		set_order_method: function (method) {
-			var check_DOM_for_method = true;
-			if (method) {
-				check_DOM_for_method = false
+			if (method)  {
 				XBS.data.order.method = method;
+			} else {
+				method = XBS.data.order.method;
 			}
+
 			$(XSM.menu.user_activity_panel_items).each(function () {
 				var route = $($(this).children()[0]).data('route');
 				if (route) {
-					if (!check_DOM_for_method) {
-						if (route.split(C.DS)[2] == method) {
-							$(this).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
-						} else {
-							$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
-						}
+					if (route.split(C.DS)[2] == method) {
+						$(this).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
 					} else {
-						if (XBS.cart.initialized) {
-							if ($(this).hasClass(XSM.effects.active) ) XBS.data.order.method = route.split(C.DS)[2];
-						}
+						$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
 					}
 				}
 			});
@@ -1573,19 +1568,14 @@ window.XBS = {
 			opt_id: null
 		},
 
-		init: function (cart_details) {
+		init: function (cart_from_session) {
 			var debug_this = 1;
-			if (debug_this > 0 ) pr(cart_details, "XBS.cart.init(cart details)", 2);
-			try {
-				XBS.data.order = cart_details.Order;
-				XBS.cart.orbs = Object.keys(cart_details.OrderItem).length > 0 ? cart_details.OrderItem : {};
-				XBS.cart.initialized = true;
-				XBS.cart.configuring = {};
-				return true;
-			} catch (e) {
-				// todo: any errors here are CRUCIAL, deal with them
-				return null
-			}
+			if (debug_this > 0 ) pr(cart_from_session, "XBS.cart.init(cart details)", 2);
+			XBS.data.order = cart_from_session.Order;
+			XBS.cart.orbs = Object.keys(cart_from_session.OrderItem).length > 0 ? cart_from_session.OrderItem : {};
+			XBS.cart.initialized = true;
+			XBS.cart.configuring = {};
+			return true;
 		},
 		tally: function () {},
 		cancel_config: function (orb_id) { XBS.cart.configuring[orb_id] = jQuery.extend({}, XBS.cart.empty_config); },
