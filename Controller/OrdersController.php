@@ -337,7 +337,14 @@
 		public function finalize() {
 			if ( $this->request->is('ajax') ) {
 				$this->layout = 'ajax';
+				$response = array('success' => null, 'error' => null, 'order_id' => null);
 			    if ($this->request->is( 'post' ) ) {
+				    $payment_method = $this->request->data['Order']['payment_method'];
+				    if (in_array($payment_method, array(CREDIT_CARD, CASH, DEBIT)) ) {
+					    $this->Session->write('Cart.Order.payment_method', $payment_method);
+				    } else {
+					    // todo: handle case of invalid payment-method type; probably just bounce
+				    }
 					$cart = $this->Session->read('Cart');
 					$this->Order->set( $this->Session->read( 'Cart.Order' ) );
 					if ( $this->Order->validates() ) {
@@ -346,99 +353,101 @@
 						$this->Order->set( 'invoice', "Not Yet Implemented" );
 						$order[ 'Order' ][ 'status' ] = ORDER_PENDING;
 
-						if ( $cart[ 'Order' ][ 'payment_method' ] == 'paypal' ) {
-							$paypal = $this->Paypal->ConfirmPayment( $order[ 'Order' ][ 'total' ] );
-							//debug($resArray);
-							$ack = strtoupper( $paypal[ 'ACK' ] );
-							if ( $ack == 'SUCCESS' || $ack == 'SUCCESSWITHWARNING' ) {
-								$order[ 'Order' ][ 'status' ] = ORDER_PAID;
-							}
+						switch ($cart[ 'Order' ][ 'payment_method' ]) {
+							case PAYPAL:
+								if ( $this->Session->read('Cart.Paypal.Details') ) {
+									$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
+									$cart['Order']['last_name'] = $cart['Paypal']['Details']['LASTNAME'];
+									$cart['Order']['email'] = $cart['Paypal']['Details']['EMAIL'];
+									$cart['Order']['phone'] = '888-888-8888';
+									$cart['Order']['billing_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
+									$cart['Order']['billing_address2'] = '';
+									$cart['Order']['billing_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
+									$cart['Order']['billing_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
+									$cart['Order']['billing_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
+									$cart['Order']['billing_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
 
-							if ( (Configure::read( 'Settings.AUTHORIZENET_ENABLED' ) == 1 ) && $cart[ 'Order' ][ 'payment_method' ] == 'creditcard') {
-								$payment = array(
-									'creditcard_number' => $this->request->data[ 'Order' ][ 'creditcard_number' ],
-									'creditcard_month'  => $this->request->data[ 'Order' ][ 'creditcard_month' ],
-									'creditcard_year'   => $this->request->data[ 'Order' ][ 'creditcard_year' ],
-									'creditcard_code'   => $this->request->data[ 'Order' ][ 'creditcard_code' ],
-								);
-								try {
-									$authorizeNet = $this->AuthorizeNet->charge( $cart[ 'Order' ], $payment );
-								} catch ( Exception $e ) {
-									$this->Session->setFlash( $e->getMessage() );
+									$cart['Order']['shipping_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
+									$cart['Order']['shipping_address2'] = '';
+									$cart['Order']['shipping_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
+									$cart['Order']['shipping_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
+									$cart['Order']['shipping_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
+									$cart['Order']['shipping_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
 
-									return $this->redirect( array( 'action' => 'review' ) );
+									$cart['Order']['payment_method'] = 'paypal';
+
+									$this->Session->write('Shop.Order', $cart['Order']);
+									$paypal = $this->Paypal->ConfirmPayment( $order[ 'Order' ][ 'total' ] );
+									$ack = strtoupper( $paypal[ 'ACK' ] );
+									if ( $ack == 'SUCCESS' || $ack == 'SUCCESSWITHWARNING' ) {
+										$order[ 'Order' ][ 'status' ] = ORDER_PAID;
+									}
 								}
-								$order[ 'Order' ][ 'authorization' ] = $authorizeNet[ 4 ];
-								$order[ 'Order' ][ 'transaction' ]   = $authorizeNet[ 6 ];
-							}
+								break;
+							case CREDIT_CARD:
+								if ( (Configure::read( 'Settings.AUTHORIZENET_ENABLED' ) == 1 )) {
+									$payment = array(
+										'creditcard_number' => $this->request->data[ 'Order' ][ 'creditcard_number' ],
+										'creditcard_month'  => $this->request->data[ 'Order' ][ 'creditcard_month' ],
+										'creditcard_year'   => $this->request->data[ 'Order' ][ 'creditcard_year' ],
+										'creditcard_code'   => $this->request->data[ 'Order' ][ 'creditcard_code' ],
+									);
+									try {
+										$authorizeNet = $this->AuthorizeNet->charge( $cart[ 'Order' ], $payment );
+									} catch ( Exception $e ) {
+										$this->Session->setFlash( $e->getMessage() );
 
-							if ( $this->Auth->loggedIn() ) {
-								$this->User->set( 'id', $this->Auth->user[ 'id' ] );
-								$this->User->saveAssociated( $this->Order );
-							} else {
-								$save = $this->Order->save();
-							}
-							//$save = $this->Order->saveAll($order, array('validate' => 'first'));
-							if ( $save ) {
-								$this->set( compact( 'cart' ) );
-
-							/*App::uses('CakeEmail', 'Network/Email');
-							$email = new CakeEmail();
-							$email->from('xtremepizzahalifax@gmail.com')
-									->cc('xtremepizzahalifax@gmail.com')
-									->to($cart['Order']['email'])
-									->subject('Xtreme Pizza Order Confirmation')
-									->template('order')
-									->emailFormat('text')
-									->viewVars(array('cart' => $cart))
-									->send();*/
-								$this->set( 'response', array( 'success' => true,
-										       "order_id" => $this->Order->id,
-											"error" => false ) );
-								$this->Session->destroy('Cart');
-								$this->render('finalize_order');
-							} else {
-								$errors = $this->Order->invalidFields();
-								$this->set('response', array( 'success' => false, "order_id" => false, "error" => $errors ));
-								$this->render('finalize_order');
-								return;
-							}
+										return $this->redirect( array( 'action' => 'review' ) );
+									}
+									$order[ 'Order' ][ 'authorization' ] = $authorizeNet[ 4 ];
+									$order[ 'Order' ][ 'transaction' ]   = $authorizeNet[ 6 ];
+								}
+								break;
+							case DEBIT:
+								// todo: confirm debit is available?
+								break;
+							default:
+								// todo: set some default keys if needed, maybe?
 						}
 
-						$credit_card_available = false; // not having this commented out is easier to read Jons IDE
-						if ($credit_card_available) {
-							if(($cart['Order']['payment_method'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
-								$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
-								$cart['Order']['last_name'] = $cart['Paypal']['Details']['LASTNAME'];
-								$cart['Order']['email'] = $cart['Paypal']['Details']['EMAIL'];
-								$cart['Order']['phone'] = '888-888-8888';
-								$cart['Order']['billing_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
-								$cart['Order']['billing_address2'] = '';
-								$cart['Order']['billing_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
-								$cart['Order']['billing_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
-								$cart['Order']['billing_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
-								$cart['Order']['billing_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
-
-								$cart['Order']['shipping_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
-								$cart['Order']['shipping_address2'] = '';
-								$cart['Order']['shipping_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
-								$cart['Order']['shipping_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
-								$cart['Order']['shipping_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
-								$cart['Order']['shipping_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
-
-								$cart['Order']['payment_method'] = 'paypal';
-
-								$this->Session->write('Shop.Order', $cart['Order']);
-							}
+						$save = false;
+						if ( $this->Auth->loggedIn() ) {
+							$this->User->set( 'id', $this->Auth->user[ 'id' ] );
+							$this->User->saveAssociated( $this->Order );
+						} else {
+							$save = $this->Order->save();
 						}
-						$this->set( compact( 'cart' ) );
+
+						if ( $save ) {
+							$this->set( compact( 'cart' ) ); // what's this do? still valid?
+
+						/*App::uses('CakeEmail', 'Network/Email');
+						$email = new CakeEmail();
+						$email->from('xtremepizzahalifax@gmail.com')
+								->cc('xtremepizzahalifax@gmail.com')
+								->to($cart['Order']['email'])
+								->subject('Xtreme Pizza Order Confirmation')
+								->template('order')
+								->emailFormat('text')
+								->viewVars(array('cart' => $cart))
+								->send();*/
+							$this->set( 'response', array( 'success' => true,
+									    "order_id" => $this->Order->id,
+										"error" => false ) );
+							$this->Session->destroy('Cart');
+							$this->render('finalize_order');
+						}
+							$errors = $this->Order->invalidFields();
+							$response = array_combine( $response, array(true, false,  $this->Order->id));
+							$this->render('finalize_order');
+							return;
 					} else {
-						$this->set('response', array( 'success' => false, "order_id" => false, "error" => "Cart didn't validate" ));
-						// todo: handle case where cart doesn't validate
+						$response = array_combine($response, array(false, "Cart didn't validate", false ));
 					}
 			    } else {
-				    $this->set('response', array( 'success' => false, "order_id" => false, "error" => "Request was not POST" ));
+				    $response = array_combine($response, array(false, "Request was not POST", false ));
 			    }
+				$this->set(compact('response'));
 			} else {
 				return $this->redirect(array('controller'=>'menu', 'action'=>''));
 			}
