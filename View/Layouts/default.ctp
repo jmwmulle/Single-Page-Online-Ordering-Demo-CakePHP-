@@ -49,20 +49,7 @@
 ?>
 <div id="page-content">
 <?php
-	$default_order = '{
-	OrderItem:{},
-	Order: {
-			method: "just_browsing",
-			address: {
-				address_1: null,
-				address_2: null,
-				postal_code: null,
-				instructions: null
-			},
-			payment: null
-		}
-	};';
-	echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : $default_order );
+	echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );
 	echo $this->fetch( 'content' );
 ?>
 </div>

@@ -6,11 +6,25 @@
 	 * Twitter: @thisimpetus
 	 * About.me: about.me/thisimpetus
 	 */
+	$__address = array('firstname'=> null,
+	                   'lastname' => null,
+	                   'address' => null,
+	                   'address_2' => null,
+	                   'phone' => null,
+	                   'email' => null,
+	                   'building_type' => null,
+	                   'delivery_instructions' => null,
+	                   'postal_code' => null,
+	                   'delivery_time' => null,
+	                   'city' => null,
+	                   'province' => null);
 	$cart = $this->Session->read('Cart');
 	$logged_in = $this->Session->read('Auth.User') ? true : false;
 	$user = $logged_in ? $this->Session->read('Auth.User.User') : array();
-	$address = $this->Session->read('Cart.Order.address');
+	$email = $this->Session->read('Cart.Order.email');
+	$address = array_merge($__address, $this->Session->read('Cart.Order.address'));
 	$update_command = "session";
+
 ?>
 <div class="row">
 	<div class="large-12 columns">
@@ -64,9 +78,8 @@
 						'value' => $address ? $address['phone'] : null)); ?>
 			</div>
 			<div class="large-<?php echo array_key_exists('Addresses', $user) ? "3" : "6";?>  columns">
-				<?php echo $this->Form->input( 'confirmation', array( 'type' => 'select',
-				                                                      'label' => "Order Confirmation From",
-				                                                      'options' => array("E-mail", "SMS")) ); ?>
+				<?php echo $this->Form->input( 'email', array( 'label' => 'E-mail Address',
+				                                               'value' => $email)); ?>
 			</div>
 			<?php if ( array_key_exists('Addresses', $user) ) {?>
 			<div class="large-6 columns">
@@ -116,7 +129,8 @@
 			<div class="large-6 columns">
 				<div class="row">
 					<div class="large-12 columns">
-					<?php echo $this->Form->input( 'delivery_time' ); ?>
+					<?php echo $this->Form->input( 'delivery_time', array('type' => 'hidden', 'value' => "asap" )); ?>
+					<?php echo $this->Form->input( 'confirmation', array('type' => 'hidden', 'value' =>"email" )); ?>
 					<?php echo $this->Form->input( 'city', array( 'type' => 'hidden',
 				                                              'value' => $address ? $address['city'] : 'Halifax' ) );?>
 					<?php echo $this->Form->input( 'province', array( 'type' => 'hidden',

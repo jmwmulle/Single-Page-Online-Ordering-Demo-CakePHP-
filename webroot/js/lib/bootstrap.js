@@ -222,6 +222,7 @@ window.XBS = {
 									break;
 								case "submit":
 									this.unset('url');
+									this.unset('modal');
 									var secondary_launch = false;
 									if (this.read('restore') == "review") secondary_launch = "order/review";
 									if (this.read('context') == "menu") secondary_launch = "menu";
@@ -483,7 +484,9 @@ window.XBS = {
 									});
 									break;
 								case "review":
-									this.__set_behavior(C.STASH_STOP);
+									if (this.read('context') == 'orb_card') {
+										this.__set_behavior(C.STASH_STOP);
+									}
 									break;
 							}
 						},
@@ -521,7 +524,7 @@ window.XBS = {
 					        var response = $.parseJSON(this.deferal_data);
 							var trigger = this.trigger.event;
 							if ("success" in response && response.success === true) {
-								XBS.data.order.method = this.read('method');
+								XBS.data.order.order_method = this.read('method');
 								if (this.read('method') == "delivery") {
 									route = "confirm_address/" + this.read('context')
 								} else {
@@ -1369,9 +1372,9 @@ window.XBS = {
 		},
 		set_order_method: function (method) {
 			if (method)  {
-				XBS.data.order.method = method;
+				XBS.data.order.order_method = method;
 			} else {
-				method = XBS.data.order.method;
+				method = XBS.data.order.order_method;
 			}
 
 			$(XSM.menu.user_activity_panel_items).each(function () {
@@ -1635,7 +1638,7 @@ window.XBS = {
 			return false;
 		},
 		configure: function () {
-			var debug_this = 1;
+			var debug_this = 0;
 			if (debug_this > 0) pr("<no args>", "XBS.cart.configure()", 2);
 			var orb_id = $(XSM.menu.orb_order_form_orb_id).val();
 			if (!(orb_id in XBS.cart.configuring)) XBS.cart.configuring[orb_id] = jQuery.extend({}, XBS.cart.empty_config);
@@ -1649,10 +1652,11 @@ window.XBS = {
 			return true;
 		},
 		validate_order_review: function() {
+			pr(XBS.data.order);
 			var valid = true;
 			XBS.data.order.payment = $(XSM.modal.payment_method_input).val();
-			if (XBS.data.order.method == C.JUST_BROWSING) valid = false;
-			if (XBS.data.order.method == C.DELIVERY ) {
+			if (XBS.data.order.order_method == C.JUST_BROWSING) valid = false;
+			if (XBS.data.order.order_method == C.DELIVERY ) {
 				if ( !XBS.data.order.address) valid = false;
 				if ( !XBS.data.order.payment) valid = false;
 			}
@@ -1679,7 +1683,6 @@ window.XBS = {
 			var logo_width = $(XSM.splash.logo).innerWidth();
 			var height = $(XSM.splash.order_delivery).innerHeight();
 			var line_height = 1.25 * (height - 2 * 15) + C.PX;
-//			var line_height = 1.15 * height + C.PX;
 			var max_height = $(XSM.splash.logo_wrapper).innerHeight();
 			$(XSM.splash.order_delivery).css({width: logo_width, lineHeight: line_height});
 			$(XSM.splash.order_pickup).css({width: logo_width, lineHeight: line_height});
@@ -1719,10 +1722,12 @@ window.XBS = {
 					"data[orderAddress][firstname]": "required",
 					"data[orderAddress][phone]": {required: true, phoneUS: true},
 					"data[orderAddress][address]": "required",
+					"data[orderAddress][email]": {required: true, email:true},
 					"data[orderAddress][postal_code]": {required: true, minlength: 6, maxlength: 7}
 				},
 				messages: {
 					"data[orderAddress][firstname]": "Well we have to call you <em>something!</em>",
+					"data[orderAddress][email]": "No spam, promise—just for sending receipts!",
 					"data[orderAddress][phone]": {
 						required: "We'll need route in case there's a problem with your order.",
 						phoneUS: "Jusst ten little digits, separated by hyphens if you like..."},
