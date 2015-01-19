@@ -390,45 +390,47 @@
 									->emailFormat('text')
 									->viewVars(array('cart' => $cart))
 									->send();*/
-							$this->set( 'response', array( 'success' => true, "error" => false ) );
+							$this->set( 'response', array( 'success' => true,
+							                               "order_id" => $this->Order->id,
+															"error" => false ) );
 							$this->render('finalize_order');
 
 							return;
 						} else {
 							$errors = $this->Order->invalidFields();
-							$this->set('response', array( 'success' => false, "error" => $errors ));
+							$this->set('response', array( 'success' => false,"order_id" => false, "error" => $errors ));
 							$this->render('finalize_order');
-
 							return;
 						}
 					}
+				}
 
-			    }
+				$credit_card_available = false; // not having this commented out is easier to read Jons IDE
+				if ($credit_card_available) {
+					if(($cart['Order']['payment_method'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
+						$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
+						$cart['Order']['last_name'] = $cart['Paypal']['Details']['LASTNAME'];
+						$cart['Order']['email'] = $cart['Paypal']['Details']['EMAIL'];
+						$cart['Order']['phone'] = '888-888-8888';
+						$cart['Order']['billing_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
+						$cart['Order']['billing_address2'] = '';
+						$cart['Order']['billing_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
+						$cart['Order']['billing_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
+						$cart['Order']['billing_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
+						$cart['Order']['billing_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
 
-			/*if(($cart['Order']['payment_method'] == 'paypal') && !empty($cart['Paypal']['Details'])) {
-				$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
-				$cart['Order']['last_name'] = $cart['Paypal']['Details']['LASTNAME'];
-				$cart['Order']['email'] = $cart['Paypal']['Details']['EMAIL'];
-				$cart['Order']['phone'] = '888-888-8888';
-				$cart['Order']['billing_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
-				$cart['Order']['billing_address2'] = '';
-				$cart['Order']['billing_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
-				$cart['Order']['billing_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
-				$cart['Order']['billing_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
-				$cart['Order']['billing_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
+						$cart['Order']['shipping_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
+						$cart['Order']['shipping_address2'] = '';
+						$cart['Order']['shipping_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
+						$cart['Order']['shipping_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
+						$cart['Order']['shipping_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
+						$cart['Order']['shipping_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
 
-				$cart['Order']['shipping_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
-				$cart['Order']['shipping_address2'] = '';
-				$cart['Order']['shipping_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
-				$cart['Order']['shipping_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
-				$cart['Order']['shipping_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
-				$cart['Order']['shipping_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
+						$cart['Order']['payment_method'] = 'paypal';
 
-				$cart['Order']['payment_method'] = 'paypal';
-
-				$this->Session->write('Shop.Order', $cart['Order']);
-			}*/
-
+						$this->Session->write('Shop.Order', $cart['Order']);
+					}
+				}
 				$this->set( compact( 'cart' ) );
 			} else {
 				return $this->redirect(array('controller'=>'menu', 'action'=>''));

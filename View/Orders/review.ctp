@@ -9,7 +9,7 @@
 	$cart = $this->Session->read('Cart');
 	$order = array_key_exists('Order', $cart) ? $cart['Order'] : array();
 	$address = array_key_exists('address', $order) ? $order['address'] : array();
-	$order_method = array_key_exists('order_method', $order) ? $order['order_method'] : false;
+	$order_method = array_key_exists('order_method', $order) ? $order['order_method'] : 'just_browsing';
 ?>
 <hr>
 
@@ -129,11 +129,11 @@
 
 <div class="row">
 	<div class="large-12 columns">
-		<a href="#" class="modal-button bisecting cancel left" data-route="order/clear">
-			<span class="text">Cancel Order</span>
+		<a href="#" class="modal-button bisecting cancel left" data-route="menu/unstash">
+			<span class="icon-circle-arrow-l"></span><span class="text">Continue</span>
 		</a>
 		<a id="finalize-order-button" href="#" class="modal-button bisecting confirm right disabled" data-route="order/finalize">
-			<span class="text">Confirm & Order</span>
+			<span class="text">Confirm & Order</span><span class="icon-circle-arrow-r"></span>
 		</a>
 	</div>
 </div>
