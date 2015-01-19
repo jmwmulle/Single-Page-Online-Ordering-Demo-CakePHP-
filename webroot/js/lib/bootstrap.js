@@ -474,20 +474,20 @@ window.XBS = {
 									this.unset('launch');
 									this.unset('modal');
 									this.set_callback("launch", function() {
+										var trigger = this.trigger;
 										$.ajax({
 											url:"orders/finalize",
 											type: C.POST,
 											data: $("#OrderReviewForm").serialize(),
 											success: function(data){
-												pr(data, 'finalize-callback');
+												data = $.parseJSON(data);
 												if (!data.error) {
 													if (data.order_id) {
+														var route = "pending_order"+ C.DS + data.order_id + C.DS + "launching";
 														$(XBS.routing).trigger(C.ROUTE_REQUEST, {
-															request:"/pending_order"+ C.DS + data.order_id + C.DS + "launching",
-															trigger:this.trigger.event
+															request: route,
+															trigger: trigger.event
 														});
-													} else {
-														pr(data);
 													}
 												}
 											}});
@@ -578,6 +578,7 @@ window.XBS = {
 					url: {url:"order-confirmation", defer: true, type: C.POST},
 					callbacks: {
 						params_set: function() {
+							pr(this);
 							switch (this.read('status') ) {
 								case "launching":
 									this.url.defer = false;

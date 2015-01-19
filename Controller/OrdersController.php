@@ -96,12 +96,13 @@
 				else {
 					$total = null;
 				}
-				
+
 				$this->set( "response", json_encode( array( "Order"   => array( "Orbs" => $products ),
 				                                            "success" => true, "cart_total" => $total )
 					)
 				);
-			} else {
+			}
+			else {
 				$this->set( "response", json_encode( array( "orb" => null, "success" => false, "cart_total" => null )
 					)
 				);
@@ -324,28 +325,32 @@
 
 		public function review() {
 
-			if ($this->request->is('ajax') ) {
+			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = 'ajax';
-				$cart = $this->Session->read( 'Cart' );
+				$cart         = $this->Session->read( 'Cart' );
 
-				if ( empty( $cart ) ) return $this->redirect( '/' );
-			} else {
-				$this->redirect("/menu");
+				if ( empty( $cart ) ) {
+					return $this->redirect( '/' );
+				}
+			}
+			else {
+				$this->redirect( "/menu" );
 			}
 		}
 
 		public function finalize() {
-			if ( $this->request->is('ajax') ) {
+			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = 'ajax';
-				$response = array('success', 'error', 'order_id');
-			    if ($this->request->is( 'post' ) ) {
-				    $payment_method = $this->request->data['Order']['payment_method'];
-				    if (in_array($payment_method, array(CREDIT_CARD, CASH, DEBIT)) ) {
-					    $this->Session->write('Cart.Order.payment_method', $payment_method);
-				    } else {
-					    // todo: handle case of invalid payment-method type; probably just bounce
-				    }
-					$cart = $this->Session->read('Cart');
+				$response     = array( 'success', 'error', 'order_id' );
+				if ( $this->request->is( 'post' ) ) {
+					$payment_method = $this->request->data[ 'Order' ][ 'payment_method' ];
+					if ( in_array( $payment_method, array( CREDIT_CARD, CASH, DEBIT ) ) ) {
+						$this->Session->write( 'Cart.Order.payment_method', $payment_method );
+					}
+					else {
+						// todo: handle case of invalid payment-method type; probably just bounce
+					}
+					$cart = $this->Session->read( 'Cart' );
 					$this->Order->set( $this->Session->read( 'Cart.Order' ) );
 					if ( $this->Order->validates() ) {
 						$order = $cart;
@@ -353,39 +358,39 @@
 						$this->Order->set( 'invoice', "Not Yet Implemented" );
 						$order[ 'Order' ][ 'status' ] = ORDER_PENDING;
 
-						switch ($cart[ 'Order' ][ 'payment_method' ]) {
+						switch ( $cart[ 'Order' ][ 'payment_method' ] ) {
 							case PAYPAL:
-								if ( $this->Session->read('Cart.Paypal.Details') ) {
-									$cart['Order']['first_name'] = $cart['Paypal']['Details']['FIRSTNAME'];
-									$cart['Order']['last_name'] = $cart['Paypal']['Details']['LASTNAME'];
-									$cart['Order']['email'] = $cart['Paypal']['Details']['EMAIL'];
-									$cart['Order']['phone'] = '888-888-8888';
-									$cart['Order']['billing_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
-									$cart['Order']['billing_address2'] = '';
-									$cart['Order']['billing_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
-									$cart['Order']['billing_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
-									$cart['Order']['billing_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
-									$cart['Order']['billing_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
+								if ( $this->Session->read( 'Cart.Paypal.Details' ) ) {
+									$cart[ 'Order' ][ 'first_name' ]       = $cart[ 'Paypal' ][ 'Details' ][ 'FIRSTNAME' ];
+									$cart[ 'Order' ][ 'last_name' ]        = $cart[ 'Paypal' ][ 'Details' ][ 'LASTNAME' ];
+									$cart[ 'Order' ][ 'email' ]            = $cart[ 'Paypal' ][ 'Details' ][ 'EMAIL' ];
+									$cart[ 'Order' ][ 'phone' ]            = '888-888-8888';
+									$cart[ 'Order' ][ 'billing_address' ]  = $cart[ 'Paypal' ][ 'Details' ][ 'SHIPTOSTREET' ];
+									$cart[ 'Order' ][ 'billing_address2' ] = '';
+									$cart[ 'Order' ][ 'billing_city' ]     = $cart[ 'Paypal' ][ 'Details' ][ 'SHIPTOCITY' ];
+									$cart[ 'Order' ][ 'billing_zip' ]      = $cart[ 'Paypal' ][ 'Details' ][ 'SHIPTOZIP' ];
+									$cart[ 'Order' ][ 'billing_state' ]    = $cart[ 'Paypal' ][ 'Details' ][ 'SHIPTOSTATE' ];
+									$cart[ 'Order' ][ 'billing_country' ]  = $cart[ 'Paypal' ][ 'Details' ][ 'SHIPTOCOUNTRYNAME' ];
 
-									$cart['Order']['shipping_address'] = $cart['Paypal']['Details']['SHIPTOSTREET'];
-									$cart['Order']['shipping_address2'] = '';
-									$cart['Order']['shipping_city'] = $cart['Paypal']['Details']['SHIPTOCITY'];
-									$cart['Order']['shipping_zip'] = $cart['Paypal']['Details']['SHIPTOZIP'];
-									$cart['Order']['shipping_state'] = $cart['Paypal']['Details']['SHIPTOSTATE'];
-									$cart['Order']['shipping_country'] = $cart['Paypal']['Details']['SHIPTOCOUNTRYNAME'];
+									$cart[ 'Order' ][ 'shipping_address' ]  = $cart[ 'Paypal' ][ 'Details' ][ 'SHIPTOSTREET' ];
+									$cart[ 'Order' ][ 'shipping_address2' ] = '';
+									$cart[ 'Order' ][ 'shipping_city' ]     = $cart[ 'Paypal' ][ 'Details' ][ 'SHIPTOCITY' ];
+									$cart[ 'Order' ][ 'shipping_zip' ]      = $cart[ 'Paypal' ][ 'Details' ][ 'SHIPTOZIP' ];
+									$cart[ 'Order' ][ 'shipping_state' ]    = $cart[ 'Paypal' ][ 'Details' ][ 'SHIPTOSTATE' ];
+									$cart[ 'Order' ][ 'shipping_country' ]  = $cart[ 'Paypal' ][ 'Details' ][ 'SHIPTOCOUNTRYNAME' ];
 
-									$cart['Order']['payment_method'] = 'paypal';
+									$cart[ 'Order' ][ 'payment_method' ] = 'paypal';
 
-									$this->Session->write('Shop.Order', $cart['Order']);
+									$this->Session->write( 'Shop.Order', $cart[ 'Order' ] );
 									$paypal = $this->Paypal->ConfirmPayment( $order[ 'Order' ][ 'total' ] );
-									$ack = strtoupper( $paypal[ 'ACK' ] );
+									$ack    = strtoupper( $paypal[ 'ACK' ] );
 									if ( $ack == 'SUCCESS' || $ack == 'SUCCESSWITHWARNING' ) {
 										$order[ 'Order' ][ 'status' ] = ORDER_PAID;
 									}
 								}
 								break;
 							case CREDIT_CARD:
-								if ( (Configure::read( 'Settings.AUTHORIZENET_ENABLED' ) == 1 )) {
+								if ( ( Configure::read( 'Settings.AUTHORIZENET_ENABLED' ) == 1 ) ) {
 									$payment = array(
 										'creditcard_number' => $this->request->data[ 'Order' ][ 'creditcard_number' ],
 										'creditcard_month'  => $this->request->data[ 'Order' ][ 'creditcard_month' ],
@@ -414,55 +419,64 @@
 
 						if ( $this->Auth->loggedIn() ) {
 							$this->User->set( 'id', $this->Auth->user[ 'id' ] );
-							$save = $this->User->saveAssociated( array("User"=>$this->User, "Order"=>$this->Order) );
-						} else {
-							$order = array('Order' => array('user_id' => -1,
-							                                'state' => 0,
-							                                'detail' => json_encode($cart),
-															'invoice' => $this->invoice($cart)));
-
-							$save = $this->Order->save($order);
+							$save = $this->User->saveAssociated( array( "User"  => $this->User,
+							                                            "Order" => $this->Order )
+							);
 						}
-						
+						else {
+							$order = array( 'Order' => array( 'user_id' => -1,
+							                                  'state'   => 0,
+							                                  'detail'  => json_encode( $cart ),
+							                                  'invoice' => $this->invoice( $cart ) ) );
+
+							$save = $this->Order->save( $order );
+						}
+
 						if ( $save ) {
 							$this->set( compact( 'cart' ) ); // what's this do? still valid?
 
-						/*App::uses('CakeEmail', 'Network/Email');
-						$email = new CakeEmail();
-						$email->from('xtremepizzahalifax@gmail.com')
-								->cc('xtremepizzahalifax@gmail.com')
-								->to($cart['Order']['email'])
-								->subject('Xtreme Pizza Order Confirmation')
-								->template('order')
-								->emailFormat('text')
-								->viewVars(array('cart' => $cart))
-								->send();*/
-							$response = array_combine($response, array( true, false, $this->Order->id));
+							/*App::uses('CakeEmail', 'Network/Email');
+							$email = new CakeEmail();
+							$email->from('xtremepizzahalifax@gmail.com')
+									->cc('xtremepizzahalifax@gmail.com')
+									->to($cart['Order']['email'])
+									->subject('Xtreme Pizza Order Confirmation')
+									->template('order')
+									->emailFormat('text')
+									->viewVars(array('cart' => $cart))
+									->send();*/
+							$response = array_combine( $response, array( true, false, $this->Order->id ) );
 //							$this->Session->destroy('Cart');
-						} else {
-							$response = array_combine( $response, array(false, $this->Order->invalidFields(), false));
 						}
-					} else {
-						$response = array_combine($response, array(false, "Cart didn't validate", false ));
+						else {
+							$response = array_combine( $response, array( false, $this->Order->invalidFields(), false )
+							);
+						}
 					}
-			    } else {
-				    $response = array_combine($response, array(false, "Request was not POST", false ));
-			    }
-				$this->set(compact('response'));
-				$this->render('finalize_order');
-			} else {
-				return $this->redirect(array('controller'=>'menu', 'action'=>''));
+					else {
+						$response = array_combine( $response, array( false, "Cart didn't validate", false ) );
+					}
+				}
+				else {
+					$response = array_combine( $response, array( false, "Request was not POST", false ) );
+				}
+				$this->set( compact( 'response' ) );
+				$this->render( 'finalize_order' );
+			}
+			else {
+				return $this->redirect( array( 'controller' => 'menu', 'action' => '' ) );
 			}
 		}
 
 		private function invoice($cart) {
 			//todo: make this fucking ledgible haha.
-			$address = implode("\n", $cart['Order']['address']);
-			$order = "";
-			foreach ($cart['OrderItem'] as $item) {
-				$order .= "\n".$item['title']."\t (".$item['subtotal'].")";
+			$address = implode( "\n", $cart[ 'Order' ][ 'address' ] );
+			$order   = "";
+			foreach ( $cart[ 'OrderItem' ] as $item ) {
+				$order .= "\n" . $item[ 'title' ] . "\t (" . $item[ 'subtotal' ] . ")";
 			}
-			return $address."\n".$order;
+
+			return $address . "\n" . $order;
 		}
 
 		public function success() {
@@ -483,9 +497,9 @@
 					if ( !$this->Session->read( "Cart.Order.address_checked" ) ) {
 						$this->Session->write( 'Cart.Order.address_checked', false );
 					}
-					if ( in_array( $method, array( DELIVERY, PICKUP, JUST_BROWSING) ) ) {
+					if ( in_array( $method, array( DELIVERY, PICKUP, JUST_BROWSING ) ) ) {
 						$this->Session->write( "Cart.Order.order_method", $method );
-						if ( $this->Auth->loggedIn() and $method == DELIVERY) {
+						if ( $this->Auth->loggedIn() and $method == DELIVERY ) {
 							$options         = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
 							$user            = $this->User->find( 'first', $options );
 							$address_matches = in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] );
@@ -509,13 +523,13 @@
 				$this->render( 'order_method' );
 			}
 			else {
-				return $this->redirect('/menu');
+				return $this->redirect( '/menu' );
 			}
 		}
 
 		/*confirm_address*/
 		public function confirm_address($command = null) {
-			if ( $this->request->is( 'ajax') ) {
+			if ( $this->request->is( 'ajax' ) ) {
 				if ( $this->request->is( 'post' ) ) {
 					if ( !$this->Session->check( "Cart.Order.address_checked" ) ) {
 						$this->Session->write( 'Cart.Order.address_checked', false );
@@ -572,12 +586,13 @@
 						}
 					}
 					elseif ( $command == 'session' ) {
-						if (!empty($data['orderAddress'])) {
+						if ( !empty( $data[ 'orderAddress' ] ) ) {
 							$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
-							$this->Session->write( 'Cart.Order.email', $data['orderAddress']['email']);
+							$this->Session->write( 'Cart.Order.email', $data[ 'orderAddress' ][ 'email' ] );
 							$this->Session->write( 'Cart.Order.delivery_instructions', $data[ 'orderAddress' ][ 'delivery_instructions' ] );
-						} else {
-							$this->Session->write('Cart.Order.triedToSetEmptyAddress', True);
+						}
+						else {
+							$this->Session->write( 'Cart.Order.triedToSetEmptyAddress', true );
 						}
 						$this->Session->write( 'Cart.Order.address_checked', true );
 						$this->set( "response", array( "success" => true,
@@ -598,46 +613,56 @@
 		}
 
 		public function get_status($id) {
-			if ($this->request->is('ajax')) {
-				$conditions = array('conditions' => array('Order.id' => $id));
-				if ($this->Order->find('first', $conditions)) {
-					$this->set('response', array('success'=>true, 'status'=>$this->Order['status'], 'error'=>Null));
-				} else {
-					$this->set('response', array('success'=>false, 'status'=>Null, 'error'=>'Order not found.'));
+			if ( $this->request->is( 'ajax' ) ) {
+				$this->layout = 'ajax';
+				$conditions   = array( 'conditions' => array( 'Order.id' => $id ) );
+				if ( $this->Order->find( 'first', $conditions ) ) {
+					$this->set( 'response', array( 'success' => true, 'status' => $this->Order[ 'status' ],
+					                               'error'   => null )
+					);
 				}
-			} else {
-				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
+				else {
+					$this->set( 'response', array( 'success' => false, 'status' => null,
+					                               'error'   => 'Order not found.' )
+					);
+				}
 			}
+			$this->redirect( "/menu" );
 		}
 
 		public function set_status($id, $status) {
-			if ($this->request->is('ajax')) {
-				$conditions = array('conditions' => array('Order.id' => $id));
-				if ($this->Order->find('first', $conditions)) {
-					$this->Order->set('status', $status);
-					if ($this->Order->save()) {
-						$this->set('response', array('success'=>true, 'error'=>Null));
-					} else {
-						$this->set('response', array('success'=>false, 'error'=>'Failed to save updated order.'));
+			if ( $this->request->is( 'ajax' ) ) {
+				$conditions = array( 'conditions' => array( 'Order.id' => $id ) );
+				if ( $this->Order->find( 'first', $conditions ) ) {
+					$this->Order->set( 'status', $status );
+					if ( $this->Order->save() ) {
+						$this->set( 'response', array( 'success' => true, 'error' => null ) );
 					}
-                                } else {
-                                        $this->set('response', array('success'=>false, 'error'=>'Order not found.'));
-                                }
+					else {
+						$this->set( 'response', array( 'success' => false,
+						                               'error'   => 'Failed to save updated order.' )
+						);
+					}
+				}
+				else {
+					$this->set( 'response', array( 'success' => false, 'error' => 'Order not found.' ) );
+				}
 			}
 		}
 
 		public function get_pending() {
-			if ($this->request->is('ajax')) {
-				$conditions = array( 'conditions' => array( 'Order.status' => $ORDER_PENDING));
-				$this->set('Orders', $this->Order->find('all', $conditions));
-			} else {
-				return $this->redirect(array('controller'=>'menu', 'action'=>'index'));
+			if ( $this->request->is( 'ajax' ) ) {
+				$conditions = array( 'conditions' => array( 'Order.status' => ORDER_PENDING ) );
+				$this->set( 'Orders', $this->Order->find( 'all', $conditions ) );
+			}
+			else {
+				return $this->redirect( array( 'controller' => 'menu', 'action' => 'index' ) );
 			}
 		}
 
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->disableCache();
-			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'review', 'index', 'view', 'get_pending', 'set_status', 'get_status','finalize');
+			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'review', 'index', 'view', 'get_pending', 'set_status', 'get_status', 'finalize' );
 		}
 	}
