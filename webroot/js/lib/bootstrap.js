@@ -5,6 +5,7 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
+
 window.XBS = {
 	data: {
 		host_root_dirs: {
@@ -1371,6 +1372,7 @@ window.XBS = {
 			return true;
 		},
 		set_order_method: function (method) {
+			pr(XBS.data.order, 'xbs.data.order');
 			if (method)  {
 				XBS.data.order.order_method = method;
 			} else {
@@ -1574,8 +1576,12 @@ window.XBS = {
 		init: function (cart_from_session) {
 			var debug_this = 1;
 			if (debug_this > 0 ) pr(cart_from_session, "XBS.cart.init(cart details)", 2);
-			XBS.data.order = cart_from_session.Order;
-			XBS.cart.orbs = Object.keys(cart_from_session.OrderItem).length > 0 ? cart_from_session.OrderItem : {};
+			if ('Order' in cart_from_session) XBS.data.order = cart_from_session.Order;
+			try {
+				XBS.cart.orbs = cart_from_session.OrderItem;
+			} catch(e) {
+				XBS.cart.orbs = {};
+			}
 			XBS.cart.initialized = true;
 			XBS.cart.configuring = {};
 			return true;
