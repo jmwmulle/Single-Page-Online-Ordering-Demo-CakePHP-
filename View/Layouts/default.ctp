@@ -50,8 +50,9 @@
 <div id="page-content">
 <?php
 	$default_order = '{
+	OrderItem:{},
 	Order: {
-			method: C.JUST_BROWSING,
+			method: "just_browsing",
 			address: {
 				address_1: null,
 				address_2: null,
@@ -60,7 +61,7 @@
 			},
 			payment: null
 		}
-	}';
+	};';
 	echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : $default_order );
 	echo $this->fetch( 'content' );
 ?>
