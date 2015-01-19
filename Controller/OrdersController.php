@@ -411,13 +411,19 @@
 						}
 
 						$save = false;
+
 						if ( $this->Auth->loggedIn() ) {
 							$this->User->set( 'id', $this->Auth->user[ 'id' ] );
 							$save = $this->User->saveAssociated( $this->Order );
 						} else {
-							$save = $this->Order->save();
-						}
+							$order = array('Order' => array('user_id' => -1,
+							                                'state' => 0,
+							                                'detail' => json_encode($cart),
+															'invoice' => $this->invoice($cart)));
 
+							$save = $this->Order->save($order);
+						}
+						
 						if ( $save ) {
 							$this->set( compact( 'cart' ) ); // what's this do? still valid?
 
@@ -449,6 +455,15 @@
 			}
 		}
 
+		private function invoice($cart) {
+			//todo: make this fucking ledgible haha.
+			$address = implode("\n", $cart['Order']['address']);
+			$order = "";
+			foreach ($cart['OrderItem'] as $item) {
+				$order .= "\n".$item['title']."\t (".$item['subtotal'].")";
+			}
+			return $address."\n".$order;
+		}
 
 		public function success() {
 			$cart = $this->Session->read( 'Cart' );
