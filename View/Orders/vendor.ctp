@@ -8,6 +8,7 @@
  */
 
 ?>
+<script type="text/javascript"> var cart = {}; </script>
 <div id="vendor-page">
 <div class="row">
 	<div class="large-12 medium-8 medium-pull-4 columns">
@@ -18,7 +19,13 @@
 				<ul class="pending-order panel">
 					<li></li>
 				</ul>
-				<div class="large button success">Accept</div>
+				<div onClick="showMessage('Order Approved', 'Status Update')" class="large button success">Accept</div>
+
+				<script type="text/javascript">
+					function showMessage(message, title) {
+	            				Android.showDialog(message, title);
+		        		}
+				</script>
 				<div class="large button alert">Decline</div>
 			</div>
 			<div class="small-4 columns">
@@ -38,6 +45,7 @@
 	</div>
 </div>
 <script>
+var cart = {};
 //setTimeout(function() { window.location("http://development-xtreme-pizza.ca/pages/vendor");}, 20000);
 setTimeout(function() { window.location.assign("http://kleinlab.psychology.dal.ca/xtreme/pages/vendor");}, 10000);
 </script>

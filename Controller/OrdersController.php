@@ -643,16 +643,19 @@
 				else {
 					$this->set( 'response', array( 'success' => false, 'error' => 'Order not found.' ) );
 				}
+				return $this->render();
 			}
+			$this->redirect("/menu");
 		}
 
 		public function get_pending() {
 			if ( $this->request->is( 'ajax' ) ) {
 				$conditions = array( 'conditions' => array( 'Order.status' => ORDER_PENDING ) );
 				$this->set( 'Orders', $this->Order->find( 'all', $conditions ) );
+				$this->render();
 			}
 			else {
-				return $this->redirect( array( 'controller' => 'menu', 'action' => 'index' ) );
+				return $this->redirect("/menu");
 			}
 		}
 

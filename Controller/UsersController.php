@@ -248,7 +248,7 @@
 		public function logout() {
 			$this->Session->setFlash( 'Good-Bye' );
 			$this->Auth->logout();
-			$this->Session->write( 'stashedUser', null );
+			$this->Session->destroy();
 			$this->redirect( ___cakeUrl( 'menu', '' ) );
 		}
 
