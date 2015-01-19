@@ -191,9 +191,10 @@ class CartComponent extends Component {
 			$this->Session->write('Cart.Order.total', sprintf('%01.2f', $total));
 			$this->Session->write('Cart.Order.deliverable', $total >= 10.0);
 			$this->Session->write('Cart.Order.order_method', 'just_browsing');
+			$this->Session->write('Cart.Order.email', '');
 			$this->Session->write('Cart.Order.address', array('address'=>'',
-				'address_2'=>'','postal_code'=>'','building_type'=>'phone','delivery_instructions'=>''
-				,'city'=>'Halifax','province'=>'NS','delivery_time'=>''));
+				'address_2'=>'','postal_code'=>'','building_type'=>'','phone'=>'','delivery_instructions'=>''
+				,'city'=>'Halifax','province'=>'NS','delivery_time'=>'',''=>'','first_name'=>'','last_name'=>''));
 			return true;
 		} else {
 			$this->Session->write('Cart.Order.quantity', 0);
