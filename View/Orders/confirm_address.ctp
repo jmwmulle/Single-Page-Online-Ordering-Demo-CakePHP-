@@ -136,9 +136,10 @@
 				                                                  'value' => 'Nova Scotia'  ));
 					  echo $this->Form->end(); ?>
 					</div>
-					<div class="large-12 columns">
-						<a href="#" id="submit-order-address" class="box downward rel modal-submit modal-button" data-route="confirm_address/submit/menu">
-							<?php echo strtoupper( "OK! To the food!" ); ?>
+					<div class="large-12 columns " style="vertical-align: bottom;">
+						<label> &nbsp; </label>
+						<a href="#" id="submit-order-address" class="modal-button lrg full-width confirm" data-route="confirm_address/submit/menu">
+							<span class="text"><?php echo strtoupper( "OK! To the food!" ); ?></span><span class="icon-circle-arrow-r"></span>
 						</a>
 					</div>
 				</div>

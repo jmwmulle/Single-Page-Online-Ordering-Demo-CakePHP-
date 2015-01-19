@@ -146,9 +146,13 @@ $logged_in = $this->Session->read('Auth');
 							<div id="tiny-orb-opts-list-wrapper"></div
 						></div
 					></div
-					><div id="orb-finalize-details" class="inline orb-card-row text-center">
-						<a id="cancel-order-button" href="#" class="xtreme-button secondary left" data-route="orb_card/add_to_cart/cancel">Cancel</a>
-						<a id="confirm-order-button" href="#" class="xtreme-button right" data-route="orb_card/add_to_cart/confirm">Confirm</a>
+					><div id="orb-finalize-details" class="orb-card-row text-center">
+						<a id="cancel-order-button" href="#" class="rounded modal-button bisecting cancel left" data-route="orb_card/add_to_cart/cancel">
+							<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span>
+						</a>
+						<a id="confirm-order-button" href="#" class="rounded modal-button bisecting confirm right" data-route="orb_card/add_to_cart/confirm">
+							<span class="text">Confirm</span><span class="icon-circle-arrow-r right"></span>
+						</a>
 					</div>
 				</section>
 			</div>

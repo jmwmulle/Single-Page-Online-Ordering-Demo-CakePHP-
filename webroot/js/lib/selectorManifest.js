@@ -183,7 +183,7 @@ var XSM = {
 		order_address_button: function(route) {
 			var message;
 			if (route == "menu") message = "OK! TO THE FOOD!";
-			if (route == "review") message = "BACK TO CHECKOUT";
+			if (route == "review") message = "RETURN TO CHECKOUT";
 
 			return '<a href="#" id="submit-order-address" data-route="confirm_address/submit/'+route+'"' +
 					' class="box downward rel modal-submit">' + message + '</a>';

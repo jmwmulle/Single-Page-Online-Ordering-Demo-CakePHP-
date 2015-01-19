@@ -4705,6 +4705,12 @@ span.icon-hn-inline {
 .icon-orb-card-register-reveal:before {
   content: "R"; }
 
+.icon-delivery:before {
+  content: "S"; }
+
+.icon-pick-up:before {
+  content: "T"; }
+
 @font-face {
   font-family: "Helvetica Neue Condensed Black";
   src: url('../files/font/HelveticaNeueLTStdBlkCn.otf');
@@ -5731,45 +5737,63 @@ div.view-cart-row.total * {
     width: auto; }
 
 .modal-button {
-  font-size: 1.33333rem;
   background-color: #0779be;
-  padding: 0.9375rem;
+  display: inline-block;
   text-transform: uppercase;
   text-align: center;
-  font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
+  font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
+  padding: 0.625rem; }
+  .modal-button span {
+    vertical-align: top;
+    font-size: 1rem;
+    display: inline-block;
+    color: white !important; }
+    .modal-button span[class*="icon-"] {
+      -webkit-transform: translateY(0.25rem) !important;
+      font-size: 1.6em;
+      padding-right: 1rem; }
+    .modal-button span[class*="-arrow-"] {
+      padding: 0; }
+    .modal-button span.icon-circle-arrow-l, .modal-button span.icon-tab-arrow-l {
+      float: left; }
+    .modal-button span.icon-circle-arrow-r, .modal-button span.icon-tab-arrow-r {
+      float: right; }
+    .modal-button span.text {
+      -webkit-transform: translateY(0.5rem) !important; }
+    .modal-button span tiny {
+      color: white !important;
+      font-size: 0.75rem; }
+  .modal-button.lrg {
+    padding: 0.9375rem; }
+    .modal-button.lrg span {
+      font-size: 1.5rem; }
+  .modal-button.sml {
+    padding: 0.3125rem; }
+    .modal-button.sml span {
+      font-size: 0.8rem; }
+      .modal-button.sml span.text {
+        -webkit-transform: translateY(0.4rem) !important; }
+      .modal-button.sml span[class*="icon-"] {
+        -webkit-transform: translateY(0.2rem) !important;
+        font-size: 1.25em; }
   .modal-button.full-width {
-    width: 100%;
-    display: block; }
+    width: 100%; }
   .modal-button:hover {
     background-color: #099bef; }
-  .modal-button span {
-    color: white !important;
-    display: inline-block;
-    -webkit-transform: translateY(0.25rem); }
-    .modal-button span.text {
-      -webkit-transform: translateY(0.25rem); }
   .modal-button.bisecting {
     width: 50%; }
-    .modal-button.bisecting:first-of-type {
+    .modal-button.bisecting.rounded:first-of-type {
       border-top-left-radius: 1000px;
       border-bottom-left-radius: 1000px; }
-    .modal-button.bisecting:last-of-type {
+    .modal-button.bisecting.rounded:last-of-type {
       border-top-right-radius: 1000px;
       border-bottom-right-radius: 1000px; }
-    .modal-button.bisecting.confirm .text, .modal-button.bisecting.cancel .text {
-      -webkit-transform: translateY(0.5rem) !important; }
     .modal-button.bisecting.confirm {
-      width: 66%; }
-      .modal-button.bisecting.confirm:hover {
-        text-shadow: 0 0 0.5rem white; }
+      width: 66.6666%; }
     .modal-button.bisecting.cancel {
-      width: 33%; }
-    .modal-button.bisecting .icon-circle-arrow-l {
-      float: left;
-      font-size: 2rem; }
-    .modal-button.bisecting .icon-circle-arrow-r {
-      float: right;
-      font-size: 2rem; }
+      width: 33.3333%; }
+    .modal-button.bisecting.discreet {
+      width: 49%; }
   .modal-button.cancel {
     background-color: #b4b4b4; }
     .modal-button.cancel:hover {
@@ -5778,11 +5802,11 @@ div.view-cart-row.total * {
         color: #e02027 !important; }
   .modal-button.active {
     background-color: #faea06; }
-    .modal-button.active span {
+    .modal-button.active span, .modal-button.active tiny {
       color: #373737 !important; }
     .modal-button.active:hover {
       background-color: #cecece; }
-      .modal-button.active:hover span {
+      .modal-button.active:hover span, .modal-button.active:hover tiny {
         color: #e02027 !important; }
   .modal-button.disabled, .modal-button.disabled:hover {
     cursor: default;
@@ -5790,6 +5814,23 @@ div.view-cart-row.total * {
     .modal-button.disabled span, .modal-button.disabled a, .modal-button.disabled:hover span, .modal-button.disabled:hover a {
       color: #b4b4b4 !important;
       text-shadow: none; }
+  .modal-button.secondary {
+    background-color: transparent;
+    padding: 0;
+    font-family: "Helvetica Neue Medium Condensed", arial, sans-serif; }
+    .modal-button.secondary span {
+      font-size: 0.75rem;
+      -webkit-transform: none;
+      color: #373737 !important; }
+      .modal-button.secondary span.text {
+        -webkit-transform: translateY(0.4rem) !important; }
+      .modal-button.secondary span[class*="icon-"] {
+        -webkit-transform: translateY(0.2rem) !important;
+        font-size: 1em; }
+    .modal-button.secondary:hover {
+      background-color: transparent; }
+      .modal-button.secondary:hover span {
+        color: #b4b4b4 !important; }
 
 /*******   modal pages ********/
 #registration-method-bar {

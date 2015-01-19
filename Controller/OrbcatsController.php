@@ -121,6 +121,7 @@ class OrbcatsController extends AppController {
 	}
 
 	public function resession() {
+		$this->Auth->allow();
 		$this->Session->destroy();
 		$this->redirect("/menu");
 	}
