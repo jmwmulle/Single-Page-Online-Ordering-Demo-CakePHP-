@@ -413,7 +413,7 @@
 						$save = false;
 						if ( $this->Auth->loggedIn() ) {
 							$this->User->set( 'id', $this->Auth->user[ 'id' ] );
-							$this->User->saveAssociated( $this->Order );
+							$save = $this->User->saveAssociated( $this->Order );
 						} else {
 							$save = $this->Order->save();
 						}
@@ -431,16 +431,11 @@
 								->emailFormat('text')
 								->viewVars(array('cart' => $cart))
 								->send();*/
-							$this->set( 'response', array( 'success' => true,
-									    "order_id" => $this->Order->id,
-										"error" => false ) );
+							$response = array_combine($response, array( true, false, $this->Order->id));
 							$this->Session->destroy('Cart');
-							$this->render('finalize_order');
+						} else {
+							$response = array_combine( $response, array(false, $this->Order->invalidFields(), false));
 						}
-							$errors = $this->Order->invalidFields();
-							$response = array_combine( $response, array(true, false,  $this->Order->id));
-							$this->render('finalize_order');
-							return;
 					} else {
 						$response = array_combine($response, array(false, "Cart didn't validate", false ));
 					}
@@ -448,6 +443,7 @@
 				    $response = array_combine($response, array(false, "Request was not POST", false ));
 			    }
 				$this->set(compact('response'));
+				$this->render('finalize_order');
 			} else {
 				return $this->redirect(array('controller'=>'menu', 'action'=>''));
 			}
