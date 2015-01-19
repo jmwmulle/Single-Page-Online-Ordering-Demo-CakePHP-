@@ -470,18 +470,27 @@ window.XBS = {
 									this.unset("launch");
 									break;
 								case "finalize":
-									this.url.url = "order-confirmation";
-									this.url.type = C.POST;
-									this.url.defer = false;
+									this.unset('url');
 									this.unset('launch');
+									this.unset('modal');
 									this.set_callback("launch", function() {
-										var data = this.deferal_data;
-										if (!data.error) {
-											$(XBS.routing).trigger(C.ROUTE_REQUEST, {
-												request:"/pending_order"+ C.DS + data.order_id + C.DS + "launching",
-												trigger:this.trigger.event
-											});
-										}
+										$.ajax({
+											url:"orders/finalize",
+											type: C.POST,
+											data: $("#OrderReviewForm").serialize(),
+											success: function(data){
+												pr(data, 'finalize-callback');
+												if (!data.error) {
+													if (data.order_id) {
+														$(XBS.routing).trigger(C.ROUTE_REQUEST, {
+															request:"/pending_order"+ C.DS + data.order_id + C.DS + "launching",
+															trigger:this.trigger.event
+														});
+													} else {
+														pr(data);
+													}
+												}
+											}});
 									});
 									break;
 								case "review":

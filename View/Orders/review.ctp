@@ -7,6 +7,7 @@
 <?php
 	$credit_card_available = Configure::read('Settings.AUTHORIZENET_ENABLED') == 1;
 	$cart = $this->Session->read('Cart');
+	$email = array_key_exists('email', $cart['Order']) ? $cart['Order']['email'] :  false;
 	$order = array_key_exists('Order', $cart) ? $cart['Order'] : array();
 	$address = array_key_exists('address', $order) ? $order['address'] : array();
 	$order_method = array_key_exists('order_method', $order) ? $order['order_method'] : 'just_browsing';
@@ -48,10 +49,10 @@
 							Name: <?php echo sprintf("%s %s", $address['firstname'], $address['lastname']);?>
 						</div>
 					</div>
-				<?php if (array_key_exists('email', $address) && !empty($address['email']) ) {?>
+				<?php if ($email ) {?>
 					<div class="row">
 						<div class="large-12 columns">
-							Email: <?php echo $customer['email'];?>
+							Email: <?php echo $email;?>
 						</div>
 					</div>
 				<?php } ?>
