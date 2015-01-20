@@ -749,6 +749,7 @@ window.XBS = {
 						},
 						launch: function() {
 							var data = $.parseJSON(this.deferal_data);
+							pr(data);
 							if (!data.error) {
 								for (var ord in data.orders) {
 									if (!in_array(ord, XBS.data.vendor.pending_orders) ) {
