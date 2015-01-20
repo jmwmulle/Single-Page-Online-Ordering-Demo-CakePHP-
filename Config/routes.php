@@ -49,7 +49,7 @@
 	Router::connect('/finish-ordering/*', array('controller' => 'orders', 'action' => 'review'));
 	Router::connect('/order-confirmation/*', array('controller' => 'orders', 'action' => 'get_status'));
 	Router::connect('/sd', array('controller' => 'orbcats', 'action' => 'resession'));
-	Router::connect('/vendor', array('controller' => 'orders', 'action' => 'display', 'vendor'));
+	Router::connect('/vendor', array('controller' => 'orders', 'action' => 'vendor'));
 	Router::connect('/vendor-accept/*', array('controller' => 'orders', 'action' => 'set_status'));
 	Router::connect('/vendor-reject/*', array('controller' => 'orders', 'action' => 'set_status'));
 	Router::connect('/pending', array('controller' => 'orders', 'action' => 'get_pending'));
