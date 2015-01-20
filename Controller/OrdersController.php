@@ -622,23 +622,26 @@
 		}
 
 		public function set_status($id, $status) {
-			if ( $this->request->is( 'ajax' ) ) {
+			if ( $this->request->is( 'ajax' || true ) ) {
 				$conditions = array( 'conditions' => array( 'Order.id' => $id ) );
-				if ( $this->Order->find( 'first', $conditions ) ) {
-					$this->Order->set( 'state', $status );
-					if ( $this->Order->save() ) {
+				$tmp = $this->Order->find( 'first', $conditions );
+				if ($tmp) {
+					$tmp['Order']['state'] = $status;
+					if ( $this->Order->save($tmp) ) {
 						$this->set( 'response', array( 'success' => true, 'error' => null ) );
+						$this->render();
 					}
 					else {
 						$this->set( 'response', array( 'success' => false,
 						                               'error'   => 'Failed to save updated order.' )
-						);
+								       );
+						$this->render();
 					}
 				}
 				else {
 					$this->set( 'response', array( 'success' => false, 'error' => 'Order not found.' ) );
+					$this->render();
 				}
-				return $this->render();
 			}
 			$this->redirect("/menu");
 		}

@@ -44,6 +44,15 @@ class Order extends AppModel {
 				'rule' => array('numeric'),
 			),
 		),
+		'paid' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+			),
+		),
+		'created' => array(
+		),
+		'modified' => array(
+		)
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
