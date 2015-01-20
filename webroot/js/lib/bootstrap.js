@@ -11,7 +11,8 @@ window.XBS = {
 		vendor: {
 			is_vendor_page: false,
 			last_tone_play: -100000,
-			current_order_id:null
+			current_order_id: null,
+			pending_orders: []
 		},
 		host_root_dirs: {
 			xDev: "",
@@ -48,7 +49,6 @@ window.XBS = {
 		},
 		partial_orb_configs: {
 		},
-		pending_orders: [],
 		user: {
 			name: {
 				first: null,
@@ -751,8 +751,8 @@ window.XBS = {
 							var data = $.parseJSON(this.deferal_data);
 							if (!data.error) {
 								for (var ord in data.orders) {
-									if (!in_array(ord, XBS.data.pending_orders) ) {
-										XBS.data.pending_orders.push( data.orders[ord] );
+									if (!in_array(ord, XBS.data.vendor.pending_orders) ) {
+										XBS.data.vendor.pending_orders.push( data.orders[ord] );
 									}
 								}
 								XBS.vendor.post_orders();
@@ -768,7 +768,6 @@ window.XBS = {
 					params: ['method', 'context'],
 					callbacks: {
 						params_set: function() {
-							pr("here");
 							switch (this.read('method') ) {
 								case "reject":
 									switch (this.read('context') ) {
@@ -1921,7 +1920,7 @@ window.XBS = {
 		init: function() {},
 		post_orders: function() {
 			if ( $("#next-order").hasClass(XSM.effects.slide_up)) {
-				var order = XBS.data.pending_orders.shift();
+				var order = XBS.data.vendor.pending_orders.shift();
 				XBS.data.vendor.current_order_id = order.id;
 				$("#order-title").html(order.title);
 				$("#customer-name").html(order.customer);
@@ -1935,13 +1934,13 @@ window.XBS = {
 					food += "</ul></li>"
 				}
 				$("#food-list").html(food);
-				$("#order-count").html(XBS.data.pending_orders.length);
+				$("#order-count").html(XBS.data.vendor.pending_orders.length);
 				$("#back-splash").addClass(XSM.effects.fade_out);
 				setTimeout(function() {
 					$("#back-splash").hide();
 					setTimeout(function() {
 						var now = new Date().getTime();
-						if (now - XBS.data.last_tone_play > 10000) {
+						if (now - XBS.data.vendor.last_tone_play > 10000) {
 							var audio = new Audio('files/new_order_tone.mp3');
 							audio.play();
 							XBS.data.last_tone_play = now;

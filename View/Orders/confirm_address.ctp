@@ -22,7 +22,8 @@
 	$logged_in = $this->Session->read('Auth.User') ? true : false;
 	$user = $logged_in ? $this->Session->read('Auth.User.User') : array();
 	$email = $this->Session->read('Cart.Order.email');
-	$address = array_merge($__address, $this->Session->read('Cart.Order.address'));
+	$address = $this->Session->read('Cart.Order.address');
+	if ( is_array($address) ) array_merge($__address, $address);
 	$update_command = "session";
 ?>
 
