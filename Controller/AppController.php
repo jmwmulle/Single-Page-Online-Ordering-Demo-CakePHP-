@@ -33,12 +33,14 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
 	public $components = array( "Session", "RequestHandler", 'Acl',
-	                            'Auth' => array(
-		                            'authorize' => array(
+	                            'Auth' => array('authorize' => array(
 			                            'Actions' => array( 'actionPath' => 'controllers' )
-		                            )
-				    ),
-				    "DebugKit.Toolbar",);
+					    ), 'authenticate' => array(
+						    'Form' => array(
+							    'fields' => array('username' => 'email')
+						    )
+					    )
+				    ), "DebugKit.Toolbar",);
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
 	protected $topnav = array('Menu','Deals','Favs', 'Order',);
@@ -297,7 +299,7 @@ class AppController extends Controller {
 		  'action' => ''
 	  	);
 		$this->Auth->loginRedirect = ___cakeUrl("users", "edit", array('id' => $this->Auth->user('id')));
-		$this->Auth->allow();//'display');
+		$this->Auth->allow('display');
 	}	
 
 }

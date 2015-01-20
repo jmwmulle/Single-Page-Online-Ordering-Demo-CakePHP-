@@ -164,6 +164,25 @@
 
 			return $this->redirect( array( 'controller' => 'menu', 'action' => 'index' ) );
 		}
+		
+		/*tabletlogin	*/
+		public function tabletlogin() {
+			if ($this->request->header('User-Agent') == 'xtreme-pos-tablet' && $this->request->data['number'] == 42) {
+				if ( $this->Auth->loggedIn() ) {
+					return $this->redirect( '/pages/vendor' );
+				}
+				if ( $this->request->is( 'post' )) {
+					$options = array( 'conditions' => array( 'User.email' => 'thisisatablet@xtreme.ca' ) );
+					$tmp = $this->User->read('first', $options);
+					$this->Auth->login($tmp);
+					return $this->redirect('/pages/vendor');
+				} else {
+					return $this->redirect( ___cakeUrl( 'users', '' ) );
+				}
+			} else {
+				return $this->redirect( ___cakeUrl( 'menu', '' ) );
+			}
+		}
 
 		/*login	*/
 		public function login() {
@@ -181,7 +200,7 @@
 						$this->Session->delete( 'stashedUser' );
 					}
 
-					return $this->redirect( __cakeUrl( 'user', 'edit' ) );
+					return $this->redirect( ___cakeUrl( 'users', 'edit', $this->Auth->user('id') ) );
 				}
 				else {
 					$this->Session->setFlash( __( 'Your email or password was incorrect.' ) );
@@ -332,7 +351,7 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 
-			$this->Auth->allow( 'index', 'view', 'opauth_complete', 'add', 'login', 'logout' ); #, 'initDB');
+			$this->Auth->allow( 'index', 'view', 'opauth_complete', 'add', 'login', 'tabletlogin', 'logout' ); #, 'initDB');
 		}
 
 		public function initDB() {
@@ -355,7 +374,7 @@
 			$this->Acl->allow($group, 'controllers/orders/getPending');
 			$this->Acl->allow($group, 'controllers/pages/vendor');
 			$this->Acl->allow($group, 'controllers/orders/setStatus');
-			
+			$this->Acl->allow($group, 'controllers/users/tabletlogin');
 			// we add an exit to avoid an ugly "missing views" error message
 			echo "all done";
 			exit;
