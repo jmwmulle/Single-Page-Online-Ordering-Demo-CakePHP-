@@ -8,6 +8,11 @@
 
 window.XBS = {
 	data: {
+		vendor: {
+			is_vendor_page: false,
+			last_tone_play: -100000,
+			current_order_id:null
+		},
 		host_root_dirs: {
 			xDev: "",
 			xProd: "",
@@ -43,6 +48,7 @@ window.XBS = {
 		},
 		partial_orb_configs: {
 		},
+		pending_orders: [],
 		user: {
 			name: {
 				first: null,
@@ -736,6 +742,75 @@ window.XBS = {
 						launch: function () { XBS.validation.submit_address(this);}
 					}
 				}),
+				get_pending: new XtremeRoute('get_pending', {
+					url:{url:"pending", type: C.GET, defer:true},
+					callbacks: {
+						params_set: function() {
+						},
+						launch: function() {
+							var data = $.parseJSON(this.deferal_data);
+							if (!data.error) {
+								for (var ord in data.orders) {
+									if (!in_array(ord, XBS.data.pending_orders) ) {
+										XBS.data.pending_orders.push( data.orders[ord] );
+									}
+								}
+								XBS.vendor.post_orders();
+								setTimeout(function() {
+									$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "get_pending", trigger:{}});
+								}, 5000);
+							}
+						}
+					}
+
+				}),
+				vendor: new XtremeRoute("vendor", {
+					params: ['method', 'context'],
+					callbacks: {
+						params_set: function() {
+							pr("here");
+							switch (this.read('method') ) {
+								case "reject":
+									switch (this.read('context') ) {
+										case 'unconfirmed':
+											$("#order-reject-confirmation").removeClass(XSM.effects.slide_left);
+										break;
+										case 'confirm':
+											$("#order-reject-confirmation").addClass(XSM.effects.slide_left);
+											this.url = {
+												url:"vendor-reject" + C.DS + XBS.data.vendor.current_order_id + C.DS + C.REJECTED,
+												type: C.POST,
+												defer:true
+											};
+											this.set_callback("launch", function() {
+												var data = $.parseJSON(this.deferal_data);
+												// todo: make sure the rejection went well;
+											});
+											break;
+										case 'cancel':
+											$("#order-reject-confirmation").addClass(XSM.effects.slide_left);
+											break;
+									}
+								break;
+								case "accept":
+									this.url = {
+										url:"vendor-accept" + C.DS + XBS.data.vendor.current_order_id + C.DS + C.ACCEPTED,
+										type: C.POST,
+										defer:true
+									};
+									this.set_callback("launch", function() {
+										var data = $.parseJSON(this.deferal_data);
+										// todo: make sure the accept wored;
+										$("#next-order").addClass(XSM.effects.slide_up);
+										$("#back-splash").show();
+										setTimeout( function() {
+											$("#back-splash").removeClass(XSM.effects.fade_out);
+										}, 300);
+									});
+							}
+						}
+					}
+				}),
 				view_order: new XtremeRoute("view_order", {
 					params: {context: {value: "default", url_fragment: false}},
 					modal: XSM.modal.primary,
@@ -790,6 +865,14 @@ window.XBS = {
 					}, 0);
 				}, 0);
 			}, 0);
+
+			var vendor_page = $(C.BODY).find("#vendor-page")[0]
+			if (vendor_page) {
+				XBS.data.is_vendor_page = true;
+				setTimeout(function() {
+					$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "get_pending", trigger:{}});
+				}, 3000);
+			}
 
 			return sit_rep;
 		},
@@ -1832,6 +1915,43 @@ window.XBS = {
 				}
 			});
 			$("#UsersForm").submit();
+		}
+	},
+	vendor: {
+		init: function() {},
+		post_orders: function() {
+			if ( $("#next-order").hasClass(XSM.effects.slide_up)) {
+				var order = XBS.data.pending_orders.shift();
+				XBS.data.vendor.current_order_id = order.id;
+				$("#order-title").html(order.title);
+				$("#customer-name").html(order.customer);
+
+				var food = "";
+				for (var i in order.food) {
+					food = "<li><ul><li>" + i +"</li>";
+					for (j in order.food[i]) {
+						food += "<li>"+order.food[i][j]+"</li>";
+					}
+					food += "</ul></li>"
+				}
+				$("#food-list").html(food);
+				$("#order-count").html(XBS.data.pending_orders.length);
+				$("#back-splash").addClass(XSM.effects.fade_out);
+				setTimeout(function() {
+					$("#back-splash").hide();
+					setTimeout(function() {
+						var now = new Date().getTime();
+						if (now - XBS.data.last_tone_play > 10000) {
+							var audio = new Audio('files/new_order_tone.mp3');
+							audio.play();
+							XBS.data.last_tone_play = now;
+						}
+						$("#pending-orders-list").removeClass(XSM.effects.slide_right);
+						$("#next-order").removeClass(XSM.effects.slide_up);
+					}, 30);
+				}, 300);
+			}
+			return true;
 		}
 	},
 	fn: {

@@ -6,36 +6,62 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-
 ?>
+<div id="order-tone-wrapper" class="true-hidden">
+	<audio controls>
+	  <source src="files/new_order_tone.mp3" type="audio/mpeg">
+	</audio>
+</div>
 <main id="vendor-page">
-<div class="row">
-	<div class="large-12 medium-8 medium-push-12 columns">
-		<div class="row">
-			<div class="small-8 columns">
-				<h1>Next Order</h1>
-
-				<ul class="pending-order panel">
-					<li></li>
-				</ul>
-				<div id="order-accept-button" class="" data-route="vendor/accept/print">ACCEPT</div>
-				<div class="large button alert">Decline</div>
+	<div id="back-splash">
+		NOTHING</br>
+		IN<br />
+		QUEUE
+	</div>
+	<div id="next-order" class="slide-up">
+		<div id="pending-orders-count">
+			<span id="order-count">96</span>
+			<h5>IN QUEUE</h5>
+		</div>
+		<div id="order-content">
+			<div class="row">
+				<div class="small-12 columns">
+					<h1>INCOMING ORDER</h1>
+				</div>
 			</div>
-			<div class="small-4 columns">
-				<h3>Pending Orders</h3>
-				<ol class="panel">
-					<li>$37.85, Smith, T. 902-441-4893</li>
-					<li>$37.85, Smith, T. 902-441-4893</li>
-					<li>$37.85, Smith, T. 902-441-4893</li>
-					<li>$37.85, Smith, T. 902-441-4893</li>
-					<li>$37.85, Smith, T. 902-441-4893</li>
-					<li>$37.85, Smith, T. 902-441-4893</li>
-					<li>$37.85, Smith, T. 902-441-4893</li>
-					<li>$37.85, Smith, T. 902-441-4893</li>
-				</ol>
+			<div id="order-content-detail" class="row">
+				<div id="labels" class="small-3 columns">
+					<span id='title' class='label'>ADDRESS:</span>
+					<span id='customer' class='label'>CUSTOMER:</span>
+					<span id='food' class='label'>ORDER:</span>
+				</div>
+				<div id='values' class="small-9 columns">
+					<span id='customer-name' class='value'>Jonathan Mulle</span>
+					<span id='order-title' class='value'>1527 Chestnut</span>
+					<ul id='food-list' class='value'>
+						<li>Bacon CheeseBurger Pizza</li>
+						<li>2L Pepsi</li>
+						<li>Lrg. Garlic Fingers w/ 2x Bacon</li>
+					</ul>
+				</div>
 			</div>
 		</div>
+
+		<div id="order-accept-button" class="vendor-button" data-route="vendor/accept/print">ACCEPT</div>
+		<div id="order-reject-button" class="vendor-button" data-route="vendor/reject/unconfirmed">DECLINE</div>
+		<div id="order-reject-confirmation" class="slide-left text-center">
+			<h1>Are you sure?</h1>
+			<a href="#" class="modal-button cancel bisecting left" data-route="vendor/reject/confirm">
+				<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span>
+			</a>
+			<a href="#" class="modal-button confirm bisecting right" data-route="vendor/reject/cancel>
+				<span class="icon-circle-arrow-r"></span><span class="text">Confirm</span>
+			</a>
+		</div>
 	</div>
+
+
+
 </main>
 <script>
 //String message, String title

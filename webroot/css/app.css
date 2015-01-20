@@ -5415,15 +5415,75 @@ footer#footer {
       width: 25%;
       max-width: 5rem; }
 
+body#vendor {
+  background-color: #191919; }
+
 main#vendor-page {
   padding-top: 3.75rem; }
 
-#order-accept-button {
-  height: 37.5rem;
-  font-size: 4rem;
-  line-height: 37.5rem;
+#next-order {
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+  padding: 0.9375rem;
+  margin: 0 1.5625rem 0 1.5625rem;
+  width: 34.375rem;
+  float: left;
+  position: absolute;
+  top: 4.6875rem;
+  left: 0;
+  border: 4px solid white;
+  border-radius: 1rem;
+  background-color: #373737; }
+
+#values {
+  border-left: 1px solid #b4b4b4; }
+
+#order-content {
+  border-bottom: 2px dashed #373737;
+  background: white;
+  /* Old browsers */
+  background: -moz-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #ffffff), color-stop(50%, #f3f3f3), color-stop(51%, #ededed), color-stop(100%, #ffffff));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+  /* IE10+ */
+  background: linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 );
+  /* IE6-9 fallback on horizontal gradient */
+  color: #373737;
+  padding: 0.9375rem 0.3125rem;
+  height: 18.75rem; }
+  #order-content h1, #order-content h2, #order-content h3, #order-content h4, #order-content h5, #order-content p, #order-content span, #order-content ul, #order-content li {
+    background-color: transparent;
+    color: #373737 !important; }
+  #order-content span {
+    display: block;
+    min-height: 1.75rem; }
+  #order-content span.label {
+    font-size: 1.125rem;
+    text-align: left;
+    vertical-align: top; }
+  #order-content span.value {
+    font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+    color: #0779be;
+    font-size: 1rem; }
+  #order-content ul#food-list {
+    font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+    display: inline-block; }
+
+.vendor-button {
   text-align: center;
-  text-shadow: 0 0 0.5rem #373737;
+  text-shadow: 0 0 0.5rem #373737; }
+
+#order-accept-button {
+  height: 25rem;
+  font-size: 8rem;
+  line-height: 28.125rem;
   background: #bfd255;
   /* Old browsers */
   background: -moz-linear-gradient(top, #bfd255 0%, #8eb92a 50%, #72aa00 51%, #9ecb2d 100%);
@@ -5440,6 +5500,83 @@ main#vendor-page {
   /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfd255', endColorstr='#9ecb2d',GradientType=0 );
   /* IE6-9 */ }
+
+#order-reject-button {
+  font-size: 3rem;
+  height: 5rem;
+  line-height: 6.25rem;
+  background: #f85032;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f85032), color-stop(50%, #f16f5c), color-stop(51%, #f6290c), color-stop(71%, #f02f17), color-stop(100%, #e73827));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#e73827',GradientType=0 );
+  /* IE6-9 */ }
+
+#pending-orders-count {
+  position: absolute;
+  float: right;
+  top: -2rem;
+  right: -1.5rem;
+  border-radius: 1000px;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.33);
+  border: 6px solid white;
+  background-color: #0779be;
+  padding: 1rem;
+  font-size: 4rem;
+  line-height: 5.5rem;
+  height: 8rem;
+  width: 8rem;
+  text-align: center;
+  text-shadow: 0 0 0.33rem rgba(0, 0, 0, 0.5); }
+  #pending-orders-count h5 {
+    position: relative;
+    width: 9.375rem;
+    font-size: 1rem;
+    text-shadow: 0 0 0.33rem rgba(0, 0, 0, 0.5);
+    -webkit-transform: translate(-1.875rem, -1.875rem); }
+
+#back-splash {
+  position: fixed;
+  top: 5rem;
+  left: 1.5625rem;
+  width: 34.375rem;
+  height: 48.75rem;
+  padding-top: 6.25rem;
+  font-size: 8.375rem;
+  text-align: center;
+  line-height: 200px;
+  color: #1e1e1e;
+  z-index: 1;
+  border-radius: 1rem;
+  border: 12px solid #1e1e1e; }
+
+#order-reject-confirmation {
+  width: 37.5rem;
+  position: absolute;
+  z-index: 9999;
+  height: 200px;
+  top: 300px;
+  left: -25px;
+  padding: 0.9375rem;
+  background-color: white;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+  border: 2px solid #373737; }
+  #order-reject-confirmation.slide-left {
+    -webkit-transform: translateX(-40.625rem); }
+  #order-reject-confirmation h1, #order-reject-confirmation h3 {
+    color: #e02027; }
+  #order-reject-confirmation h3 {
+    margin-top: -1rem; }
 
 @-webkit-keyframes modal_loading_dots {
   0% {

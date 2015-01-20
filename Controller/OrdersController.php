@@ -649,9 +649,9 @@
 		}
 
 		public function get_pending() {
-			if ( $this->request->is( 'ajax' ) ) {
-				$conditions = array( 'conditions' => array( 'Order.state' => ORDER_PENDING ) );
-				$this->set( 'Orders', $this->Order->find( 'all', $conditions ) );
+			if ( $this->request->is( 'ajax' ) || true ) {
+				$conditions = array( 'conditions' => array( 'Order.state' => ORDER_PENDING ), 'recursive' => -1 );
+				$this->set( 'orders', $this->Order->find( 'all', $conditions ) );
 			}
 			else {
 				return $this->redirect("/menu");

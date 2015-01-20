@@ -57,7 +57,9 @@ var constants = {
 	STASH_OL_STOP:9,
 	PENDING:0,
 	ACCEPTED:1,
-	REJECTED:2
+	REJECTED:2,
+	ACCEPT: "accept",
+	REJRECT: "reject"
 };
 
 var C = constants;
