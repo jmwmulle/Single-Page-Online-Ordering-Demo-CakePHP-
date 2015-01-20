@@ -170,6 +170,8 @@ var XSM = {
 		hover_text_label_incoming: "#topbar-hover-text-label span.incoming",
 		hover_text_label_outgoing: "#topbar-hover-text-label span.outgoing"
 	},
+	vendor: {
+	},
 	footer: {
 		self:"footer#footer"
 	},

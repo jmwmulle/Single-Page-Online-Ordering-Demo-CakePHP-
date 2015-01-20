@@ -54,7 +54,7 @@
 			<a href="#" class="modal-button cancel bisecting left" data-route="vendor/reject/confirm">
 				<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span>
 			</a>
-			<a href="#" class="modal-button confirm bisecting right" data-route="vendor/reject/cancel>
+			<a href="#" class="modal-button confirm bisecting right" data-route="vendor/reject/cancel">
 				<span class="icon-circle-arrow-r"></span><span class="text">Confirm</span>
 			</a>
 		</div>

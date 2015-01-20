@@ -5186,6 +5186,7 @@ nav#topbar {
   vertical-align: middle;
   overflow: hidden; }
   nav#topbar .topbar-social {
+    padding-top: 0.25rem;
     height: 4.0625rem !important;
     line-height: 2.03125rem;
     font-size: 1.625rem; }
@@ -5555,10 +5556,10 @@ main#vendor-page {
   font-size: 8.375rem;
   text-align: center;
   line-height: 200px;
-  color: #1e1e1e;
+  color: #373737;
   z-index: 1;
   border-radius: 1rem;
-  border: 12px solid #1e1e1e; }
+  border: 12px solid #373737; }
 
 #order-reject-confirmation {
   width: 37.5rem;

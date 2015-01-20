@@ -116,10 +116,10 @@ main#vendor-page {
   font-size:rem-calc(134px);
   text-align: center;
   line-height:200px;
-  color:darken($text-grey, 10%);
+  color: $text-grey;
   z-index:1;
   border-radius:1rem;
-  border:12px solid darken($text-grey, 10%);
+  border:12px solid $text-grey;
 
 }
 

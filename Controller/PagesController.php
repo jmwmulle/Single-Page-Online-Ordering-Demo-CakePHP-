@@ -67,7 +67,7 @@ class PagesController extends AppController {
 			$title_for_layout = Inflector::humanize($path[$count - 1]);
 		}
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
-		if ($path[0] == "vendor" && $this->request->header('User-Agent') == "xtreme-pos-tablet") {
+		if ($path[0] == "vendor" && $this->request->header('User-Agent') == "xtreme-pos-tablet" || true) {
 			$this->layout = "vendor";
 			$this->render("vendor");
 		} else {

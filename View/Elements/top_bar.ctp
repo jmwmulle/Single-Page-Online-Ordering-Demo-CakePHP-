@@ -61,10 +61,10 @@ $social_route = $logged_in ? "social" : "login/topbar";
 					</a>
 					<?php }
 					if ($logged_in) { ?>
-					<a href="#" data-route="topbar_link/favorites" data-hover_text="View Your Favorites">
+					<a href="#" class="disabled" data-route="topbar_link/favorites" data-hover_text="View Your Favorites">
 						<span class="icon-favorites"></span>
 					</a>
-					<a href="#" data-route="topbar_link/settings" data-hover_text="Account Settings">
+					<a href="#" class="disabled" data-route="topbar_link/settings" data-hover_text="Account Settings">
 						<span class="icon-settings"></span>
 					</a>
 					<?php }?>

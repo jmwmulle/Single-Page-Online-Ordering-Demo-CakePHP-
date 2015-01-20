@@ -775,7 +775,6 @@ window.XBS = {
 											$("#order-reject-confirmation").removeClass(XSM.effects.slide_left);
 										break;
 										case 'confirm':
-											$("#order-reject-confirmation").addClass(XSM.effects.slide_left);
 											this.url = {
 												url:"vendor-reject" + C.DS + XBS.data.vendor.current_order_id + C.DS + C.REJECTED,
 												type: C.POST,
@@ -783,6 +782,8 @@ window.XBS = {
 											};
 											this.set_callback("launch", function() {
 												var data = $.parseJSON(this.deferal_data);
+												pr(data);
+												$("#order-reject-confirmation").addClass(XSM.effects.slide_left);
 												// todo: make sure the rejection went well;
 											});
 											break;

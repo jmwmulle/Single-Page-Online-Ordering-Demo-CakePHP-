@@ -22,6 +22,7 @@ nav#topbar {
   vertical-align   : middle;
   overflow         : hidden;
   .topbar-social {
+    padding-top:0.25rem;
     height      : $topnav-height !important;
     line-height :$topnav-social-row;
     font-size   :  $topnav-social-icon-height;

@@ -8,7 +8,8 @@
 		echo $this->Html->meta( 'icon' );
 		echo $this->Html->css( "app" );
 		echo $this->Html->script( "/bower_components/modernizr/modernizr" );
-		echo $this->Html->script( array( "lib/selectorManifest.js",
+		echo $this->Html->script( array(
+				"lib/selectorManifest.js",
 		                                 "lib/constants",
 		                                 "/bower_components/jquery/dist/jquery.min",
 		                                 "//code.jquery.com/ui/1.11.1/jquery-ui.js",
@@ -43,7 +44,7 @@
 <body id="vendor">
 
 <?php
-	echo $this->fetch( 'content' );
+echo $this->fetch( 'content' );
 echo $this->fetch( 'app' );
 echo $this->fetch( 'main' );
 ?>
