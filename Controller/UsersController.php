@@ -345,10 +345,17 @@
 			// allow managers to posts and widgets
 			$group->id = 1;
 			$this->Acl->deny( $group, 'controllers' );
-			$this->Acl->allow( $group, 'controllers/users/edit' );
-			$this->Acl->allow( $group, 'controllers/users/index' );
+			$this->Acl->allow( $group, 'controllers/users/home' );
+			$this->Acl->allow( $group, 'controllers/users/settings' );
 			$this->Acl->allow( $group, 'controllers/users/add_favourite' );
 			$this->Acl->allow( $group, 'controllers/users/add_address' );
+
+			$group->id = 3;
+			$this->Acl->deny($group, 'controllers');
+			$this->Acl->allow($group, 'controllers/orders/getPending');
+			$this->Acl->allow($group, 'controllers/pages/vendor');
+			$this->Acl->allow($group, 'controllers/orders/setStatus');
+			
 			// we add an exit to avoid an ugly "missing views" error message
 			echo "all done";
 			exit;

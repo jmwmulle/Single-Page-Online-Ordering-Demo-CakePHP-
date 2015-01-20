@@ -617,7 +617,7 @@
 				$this->layout = 'ajax';
 				$conditions = array('conditions' => array('Order.id' => $id));
 				if ($this->Order->find('first', $conditions)) {
-					$this->set('response', array('success'=>true, 'status'=>$this->Order->status, 'error'=>Null));
+					$this->set('response', array('success'=>true, 'status'=>$this->Order->state, 'error'=>Null));
 				} else {
 					$this->set('response', array('success'=>false, 'status'=>Null, 'error'=>'Order not found.'));
 				}
@@ -630,7 +630,7 @@
 			if ( $this->request->is( 'ajax' ) ) {
 				$conditions = array( 'conditions' => array( 'Order.id' => $id ) );
 				if ( $this->Order->find( 'first', $conditions ) ) {
-					$this->Order->set( 'status', $status );
+					$this->Order->set( 'state', $status );
 					if ( $this->Order->save() ) {
 						$this->set( 'response', array( 'success' => true, 'error' => null ) );
 					}
@@ -650,9 +650,8 @@
 
 		public function get_pending() {
 			if ( $this->request->is( 'ajax' ) ) {
-				$conditions = array( 'conditions' => array( 'Order.status' => ORDER_PENDING ) );
+				$conditions = array( 'conditions' => array( 'Order.state' => ORDER_PENDING ) );
 				$this->set( 'Orders', $this->Order->find( 'all', $conditions ) );
-				$this->render();
 			}
 			else {
 				return $this->redirect("/menu");
