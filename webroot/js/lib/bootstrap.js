@@ -749,7 +749,7 @@ window.XBS = {
 						},
 						launch: function() {
 							var data = $.parseJSON(this.deferal_data);
-							pr(data);
+
 							if (!data.error && data.orders.length > 0) {
 								for (var ord in data.orders) {
 									if (!in_array(ord, XBS.data.vendor.pending_orders) ) {
@@ -757,10 +757,10 @@ window.XBS = {
 									}
 								}
 								XBS.vendor.post_orders();
-								setTimeout(function() {
-									$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "get_pending", trigger:{}});
-								}, 3000);
 							}
+							setTimeout(function() {
+								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "get_pending", trigger:{}});
+							}, 3000);
 						}
 					}
 
