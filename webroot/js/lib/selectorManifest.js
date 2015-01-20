@@ -191,8 +191,23 @@ var XSM = {
 	},
 	generated: {
 		vendor_orb_desc: function(orb_desc, orb_opts) {
-			var orb_str = "<li><ul><li>" + orb_desc +"</li>";
-			for (var opt_id in orb_opts) orb_str += "<li>" + orb_opts[opt_id] + "</li>";
+			var orb_str = "<li><ul class='orb'><li>" + orb_desc +"</li>";
+			for (var opt_id in orb_opts) {
+				orb_str += "<li class='orb-opt'><span class='text'>" + orb_opts[opt_id].title + "</span>";
+				switch ( orb_opts[opt_id].weight ) {
+					case "D":
+						orb_str += '<span class="icon-double"></span></li>';
+						break;
+					case "L":
+						orb_str += '<span class="icon-left-side"></span></li>';
+						break;
+					case "R":
+						orb_str += '<span class="icon-right-side"></span></li>';
+						break;
+					default:
+						orb_str += '</li>';
+				}
+			}
 			orb_str += "</ul></li>";
 			return orb_str;
 		},

@@ -1968,8 +1968,8 @@ window.XBS = {
 					setTimeout(function() {
 						var now = new Date().getTime();
 						if (now - XBS.data.vendor.last_tone_play > 10000) {
-							var audio = new Audio(XSM.vendor.new_order_tone);
-							audio.play();
+//							var audio = new Audio(XSM.vendor.new_order_tone);
+//							audio.play();
 							XBS.data.last_tone_play = now;
 						}
 						$(XSM.vendor.pending_orders_list).removeClass(XSM.effects.slide_right);

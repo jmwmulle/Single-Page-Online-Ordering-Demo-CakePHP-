@@ -5481,6 +5481,16 @@ main#vendor-page {
   text-align: center;
   text-shadow: 0 0 0.5rem #373737; }
 
+@-webkit-keyframes accept-glow {
+  0% {
+    text-shadow: 0 0 0.5rem #373737; }
+
+  50% {
+    text-shadow: 0 0 1rem white; }
+
+  100% {
+    text-shadow: 0 0 0.5rem #373737; } }
+
 #order-accept-button {
   height: 25rem;
   font-size: 8rem;
@@ -5499,8 +5509,9 @@ main#vendor-page {
   /* IE10+ */
   background: linear-gradient(to bottom, #bfd255 0%, #8eb92a 50%, #72aa00 51%, #9ecb2d 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfd255', endColorstr='#9ecb2d',GradientType=0 );
-  /* IE6-9 */ }
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bfd255', endColorstr='#9ecb2d', GradientType=0);
+  /* IE6-9 */
+  -webkit-animation: accept-glow 3s ease-in-out infinite normal 0s running forwards; }
 
 #order-reject-button {
   font-size: 3rem;
@@ -5520,7 +5531,7 @@ main#vendor-page {
   /* IE10+ */
   background: linear-gradient(to bottom, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#e73827',GradientType=0 );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f85032', endColorstr='#e73827', GradientType=0);
   /* IE6-9 */ }
 
 #pending-orders-count {
@@ -5578,6 +5589,29 @@ main#vendor-page {
     color: #e02027; }
   #order-reject-confirmation h3 {
     margin-top: -1rem; }
+
+#food-list ul.orb li {
+  height: 1.1rem;
+  line-height: 1.1rem; }
+  #food-list ul.orb li.orb-opt {
+    border-bottom: 1px dotted #b4b4b4;
+    color: #0779be;
+    padding-left: 1rem;
+    font-size: 0.8rem; }
+    #food-list ul.orb li.orb-opt span {
+      min-height: 0;
+      height: inherit;
+      line-height: inherit;
+      display: inline-block;
+      vertical-align: top; }
+    #food-list ul.orb li.orb-opt span.text {
+      -webkit-transform: translateY(0.15rem); }
+    #food-list ul.orb li.orb-opt span[class*="icon-"] {
+      color: #e02027 !important;
+      font-size: 0.9rem;
+      right: 0;
+      top: 0;
+      float: right; }
 
 @-webkit-keyframes modal_loading_dots {
   0% {
