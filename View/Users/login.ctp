@@ -1,11 +1,12 @@
 <?php
-	echo $this->Form->create( 'User', array( 'action' => 'login' ) );
-	echo $this->Form->inputs( array(
-			'legend' => __( 'Login' ),
-			'email',
-			'password'
+	echo $this->Form->create('User', array(
+	    'url' => array(
+		'controller' => 'users',
+		'action' => 'login'
 		)
-	);
+	));
+	echo $this->Form->input('User.email');
+	echo $this->Form->input('User.password');
 	echo $this->Form->end( 'Login' );
 ?>
 <div id="on-close" class="true-hidden" data-action=""></div>
