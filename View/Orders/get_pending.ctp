@@ -8,35 +8,7 @@
  *
  * */
 
-$response = null;
-$f_orders = array();
-//	db($orders);
-try {
-	foreach ($orders as $order) {
-		$detail = json_decode($order['Order']['detail'], true);
-		pr($detail);
-		echo "<hr />";
-		$address = $detail['Order']['address'];
-		if (!array_key_exists('firstname', $address) ) $address['firstname'] = 'Anon';
-		if (!array_key_exists('lastname', $address) ) $address['lastname'] = 'Anon';
-		$f_order = array(
-			'id' => $order['Order']['id'],
-			'title' => $address['address'],
-		    'customer' => sprintf("%s %s", $address['firstname'], $address['lastname']),
-		    'food' => array()
-		);
-		$food_array = array();
-		foreach ($detail['OrderItem'] as $orb) {
-			$food_array[$orb['title']] = $orb['orbopts'];
-	    }
 
-		$f_order['food'][$orb['title']] = $food_array;
-		$f_orders[] = $f_order;
-	}
-	$response = array('success' => true, 'error' => false, 'orders' => $f_orders);
-} catch (Exception $e) {
-	$response = array('success' => false, 'error' => json_encode($e), 'orders' => false);
-}
-db($response);
+
 echo json_encode($response);
 ?>

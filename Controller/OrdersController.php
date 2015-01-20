@@ -650,7 +650,48 @@
 			if ( $this->request->is( 'ajax' ) || true ) {
 				$this->layout = "ajax";
 				$conditions = array( 'conditions' => array( 'Order.state' => ORDER_PENDING ), 'recursive' => -1 );
-				$this->set( 'orders', $this->Order->find( 'all', $conditions ) );
+				$orders = $this->Order->find( 'all', $conditions );
+				$response = null;
+				$f_orders = array();
+				//	db($orders);
+				try {
+					foreach ($orders as $order) {
+						$detail = json_decode($order['Order']['detail'], true);
+						$address = $detail['Order']['address'];
+						if (!array_key_exists('firstname', $address) ) $address['firstname'] = 'Anonymous';
+						if (!array_key_exists('lastname', $address) ) $address['lastname'] = 'Anonymous';
+						$f_order = array(
+							'id' => $order['Order']['id'],
+							'title' => $address['address'],
+						    'customer' => sprintf("%s %s", $address['firstname'], $address['lastname']),
+						    'order_method' => $detail['Order']['order_method'],
+						    'payment_method' => $detail['Order']['payment_method'],
+						    'paid' => false,
+						    'delivery_instructions' => $detail['Order']['delivery_instructions'],
+						    'time' => $order['Order']['created'],
+						    'price' => $detail['Order']['total'],
+						    'food' => array()
+						);
+						$food_array = array();
+						foreach ($detail['OrderItem'] as $orb) {
+							$opts = array();
+							if ( !empty($orb['orbopts']) ) {
+								foreach($orb['orbopts'] as $opt) {
+									$id = $opt['Orbopt']['id'];
+									$opts[] = array( 'title' => $opt['Orbopt']['title'],
+									                 'weight' => $orb['orbopts_arrangement'][$id]);
+								}
+							}
+							$food_array[$orb['title']] = $opts;
+					    }
+						$f_order['food'] = $food_array;
+						$f_orders[] = $f_order;
+					}
+					$response = array('success' => true, 'error' => false, 'orders' => $f_orders);
+				} catch (Exception $e) {
+					$response = array('success' => false, 'error' => $e, 'orders' => false);
+				}
+				$this->set( compact('response') );
 			}
 			else {
 				return $this->redirect("/menu");
