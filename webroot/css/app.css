@@ -5170,110 +5170,6 @@ a.xtreme-button {
   100% {
     opacity: 0; } }
 
-.spinner {
-  -webkit-animation: rotator 4s linear infinite;
-  animation: rotator 4s linear infinite; }
-
-@-webkit-keyframes rotator {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  100% {
-    -webkit-transform: rotate(270deg);
-    transform: rotate(270deg); } }
-
-.spinner {
-  -webkit-animation: rotator 1.4s linear infinite;
-  animation: rotator 1.4s linear infinite; }
-
-@-webkit-keyframes rotator {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  100% {
-    -webkit-transform: rotate(270deg);
-    transform: rotate(270deg); } }
-
-@keyframes rotator {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
-
-  100% {
-    -webkit-transform: rotate(270deg);
-    transform: rotate(270deg); } }
-
-.path {
-  stroke-dasharray: 187;
-  stroke-dashoffset: 0;
-  -webkit-transform-origin: center;
-  -ms-transform-origin: center;
-  transform-origin: center;
-  -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
-  animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite; }
-
-@-webkit-keyframes colors {
-  0% {
-    stroke: #4285f4; }
-
-  25% {
-    stroke: #de3e35; }
-
-  50% {
-    stroke: #f7c223; }
-
-  75% {
-    stroke: #1b9a59; }
-
-  100% {
-    stroke: #4285f4; } }
-
-@keyframes colors {
-  0% {
-    stroke: #4285f4; }
-
-  25% {
-    stroke: #de3e35; }
-
-  50% {
-    stroke: #f7c223; }
-
-  75% {
-    stroke: #1b9a59; }
-
-  100% {
-    stroke: #4285f4; } }
-
-@-webkit-keyframes dash {
-  0% {
-    stroke-dashoffset: 187; }
-
-  50% {
-    stroke-dashoffset: 46.75;
-    -webkit-transform: rotate(135deg);
-    transform: rotate(135deg); }
-
-  100% {
-    stroke-dashoffset: 187;
-    -webkit-transform: rotate(450deg);
-    transform: rotate(450deg); } }
-
-@keyframes dash {
-  0% {
-    stroke-dashoffset: 187; }
-
-  50% {
-    stroke-dashoffset: 46.75;
-    -webkit-transform: rotate(135deg);
-    transform: rotate(135deg); }
-
-  100% {
-    stroke-dashoffset: 187;
-    -webkit-transform: rotate(450deg);
-    transform: rotate(450deg); } }
-
 #loading {
   height: 80%;
   position: fixed;
@@ -5518,6 +5414,61 @@ footer#footer {
     footer#footer #designer-plug img {
       width: 25%;
       max-width: 5rem; }
+
+main#vendor-page {
+  padding-top: 3.75rem; }
+
+#order-accept-button {
+  height: 37.5rem;
+  font-size: 4rem;
+  line-height: 37.5rem;
+  text-align: center;
+  text-shadow: 0 0 0.5rem #373737;
+  background: #bfd255;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #bfd255 0%, #8eb92a 50%, #72aa00 51%, #9ecb2d 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bfd255), color-stop(50%, #8eb92a), color-stop(51%, #72aa00), color-stop(100%, #9ecb2d));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #bfd255 0%, #8eb92a 50%, #72aa00 51%, #9ecb2d 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #bfd255 0%, #8eb92a 50%, #72aa00 51%, #9ecb2d 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #bfd255 0%, #8eb92a 50%, #72aa00 51%, #9ecb2d 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #bfd255 0%, #8eb92a 50%, #72aa00 51%, #9ecb2d 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfd255', endColorstr='#9ecb2d',GradientType=0 );
+  /* IE6-9 */ }
+
+@-webkit-keyframes modal_loading_dots {
+  0% {
+    -webkit-transform: scale(1, 1);
+    background-color: #0779be; }
+
+  25% {
+    -webkit-transform: scale(0.5, 0.5);
+    background-color: #e02027; } }
+
+.modal-load-dot {
+  background-color: #0779be;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1000px;
+  display: inline-block;
+  margin: 0.5rem; }
+
+#load-dot-1 {
+  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 0s running forwards; }
+
+#load-dot-2 {
+  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 0.25s running forwards; }
+
+#load-dot-3 {
+  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 0.5s running forwards; }
+
+#load-dot-4 {
+  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 0.75s running forwards; }
 
 #modal-overlay-container {
   position: fixed;

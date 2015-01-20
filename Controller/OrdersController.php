@@ -613,7 +613,7 @@
 		}
 
 		public function get_status($id) {
-			if ($this->request->is('ajax')) {
+			if ($this->request->is('ajax') || true) {
 				$this->layout = 'ajax';
 				$conditions = array('conditions' => array('Order.id' => $id));
 				if ($this->Order->find('first', $conditions)) {

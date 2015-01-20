@@ -8,7 +8,7 @@
  */
 
 ?>
-<div id="vendor-page">
+<main id="vendor-page">
 <div class="row">
 	<div class="large-12 medium-8 medium-push-12 columns">
 		<div class="row">
@@ -18,7 +18,7 @@
 				<ul class="pending-order panel">
 					<li></li>
 				</ul>
-				<div class="large button success" onClick="showDialog('Order Approved!', 'Status')" data-route="print">Accept</div>
+				<div id="order-accept-button" class="" data-route="vendor/accept/print">ACCEPT</div>
 				<div class="large button alert">Decline</div>
 			</div>
 			<div class="small-4 columns">
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</main>
 <script>
 //String message, String title
 function show_dialog(message, title) {

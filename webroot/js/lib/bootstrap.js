@@ -575,30 +575,45 @@ window.XBS = {
 					url: {url:"order-confirmation", defer: true, type: C.POST},
 					callbacks: {
 						params_set: function() {
-							pr("zomfg you guys");
 							switch (this.read('status') ) {
 								case "launching":
 									this.url.defer = false;
+									var request = {
+										request: "pending_order"+ C.DS + this.read('order_id') + C.DS + C.PENDING,
+										trigger: this.trigger
+									};
 									this.set_callback("launch", function() {
-										$(XBS.routing).trigger(C.ROUTE_REQUEST, {
-											request: "pending_order"+ C.DS + this.read('order_id' + C.DS + 'check'),
-											trigger:this.trigger.event
-										});
+										setTimeout(function() {
+											$(XBS.routing).trigger(C.ROUTE_REQUEST, request);
+										}, 3000);
 									});
 									break;
+
 							}
 						},
 						launch: function() {
-							var data = this.deferal_data;
-							if (data.status = "pending") {
-								var request = {
-									request: "pending_order"+ C.DS + this.read('order_id' + C.DS + 'check'),
-									trigger: this.trigger
-								};
-								setTimeout(function() {
-									$(XBS.routing).trigger(C.ROUTE_REQUEST, request);
-								}, 3000);
+							switch (this.deferal_data.status) {
+								case C.PENDING:
+									var request = {
+										request: "pending_order"+ C.DS + this.read('order_id') + C.DS + C.PENDING,
+										trigger: this.trigger
+									};
+									setTimeout(function() {
+										$(XBS.routing).trigger(C.ROUTE_REQUEST, request);
+									}, 3000);
+									break;
+								case C.REJECTED:
+									break;
+								case C.ACCEPTED:
+									$("#load-dot-box").addClass(XSM.effects.fade_out);
+									setTimeout(function() {
+										$("#load-dot-box").hide();
+
+									}, 300);
+									break;
+
 							}
+
 						}
 					}
 				}),
