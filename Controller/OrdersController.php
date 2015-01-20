@@ -663,4 +663,13 @@
 			$this->disableCache();
 			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'review', 'index', 'view', 'get_pending', 'set_status', 'get_status', 'finalize' );
 		}
+
+		public function vendor() {
+			if ($this->request->header('User-Agent') == "xtreme-pos-tablet" || true) {
+				$this->layout = "vendor";
+				$this->render("vendor");
+			} else {
+				$this->redirect("/menu");
+			}
+		}
 	}

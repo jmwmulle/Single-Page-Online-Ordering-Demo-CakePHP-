@@ -12,7 +12,7 @@ $f_orders = array();
 try {
 	foreach ($orders as $order) {
 		$detail = json_decode($order['Order']['detail'], true);
-
+	pr($detail);
 		$address = $detail['Order']['address'];
 		if (!array_key_exists('firstname', $address) ) $address['firstname'] = 'Anon';
 		if (!array_key_exists('lastname', $address) ) $address['lastname'] = 'Anon';
