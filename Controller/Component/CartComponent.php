@@ -77,11 +77,12 @@ class CartComponent extends Component {
 		$premium_opts_prices = array();
 		if(!empty($orbopts)) {
 			foreach($orbopts as $key=>$orbopt) {
+
 				$opts_by_val = array_values($orbopt['Pricelist']);
 
 				#Check if Sauce and not Xtra
-				if (!$orbopt['Sauce'] or ($orbopts_list[$key] == D)) {
-					if ($orbopt['Premium']) {
+				if (!$orbopt['Orbopt']['sauce'] or ($orbopts_list[$key] == "D")) {
+					if ($orbopt['Orbopt']['premium']) {
 						array_push($premium_opts_prices, $opts_by_val[$price_rank]*$position_to_price[$orbopts_list[$key]]);
 					} else {
 						array_push($regular_opts_prices, $opts_by_val[$price_rank]*$position_to_price[$orbopts_list[$key]]);
@@ -89,6 +90,7 @@ class CartComponent extends Component {
 				} 
 			}
 		}
+
 		
 		$prices =  array_values($orb['Pricelist']);
 		$size_names = array_values($orb['Pricedict']);

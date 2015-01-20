@@ -54,6 +54,8 @@
 	Router::connect('/vendor-reject/*', array('controller' => 'orders', 'action' => 'set_status'));
 	Router::connect('/pending', array('controller' => 'orders', 'action' => 'get_pending'));
 	Router::connect('/tablet/login', array('controller' => 'users', 'action' => 'tabletlogin'));
+	Router::connect('/add-to-cart/*', array('controller' => 'orders', 'action' => 'add_to_cart'));
+
 
 
 	Router::connect('/auth/email', array('controller' => 'users', 'action' => 'login'));

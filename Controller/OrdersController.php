@@ -69,43 +69,38 @@
 		 * @return the item information in AJAX
 		 */
 		public function add_to_cart() {
-//			if ( $this->request->is( 'ajax' ) ) $this->layout = "ajax";
-			//if ( $this->request->is( 'get' ) ) {
-			//	$this->render();
-			//	return;
-			//}
-			$products = array();
-			foreach ( $this->request->data[ 'Order' ] as $orb ) {
-				extract( array_merge( array(
-							"id"                       => -1,
-							"quantity"                 => -1,
-							"price_rank"               => 0,
-							"orbopts"                  => array(),
-							"preparation_instructions" => "" ),
-						$orb
-					)
-				);
-				$item = $this->Cart->add( $id, $quantity, $price_rank, $orbopts, $preparation_instructions );
-				array_push( $products, $item );
-			}
-			$this->Cart->update();
-			if ( !empty( $products ) ) {
-				if ( $this->Session->check( 'Cart.Order.total' ) ) {
-					$total = $this->Session->read( 'Cart.Order.total' );
-				}
-				else {
-					$total = null;
-				}
+			if ( $this->request->is( 'ajax' ) ) {
+				$this->layout = "ajax";
+				$response = array( "order", "success", "cart_total");
+				if ( $this->request->is( 'post' ) ) {
+					$products = array();
 
-				$this->set( "response", json_encode( array( "Order"   => array( "Orbs" => $products ),
-				                                            "success" => true, "cart_total" => $total )
-					)
-				);
-			}
-			else {
-				$this->set( "response", json_encode( array( "orb" => null, "success" => false, "cart_total" => null )
-					)
-				);
+					foreach ( $this->request->data[ 'Order' ] as $orb ) {
+						extract( array_merge( array(
+									"id"                       => -1,
+									"quantity"                 => -1,
+									"price_rank"               => 0,
+									"orbopts"                  => array(),
+									"preparation_instructions" => "" ),
+								$orb
+							)
+						);
+						$item = $this->Cart->add( $id, $quantity, $price_rank, $orbopts, $preparation_instructions );
+						array_push( $products, $item );
+					}
+					$this->Cart->update();
+					if ( !empty( $products ) ) {
+						$total = $this->Session->check( 'Cart.Order.total' ) ? $this->Session->read( 'Cart.Order.total' ) : null;
+						$response = array_combine($response, array( array( "Orbs" => $products ), true, $total));
+					}
+					else {
+						$response = array_combine($response, array(array(), false, null));
+					}
+				}
+				$this->set(compact('response'));
+				$this->render();
+			} else {
+				$this->redirect("/menu");
 			}
 		}
 
@@ -650,6 +645,7 @@
 
 		public function get_pending() {
 			if ( $this->request->is( 'ajax' ) || true ) {
+				$this->layout = "ajax";
 				$conditions = array( 'conditions' => array( 'Order.state' => ORDER_PENDING ), 'recursive' => -1 );
 				$this->set( 'orders', $this->Order->find( 'all', $conditions ) );
 			}

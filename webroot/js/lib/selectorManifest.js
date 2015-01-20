@@ -51,6 +51,11 @@ var XSM = {
 		true_hidden: "true-hidden",
 		unchecked: "icon-unchecked"
 	},
+	forms: {
+		orb_order_form: "#orderOrbForm",
+		order_address_form: "#orderAddressForm",
+		users_form: "#UsersForm"
+	},
 	load: {
 		dismissLSButton: "#dismiss-loading-screen",
 		pizzaLoaderGIF: "#pizza-loader-gif",
@@ -109,7 +114,7 @@ var XSM = {
 		share_button: "#like.orb-card-button",
 		self:"main#menu",
 		social_panel: "#orb-card-social-panel",
-		tiny_orb_opts_list: "tiny-orb-opt-list",
+		tiny_orb_opts_list: "#tiny-orb-opts-list",
 		tiny_orb_opts_list_wrapper:"#tiny-orb-opts-list-wrapper",
 		tiny_orb_opts_list_item: ".tiny-orb-opts-list-item",
 		user_activity_panel: "#user-activity-panel",
@@ -171,12 +176,30 @@ var XSM = {
 		hover_text_label_outgoing: "#topbar-hover-text-label span.outgoing"
 	},
 	vendor: {
+		back_splash: "#back-splash",
+		customer_name: "#customer-name",
+		food_list: "#food-list",
+		next_order: "#next-order",
+		new_order_tone: "files/new_order_tone.mp3",
+		order_reject_confirmation: "#order-reject-confirmation",
+		order_count: "#order-count",
+		order_title: "#order-title",
+		pending_orders_list: "#pending-orders-list"
 	},
 	footer: {
 		self:"footer#footer"
 	},
 	generated: {
-		order_form_order_opt: function(opt_id) { return as_id("OrderOrbOrbopts" + opt_id) },
+		vendor_orb_desc: function(orb_desc, orb_opts) {
+			var orb_str = "<li><ul><li>" + orb_desc +"</li>";
+			for (var opt_id in orb_opts) orb_str += "<li>" + orb_opts[opt_id] + "</li>";
+			orb_str += "</ul></li>";
+			return orb_str;
+		},
+		order_form_opt_id: function(opt_id) {
+			opt_id = opt_id.split("-")[2]
+			return as_id("OrderOrbOrbopts" + opt_id)
+		},
 		orb_card_row_content: function(row) { return "#orb-card-row-"+row+" div.orb-card-content" },
 		orb_opt_id: function(opt_id) { return as_id("orb-opt-coverage-" + opt_id); },
 		orb_opt_icon: function(opt_id, weight) {
@@ -189,6 +212,11 @@ var XSM = {
 
 			return '<a href="#" id="submit-order-address" data-route="confirm_address/submit/'+route+'"' +
 					' class="box downward rel modal-submit">' + message + '</a>';
+		},
+		tiny_orb_opt_list_item: function(name, weight) {
+			return $("<li/>").addClass(stripCSS(XSM.menu.tiny_orb_opts_list_item))
+				.append("<span class='tiny-opt-label'>" + name + "</span>")
+				.append(C[weight])[0];
 		}
 	}
 };

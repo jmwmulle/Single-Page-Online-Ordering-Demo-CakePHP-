@@ -6,5 +6,5 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-echo $response;
-?>
+echo json_encode($response);
+

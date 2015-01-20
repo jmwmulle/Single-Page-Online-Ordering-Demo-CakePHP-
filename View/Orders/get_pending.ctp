@@ -7,11 +7,15 @@
  * About.me: about.me/thisimpetus
  *
  * */
+
 $response = null;
 $f_orders = array();
+//	db($orders);
 try {
 	foreach ($orders as $order) {
 		$detail = json_decode($order['Order']['detail'], true);
+		pr($detail);
+		echo "<hr />";
 		$address = $detail['Order']['address'];
 		if (!array_key_exists('firstname', $address) ) $address['firstname'] = 'Anon';
 		if (!array_key_exists('lastname', $address) ) $address['lastname'] = 'Anon';
@@ -33,6 +37,6 @@ try {
 } catch (Exception $e) {
 	$response = array('success' => false, 'error' => json_encode($e), 'orders' => false);
 }
-
+db($response);
 echo json_encode($response);
 ?>

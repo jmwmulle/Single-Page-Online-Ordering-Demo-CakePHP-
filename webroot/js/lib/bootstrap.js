@@ -20,10 +20,7 @@ window.XBS = {
 			xLoc: "xtreme"
 		},
 		orb_card_out_face: C.FRONT_FACE,
-		orb_card_animation_queue: {
-			animating: false,
-			queued: 0
-		},
+		tiny_orb_opts_list: {},
 		orb_opts: {
 		},
 		orb_opt_filters: {
@@ -410,11 +407,31 @@ window.XBS = {
 					callbacks: { params_set: function () { XBS.menu.refresh_orb_card_stage(this.params.id.value); } }
 				}),
 				orb_opt: new XtremeRoute("orb_opt", {
-					params: ["layer", "element", "title", "weight"],
+					params: ["context", "element", "title", "weight"],
 					behavior: C.STOP,
 					callbacks: {
 						params_set: function () {
-							switch (this.read('layer')) {
+							switch (this.read('context')) {
+								case "form_update":
+									var weight = -1;
+									/*
+										1. get the real weighting if the opt has been activated
+										2. set the corresponding form field to the opt's weighting
+									*/
+									/* #1 */
+									if ( $(this.read('element')).hasClass(XSM.effects.active) ) {
+										weight = $(
+											$(this.read('element')).find(XSM.menu.orb_opt_icon_active)[0]
+										).data('route').split("/")[4];
+										var opt_list_item = XSM.generated.tiny_orb_opt_list_item(this.read('title'), weight);
+										XBS.data.tiny_orb_opts_list[this.read('element')] = opt_list_item;
+									} else {
+										XBS.data.tiny_orb_opts_list[this.read('element')] = false;
+									}
+									/* #2 */
+									var form_opt_id = XSM.generated.order_form_opt_id(this.read('element'));
+									$(form_opt_id).val(weight);
+									break;
 								case 'weight':
 									if ($(this.trigger.element).hasClass(XSM.effects.enabled)) {
 										this.trigger.event.stopPropagation();
@@ -434,19 +451,40 @@ window.XBS = {
 					callbacks: {
 						params_set: function () {
 							var launch = false;
-							if (in_array(this.read('method'), ['share', 'register'])) {
-								launch = function () { XBS.menu.toggle_orb_card_row_menu(this.read('method'), null);}
-							};
-							if (this.read('method') == 'configure') {
-								XBS.menu.configure_orb(this.read('channel'), this.read('data'));
-							}
-							if (this.read('method') == 'add_to_cart') {
-								if (this.read('channel') == 'confirm') {
-									launch = function () {XBS.menu.add_to_cart();}
-								}
-								if (this.read('channel') == 'cancel') {
-									launch = XBS.menu.reset_orb_card_stage();
-								}
+							var method = this.read('method');
+							switch ( method ) {
+								case 'configure':
+									XBS.menu.configure_orb(this.read('channel'), this.read('data'));
+									break;
+								case 'add_to_cart':
+									switch ( this.read('channel') ) {
+										case "confirm":
+											this.url = {
+												url:"add-to-cart",
+												type: C.POST,
+												defer:true,
+												data: $(XSM.menu.orb_order_form).serialize()
+											};
+											launch = function () {
+												var data = JSON.parse(this.deferal_data);
+												if (data.success == true) {
+													XBS.cart.add_to_cart();
+													$(XSM.modal.orb_card).show('clip');
+													$(XSM.topbar.topbar_cart_button).show()
+													setTimeout(function () {
+														$(XSM.topbar.topbar_cart_button).removeClass(XSM.effects.fade_out);
+													}, 300);
+												}
+											}
+											break;
+										case 'cancel':
+											launch = XBS.menu.reset_orb_card_stage();
+											break;
+									}
+									break;
+								default:
+									launch = function () { XBS.menu.toggle_orb_card_row_menu(method, null);}
+									break;
 							}
 							if (launch) this.set_callback("launch", launch)
 						}
@@ -737,7 +775,7 @@ window.XBS = {
 				}),
 				submit_order_address: new XtremeRoute("submit_order_address", {
 					params: { is_splash: {value: null, url_fragment: false}},
-					url: {url: "confirm-address/session", type: C.GET, defer: false},
+					url: {url: "confirm-address" + C.DS + "session", type: C.GET, defer: false},
 					callbacks: {
 						launch: function () { XBS.validation.submit_address(this);}
 					}
@@ -749,7 +787,6 @@ window.XBS = {
 						},
 						launch: function() {
 							var data = $.parseJSON(this.deferal_data);
-
 							if (!data.error && data.orders.length > 0) {
 								for (var ord in data.orders) {
 									if (!in_array(ord, XBS.data.vendor.pending_orders) ) {
@@ -773,7 +810,7 @@ window.XBS = {
 								case "reject":
 									switch (this.read('context') ) {
 										case 'unconfirmed':
-											$("#order-reject-confirmation").removeClass(XSM.effects.slide_left);
+											$(XSM.vendor.order_reject_confirmation).removeClass(XSM.effects.slide_left);
 										break;
 										case 'confirm':
 											this.url = {
@@ -783,13 +820,12 @@ window.XBS = {
 											};
 											this.set_callback("launch", function() {
 												var data = $.parseJSON(this.deferal_data);
-												pr(data);
-												$("#order-reject-confirmation").addClass(XSM.effects.slide_left);
+												$(XSM.vendor.order_reject_confirmation).addClass(XSM.effects.slide_left);
 												// todo: make sure the rejection went well;
 											});
 											break;
 										case 'cancel':
-											$("#order-reject-confirmation").addClass(XSM.effects.slide_left);
+											$(XSM.vendor.order_reject_confirmation).addClass(XSM.effects.slide_left);
 											break;
 									}
 								break;
@@ -801,11 +837,11 @@ window.XBS = {
 									};
 									this.set_callback("launch", function() {
 										var data = $.parseJSON(this.deferal_data);
-										// todo: make sure the accept wored;
-										$("#next-order").addClass(XSM.effects.slide_up);
-										$("#back-splash").show();
+										// todo: make sure the accept worked;
+										$(XSM.vendor.next_order).addClass(XSM.effects.slide_up);
+										$(XSM.vendor.back_splash).show();
 										setTimeout( function() {
-											$("#back-splash").removeClass(XSM.effects.fade_out);
+											$(XSM.vendor.back_splash).removeClass(XSM.effects.fade_out);
 										}, 300);
 									});
 							}
@@ -850,7 +886,7 @@ window.XBS = {
 	},
 	layout: {
 		init: function () {
-			var sit_rep = XBS.fn.execInitSequence({"XBS.layout.jq_binds": XBS.layout.jq_binds});
+			var sit_rep = XBS.fn.exec_init_sequence({"XBS.layout.jq_binds": XBS.layout.jq_binds});
 			if (XBS.cfg.is_splash) XBS.layout.detachAnimationTargets();
 			var page_content_height = window.innerHeight - ($(XSM.global.topbar).innerHeight() + 3 * C.REM) + C.PX;
 			$(XSM.global.page_content).css({minHeight: page_content_height});
@@ -1119,7 +1155,7 @@ window.XBS = {
 		init: function () {
 			var init_ok = true;
 			if (XBS.cfg.page_name == C.MENU) {
-				init_ok = XBS.fn.execInitSequence({"XBS.menu.jq_binds": XBS.menu.jq_binds});
+				init_ok = XBS.fn.exec_init_sequence({"XBS.menu.jq_binds": XBS.menu.jq_binds});
 				try {
 					if (!XBS.data.current_orb_card) XBS.menu.load_from_cart($(XSM.menu.active_orb).data('orb'));
 				} catch (e) {
@@ -1167,7 +1203,7 @@ window.XBS = {
 			},
 			order_update_listeners: function () {
 				/** order form manual change */
-				$(C.BODY).on("change", XSM.menu.orb_order_form, null, XBS.cart.configure);
+				$(C.BODY).on("change", XSM.forms.orb_order_form, null, XBS.cart.configure);
 
 				/** order form update */
 				$(C.BODY).on(C.ORDER_FORM_UPDATE, null, null, XBS.menu.update_orb_configuration_ui);
@@ -1616,22 +1652,15 @@ window.XBS = {
 		},
 		update_orb_form: function () {
 			var tiny_toppings_list = $("<ul/>").addClass(selToStr(XSM.menu.tiny_orb_opts_list));
-
-			//$(XSM.menu.orb_opt_weight).each(function () { $(this).val(-1);});
 			$(XSM.menu.orb_opt).each(function () {
-				var topping_name = $(this).data("name");
-				var weight = -1;
-				if ($(this).hasClass(XSM.effects.active)) {
-					weight = $($(this).find(XSM.menu.orb_opt_icon_active)[0]).data(C.WEIGHT);
-					$("<li/>").addClass(stripCSS(XSM.menu.tiny_orb_opts_list_item))
-						.append("<span class='tiny-opt-label'>" + topping_name + "</span>")
-						.append(C[weight])
-						.appendTo(tiny_toppings_list);
-				}
-
-				$(XSM.generated.order_form_order_opt($(this).data('id'))).val(weight);
+				$(XBS.routing).trigger(C.ROUTE_REQUEST, {
+					request: ($(this).data("route")).replace("\/opt\/", "\/form_update\/"),
+					trigger: {}
+				});
 			});
-
+			for (var el in XBS.data.tiny_orb_opts_list) {
+				if (XBS.data.tiny_orb_opts_list[el]) tiny_toppings_list.append(XBS.data.tiny_orb_opts_list[el]);
+			}
 			$(XSM.menu.tiny_orb_opts_list_wrapper).html(tiny_toppings_list);
 			XBS.cart.configure();
 		},
@@ -1794,7 +1823,6 @@ window.XBS = {
 			$(XSM.splash.menu_spacer).css({height: $(XSM.splash.menu_wrapper).innerHeight() * C.MENU_SPACER_FACTOR});
 			XBS.layout.assert_aspect_ratio(XSM.splash.preserve_aspect_ratio);
 
-
 			var logo_width = $(XSM.splash.logo).innerWidth();
 			var height = $(XSM.splash.order_delivery).innerHeight();
 			var line_height = 1.25 * (height - 2 * 15) + C.PX;
@@ -1831,7 +1859,7 @@ window.XBS = {
 			if (debug_this > 0) pr(route, "XBS.validation.submit_address(route)", 2);
 			var context = route.read("context");
 			var method = route.read("method");
-			$("#orderAddressForm").validate({
+			$(XSM.forms.order_address_form).validate({
 				debug: false,
 				rules: {
 					"data[orderAddress][firstname]": "required",
@@ -1857,13 +1885,14 @@ window.XBS = {
 					$.ajax({
 						type: C.POST,
 						url: "confirm-address/session",
-						data: $("#orderAddressForm").serialize(),
+						data: $(XSM.forms.order_address_form).serialize(),
 						success: function (data) {
-							pr(data, 'confirm_address_validation');
+							if (debug_this > 1) pr(data, 'XBS.validation.submit_address()->confirm_address_validation', 2);
 							try {
 								data = $.parseJSON(data);
 								XBS.data.user.address = data.address;
 							} catch (e) {
+								// todo: something... with... this... eror?
 							}
 							XBS.layout.dismiss_modal(XSM.modal.primary);
 							if (secondary_route) {
@@ -1875,12 +1904,12 @@ window.XBS = {
 					});
 				}
 			});
-			$("#orderAddressForm").submit();
+			$(XSM.forms.order_address_form).submit();
 		},
 		submit_register: function (route) {
 			var debug_route = 0;
 			if (debug_route > 0) pr(route, "XBS.validation.submit_address(route)", 2);
-			$("#UsersForm").validate({
+			$(XSM.forms.users_form).validate({
 				debug: true,
 				rules: {
 					"data[Users][firstname]": "required",
@@ -1906,7 +1935,7 @@ window.XBS = {
 					$.ajax({
 						type: route.url.type,
 						url: "users/add",
-						data: $("#UsersForm").serialize(),
+						data: $(XSM.forms.users_form).serialize(),
 						success: function (data) {
 							//todo: handle... this?
 						},
@@ -1915,40 +1944,36 @@ window.XBS = {
 					});
 				}
 			});
-			$("#UsersForm").submit();
+			$(XSM.forms.users_form).submit();
 		}
 	},
 	vendor: {
 		init: function() {},
 		post_orders: function() {
-			if ( $("#next-order").hasClass(XSM.effects.slide_up)) {
+			if ( $(XSM.vendor.next_order).hasClass(XSM.effects.slide_up) ) {
+				pr(XBS.data.vendor);
 				var order = XBS.data.vendor.pending_orders.shift();
 				XBS.data.vendor.current_order_id = order.id;
-				$("#order-title").html(order.title);
-				$("#customer-name").html(order.customer);
+				$(XSM.vendor.order_title).html(order.title);
+				$(XSM.vendor.customer_name).html(order.customer);
 
 				var food = "";
-				for (var i in order.food) {
-					food = "<li><ul><li>" + i +"</li>";
-					for (j in order.food[i]) {
-						food += "<li>"+order.food[i][j]+"</li>";
-					}
-					food += "</ul></li>"
-				}
-				$("#food-list").html(food);
-				$("#order-count").html(XBS.data.vendor.pending_orders.length);
-				$("#back-splash").addClass(XSM.effects.fade_out);
+				for (var i in order.food) food += XSM.generated.vendor_orb_desc(i, order.food[i]);
+
+				$(XSM.vendor.food_list).html(food);
+				$(XSM.vendor.order_count).html(XBS.data.vendor.pending_orders.length);
+				$(XSM.vendor.back_splash).addClass(XSM.effects.fade_out);
 				setTimeout(function() {
-					$("#back-splash").hide();
+					$(XSM.vendor.back_splash).hide();
 					setTimeout(function() {
 						var now = new Date().getTime();
 						if (now - XBS.data.vendor.last_tone_play > 10000) {
-							var audio = new Audio('files/new_order_tone.mp3');
+							var audio = new Audio(XSM.vendor.new_order_tone);
 							audio.play();
 							XBS.data.last_tone_play = now;
 						}
-						$("#pending-orders-list").removeClass(XSM.effects.slide_right);
-						$("#next-order").removeClass(XSM.effects.slide_up);
+						$(XSM.vendor.pending_orders_list).removeClass(XSM.effects.slide_right);
+						$(XSM.vendor.next_order).removeClass(XSM.effects.slide_up);
 					}, 30);
 				}, 300);
 			}
@@ -1956,15 +1981,15 @@ window.XBS = {
 		}
 	},
 	fn: {
-		execInitSequence: function (init_list) {
+		exec_init_sequence: function (init_list) {
 			var meta_sit_rep = {state: true, report: {}};
-			for (init_ob_name in init_list) {
+			for (var init_ob_name in init_list) {
 				meta_sit_rep.report[init_ob_name] = {};
 				var init_ob = init_list[init_ob_name];
 				if (!exists(init_ob.has_init_sequence)) {
-					throw new TypeError("Object passed to XBS.fn.execInitSequence() does not contain 'has_init_sequence' property.");
+					throw new TypeError("Object passed to XBS.fn.exec_init_sequence() does not contain 'has_init_sequence' property.");
 				}
-				for (fn in init_ob) {
+				for (var fn in init_ob) {
 					if (fn != "has_init_sequence") {
 						meta_sit_rep.report[init_ob_name][fn] = init_ob[fn]();
 						if (meta_sit_rep.report[init_ob_name][fn] !== true) meta_sit_rep.state = false;
@@ -1973,16 +1998,16 @@ window.XBS = {
 			}
 			return meta_sit_rep;
 		},
-		route: function (controller, action) {
-			if (controller in XBS.routes) {
-				if (action in XBS.routes[controller]) {
-					var url = XBS.routes[controller][action] + C.DS + orb_card_id
-					if (XBS.cfg.root.length != 0) url = C.DS + XBS.cfg.root + C.DS + url
-					return url;
-				}
-			}
-			return false;
-		},
+//		route: function (controller, action) {
+//			if (controller in XBS.routes) {
+//				if (action in XBS.routes[controller]) {
+//					var url = XBS.routes[controller][action] + C.DS + orb_card_id
+//					if (XBS.cfg.root.length != 0) url = C.DS + XBS.cfg.root + C.DS + url
+//					return url;
+//				}
+//			}
+//			return false;
+//		},
 
 		/**
 		 * setHost method
@@ -1998,27 +2023,6 @@ window.XBS = {
 				XBS.cfg.root = XBS.data.host_root_dirs[host];
 			}
 			return true;
-		},
-
-		/**
-		 * sleep method
-		 *
-		 * @period {integer} duration (ms) for which program should wait
-		 * @wakeEvent {mixed} Either an event object or a string name of standard event
-		 * @onWake {function} Function to be executed after sleep period has elapsed
-		 * @target {mixed} CSS selector string or DOM element to be target of wakeEvent
-		 * @returns {boolean}
-		 */
-		sleep: function (period, wakeEvent, onWake, target) {
-			if (wakeEvent == C.UNDEF) wakeEvent = XBS.evnt.wakeFromSleep;
-			if (isFunction(onWake)) {
-				// confirmed code reaches these lines and all vars are as expected
-				if (target == C.UNDEF) target = window;
-				$(target).on(wakeEvent.type, onWake);
-			}
-			setTimeout(function () {$(target).trigger(wakeEvent) }, period);
-
-			return target;
 		}
 	}
 };
