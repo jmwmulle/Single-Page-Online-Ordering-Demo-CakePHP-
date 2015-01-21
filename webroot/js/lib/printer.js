@@ -2,19 +2,20 @@
  * Created by jono on 1/20/15.
  */
 function accept_order (order) {
-	p = ""
-        p+=order.address+'\n';
-	p+='Delivery Instructions: '+order.delivery_instructions+'\n';
-	p+='Time Ordered: '+order.time+'\n';
-	p+='Total: $'+order.price+'\n';
-	p+='Ordered for: '+order.order_method+'\n';
-	p+='Paying with: '+order.payment_method+'\n';
+
+	var p = ""
+    p += order.address + '\n';
+	p += 'Delivery Instructions: '+ order.delivery_instructions + '\n';
+	p += 'Time Ordered: '+ order.time + '\n';
+	p += 'Total: $' + order.price + '\n';
+	p += 'Ordered for: ' + order.order_method + '\n';
+	p += 'Paying with: ' + order.payment_method + '\n';
 	if (order.paid) {
-		p+='Paid: Yes\n';
+		p += 'Paid: Yes\n';
 	} else {
-		p+='Paid: No\n';
+		p += 'Paid: No\n';
 	}
-	p+=print_items(order.food);
+	p += print_items(order.food);
         print_simple(p);
         cut(true);
 }
@@ -43,20 +44,21 @@ function cut(feed) {
 
 function print_items(items) {
 	var ret = "";
-        for (var name in items) {
-		ret+=print_item(name, items[name]);
+    for (var name in items) {
+		ret += print_item(name, items[name]);
 	}
         return ret;
 }
 
 function print_item(name, item) {
 	var ret = "";
-        ret+=item.quantity+'x '+name+'\n';
-	ret+='$'+item.price+'\n';
-	for (var topping in toppings) {
-		ret+='\t' + topping.title + ' ' + topping.weight +'\n';
+	ret += item.quantity+'x '+name+'\n';
+	ret += '$'+item.price+'\n';
+	for (var topping in item.toppings) {
+		topping = item.toppings[topping];
+		ret += '\t' + topping.title + ' ' + topping.weight +'\n';
 	}
-	ret+=item.instructions+'\n';
-        return ret;
+	ret += item.instructions + '\n';
+	return ret;
 }
 
