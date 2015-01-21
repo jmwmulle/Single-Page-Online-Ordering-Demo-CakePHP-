@@ -1,17 +1,4 @@
 <?php
-/**
- * J. Mulle, for app, 1/18/15 7:35 PM
- * www.introspectacle.net
- * Email: this.impetus@gmail.com
- * Twitter: @thisimpetus
- * About.me: about.me/thisimpetus
- */
-	$r = 70;
-	$d = 2 * $r;
-	$vb = $d + 1;
-	$c = $r + 1;
-?>
-<?php
 	echo $this->Element('modal_masthead', array('header' => 'Order Confirmation',
 	                                            'subheader' => 'Contacting a real person... might take a minute!'));?>
 <div id="order-confirmation-spinner" class="row">

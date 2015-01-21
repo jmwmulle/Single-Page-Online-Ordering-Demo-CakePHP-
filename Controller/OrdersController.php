@@ -608,22 +608,15 @@
 			}
 		}
 
-		public function get_status($id) {
+		public function get_status($id, $first_call=false) {
 			if ( $this->request->is( 'ajax' ) || true ) {
 				$this->layout = 'ajax';
-				$conditions   = array( 'conditions' => array( 'Order.id' => $id ) );
-				if ( $this->Order->find( 'first', $conditions ) ) {
-					$this->set( 'response', array( 'success' => true, 'status' => $this->Order->state,
-					                               'error'   => null )
-					);
-				}
-				else {
-					$this->set( 'response', array( 'success' => false, 'status' => null,
-					                               'error'   => 'Order not found.' )
-					);
-				}
-
-				return $this->render();
+				$order = $this->Order->findById($id);
+				$response = array('success', 'status' ,'error');
+				$r = !empty($order) ? array(true, $order['Order']['state'], false) : array(false, null, "Order not found.");
+				$response = array_combine($response, $r);
+				$this->set(compact('response'));
+				return  $first_call ? $this->render('get_status') : $this->render('get_status_update');
 			}
 			$this->redirect( "/menu" );
 		}

@@ -613,7 +613,7 @@ window.XBS = {
 				pending_order: new XtremeRoute("pending_order", {
 					params:{
 						order_id: {value:null, url_fragment:true},
-						status: {value:null, url_fragment:false}
+						status: {value:null, url_fragment:true}
 					},
 					modal: XSM.modal.primary,
 					url: {url:"order-confirmation", defer: true, type: C.POST},
@@ -621,31 +621,25 @@ window.XBS = {
 						params_set: function() {
 							switch (this.read('status') ) {
 								case "launching":
+									this.params.status = {value:true, url_fragment:true, post_init:false};
 									this.url.defer = false;
 									var request = {
 										request: "pending_order"+ C.DS + this.read('order_id') + C.DS + C.PENDING,
 										trigger: this.trigger
 									};
+
 									this.set_callback("launch", function() {
 										setTimeout(function() {
 											$(XBS.routing).trigger(C.ROUTE_REQUEST, request);
 										}, 3000);
 									});
 									break;
-
 							}
 						},
 						launch: function() {
-							switch (this.deferal_data.status) {
-								case C.PENDING:
-									var request = {
-										request: "pending_order"+ C.DS + this.read('order_id') + C.DS + C.PENDING,
-										trigger: this.trigger
-									};
-									setTimeout(function() {
-										$(XBS.routing).trigger(C.ROUTE_REQUEST, request);
-									}, 3000);
-									break;
+							pr(this.deferal_data);
+							var status = Number(this.deferal_data.status);
+							switch ( status ) {
 								case C.REJECTED:
 									break;
 								case C.ACCEPTED:
@@ -654,6 +648,15 @@ window.XBS = {
 										$("#load-dot-box").hide();
 
 									}, 300);
+									break;
+								default:
+									var request = {
+										request: "pending_order"+ C.DS + this.read('order_id') + C.DS + C.PENDING,
+										trigger: this.trigger
+									};
+									setTimeout(function() {
+										$(XBS.routing).trigger(C.ROUTE_REQUEST, request);
+									}, 3000);
 									break;
 
 							}
