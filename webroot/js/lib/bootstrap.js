@@ -11,7 +11,7 @@ window.XBS = {
 		vendor: {
 			is_vendor_page: false,
 			last_tone_play: -100000,
-			last_check: false,
+			last_check: 0,
 			current_order_id: null,
 			pending_orders: {}
 		},
@@ -639,7 +639,7 @@ window.XBS = {
 						},
 						launch: function() {
 							var data = $.parseJSON(this.deferal_data);
-							pr(data);
+
 							switch ( Number(data.status) ) {
 								case C.REJECTED:
 									break;
@@ -787,20 +787,25 @@ window.XBS = {
 					url:{url:"pending", type: C.GET, defer:true},
 					callbacks: {
 						params_set: function() {
+							if (!XBS.data.vendor.last_check) XBS.data.vendor.last_check = new Date().getTime();
+							var since_last_check = new Date().getTime() -  XBS.data.vendor.last_check;
+							if (since_last_check < 3000) {
+								this.unset('url');
+								this.set_callback("launch", function() {
+									setTimeout(function() {
+										$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "get_pending", trigger:{}});
+									}, 250);
+								});
+							}
 						},
 						launch: function() {
+							XBS.data.vendor.last_check = new Date().getTime();
+							pr(this.deferal_data);
 							var data = $.parseJSON(this.deferal_data);
-							if (!data.error && data.orders.length > 0) {
-								for (var ord in data.orders) {
-									if ( !(data.orders[ord].id in XBS.data.vendor.pending_orders) ) {
-										XBS.data.vendor.pending_orders[data.orders[ord].id] = data.orders[ord];
-									}
-								}
-								XBS.vendor.post_orders();
-							}
-							if ((new Date().getTime() -  XBS.data.vendor.last_check) > 3000) {
+							if (!data.error && data.orders.length > 0) XBS.vendor.post_orders(data.orders);
+							setTimeout(function() {
 								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "get_pending", trigger:{}});
-							}
+							}, 250);
 						}
 					}
 
@@ -842,12 +847,17 @@ window.XBS = {
 									this.set_callback("launch", function() {
 										XBS.data.vendor.last_check = new Date().getTime();
 										var data = $.parseJSON(this.deferal_data);
-										if (data.success) XBS.data.vendor.current_order_id = null;
+										if (data.success) {
+											window.accept_order(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
+											delete(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
+											XBS.data.vendor.current_order_id = null;
+										}
 										if (obj_len(XBS.data.vendor.pending_orders) == 0 && data.success) {
 											$(XSM.vendor.next_order).addClass(XSM.effects.slide_up);
 											$(XSM.vendor.back_splash).show();
 											setTimeout( function() {
 												$(XSM.vendor.back_splash).removeClass(XSM.effects.fade_out);
+												$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "get_pending", trigger:{}});
 											}, 300);
 										} else {
 											XBS.vendor.post_orders();
@@ -1958,7 +1968,12 @@ window.XBS = {
 	},
 	vendor: {
 		init: function() {},
-		post_orders: function() {
+		post_orders: function(orders) {
+			for (var ord in orders) {
+				if ( !(orders[ord].id in XBS.data.vendor.pending_orders) ) {
+					XBS.data.vendor.pending_orders[orders[ord].id] = orders[ord];
+				}
+			}
 			var order_content = $.parseHTML(
 				"<div id='order-content-detail' class='row fade-out'>" +
 					"<div id='labels' class='small-3 columns'>" +
