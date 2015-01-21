@@ -622,7 +622,7 @@
 		}
 
 		public function set_status($id, $status) {
-			if ( $this->request->is( 'ajax' ) || true ) {
+			if ( $this->request->is( 'ajax' )) {
 				$order    = $this->Order->findById( $id );
 				$response = array( 'success', 'error' );
 				if ( $order ) {
