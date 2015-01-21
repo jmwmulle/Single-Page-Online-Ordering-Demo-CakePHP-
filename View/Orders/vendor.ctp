@@ -61,6 +61,23 @@
 
 </main>
 <script>
+function accept_order (order) {
+	print_simple(order.address);
+	print_simple('Delivery Instructions: '+order.delivery_instructions+'\n');
+	print_simple('Time Ordered: '+order.time+'\n');
+	print_simple('Total: $'+order.price+'\n');
+	print_simple('Ordered for: '+order.order_method+'\n');
+	print_simple('Paying with: '+order.payment_method+'\n');
+	if (order.paid) {
+		print_simple('Paid: Yes\n');
+	} else {
+		print_simple('Paid: No\n'
+	}
+	print_items(order.food);
+
+			
+}
+
 //String message, String title
 function show_dialog(message, title) {
 	Android.showDialog(message, title);
@@ -74,27 +91,28 @@ function print_simple(text) {
 	print_text(text, 1, 'left', 1, 1, 1, 1, false, false);
 }
 
+function print_title(text) {
+	print_text(text, 1, 'left', 1, 2, 2, 1, true, false);
+}
+
 //boolean feed
 function cut(feed) {
 	Android.cut(feed);
 }
 
-function print_address(name, address1, address2, postal_code) {
-	print_simple(name+'\n');
-	print_simple(address1+'\n');
-	print_simple(address2+'\n');
-	print_simple(postal_code+'\n\n');
+function print_items(items) {
+	for (var name in items) {
+		print_item(name, items[name]);
+	}
 }
 
-function print_item(name, price, quantity, toppings, instructions) {
-	print_simple(quantity+'x '+name+'\n');
-	print_simple('$'+price+'\n');
-	print_simple(instructions+'\n');
-}
-
-function print_contact_info(phone, email) {
-	print_simple('E-Mail: '+email+'\n');
-	print_simple('Phone #: '+phone+'\n');
+function print_item(name, item) {
+	print_simple(item.quantity+'x '+name+'\n');
+	print_simple('$'+item.price+'\n');
+	for (var topping in toppings) {
+		print_simple('\t'+topping.title+' '+topping.weight+'\n');
+	}
+	print_simple(item.instructions+'\n');
 }
 
 var cart = {};
