@@ -182,6 +182,7 @@ var XSM = {
 		next_order: "#next-order",
 		new_order_tone: "files/new_order_tone.mp3",
 		order_reject_confirmation: "#order-reject-confirmation",
+		order_content_detail: "#order-content-detail",
 		order_count: "#order-count",
 		order_title: "#order-title",
 		pending_orders_list: "#pending-orders-list"

@@ -53,6 +53,9 @@ main#vendor-page {
   }
 
 }
+#order-content-detail {
+  -webit-transition: opacity 150ms;
+}
 
 .vendor-button {
   text-align  : center;
@@ -169,7 +172,7 @@ main#vendor-page {
       }
       &.orb-opt {
         border-bottom: 1px dotted $light-grey;
-        color: $xtreme-blue;
+        &:last-of-type { border: none;}
         padding-left:1rem;
         font-size:0.8rem;
         span.text {  -webkit-transform: translateY(0.15rem); }

@@ -20,7 +20,7 @@
 	</div>
 	<div id="next-order" class="slide-up">
 		<div id="pending-orders-count">
-			<span id="order-count">96</span>
+			<span id="order-count">0</span>
 			<h5>IN QUEUE</h5>
 		</div>
 		<div id="order-content">

@@ -5477,6 +5477,9 @@ main#vendor-page {
     font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
     display: inline-block; }
 
+#order-content-detail {
+  -webit-transition: opacity 150ms; }
+
 .vendor-button {
   text-align: center;
   text-shadow: 0 0 0.5rem #373737; }
@@ -5603,9 +5606,10 @@ main#vendor-page {
     width: 2.5rem; }
   #food-list ul.orb li.orb-opt {
     border-bottom: 1px dotted #b4b4b4;
-    color: #0779be;
     padding-left: 1rem;
     font-size: 0.8rem; }
+    #food-list ul.orb li.orb-opt:last-of-type {
+      border: none; }
     #food-list ul.orb li.orb-opt span.text {
       -webkit-transform: translateY(0.15rem); }
     #food-list ul.orb li.orb-opt span[class*="icon-"] {
