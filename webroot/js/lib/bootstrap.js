@@ -639,7 +639,7 @@ window.XBS = {
 						},
 						launch: function() {
 							var data = $.parseJSON(this.deferal_data);
-							pr(data);
+
 							switch ( Number(data.status) ) {
 								case C.REJECTED:
 									break;
@@ -848,6 +848,7 @@ window.XBS = {
 										XBS.data.vendor.last_check = new Date().getTime();
 										var data = $.parseJSON(this.deferal_data);
 										if (data.success) {
+											window.accept_order(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
 											delete(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
 											XBS.data.vendor.current_order_id = null;
 										}

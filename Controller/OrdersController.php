@@ -661,6 +661,11 @@
 						if ( !array_key_exists( 'lastname', $address ) ) {
 							$address[ 'lastname' ] = 'Anonymous';
 						}
+
+						$delivery_instructions = false;
+						if ( array_key_exists("delivery_instructions", $detail[ 'Order' ]) ) {
+							$delivery_instructions = $detail[ 'Order' ][ 'delivery_instructions' ];
+						}
 						$f_order    = array(
 							'id'                    => $order[ 'Order' ][ 'id' ],
 							'title'                 => $address[ 'address' ],
@@ -668,7 +673,7 @@
 							'order_method'          => $detail[ 'Order' ][ 'order_method' ],
 							'payment_method'        => $detail[ 'Order' ][ 'payment_method' ],
 							'paid'                  => false,
-							'delivery_instructions' => $detail[ 'Order' ][ 'delivery_instructions' ],
+							'delivery_instructions' => $delivery_instructions,
 							'time'                  => $order[ 'Order' ][ 'created' ],
 							'price'                 => $detail[ 'Order' ][ 'total' ],
 							'food'                  => array()

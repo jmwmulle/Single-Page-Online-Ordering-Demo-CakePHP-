@@ -71,7 +71,7 @@ function accept_order (order) {
 	if (order.paid) {
 		print_simple('Paid: Yes\n');
 	} else {
-		print_simple('Paid: No\n'
+		print_simple('Paid: No\n');
 	}
 	print_items(order.food);
 
@@ -83,7 +83,7 @@ function show_dialog(message, title) {
 	Android.showDialog(message, title);
 }
 //String text, int font_id, String alignment, int line_space, int size_w, int size_h, int x_pos, boolean bold, boolean underline
-function print_text(text, font_id, alignment, line_space, size_w, size_h, x_pos, bold, underline){
+function print_text(text, font_id, alignment, line_space, size_w, size_h, x_pos, bold, underline) {
 	Android.printText(text, font_id, alignment, line_space, size_w, size_h, x_pos, bold, underline);
 }
 
@@ -110,7 +110,7 @@ function print_item(name, item) {
 	print_simple(item.quantity+'x '+name+'\n');
 	print_simple('$'+item.price+'\n');
 	for (var topping in toppings) {
-		print_simple('\t'+topping.title+' '+topping.weight+'\n');
+		print_simple('\t' + topping.title + ' ' + topping.weight +'\n');
 	}
 	print_simple(item.instructions+'\n');
 }
