@@ -29,7 +29,8 @@ main#vendor-page {
   @include primary-modal-bg;
   color         : $text-grey;
   padding       : $base-padding $tight-padding;
-  height        : rem-calc(300px);
+  height        : rem-calc(500px);
+
   h1, h2, h3, h4, h5, p, span, ul, li {
     background-color : transparent;
     color            : $text-grey !important;
@@ -68,9 +69,9 @@ main#vendor-page {
 }
 
 #order-accept-button {
-  height      : rem-calc(400px);
+  height      : rem-calc(200px);
   font-size   : rem-calc(128px);
-  line-height : rem-calc(450px);
+  line-height : rem-calc(225px);
   background  : rgb(191, 210, 85); /* Old browsers */
   background  : -moz-linear-gradient(top, rgba(191, 210, 85, 1) 0%, rgba(142, 185, 42, 1) 50%, rgba(114, 170, 0, 1) 51%, rgba(158, 203, 45, 1) 100%); /* FF3.6+ */
   background  : -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(191, 210, 85, 1)), color-stop(50%, rgba(142, 185, 42, 1)), color-stop(51%, rgba(114, 170, 0, 1)), color-stop(100%, rgba(158, 203, 45, 1))); /* Chrome,Safari4+ */

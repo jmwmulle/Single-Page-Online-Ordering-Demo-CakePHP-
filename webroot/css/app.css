@@ -5458,7 +5458,7 @@ main#vendor-page {
   /* IE6-9 fallback on horizontal gradient */
   color: #373737;
   padding: 0.9375rem 0.3125rem;
-  height: 18.75rem; }
+  height: 31.25rem; }
   #order-content h1, #order-content h2, #order-content h3, #order-content h4, #order-content h5, #order-content p, #order-content span, #order-content ul, #order-content li {
     background-color: transparent;
     color: #373737 !important; }
@@ -5495,9 +5495,9 @@ main#vendor-page {
     text-shadow: 0 0 0.5rem #373737; } }
 
 #order-accept-button {
-  height: 25rem;
+  height: 12.5rem;
   font-size: 8rem;
-  line-height: 28.125rem;
+  line-height: 14.0625rem;
   background: #bfd255;
   /* Old browsers */
   background: -moz-linear-gradient(top, #bfd255 0%, #8eb92a 50%, #72aa00 51%, #9ecb2d 100%);

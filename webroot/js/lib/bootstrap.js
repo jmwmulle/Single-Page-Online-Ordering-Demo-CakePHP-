@@ -850,6 +850,7 @@ window.XBS = {
 										defer:true
 									};
 									this.set_callback("launch", function() {
+										pr(this.deferal_data);
 										XBS.data.vendor.last_check = new Date().getTime();
 										var data = $.parseJSON(this.deferal_data);
 										if (data.success) {
