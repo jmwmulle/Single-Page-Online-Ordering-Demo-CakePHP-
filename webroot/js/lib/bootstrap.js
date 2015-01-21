@@ -11,8 +11,9 @@ window.XBS = {
 		vendor: {
 			is_vendor_page: false,
 			last_tone_play: -100000,
+			last_check: false,
 			current_order_id: null,
-			pending_orders: []
+			pending_orders: {}
 		},
 		host_root_dirs: {
 			xDev: "",
@@ -637,16 +638,15 @@ window.XBS = {
 							}
 						},
 						launch: function() {
-							pr(this.deferal_data);
-							var status = Number(this.deferal_data.status);
-							switch ( status ) {
+							var data = $.parseJSON(this.deferal_data);
+							pr(data);
+							switch ( Number(data.status) ) {
 								case C.REJECTED:
 									break;
 								case C.ACCEPTED:
 									$("#load-dot-box").addClass(XSM.effects.fade_out);
 									setTimeout(function() {
 										$("#load-dot-box").hide();
-
 									}, 300);
 									break;
 								default:
@@ -792,15 +792,15 @@ window.XBS = {
 							var data = $.parseJSON(this.deferal_data);
 							if (!data.error && data.orders.length > 0) {
 								for (var ord in data.orders) {
-									if (!in_array(ord, XBS.data.vendor.pending_orders) ) {
-										XBS.data.vendor.pending_orders.push( data.orders[ord] );
+									if ( !(data.orders[ord].id in XBS.data.vendor.pending_orders) ) {
+										XBS.data.vendor.pending_orders[data.orders[ord].id] = data.orders[ord];
 									}
 								}
 								XBS.vendor.post_orders();
 							}
-							setTimeout(function() {
+							if ((new Date().getTime() -  XBS.data.vendor.last_check) > 3000) {
 								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "get_pending", trigger:{}});
-							}, 3000);
+							}
 						}
 					}
 
@@ -833,20 +833,25 @@ window.XBS = {
 									}
 								break;
 								case "accept":
+									XBS.data.vendor.last_check = -100000;
 									this.url = {
 										url:"vendor-accept" + C.DS + XBS.data.vendor.current_order_id + C.DS + C.ACCEPTED,
 										type: C.POST,
 										defer:true
 									};
 									this.set_callback("launch", function() {
-										pr(this.deferal_data);
+										XBS.data.vendor.last_check = new Date().getTime();
 										var data = $.parseJSON(this.deferal_data);
-										// todo: make sure the accept worked;
-										$(XSM.vendor.next_order).addClass(XSM.effects.slide_up);
-										$(XSM.vendor.back_splash).show();
-										setTimeout( function() {
-											$(XSM.vendor.back_splash).removeClass(XSM.effects.fade_out);
-										}, 300);
+										if (data.success) XBS.data.vendor.current_order_id = null;
+										if (obj_len(XBS.data.vendor.pending_orders) == 0 && data.success) {
+											$(XSM.vendor.next_order).addClass(XSM.effects.slide_up);
+											$(XSM.vendor.back_splash).show();
+											setTimeout( function() {
+												$(XSM.vendor.back_splash).removeClass(XSM.effects.fade_out);
+											}, 300);
+										} else {
+											XBS.vendor.post_orders();
+										}
 									});
 							}
 						}
@@ -1954,34 +1959,66 @@ window.XBS = {
 	vendor: {
 		init: function() {},
 		post_orders: function() {
-			if ( $(XSM.vendor.next_order).hasClass(XSM.effects.slide_up) ) {
-				pr(XBS.data.vendor);
-				var order = XBS.data.vendor.pending_orders.shift();
-				XBS.data.vendor.current_order_id = order.id;
-				$(XSM.vendor.order_title).html(order.title);
-				$(XSM.vendor.customer_name).html(order.customer);
+			var order_content = $.parseHTML(
+				"<div id='order-content-detail' class='row fade-out'>" +
+					"<div id='labels' class='small-3 columns'>" +
+						"<span id='title' class='label'>ADDRESS:</span>" +
+						"<span id='customer' class='label'>CUSTOMER:</span>" +
+						"<span id='food' class='label'>ORDER:</span>" +
+					"</div>"+
+					"<div id='values' class='small-9 columns'>" +
+						"<span id='customer-name' class='value'></span>" +
+						"<span id='order-title' class='value'></span>"+
+						"<ul id='food-list' class='value'></ul>"+
+					"</div></div>"
+			);
+			var current_displayed_count = $(XSM.vendor.order_count).html()
+			if (current_displayed_count != obj_len(XBS.data.vendor.pending_orders)) {
+				$(XSM.vendor.order_count).addClass(XSM.effects.fade_out);
+				setTimeout(function() {
+					$(XSM.vendor.order_count).html(obj_len(XBS.data.vendor.pending_orders));
+					setTimeout(function() {
+						$(XSM.vendor.order_count).removeClass(XSM.effects.fade_out);
+					}, 30);
+				}, 150);
+			}
 
+			if ( obj_len(XBS.data.vendor.pending_orders) > 0 ) {
+				var order = XBS.data.vendor.pending_orders[Object.keys(XBS.data.vendor.pending_orders)[0]];
+				if ( XBS.data.vendor.current_order_id ) return
+				XBS.data.vendor.current_order_id = order.id;
 				var food = "";
 				for (var i in order.food) food += XSM.generated.vendor_orb_desc(i, order.food[i]);
-
-				$(XSM.vendor.food_list).html(food);
-				$(XSM.vendor.order_count).html(XBS.data.vendor.pending_orders.length);
-				$(XSM.vendor.back_splash).addClass(XSM.effects.fade_out);
-				setTimeout(function() {
-					$(XSM.vendor.back_splash).hide();
+				$($(order_content).find(XSM.vendor.order_title)[0]).html(order.title);
+				$($(order_content).find(XSM.vendor.customer_name)[0]).html(order.customer);
+				$($(order_content).find(XSM.vendor.food_list)[0]).html(food);
+				if ( $(XSM.vendor.next_order).hasClass(XSM.effects.slide_up) ) {
+					$(XSM.vendor.order_content_detail).replaceWith(order_content)
+					$(XSM.vendor.order_content_detail).removeClass(XSM.effects.fade_out);
+					$(XSM.vendor.back_splash).addClass(XSM.effects.fade_out);
 					setTimeout(function() {
-						var now = new Date().getTime();
-						if (now - XBS.data.vendor.last_tone_play > 10000) {
-//							var audio = new Audio(XSM.vendor.new_order_tone);
-//							audio.play();
-							XBS.data.last_tone_play = now;
-						}
-						$(XSM.vendor.pending_orders_list).removeClass(XSM.effects.slide_right);
-						$(XSM.vendor.next_order).removeClass(XSM.effects.slide_up);
-					}, 30);
-				}, 300);
+						$(XSM.vendor.back_splash).hide();
+						setTimeout(function() {
+							var now = new Date().getTime();
+							if (now - XBS.data.vendor.last_tone_play > 10000) {
+								var audio = new Audio(XSM.vendor.new_order_tone);
+								audio.play();
+								XBS.data.last_tone_play = now;
+							}
+							$(XSM.vendor.next_order).removeClass(XSM.effects.slide_up);
+						}, 30);
+					}, 300);
+				} else {
+					$(XSM.vendor.order_content_detail).addClass(XSM.effects.fade_out);
+					setTimeout(function() {
+						$(XSM.vendor.order_content_detail).replaceWith(order_content);
+						setTimeout(function() {
+							$(XSM.vendor.order_content_detail).removeClass(XSM.effects.fade_out);
+						},30);
+					}, 300)
+				}
 			}
-			return true;
+			return
 		}
 	},
 	fn: {

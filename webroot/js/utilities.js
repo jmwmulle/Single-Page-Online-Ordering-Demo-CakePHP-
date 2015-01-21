@@ -531,7 +531,7 @@ $.fn.scrollTo = function (target, options, callback) {
 	});
 
 
-	function obLen(object) {
+	function obj_len(object) {
 		var size = 0, key;
 		for (key in object) {
 			if (object.hasOwnProperty(key)) size++;
