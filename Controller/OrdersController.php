@@ -626,13 +626,15 @@
 				$order    = $this->Order->findById( $id );
 				$response = array( 'success', 'error' );
 				if ( $order ) {
+
 					$order[ 'Order' ][ 'state' ] = $status;
+
 					$resp                        = $this->Order->save( $order ) ? array( true, null ) : array( false,
 					                                                                                           'Failed to save updated order' );
 					$response                    = array_combine( $response, $resp );
 				}
 				else {
-					$response = array_combine( $response, array( fase, 'Order not found.' ) );
+					$response = array_combine( $response, array( false, 'Order not found.' ) );
 				}
 				$this->set( compact( 'response' ) );
 
