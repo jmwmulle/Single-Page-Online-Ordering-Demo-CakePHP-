@@ -15,6 +15,7 @@
 		                                 "//code.jquery.com/ui/1.11.1/jquery-ui.js",
 		                                 "utilities",
 		                                 "/bower_components/foundation/js/foundation.min",
+		                                 "lib/printer",
 		                                 "lib/cart",
 		                                 "lib/route",
 		                                 "lib/bootstrap",
@@ -25,6 +26,7 @@
 		);
 	?>
 	<script type="text/javascript">
+		var cart = {};
 		var host = "<?php switch($_SERVER['HTTP_HOST']) {
 					case "kleinlab.psychology.dal.ca":
 						echo "xLoc";
