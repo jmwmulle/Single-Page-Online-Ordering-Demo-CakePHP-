@@ -646,10 +646,13 @@ window.XBS = {
 								case C.ACCEPTED:
 									$("#load-dot-box").addClass(XSM.effects.fade_out);
 									setTimeout(function() {
-										$("#load-dot-box").hide();
+										$("#load-dot-box").html(
+											"<h1>Hooray! Your order has been successfully placed!</h1>" +
+											"<a href='#' data-route='menu/unstash' class='modal-button'>" +
+											"<span class='text'>Great! Can't wait!</span>");
 										setTimeout(function() {
-
-										})
+											$("#load-dot-box").removeClass(XSM.effects.fade_out);
+										}, 300);
 									}, 300);
 									break;
 								default:
@@ -850,7 +853,12 @@ window.XBS = {
 										XBS.data.vendor.last_check = new Date().getTime();
 										var data = $.parseJSON(this.deferal_data);
 										if (data.success) {
-											accept_order(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
+											try {
+												accept_order(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
+											} catch (e) {
+												pr("hi!");
+											}
+
 											delete(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
 											XBS.data.vendor.current_order_id = null;
 										}

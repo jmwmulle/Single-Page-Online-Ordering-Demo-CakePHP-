@@ -39,6 +39,7 @@
 					}?>";
 		var is_splash = <?php echo ($this->get("is_splash")) ? 'true' : 'false';?>;
 		var page_name = "<?php echo ($this->get("page_name")) ? $this->get("page_name") : "default"; ?>";
+		var cart ={};
 	</script>
 </head>
 
