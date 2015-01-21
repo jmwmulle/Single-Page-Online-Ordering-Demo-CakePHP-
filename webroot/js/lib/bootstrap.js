@@ -836,6 +836,7 @@ window.XBS = {
 										defer:true
 									};
 									this.set_callback("launch", function() {
+										pr(this.deferal_data);
 										var data = $.parseJSON(this.deferal_data);
 										// todo: make sure the accept worked;
 										$(XSM.vendor.next_order).addClass(XSM.effects.slide_up);

@@ -41,8 +41,8 @@
 								 and load it up!
 							</span>
 					<?php } else {?>
-						<h3 class="inline"> <?php echo $user['firstname']; ?></h3>
-						<h3 class="inline"> <?php echo $user['lastname']; ?></h3>
+						<h3 class="inline"> <?php if (array_key_exists('firstname', $user) ) echo $user['firstname']; ?></h3>
+						<h3 class="inline"> <?php if (array_key_exists('lastname', $user) ) echo $user['lastname']; ?></h3>
 					<?php } ?>
 					</div>
 					<div class="large-2 columns modal-header">

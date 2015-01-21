@@ -71,7 +71,7 @@
 		public function add_to_cart() {
 			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = "ajax";
-				$response = array( "order", "success", "cart_total");
+				$response     = array( "order", "success", "cart_total" );
 				if ( $this->request->is( 'post' ) ) {
 					$products = array();
 
@@ -90,17 +90,18 @@
 					}
 					$this->Cart->update();
 					if ( !empty( $products ) ) {
-						$total = $this->Session->check( 'Cart.Order.total' ) ? $this->Session->read( 'Cart.Order.total' ) : null;
-						$response = array_combine($response, array( array( "Orbs" => $products ), true, $total));
+						$total    = $this->Session->check( 'Cart.Order.total' ) ? $this->Session->read( 'Cart.Order.total' ) : null;
+						$response = array_combine( $response, array( array( "Orbs" => $products ), true, $total ) );
 					}
 					else {
-						$response = array_combine($response, array(array(), false, null));
+						$response = array_combine( $response, array( array(), false, null ) );
 					}
 				}
-				$this->set(compact('response'));
+				$this->set( compact( 'response' ) );
 				$this->render();
-			} else {
-				$this->redirect("/menu");
+			}
+			else {
+				$this->redirect( "/menu" );
 			}
 		}
 
@@ -608,93 +609,100 @@
 		}
 
 		public function get_status($id) {
-			if ($this->request->is('ajax') || true) {
+			if ( $this->request->is( 'ajax' ) || true ) {
 				$this->layout = 'ajax';
-				$conditions = array('conditions' => array('Order.id' => $id));
-				if ($this->Order->find('first', $conditions)) {
-					$this->set('response', array('success'=>true, 'status'=>$this->Order->state, 'error'=>Null));
-				} else {
-					$this->set('response', array('success'=>false, 'status'=>Null, 'error'=>'Order not found.'));
+				$conditions   = array( 'conditions' => array( 'Order.id' => $id ) );
+				if ( $this->Order->find( 'first', $conditions ) ) {
+					$this->set( 'response', array( 'success' => true, 'status' => $this->Order->state,
+					                               'error'   => null )
+					);
 				}
+				else {
+					$this->set( 'response', array( 'success' => false, 'status' => null,
+					                               'error'   => 'Order not found.' )
+					);
+				}
+
 				return $this->render();
 			}
 			$this->redirect( "/menu" );
 		}
 
 		public function set_status($id, $status) {
-			if ( $this->request->is( 'ajax' || true ) ) {
-				$conditions = array( 'conditions' => array( 'Order.id' => $id ) );
-				$tmp = $this->Order->find( 'first', $conditions );
-				if ($tmp) {
-					$tmp['Order']['state'] = $status;
-					if ( $this->Order->save($tmp) ) {
-						$this->set( 'response', array( 'success' => true, 'error' => null ) );
-						$this->render();
-					}
-					else {
-						$this->set( 'response', array( 'success' => false,
-						                               'error'   => 'Failed to save updated order.' )
-								       );
-						$this->render();
-					}
+			if ( $this->request->is( 'ajax' ) || true ) {
+				$order    = $this->Order->findById( $id );
+				$response = array( 'success', 'error' );
+				if ( $order ) {
+					$order[ 'Order' ][ 'state' ] = $status;
+					$resp                        = $this->Order->save( $order ) ? array( true, null ) : array( false,
+					                                                                                           'Failed to save updated order' );
+					$response                    = array_combine( $response, $resp );
 				}
 				else {
-					$this->set( 'response', array( 'success' => false, 'error' => 'Order not found.' ) );
-					$this->render();
+					$response = array_combine( $response, array( fase, 'Order not found.' ) );
 				}
+				$this->set( compact( 'response' ) );
+
+				return $this->render();
 			}
-			$this->redirect("/menu");
+			else {
+				$this->redirect( "/menu" );
+			}
 		}
 
 		public function get_pending() {
 			if ( $this->request->is( 'ajax' ) || true ) {
 				$this->layout = "ajax";
-				$conditions = array( 'conditions' => array( 'Order.state' => ORDER_PENDING ), 'recursive' => -1 );
-				$orders = $this->Order->find( 'all', $conditions );
-				$response = null;
-				$f_orders = array();
+				$conditions   = array( 'conditions' => array( 'Order.state' => ORDER_PENDING ), 'recursive' => -1 );
+				$orders       = $this->Order->find( 'all', $conditions );
+				$response     = null;
+				$f_orders     = array();
 				//	db($orders);
 				try {
-					foreach ($orders as $order) {
-						$detail = json_decode($order['Order']['detail'], true);
-						$address = $detail['Order']['address'];
-						if (!array_key_exists('firstname', $address) ) $address['firstname'] = 'Anonymous';
-						if (!array_key_exists('lastname', $address) ) $address['lastname'] = 'Anonymous';
-						$f_order = array(
-							'id' => $order['Order']['id'],
-							'title' => $address['address'],
-						    'customer' => sprintf("%s %s", $address['firstname'], $address['lastname']),
-						    'order_method' => $detail['Order']['order_method'],
-						    'payment_method' => $detail['Order']['payment_method'],
-						    'paid' => false,
-						    'delivery_instructions' => $detail['Order']['delivery_instructions'],
-						    'time' => $order['Order']['created'],
-						    'price' => $detail['Order']['total'],
-						    'food' => array()
+					foreach ( $orders as $order ) {
+						$detail  = json_decode( $order[ 'Order' ][ 'detail' ], true );
+						$address = $detail[ 'Order' ][ 'address' ];
+						if ( !array_key_exists( 'firstname', $address ) ) {
+							$address[ 'firstname' ] = 'Anonymous';
+						}
+						if ( !array_key_exists( 'lastname', $address ) ) {
+							$address[ 'lastname' ] = 'Anonymous';
+						}
+						$f_order    = array(
+							'id'                    => $order[ 'Order' ][ 'id' ],
+							'title'                 => $address[ 'address' ],
+							'customer'              => sprintf( "%s %s", $address[ 'firstname' ], $address[ 'lastname' ] ),
+							'order_method'          => $detail[ 'Order' ][ 'order_method' ],
+							'payment_method'        => $detail[ 'Order' ][ 'payment_method' ],
+							'paid'                  => false,
+							'delivery_instructions' => $detail[ 'Order' ][ 'delivery_instructions' ],
+							'time'                  => $order[ 'Order' ][ 'created' ],
+							'price'                 => $detail[ 'Order' ][ 'total' ],
+							'food'                  => array()
 						);
 						$food_array = array();
-						foreach ($detail['OrderItem'] as $orb) {
+						foreach ( $detail[ 'OrderItem' ] as $orb ) {
 							$opts = array();
-							if ( !empty($orb['orbopts']) ) {
-								foreach($orb['orbopts'] as $opt) {
-									$id = $opt['Orbopt']['id'];
-									$opts[] = array( 'title' => $opt['Orbopt']['title'],
-									                 'weight' => $orb['orbopts_arrangement'][$id]);
+							if ( !empty( $orb[ 'orbopts' ] ) ) {
+								foreach ( $orb[ 'orbopts' ] as $opt ) {
+									$id      = $opt[ 'Orbopt' ][ 'id' ];
+									$opts[ ] = array( 'title'  => $opt[ 'Orbopt' ][ 'title' ],
+									                  'weight' => $orb[ 'orbopts_arrangement' ][ $id ] );
 								}
 							}
-							$food_array[$orb['title']] = $opts;
-					    }
-						$f_order['food'] = $food_array;
-						$f_orders[] = $f_order;
+							$food_array[ $orb[ 'title' ] ] = array( 'size' => $orb[ 'size_name' ], 'opts' => $opts );
+						}
+						$f_order[ 'food' ] = $food_array;
+						$f_orders[ ]       = $f_order;
 					}
-					$response = array('success' => true, 'error' => false, 'orders' => $f_orders);
-				} catch (Exception $e) {
-					$response = array('success' => false, 'error' => $e, 'orders' => false);
+					$response = array( 'success' => true, 'error' => false, 'orders' => $f_orders );
+				} catch ( Exception $e ) {
+					$response = array( 'success' => false, 'error' => $e, 'orders' => false );
 				}
-				$this->set( compact('response') );
+				$this->set( compact( 'response' ) );
 			}
 			else {
-				return $this->redirect("/menu");
+				return $this->redirect( "/menu" );
 			}
 		}
 
@@ -705,11 +713,12 @@
 		}
 
 		public function vendor() {
-			if ($this->request->header('User-Agent') == "xtreme-pos-tablet" || true) {
+			if ( $this->request->header( 'User-Agent' ) == "xtreme-pos-tablet" || true ) {
 				$this->layout = "vendor";
-				$this->render("vendor");
-			} else {
-				$this->redirect("/menu");
+				$this->render( "vendor" );
+			}
+			else {
+				$this->redirect( "/menu" );
 			}
 		}
 	}

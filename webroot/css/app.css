@@ -5593,17 +5593,19 @@ main#vendor-page {
 #food-list ul.orb li {
   height: 1.1rem;
   line-height: 1.1rem; }
+  #food-list ul.orb li span {
+    min-height: 0;
+    height: inherit;
+    line-height: inherit;
+    display: inline-block;
+    vertical-align: top; }
+  #food-list ul.orb li:first-of-type span.size {
+    width: 2.5rem; }
   #food-list ul.orb li.orb-opt {
     border-bottom: 1px dotted #b4b4b4;
     color: #0779be;
     padding-left: 1rem;
     font-size: 0.8rem; }
-    #food-list ul.orb li.orb-opt span {
-      min-height: 0;
-      height: inherit;
-      line-height: inherit;
-      display: inline-block;
-      vertical-align: top; }
     #food-list ul.orb li.orb-opt span.text {
       -webkit-transform: translateY(0.15rem); }
     #food-list ul.orb li.orb-opt span[class*="icon-"] {

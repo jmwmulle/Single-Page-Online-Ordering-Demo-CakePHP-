@@ -190,8 +190,11 @@ var XSM = {
 		self:"footer#footer"
 	},
 	generated: {
-		vendor_orb_desc: function(orb_desc, orb_opts) {
-			var orb_str = "<li><ul class='orb'><li>" + orb_desc +"</li>";
+		vendor_orb_desc: function(orb_desc, orb_details) {
+			var orb_opts = orb_details.opts;
+			var orb_str = "<li><ul class='orb'><li> &#8226; ";
+			orb_str += "<span class='size'>" + orb_details.size.replace('in','"') + "</span>";
+			orb_str += "<span class='title'>" + orb_desc + "</span></li>";
 			for (var opt_id in orb_opts) {
 				orb_str += "<li class='orb-opt'><span class='text'>" + orb_opts[opt_id].title + "</span>";
 				switch ( orb_opts[opt_id].weight ) {
@@ -210,6 +213,8 @@ var XSM = {
 			}
 			orb_str += "</ul></li>";
 			return orb_str;
+		},
+		vendor_orb_title: function(size, title) {
 		},
 		order_form_opt_id: function(opt_id) {
 			opt_id = opt_id.split("-")[2]
