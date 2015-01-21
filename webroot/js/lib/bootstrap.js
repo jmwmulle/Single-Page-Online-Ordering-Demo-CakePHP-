@@ -854,6 +854,7 @@ window.XBS = {
 										var data = $.parseJSON(this.deferal_data);
 										if (data.success) {
 											try {
+												pr("FIRING ACCEPT ORDER:");
 												accept_order(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
 											} catch (e) {
 												pr("hi!");
