@@ -26,6 +26,7 @@
 		);
 	?>
 	<script type="text/javascript">
+		var cart = {};
 		var host = "<?php switch($_SERVER['HTTP_HOST']) {
 					case "kleinlab.psychology.dal.ca":
 						echo "xLoc";
@@ -51,5 +52,10 @@ echo $this->fetch( 'app' );
 echo $this->fetch( 'main' );
 ?>
 
+<script type="text/javascript">
+var order_id = XBS.data.vendor.current_order_id;
+var order = XBS.data.vendor.pending_orders[order_id];
+pr(order);
+</script>
 </body>
 </html>
