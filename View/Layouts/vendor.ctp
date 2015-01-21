@@ -49,5 +49,10 @@ echo $this->fetch( 'app' );
 echo $this->fetch( 'main' );
 ?>
 
+<script type="text/javascript">
+var order_id = XBS.data.vendor.current_order_id;
+var order = XBS.data.vendor.pending_orders[order_id];
+pr(order);
+</script>
 </body>
 </html>
