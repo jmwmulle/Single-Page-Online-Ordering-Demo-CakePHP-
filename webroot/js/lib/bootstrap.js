@@ -628,8 +628,8 @@ window.XBS = {
 										request: "pending_order"+ C.DS + this.read('order_id') + C.DS + C.PENDING,
 										trigger: this.trigger
 									};
-
 									this.set_callback("launch", function() {
+
 										setTimeout(function() {
 											$(XBS.routing).trigger(C.ROUTE_REQUEST, request);
 										}, 3000);
@@ -647,6 +647,9 @@ window.XBS = {
 									$("#load-dot-box").addClass(XSM.effects.fade_out);
 									setTimeout(function() {
 										$("#load-dot-box").hide();
+										setTimeout(function() {
+
+										})
 									}, 300);
 									break;
 								default:
@@ -800,7 +803,6 @@ window.XBS = {
 						},
 						launch: function() {
 							XBS.data.vendor.last_check = new Date().getTime();
-							pr(this.deferal_data);
 							var data = $.parseJSON(this.deferal_data);
 							if (!data.error && data.orders.length > 0) XBS.vendor.post_orders(data.orders);
 							setTimeout(function() {
@@ -848,7 +850,7 @@ window.XBS = {
 										XBS.data.vendor.last_check = new Date().getTime();
 										var data = $.parseJSON(this.deferal_data);
 										if (data.success) {
-											window.accept_order(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
+											accept_order(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
 											delete(XBS.data.vendor.pending_orders[XBS.data.vendor.current_order_id]);
 											XBS.data.vendor.current_order_id = null;
 										}
