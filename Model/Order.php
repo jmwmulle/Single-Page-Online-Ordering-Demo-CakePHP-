@@ -44,11 +44,6 @@ class Order extends AppModel {
 				'rule' => array('numeric'),
 			),
 		),
-		'paid' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-			),
-		),
 		'created' => array(
 		),
 		'modified' => array(

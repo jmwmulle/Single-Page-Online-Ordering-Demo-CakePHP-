@@ -622,7 +622,7 @@
 		}
 
 		public function set_status($id, $status) {
-			if ( $this->request->is( 'ajax' ) || true ) {
+			if ( $this->request->is( 'ajax' )) {
 				$order    = $this->Order->findById( $id );
 				$response = array( 'success', 'error' );
 				if ( $order ) {
@@ -632,7 +632,7 @@
 					$response                    = array_combine( $response, $resp );
 				}
 				else {
-					$response = array_combine( $response, array( fase, 'Order not found.' ) );
+					$response = array_combine( $response, array( false, 'Order not found.' ) );
 				}
 				$this->set( compact( 'response' ) );
 
