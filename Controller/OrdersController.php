@@ -683,7 +683,9 @@
 									                  'weight' => $orb[ 'orbopts_arrangement' ][ $id ] );
 								}
 							}
-							$food_array[ $orb[ 'title' ] ] = array( 'size' => $orb[ 'size_name' ], 'opts' => $opts );
+							$food_array[ $orb[ 'title' ] ] = array( 'size' => $orb[ 'size_name' ],
+								'price' => $orb['subtotal'], 'quantity' => $orb['quantity'], 'opts' => $opts,
+						       		'instructions' => $orb['preparation_instructions']);
 						}
 						$f_order[ 'food' ] = $food_array;
 						$f_orders[ ]       = $f_order;
