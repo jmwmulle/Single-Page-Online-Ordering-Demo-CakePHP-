@@ -93,23 +93,17 @@ Cart = function(cart_details) {
 
 	XBS.cart.configure = function() {
 		pr(XBS.cart.configuring, "configuring!");
-//		try {
-			var orb_id = $(XSM.menu.orb_order_form_orb_id).val();
-			if ( XBS.cart.configuring === null ) XBS.cart.configuring[orb_id] = XBS.cart.empty_config).clone();
-			if ( !(String(orb_id) in XBS.cart.configuring) ) XBS.cart.configuring[orb_id] = $(XBS.cart.empty_config).clone();
-			XBS.cart.configuring[orb_id].quantity = $(XSM.menu.orb_order_form_quantity).val();
-			XBS.cart.configuring[orb_id].price_rank = $(XSM.menu.orb_order_form_price_rank).val();
-			XBS.cart.configuring[orb_id].preparation_instructions = $(XSM.menu.orb_order_form_prep_instrux).val();
-			$(XSM.menu.orb_order_form_orb_opts).each( function() {
-				var opt_id = XBS.cart.from_attribute_id_str($(this).attr('id')).opt_id;
-				XBS.cart.configuring[orb_id].orb_opts[opt_id] = $(this).val();
-			});
-			pr("returning true");
-			return true;
-//		} catch(e) {
-//			pr("returning false");
-//			return false;
-//		}
+		var orb_id = $(XSM.menu.orb_order_form_orb_id).val();
+		if ( XBS.cart.configuring === null ) XBS.cart.configuring[orb_id] = XBS.cart.empty_config();
+		if ( !(String(orb_id) in XBS.cart.configuring) ) XBS.cart.configuring[orb_id] = $(XBS.cart.empty_config).clone();
+		XBS.cart.configuring[orb_id].quantity = $(XSM.menu.orb_order_form_quantity).val();
+		XBS.cart.configuring[orb_id].price_rank = $(XSM.menu.orb_order_form_price_rank).val();
+		XBS.cart.configuring[orb_id].preparation_instructions = $(XSM.menu.orb_order_form_prep_instrux).val();
+		$(XSM.menu.orb_order_form_orb_opts).each( function() {
+			var opt_id = XBS.cart.from_attribute_id_str($(this).attr('id')).opt_id;
+			XBS.cart.configuring[orb_id].orb_opts[opt_id] = $(this).val();
+		});
+		return true;
 	}
 
 

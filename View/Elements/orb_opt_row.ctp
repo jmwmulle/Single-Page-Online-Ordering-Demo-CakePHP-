@@ -10,7 +10,7 @@
 	$id = sprintf("orb-opt-%s", $opt['id']);
 	$list_classes = array("fade-out", "orb-opt", "inactive", "xtreme-select-list");
 	$icons = array('right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D");
-	$data = array("route" => "orb_opt/opt" . DS . sprintf("#%s", $id) . DS . strtolower($opt['title']));
+	$data = array("route" => "orb_opt/opt" . DS . sprintf("#%s", $id) . DS .___as_file_name($opt['title']));
 	foreach (array_slice($opt, 3, -1) as $flag => $value) {
 		if ($value) {
 			if (in_array($flag, $filter_flags) ) $list_classes[] = $flag;

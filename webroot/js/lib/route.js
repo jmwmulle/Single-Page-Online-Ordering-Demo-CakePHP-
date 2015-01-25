@@ -255,6 +255,21 @@ function XtremeRoute(name, data) {
 		return true;
 	}
 
+	this.write = function(path, value, context) {
+		if (!context) context = this;
+		path = path.split(".");
+		if (path[0] in context) {
+			if (path.length > 1) {
+				var context = context[path[0]]
+				return this.write(path.slice(1).join("."), value, context);
+			}  else {
+				context[path[0]] = value;
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * set_callback() set a callback post-initialization and re-init
 	 * @param callback

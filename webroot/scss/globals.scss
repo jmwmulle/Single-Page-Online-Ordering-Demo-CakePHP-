@@ -177,8 +177,14 @@ footer {
   &.active {
     a, h1, h2, h3, h4, h5, span { color: $dark-grey;}
   }
-  &.lr-only {
-    li.full, li.full:hover, li.double:hover {
+  &.inelligible {
+    background-color:$light-grey;
+    &:hover { background-color:$light-grey; }
+  }
+  li.inelligible {
+    -webkit-opacity: 0.333 !important;
+    &:hover {
+      color:$white !important;
       -webkit-opacity: 0.333 !important;
     }
   }

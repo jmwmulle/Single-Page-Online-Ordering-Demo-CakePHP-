@@ -5,7 +5,9 @@ var xbs_routing = {
 		init: function () {
 			/* For launching routes via the DOM */
 			$(C.BODY).on(C.CLK, XSM.global.route, null, function (e) {
-				if ( !$(e.currentTarget).hasClass(XSM.effects.disabled) ) {
+				var disabled = $(e.currentTarget).hasClass(XSM.effects.disabled);
+//				var inelligible = $(e.currentTarget).hasClass(XSM.effects.disabled)
+				if ( !disabled ) {
 					$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: $(e.currentTarget).data('route'), trigger: e});
 				}
 			});
@@ -242,6 +244,25 @@ var xbs_routing = {
 					url: {url: "menuitem"},
 					params: {orb_id: {value: null, url_fragment: true}}
 				}),
+				order_update: new XtremeRoute('order_update', {
+					params: ['source'],
+					callbacks: {
+						params_set: function() {
+							switch (this.read('source') ) {
+								case 'form':
+									XBS.menu.update_orb_configuration_ui();
+									break;
+								case 'ui':
+									XBS.menu.update_orb_form();
+									break;
+								case 'reset':
+									XBS.menu.update_orb_form();
+									XBS.menu.update_orb_configuration_ui();
+									break;
+							}
+						}
+					}
+				}),
 				orbcat: new XtremeRoute("orbcat", {
 					params: {
 						id: {value: null},
@@ -262,38 +283,34 @@ var xbs_routing = {
 					behavior: C.STOP,
 					callbacks: {
 						params_set: function () {
+							if (this.read('context') != "form_update") pr(this);
 							switch (this.read('context')) {
 								case "form_update":
 									var weight = -1;
 									/*
 										1. get the real weighting if the opt has been activated
 										2. set the corresponding form field to the opt's weighting
-									*/
-									/* #1 */
-									if ( $(this.read('element')).hasClass(XSM.effects.active) ) {
-										weight = $(
-											$(this.read('element')).find(XSM.menu.orb_opt_icon_active)[0]
-										).data('route').split("/")[4];
+
+									 #1 */
+									var element = this.read('element');
+									if (!this.read('weight') ) this.write("params.title.value", title_case(this.read('title')) );
+
+									if ( $(this.read('element')).hasClass(XSM.effects.active)) {
+										weight = $($(element).find(XSM.menu.orb_opt_icon_active)[0])
+												.data('route').split("/")[4];
 										var opt_list_item = XSM.generated.tiny_orb_opt_list_item(this.read('title'), weight);
-										XBS.data.tiny_orb_opts_list[this.read('element')] = opt_list_item;
-									} else {
-										XBS.data.tiny_orb_opts_list[this.read('element')] = false;
-									}
+										XBS.data.tiny_orb_opts_list[element] = opt_list_item;
+									} else XBS.data.tiny_orb_opts_list[element] = false;
 									/* #2 */
-									var form_opt_id = XSM.generated.order_form_opt_id(this.read('element'));
+									var form_opt_id = XSM.generated.order_form_opt_id(element);
 									$(form_opt_id).val(weight);
 									break;
 								case 'weight':
-									die();
-									var classes = $(this.trigger.element).attr('class').split(/\s+/);
-									if (in_array(XSM.effects.enabled, classes)) this.trigger.event.stopPropagation();
-									var parent = $(this.trigger.element).parents(XSM.menu.orb_opt)[0];
-									var parent_classes = $(parent).attr('class').split(/\s+/);
-									if ( in_array(XSM.effects.lr_only, parent_classes) ) {
-										if ( in_array(XSM.menu.double, classes) || in_array(XSM.menu.double, full)){
-											return;
-										}
+									var parent_opt = $(this.trigger.element).parents(XSM.menu.orb_opt)[0];
+									if ( $(parent_opt).hasClass(XSM.effects.active) ) {
+										this.trigger.event.stopPropagation();
 									}
+									if ($(this).hasClass(XSM.effects.inelligible) ) return;
 									XBS.menu.toggle_orb_opt_icon(this.trigger.element, true);
 									break;
 								case "opt":

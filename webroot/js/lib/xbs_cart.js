@@ -122,7 +122,7 @@ var xbs_cart = {
 		return false;
 	},
 	configure: function () {
-		var debug_this = 0;
+		var debug_this = 1;
 		if (debug_this > 0) pr("<no args>", "XBS.cart.configure()", 2);
 		var orb_id = $(XSM.menu.orb_order_form_orb_id).val();
 		var orb_uid = $(XSM.menu.orb_order_form_orb_uid).val();

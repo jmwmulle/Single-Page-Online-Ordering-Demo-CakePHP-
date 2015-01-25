@@ -411,17 +411,15 @@ $.fn.scrollTo = function (target, options, callback) {
 
 
 	/**
-	 * splitPath method
+	 * split_path method
 	 *
 	 * @desc Splits a path by <separator> or else forward-slash, striping first trailing and leading slash if found
 	 * @param path
 	 * @param separator
 	 * @returns {*}
 	 */
-	function splitPath(path, separator) {
-		if (typeof(path) != "string") {
-			return false;
-		}
+	function split_path(path, separator) {
+		if (typeof(path) != "string") return false;
 		// clear trailing & leading slashes
 		path = path.substr(-1, 1) === separator ? path.substring(0, path.length - 1) : path;
 		path = path.substr(0, 1) === separator ? path.substring(1) : path;
@@ -445,6 +443,12 @@ $.fn.scrollTo = function (target, options, callback) {
 
 	function str_to_upper(string_name) {
 		return string_name.toUpperCase();
+	}
+
+	function title_case(string_name) {
+		string_name = string_name.replace('_', ' ').split(' ');
+		for (var i = 0; i < string_name.length; i++) string_name[i] = ucfirst(string_name[i]);
+		return string_name.join(' ');
 	}
 
 	function flip(bool) {

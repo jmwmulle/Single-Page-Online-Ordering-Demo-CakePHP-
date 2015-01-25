@@ -5140,8 +5140,15 @@ footer {
     color: white; }
   .xtreme-select-list.active a, .xtreme-select-list.active h1, .xtreme-select-list.active h2, .xtreme-select-list.active h3, .xtreme-select-list.active h4, .xtreme-select-list.active h5, .xtreme-select-list.active span {
     color: #191919; }
-  .xtreme-select-list.lr-only li.full, .xtreme-select-list.lr-only li.full:hover, .xtreme-select-list.lr-only li.double:hover {
+  .xtreme-select-list.inelligible {
+    background-color: #b4b4b4; }
+    .xtreme-select-list.inelligible:hover {
+      background-color: #b4b4b4; }
+  .xtreme-select-list li.inelligible {
     -webkit-opacity: 0.333 !important; }
+    .xtreme-select-list li.inelligible:hover {
+      color: white !important;
+      -webkit-opacity: 0.333 !important; }
 
 textarea.note {
   height: 2rem; }
