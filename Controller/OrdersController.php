@@ -78,6 +78,7 @@
 					foreach ( $this->request->data[ 'Order' ] as $orb ) {
 						extract( array_merge( array(
 									"id"                       => -1,
+									"uid"			   => -1,
 									"quantity"                 => -1,
 									"price_rank"               => 0,
 									"orbopts"                  => array(),
@@ -85,7 +86,7 @@
 								$orb
 							)
 						);
-						$item = $this->Cart->add( $id, $quantity, $price_rank, $orbopts, $preparation_instructions );
+						$item = $this->Cart->add( $id, $uid, $quantity, $price_rank, $orbopts, $preparation_instructions );
 						array_push( $products, $item );
 					}
 					$this->Cart->update();

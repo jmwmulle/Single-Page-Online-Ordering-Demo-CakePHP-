@@ -27,7 +27,7 @@ class CartComponent extends Component {
 
 //////////////////////////////////////////////////
 
-	public function add($orb_id, $quantity = 1, $price_rank = 0, $orbopts_list = null, $preparation_instructions = '') {
+	public function add($orb_id, $uid, $quantity = 1, $price_rank = 0, $orbopts_list = null, $preparation_instructions = '') {
 
 		$position_to_price = array('F'=>1, 'L'=>0.5, 'R'=>0.5, 'D'=>2);
 
@@ -126,6 +126,7 @@ class CartComponent extends Component {
 
 		if(!$matched && $quantity > 0) {
 			$item['orb_id'] = $orb['Orb']['id'];
+			$item['uid'] = $uid;
 			$item['title'] = $orb['Orb']['title'];
 			$item['description'] = $orb['Orb']['description'];
 			$item['price_rank'] = $price_rank;
