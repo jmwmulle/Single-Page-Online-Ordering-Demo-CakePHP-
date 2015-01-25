@@ -68,6 +68,7 @@ function XtremePrinter() {
 		return true;
 	}
 
+
 	/**
 	 * extend_style()
 	 *
@@ -111,6 +112,7 @@ function XtremePrinter() {
 		Android.showDialog(message, title);
 	}
 
+
 	/**
 	 *  print_text()
 	 *
@@ -148,6 +150,7 @@ function XtremePrinter() {
 	this.print_title = function (text) {
 	print_text(text, 1, 'left', 1, 2, 2, 1, true, false);
 }
+
 
 	/**
 	 * cut()
@@ -190,3 +193,10 @@ function XtremePrinter() {
 	return this;
 }
 
+function openPrinter(ip) {
+    return Android.openPrinter(ip);
+}
+
+function playOrderTone() {
+    Android.playTone();
+}
