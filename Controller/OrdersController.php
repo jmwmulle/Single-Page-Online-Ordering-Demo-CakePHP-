@@ -621,21 +621,16 @@
 			$this->redirect( "/menu" );
 		}
 
-		public function set_status($id, $status) {
-			if ( $this->request->is( 'ajax' )) {
+		public function set_status($id = null, $status = null) {
+			if ( $this->request->is( 'ajax' ) && $id != null && $status != null) {
 				$order    = $this->Order->findById( $id );
 				$response = array( 'success', 'error' );
 				if ( $order ) {
-
 					$order[ 'Order' ][ 'state' ] = $status;
-
-					$resp                        = $this->Order->save( $order ) ? array( true, null ) : array( false,
-					                                                                                           'Failed to save updated order' );
-					$response                    = array_combine( $response, $resp );
+					$resp = $this->Order->save( $order ) ? array( true, null ) : array( false, 'Failed to save updated order' );
+					$response = array_combine( $response, $resp );
 				}
-				else {
-					$response = array_combine( $response, array( false, 'Order not found.' ) );
-				}
+				else { $response = array_combine( $response, array( false, 'Order not found.' ) ); }
 				$this->set( compact( 'response' ) );
 
 				return $this->render();
@@ -652,7 +647,6 @@
 				$orders       = $this->Order->find( 'all', $conditions );
 				$response     = null;
 				$f_orders     = array();
-				//	db($orders);
 				try {
 					foreach ( $orders as $order ) {
 						$detail  = json_decode( $order[ 'Order' ][ 'detail' ], true );
@@ -701,6 +695,7 @@
 				} catch ( Exception $e ) {
 					$response = array( 'success' => false, 'error' => $e, 'orders' => false );
 				}
+
 				$this->set( compact( 'response' ) );
 			}
 			else {
@@ -715,8 +710,8 @@
 		}
 
 		public function vendor() {
+			$this->set('page_name', 'vendor');
 			if ( $this->request->header( 'User-Agent' ) == "xtreme-pos-tablet" || true ) {
-				$this->layout = "vendor";
 				$this->render( "vendor" );
 			}
 			else {

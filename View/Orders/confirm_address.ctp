@@ -24,6 +24,14 @@
 	$email = $this->Session->read('Cart.Order.email');
 	$address = $this->Session->read('Cart.Order.address');
 	if ( is_array($address) ) array_merge($__address, $address);
+	if (array_key_exists("first_name", $address) ) {
+	    $address['firstname'] = $address['first_name'];
+		unset($address['first_name']);
+	}
+	if (array_key_exists("last_name", $address) ) {
+		    $address['lastname'] = $address['last_name'];
+			unset($address['last_name']);
+		}
 	$update_command = "session";
 ?>
 
@@ -46,7 +54,7 @@
 					<?php } ?>
 					</div>
 					<div class="large-2 columns modal-header">
-						<a href="#" class="reset-form" data-form="testForm">Reset Form</a>
+
 					</div>
 				</div>
 				<div id="confirm-address-login-panel" class="row true-hidden">
@@ -88,14 +96,12 @@
 			<?php }?>
 		</div>
 		<div class="row">
-			<div class="large-12 columns">
+			<div class="large-6 columns">
 				<?php echo $this->Form->input( 'address', array(
 						'label' => "Street Address Line 1",
 						'value' => $address ? $address['address'] : null)); ?>
 			</div>
-		</div>
-		<div class="row">
-			<div class="large-12 columns">
+			<div class="large-6 columns">
 				<?php echo $this->Form->input( 'address_2', array(
 						'label' => "Street Address Line 2 (optional)",
 						'value' => $address ? $address['address_2'] : null)); ?>
@@ -119,30 +125,34 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="large-6 columns">
+			<div class="large-12 columns">
 				<?php echo $this->Form->input( 'delivery_instructions', array('type'  => 'textarea',
+				                                                    'class' =>  array('note'),
 					                                                'label' => 'Delivery Instructions',
 					                                                'value' => $address ? $address['delivery_instructions'] : null,
 				                                                    'placeholder' => "Let our driver know about those hard-to-find stairs, or that pesky pet leopard in your back yard..."
 					) );?>
 			</div>
-			<div class="large-6 columns">
-				<div class="row">
-					<div class="large-12 columns">
-					<?php echo $this->Form->input( 'delivery_time', array('type' => 'hidden', 'value' => "asap" )); ?>
-					<?php echo $this->Form->input( 'confirmation', array('type' => 'hidden', 'value' =>"email" )); ?>
-					<?php echo $this->Form->input( 'city', array( 'type' => 'hidden',
-				                                              'value' => $address ? $address['city'] : 'Halifax' ) );?>
-					<?php echo $this->Form->input( 'province', array( 'type' => 'hidden',
-				                                                  'value' => 'Nova Scotia'  ));
-					  echo $this->Form->end(); ?>
-					</div>
-					<div class="large-12 columns " style="vertical-align: bottom;">
-						<label> &nbsp; </label>
-						<a href="#" id="submit-order-address" class="modal-button lrg full-width confirm" data-route="confirm_address/submit/menu">
-							<span class="text"><?php echo strtoupper( "OK! To the food!" ); ?></span><span class="icon-circle-arrow-r"></span>
-						</a>
-					</div>
+		</div>
+		<div class="row">
+			<div class="large-12 columns true-hidden">
+			<?php echo $this->Form->input( 'delivery_time', array('type' => 'hidden', 'value' => "asap" )); ?>
+			<?php echo $this->Form->input( 'confirmation', array('type' => 'hidden', 'value' =>"email" )); ?>
+			<?php echo $this->Form->input( 'city', array( 'type' => 'hidden',
+		                                              'value' => $address ? $address['city'] : 'Halifax' ) );?>
+			<?php echo $this->Form->input( 'province', array( 'type' => 'hidden',
+		                                                  'value' => 'Nova Scotia'  ));
+			  echo $this->Form->end(); ?>
+			</div>
+			<div class="large-12 columns">
+				<label> &nbsp; </label>
+				<div id="submit-order-button-wrapper">
+					<a href="#" class="modal-button lrg bisecting cancel left" data-route="confirm_address/cancel/menu">
+						<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span>
+					</a
+					><a href="#" id="submit-order-address" class="modal-button lrg bisecting confirm right" data-route="confirm_address/submit/menu">
+						<span class="text">OK!</span><span class="icon-circle-arrow-r"></span>
+					</a>
 				</div>
 			</div>
 		</div>

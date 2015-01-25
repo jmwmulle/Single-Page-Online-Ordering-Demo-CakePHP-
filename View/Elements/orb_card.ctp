@@ -125,6 +125,7 @@ $logged_in = $this->Session->read('Auth');
 							<?php
 							echo $this->Form->create("Order", array("action" => "add_to_cart", "id" => "orderOrbForm"));
 							echo $this->Form->input("Order.Orb.id", array("type" => "hidden", "value" => $orb['id']));
+							echo $this->Form->input("Order.Orb.uid", array("type" => "hidden", "value" => null));
 							echo $this->Form->input("Order.Orb.price_rank", array("type" => "hidden", "value" => 0));?>
 							<div id="OrderOrbPreparationInstructions-wrapper" class="t-pad inline">
 								<label for="orderOrbPreparationInstructions">PREPARATION INSTRUCTIONS</label

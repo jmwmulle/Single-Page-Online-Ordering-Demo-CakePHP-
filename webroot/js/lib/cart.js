@@ -14,12 +14,16 @@ Cart = function(cart_details) {
 	XBS.cart.orbs = {}; // CONFIRMED BY SERVER
 	XBS.cart.configuring = {init: true} // ORB_ID: {CONFIG}
 	XBS.cart.initialized = false;
-	XBS.cart.empty_config = {
-						quantity:null,
-						 orbopts:{},
-						 preparation_instructions:null,
-						 price_rank: null
-						};
+	XBS.cart.__empty_config = function() {
+		return {
+			id: null,
+			uid: null,
+			quantity:null,
+			orbopts:{},
+			preparation_instructions:null,
+			price_rank: null
+			}
+	}
 	XBS.cart.attributes_object = {
 						str: null,
 						is_id: false,
@@ -91,7 +95,7 @@ Cart = function(cart_details) {
 		pr(XBS.cart.configuring, "configuring!");
 //		try {
 			var orb_id = $(XSM.menu.orb_order_form_orb_id).val();
-			if ( XBS.cart.configuring === null ) XBS.cart.configuring[orb_id] = $(XBS.cart.empty_config).clone();
+			if ( XBS.cart.configuring === null ) XBS.cart.configuring[orb_id] = XBS.cart.empty_config).clone();
 			if ( !(String(orb_id) in XBS.cart.configuring) ) XBS.cart.configuring[orb_id] = $(XBS.cart.empty_config).clone();
 			XBS.cart.configuring[orb_id].quantity = $(XSM.menu.orb_order_form_quantity).val();
 			XBS.cart.configuring[orb_id].price_rank = $(XSM.menu.orb_order_form_price_rank).val();

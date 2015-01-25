@@ -177,8 +177,14 @@ footer {
   &.active {
     a, h1, h2, h3, h4, h5, span { color: $dark-grey;}
   }
+  &.lr-only {
+    li.full, li.full:hover, li.double:hover {
+      -webkit-opacity: 0.333 !important;
+    }
+  }
 }
 
+textarea.note { height:2rem;}
 @mixin blue_scroll () {
   &::-webkit-scrollbar-track {
         box-shadow       : inset 0 0 3px rgba(0, 0, 0, 0.3);

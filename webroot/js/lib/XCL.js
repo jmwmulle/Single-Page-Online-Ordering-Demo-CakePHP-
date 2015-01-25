@@ -59,7 +59,11 @@ var constants = {
 	ACCEPTED:1,
 	REJECTED:2,
 	ACCEPT: "accept",
-	REJRECT: "reject"
+	REJECT: "reject",
+	VMOUSEDOWN: "vmousedown",
+	VMOUSEOUT: "vmouseout",
+	VMOUSEMOVE: "vmousemove",
+
 };
 
 var C = constants;

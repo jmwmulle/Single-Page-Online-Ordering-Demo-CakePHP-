@@ -9,7 +9,6 @@ var XSM = {
 		activizing_list: "ul.activizing li",
 		active_list_item: "li.active",
 		ajaxLink:".ajax-link",
-		detachable: ".detach",
 		footer: "footer",
 		imageQueue: "#image-loading-queue",
 		loadingScreen: "#loadingScreen",
@@ -25,12 +24,16 @@ var XSM = {
 		checked: "icon-checked",
 		active_by_default: "default",
 		disabled: "disabled",
+		detach: "detach",
 		enabled: "enabled",
 		exposed: "exposed",
+		fastened: "fastened",
 		inactive: "inactive",
 		hidden: "hidden",
 		fade_out: "fade-out",
 		loading: "loading",
+		lr_only: "lr-only",
+		max_of_type: "max-of-type",
 		slide_right: "slide-right",
 		slide_left: "slide-left",
 		slide_up: "slide-up",
@@ -39,6 +42,7 @@ var XSM = {
 		flipped_y: "flipped-y",
 		float_label: "float-labeled",
 		overlay: "overlay",
+		pressed: "pressed",
 		solidify: "solidify",
 		share_icon: "icon-orb-card-share",
 		share_icon_reveal: "icon-orb-card-share-reveal",
@@ -73,7 +77,12 @@ var XSM = {
 		add_to_cart:".add-to-cart",
 		cancel_order_button: "#cancel-order-button",
 		confirm_order_button: "#confirm-order-button",
+		double: ".double",
+		full: ".full",
+		left_side: ".left-side",
+		right_side: ".right-side",
 		float_label: "#float-label",
+		inactive_sauce: ".orb-opt.sauce.inactive",
 		orb_card_back: "#orb-card-back",
 		ord_card_back_face: ".ord-card-back-face",
 		orb_card_content_container: ".orb-card-content-container",
@@ -87,6 +96,7 @@ var XSM = {
 		orb_card_wrapper: "#orb-card-wrapper",
 		orb_order_form: "#orderOrbForm",
 		orb_order_form_orb_id: "#OrderOrbId",
+		orb_order_form_orb_uid: "#OrderOrbUid",
 		orb_order_form_inputs: "#orderOrbForm input",
 		orb_order_form_orb_opts: "#orderOrbForm input.orb-opt-weight",
 		orb_order_form_price_rank: "#OrderOrbPriceRank",
@@ -136,7 +146,8 @@ var XSM = {
 		primary_deferred_content: "#primary-modal-content .deferred-content",
 		social: "#social-modal",
 		splash: "#splash-modal",
-		submit_order_address: "#submit-order-address"
+		submit_order_address: "#submit-order-address",
+		submit_order_button_wrapper: "#submit-order-button-wrapper"
 	},
 	splash:{
 		self:"#splash",
@@ -158,6 +169,8 @@ var XSM = {
 		openingDeal:"grand-opening-deal",
 		order:"#order",
 		order_delivery: "#splash-order-delivery",
+		order_delivery_wrapper: "order-delivery-wrapper",
+		order_pickup_wrapper: "order-pickup-wrapper",
 		order_pickup: "#splash-order-pickup",
 		order_spacer:"#order-wrapper .spacer",
 		preserve_aspect_ratio: "#splash *.preserve-aspect-ratio",
@@ -176,14 +189,20 @@ var XSM = {
 		hover_text_label_outgoing: "#topbar-hover-text-label span.outgoing"
 	},
 	vendor: {
+		self: "body#vendor",
 		back_splash: "#back-splash",
 		customer_name: "#customer-name",
+		error_pane: "#error-pane",
 		food_list: "#food-list",
 		next_order: "#next-order",
 		new_order_tone: "files/new_order_tone.mp3",
-		order_reject_confirmation: "#order-reject-confirmation",
+		order_accepted: "#order-accepted",
+		order_accept_button: "#order-accept-button",
+		order_accept_button_pressed: "#order-accept-button.pressed",
 		order_content_detail: "#order-content-detail",
+		order_content_sample: "#order-content-sample",
 		order_count: "#order-count",
+		order_reject_confirmation: "#order-reject-confirmation",
 		order_title: "#order-title",
 		pending_orders_list: "#pending-orders-list"
 	},
@@ -221,18 +240,31 @@ var XSM = {
 			opt_id = opt_id.split("-")[2]
 			return as_id("OrderOrbOrbopts" + opt_id)
 		},
-		orb_card_row_content: function(row) { return "#orb-card-row-"+row+" div.orb-card-content" },
+		orb_card_row_content: function(row) { return "#orb-card-row-" + row + " div.orb-card-content" },
 		orb_opt_id: function(opt_id) { return as_id("orb-opt-coverage-" + opt_id); },
 		orb_opt_icon: function(opt_id, weight) {
 			return $(opt_id).find(XSM.menu.orb_opt_icon + '[data-weight="' + weight + '"]')[0];
 		},
-		order_address_button: function(route) {
+		order_address_button: function(context) {
+			var classes;
+			var route = "confirm_address/submit" + C.DS + context;
 			var message;
-			if (route == "menu") message = "OK! TO THE FOOD!";
-			if (route == "review") message = "RETURN TO CHECKOUT";
+			var wrapper = '<a href="#" id="submit-order-address" class="'
+			var cancel = '<a href="#" class="modal-button lrg bisecting cancel left""';
+				cancel += ' data-route="confirm_address/cancel' + C.DS + context +'">';
+				cancel += '<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span></a>';
 
-			return '<a href="#" id="submit-order-address" data-route="confirm_address/submit/'+route+'"' +
-					' class="box downward rel modal-submit">' + message + '</a>';
+			if (context == "menu") {
+				classes = ["modal-button", "lrg", "bisecting", "confirm", "right"];
+				message = '<span class="text">OK!</span><span class="icon-circle-arrow-r"></span></a>';
+			}
+			if (context == "review") {
+				cancel = "";
+				classes= ["modal-button", "lrg", "full-width", "confirm"];
+				message = '<span class="text">BACK TO CHECKOUT!</span><span class="icon-circle-arrow-r"></span></a>';
+			}
+			wrapper += classes.join(" ") + '" data-route="' + route + '">';
+			return cancel + wrapper + message;
 		},
 		tiny_orb_opt_list_item: function(name, weight) {
 			return $("<li/>").addClass(stripCSS(XSM.menu.tiny_orb_opts_list_item))

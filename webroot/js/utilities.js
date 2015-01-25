@@ -193,22 +193,23 @@ $.fn.scrollTo = function (target, options, callback) {
 	}
 
 
-	function asClass(selector) {
+	function as_class(selector) {
 		if (typeof(selector) === "string") {
 			return selector.substring(0, 1) === "." ? selector : "." + selector;
 		}
 		return false;
 	}
 
-	function selToStr(str) {
+	function sel_to_str(str) {
 		try {
 			return str.replace("-", " ").replace("_", " ").toTitleCase();
 		} catch (e) {
-			pr(e, "ERROR:selToStr()");
+			pr(e, "ERROR:sel_to_str()");
 			return str;
 		}
 	}
 
+	function now() { return new Date().getTime(); }
 
 	function stripCSS(selector) {
 		return selector.substring(0, 1) == "." || selector.substring(0, 1) == "#" ? selector.substring(1) : selector;
