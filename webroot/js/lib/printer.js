@@ -26,7 +26,7 @@ function show_dialog(message, title) {
 }
 //String text, int font_id, String alignment, int line_space, int size_w, int size_h, int x_pos, boolean bold, boolean underline
 function print_text(text, font_id, alignment, line_space, size_w, size_h, x_pos, bold, underline) {
-	Android.printText(text, font_id, alignment, line_space, size_w, size_h, x_pos, bold, underline);
+	return Android.printText(text, font_id, alignment, line_space, size_w, size_h, x_pos, bold, underline);
 }
 
 function print_simple(text) {
@@ -39,7 +39,7 @@ function print_title(text) {
 
 //boolean feed
 function cut(feed) {
-	Android.cut(feed);
+	return Android.cut(feed);
 }
 
 function print_items(items) {
@@ -62,3 +62,10 @@ function print_item(name, item) {
 	return ret;
 }
 
+function openPrinter(ip) {
+    return Android.openPrinter(ip);
+}
+
+function playOrderTone() {
+    Android.playTone();
+}
