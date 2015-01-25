@@ -30,7 +30,7 @@ function print_text(text, font_id, alignment, line_space, size_w, size_h, x_pos,
 }
 
 function print_simple(text) {
-	print_text(text, 1, 'left', 1, 1, 1, 1, false, false);
+	print_text(text, 1, 'left', 1, 3, 2, 1, false, false);
 }
 
 function print_title(text) {
