@@ -3,7 +3,8 @@
  */
 var xbs_vendor = {
 		init: function() {
-			var vendor_page = $(C.BODY).find(XSM.vendor.self)[0]
+			var vendor_page = $("HTML").find(XSM.vendor.self)[0]
+
 			if (vendor_page) {
 				XBS.data.is_vendor_page = true;
 				setTimeout(function() {

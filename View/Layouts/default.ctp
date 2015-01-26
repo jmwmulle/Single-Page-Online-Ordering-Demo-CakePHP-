@@ -12,7 +12,7 @@
 			"/bower_components/foundation/js/foundation.min",
 			"vendor/jquery.validate.min",
 			"vendor/additional-methods.min" );
-		if ( $this->get( "page_name" ) == "vendor" ) array_push( $vendor_scripts, "vendor/jquery.mobile.custom.min" );
+	//	if ( $this->get( "page_name" ) == "vendor" ) array_push( $vendor_scripts, "vendor/jquery.mobile.custom.min" );
 		$xbs_scripts = array( "utilities",
 		                      "lib/XSM.js",
 		                      "lib/XCL",
