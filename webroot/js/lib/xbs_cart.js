@@ -59,11 +59,11 @@ var xbs_cart = {
 	has_orb: function (identifier, in_configuring, as_int) {
 		var found = 0;
 		var context = in_configuring ? XBS.cart.configuring : XBS.cart.orbs;
-		if ( is_uid(identifier) ) {
-			found = orb_uid in context
+		if ( XBS.cart.is_uid(identifier) ) {
+			found = identifier in context
 		} else {
 			as_int === false; // ie. if not otherwise specified, as_int should be true for searching by ids
-			for (uid in context) { if (context[uid].id == identifier) found += 1 }
+			for (var uid in context) { if (context[uid].id == identifier) found += 1 }
 		}
 		if (as_int === false) return found > 1 || found === true;
 		if ( found === true  ) return 1;
