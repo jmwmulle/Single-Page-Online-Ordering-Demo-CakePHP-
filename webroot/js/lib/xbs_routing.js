@@ -305,7 +305,7 @@ var xbs_routing = {
 									var form_opt_id = XSM.generated.order_form_opt_id(element);
 									$(form_opt_id).val(weight);
 									break;
-								case 'weight':
+								case "weight":
 									var parent_opt = $(this.trigger.element).parents(XSM.menu.orb_opt)[0];
 									if ( $(parent_opt).hasClass(XSM.effects.active) ) {
 										this.trigger.event.stopPropagation();
