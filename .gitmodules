@@ -16,3 +16,6 @@
 [submodule "Plugin/Opauth/Strategy/Facebook"]
 	path = Plugin/Opauth/Strategy/Facebook
 	url = https://github.com/opauth/facebook.git
+[submodule "Plugin/CakePHP-Google-API-Plugin"]
+	path = Plugin/CakePHP-Google-API-Plugin
+	url = https://github.com/LubosRemplik/CakePHP-Google-API-Plugin.git
