@@ -244,6 +244,10 @@ var xbs_routing = {
 					url: {url: "menuitem"},
 					params: {orb_id: {value: null, url_fragment: true}}
 				}),
+				order_accepted: new XtremeRoute('order_accepted', {
+					url:"order-accepted",
+					modal:XSM.modal.primary
+				}),
 				order_update: new XtremeRoute('order_update', {
 					params: ['source'],
 					callbacks: {
@@ -514,16 +518,7 @@ var xbs_routing = {
 								case C.REJECTED:
 									break;
 								case C.ACCEPTED:
-									$("#load-dot-box").addClass(XSM.effects.fade_out);
-									setTimeout(function() {
-										$("#load-dot-box").html(
-											"<h1>Hooray! Your order has been successfully placed!</h1>" +
-											"<a href='#' data-route='menu/unstash' class='modal-button'>" +
-											"<span class='text'>Great! Can't wait!</span>");
-										setTimeout(function() {
-											$("#load-dot-box").removeClass(XSM.effects.fade_out);
-										}, 300);
-									}, 300);
+									$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"order_accepted", trigger:this.trigger});
 									break;
 								default:
 									var request = {
@@ -664,15 +659,15 @@ var xbs_routing = {
 						params_set: function() {
 							var debug_this = 0;
 							if (debug_this > 0) pr("<no_args>", "XBS.routing.vendor_get_pending()::params_set", 2);
-							if (!XBS.data.vendor.last_check) {
-								XBS.data.vendor.last_check = now();
+							if (!XBS.vendor.last_check) {
+								XBS.vendor.last_check = now();
 								this.unset('url');
 							}
-							if ( now() -  XBS.data.vendor.last_check < 3000 ) this.unset('url');
+							if ( now() -  XBS.vendor.last_check < 3000 ) this.unset('url');
 						},
 						launch: function() {
 							if (this.url.url) {
-								XBS.data.vendor.last_check = new Date().getTime();
+								XBS.vendor.last_check = new Date().getTime();
 								var data = $.parseJSON(this.deferal_data);
 								if (!data.error && data.orders.length > 0) XBS.vendor.post_orders(data.orders);
 							}
@@ -693,7 +688,7 @@ var xbs_routing = {
 								break;
 								case 'confirm':
 									this.url = {
-										url:"vendor-reject" + C.DS + XBS.data.vendor.current_order_id + C.DS + C.REJECTED,
+										url:"vendor-reject" + C.DS + XBS.vendor.current_order_id + C.DS + C.REJECTED,
 										type: C.POST,
 										defer:true
 									};
@@ -715,28 +710,28 @@ var xbs_routing = {
 					url: { url:"vendor-accept", type: C.POST, defer:true},
 					callbacks: {
 						params_set: function() {
-							this.url.url += C.DS + XBS.data.vendor.current_order_id + C.DS + C.ACCEPTED;
-							$(XSM.vendor.order_accepted).show().removeClass(XSM.effects.fade_out);
-							XBS.data.vendor.last_check = -100000;
+							this.url.url += C.DS + XBS.vendor.current().id + C.DS + C.ACCEPTED;
+							$(XSM.vendor.accept_acknowledge).show();
+							setTimeout(function(){
+								$(XSM.vendor.accept_acknowledge).addClass(XSM.effects.exposed);
+								setTimeout(function(){
+									$(XSM.vendor.accept_acknowledge).removeClass(XSM.effects.exposed).hide();
+								}, 300);
+							}, 30);
+							XBS.vendor.last_check = -100000;
 						},
 						launch: function() {
 							var data = $.parseJSON(this.deferal_data);
 							if (data.success) {
-								XBS.data.vendor.pending_orders.unshift();
-								XBS.data.vendor.current_order_id = null;
-								XBS.data.vendor.last_check = now();
-								$("#order-accept-button").removeClass('launching');
+								var order = XBS.vendor.current();
+								XBS.vendor.pending_orders.shift()
+								XBS.vendor.current_order = null;
+								XBS.vendor.last_check = now();
+								$(XSM.vendor.order_accept_button).removeClass(XSM.effects.launching);
 								$(XSM.vendor.order_accepted).addClass(XSM.effects.fade_out);
-								var print_ok = true;
-								try {
-									XBS.printer.print_accepted_order(XBS.data.vendor.current_order.id);
-								} catch (e) { print_ok = false;}
-								if (print_ok) {
-									setTimeout(function() {
-										XBS.vendor.next();
-										$(XSM.vendor.order_accepted).hide();
-									}, 150);
-								} else { $("#error-pane").removeClass(XSM.effects.slide_up); }
+
+								if ( XBS.printer.print_accepted_order(order) || true ) XBS.vendor.next();
+								else $(XSM.vendor.error_pane).removeClass(XSM.effects.slide_up);
 							}
 						}
 					}

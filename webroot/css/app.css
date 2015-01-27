@@ -5430,11 +5430,19 @@ footer#footer {
 
 body#vendor {
   background-color: #191919; }
-  body#vendor #topbar, body#vendor #footer {
+  body#vendor #topbar, body#vendor #footer, body#vendor h4.loading {
     display: none; }
+  body#vendor * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
 
 main#vendor-page {
-  padding-top: 3.75rem; }
+  padding-top: 3.75rem;
+  width: 37.5rem; }
 
 #next-order {
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
@@ -5453,26 +5461,27 @@ main#vendor-page {
   border-left: 1px solid #b4b4b4; }
 
 #order-content {
-  border-bottom: 2px dashed #373737;
-  background: white;
-  /* Old browsers */
-  background: -moz-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #ffffff), color-stop(50%, #f3f3f3), color-stop(51%, #ededed), color-stop(100%, #ffffff));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
-  /* IE10+ */
-  background: linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 );
-  /* IE6-9 fallback on horizontal gradient */
   color: #373737;
   padding: 0.9375rem 0.3125rem;
   height: 31.25rem; }
+  #order-content .wrapper {
+    background: white;
+    /* Old browsers */
+    background: -moz-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #ffffff), color-stop(50%, #f3f3f3), color-stop(51%, #ededed), color-stop(100%, #ffffff));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+    /* IE10+ */
+    background: linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 );
+    /* IE6-9 fallback on horizontal gradient */
+    height: inherit; }
   #order-content h1, #order-content h2, #order-content h3, #order-content h4, #order-content h5, #order-content p, #order-content span, #order-content ul, #order-content li {
     background-color: transparent;
     color: #373737 !important; }
@@ -5494,56 +5503,6 @@ main#vendor-page {
 #order-content-detail {
   -webit-transition: opacity 150ms; }
 
-.vendor-button {
-  position: relative;
-  text-align: center;
-  text-shadow: 0 0 0.5rem #373737;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -o-user-select: none; }
-
-@-webkit-keyframes accept-glow {
-  0% {
-    text-shadow: 0 0 0.5rem #373737; }
-
-  50% {
-    text-shadow: 0 0 1rem white; }
-
-  100% {
-    text-shadow: 0 0 0.5rem #373737; } }
-
-#order-accept-button {
-  height: 12.5rem;
-  font-size: 8rem;
-  line-height: 14.0625rem;
-  background: -webkit-linear-gradient(top, #32ff32 0%, #7db9e8 0%, #7db9e8 100%, #7db9e8 100%);
-  -webkit-animation: accept-glow 3s ease-in-out infinite normal 0s running forwards; }
-  #order-accept-button.launching {
-    background: none !important;
-    background-color: #32ff32 !important; }
-
-#order-reject-button {
-  font-size: 3rem;
-  height: 5rem;
-  line-height: 6.25rem;
-  background: #f85032;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f85032), color-stop(50%, #f16f5c), color-stop(51%, #f6290c), color-stop(71%, #f02f17), color-stop(100%, #e73827));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
-  /* IE10+ */
-  background: linear-gradient(to bottom, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f85032', endColorstr='#e73827', GradientType=0);
-  /* IE6-9 */ }
-
 #pending-orders-count {
   position: absolute;
   float: right;
@@ -5559,7 +5518,8 @@ main#vendor-page {
   height: 8rem;
   width: 8rem;
   text-align: center;
-  text-shadow: 0 0 0.33rem rgba(0, 0, 0, 0.5); }
+  text-shadow: 0 0 0.33rem rgba(0, 0, 0, 0.5);
+  z-index: 99999; }
   #pending-orders-count h5 {
     position: relative;
     width: 9.375rem;
@@ -5631,7 +5591,7 @@ main#vendor-page {
   top: 0;
   left: 0;
   z-index: 999999;
-  -webkit-transition: opacity 0.15s;
+  -webkit-transition: opacity 0.1s;
   height: 12.5rem;
   margin-top: 6.25rem;
   font-size: 6rem;
@@ -5639,6 +5599,70 @@ main#vendor-page {
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.9375rem;
   width: 100%; }
+
+@-webkit-keyframes ok-zoom {
+  0% {
+    opacity: 1;
+    -webkit-transform: scale(0.01); }
+
+  100% {
+    opacity: 0;
+    -webkit-transform: translateX(-300px) scale(1); } }
+
+#accept-acknowledge {
+  font-size: 80rem;
+  text-align: center;
+  width: 37.5rem;
+  line-height: 50rem;
+  height: 50rem;
+  position: absolute;
+  top: 5rem;
+  left: 0;
+  -webkit-transition: none;
+  -webkit-transform: scale(0.01);
+  text-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+  z-index: 999999999;
+  color: #e02027 !important; }
+  #accept-acknowledge.exposed {
+    -webkit-animation: ok-zoom 300ms ease-in 1 normal 0s running forwards; }
+
+.virtual-receipt {
+  position: fixed;
+  background-color: white;
+  padding: 0.3125rem;
+  top: 5rem;
+  width: 225px;
+  height: auto;
+  z-index: 999999999;
+  font-size: 0.75rem;
+  font-family: monaco, Consolas, "courier new", courier, monospaced; }
+  .virtual-receipt * {
+    color: #373737 !important; }
+
+#tablet-out {
+  position: fixed;
+  background-color: white;
+  padding: 0.3125rem;
+  top: 11.25rem;
+  width: 600px;
+  height: 200px;
+  padding: 1rem;
+  overflow: scroll;
+  z-index: 999999999;
+  font-size: 0.75rem;
+  font-family: monaco, Consolas, "courier new", courier, monospaced; }
+  #tablet-out * {
+    color: #373737 !important; }
+  #tablet-out span {
+    display: inline-block;
+    padding: 0 1rem; }
+  #tablet-out span.tout-label {
+    background-color: whitesmoke;
+    color: blue !important;
+    border-right: 1px solid #b4b4b4;
+    width: 100px; }
+  #tablet-out div {
+    border-bottom: 1px dotted #e1e1e1; }
 
 @-webkit-keyframes modal_loading_dots {
   0% {
@@ -5870,7 +5894,7 @@ div.view-cart-row.total * {
     text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.5);
     padding-bottom: 0;
     margin-bottom: 0; }
-  #modal-masthead h2 {
+  #modal-masthead h2, #modal-masthead h2 em {
     text-align: center;
     background-color: #373737;
     padding: 0.3125rem;
@@ -5882,6 +5906,8 @@ div.view-cart-row.total * {
     color: #faea06;
     border: 2px solid white;
     box-shadow: 0 0 0.333rem rgba(0, 0, 0, 0.5); }
+    #modal-masthead h2 em, #modal-masthead h2 em em {
+      font-style: italic; }
   #modal-masthead img {
     height: 5.333rem;
     width: auto; }
@@ -5926,6 +5952,15 @@ div.view-cart-row.total * {
       .modal-button.sml span[class*="icon-"] {
         -webkit-transform: translateY(0.2rem) !important;
         font-size: 1.25em; }
+  .modal-button.huge {
+    padding: 2rem; }
+    .modal-button.huge span {
+      font-size: 6.25rem;
+      line-height: 6.25rem; }
+  .modal-button.success {
+    background-color: #43ac6a; }
+    .modal-button.success:hover {
+      background-color: #73c892; }
   .modal-button.full-width {
     width: 100%; }
   .modal-button:hover {

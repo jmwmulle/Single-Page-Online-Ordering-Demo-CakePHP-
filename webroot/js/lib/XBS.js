@@ -6,6 +6,8 @@
  * About.me: about.me/thisimpetus
  */
 
+var printer_ip = "192.168.1.129";
+
 window.XBS = {
 	init: function (is_splash, page_name, host, cart) {
 		XBS.cart = xbs_cart;
@@ -18,10 +20,10 @@ window.XBS = {
 		XBS.splash = xbs_splash;
 		XBS.validation = xbs_validation;
 		XBS.vendor = xbs_vendor;
-
+		XBS.printer.open_printer(printer_ip)
+		pr(XBS.printer.status, "printerStatus");
 		XBS.setHost(host);
 		XBS.data.store_status = store_status;
-		pr(XBS.data.store_status);
 		XBS.data.cfg.page_name = page_name;
 		XBS.data.cfg.is_splash = is_splash === true;
 		var init_status = {

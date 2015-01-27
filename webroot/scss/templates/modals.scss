@@ -235,7 +235,7 @@ div.view-cart-row {
     text-shadow    : 0 0 0.5rem $white-a50;
     padding-bottom : 0;
     margin-bottom  : 0; }
-  h2 {
+  h2, h2 em {
     text-align       : center;
     background-color : $text-grey;
     padding          : $tight-padding;
@@ -247,6 +247,7 @@ div.view-cart-row {
     color            : $xtreme-yellow;
     border           : 2px solid $white;
     box-shadow       : 0 0 0.333rem $black-a50;
+    em { font-style: italic;}
   }
   img {
     height : 5.333rem;
@@ -297,6 +298,17 @@ div.view-cart-row {
         font-size         : 1.25em;
       }
     }
+  }
+  &.huge {
+    padding: 2rem;
+    span {
+      font-size: rem-calc(100px);
+      line-height: rem-calc(100px);
+    }
+  }
+  &.success {
+    background-color: $success-color;
+    &:hover { background-color: lighten($success-color, 15%);}
   }
   &.full-width { width : 100%; }
 

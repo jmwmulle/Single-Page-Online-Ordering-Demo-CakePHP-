@@ -45,14 +45,20 @@ function XtremeRoute(name, data) {
 			this.modal_content = data.modal + "-content";
 		}
 		if ("url" in data) {
-			this.url.url = data.url.url == C.UNSET ? null : data.url.url;
-			this.url.type = "type" in data.url ? data.url.type : "GET";
-			this.url.defer = "defer" in data.url ? data.url.defer : false;
+			if ( is_string(data.url) ) {
+				this.url.url = data.url;
+				this.url.type = C.GET;
+				this.url.defer = false;
+			} else {
+				this.url.url = data.url.url == C.UNSET ? null : data.url.url;
+				this.url.type = "type" in data.url ? data.url.type : C.GET;
+				this.url.defer = "defer" in data.url ? data.url.defer : false;
+			}
 		}
 
 		if ("params" in data) {
 			this.params = {};
-			if (isArray(data.params)) {
+			if (is_array(data.params)) {
 				for (var i = 0; i < data.params.length; i++) {
 					this.params[data.params[i]] = {value: false, url_fragment: false, post_init: false};
 				}
@@ -159,7 +165,7 @@ function XtremeRoute(name, data) {
 	 */
 	this.__debug = function (method_str, args) {
 		if (!!args) {
-			if (isArray(args)) args = args.join(", ");
+			if (is_array(args)) args = args.join(", ");
 			return this.toString() + "::" + method_str + "(" + args + ")"
 		} else {
 			return this.toString() + "::" + method_str + "#"
