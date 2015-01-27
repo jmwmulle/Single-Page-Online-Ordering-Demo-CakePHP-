@@ -163,7 +163,7 @@ var xbs_layout = {
 		fasten: function (selector) {
 			var debug_this = 0;
 			//todo: error handling & logic for objects vs arrays
-			var selectors = ( isArray(selector) ) ? selector : [selector];
+			var selectors = ( is_array(selector) ) ? selector : [selector];
 			for (var i in selectors) {
 				var sel = selectors[i];
 				var offset = $(sel).offset();
@@ -174,7 +174,7 @@ var xbs_layout = {
 				if (debug_this > 1) pr(styles);
 				$(sel).css(styles).addClass(XSM.effects.fastened);
 			}
-			return  (isArray(selector) ) ? selector : $(selector);
+			return  (is_array(selector) ) ? selector : $(selector);
 		},
 		multi_activize: function (element) {
 			if ($(element).hasClass('active')) {

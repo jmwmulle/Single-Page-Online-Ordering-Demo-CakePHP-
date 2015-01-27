@@ -10,13 +10,6 @@ var xbs_events = {
 };
 var xbs_data = {
 		store_status: null,
-		vendor: {
-			is_vendor_page: false,
-			last_tone_play: -100000,
-			last_check: 0,
-			current_order_id: null,
-			pending_orders: []
-		},
 		host_root_dirs: {
 			xDev: "",
 			xProd: "",

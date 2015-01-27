@@ -55,6 +55,8 @@
 	Router::connect('/pending', array('controller' => 'orders', 'action' => 'get_pending'));
 	Router::connect('/tablet/login', array('controller' => 'users', 'action' => 'tabletlogin'));
 	Router::connect('/add-to-cart/*', array('controller' => 'orders', 'action' => 'add_to_cart'));
+	Router::connect('/order-accepted', array('controller' => 'pages', 'action' => 'display', "order_accepted"));
+
 
 
 
