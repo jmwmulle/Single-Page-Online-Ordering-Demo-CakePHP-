@@ -299,7 +299,7 @@ class AppController extends Controller {
 		  'action' => ''
 	  	);
 		$this->Auth->loginRedirect = ___cakeUrl("users", "edit", array('id' => $this->Auth->user('id')));
-		$this->Auth->allow();
+		$this->Auth->allow();//'/display');
 	}	
 
 }

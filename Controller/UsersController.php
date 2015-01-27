@@ -15,7 +15,7 @@
 		 * @var array
 		 */
 		public $components = array( 'Paginator' );
-		public $uses = array( 'User', 'Address', 'Favourite' );
+		public $uses = array( 'User', 'Address', 'Favourite' , 'Google.GoogleDriveFiles');
 
 		/**
 		 * index method
@@ -347,11 +347,18 @@
 			}
 		}
 
+		/*view_gdrive*/
+		public function view_gdrive() {
+			$data = $this->GoogleDriveFiles->listItems(array('q' => 'trashed = false'));
+			$files = Hash::combine($data['items'], '{n}.id', '{n}.title');
+			$this->set(compact('files'));
+		}
+
 		/*beforeFilter*/
 		public function beforeFilter() {
 			parent::beforeFilter();
 
-			$this->Auth->allow( 'index', 'view', 'opauth_complete', 'add', 'login', 'tabletlogin', 'logout' ); #, 'initDB');
+			$this->Auth->allow( 'index', 'view_gdrive', 'view', 'opauth_complete', 'add', 'login', 'tabletlogin', 'logout' ); #, 'initDB');
 		}
 
 		public function initDB() {
