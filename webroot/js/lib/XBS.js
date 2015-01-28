@@ -81,13 +81,6 @@ window.XBS = {
 		var delivery_status_text;
 		var delivery_status_class;
 
-		if (XBS.data.store_status.open) {
-			store_status_text = C.OPEN;
-			store_status_class = stripCSS(XSM.global.available);
-		} else {
-			store_status_text = C.CLOSED;
-			store_status_class = stripCSS(XSM.global.unavailable);
-		}
 
 		if (XBS.data.store_status.delivering) {
 			delivery_status_text = C.DELIVERING;
@@ -97,6 +90,15 @@ window.XBS = {
 			delivery_status_class = stripCSS(XSM.global.unavailable);
 		}
 
+		if (XBS.data.store_status.open) {
+			store_status_text = C.OPEN;
+			store_status_class = stripCSS(XSM.global.available);
+		} else {
+			store_status_text = C.CLOSED;
+			store_status_class = stripCSS(XSM.global.unavailable);
+			delivery_status_text = C.UNAVAILABLE;
+			delivery_status_class = stripCSS(XSM.global.unavailable);
+		}
 		$(XSM.global.store_status).html(store_status_text).addClass(store_status_class);
 		$(XSM.global.delivery_status).html(delivery_status_text).addClass(delivery_status_class);
 
