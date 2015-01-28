@@ -64,7 +64,11 @@ var constants = {
 	FEED: 'feed',
 	FEED_CUT: "feed_cut",
 	XTREME_TABLET_USER_AGENT: 'xtreme-pos-tablet',
-	EPOS_EXCEPTION: "com.epson.eposprint.EposException"
+	EPOS_EXCEPTION: "com.epson.eposprint.EposException",
+	OPEN: "OPEN",
+	CLOSED: "CLOSED",
+	DELIVERING: "DELIVERING",
+	PICKUP_ONLY: "PICKUP ONLY"
 };
 
 var C = constants;

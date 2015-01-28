@@ -177,3 +177,35 @@ nav#login {
   &.fade-out {opacity:0;}
   transition: opacity 0.1s;
 }
+
+#topbar .third {
+  border-right: 3px double lighten($dark-grey, 5%);
+  &:first-of-type {
+    border-left: 3px double lighten($dark-grey, 5%);
+  }
+}
+#unknown-status {}
+h3.top-bar-status-header {
+  text-align: right;
+  height:$topbar-height;
+  line-height:$topbar-height;
+}
+.top-bar-status {
+  &.store, &.delivery {
+    display:block;
+    width:100%;
+    font-size:1.5rem !important;
+    height: 0.5 * $topbar-height;
+    line-height: 0.5 * $topbar-height;
+    text-align: center;
+  }
+
+  padding: 0.05 * $topbar-height 1rem;
+  &.store {
+    -webkit-transform: translateY(0.1rem) !important;
+  }
+// &.delivery {   border-top: 1px dotted $white; }
+
+  &.available { color: $success-color;}
+  &.unavailable { color: $alert-color;}
+}

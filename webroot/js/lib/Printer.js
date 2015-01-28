@@ -1,7 +1,10 @@
 /**
  * Created by jono on 1/20/15.
  */
+var allow_tab_out = false;
+
 function tab_out(output, label, error_ob) {
+	if (!allow_tab_out) return;
 	try {
 		if (output === null) output = "null";
 		if (output === true) output = "true";
@@ -27,6 +30,7 @@ function tab_out(output, label, error_ob) {
 }
 
 function tout_show(called_from) {
+	if (!allow_tab_out) return;
 	called_from = called_from ? called_from : "anon"
 	$("h4#called-from").html(called_from);
 	$("main").hide();
@@ -61,11 +65,6 @@ function XtremePrinter() {
 
 	this.init = function(ip) {
 		this.status = this.open_printer(ip);
-//		var data = sprintf("<pre>%s</pre>", JSON.stringify({printer_avail: this.printer_available,
-//					open_printer_result: this.status}));
-//		tab_out(data, 'OPEN PRINTER STATUS');
-//		tout_show();
-		// basic text
 		this.add_style('default', 0, 'left', 3, 1.5, false, false);
 		this.extend_style('center', 'default', {align:'center'});
 		this.extend_style('right', 'default', {align:'right'});
@@ -327,9 +326,7 @@ function XtremePrinter() {
 		var receipts = $("<ul/>").attr('id', 'virtual-receipt').addClass('virtual-receipt-container');
 		for (var i= 0; i < this.virtual_receipts.length; i++) {
 			var receipt_wrapper = $("<li />");
-			pr(receipt_wrapper, "receipt wrapper at instantiation");
 			var receipt = $("<ul />").addClass('virtual-receipt receipt');
-			pr(receipt, "receipt wrapper at instantiation");
 			for (var j = 0; j < this.virtual_receipts[i].length; j++) {
 				$(receipt).append(this.virtual_receipts[i][j]);
 			}

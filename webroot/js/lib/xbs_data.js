@@ -56,8 +56,9 @@ var xbs_data = {
 		},
 	cfg: {
 		root: null,
-		developmentMode: true,
-		minLoadTime: 1
+		developmentMode: false,
+		minLoadTime: 1,
+		store_status_inspection_timeout: 61000  // ie. 61 seconds
 	}
 };
 

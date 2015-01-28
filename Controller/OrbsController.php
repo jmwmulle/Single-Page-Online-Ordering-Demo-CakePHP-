@@ -114,7 +114,7 @@ class OrbsController extends AppController {
 	}
 
 	public function menu_item($id) {
-		if ($this->request->is('ajax') && $this->Orb->exists($id) || true) {
+		if ($this->request->is('ajax') && $this->Orb->exists($id)) {
 			$filters =  array("premium" => 0, "meat" => 0, "veggie" => 0, "sauce" => 0, "cheese" => 0);
 			$this->layout = 'ajax';
 			$orb = $this->Orb->findById($id);

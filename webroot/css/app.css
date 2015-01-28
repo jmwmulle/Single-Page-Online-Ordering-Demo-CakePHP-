@@ -5334,6 +5334,33 @@ nav#login {
   #topbar .loading.fade-out {
     opacity: 0; }
 
+#topbar .third {
+  border-right: 3px double #262626; }
+  #topbar .third:first-of-type {
+    border-left: 3px double #262626; }
+
+
+h3.top-bar-status-header {
+  text-align: right;
+  height: 65px;
+  line-height: 65px; }
+
+.top-bar-status {
+  padding: 3.25px 1rem; }
+  .top-bar-status.store, .top-bar-status.delivery {
+    display: block;
+    width: 100%;
+    font-size: 1.5rem !important;
+    height: 32.5px;
+    line-height: 32.5px;
+    text-align: center; }
+  .top-bar-status.store {
+    -webkit-transform: translateY(0.1rem) !important; }
+  .top-bar-status.available {
+    color: #43ac6a; }
+  .top-bar-status.unavailable {
+    color: #f04124; }
+
 @-webkit-keyframes ellipses-glow-1 {
   0% {
     color: #faea06; }

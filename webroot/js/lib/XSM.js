@@ -9,6 +9,8 @@ var XSM = {
 		activizing_list: "ul.activizing li",
 		active_list_item: "li.active",
 		ajaxLink:".ajax-link",
+		available: ".available",
+		unavailable: ".unavailable",
 		footer: "footer",
 		imageQueue: "#image-loading-queue",
 		loadingScreen: "#loadingScreen",
@@ -16,7 +18,10 @@ var XSM = {
 		multi_activizing: ".multi-activizing",
 		page_content: "#page-content",
 		preserve_aspect_ratio: ".preserve-aspect-ratio",
-		route: "*[data-route]"
+		route: "*[data-route]",
+		store_status: "#store-status",
+		delivery_status: "#delivery-status",
+		unknown_status: "#delivery-status",
 	},
 	effects: {
 		active: "active",
