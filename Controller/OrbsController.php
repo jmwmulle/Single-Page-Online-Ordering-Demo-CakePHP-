@@ -154,8 +154,9 @@ class OrbsController extends AppController {
  * csv_to_menu
  */
 	public function csv_to_menu($menu_file, $opts_file) { 
-		$db = ConnectionManager::getDataSource('default');
-		$db->begin();
+		$db = mysqli_connect('development-xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com','xtremeAdmin','xtremePizzaDBDB!','development_xtreme');
+		//ConnectionManager::getDataSource('default');
+		$db->begin_transaction();
 
 		try {	
 			// ORBOPTS
@@ -166,7 +167,7 @@ class OrbsController extends AppController {
 				$opt_query_str = "INSERT INTO `orbopts` (`pricelist_id`, `title`, `meat`, `veggie`,`sauce`, `cheese`,`condiment`,`burger`,`salad`, `pizza`,`premium`,`pita`, `subs`, `donair`, `nacho`, `poutines`, `fingers`, `exception_products`) VALUES (-1, '%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '')";
 
 				$opt_query_str = sprintf($opt_query_str, $opt[0], 	$opt[1], $opt[2], $opt[3], $opt[4], $opt[5], $opt[6], $opt[7], $opt[8], $opt[9], $opt[10], $opt[11], $opt[12], $opt[13], $opt[14], $opt[15]);				
-				$db->rawQuery($opt_query_str);
+				$db->query($opt_query_str);
 			}
 
 			$xtreme_data = explode("\n", file_get_contents($menu_file));
@@ -178,22 +179,22 @@ class OrbsController extends AppController {
 				if ($orb[13] == "FALSE") $orb[13] = ""; // description set to blank str.
 				$orb_query_str = "INSERT INTO `orbs` (`title`,`description`,`pricedict_id`, `pricelist_id`, `opt_count`, `premium_count`, `config`) VALUES ('%s','%s', %s, %s, %s, %s, '')";
 				$orb_query = sprintf($orb_query_str, $orb[0], $orb[13], -1, -1, 0, 0);
-				$db->rawQuery($orb_query);
+				$db->query($orb_query);
 				$orb_id = $db->insert_id;
 				
 				// ORBCATS & ORBS_ORBCATS
 				if ($orb[7] == "FALSE") $orb[7] = '';
 				$orbcat_query_str = sprintf("SELECT `id` FROM `orbcats` WHERE `orbcats`.`title` = '%s' AND `orbcats`.`subtitle` = '%s'", $orb[6], $orb[7]);
 				$orbcat_id = null;
-				$orbcat_id = $db->rawQuery($orbcat_query_str)->fetch_all();
+				$orbcat_id = $db->query($orbcat_query_str)->fetch_all();
 				if ( !empty($orbcat_id) ) {
 					$orbcat_id = $orbcat_id[0][0];
 				} else {
-					$db->rawQuery(sprintf("INSERT INTO `orbcats` (`primary_menu`, `title`, `subtitle`) VALUES (1, '%s', '%s')", $orb[6], $orb[7]));
+					$db->query(sprintf("INSERT INTO `orbcats` (`primary_menu`, `title`, `subtitle`) VALUES (1, '%s', '%s')", $orb[6], $orb[7]));
 					$orbcat_id = $db->insert_id;
 				}
 				
-				$db->rawQuery(sprintf("INSERT INTO `orbs_orbcats` (`orb_id`, `orbcat_id`) VALUES (%s, %s)", $orb_id, $orbcat_id));
+				$db->query(sprintf("INSERT INTO `orbs_orbcats` (`orb_id`, `orbcat_id`) VALUES (%s, %s)", $orb_id, $orbcat_id));
 				
 				// ORBS_ORBOPTS	
 				$orb_flag_labels = array("burger", "salad",	"pizza", "pita", "subs", "donair", "nacho", "poutines", "fingers");
@@ -208,9 +209,9 @@ class OrbsController extends AppController {
 					}
 				}
 				if ($included_flags > 0) {
-					$matched_opts = $db->rawQuery($opt_search_str)->fetch_all();
+					$matched_opts = $db->query($opt_search_str)->fetch_all();
 					foreach($matched_opts as $opt) {
-						$db->rawQuery(sprintf('INSERT INTO `orbs_orbopts` (`orb_id`, `orbopt_id`) VALUES (%s, %s)', $orb_id, $opt[0]));
+						$db->query(sprintf('INSERT INTO `orbs_orbopts` (`orb_id`, `orbopt_id`) VALUES (%s, %s)', $orb_id, $opt[0]));
 					} 
 				}	
 				// PRICELISTS
@@ -229,7 +230,7 @@ class OrbsController extends AppController {
 					}
 				}
 
-				$price_list_id =  $db->rawQuery($price_list_query_str)->fetch_all();
+				$price_list_id =  $db->query($price_list_query_str)->fetch_all();
 				echo "after fetch all: <br />";
 				pr($price_list_id);
 				if ( !empty($price_list_id) ) {
@@ -254,14 +255,14 @@ class OrbsController extends AppController {
 					$values .= ") ";
 					$price_list_query_str = sprintf($price_list_query_str, $fields, $values);
 					pr($price_list_query_str);
-					$db->rawQuery($price_list_query_str);
+					$db->query($price_list_query_str);
 					$price_list_id = $db->insert_id;
 					pr($price_list_id);
 				}
 				$update_orb_price_list = "UPDATE `orbs` SET `pricelist_id` = $price_list_id WHERE `orbs`.`id` = $orb_id";
 				pr($update_orb_price_list);
 				echo "<hr />";
-				$db->rawQuery($update_orb_price_list);
+				$db->query($update_orb_price_list);
 				
 				// PRICEDICTS
 				$pd = array_slice($orb, 8,5);
@@ -278,15 +279,15 @@ class OrbsController extends AppController {
 					}
 				}
 
-				$price_dict_id =  $db->rawQuery($price_dict_query_str)->fetch_all();
+				$price_dict_id =  $db->query($price_dict_query_str)->fetch_all();
 				if ( !empty($price_dict_id) ) {
 					$price_dict_id = $price_dict_id[0][0];
 				} else {
 					$price_dict_query_str = "INSERT INTO `pricedicts` (`l1`, `l2`, `l3`, `l4`, `l5`, `l6`) VALUES ('%s', '%s', '%s', '%s', '%s', '')";
-					$db->rawQuery(sprintf($price_dict_query_str, $pd[0], $pd[1], $pd[2], $pd[3], $pd[4]));
+					$db->query(sprintf($price_dict_query_str, $pd[0], $pd[1], $pd[2], $pd[3], $pd[4]));
 					$price_dict_id = $db->insert_id;
 				}
-				$db->rawQuery("UPDATE `orbs` SET `pricedict_id` = $price_dict_id WHERE `orbs`.`id` = $orb_id");
+				$db->query("UPDATE `orbs` SET `pricedict_id` = $price_dict_id WHERE `orbs`.`id` = $orb_id");
 			}
 		} catch (Exception $e) {
 			$db->rollback();
@@ -305,8 +306,8 @@ class OrbsController extends AppController {
 	public function upload_menu() {
 		//$this->set('response', 
 		if ($this->request->is('post')) {
-			db($this->csv_to_menu($this->request->data['Orb']['Menu File']['tmp_name'],
-				$this->request->data['Orb']['Opts File']['tmp_name']));
+			$this->csv_to_menu($this->request->data['Orb']['Menu File']['tmp_name'],
+				$this->request->data['Orb']['Opts File']['tmp_name']);
 		}
 	}
 
