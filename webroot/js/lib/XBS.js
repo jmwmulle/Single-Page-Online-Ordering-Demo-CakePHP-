@@ -33,7 +33,7 @@ window.XBS = {
 			routing: XBS.routing.init(),
 			vendor: XBS.vendor.init()
 		};
-		pr(init_status, "init status");
+
 		if (XBS.data.debug) pr(init_status, "init status");
 	},
 	exec_init_sequence: function (init_list) {

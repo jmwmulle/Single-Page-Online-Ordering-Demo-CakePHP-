@@ -641,7 +641,7 @@
 			}
 		}
 
-		public function get_pending() {
+		public function get_pending($refreshed) {
 			if ( $this->request->is( 'ajax' ) || true ) {
 				$this->layout = "ajax";
 				$conditions   = array( 'conditions' => array( 'Order.state' => ORDER_PENDING ), 'recursive' => -1 );
@@ -665,7 +665,7 @@
 						}
 						$f_order    = array(
 							'id'                    => $order[ 'Order' ][ 'id' ],
-							'title'                 => $address[ 'address' ],
+							'address'               => $address[ 'address' ],
 							'customer'              => sprintf( "%s %s", $address[ 'firstname' ], $address[ 'lastname' ] ),
 							'order_method'          => $detail[ 'Order' ][ 'order_method' ],
 							'payment_method'        => $detail[ 'Order' ][ 'payment_method' ],
@@ -692,9 +692,9 @@
 						$f_order[ 'food' ] = $food_array;
 						$f_orders[ ]       = $f_order;
 					}
-					$response = array( 'success' => true, 'error' => false, 'orders' => $f_orders );
+					$response = array( 'success' => true, 'error' => false, 'orders' => $f_orders, 'refresh' => true, 'refreshed' => $refreshed);
 				} catch ( Exception $e ) {
-					$response = array( 'success' => false, 'error' => $e, 'orders' => false );
+					$response = array( 'success' => false, 'error' => $e, 'orders' => false, 'refresh' => true, 'refreshed' => $refreshed);
 				}
 
 				$this->set( compact( 'response' ) );
