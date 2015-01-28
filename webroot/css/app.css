@@ -5356,6 +5356,9 @@ h3.top-bar-status-header {
     text-align: center; }
   .top-bar-status.store {
     -webkit-transform: translateY(0.1rem) !important; }
+  .top-bar-status.closed {
+    font-size: 3em !important;
+    -webkit-transform: translateY(1rem) !important; }
   .top-bar-status.available {
     color: #43ac6a; }
   .top-bar-status.unavailable {

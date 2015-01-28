@@ -45,7 +45,7 @@
 						echo "xProd";
 						break;
 					}?>";
-		var store_status = <?php echo $this->get('store_status'); ?>;
+		var store_status = <?php echo $this->get('store_status') ? $this->get('store_status') : "{reachable:false, delivering:false, time:0}"; ?>;
 		var is_splash = <?php echo ($this->get("is_splash")) ? 'true' : 'false';?>;
 		var page_name = "<?php echo ($this->get("page_name")) ? $this->get("page_name") : "default"; ?>";
 	</script>
@@ -73,10 +73,10 @@
 	echo $this->fetch( 'main' );
 ?>
 <script>
-//	window.___gcfg = {
-//		lang: 'zh-CN',
-//		parsetags: 'onload'
-//	};
+	window.___gcfg = {
+		lang: 'zh-CN',
+		parsetags: 'onload'
+	};
 </script>
 </body>
 </html>
