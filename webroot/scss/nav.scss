@@ -201,8 +201,11 @@ h3.top-bar-status-header {
   }
 
   padding: 0.05 * $topbar-height 1rem;
-  &.store {
-    -webkit-transform: translateY(0.1rem) !important;
+  &.store { -webkit-transform: translateY(0.1rem) !important; }
+
+  &.closed{
+    font-size: 3em !important;
+    -webkit-transform: translateY(1rem) !important;
   }
 // &.delivery {   border-top: 1px dotted $white; }
 

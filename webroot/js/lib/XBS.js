@@ -6,8 +6,6 @@
  * About.me: about.me/thisimpetus
  */
 
-var printer_ip = "192.168.1.129";
-
 window.XBS = {
 	init: function (is_splash, page_name, host, cart) {
 		XBS.cart = xbs_cart;
@@ -95,9 +93,8 @@ window.XBS = {
 			store_status_class = stripCSS(XSM.global.available);
 		} else {
 			store_status_text = C.CLOSED;
-			store_status_class = stripCSS(XSM.global.unavailable);
-			delivery_status_text = C.UNAVAILABLE;
-			delivery_status_class = stripCSS(XSM.global.unavailable);
+			store_status_class = ['closed', stripCSS(XSM.global.unavailable)].join(" ");
+			delivery_status_text = null;
 		}
 		$(XSM.global.store_status).html(store_status_text).addClass(store_status_class);
 		$(XSM.global.delivery_status).html(delivery_status_text).addClass(delivery_status_class);
