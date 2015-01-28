@@ -48,6 +48,9 @@ class PagesController extends AppController {
 	public function display() {
 		$path = func_get_args();
 		$count = count($path);
+
+		if ( $this->request->is('ajax') ) $this->layout = "ajax";
+
 		if (!$count) {
 			return $this->redirect('/');
 		}
@@ -55,7 +58,7 @@ class PagesController extends AppController {
 
 		if (!empty($path[0])) {
 			$page = $path[0];
-			if ($page === "splash") $this->set("isSplash", true);
+			if ($page === "splash") $this->set("is_splash", true);
 		}
 		if (!empty($path[1])) {
 			$subpage = $path[1];
@@ -64,7 +67,6 @@ class PagesController extends AppController {
 			$title_for_layout = Inflector::humanize($path[$count - 1]);
 		}
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
-
 		try {
 			$this->render(implode('/', $path));
 		} catch (MissingViewException $e) {
@@ -73,5 +75,10 @@ class PagesController extends AppController {
 			}
 			throw new NotFoundException();
 		}
+	}
+
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('display');
 	}
 }

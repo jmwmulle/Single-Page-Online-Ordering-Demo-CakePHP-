@@ -5,6 +5,7 @@
 ***************************************************************/
 .html5-3d-perspective-container {
   position            : relative;
+  -ms-perspective     : 800px;
   -webkit-perspective : 800px;
   -moz-perspective    : 800px;
   -o-perspective      : 800px;
@@ -15,18 +16,32 @@
   position           : absolute;
   width              : 100%;
   height             : 100%;
-  -webkit-transition : -webkit-transform 1s opacity 0.3s;
+  -ms-transition     : -ms-transform 1s;
+  -webkit-transition : -webkit-transform 1s;
   -moz-transition    : -moz-transform 1s;
   -o-transition      : -o-transform 1s;
   transition         : transform 1s;
-//  &.flips-over-x { transform-origin:  bottom center; }
-  &.flipped-x { transform : rotateX(180deg); }
-  &.flipped-y { transform : rotateY(180deg); }
+  //  &.flips-over-x { transform-origin:  bottom center; }
+  &.flipped-x {
+    -webkit-transform : rotateX(180deg);
+    -moz-transform    : rotateX(180deg);
+    -ms-transition    : rotateX(180deg);
+    -o-transform      : rotateX(180deg);
+    transform         : rotateX(180deg);
+  }
+  &.flipped-y {
+    -webkit-transform : rotateY(180deg);
+    -moz-transform    : rotateY(180deg);
+    -ms-transition    : rotateY(180deg);
+    -o-transform      : rotateY(180deg);
+    transform         : rotateY(180deg);
+  }
 }
 
 .preserve-3d {
   -webkit-transform-style : preserve-3d;
   -moz-transform-style    : preserve-3d;
+  -ms-transition          : preserve-3d;
   -o-transform-style      : preserve-3d;
   transform-style         : preserve-3d;
 }
@@ -38,18 +53,23 @@
   height                      : 100%;
   -webkit-backface-visibility : hidden;
   -moz-backface-visibility    : hidden;
+  -ms-backface-visibility     : hidden;
   -o-backface-visibility      : hidden;
   backface-visibility         : hidden;
 }
+
 .back-face-x {
   -webkit-transform : rotateX(180deg);
-   -moz-transform    : rotateX(180deg);
-   -o-transform      : rotateX(180deg);
-   transform         : rotateX(180deg);
+  -moz-transform    : rotateX(180deg);
+  -ms-transform     : rotateX(180deg);
+  -o-transform      : rotateX(180deg);
+  transform         : rotateX(180deg);
 }
+
 .back-face-y {
   -webkit-transform : rotateY(180deg);
-    -moz-transform    : rotateY(180deg);
-    -o-transform      : rotateY(180deg);
-    transform         : rotateY(180deg);
+  -moz-transform    : rotateY(180deg);
+  -ms-transform     : rotateY(180deg);
+  -o-transform      : rotateY(180deg);
+  transform         : rotateY(180deg);
 }

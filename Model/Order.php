@@ -34,6 +34,20 @@ class Order extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+		'invoice' => array(
+			'notEmpty' => array(
+				'rule' => array('notEmpty'),
+			),
+		),
+		'state' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+			),
+		),
+		'created' => array(
+		),
+		'modified' => array(
+		)
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed

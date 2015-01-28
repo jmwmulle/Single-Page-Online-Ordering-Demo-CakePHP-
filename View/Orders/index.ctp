@@ -12,15 +12,17 @@
 	</tr>
 	</thead>
 	<tbody>
-	<?php foreach ($orders as $order):  db($orders)?>
+	<?php foreach ($orders as $order):?>
 	<tr>
 		<td><?php echo h($order['Order']['id']); ?>&nbsp;</td>
 		<td>
 			<?php echo $this->Html->link($order['User']['id'], array('controller' => 'users', 'action' => 'view', $order['User']['id'])); ?>
 		</td>
 		<td><?php echo h($order['Order']['detail']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['created']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['modified']); ?>&nbsp;</td>
+		<td><?php echo h($order['Order']['invoice']); ?>&nbsp;</td>
+		<td><?php echo h($order['Order']['status']); ?>&nbsp;</td>
+                <td><?php echo h($order['Order']['created']); ?>&nbsp;</td>
+                <td><?php echo h($order['Order']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $order['Order']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['id'])); ?>
@@ -29,6 +31,7 @@
 	</tr>
 <?php endforeach; ?>
 	</tbody>
+        
 	</table>
 	<p>
 	<?php
@@ -53,4 +56,5 @@
 		<li><?php echo $this->Html->link(__('List Orbs'), array('controller' => 'orbs', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Orb'), array('controller' => 'orbs', 'action' => 'add')); ?> </li>
 	</ul>
+<a href="#" data-route="print/Xtreme_Text%20Is%20Xtreme/1/Left/1/2/4/1/true/true">I WANTS TO CLICK THIS</a>
 </div>

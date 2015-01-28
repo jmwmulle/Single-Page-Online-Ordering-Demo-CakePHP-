@@ -29,13 +29,37 @@
  * ...and connect the rest of 'Pages' controller's URLs.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	Router::connect('/splash-order', array('controller' => 'pages', 'action' => 'display', 'splash_order_modal'));
 	Router::connect('/menu/*', array('controller' => 'orbcats', 'action' => 'menu'));
 	Router::connect('/users/update', array('controller' => 'users', 'action' => 'edit'));
 	Router::connect('/cart/*', array('controller' => 'orders', 'action' => 'cart'));
 	Router::connect('/menuitem/*', array('controller' => 'orbs', 'action' => 'menu_item'));
 	Router::connect('/register', array('controller' => 'pages', 'action' => 'signup'));
-
+	Router::connect('/order-method/*', array('controller' => 'orders', 'action' => 'order_method'));
+	Router::connect('/confirm-address/*', array('controller' => 'orders', 'action' => 'confirm_address'));
+	Router::connect('/launch-menu/*', array('controller' => 'orbcats', 'action' => 'menu', null, null, true));
+	Router::connect('/favorite/*', array('controller' => 'users', 'action' => 'add_favourite'));
+	Router::connect('/favorites/*', array('controller' => 'users', 'action' => 'favorites'));
+	Router::connect('/settings', array('controller' => 'users', 'action' => 'account'));
+	Router::connect('/sign-up', array('controller' => 'pages', 'action' => 'display', 'sign_up'));
+	Router::connect('/login/email', array('controller' => 'users', 'action' => 'login'));
 	Router::connect('/opauth-complete/*', array('controller' => 'users', 'action' => 'opauth_complete'));
+	Router::connect('/clear-cart', array('controller' => 'orders', 'action' => 'clear'));
+	Router::connect('/review-order', array('controller' => 'orders', 'action' => 'review'));
+	Router::connect('/finish-ordering/*', array('controller' => 'orders', 'action' => 'review'));
+	Router::connect('/order-confirmation/*', array('controller' => 'orders', 'action' => 'get_status'));
+	Router::connect('/sd', array('controller' => 'orbcats', 'action' => 'resession'));
+	Router::connect('/vendor', array('controller' => 'orders', 'action' => 'vendor'));
+	Router::connect('/vendor-accept/*', array('controller' => 'orders', 'action' => 'set_status'));
+	Router::connect('/vendor-reject/*', array('controller' => 'orders', 'action' => 'set_status'));
+	Router::connect('/pending', array('controller' => 'orders', 'action' => 'get_pending'));
+	Router::connect('/tablet/login', array('controller' => 'users', 'action' => 'tabletlogin'));
+	Router::connect('/add-to-cart/*', array('controller' => 'orders', 'action' => 'add_to_cart'));
+	Router::connect('/order-accepted', array('controller' => 'pages', 'action' => 'display', "order_accepted"));
+	Router::connect('/print_response/*', array('controller' => 'orders', 'action' => 'log_printer'));
+
+
+
 
 	Router::connect('/auth/email', array('controller' => 'users', 'action' => 'login'));
 	

@@ -1,0 +1,72 @@
+title	meat	veggie	sauce	cheese	condiment	burger	salad	crust	pizza	premium	make_it_a_poutine	exception_products	pita	subs	donair	nacho	prep_type	global
+Sweet Sauce	0	0	1	0	0	0	0	0	1	0	0		0	0	0	0	0	0
+Xtra Spicy Sauce	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Xtra Sauce	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Xtra Cheese	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Xtra Regular Item	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Potato Wedges	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Sweet Potato Fries	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Xtra Cheese	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Xtra Gravy	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Xtra Meat	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Xtra Sauce	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Make it into a platter	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Make it into a regular poutine	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Make it into a specialty poutine	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Make it into a double topping poutine	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Xtra Cheese on a Burger	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Make it into a poutine platter	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Stuffing	0	0	0	0	0	0	0	0	0	0	0		0	0	0	0	0	0
+Pepperoni	1	0	0	0	0	0	0	0	1	0	0		1	1	0	0	0	0
+Salami	1	0	0	0	0	0	0	0	1	0	0		1	1	0	0	0	0
+Bacon	1	0	0	0	0	0	0	0	1	0	0		1	1	0	0	0	0
+Hamburger	1	0	0	0	0	0	0	0	1	0	0		0	1	0	1	0	0
+Italian Sausage	1	0	0	0	0	0	0	0	1	0	0		0	1	0	0	0	0
+Ham	1	0	0	0	0	0	0	0	1	0	0		1	1	0	0	0	0
+spicy chicken	1	0	0	0	0	0	0	0	1	1	1		1	1	0	1	0	0
+real bacon	1	0	0	0	0	0	0	0	1	1	0		0	0	0	0	0	0
+steak	1	0	0	0	0	0	0	0	1	1	1		1	1	0	0	0	0
+Donair Meat	1	0	0	0	0	0	0	0	1	1	1		1	1	0	1	0	0
+Sliced Bacon	1	0	0	0	0	0	0	0	1	1	1		1	1	1	1	0	0
+Wieners	1	0	0	0	0	0	0	0	1	1	0		0	0	0	0	0	0
+meatballs	1	0	0	0	0	0	0	0	1	1	0		0	0	0	0	0	0
+brothers pepperoni	1	0	0	0	0	0	0	0	1	1	1		0	1	1	1	0	0
+Onions	0	1	0	0	0	1	1	0	1	0	1		1	1	1	1	0	0
+Red Onions	0	1	0	0	0	0	0	0	1	0	1		1	1	1	1	0	0
+green Onions	0	1	0	0	0	0	0	0	1	0	1		1	1	1	1	0	0
+Tomatoes	0	1	0	0	0	0	1	0	1	0	1		1	1	1	1	0	0
+Green Peppers	0	1	0	0	0	0	0	0	1	0	1		1	1	1	1	0	0
+Mushrooms	0	1	0	0	0	0	0	0	1	0	1		1	1	1	1	0	0
+black olives	0	1	0	0	0	0	0	0	1	0	1		1	1	1	1	0	0
+green olives	0	1	0	0	0	0	0	0	1	0	1		1	1	1	1	0	0
+hot peppers	0	1	0	0	0	0	0	0	1	0	1		1	1	1	1	0	0
+jalape–o peppers	0	1	0	0	0	0	0	0	1	0	1		1	1	1	1	0	0
+roasted garlic	0	1	0	0	0	0	0	0	1	0	1		1	1	1	0	0	0
+Broccoli	0	1	0	0	0	0	0	0	1	0	1		1	1	0	0	0	0
+corn	0	1	0	0	0	0	0	0	1	0	0		0	0	0	0	0	0
+lettuce	0	1	0	0	0	1	1	0	0	0	0		1	1	0	0	0	0
+pickles	0	1	0	0	0	1	1	0	0	0	0		1	1	0	1	0	0
+cucumber	0	1	0	0	0	1	1	0	0	0	0		1	1	0	0	0	0
+sliced tomatoes	0	1	0	0	0	1	0	0	1	0	0		0	1	0	0	0	0
+Pineapple	0	1	0	0	0	0	0	0	1	1	1		1	1	0	1	0	0
+Mozzarella	0	0	0	1	0	0	0	0	1	0	1		1	1	0	1	0	0
+Cheddar	0	0	0	1	0	0	0	0	1	0	1		1	1	0	1	0	0
+feta	0	0	0	1	0	0	0	0	1	0	1		1	1	0	1	0	0
+parmesan	0	0	0	1	0	0	0	0	1	0	0		1	1	0	0	0	0
+Garlic Basted Crust	0	0	1	0	0	0	0	1	1	0	0		0	0	0	0	0	0
+Zesty BBQ Sauce	0	0	1	0	0	0	0	0	1	0	0		1	1	0	0	0	0
+Donair Sauce	0	0	1	0	0	0	0	0	1	0	1		1	1	0	0	0	0
+Sweet Sauce pizza	0	0	1	0	0	0	0	0	1	0	0		0	1	0	0	0	0
+ketchup	0	0	0	0	1	1	0	0	0	0	0		1	1	0	0	0	0
+mustard	0	0	0	0	1	1	0	0	0	0	0		1	1	0	0	0	0
+mayo	0	0	0	0	1	1	0	0	0	0	0		1	1	0	0	0	0
+relish	0	0	0	0	1	1	0	0	0	0	0		1	1	0	0	0	0
+ranch	0	0	0	0	1	0	1	0	0	0	0		1	1	0	0	0	0
+italian	0	0	0	0	1	0	1	0	0	0	0		1	1	0	0	0	0
+caesar	0	0	0	0	1	0	1	0	0	0	0		1	1	0	0	0	0
+french	0	0	0	0	1	0	1	0	0	0	0		1	1	0	0	0	0
+salsa	0	0	0	0	1	0	1	0	0	0	0		1	1	0	0	0	0
+thousand island	0	0	0	0	1	0	1	0	0	0	0		1	1	0	0	0	0
+blue cheese	0	0	0	0	1	0	1	0	0	0	0		1	1	0	0	0	0
+tzatziki	0	0	1	0	1	0	0	0	0	0	0		1	1	1	0	0	0
+pesto sauce	0	0	1	0	1	0	0	0	1	0	0		1	1	0	0	0	0

@@ -1,0 +1,207 @@
+@-webkit-keyframes reveal-orb-card-panel {
+  0% { width: $orb-card-button-width;}
+  100% { width: $orb-card-content-width;
+        background-color:$light-grey;}
+}
+@-webkit-keyframes stash-orb-card-panel {
+  0% { width: $orb-card-content-width;
+        background-color:$light-grey;}
+  100% { width: $orb-card-button-width;}
+}
+
+#orb-card-wrapper {
+  height : $orb-card-wrapper-height;
+  width  : $orb-card-wrapper-width; // active orbs floats right (ie. this - orbcard stage = visible space for active orbs)
+  margin : $orb-card-wrapper-margin;
+  overflow: hidden;
+  &.slide-left {
+     -webkit-transform : translate(-2000px, 0);
+       -moz-transform    : translate(-2000px, 0);
+       -ms-transform    : translate(-2000px, 0);
+       -o-transform      : translate(-2000px, 0);
+       transform         : translate(-2000px, 0);
+   }
+}
+
+#orb-card-container {
+  left                       : -1 * $float-pane-border-width;
+  top                        : -0.9 * $float-pane-border-width;
+  width                      : $orb-card-container-width;
+  border                     : $orb-card-stage-border;
+  border-top-right-radius    : $global-rounded;
+  border-bottom-right-radius : $global-rounded;
+  height                     : $orb-card-stage-height;
+  @include orb-card-gradient;
+  @include unselectable;
+  padding                    : $orb-card-margin;
+}
+
+// FLOAT LABELS
+.float-label {
+  visibility               : hidden;
+  width                    : $float-label-width;
+  height                   : $float-label-height;
+  -webkit-transform-origin : 100% 0;
+  -moz-transform-origin    : 100% 0;
+  -ms-transform-origin     : 100% 0;
+  -o-transform-origin      : 100% 0;
+  transform-origin         : 100% 0;
+  -webkit-transform        : $float-label-transform;
+  -moz-transform           : $float-label-transform;
+  -ms-transform           : $float-label-transform;
+  -o-transform             : $float-label-transform;
+  transform                : $float-label-transform;
+  text-shadow              : 0 0 rem-calc(6px) $black-a33;
+  transition               : visibility 150ms, margin-left 150ms;
+  &.exposed {
+    visibility  : visible;
+    margin-left : -1 * $float-label-height;
+  }
+}
+#orb-card-stage {
+  height: $orb-card-stage-height;
+  width: $orb-card-container-width;
+}
+
+div#orb-card {
+  height : $orb-card-height;
+  width  : $orb-card-width;
+  // todo: consider putting the shadow back in; then move this BG color up to the orb-card, not the section
+  section { background-color : $white; }
+
+  .orb-card-row {
+    height        : $orb-card-row-height;
+    margin-bottom : $float-pane-margin;
+  }
+
+  ul.orb-card {
+    div.orb-card-button {
+      vertical-align      : top;
+      width               : $orb-card-button-width;
+      height              : $orb-card-button-height;
+      background-repeat   : no-repeat;
+      background-position : center;
+      cursor              : pointer;
+
+
+      span {
+        vertical-align      : top;
+        display:inline-block;
+        width               : $orb-card-button-width;
+        height              : $orb-card-button-height;
+      }
+      .orb-card-row-panel {
+        display:inline-block;
+        &.true-hidden { display: none;}
+        padding-top:0.1 * $orb-card-row-height;
+        width:$orb-card-content-width;
+        height: $orb-card-row-height;
+        a, span {
+          display:inline-block;
+          padding:0;
+          margin:0;
+          text-align:center;
+        }
+      }
+      #orb-card-register-panel {
+        span, a { width:25%;}
+      }
+      #orb-card-social-panel {
+        span, a { width:33%;}
+      }
+    }
+  }
+}
+
+div.orb-card-content {
+  width       : $orb-card-content-width;
+  margin-left : $float-pane-margin;
+  position    : relative; // only necessary for floating orb title; remove if you fix that
+  height      : $orb-card-row-height;
+
+  &#description {
+    background-color : $light-grey;
+    padding          : $medium-padding;
+  }
+  &#price-matrix {
+    ul {
+      margin-top : -6px;
+      height     : $price-matrix-max-height;
+      overflow-y : auto;
+      @include blue_scroll;
+    }
+    li:hover { background-color : $very-light-grey; }
+
+    h5 { height : $price-matrix-header-height; }
+    h5, li div {
+      width   : 50%;
+      padding : 0;
+      margin  : 0;
+      display : inline-block;
+      padding : $price-matrix-header-padding;
+    }
+    h5:last-of-type { padding-right : $orb-card-price-table-padding-right; }
+    &#orb-card-options { background-color : $text-grey; }
+  }
+}
+
+
+
+ul.orb-card {
+  position:absolute;
+  overflow:hidden !important;
+}
+
+
+
+.orb-card-row.swap-width {
+    .orb-card-button {
+      transition: color $global-transition-time, background-color $global-transition-time, width 0.5s ease-in-out;
+      width: $orb-card-inner-width !important;
+      background-color:$light-grey;
+      position:relative;
+      .icon-orb-card-register { background-color:$xtreme-yellow;}
+      .icon-orb-card-share {background-color:$xtreme-blue;}
+    }
+    .orb-card-content { position: absolute;}
+}
+.orb-card-button.stash { -webkit-animation: stash-orb-card-panel 0.5s ease-in-out normal running forwards; }
+#orb-card-row-3 { overflow-y:hidden;}
+
+
+
+#OrderOrbPreparationInstructions-wrapper { width : rem-calc(175px); }
+
+#OrderOrbQuantity-wrapper { width : rem-calc(60px); }
+
+input#orderOrbQuantity { width : 3rem; }
+
+.orb-size-panel li {
+    padding-bottom : 0;
+    padding-top: 0;
+    h3 { height: 1.333333 * $h3-font-size;}
+    &:first-of-type { padding-left : 0; }
+    &:last-of-type { padding-right : 0; }
+    &.active h3 { background-color: $xtreme-yellow}
+}
+
+#order-details {
+  & > div { vertical-align : top; }
+  #orb-order-form { width : $orb-configure-form-width; }
+  #tiny-orb-opts-list {
+    padding  : $tight-padding;
+    width    : $tiny-orb-opt-list-width;
+    height   : rem-calc(65px);
+    overflow : hidden;
+    ul { margin : 0; }
+    li {
+      float            : left;
+      display          : inline-block;
+      padding          : 0 $tight-padding;
+      margin           : 1px;
+      height           : rem-calc(16px);
+      background-color : $light-grey;
+      vertical-align: middle;
+    }
+  }
+}

@@ -1,98 +1,116 @@
-<?php echo $this->set('title_for_layout', 'Shopping Cart'); ?>
+<?php echo $this->set( 'title_for_layout', 'Shopping Cart' ); ?>
 
-<?php $this->Html->addCrumb('Shopping Cart'); ?>
+<?php $this->Html->addCrumb( 'Shopping Cart' ); ?>
 
-<?php echo $this->Html->script(array('cart.js'), array('inline' => false)); ?>
-
-<h1>Your Order</h1>
-
-<?php if(empty($cart['OrderItem'])) : ?>
-
-You haven't ordered anything yet.
-
-<?php else: ?>
-
-<?php echo $this->Form->create(NULL, array('url' => array('controller' => 'orders', 'action' => 'cartupdate'))); ?>
-
-<hr>
+<?php echo $this->Html->script( array( 'cart.js' ), array( 'inline' => false ) );
+//	db($cart);
+//	db($cart);
+echo $this->element("modal_masthead", array(
+	"header" => "Mmmm... Cart Contents",
+"subheader" => "Couldn't have chosen better ourselves!")); ?>
 
 <div class="row">
-	<div class="col col-sm-1">#</div>
-	<div class="col col-sm-7">ITEM</div>
-	<div class="col col-sm-1">PRICE</div>
-	<div class="col col-sm-1">QUANTITY</div>
-	<div class="col col-sm-1">SUBTOTAL</div>
-	<div class="col col-sm-1">REMOVE</div>
-</div>
-
-<?php $tabindex = 1; $size = 0;?>
-<?php foreach ($cart['OrderItem'] as $key => $item): ?>
-
-	<div class="row" id="row-<?php echo $key; ?>">
-		<!-- <div class="col col-sm-1"><?php echo $this->Html->image('/images/small/' . $item['Orb']['image'], array('class' => 'px60')); ?></div> -->
-		<div class="col col-sm-7">
-			<strong><?php echo $this->Html->link($item['Orb']['title'], array('controller' => 'orbs', 'action' => 'view')); ?></strong>
-                        <!-- , 'slug' => $item['Orb']['slug'])); ?></strong> -->
-			<?php
-			$mods = 0;
-			if(isset($item['Orb']['title'])) :
-			$mods = $item['Orb']['id'];
-			?>
-			<br />
-			<small><?php echo $item['Orb']['orbopt_name']; ?></small>
-			<?php endif; ?>
+	<div class="large-12 columns default-content">
+	<?php if (empty( $cart[ 'OrderItem' ] )) { ?>
+		<div class="row">
+			<div id="empty-cart-message" class="large-8 large-centered columns">
+					<p>Well, "nothing" probably won't make for a satisfying meal.</p>
+					<p>But on the upside it's free?</p>
+			</div>
 		</div>
-		<div class="col col-sm-1" id="price-<?php echo $key; ?>"><?php echo $item['Orb']->price_list[$item['price_rank']]; ?></div>
-                <div class="col col-sm-1" id="desc-<?php echo $key; ?>"> <?php echo $item['Orb']['description'] ?></div>
-		<div class="col col-sm-1"><?php echo $this->Form->input('quantity-' . $key, array('div' => false, 'class' => 'numeric form-control input-small', 'label' => false, 'size' => 2, 'maxlength' => 2, 'tabindex' => $tabindex++, 'data-id' => $item['Orb']['id'], 'data-mods' => $mods, 'value' => $item['quantity'])); ?></div>
-		<div class="col col-sm-1" id="subtotal_<?php echo $key; ?>"><?php echo $item['subtotal']; ?></div>
-		<div class="col col-sm-1"><span class="remove" id="<?php echo $key; ?>"></span></div>
-	</div>
-<?php endforeach; ?>
-
-<hr>
-
-<div class="row">
-	<div class="col col-sm-12">
-		<div class="pull-right">
-		<?php echo $this->Html->link('<i class="icon-remove icon"></i> Clear Cart', array('controller' => 'orders', 'action' => 'clear'), array('class' => 'btn btn-danger', 'escape' => false)); ?>
-		&nbsp; &nbsp;
-		<?php echo $this->Form->button('<i class="icon-refresh icon"></i> Recalculate', array('class' => 'btn btn-default', 'escape' => false));?>
-		<?php echo $this->Form->end(); ?>
+		<?php } else { ?>
+		<div class="row view-cart-row cart-header">
+			<div class="large-7 columns"><span>ITEM</span></div>
+			<div class="large-2 columns text-center"><span>QUANTITY</span></div>
+			<div class="large-2 columns"><span>PRICE</span></div>
+			<div class="large-1 columns text-center">&nbsp;</div>
 		</div>
+
+		<?php foreach ($cart[ 'OrderItem' ] as $index => $item) { $item = $item[0]?>
+		<div class="row view-cart-row">
+			<div class="large-12 columns row-wrapper">
+				<div id="order-item-<?php echo $index; ?>" class="row primary-row">
+					<div class="large-7 columns"><span><?php echo $item[ 'title' ]; ?></span></div>
+					<div class="large-2 columns text-center"><span><?php echo $item['quantity'];?></span></div>
+					<div class="large-2 columns "><span><?php echo money_format("%#3.2n", $item['subtotal']);?></span></div>
+					<div class="large-1 columns text-center"><span class="icon-cancel"></div>
+				</div>
+			<?php if ( array_key_exists('orbopts', $item) ) { ?>
+				<div class="row">
+					<div class="large-12 columns secondary-row orbopts">
+						<?php foreach ( $item[ 'orbopts' ] as $opt_id => $opt ) {
+							$opt = $opt['Orbopt'];
+							$opt_weight = $item['orbopts_arrangement'][$opt_id];
+							?>
+							<a href="#" data-route="edit_orbopt_in_cart<?php echo DS.$index.DS.$opt_id;?>">
+							<span class="opt-label"><?php echo $opt[ 'title' ];?>
+							<?php switch($opt_weight) {
+										case "R":
+											echo '<span class="icon-right-side"></span>';
+											break;
+										case "L":
+											echo '<span class="icon-left-side"></span>';
+											break;
+										case "D":
+											echo '<span class="icon-double"></span>';
+											break;
+									}?>
+							</span></a>
+						<?php }?>
+					</div>
+				</div>
+			<?php }
+			if ( array_key_exists('preparation_instructions', $item) && !empty($item['preparation_instructions']) ) {?>
+				<div class="row">
+					<div class="large-12 columns secondary-row preparation-instructions">
+						<span class="preparation-instructions"><?php echo $item['preparation_instructions'];?></span>
+					</div>
+				</div>
+			<?php } ?>
+				<div class="true-hidden"><?php
+						echo $this->Form->create( null, array( 'url' => ___cakeUrl( 'orders', 'cartupdate' )) );
+						echo $this->Form->input( 'orb_id', array( 'hiddenField' => true, 'value' => $item['orb_id']) );
+						echo $this->Form->input( 'orbopts', array( 'hiddenField' => true, 'value' => $item['orbopts']) );
+						echo $this->Form->input( 'preparation_instructions', array( 'div'     => false,
+						                                                            'class'   => 'text form-control input-small',
+						                                                            'label'   => false,
+						                                                            'data-id' => $item['orb_id'],
+						                                                            'value'   => $item['preparation_instructions'] )
+						);
+						echo $this->Form->input( 'price_rank', array( 'div'     => false,
+						                                              'class'   => 'numeric form-control input-small',
+						                                              'label'   => false,
+						                                              'data-id' => $item['orb_id'],
+						                                              'value'   => $item['price_rank'] ));
+						echo $this->Form->input( 'quantity', array( 'div'     => false,
+						                                            'class'   => 'numeric form-control input-small',
+						                                            'label'   => false,
+						                                            'data-id' => $item[ 'orb_id' ],
+						                                            'value'   => $item[ 'quantity' ]));
+						echo $this->Form->end();
+					?>
+				</div>
+			</div>
+		</div>
+			<?php } ?>
+		<div class="row view-cart-row total">
+			<div class="large-12 columns">
+				<ul class="right">
+					<li>Subtotal: <span class="normal" id="subtotal">$<?php echo $cart[ 'Order' ][ 'subtotal' ]; ?></span></li>
+					<li>Sales Tax: <span class="normal" id="HST">$<?php echo $cart[ 'Order' ][ 'HST' ]; ?></span></li>
+					<li>Delivery: <span class="normal" id="delivery">$<?php echo $cart[ 'Order' ][ 'delivery' ]; ?></span></li>
+					<li>Order Total: <span class="red" id="total">$<?php echo $cart[ 'Order' ][ 'total' ]; ?></span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="large-12 large-centered columns">
+				<a href="#" class="modal-button bisecting cancel left" data-route="order/clear"><span class="icon-circle-arrow-l icon"></span><span class="text">Clear Cart</span></a
+				><a href="#" class="modal-button bisecting confirm right" data-route="order/review"><span class="text">Review My Order</span><span class="icon-circle-arrow-r icon"></span></a
+			></div>
+		</div>
+<?php } ?>
 	</div>
 </div>
-
-<hr>
-
-<div class="row">
-	<div class="col col-sm-12 pull-right tr">
-		Subtotal: <span class="normal" id="subtotal">$<?php echo $cart['Order']['subtotal']; ?></span>
-		<br />
-		<br />
-		Sales Tax: <span class="normal" id="HST">$<?php echo $cart['Order']['HST']; ?></span>
-		<br />
-		<br />
-		Delivery: <span class="normal" id="delivery">$<?php echo $cart['Order']['delivery']; ?></span>
-		<br />
-		<br />
-		Order Total: <span class="red" id="total">$<?php echo $cart['Order']['total']; ?></span>
-		<br />
-		<br />
-
-		<?php echo $this->Html->link('<i class="glyphicon glyphicon-arrow-right"></i> Checkout', array('controller' => 'orders', 'action' => 'address'), array('class' => 'btn btn-primary', 'escape' => false)); ?>
-
-		<br />
-		<br />
-
-		<?php echo $this->Form->create(NULL, array('url' => array('controller' => 'orders', 'action' => 'step1'))); ?>
-		<input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0' align='top' alt='Check out with PayPal' class="sbumit" />
-		<?php echo $this->Form->end(); ?>
-
-	</div>
-</div>
-
-<br />
-<br />
-
-<?php endif; ?>
+<div class="deferred-content slide-left"></div>
+<div id="on-close" class="true-hidden" data-action="unstash"></div>

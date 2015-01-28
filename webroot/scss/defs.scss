@@ -1,4 +1,14 @@
 //----------------------------------------------------------------------------------------------------------------MIXINS
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
 @mixin unselectable() {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -23,11 +33,6 @@
   background-position:center;
 }
 
-@mixin tightContent() {
-  padding:0;
-  margin:0;
-}
-
 @mixin disableWithOpacity($opacity: 0.33) {
   &.disabled {
     opacity:$opacity;
@@ -42,6 +47,8 @@ $base-padding : rem-calc(15px);
 $medium-padding: ($base-padding/3) * 2;
 $tight-padding: $base-padding/3;
 
+$scroll-bar-width: rem-calc(10px);
+
 /* TYPOGRAPHY */
 $body-font-size: 1rem;
 $button-font-family: "Helvetica Neue Condensed Black";
@@ -51,9 +58,13 @@ $topnav-height: rem-calc(65px);
 $topnav-h1-padding: 0 0 0 0;
 $topnav-h1-margin: (0.9 * $topnav-height - $h1-font-size)/2 rem-calc(10px) 0 rem-calc(10px);
 $topnav-h1-height: $topnav-height - $topnav-h1-padding - $topnav-h1-margin;
+$topnav-social-row: $topnav-height / 2;
+$topnav-social-icon-height: 0.8 * $topnav-social-row;
+
 
 $focus-pane-height: rem-calc(360);
-
+$float-pane-margin: rem-calc(20px);
+$float-pane-border-width: rem-calc(6px);
 $float-pane-shadow-size: rem-calc(50px);
 $float-pane-shadow-offset: rem-calc(8px);
 
@@ -66,8 +77,7 @@ $splash-circle-min-diameter: rem-calc(200px);
 $splash-circle-transition-time: 1s;
 
 /*   MENU   */
-$float-pane-margin: rem-calc(20px);
-$float-pane-border-width: rem-calc(8px);
+
 $menu-top-padding: $topnav-height + $float-pane-margin;
 $menu-height: rem-calc(600px);
 $menu-row-height: 0.5 * ($menu-height - 1.5 * $float-pane-margin);
@@ -94,46 +104,91 @@ $user-activity-panel-width: 0.25 * $user-activity-height;
 $user-activity-panel-height: $user-activity-panel-width;
 $user-activity-panel-font-size: 0.2 * $user-activity-panel-width;
 
-  // ORB CARD STAGE
+
+// ORB CARD STAGE
+    // ORB CARD WRAPPER
 $orb-card-wrapper-width: $row-width - $column-gutter;
 $orb-card-wrapper-height: $menu-row-height;
 $orb-card-wrapper-inner-height: $orb-card-wrapper-height - 2 * $float-pane-border-width;
+$orb-card-wrapper-inner-width: $orb-card-wrapper-width - 2 * $float-pane-border-width;
 $orb-card-wrapper-margin: $float-pane-margin 0 $float-pane-shadow-size 0;
-$min-orb-list-width: 0.33333 * $orb-card-wrapper-width;
-$orb-card-stage-height: $menu-row-height; // todo: media queries yo
-$orb-card-stage-width: $orb-card-wrapper-width - $min-orb-list-width;
-$orb-card-stage-border-width: 0.75 * $float-pane-border-width;
-$orb-card-stage-border: $orb-card-stage-border-width solid $white;
-$orb-card-stage-menu-width: 0.5 * $orb-card-wrapper-width;
-$orb-card-stage-menu-height: $orb-card-wrapper-inner-height;
-$orb-card-stage-menu-item-height: 0.2 * ($orb-card-stage-height - 2 * $orb-card-stage-border-width);
-$orb-card-stage-menu-padding-left: 0.33333 * $orb-card-stage-menu-width;
-
-  // ORB CARD
+    // ORB CARD
+$orb-card-container-width: 2 * $orb-card-wrapper-width/3;
 $orb-card-width:  0.5 * $orb-card-wrapper-width;
 $orb-card-height: (0.9 * $orb-card-wrapper-height) - $float-pane-border-width; //$orb-card-wrapper-height - 2 * $float-pane-margin;
-$orb-card-padding: rem-calc(10px);
-$orb-card-inner-width: $orb-card-width - (2 * $orb-card-padding);
+$orb-card-inner-width: $orb-card-width - (2 * $medium-padding);
 $orb-card-margin-left: 0.5 * $user-activity-panel-width;
 $orb-card-vertical-margin:  0.05 * $orb-card-wrapper-height;
 $orb-card-margin: $orb-card-vertical-margin 0 $orb-card-vertical-margin $orb-card-margin-left;
 $orb-card-shadow-position:  ($orb-card-margin-left - (0.107 * $orb-card-width)) ($orb-card-height - rem-calc(4px) );
 $orb-card-shadow-size: $orb-card-width * 1.2 rem-calc(25px) ; // ie. 10% width of orbcard in both directions;
-$orb-card-row-height: ($orb-card-height - 4 * $orb-card-vertical-margin) / 3;
+$orb-card-row-height: ($orb-card-height - (2 * $medium-padding + 2 * $float-pane-margin)) / 3;
 $orb-card-button-width:$orb-card-row-height;
 $orb-card-button-height:$orb-card-row-height;
 $orb-card-content-width: $orb-card-inner-width - $orb-card-button-width - $float-pane-margin; // float-pane-margin is used as button/content separation width
 $orb-card-scrollbar-width: rem-calc(10px);
 $orb-card-price-table-padding-left: rem-calc(15px);
 $orb-card-price-table-padding-right: $orb-card-price-table-padding-left + $orb-card-scrollbar-width;
+
+ // ORB CARD STAGE MENU
+$orb-card-stage-height: $menu-row-height; // todo: media queries yo
+$orb-card-stage-width: $orb-card-wrapper-inner-width;
+$orb-card-stage-border-width: $float-pane-border-width;
+$orb-card-stage-border: $orb-card-stage-border-width solid $white;
+$orb-card-stage-menu-width: $orb-card-wrapper-width - ($orb-card-width + $orb-card-margin-left);
+$orb-card-stage-menu-item-height: 0.2 * ($orb-card-stage-height - 2 * $orb-card-stage-border-width);
+$orb-card-stage-menu-height: $orb-card-wrapper-inner-height - $orb-card-stage-menu-item-height;
+$orb-card-stage-menu-padding-left: 0.33333 * $orb-card-stage-menu-width;
 $triangle-border-width: rem-calc(12px);
+
 $triangle-extrude-position: -1 * $triangle-border-width;
 $triangle-center-position: 0.5 * $orb-card-button-width - $triangle-border-width;
 $price-matrix-header-padding: 0 ($orb-card-price-table-padding-right - $orb-card-scrollbar-width) 0 $orb-card-price-table-padding-left;
 $price-matrix-header-height: $h5-font-size;
 $price-matrix-max-height: $orb-card-row-height - $price-matrix-header-height;
+
+$orb-opt-right-padding: $base-padding - $scroll-bar-width;
+$orb-opt-icon-bg-diameter: rem-calc(30px);
+$orb-opt-icon-half-bg-width: rem-calc(30px) / 2;
+$orb-opt-icon-button-height: $orb-card-stage-menu-item-height;
+$orb-opt-icon-button-width: $orb-opt-icon-bg-diameter;
+$orb-opt-icon-vertical-padding: ($orb-opt-icon-button-height - $orb-opt-icon-bg-diameter) / 2;
+$orb-opt-icon-full-padding: 0;
+$orb-opt-filter-height: $orb-card-stage-menu-item-height - 2 * $tight-padding;
+$orb-opt-filter-padding-left: $orb-card-stage-menu-width  - ($orb-card-wrapper-width / 3) + $base-padding;
+$orb-opt-filter-button-height: $orb-opt-filter-height / 2;
+$orb-opt-filter-button-width: ($orb-card-stage-menu-width - $orb-opt-filter-padding-left - ($base-padding + 2 * $tight-padding)) / 3;
+$orb-opt-text-width: $orb-card-stage-menu-width - ($orb-opt-right-padding + $orb-opt-filter-padding-left + 5 * $orb-opt-icon-button-width);
+$orb-opt-filter-all-height: $orb-card-stage-menu-item-height - 2 * $tight-padding;
+$orb-opt-filter-all-inner-height: $orb-card-stage-menu-item-height - 4 * $tight-padding;
+$orb-opt-filter-all-width: 6.25rem;
+$orb-opt-filter-all-transform-width: $orb-opt-filter-all-width - 1rem;
+
+  // FLOAT LABELS
+$float-label-height: $h3-font-size * 1.75;
+$float-label-width: $orb-card-wrapper-inner-height;
+$float-label-transform:  rotate(270deg) translate(0, -1 * ($float-label-width - $float-label-height));
+
+
 $float-label-exposed-bottom: (0.5 * $orb-card-height) - $orb-card-vertical-margin;
 $float-label-exposed-margin: -0.5 * $orb-card-height + $h3-font-size ;
+
+// ORB CONFIGURATION
+$orb-preparation-instructions-field-width: rem-calc(175px); // arbitrarily chosen, see next line
+$orb-quantity-field-width: rem-calc(60px); // arbitrarily chosen from min. size needed to fit both fields
+$orb-configure-form-width: $orb-preparation-instructions-field-width + $orb-quantity-field-width;
+$orb-quantity-wrapper-width: $orb-configure-form-width / 3;
+$orb-preparation-wrapper-width: $orb-configure-form-width;
+$orb-preparation-label-width: 0.33333333 * $orb-preparation-wrapper-width;
+$orb-preparation-field-width: $orb-preparation-wrapper-width - $orb-preparation-label-width;
+$tiny-orb-opt-list-width: $orb-card-inner-width - $orb-configure-form-width;
+
+  // ORDER-MODAL
+$order-modal-top: 0.25 * $orb-card-wrapper-inner-height;
+$order-modal-height: 0.5 * $orb-card-wrapper-inner-height;
+$order-modal-content-shadow-size: rem-calc(20px);
+$order-modal-content-height: $order-modal-height - 2 * $order-modal-content-shadow-size;
+
 
 /*  MONTHLY  CONTENT  */
 $monthly-content-wrapper-width: $row-width - ($column-gutter + $orbcat-menu-width + 2 * $float-pane-margin + $user-activity-panel-width);
