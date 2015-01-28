@@ -156,7 +156,7 @@ class OrbsController extends AppController {
 	public function csv_to_menu($menu_file, $opts_file) { 
 		$db = mysqli_connect('development-xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com','xtremeAdmin','xtremePizzaDBDB!','development_xtreme');
 		//ConnectionManager::getDataSource('default');
-		$db->begin_transaction();
+		$db->query("START TRANSACTION;");
 
 		try {	
 			// ORBOPTS
@@ -290,11 +290,12 @@ class OrbsController extends AppController {
 				$db->query("UPDATE `orbs` SET `pricedict_id` = $price_dict_id WHERE `orbs`.`id` = $orb_id");
 			}
 		} catch (Exception $e) {
-			$db->rollback();
+			db($db);
+			$db->query("ROLLBACK;");
 			return('{success: false, error: '+$e+'}');
 		}
 
-		$db->rollback();
+		$db->query("ROLLBACK;");
 		db('Success');
 		return('{success: true, error: null}');
 	}
