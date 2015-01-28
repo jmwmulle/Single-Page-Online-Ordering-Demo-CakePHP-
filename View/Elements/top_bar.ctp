@@ -14,7 +14,6 @@
  */
 
 $logged_in =  $this->Session->read('Auth.User') ? true : false;
-$logged_in = true;
 $twitter_text = $logged_in ? "Tweet about Xtreme!" : "Login via Twitter";
 $gplus_text = $logged_in ? "+1 Xtreme!" : "Login via GooglePlus";
 $fb_text = $logged_in ? "Like Xtreme!" : "Login via Facebook";
@@ -23,7 +22,7 @@ $social_route = $logged_in ? "social" : "login/topbar";
 
 <nav id="topbar" class="text-center">
 	<div class="row">
-		<div class="large-5 small-12 columns text-center topbar-social">
+		<div class="large-4 small-12 columns text-center topbar-social">
 			<div class="row">
 				<div id="social-loading" class="large-12 columns">
 					<span class="one icon-full"></span>
@@ -83,8 +82,9 @@ $social_route = $logged_in ? "social" : "login/topbar";
 				</div>
 			</div>
 		</div>
-		<div class="large-3 large-push-1 columns">
-			<h4 class="loading fade-out">LOADING</h4>
+		<div class="large-4 columns">
+			<span id="store-status"></span>
+			<span id="delivery-status"></span>
 		</div>
 		<div class="large-4 columns show-for-large-up">
 			<ul id="hours-and-location">

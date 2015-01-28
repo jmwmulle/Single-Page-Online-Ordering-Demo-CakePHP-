@@ -10,15 +10,16 @@ var xbs_layout = {
 			setTimeout(function () {
 				$(XSM.topbar.social_loading).addClass(XSM.effects.fade_out);
 				setTimeout(function () {
-					$(XSM.topbar.social_loading).hide(XSM.effects.fade_out);
+					$(XSM.topbar.social_loading).hide();
 					setTimeout(function () {
-						$(XSM.topbar.icon_row).removeClass(XSM.effects.true_hidden)
+						$(XSM.topbar.icon_row).show();
 						setTimeout(function () {
 							$(XSM.topbar.icon_row).removeClass(XSM.effects.fade_out);
+							$(XSM.topbar.icon_row).removeClass(XSM.effects.true_hidden);
 						}, 30);
-					}, 0);
-				}, 0);
-			}, 0);
+					}, 30);
+				}, 300);
+			}, 800);
 
 			return sit_rep;
 		},
