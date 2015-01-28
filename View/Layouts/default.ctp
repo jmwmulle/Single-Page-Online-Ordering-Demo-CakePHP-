@@ -45,8 +45,7 @@
 						echo "xProd";
 						break;
 					}?>";
-<!--		var store_status = --><?php //echo $this->get('store_status'); ?><!--;-->
-		var store_status = {"open":"false","reachable":"true","delivering":"true","time":"Wed Jan 28 08:10:11 UTC 2015"};
+		var store_status = <?php echo $this->get('store_status'); ?>;
 		var is_splash = <?php echo ($this->get("is_splash")) ? 'true' : 'false';?>;
 		var page_name = "<?php echo ($this->get("page_name")) ? $this->get("page_name") : "default"; ?>";
 	</script>
