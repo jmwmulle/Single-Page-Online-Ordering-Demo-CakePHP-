@@ -76,13 +76,11 @@ var xbs_vendor = {
 		XBS.vendor.pending_orders = orders;
 		XBS.vendor.update_pending_display()
 		XBS.vendor.update_current_order()
-//		if (XBS.printer.queued()) $(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"print_from_queue/init", trigger:{}});
 		return;
 	},
 	update_current_order: function() {
 		if ( !XBS.vendor.current() && XBS.vendor.pending() ) {
 			/* Get a fresh copy of the basic order display HTML from a hidden element in the page. */
-			// ********
 			var order_content = $.parseHTML($(XSM.vendor.order_content_sample).html());
 			var order = XBS.vendor.current(XBS.vendor.pending_orders[0]);
 			var food = "";
@@ -97,10 +95,9 @@ var xbs_vendor = {
 				setTimeout(function() {
 					$(XSM.vendor.back_splash).hide();
 					setTimeout(function() {
-						var now = new Date().getTime();
-						if (now - XBS.vendor.last_tone_play > 10000) {
+						if (now() - XBS.vendor.last_tone_play > 10000) {
 							XBS.printer.play_order_tone();
-							XBS.data.last_tone_play = now;
+							XBS.data.last_tone_play = now();
 						}
 						$(XSM.vendor.next_order).removeClass(XSM.effects.slide_up);
 					}, 30);

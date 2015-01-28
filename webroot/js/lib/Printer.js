@@ -80,7 +80,7 @@ function XtremePrinter() {
 	this.print_from_queue = function() {
 		var response = {success: true, error:false, line:null, queue_empty:false};
 		if ( this.queued() ) {
-			var line = this.queue.shift();
+			var line = this.queue[0];
 			var cut = in_array(line.text, [C.CUT, C.FEED_CUT]);
 			if (line.text != C.CUT) {
 				if ( in_array(line.text, C.FEED, C.FEED_CUT) ) line.text = " \n";

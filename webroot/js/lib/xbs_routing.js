@@ -543,18 +543,21 @@ var xbs_routing = {
 							var debug_this= 0;
 							if (debug_this > 0) pr(XBS.printer.queue, "ROUTE: print_from_queue");
 							var response;
-							/* if lines in queue, then we must print! */
-							if ( XBS.printer.queued() ) response = XBS.printer.print_from_queue();
-//							} else {
-//								if (this.read('context') != 'init') return;
-//								response = {success:false, error:false, queue_empty: false, line:null};
-//							}
-							if (!response) return;
-							XBS.printer.tab_out(response, "print response");
-							if ( response.error) {
-								XBS.printer.queue.unshift({text:"WARNING: Receipt Line Dropped!", style:"h4"})
-								pr(response, "DROPPED LINE", 1);
+							switch (this.read('context') ) {
+								case 'vendor_accepted':  // ie. first entry into printing loop
+									response = XBS.printer.queued() ? XBS.printer.print_from_queue() : false;
+									break;
+								case 'line_complete':
+									response = XBS.printer.queued() ? XBS.printer.print_from_queue() : false;
+									break;
 							}
+							if (response === false) this.unset('launch');
+//
+//							XBS.printer.tab_out(response, "print response");
+//							if ( response.error) {
+//								XBS.printer.queue.unshift({text:"WARNING: Receipt Line Dropped!", style:"h4"})
+//								pr(response, "DROPPED LINE", 1);
+//							}
 //							if (response.queue_empty) {
 //								if (!XBS.printer.printer_available) XBS.printer.render_virtual_receipt();
 //								this.unset('launch');
@@ -564,7 +567,7 @@ var xbs_routing = {
 							try {
 								print_from_queue_requests++;
 //								pr(print_from_queue_requests, "print_from_queue_requests");
-								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"print_from_queue", trigger:{}});
+								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"print_from_queue/line_complete", trigger:{}});
 							} catch(e) {
 								pr(e);
 							}
@@ -679,13 +682,15 @@ var xbs_routing = {
 						},
 						launch: function() {
 							if (this.url.url) {
-								XBS.vendor.last_check = new Date().getTime();
+								XBS.vendor.last_check = now();
 								var data = $.parseJSON(this.deferal_data);
-								if (!data.error && data.orders.length > 0) XBS.vendor.post_orders(data.orders);
+								if (!data.error && data.orders.length > 0) {
+									XBS.vendor.post_orders(data.orders);
+								}
 							}
 							setTimeout(function() {
 								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "vendor_get_pending", trigger:{}});
-							}, 250);
+							}, 500);
 						}
 					}
 
@@ -741,10 +746,9 @@ var xbs_routing = {
 								XBS.vendor.last_check = now();
 								$(XSM.vendor.order_accept_button).removeClass(XSM.effects.launching);
 								$(XSM.vendor.order_accepted).addClass(XSM.effects.fade_out);
-								var order_result = XBS.printer.queue_order(order);
-								pr(order_result, 'order_rsult');
+								XBS.printer.queue_order(order);
 								$(XBS.routing).trigger(C.ROUTE_REQUEST, {
-									request:"print_from_queue/init",
+									request:"print_from_queue/vendor_accepted",
 									trigger:{}
 								});
 								if ( true ) XBS.vendor.next();
