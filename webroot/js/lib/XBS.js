@@ -21,7 +21,7 @@ window.XBS = {
 		XBS.validation = xbs_validation;
 		XBS.vendor = xbs_vendor;
 		XBS.setHost(host);
-		XBS.data.store_status = store_status;
+		XBS.data.store_status = store_status;;
 		XBS.data.cfg.page_name = page_name;
 		XBS.data.cfg.is_splash = is_splash === true;
 		var init_status = {
@@ -72,6 +72,10 @@ window.XBS = {
 	},
 
 	store_status: function() {
+		for (var key in XBS.data.store_status) {
+			if (XBS.data.store_status[key] == "true") XBS.data.store_status[key] = true;
+			if (XBS.data.store_status[key] == "false") XBS.data.store_status[key] = false
+		};
 		var store_status_text;
 		var store_status_class;
 		var delivery_status_text;
