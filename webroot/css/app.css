@@ -5626,43 +5626,51 @@ main#vendor-page {
   #accept-acknowledge.exposed {
     -webkit-animation: ok-zoom 300ms ease-in 1 normal 0s running forwards; }
 
-.virtual-receipt {
+#virtual-receipt {
   position: fixed;
   background-color: white;
   padding: 0.3125rem;
   top: 5rem;
-  width: 225px;
+  left: 6.25rem;
+  width: 25rem;
   height: auto;
-  z-index: 999999999;
+  z-index: 99999;
   font-size: 0.75rem;
   font-family: monaco, Consolas, "courier new", courier, monospaced; }
-  .virtual-receipt * {
+  #virtual-receipt * {
     color: #373737 !important; }
 
-#tablet-out {
-  position: fixed;
-  background-color: white;
-  padding: 0.3125rem;
-  top: 11.25rem;
-  width: 600px;
-  height: 200px;
-  padding: 1rem;
-  overflow: scroll;
-  z-index: 999999999;
-  font-size: 0.75rem;
+main#js-console {
+  background-color: #2d4352;
+  top: 5rem;
+  width: 37.5rem;
+  height: 50rem;
+  font-size: 0.625rem;
   font-family: monaco, Consolas, "courier new", courier, monospaced; }
-  #tablet-out * {
-    color: #373737 !important; }
-  #tablet-out span {
+  main#js-console div {
+    color: white !important;
     display: inline-block;
-    padding: 0 1rem; }
-  #tablet-out span.tout-label {
-    background-color: whitesmoke;
-    color: blue !important;
-    border-right: 1px solid #b4b4b4;
-    width: 100px; }
-  #tablet-out div {
-    border-bottom: 1px dotted #e1e1e1; }
+    vertical-align: text-top;
+    word-wrap: break-word; }
+    main#js-console div.tout-label {
+      padding: 0.1rem 0.3rem;
+      vertical-align: text-top;
+      color: blue !important;
+      border-right: 1px solid #b4b4b4;
+      width: 200px; }
+    main#js-console div.tout-text {
+      padding: 0.1rem 0.3rem;
+      background-color: #373737;
+      vertical-align: text-top;
+      font-size: 0.625rem !important;
+      width: 400px; }
+    main#js-console div.jsc-line {
+      width: 600px;
+      padding: 0;
+      margin: 0;
+      display: block;
+      border-bottom: 1px solid #43ac6a;
+      background-color: whitesmoke; }
 
 @-webkit-keyframes modal_loading_dots {
   0% {

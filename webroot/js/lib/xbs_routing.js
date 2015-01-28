@@ -1,6 +1,7 @@
 /**
  * Created by jono on 1/22/15.
  */
+	var print_from_queue_requests = 0;
 var xbs_routing = {
 		init: function () {
 			/* For launching routes via the DOM */
@@ -535,26 +536,37 @@ var xbs_routing = {
 						}
 					}
 				}),
-				print: new XtremeRoute("print", {
-					params: ["print_str", "font_id", "alignment", "line_space", "size_w", "size_h", "x_pos", "bold", "underline"],
+				print_from_queue: new XtremeRoute("print_from_queue", {
+					params:['context'],
 					callbacks: {
-						launch: function () {
-							$(C.BODY).append($("<div />").attr('id', 'js_temp_out').css({position: "fixed", top: 200 + C.PX, left: 0, zIndex: 100000, width: 400 + C.PX, backgroundColor: "rgb(45,45,45)", color: "white"}));
+						params_set: function() {
+							var debug_this= 0;
+							if (debug_this > 0) pr(XBS.printer.queue, "ROUTE: print_from_queue");
+							var response;
+							/* if lines in queue, then we must print! */
+							if ( XBS.printer.queued() ) response = XBS.printer.print_from_queue();
+//							} else {
+//								if (this.read('context') != 'init') return;
+//								response = {success:false, error:false, queue_empty: false, line:null};
+//							}
+							if (!response) return;
+							XBS.printer.tab_out(response, "print response");
+							if ( response.error) {
+								XBS.printer.queue.unshift({text:"WARNING: Receipt Line Dropped!", style:"h4"})
+								pr(response, "DROPPED LINE", 1);
+							}
+//							if (response.queue_empty) {
+//								if (!XBS.printer.printer_available) XBS.printer.render_virtual_receipt();
+//								this.unset('launch');
+//							}
+						},
+						launch: function() {
 							try {
-								print_response = window.JSInterface.printText(
-									this.read('print_str'),
-									this.read('font_id'),
-									this.read('alignment'),
-									this.read('line_space'),
-									this.read('size_w'),
-									this.read('size_h'),
-									this.read('x_pos'),
-									this.read('bold'),
-									this.read('underline'));
-								$("#js_temp_out").html(print_response);
-								console.log(print_response);
-							} catch (e) {
-								console.log(e);
+								print_from_queue_requests++;
+//								pr(print_from_queue_requests, "print_from_queue_requests");
+								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"print_from_queue", trigger:{}});
+							} catch(e) {
+								pr(e);
 							}
 						}
 					}
@@ -688,7 +700,7 @@ var xbs_routing = {
 								break;
 								case 'confirm':
 									this.url = {
-										url:"vendor-reject" + C.DS + XBS.vendor.current_order_id + C.DS + C.REJECTED,
+										url:"vendor-reject" + C.DS + XBS.vendor.current().id + C.DS + C.REJECTED,
 										type: C.POST,
 										defer:true
 									};
@@ -729,8 +741,13 @@ var xbs_routing = {
 								XBS.vendor.last_check = now();
 								$(XSM.vendor.order_accept_button).removeClass(XSM.effects.launching);
 								$(XSM.vendor.order_accepted).addClass(XSM.effects.fade_out);
-
-								if ( XBS.printer.print_accepted_order(order) || true ) XBS.vendor.next();
+								var order_result = XBS.printer.queue_order(order);
+								pr(order_result, 'order_rsult');
+								$(XBS.routing).trigger(C.ROUTE_REQUEST, {
+									request:"print_from_queue/init",
+									trigger:{}
+								});
+								if ( true ) XBS.vendor.next();
 								else $(XSM.vendor.error_pane).removeClass(XSM.effects.slide_up);
 							}
 						}

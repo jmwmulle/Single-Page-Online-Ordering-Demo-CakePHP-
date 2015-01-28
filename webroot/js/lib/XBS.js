@@ -20,8 +20,6 @@ window.XBS = {
 		XBS.splash = xbs_splash;
 		XBS.validation = xbs_validation;
 		XBS.vendor = xbs_vendor;
-		XBS.printer.open_printer(printer_ip)
-		pr(XBS.printer.status, "printerStatus");
 		XBS.setHost(host);
 		XBS.data.store_status = store_status;
 		XBS.data.cfg.page_name = page_name;
@@ -31,10 +29,12 @@ window.XBS = {
 			layout: XBS.layout.init(),
 			splash: XBS.splash.init(),
 			menu: XBS.menu.init(),
+			printer: XBS.printer.is_xtreme_tablet() ? XBS.printer.init() : 'not_tablet',
 			routing: XBS.routing.init(),
 			vendor: XBS.vendor.init()
 		};
-		if (xbs_data.debug) pr(init_status, "init status");
+		pr(init_status, "init status");
+		if (XBS.data.debug) pr(init_status, "init status");
 	},
 	exec_init_sequence: function (init_list) {
 		var meta_sit_rep = {state: true, report: {}};

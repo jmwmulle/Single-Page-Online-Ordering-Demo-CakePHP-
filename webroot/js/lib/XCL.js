@@ -60,10 +60,11 @@ var constants = {
 	REJECTED:2,
 	ACCEPT: "accept",
 	REJECT: "reject",
-	VMOUSEDOWN: "vmousedown",
-	VMOUSEOUT: "vmouseout",
-	VMOUSEMOVE: "vmousemove",
-
+	CUT: "cut",
+	FEED: 'feed',
+	FEED_CUT: "feed_cut",
+	XTREME_TABLET_USER_AGENT: 'xtreme-pos-tablet',
+	EPOS_EXCEPTION: "com.epson.eposprint.EposException"
 };
 
 var C = constants;

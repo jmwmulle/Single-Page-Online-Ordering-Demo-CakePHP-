@@ -1,140 +1,227 @@
 /**
  * Created by jono on 1/20/15.
  */
+function tab_out(output, label, error_ob) {
+	try {
+		if (output === null) output = "null";
+		if (output === true) output = "true";
+		if (output === false) output = "false";
+		if (error_ob) {
+			var error = {e_txt:output.message, e_stack:output.stack};
+			output = sprintf("<pre>%s</pre>", JSON.stringify( error, null, "\t"));
+		}
+		if (typeof(output) != "string") output = sprintf("<pre>%s</pre>", (JSON.stringify(output, null, "\t")));
+		var line = $("<div/>").addClass('jsc-line');
+		if (!label) label = "----";
+		$(line).append($("<div/>").addClass('tout-label').html(label));
+		$(line).append($("<div/>").addClass('tout-text').html(output));
+		$("main#js-console").append(line);
+	} catch (e) {
+		$('body').style({backgroundColor: 'yellow'});
+		setTimeout(function() {
+			$('body').css({backgroundColor: 'yellow'});
+			$("main").hide();
+			$("body").append($("<div/>").css({marginTop:'80px'}).html(e.message));
+		}, 250);
+	}
+}
+
+function tout_show(called_from) {
+	called_from = called_from ? called_from : "anon"
+	$("h4#called-from").html(called_from);
+	$("main").hide();
+	setTimeout(function() {
+	$("main#js-console").show();
+		setTimeout(function() {
+			$("main#js-console").css({position:'fixed', top:'80px', left:'0px', zIndex:9999999});
+		}, 100);
+	}, 50);
+}
+
+
 function XtremePrinter() {
-	this.printer_available = null;
+	this.printer_available = false;
 	this.ip = null;
 	this.status = null;
-
-
+	this.queue = [];
+	this.styles = {}
+	this.tab_out = function(text, label) { tab_out(text, label); };
+	this.tout_show = function() {tout_show();};
 	this.style_template = function() {
 		return {
-			font_id:null,
-			alignment:null,
-			line_space:null,
-			width:null,
-			height:null,
-			indent:null,
+			indent:0,
+			scale:1,
+			line_h:1,
+			align: C.LEFT,
 			bold:false,
 			underline: false
 		}
 	}
-
-	this.virtual_receipt = function(receipt_lines) {
-		var vr = $("<div/>").addClass('virtual-receipt');
-		for (var i=0; i< receipt_lines.length; i++) $(vr).append(receipt_lines[i]);
-		pr(vr, "XtremePrinter::virtual_receipt()", 2);
-		$(C.BODY).append(vr);
-		return true;
-	}
-
-	this.styles = {}
+	this.virtual_receipts = [];
 
 	this.init = function(ip) {
-		if (ip) this.open_printer(ip);
+		this.status = this.open_printer(ip);
+		this.printer_available = this.status.success;
+
+		// basic text
+		this.add_style('default', 0, 'left', 3, 1.5, false, false);
+		this.extend_style('center', 'default', {align:'center'});
+		this.extend_style('right', 'default', {align:'right'});
+
+		// headers
+		this.add_style('h1', 0, 'center', 7.5, 5, true, false);
+		this.extend_style('h2', 'h1', {scale:4, line_h:6});
+		this.extend_style('h3', 'h1', {scale:3, line_h:4.5});
+		this.extend_style('h4', 'h1', {scale:2, line_h:3});
+		this.extend_style('h5', 'h1', {scale:1, line_h:2});
+
 	}
 
+	this.print_from_queue = function() {
+		var response = {success: true, error:false, line:null, queue_empty:false};
+		if ( this.queued() ) {
+			var line = this.queue.shift();
+			var cut = in_array(line.text, [C.CUT, C.FEED_CUT]);
+			if (line.text != C.CUT) {
+				if ( in_array(line.text, C.FEED, C.FEED_CUT) ) line.text = " \n";
+				var print_response = cut ? this.print(line.text, line.style, true) : this.print(line.text, line.style);
+				if (print_response.success === false) {
+					response.success = false;
+					response.error = print_response;
+					response.line = line;
+				}
+			}
+			if (cut) this.cut(true);
+		} else {
+			this.cut(true);
+			response.queue_empty = true;
+		}
+		return response;
+	}
+
+	this.queued = function() { return this.queue.length > 0;}
 
 	this.open_printer = function(ip) {
-		var status = ip ? Android.openPrinter(ip) : Android.openDefaultPrinter();
-		this.printer_available = status.success === true;
-		this.ip = status.ip;
-		this.status = status;
+		var status;
+		if ( XBS.printer.is_xtreme_tablet() ) {
+			status = ip ? Android.openPrinter(ip) : Android.openDefaultPrinter();
+			this.printer_available = status.success ? true : false;
+			this.ip = status.ip;
+			this.status = status;
+		} else {
+			this.printer_available = false;
+			this.ip = false;
+			this.status = {ip:false, success:false};
+			status = this.status;
+		}
+		return status;
 	}
 
 	this.play_order_tone = function() {
-		return true;
-//		tout(navigator.userAgent, "userAgent");
-//		if ( navigator.userAgent === 'xtreme-pos-tablet') {
-//			Android.playTone();
-//		} else {
-//			var audio = new Audio(XSM.vendor.new_order_tone);
-//			audio.play();
-//		}
+		return
+		if ( XBS.printer.is_xtreme_tablet() ) {
+			Android.playTone();
+		} else {
+			var audio = new Audio(XSM.vendor.new_order_tone);
+			audio.play();
+		}
 	}
 
+	this.feed_line = function(lines) {
+		if (!lines && lines != 0) lines = 1;
+		for (var i = 0; i < lines; i++) this.queue_line(" \n", 'default');
+	}
+
+	this.queue_line = function(line, style, feed) {
+		if (!feed) feed = 0;
+		if (style) {
+			this.queue.push({style:style, text:line});
+		} else {
+			this.queue.push({style:'default', text:line});
+		}
+		this.feed_line(feed)
+		return true;
+	}
+
+
+	this.has_virtual_receipts = function() {
+		if ( is_array(this.virtual_receipts) ) {
+			return this.virtual_receipts.length > 0;
+		} else {
+			this.virtual_receipts = [];
+			return false;
+		}
+	}
 	/**
-	 * print_accepted_order()
+	 * queue_order()
 	 *
 	 * @param {obj} order
 	 * @returns {void}
 	 */
-	this.print_accepted_order = function(order) {
-		if (this.printer_available) {
-			var p = "";
-		    p += order.address + '\n';
-			p += 'Delivery Instructions: '+ order.delivery_instructions + '\n';
-			p += 'Time Ordered: '+ order.time + '\n';
-			p += 'Total: $' + order.price + '\n';
-			p += 'Ordered for: ' + order.order_method + '\n';
-			p += 'Paying with: ' + order.payment_method + '\n';
-			var paid = order.paid ? 'Paid: Yes\n' : 'Paid: No\n'
-			p += this.print_items(order.food);
-		        this.print_simple(p);
-		        this.cut(true);
-		} else {
-			var receipt_elements = [];
-			for (key in order)  {
-				if (key != "food" && key != "id") {
-					receipt_elements.push($("<div/>").html(sprintf("%s: %s", title_case(sel_to_str(key)), order[key])));
-				}
+	this.queue_order = function(order) {
+		tab_out("arrived", "queue_order()");
+		try {
+			tab_out("printer avail", "queue_order()");
+			this.queue_line(sprintf('Ordered At: %s', order.time), 'h4', 1);
+			this.queue_line(sprintf("For: %s", order.order_method), 'h2', 1);
+			if ( order.order_method == C.DELIVERY) {
+				if (order.address) this.queue_line(order.address, 'center', 1);
+				if ( order.delivery_instructions ) this.queue_line(order.delivery_instructions);
 			}
-			receipt_elements.push(this.print_items(order.food));
-			//this.virtual_receipt(receipt_elements)
+//			this.feed_line(3);
+			this.queue_line(sprintf("Payment Status: %s", order.paid ? "PAYED" : "OWED"), 'h3',1);
+			this.queue_line(sprintf("Payment Type: %s", order.payment_method), 'h4');
+//			this.feed_line(3);
+//			this.__queue_orb_list(order.food);
+		} catch(e) {
+			// todo: handle this maybe?!
+			tab_out(e, 'queue_order() error', true);
+			return false;
 		}
-		return true;
+		tout_show();
+		return this.queue;
 	};
 
 	/**
 	 * add_style()
 	 * @param name
-	 * @param font_id
-	 * @param alignment
-	 * @param line_space
-	 * @param width
-	 * @param height
 	 * @param indent
+	 * @param scale
+	 * @param line_space
+	 * @param alignment
 	 * @param bold
 	 * @param underline
 	 * @returns {boolean}
 	 */
-	this.add_style = function(name, font_id, alignment, line_space, width, height, indent, bold, underline) {
-		self.styles[name] = {
-			font_id: font_id,
-			alignment: alignment,
-			line_space: line_space,
-			width: width,
-			height: height,
-			indent: indent,
-			bold: bold,
-			underline: underline
+	this.add_style = function(name, indent, alignment, line_space, scale, bold, underline) {
+		this.styles[name] = {
+			align: alignment ? alignment : 'left',
+			line_h: line_space ? line_space : 1,
+			scale: scale ? scale : 1,
+			indent: indent ? indent : 0,
+			bold: bold ? bold :false,
+			underline: underline ? underline : false
 		}
 		return true;
 	}
 
-
 	/**
 	 * extend_style()
-	 *
 	 * @param {str} name
-	 * @param {str} parent_style
-	 * @param {obj} variations
+	 * @param {str} base
+	 * @param {obj} ext
 	 * @returns {boolean}
 	 */
-	
-	this.extend_style = function(name, parent_style, variations) {
+	this.extend_style = function(name, base, ext) {
 		try {
-			self.styles[name] = this.style_template();
-			for (var attr in self.styles[name]) {
-				self.styles[name][attr] = attr in variations ? variations[attr] : self.styles[parent_style][attr];
-			}
-			return true;
+			var style = this.style_template();
+			for (var attr in style)  style[attr] = attr in ext ? ext[attr] : this.styles[base][attr];
+			this.styles[name] = style
+			return {name:name, style:style};
 		} catch (e) {
-			pr(e);
-			return false;
+			return e;
 		}
 	}
-	/*
 
 	/**
 	 * show_dialog()
@@ -145,106 +232,95 @@ function XtremePrinter() {
 	 */
 	this.show_dialog = function (message, title) { if (this.printer_available) Android.showDialog(message, title);}
 
-
 	/**
-	 *  print_text()
+	 *  print()
 	 *
 	 *  @param {str} text
-	 *  @param {int} font_id
-	 *  @param {str} alignment
-	 *  @param {int} line_space
-	 *  @param {int} size_w
-	 *  @param {int} size_h
-	 *  @param {int} x_pos
-	 *  @param {bool} bold
-	 *  @param {bool} underline
-	 *  @returns {void}
+	 *  @param {int} style
+	 *  @returns {string}
 	 */
-	this.print_text = function (text, style) {
-		var s = self.styles[style];
-		if (this.printer_available) {
-			Android.printText(text, s.font_id, s.alignment, s.line_space, s.width, s.height, s.indent, s.bold, s.underline);
-		} else {
-			return text;
+	this.print = function (text, style, virtual_cut) {
+		pr({text:text, style:style, virtual_cut:virtual_cut}, "XtremePrinter::print(text, style, virtual_cut)", 2);
+		tab_out({text:text, style:style}, 'print()');
+		var response = null;
+		var s = XBS.printer.styles[style];
+		try {
+			if (this.printer_available) {
+				response = Android.printText(text, 1, s.align, s.line_h, s.scale, s.scale, s.indent, s.bold, s.underline);
+			} else {
+				if (virtual_cut || this.virtual_receipts.length === 0) this.virtual_receipts.unshift([]);
+				this.virtual_receipts[0].push(
+					$("<li/>").addClass(["virtual-receipt", style]).html(text)
+				);
+				response = {success:true, error:false};
+			}
+		} catch (e) {
+				tab_out(e, 'print error', true);
 		}
+		return response;
 	}
-
-	/**
-	 * print_simple()
-	 * @param {str} text
-	 * @returns {void}
-	 */
-	this.print_simple = function(text) { this.print_text(text, 1, 'left', 1, 1, 1, 1, false, false); }
-
-	/**
-	 * print_title()
-	 * @param {str} text
-	 * @wraps print_simple()
-	 * @returns {void}
-	 */
-	this.print_title = function (text) { this.print_text(text, 1, 'left', 1, 2, 2, 1, true, false); }
-
 
 	/**
 	 * cut()
 	 * @param {bool} feed
 	 * @returns {void}
 	 */
-	this.cut = function (feed) { if (this.printer_available) Android.cut(feed); }
+	this.cut = function (feed) { feed === true ? Android.cut(feed) : Android.cut(false); }
 
 	/**
-	 * print_items()
+	 * __queue_orb_list()
 	 * @param {obj} items
 	 * @returns {string}
 	 */
-	this.print_items = function (items) {
-		var ret;
-		if (this.printer_available) {
-			ret = "";
-			for (var name in items) ret += this.print_item(name, items[name]);
-		} else {
-			ret = $("<ul/>").addClass('order-items');
-			for (name in items) $(ret).append(this.print_item(name, items[name]));
+	this.__queue_orb_list = function (items) {
+		try {
+			for (var orb_name in items)  {
+				var item = items[orb_name];
+				pr(item);
+				try {
+					this.queue_line(sprintf("(%s) x %s", item.quantity, orb_name));
+					for (var opt in item.toppings) {
+						this.queue_line(sprintf("%s: %s", item.toppings[opt].weight, item.toppings[opt].title), 'orb_opt');
+						if (item.instructions) this.queue_line(item.instructions, 'opt_note');
+					}
+				} catch (e) {
+					tab_out({
+							e_txt: e.message,
+							e_stack: sprintf("<pre>%s</pre>", JSON.stringify(e.stack, null, "\t"))
+							}, "__format_orbs() error");
+				}
+			}
+		} catch (e) {
+			tab_out({
+				e_txt: e.message,
+				e_stack: sprintf("<pre>%s</pre>", JSON.stringify(e.stack, null, "\t"))
+				}, "__queue_orb_list() error");
 		}
-		return ret;
+		return true;
 	}
 
-	/**
-	 * print_item()
-	 * @param {str} name
-	 * @param {obj} item
-	 * @returns {string}
-	 */
-	this.print_item = function (name, item) {
-		var debug_this = 1;
-		if (debug_this > 0) pr({name:name, item:item}, "XtremePrinter::print_item(name, item)", 2);
-
-		var ret;
-		if (this.printer_available) {
-			ret = "";
-			ret += item.quantity+'x '+name+'\n';
-			ret += '$' + item.price + '\n';
-			for (var topping in item.toppings) {
-				topping = item.toppings[topping];
-				ret += '\t' + topping.title + ' ' + topping.weight +'\n';
+	this.render_virtual_receipt = function() {
+		pr(this.virtual_receipts, "XtremePrinter::render_virtual_receipt()", 2 );
+		if (this.virtual_receipts.length) return;
+		var receipts = $("<ul/>").attr('id', 'virtual-receipt').addClass('virtual-receipt-container');
+		for (var i= 0; i < this.virtual_receipts.length; i++) {
+			var receipt_wrapper = $("<li />");
+			pr(receipt_wrapper, "receipt wrapper at instantiation");
+			var receipt = $("<ul />").addClass('virtual-receipt receipt');
+			pr(receipt, "receipt wrapper at instantiation");
+			for (var j = 0; j < this.virtual_receipts[i].length; j++) {
+				$(receipt).append(this.virtual_receipts[i][j]);
 			}
-			ret += item.instructions + '\n';
-		} else {
-			var topping_str = "<span class='opt-name'>%s</span><span class='opt-weight'>(%s)</span>";
-			ret = $("<li/>").addClass('orb');
-			$("<span/>").addClass('quantity').html(sprintf("%sx", item.quantity)).appendTo(ret);
-			$("<span/>").addClass('name').html(name).appendTo(ret);
-			$("<span/>").addClass('price').html(sprintf("\$%s", item.price)).appendTo(ret);
-			var opts = $("<ul/>").addClass('opt-list');
-			for (var key in item.toppings) {
-				$("<li/>").html(sprintf(topping_str, item.toppings[key].title, item.toppings[key].weight)).appendTo(opts);
-			}
-			$(ret).append(opts);
+			$(receipt_wrapper).append(receipt);
+			$(receipts).append(receipt_wrapper);
 		}
-		return ret;
+		$(C.BODY).append(receipts);
+		this.virtual_receipts = [];
+		return true;
 	}
 
-	this.init();
+	this.is_xtreme_tablet = function() { return navigator.userAgent == C.XTREME_TABLET_USER_AGENT }
+
 	return this;
 }
 

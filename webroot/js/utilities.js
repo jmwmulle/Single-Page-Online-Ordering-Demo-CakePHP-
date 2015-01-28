@@ -567,13 +567,3 @@ $.fn.scrollTo = function (target, options, callback) {
 //
 
 
-function tout(output, label) {
-	if (output === null) output = "null"
-	if (output === true) output = "true"
-	if (output === false) output = "false"
-	var line = $("<div/>");
-	if (!label) label = "----";
-	$(line).append($("<span/>").addClass('tout-label').html(label))
-	$(line).append($("<span/>").addClass('tout-output').html(output))
-	$("#tablet-out").append(line);
-}
