@@ -99,11 +99,12 @@ window.XBS = {
 		$(XSM.global.store_status).html(store_status_text).addClass(store_status_class);
 		$(XSM.global.delivery_status).html(delivery_status_text).addClass(delivery_status_class);
 
-		var inspected_recently = Date.UTC() - Date.parse( XBS.data.store_status.time ) > XBS.data.cfg.store_status_inspection_timeout;
-		if ( !inspected_recently || !XBS.data.store_status.reachable && 2+3 < 1) {
-			$(XSM.global.store_status).hide();
-			$(XSM.global.delivery_status).hide();
-			$(XSM.global.unknown_status).show();
-		}
+//		var inspected_recently = (Date.UTC() - Date.parse( XBS.data.store_status.time ) ) > XBS.data.cfg.store_status_inspection_timeout;
+//		pr(Date.UTC() - Date.parse( XBS.data.store_status.time));
+//		if ( !inspected_recently || !XBS.data.store_status.reachable && 2+3 < 1) {
+//			$(XSM.global.store_status).hide();
+//			$(XSM.global.delivery_status).hide();
+//			$(XSM.global.unknown_status).show();
+//		}
 	}
 };
