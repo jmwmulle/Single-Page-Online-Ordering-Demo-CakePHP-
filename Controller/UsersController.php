@@ -358,7 +358,7 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 
-			$this->Auth->allow( 'index', 'view_gdrive', 'view', 'opauth_complete', 'add', 'login', 'tabletlogin', 'logout' ); #, 'initDB');
+			$this->Auth->allow( 'opauth_complete', 'login', 'logout' ); #, 'initDB');
 		}
 
 		public function initDB() {
