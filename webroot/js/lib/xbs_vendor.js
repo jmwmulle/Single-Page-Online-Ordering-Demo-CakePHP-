@@ -48,12 +48,9 @@ var xbs_vendor = {
 	next: function() {
 		var debug_this = 1;
 		if (debug_this > 0) pr("<no_args>", "XBS.vendor.next()", 2);
-		tout(XBS.vendor.pending(), "pending");
 		if (XBS.vendor.pending()) {
 			$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "vendor_get_pending", trigger:{}});
 		} else {
-			tout("getting here");
-			pr("getting here");
 			$(XSM.vendor.next_order).addClass(XSM.effects.slide_up);
 			$(XSM.vendor.back_splash).show();
 			setTimeout(function() {
@@ -74,11 +71,12 @@ var xbs_vendor = {
 		return length > 0 ? length : false;
 	},
 	post_orders: function(orders) {
-		var debug_this = 1;
+		var debug_this = 0;
 		if (debug_this > 0) pr({orders:orders, orders_length:orders.length}, "vendor.post_orders(orders)", 2);
 		XBS.vendor.pending_orders = orders;
 		XBS.vendor.update_pending_display()
 		XBS.vendor.update_current_order()
+//		if (XBS.printer.queued()) $(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"print_from_queue/init", trigger:{}});
 		return;
 	},
 	update_current_order: function() {

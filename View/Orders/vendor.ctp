@@ -6,8 +6,11 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-	$tablet_debug = false;
+	$tablet_debug = true;
 ?>
+<script type="text/javascript">
+	window.redirect_me = true;
+</script>
 <div id="order-tone-wrapper" class="true-hidden">
 	<audio controls>
 	  <source src="files/new_order_tone.mp3" type="audio/mpeg">
@@ -16,7 +19,6 @@
 <div id="error-pane">
 	<div id="error-text"></div>
 </div>
-<?php if ($tablet_debug) echo '<div id="tablet-out"> </div>' ;?>
 <main id="vendor-page">
 	<div id="back-splash" class="true-hidden">
 		NOTHING</br>
@@ -34,7 +36,7 @@
 				<div id="order-content" class="small-12 columns">
 					<div class="row">
 						<div class="small-12 columns">
-							<h1>INCOMING ORDER</h1>
+							<h1 id="incoming">INCOMING ORDER</h1>
 						</div>
 					</div>
 					<div id="order-content-detail" class="row">
@@ -95,5 +97,8 @@
 		</div>
 	</div>
 
+</main>
+<main id="js-console">
+<h4 id="called-from"></h4>
 </main>
 </div>

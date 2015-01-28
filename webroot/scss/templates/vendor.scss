@@ -195,41 +195,54 @@ main#vendor-page {
   &.exposed { -webkit-animation : ok-zoom 300ms ease-in 1 normal 0s running forwards; }
 }
 
-.virtual-receipt {
+#virtual-receipt {
   position:fixed;
   background-color:$white;
   padding:$tight-padding;
   top:rem-calc(80px);
-  width: 225px;
+  left:rem-calc(100px);
+  width: rem-calc(400px);
   height:auto;
-  z-index:999999999;
+  z-index:99999;
   font-size:rem-calc(12px);
   font-family: monaco, Consolas, "courier new", courier, monospaced;
   * { color: $text-grey !important;}
-
 }
-#tablet-out {
-position:fixed;
-background-color:$white;
-padding:$tight-padding;
-top:rem-calc(180px);
-width: 600px;
-height:200px;
-  padding:1rem;
-  overflow:scroll;
-z-index:999999999;
-font-size:rem-calc(12px);
+main#js-console {
+background-color: rgb(45,67,82);
+top:rem-calc(80px);
+width: rem-calc(600px);
+height:rem-calc(800px);
+font-size:rem-calc(10px);
 font-family: monaco, Consolas, "courier new", courier, monospaced;
-* { color: $text-grey !important;}
-  span {
+//overflow-y:scroll !important;
+  div {
+    color:white !important;
     display:inline-block;
-    padding: 0 1rem;
+    vertical-align: text-top;
+    word-wrap:break-word;
+    &.tout-label {
+      padding:0.1rem 0.3rem;
+    vertical-align: text-top;
+      color:blue !important;
+      border-right: 1px solid $light-grey;
+      width:200px;
+    }
+    &.tout-text {
+      padding:0.1rem 0.3rem;
+      background-color:$text-grey;
+    vertical-align: text-top;
+      font-size:rem-calc(10px) !important;
+      width:400px;
+    }
+    &.jsc-line {
+      width:600px;
+      padding:0;
+      margin:0;
+      display:block;
+      border-bottom: 1px solid $success-color;
+      background-color: $ultra-light-grey;
+    }
   }
-  span.tout-label {
-    background-color: $ultra-light-grey;
-    color:blue !important;
-    border-right: 1px solid $light-grey;
-    width:100px;
-  }
-  div { border-bottom: 1px dotted $very-light-grey;}
 }
+

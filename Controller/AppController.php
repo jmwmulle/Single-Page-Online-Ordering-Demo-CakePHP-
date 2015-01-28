@@ -40,7 +40,7 @@ class AppController extends Controller {
 							    'fields' => array('username' => 'email')
 						    )
 					    )
-				    ), "DebugKit.Toolbar",);
+				    ), ); //"DebugKit.Toolbar",
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
 	protected $topnav = array('Menu','Deals','Favs', 'Order',);
