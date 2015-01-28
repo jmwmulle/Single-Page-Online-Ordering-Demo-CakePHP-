@@ -93,7 +93,7 @@ window.XBS = {
 			store_status_class = stripCSS(XSM.global.available);
 		} else {
 			store_status_text = C.CLOSED;
-			store_status_class = ['closed', stripCSS(XSM.global.unavailable)].join(" ");
+			store_status_class = ['store-closed', stripCSS(XSM.global.unavailable)].join(" ");
 			delivery_status_text = null;
 		}
 		$(XSM.global.store_status).html(store_status_text).addClass(store_status_class);
