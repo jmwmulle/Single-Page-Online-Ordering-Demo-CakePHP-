@@ -312,4 +312,9 @@ class OrbsController extends AppController {
 		}
 	}
 
+	public function before_filter() {
+		parent::before_filter();
+
+		$this->Auth->allow('csv_to_menu', 'upload_menu', 'menu_item');
+	}
 }

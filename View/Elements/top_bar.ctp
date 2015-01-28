@@ -22,7 +22,7 @@ $social_route = $logged_in ? "social" : "login/topbar";
 
 <nav id="topbar" class="text-center">
 	<div class="row">
-		<div class="large-4 small-12 columns text-center topbar-social">
+		<div class="large-4 small-12 columns text-center topbar-social third">
 			<div class="row">
 				<div id="social-loading" class="large-12 columns">
 					<span class="one icon-full"></span>
@@ -76,17 +76,26 @@ $social_route = $logged_in ? "social" : "login/topbar";
 				</div>
 			</div>
 			<div class="row">
-				<div id="topbar-hover-text-label" class="large-12 columns text-center">
+				<div id="topbar-hover-text-label" class="large-12 columns text-center ">
 					<span class="incoming slide-left"></span>
 					<span class="outgoing">Halifax loves pizza and we love halifax!</span>
 				</div>
 			</div>
 		</div>
-		<div class="large-4 columns">
-			<span id="store-status"></span>
-			<span id="delivery-status"></span>
-		</div>
-		<div class="large-4 columns show-for-large-up">
+		<div class="large-4 columns third"
+			<div class="row">
+				<div id="unknown-status" class="large-12 columns top-bar-status unknown true-hidden">
+					<span>We're having trouble reaching the store just now, please call for delivery and confirmation that we're open.</span>
+				</div>
+				<div class="large-4 columns">
+					<h3 class="top-bar-status-header">WE ARE:</h3>
+				</div>
+				<div class="large-8 columns">
+					<span id="store-status" class="top-bar-status store"></span>
+					<span id="delivery-status" class="top-bar-status delivery"></span>
+				</div>
+			</div>
+		<div class="large-4 columns show-for-large-up third">
 			<ul id="hours-and-location">
 				<li>
 					Sun-Thurs: 11am - 3am&nbsp;&nbsp;&nbsp;&nbsp;

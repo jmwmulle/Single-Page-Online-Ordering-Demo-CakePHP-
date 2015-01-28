@@ -30,6 +30,7 @@ window.XBS = {
 			splash: XBS.splash.init(),
 			menu: XBS.menu.init(),
 			printer: XBS.printer.is_xtreme_tablet() ? XBS.printer.init() : 'not_tablet',
+			store: XBS.store_status(),
 			routing: XBS.routing.init(),
 			vendor: XBS.vendor.init()
 		};
@@ -68,5 +69,38 @@ window.XBS = {
 			xbs_data.cfg.root = xbs_data.host_root_dirs[host];
 		}
 		return true;
+	},
+
+	store_status: function() {
+		var store_status_text;
+		var store_status_class;
+		var delivery_status_text;
+		var delivery_status_class;
+
+		if (XBS.data.store_status.open) {
+			store_status_text = C.OPEN;
+			store_status_class = stripCSS(XSM.global.available);
+		} else {
+			store_status_text = C.CLOSED;
+			store_status_class = stripCSS(XSM.global.unavailable);
+		}
+
+		if (XBS.data.store_status.delivering) {
+			delivery_status_text = C.DELIVERING;
+			delivery_status_class = stripCSS(XSM.global.available);
+		} else {
+			delivery_status_text = C.PICKUP_ONLY;
+			delivery_status_class = stripCSS(XSM.global.unavailable);
+		}
+
+		$(XSM.global.store_status).html(store_status_text).addClass(store_status_class);
+		$(XSM.global.delivery_status).html(delivery_status_text).addClass(delivery_status_class);
+
+		var inspected_recently = now() - Date.parse( XBS.data.store_status.time ) > XBS.data.cfg.store_status_inspection_timeout;
+		if ( !inspected_recently || !XBS.data.store_status.reachable && 2+3 < 1) {
+			$(XSM.global.store_status).hide();
+			$(XSM.global.delivery_status).hide();
+			$(XSM.global.unknown_status).show();
+		}
 	}
 };

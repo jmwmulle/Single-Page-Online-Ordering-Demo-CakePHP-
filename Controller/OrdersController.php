@@ -708,7 +708,7 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->disableCache();
-			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'review', 'index', 'view', 'get_pending', 'set_status', 'get_status', 'finalize' );
+			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'review', 'get_pending', 'set_status', 'get_status', 'finalize' );
 		}
 
 		public function vendor() {
