@@ -207,7 +207,7 @@ var XSM = {
 		order_count: "#order-count",
 		order_count_bubble: "#pending-orders-count",
 		order_reject_confirmation: "#order-reject-confirmation",
-		order_title: "#order-title",
+		order_address: "#order-title",
 		pending_orders_list: "#pending-orders-list"
 	},
 	footer: {

@@ -43,7 +43,7 @@ function XtremePrinter() {
 	this.printer_available = false;
 	this.ip = null;
 	this.status = null;
-	this.queue = [];
+	this.queue = {};
 	this.styles = {}
 	this.tab_out = function(text, label) { tab_out(text, label); };
 	this.tout_show = function() {tout_show();};
@@ -61,12 +61,15 @@ function XtremePrinter() {
 
 	this.init = function(ip) {
 		this.status = this.open_printer(ip);
-		this.printer_available = this.status.success;
-
+//		var data = sprintf("<pre>%s</pre>", JSON.stringify({printer_avail: this.printer_available,
+//					open_printer_result: this.status}));
+//		tab_out(data, 'OPEN PRINTER STATUS');
+//		tout_show();
 		// basic text
 		this.add_style('default', 0, 'left', 3, 1.5, false, false);
 		this.extend_style('center', 'default', {align:'center'});
 		this.extend_style('right', 'default', {align:'right'});
+		this.extend_style('orb_opt', 'default', {indent:2, scale:2});
 
 		// headers
 		this.add_style('h1', 0, 'center', 7.5, 5, true, false);
@@ -77,14 +80,30 @@ function XtremePrinter() {
 
 	}
 
+	this.dequeue = function() {
+		var line;
+		var queue = {}
+		var count = 0;
+		for (var key in this.queue) {
+			if (count == 0) {
+				line = this.queue[key];
+			} else {
+				queue[key-1] = this.queue[key];
+			}
+			count++;
+		}
+		this.queue = queue;
+		return line;
+	}
+
 	this.print_from_queue = function() {
-		var response = {success: true, error:false, line:null, queue_empty:false};
+		var response = {success: true, error:false, line:null, queue_empty:false, raw:null};
 		if ( this.queued() ) {
-			var line = this.queue[0];
+			var line = this.dequeue();
 			var cut = in_array(line.text, [C.CUT, C.FEED_CUT]);
 			if (line.text != C.CUT) {
 				if ( in_array(line.text, C.FEED, C.FEED_CUT) ) line.text = " \n";
-				var print_response = cut ? this.print(line.text, line.style, true) : this.print(line.text, line.style);
+				var print_response = this.print(line.text, line.style, cut);
 				if (print_response.success === false) {
 					response.success = false;
 					response.error = print_response;
@@ -99,12 +118,14 @@ function XtremePrinter() {
 		return response;
 	}
 
-	this.queued = function() { return this.queue.length > 0;}
+	this.queued = function() { return obj_len(this.queue) > 0;}
 
 	this.open_printer = function(ip) {
 		var status;
-		if ( XBS.printer.is_xtreme_tablet() ) {
+		if ( XBS.printer.is_xtreme_tablet() || true) {
 			status = ip ? Android.openPrinter(ip) : Android.openDefaultPrinter();
+			status = status.split(":");
+			status = {success: parseInt(status[0]) === 1, error:status[1] == 'false' ? false : status[1]};
 			this.printer_available = status.success ? true : false;
 			this.ip = status.ip;
 			this.status = status;
@@ -134,13 +155,13 @@ function XtremePrinter() {
 
 	this.queue_line = function(line, style, feed) {
 		if (!feed) feed = 0;
+		var index = obj_len(this.queue);
 		if (style) {
-			this.queue.push({style:style, text:line});
+			this.queue[index] = {style:style, text:line};
 		} else {
-			this.queue.push({style:'default', text:line});
+			this.queue[index] = {style:'default', text:line};
 		}
-		this.feed_line(feed)
-		return true;
+		this.queue[index+1] = {style:'default', text:' '};
 	}
 
 
@@ -152,6 +173,7 @@ function XtremePrinter() {
 			return false;
 		}
 	}
+
 	/**
 	 * queue_order()
 	 *
@@ -159,26 +181,27 @@ function XtremePrinter() {
 	 * @returns {void}
 	 */
 	this.queue_order = function(order) {
+		pr(order, 'the order');
 		tab_out("arrived", "queue_order()");
 		try {
-			tab_out("printer avail", "queue_order()");
 			this.queue_line(sprintf('Ordered At: %s', order.time), 'h4', 1);
 			this.queue_line(sprintf("For: %s", order.order_method), 'h2', 1);
 			if ( order.order_method == C.DELIVERY) {
-				if (order.address) this.queue_line(order.address, 'center', 1);
-				if ( order.delivery_instructions ) this.queue_line(order.delivery_instructions);
+				if (order.customer) this.queue_line(order.customer, 'center', 'h3');
+				if (order.address) this.queue_line(order.address, 'center', 'h3');
+				if (order.delivery_instructions ) this.queue_line(order.delivery_instructions, 'h4');
 			}
-//			this.feed_line(3);
 			this.queue_line(sprintf("Payment Status: %s", order.paid ? "PAYED" : "OWED"), 'h3',1);
 			this.queue_line(sprintf("Payment Type: %s", order.payment_method), 'h4');
-//			this.feed_line(3);
-//			this.__queue_orb_list(order.food);
+			this.__queue_orb_list(order.food);
+			this.queue_line(sprintf("TOTAL: $%s", order.price), 'h2');
 		} catch(e) {
 			// todo: handle this maybe?!
 			tab_out(e, 'queue_order() error', true);
 			return false;
 		}
-		tout_show();
+//		tout_show();
+		pr(this.queue, 'the queue');
 		return this.queue;
 	};
 
@@ -276,11 +299,10 @@ function XtremePrinter() {
 		try {
 			for (var orb_name in items)  {
 				var item = items[orb_name];
-				pr(item);
 				try {
-					this.queue_line(sprintf("(%s) x %s", item.quantity, orb_name));
-					for (var opt in item.toppings) {
-						this.queue_line(sprintf("%s: %s", item.toppings[opt].weight, item.toppings[opt].title), 'orb_opt');
+					this.queue_line(sprintf("$%s   (%s) x %s %s", item.price, item.quantity, item.size, orb_name), 'h4');
+					for (var opt in item.opts) {
+						this.queue_line(sprintf("%s: %s", item.opts[opt].weight, item.opts[opt].title), 'orb_opt');
 						if (item.instructions) this.queue_line(item.instructions, 'opt_note');
 					}
 				} catch (e) {

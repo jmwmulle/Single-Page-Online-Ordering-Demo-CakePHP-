@@ -52,7 +52,8 @@
 	Router::connect('/vendor', array('controller' => 'orders', 'action' => 'vendor'));
 	Router::connect('/vendor-accept/*', array('controller' => 'orders', 'action' => 'set_status'));
 	Router::connect('/vendor-reject/*', array('controller' => 'orders', 'action' => 'set_status'));
-	Router::connect('/pending', array('controller' => 'orders', 'action' => 'get_pending'));
+	Router::connect('/pending', array('controller' => 'orders', 'action' => 'get_pending', false));
+	Router::connect('/pending/refreshed', array('controller' => 'orders', 'action' => 'get_pending', true));
 	Router::connect('/tablet/login', array('controller' => 'users', 'action' => 'tabletlogin'));
 	Router::connect('/add-to-cart/*', array('controller' => 'orders', 'action' => 'add_to_cart'));
 	Router::connect('/order-accepted', array('controller' => 'pages', 'action' => 'display', "order_accepted"));

@@ -549,6 +549,7 @@ var xbs_routing = {
 									break;
 								case 'line_complete':
 									response = XBS.printer.queued() ? XBS.printer.print_from_queue() : false;
+									if (!XBS.printer.queued()) XBS.printer.cut(true);
 									break;
 							}
 							if (response === false) this.unset('launch');
@@ -565,8 +566,6 @@ var xbs_routing = {
 						},
 						launch: function() {
 							try {
-								print_from_queue_requests++;
-//								pr(print_from_queue_requests, "print_from_queue_requests");
 								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"print_from_queue/line_complete", trigger:{}});
 							} catch(e) {
 								pr(e);
@@ -669,7 +668,7 @@ var xbs_routing = {
 					}
 				}),
 				vendor_get_pending: new XtremeRoute('vendor_get_pending', {
-					url:{url:"pending", type: C.GET, defer:true},
+					url: {url:'pending', defer:true, type: C.GET},
 					callbacks: {
 						params_set: function() {
 							var debug_this = 0;

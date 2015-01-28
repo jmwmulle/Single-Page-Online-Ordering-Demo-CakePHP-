@@ -6,7 +6,7 @@ var xbs_vendor = {
 	last_check: 0,
 	last_tone_play: 0,
 	init: function() {
-		var vendor_page = $("HTML").find(XSM.vendor.self)[0]
+		var vendor_page = $("html").find(XSM.vendor.self)[0]
 
 		if (vendor_page) {
 			XBS.data.is_vendor_page = true;
@@ -85,7 +85,7 @@ var xbs_vendor = {
 			var order = XBS.vendor.current(XBS.vendor.pending_orders[0]);
 			var food = "";
 			for (var i in order.food) food += XSM.generated.vendor_orb_desc(i, order.food[i]);
-			$($(order_content).find(XSM.vendor.order_title)[0]).html(order.title);
+			$($(order_content).find(XSM.vendor.order_address)[0]).html(order.address);
 			$($(order_content).find(XSM.vendor.customer_name)[0]).html(order.customer);
 			$($(order_content).find(XSM.vendor.food_list)[0]).html(food);
 			if ( $(XSM.vendor.next_order).hasClass(XSM.effects.slide_up) ) {

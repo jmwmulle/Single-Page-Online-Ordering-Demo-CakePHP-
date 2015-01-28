@@ -1,16 +1,3 @@
-<?php
-/**
- * J. Mulle, for app, 1/6/15 10:02 PM
- * www.introspectacle.net
- * Email: this.impetus@gmail.com
- * Twitter: @thisimpetus
- * About.me: about.me/thisimpetus
- */
-	$tablet_debug = true;
-?>
-<script type="text/javascript">
-	window.redirect_me = true;
-</script>
 <div id="order-tone-wrapper" class="true-hidden">
 	<audio controls>
 	  <source src="files/new_order_tone.mp3" type="audio/mpeg">
@@ -21,7 +8,7 @@
 </div>
 <main id="vendor-page">
 	<div id="back-splash" class="true-hidden">
-		NOTHING</br>
+		NOTHING<br />
 		IN<br />
 		QUEUE
 	</div>
@@ -41,7 +28,7 @@
 					</div>
 					<div id="order-content-detail" class="row">
 						<div id="labels" class="small-3 columns">
-							<span id='title' class='label'>ADDRESS:</span>
+							<span id='address' class='label'>ADDRESS:</span>
 							<span id='customer' class='label'>CUSTOMER:</span>
 							<span id='food' class='label'>ORDER:</span>
 						</div>
@@ -66,9 +53,11 @@
 					<a href="#" class="modal-button sml cancel bisecting left" data-route="vendor_reject/unconfirmed">
 						<span class="icon-cancel"></span><span class="text">DECLINE</span>
 					</a>
-					<a href="#" class="modal-button sml confirm bisecting right" onclick="my_test()">
+					<a href="#" class="modal-button sml confirm bisecting right" ">
 						<span class="text">SET DELIVERY TIME</span><span class="icon-circle-arrow-r"></span>
 					</a>
+				</div>
+			</div>
 			<div id="order-reject-confirmation" class="slide-left text-center">
 				<h1>Are you sure?</h1>
 				<a href="#" class="modal-button cancel bisecting left" data-route="vendor_reject/confirm">
@@ -101,4 +90,4 @@
 <main id="js-console">
 <h4 id="called-from"></h4>
 </main>
-</div>
+
