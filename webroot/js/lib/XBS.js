@@ -34,7 +34,7 @@ window.XBS = {
 		};
 
 		if (XBS.data.debug) pr(init_status, "init status");
-
+		$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: 'launch_apology', trigger: {}});
 	},
 	exec_init_sequence: function (init_list) {
 		var meta_sit_rep = {state: true, report: {}};

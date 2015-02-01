@@ -84,6 +84,9 @@ $social_route = $logged_in ? "social" : "login/topbar";
 		</div>
 		<div class="large-4 columns third"
 			<div class="row">
+				<?php
+					$site_fucking_works = false;
+					if ($site_fucking_works) {?>
 				<div id="unknown-status" class="large-12 columns top-bar-status unknown true-hidden">
 					<span>We're having trouble reaching the store just now, please call for delivery and confirmation that we're open.</span>
 				</div>
@@ -94,6 +97,9 @@ $social_route = $logged_in ? "social" : "login/topbar";
 					<span id="store-status" class="top-bar-status store"></span>
 					<span id="delivery-status" class="top-bar-status delivery"></span>
 				</div>
+				<?php } else { ?>
+						&nbsp;
+				<?php }?>
 			</div>
 		<div class="large-4 columns show-for-large-up third">
 			<ul id="hours-and-location">

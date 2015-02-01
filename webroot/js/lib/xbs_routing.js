@@ -161,6 +161,19 @@ var xbs_routing = {
 						}
 					}
 				}),
+				launch_apology: new XtremeRoute("launch_apology", {
+					url:{url:'launch-apology', type: C.GET, defer:false},
+					modal: XSM.modal.primary,
+					params:['action'],
+					callbacks: {
+						params_set: function() {
+							if (this.read('action') == 'close') {
+								this.unset('url');
+								XBS.layout.dismiss_modal(this.modal);
+							}
+						}
+					}
+				}),
 				login: new XtremeRoute("login", {
 					url: {url: false, type: C.POST},
 					modal: XSM.modal.primary,
@@ -443,7 +456,6 @@ var xbs_routing = {
 				}),
 				order_method: new XtremeRoute("order_method", {
 					modal: XSM.modal.primary,
-					modal: false,
 					url: {url: "order-method", type: C.POST, defer: true},
 					params: {
 						context: {value: null, url_fragment: false},
@@ -782,7 +794,7 @@ var xbs_routing = {
 
 var launch = function (route) {
 			var debug_this = 0;
-			if (debug_this > 0) pr([parent_route, params], "XBS.routing.launch(parent_route, params, event)", 2);
+			if (debug_this > 0) pr({route: route}, "XBS.routing.launch(route)", 2);
 			var launch_delay = 0
 			var hide_class = false;
 			if (route.stash) {
@@ -856,7 +868,7 @@ var launch = function (route) {
 						launch_triggered = true;
 						$(route).trigger(C.ROUTE_LAUNCHED, {launch_msg: "CAUGHT_EXCEPTION"})
 					}
-					$(XBS.routes).trigger(C.ROUTE_REQUEST, {request: "flash"});
+					$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "flash"});
 				}
 			} else {
 				$(route).trigger(C.ROUTE_LAUNCHED, {launch_msg: "NO_AJAX"});
