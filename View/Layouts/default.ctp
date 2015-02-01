@@ -57,7 +57,7 @@
 <body id="<?php echo $body_id; ?>" <?php echo ___cD( $body_class ); ?>>
 
 <?php
-	echo $this->Element( 'feedback' );
+	echo $this->Element( 'launch_apology' );
 	echo $this->Element( "top_bar" );
 ?>
 <div id="page-content">
