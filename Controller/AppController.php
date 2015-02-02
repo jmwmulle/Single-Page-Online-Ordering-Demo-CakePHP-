@@ -302,6 +302,12 @@ class AppController extends Controller {
 		$this->Auth->allow();
 	}	
 
+	static function verbose_query($db, $query, $fetch_all=false) {
+		$result = $db->query( $query );
+		if ( !$result ) throw new Exception( mysqli_error($db) );
+		return $fetch_all ? $result->fetch_all() : true;
+	}
+
 	static function update_tables_from_file($opts_file, $menu_file) {
 		$db = null;
 		switch ($_SERVER['HTTP_ORIGIN']) {
@@ -397,14 +403,9 @@ class AppController extends Controller {
 		  PRIMARY KEY (`id`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
 
-		if (!$db->query($drop_tables_query) ) {
-			echo mysqli_error($db);
-		}
-		foreach ($create_queries as $q) {
-			if (!$db->query($q) ) {
-				echo mysqli_error($db);
-			}
-		}
+		AppController::verbose_query($db, $drop_tables_query);
+
+		foreach ($create_queries as $q) { AppController::verbose_query($db, $q); }
 
 		// ORBOPTS
 		$opts = explode("\n", file_get_contents($opts_file));
@@ -413,9 +414,8 @@ class AppController extends Controller {
 		foreach($opts as $opt) {
 			$opt = explode("\t", $opt);
 			$opt_query_str = "INSERT INTO `orbopts` (`pricelist_id`, `title`, `meat`, `veggie`,`sauce`, `cheese`,`condiment`,`burger`,`salad`, `pizza`,`premium`,`pita`, `subs`, `donair`, `nacho`, `poutines`, `fingers`, `exception_products`) VALUES (-1, '%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '')";
-
 			$opt_query_str = sprintf($opt_query_str, $opt[0], 	$opt[1], $opt[2], $opt[3], $opt[4], $opt[5], $opt[6], $opt[7], $opt[8], $opt[9], $opt[10], $opt[11], $opt[12], $opt[13], $opt[14], $opt[15]);
-			$db->query($opt_query_str);
+			AppController::verbose_query($db, $opt_query_str);
 		}
 
 		$xtreme_data = explode("\n", file_get_contents($menu_file));
@@ -426,19 +426,20 @@ class AppController extends Controller {
 			// ORBS
 			if ($orb[13] == "FALSE") $orb[13] = ""; // description set to blank str.
 			$orb_query_str = "INSERT INTO `orbs` (`title`,`description`,`pricedict_id`, `pricelist_id`, `opt_count`, `premium_count`, `config`) VALUES ('%s','%s', %s, %s, %s, %s, '')";
-			$orb_query = sprintf($orb_query_str, $orb[0], $orb[13], -1, -1, 0, 0);
-			$db->query($orb_query);
+			$orb_query = sprintf($orb_query_str, $orb[0], mysqli_real_escape_string($db, $orb[13]), -1, -1, 0, 0);
+			AppController::verbose_query($db, $orb_query);
 			$orb_id = $db->insert_id;
 
 			// ORBCATS & ORBS_ORBCATS
 			if ($orb[7] == "FALSE") $orb[7] = '';
 			$orbcat_query_str = sprintf("SELECT `id` FROM `orbcats` WHERE `orbcats`.`title` = '%s' AND `orbcats`.`subtitle` = '%s'", $orb[6], $orb[7]);
 			$orbcat_id = null;
-			$orbcat_id = $db->query($orbcat_query_str)->fetch_all();
+			$orbcat_id = AppController::verbose_query($db, $orbcat_query_str, true);
 			if ( !empty($orbcat_id) ) {
 				$orbcat_id = $orbcat_id[0][0];
 			} else {
-				$db->query(sprintf("INSERT INTO `orbcats` (`primary_menu`, `title`, `subtitle`) VALUES (0, '%s', '%s')", $orb[6], $orb[7]));
+				$q = sprintf("INSERT INTO `orbcats` (`primary_menu`, `title`, `subtitle`) VALUES (0, '%s', '%s')", $orb[6], $orb[7]);
+				AppController::verbose_query($db, $q);
 				$orbcat_id = $db->insert_id;
 			}
 			$db->query(sprintf("INSERT INTO `orbs_orbcats` (`orb_id`, `orbcat_id`) VALUES (%s, %s)", $orb_id, $orbcat_id));
@@ -456,9 +457,10 @@ class AppController extends Controller {
 				}
 			}
 			if ($included_flags > 0) {
-				$matched_opts = $db->query($opt_search_str)->fetch_all();
+				$matched_opts = AppController::verbose_query($db, $orbcat_query_str, true);
 				foreach($matched_opts as $opt) {
-					$db->query(sprintf('INSERT INTO `orbs_orbopts` (`orb_id`, `orbopt_id`) VALUES (%s, %s)', $orb_id, $opt[0]));
+					$opt_q = sprintf('INSERT INTO `orbs_orbopts` (`orb_id`, `orbopt_id`) VALUES (%s, %s)', $orb_id, $opt[0]);
+					AppController::verbose_query($db, $opt_q);
 				}
 			}
 			// PRICELISTS
@@ -475,7 +477,7 @@ class AppController extends Controller {
 				}
 			}
 
-			$price_list_id =  $db->query($price_list_query_str)->fetch_all();
+			$price_list_id = AppController::verbose_query($db, $price_list_query_str, true);
 			if ( !empty($price_list_id) ) {
 				$price_list_id = $price_list_id[0][0];
 			} else {
@@ -494,11 +496,11 @@ class AppController extends Controller {
 				$fields .= ") ";
 				$values .= ") ";
 				$price_list_query_str = sprintf($price_list_query_str, $fields, $values);
-				$db->query($price_list_query_str);
+				AppController::verbose_query($db, $price_list_query_str);
 				$price_list_id = $db->insert_id;
 			}
 			$update_orb_price_list = "UPDATE `orbs` SET `pricelist_id` = $price_list_id WHERE `orbs`.`id` = $orb_id";
-			$db->query($update_orb_price_list);
+			AppController::verbose_query($db, $update_orb_price_list);
 
 			// PRICEDICTS
 			$pd = array_slice($orb, 8,5);
@@ -515,37 +517,33 @@ class AppController extends Controller {
 				}
 			}
 
-			$price_dict_id =  $db->query($price_dict_query_str)->fetch_all();
+			$price_dict_id =  AppController::verbose_query($db, $price_dict_query_str, true);
 			if ( !empty($price_dict_id) ) {
 				$price_dict_id = $price_dict_id[0][0];
 			} else {
 				$price_dict_query_str = "INSERT INTO `pricedicts` (`l1`, `l2`, `l3`, `l4`, `l5`, `l6`) VALUES ('%s', '%s', '%s', '%s', '%s', '')";
-				$db->query(sprintf($price_dict_query_str, $pd[0], $pd[1], $pd[2], $pd[3], $pd[4]));
+				AppController::verbose_query($db, sprintf($price_dict_query_str, $pd[0], $pd[1], $pd[2], $pd[3], $pd[4]));
 				$price_dict_id = $db->insert_id;
 			}
-			$db->query("UPDATE `orbs` SET `pricedict_id` = $price_dict_id WHERE `orbs`.`id` = $orb_id");
-
+			AppController::verbose_query($db, "UPDATE `orbs` SET `pricedict_id` = $price_dict_id WHERE `orbs`.`id` = $orb_id");
 		}
-				// reset primary menu orbcats
-			foreach ($primary_orbcats as $key => $val) {
-				$query = "";
-				$title = null;
-				$subtitles = null;
-				if ( !is_array($val) ) {
-					$title = $val;
-					$subtitles = array('');
-				} else {
-					$title = $key;
-					$subtitles = $val;
-				}
-				for ($i=0; $i<count($subtitles); $i++) {
-					$query = sprintf( "UPDATE `orbcats` SET `primary_menu` = 1 WHERE `title` = '%s' AND `subtitle` = '%s'", $title, $subtitles[ $i ] );
-					if ( !$db->query( $query ) ) {
-						echo mysql_error( $db );
-						die();
-					}
-				}
+		// reset primary menu orbcats
+		foreach ($primary_orbcats as $key => $val) {
+			$query = "";
+			$title = null;
+			$subtitles = null;
+			if ( !is_array($val) ) {
+				$title = $val;
+				$subtitles = array('');
+			} else {
+				$title = $key;
+				$subtitles = $val;
 			}
+			for ($i=0; $i<count($subtitles); $i++) {
+				$query = sprintf( "UPDATE `orbcats` SET `primary_menu` = 1 WHERE `title` = '%s' AND `subtitle` = '%s'", $title, $subtitles[ $i ] );
+				AppController::verbose_query($db, $query );
+			}
+		}
 		return true;
 	}
 }
