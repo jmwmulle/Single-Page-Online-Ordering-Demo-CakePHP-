@@ -299,7 +299,239 @@ class AppController extends Controller {
 		  'action' => ''
 	  	);
 		$this->Auth->loginRedirect = ___cakeUrl("users", "edit", array('id' => $this->Auth->user('id')));
-		$this->Auth->allow('/display');
+		$this->Auth->allow();
 	}	
 
+	static function update_tables_from_file($opts_file, $menu_file) {
+//		$db = mysqli_connect('development-xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com','xtremeAdmin','xtremePizzaDBDB!','development_xtreme');
+		$db = mysqli_connect('localhost','root','fr0gstar','xtreme');
+		$primary_orbcats = array('APPETIZERS', 'ASSORTED FINGERS', 'DRINKS & SAUCES', 'BURGERS', 'CHICKEN & CHIPS', 'DESSERTS', 'DONAIRS', 'FISH & CHIPS', 'FRIES & POUTINES', 'PANZAROTTIS', 'PASTA', 'PITAS & SANDWICHES', 'SALADS', 'SUBS' => array('', 'XTREME'), 'PIZZAS' => array('ORIGINAL', 'SUPER', 'SPECIALTY'));
+		$drop_tables_query = "DROP TABLES `orbs`, `orbopts`, `orbs_orbopts`, `orbcats`, `orbs_orbcats`, `pricedicts`, `pricelists`;";
+		$create_queries = array("CREATE TABLE IF NOT EXISTS `orbcats` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `primary_menu` tinyint(1) NOT NULL,
+		  `title` varchar(255) NOT NULL,
+		  `subtitle` varchar(255) NOT NULL,
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1",
+		"CREATE TABLE IF NOT EXISTS `orbopts` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `pricelist_id` int(11) NOT NULL,
+		  `title` varchar(255) DEFAULT NULL,
+		  `meat` tinyint(1) DEFAULT NULL,
+		  `veggie` tinyint(1) DEFAULT NULL,
+		  `sauce` tinyint(1) DEFAULT NULL,
+		  `cheese` tinyint(1) DEFAULT NULL,
+		  `condiment` tinyint(1) DEFAULT NULL,
+		  `burger` tinyint(1) DEFAULT NULL,
+		  `salad` tinyint(1) DEFAULT NULL,
+		  `pizza` tinyint(1) DEFAULT NULL,
+		  `premium` tinyint(1) DEFAULT NULL,
+		  `pita` tinyint(1) DEFAULT NULL,
+		  `subs` tinyint(1) DEFAULT NULL,
+		  `donair` tinyint(1) DEFAULT NULL,
+		  `nacho` tinyint(1) DEFAULT NULL,
+		  `poutines` tinyint(1) NOT NULL,
+		  `fingers` tinyint(1) NOT NULL,
+		  `exception_products` varchar(255) DEFAULT NULL,
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1",
+		"CREATE TABLE IF NOT EXISTS `orbs` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `title` varchar(255) NOT NULL,
+		  `description` text NOT NULL,
+		  `pricedict_id` int(11) NOT NULL,
+		  `pricelist_id` int(11) NOT NULL,
+		  `opt_count` int(11) NOT NULL,
+		  `premium_count` int(11) NOT NULL,
+		  `config` text NOT NULL,
+		  PRIMARY KEY (`id`),
+		  KEY `pricelabels_id` (`pricedict_id`),
+		  KEY `pricelist_id` (`pricelist_id`)
+		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1",
+		"CREATE TABLE IF NOT EXISTS `orbs_orbcats` (
+		  `orb_id` int(11) NOT NULL,
+		  `orbcat_id` int(11) NOT NULL,
+		  KEY `orb_id` (`orb_id`,`orbcat_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1",
+		"CREATE TABLE IF NOT EXISTS `orbs_orbopts` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `orb_id` int(11) NOT NULL,
+		  `orbopt_id` int(11) NOT NULL,
+		  PRIMARY KEY (`id`),
+		  KEY `orb_id` (`orb_id`),
+		  KEY `orbextra_id` (`orbopt_id`)
+		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1",
+		"CREATE TABLE IF NOT EXISTS `pricedicts` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `l1` varchar(32) NOT NULL,
+		  `l2` varchar(32) DEFAULT NULL,
+		  `l3` varchar(32) DEFAULT NULL,
+		  `l4` varchar(32) DEFAULT NULL,
+		  `l5` varchar(32) DEFAULT NULL,
+		  `l6` varchar(32) DEFAULT NULL,
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1",
+		"CREATE TABLE IF NOT EXISTS `pricelists` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `p1` float NOT NULL,
+		  `p2` float DEFAULT NULL,
+		  `p3` float DEFAULT NULL,
+		  `p4` float DEFAULT NULL,
+		  `p5` float DEFAULT NULL,
+		  `p6` float DEFAULT NULL,
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+
+		if (!$db->query($drop_tables_query) ) {
+			echo mysqli_error($db);
+		}
+		foreach ($create_queries as $q) {
+			if (!$db->query($q) ) {
+				echo mysqli_error($db);
+			}
+		}
+
+		// ORBOPTS
+		$opts = explode("\n", file_get_contents($opts_file));
+		$opts = array_slice($opts, 1, 56);
+
+		foreach($opts as $opt) {
+			$opt = explode("\t", $opt);
+			$opt_query_str = "INSERT INTO `orbopts` (`pricelist_id`, `title`, `meat`, `veggie`,`sauce`, `cheese`,`condiment`,`burger`,`salad`, `pizza`,`premium`,`pita`, `subs`, `donair`, `nacho`, `poutines`, `fingers`, `exception_products`) VALUES (-1, '%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '')";
+
+			$opt_query_str = sprintf($opt_query_str, $opt[0], 	$opt[1], $opt[2], $opt[3], $opt[4], $opt[5], $opt[6], $opt[7], $opt[8], $opt[9], $opt[10], $opt[11], $opt[12], $opt[13], $opt[14], $opt[15]);
+			$db->query($opt_query_str);
+		}
+
+		$xtreme_data = explode("\n", file_get_contents($menu_file));
+		$xtreme_data = array_slice($xtreme_data, 2);
+		foreach ($xtreme_data as $i => $row) {
+			$orb = explode("\t", $row);
+
+			// ORBS
+			if ($orb[13] == "FALSE") $orb[13] = ""; // description set to blank str.
+			$orb_query_str = "INSERT INTO `orbs` (`title`,`description`,`pricedict_id`, `pricelist_id`, `opt_count`, `premium_count`, `config`) VALUES ('%s','%s', %s, %s, %s, %s, '')";
+			$orb_query = sprintf($orb_query_str, $orb[0], $orb[13], -1, -1, 0, 0);
+			$db->query($orb_query);
+			$orb_id = $db->insert_id;
+
+			// ORBCATS & ORBS_ORBCATS
+			if ($orb[7] == "FALSE") $orb[7] = '';
+			$orbcat_query_str = sprintf("SELECT `id` FROM `orbcats` WHERE `orbcats`.`title` = '%s' AND `orbcats`.`subtitle` = '%s'", $orb[6], $orb[7]);
+			$orbcat_id = null;
+			$orbcat_id = $db->query($orbcat_query_str)->fetch_all();
+			if ( !empty($orbcat_id) ) {
+				$orbcat_id = $orbcat_id[0][0];
+			} else {
+				$db->query(sprintf("INSERT INTO `orbcats` (`primary_menu`, `title`, `subtitle`) VALUES (0, '%s', '%s')", $orb[6], $orb[7]));
+				$orbcat_id = $db->insert_id;
+			}
+			$db->query(sprintf("INSERT INTO `orbs_orbcats` (`orb_id`, `orbcat_id`) VALUES (%s, %s)", $orb_id, $orbcat_id));
+
+			// ORBS_ORBOPTS
+			$orb_flag_labels = array("burger", "salad",	"pizza", "pita", "subs", "donair", "nacho", "poutines", "fingers");
+			$orb_flags = array_slice($orb, -9);
+			$orb_flags = array_combine($orb_flag_labels, $orb_flags);
+			$opt_search_str = "SELECT `id` FROM `orbopts` WHERE ";
+			$included_flags = 0;
+			foreach ($orb_flags as $flag => $value) {
+				if ($value == "TRUE")  {
+					$included_flags++;
+					$opt_search_str .= $included_flags > 1 ? " AND `orbopts`.`$flag` = 1" : "`orbopts`.`$flag` = 1";
+				}
+			}
+			if ($included_flags > 0) {
+				$matched_opts = $db->query($opt_search_str)->fetch_all();
+				foreach($matched_opts as $opt) {
+					$db->query(sprintf('INSERT INTO `orbs_orbopts` (`orb_id`, `orbopt_id`) VALUES (%s, %s)', $orb_id, $opt[0]));
+				}
+			}
+			// PRICELISTS
+			$pl = array_slice($orb, 1,5);
+			$price_list_query_str = "SELECT	`id` FROM `pricelists` WHERE ";
+			$price_list_vals = 0;
+			foreach ($pl as $i => $val) {
+				if ($pl[$i] == "FALSE") {
+					$pl[$i] = null;
+				} else {
+					$price_list_vals++;
+					$j = $i + 1;
+					$price_list_query_str .= 	$price_list_vals > 1 ? " AND `p$j` = $val" : "`p$j` = $val";
+				}
+			}
+
+			$price_list_id =  $db->query($price_list_query_str)->fetch_all();
+			if ( !empty($price_list_id) ) {
+				$price_list_id = $price_list_id[0][0];
+			} else {
+				$price_list_query_str = "INSERT INTO `pricelists` %s VALUES % s";
+				$fields = "(";
+				$field_count = 0;
+				$values = "(";
+				foreach($pl as $i => $val) {
+					if ($val) {
+						$field_count++;
+						$j = $i + 1;
+						$fields .= $field_count > 1 ? ", `p$j`" :  "`p$j`";
+						$values .= $field_count > 1 ? ", $val" : "$val";
+					}
+				}
+				$fields .= ") ";
+				$values .= ") ";
+				$price_list_query_str = sprintf($price_list_query_str, $fields, $values);
+				$db->query($price_list_query_str);
+				$price_list_id = $db->insert_id;
+			}
+			$update_orb_price_list = "UPDATE `orbs` SET `pricelist_id` = $price_list_id WHERE `orbs`.`id` = $orb_id";
+			$db->query($update_orb_price_list);
+
+			// PRICEDICTS
+			$pd = array_slice($orb, 8,5);
+
+			$price_dict_query_str = "SELECT	`id` FROM `pricedicts` WHERE ";
+			$price_dict_vals = 0;
+			foreach ($pd as $i => $val) {
+				if ($pd[$i] == "FALSE") {
+					$pd[$i] = '';
+				} else {
+					$price_dict_vals++;
+					$j = $i + 1;
+					$price_dict_query_str .= $price_dict_vals > 1 ? " AND `l$j` = '$val'" : "`l$j` = '$val'";
+				}
+			}
+
+			$price_dict_id =  $db->query($price_dict_query_str)->fetch_all();
+			if ( !empty($price_dict_id) ) {
+				$price_dict_id = $price_dict_id[0][0];
+			} else {
+				$price_dict_query_str = "INSERT INTO `pricedicts` (`l1`, `l2`, `l3`, `l4`, `l5`, `l6`) VALUES ('%s', '%s', '%s', '%s', '%s', '')";
+				$db->query(sprintf($price_dict_query_str, $pd[0], $pd[1], $pd[2], $pd[3], $pd[4]));
+				$price_dict_id = $db->insert_id;
+			}
+			$db->query("UPDATE `orbs` SET `pricedict_id` = $price_dict_id WHERE `orbs`.`id` = $orb_id");
+
+		}
+				// reset primary menu orbcats
+			foreach ($primary_orbcats as $key => $val) {
+				$query = "";
+				$title = null;
+				$subtitles = null;
+				if ( !is_array($val) ) {
+					$title = $val;
+					$subtitles = array('');
+				} else {
+					$title = $key;
+					$subtitles = $val;
+				}
+				for ($i=0; $i<count($subtitles); $i++) {
+					$query = sprintf( "UPDATE `orbcats` SET `primary_menu` = 1 WHERE `title` = '%s' AND `subtitle` = '%s'", $title, $subtitles[ $i ] );
+					if ( !$db->query( $query ) ) {
+						echo mysql_error( $db );
+						die();
+					}
+				}
+			}
+		return true;
+	}
 }
