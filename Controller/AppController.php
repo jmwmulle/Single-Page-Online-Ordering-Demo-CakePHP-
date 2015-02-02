@@ -304,8 +304,15 @@ class AppController extends Controller {
 
 	static function verbose_query($db, $query, $fetch_all=false) {
 		$result = $db->query( $query );
-		if ( !$result ) throw new Exception( mysqli_error($db) );
-		return $fetch_all ? $result->fetch_all() : true;
+		switch ( gettype($result) ) {
+			case 'object':
+				if ( !get_class($result) || get_class($result) != 'mysqli_result' ) throw new Exception( mysqli_error($db) );
+				break;
+			case 'boolean':
+				if ( $result !== true ) throw new Exception( mysqli_error($db) );
+				break;
+		}
+		return $fetch_all ? $result->fetch_all() : $result;
 	}
 
 	static function update_tables_from_file($opts_file, $menu_file) {
@@ -403,7 +410,7 @@ class AppController extends Controller {
 		  PRIMARY KEY (`id`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
 
-		AppController::verbose_query($db, $drop_tables_query);
+		$result = AppController::verbose_query( $db, $drop_tables_query );
 
 		foreach ($create_queries as $q) { AppController::verbose_query($db, $q); }
 
