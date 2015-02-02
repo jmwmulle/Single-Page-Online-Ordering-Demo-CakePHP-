@@ -303,8 +303,22 @@ class AppController extends Controller {
 	}	
 
 	static function update_tables_from_file($opts_file, $menu_file) {
-//		$db = mysqli_connect('development-xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com','xtremeAdmin','xtremePizzaDBDB!','development_xtreme');
-		$db = mysqli_connect('localhost','root','fr0gstar','xtreme');
+		$db = null;
+		switch ($_SERVER['HTTP_ORIGIN']) {
+			case 'http://localhost':
+				$db = mysqli_connect( 'localhost', 'root', 'fr0gstar', 'xtreme' );
+				break;
+			case 'http://development-xtreme-pizza.ca':
+				$db = mysqli_connect( 'development-xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com', 'xtremeAdmin', 'xtremePizzaDBDB!', 'development_xtreme' );
+				break;
+			case 'http://xtreme-pizza.ca':
+				$db = mysqli_connect( 'xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com', 'xtremeAdmin', 'xtremePizzaDBDB!', 'development_xtreme' );
+				break;
+			default:
+				echo "got to default :(";
+				die();
+			//$db = mysqli_connect('xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com','xtremeAdmin','xtremePizzaDBDB!','development_xtreme');
+		}
 		$primary_orbcats = array('APPETIZERS', 'ASSORTED FINGERS', 'DRINKS & SAUCES', 'BURGERS', 'CHICKEN & CHIPS', 'DESSERTS', 'DONAIRS', 'FISH & CHIPS', 'FRIES & POUTINES', 'PANZAROTTIS', 'PASTA', 'PITAS & SANDWICHES', 'SALADS', 'SUBS' => array('', 'XTREME'), 'PIZZAS' => array('ORIGINAL', 'SUPER', 'SPECIALTY'));
 		$drop_tables_query = "DROP TABLES `orbs`, `orbopts`, `orbs_orbopts`, `orbcats`, `orbs_orbcats`, `pricedicts`, `pricelists`;";
 		$create_queries = array("CREATE TABLE IF NOT EXISTS `orbcats` (
