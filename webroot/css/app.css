@@ -4943,6 +4943,9 @@ body {
   background-repeat: no-repeat;
   background-position: fixed; }
 
+body#vendor_ui {
+  background: initial !important; }
+
 body#vendor {
   width: 100%;
   height: 100%;
@@ -6086,6 +6089,10 @@ div.view-cart-row.total * {
     #registration-method-bar.diminish a, #registration-method-bar.diminish h4 {
       height: 1.5rem;
       line-height: 1.5rem; }
+
+p {
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+  margin-bottom: 0.75rem; }
 
 #micro-cart-contents {
   font-size: 0.75rem;

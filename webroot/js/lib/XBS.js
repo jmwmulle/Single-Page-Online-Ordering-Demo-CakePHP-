@@ -22,6 +22,7 @@ window.XBS = {
 		XBS.data.store_status = store_status;;
 		XBS.data.cfg.page_name = page_name;
 		XBS.data.cfg.is_splash = is_splash === true;
+		XBS.data.debug = true;
 		var init_status = {
 			cart: XBS.cart.init(cart),
 			layout: XBS.layout.init(),
@@ -34,7 +35,7 @@ window.XBS = {
 		};
 
 		if (XBS.data.debug) pr(init_status, "init status");
-		$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: 'launch_apology', trigger: {}});
+		if (!XBS.data.debug) $(XBS.routing).trigger(C.ROUTE_REQUEST, {request: 'launch_apology', trigger: {}});
 	},
 	exec_init_sequence: function (init_list) {
 		var meta_sit_rep = {state: true, report: {}};

@@ -1,3 +1,12 @@
+<?php
+/**
+ * J. Mulle, for app, 2/2/15 6:05 PM
+ * www.introspectacle.net
+ * Email: this.impetus@gmail.com
+ * Twitter: @thisimpetus
+ * About.me: about.me/thisimpetus
+ */
+?>
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -53,27 +62,7 @@
 		$body_id = $this->get( 'page_name' );
 		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" ); ?>
 </head>
-
-<body id="<?php echo $body_id; ?>" <?php echo ___cD( $body_class ); ?>>
-
-<div id="page-content">
-	<?php
-		echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );
-		echo $this->fetch( 'content' );
-	?>
-</div>
-<?php
-	echo $this->Element( 'footer' );
-	echo $this->fetch( 'vendor' );
-	echo $this->fetch( 'app' );
-	echo $this->fetch( 'main' );
-?>
-<script>
-/*	window.___gcfg = {
-		lang: 'zh-CN',
-		parsetags: 'onload'
-	}; */
-</script>
+<body id="vendor" class="ui">
+<?php echo $this->fetch('content'); ?>
 </body>
 </html>
-

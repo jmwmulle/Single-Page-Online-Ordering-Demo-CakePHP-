@@ -793,7 +793,7 @@ var xbs_routing = {
  */
 
 var launch = function (route) {
-			var debug_this = 0;
+			var debug_this = 1;
 			if (debug_this > 0) pr({route: route}, "XBS.routing.launch(route)", 2);
 			var launch_delay = 0
 			var hide_class = false;

@@ -417,6 +417,10 @@ div.view-cart-row {
   }
 }
 
+p {
+  @include HelveticaMdCn;
+  margin-bottom:0.75rem;
+}
 // ORDER/ REVIEW
 
 #micro-cart-contents {

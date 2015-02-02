@@ -10,6 +10,9 @@ body {
   background-repeat:no-repeat;
   background-position:fixed;
 }
+body#vendor_ui {
+  background:initial!important;
+}
 body#vendor {
   width:100%;
   height:100%;
@@ -37,6 +40,7 @@ body#vendor {
   }
 
 }
+
 
 #page-content {
   height:100%;
@@ -235,3 +239,24 @@ textarea.note { height:2rem;}
   width: $monthly-content-wrapper-width;
   vertical-align: top;
 }
+
+//#launch-apology {
+//  position:absolute;
+//  top:rem-calc(125px);
+//  left:15%;
+//  width:rem-calc(500px);
+//  height: auto;
+//  border-radius:1rem;
+//  border: 1rem solid $white;
+//  background-color:$xtreme-blue;
+//  padding:1rem;
+//  z-index:999999;
+//  #launch-apology-content {
+//    @include HelveticaThCn;
+//    #close-modal {
+//      z-index:99999999;
+//      color: $white;
+//      span { color: $white; }
+//    }
+//  }
+//}

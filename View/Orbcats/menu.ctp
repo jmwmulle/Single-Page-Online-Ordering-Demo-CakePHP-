@@ -71,6 +71,7 @@ $this->start('active_orb_card');
 	echo $this->Element('orb_card', array('orb' => $active_orbcat['orb_card'], 'ajax' => false));
 $this->end('active_orb_card');
 ?>
+<?php echo  $this->Element( "top_bar" ); ?>
 <div class="row">
 	<main id="menu" class="large-12 columns<?php if ($this->get( "is_splash" )) echo " fade-out";?>">
 		<div class="row">
