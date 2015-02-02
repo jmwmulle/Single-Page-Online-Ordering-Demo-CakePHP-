@@ -336,7 +336,7 @@ class AppController extends Controller {
 			case 'http://development-xtreme-pizza.ca':
 				$db = mysqli_connect( 'development-xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com', 'xtremeAdmin', 'xtremePizzaDBDB!', 'development_xtreme' );
 				break;
-			case 'http://xtreme-pizza.ca':
+			case 'http://www.xtreme-pizza.ca':
 				$db = mysqli_connect( 'xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com', 'xtremeAdmin', 'xtremePizzaDBDB!', 'xtreme' );
 				break;
 			default:
