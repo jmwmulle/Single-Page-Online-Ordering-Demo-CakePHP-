@@ -165,11 +165,14 @@ class OrbsController extends AppController {
 		$this->layout = 'vendor_ui';
 		if ($this->request->is('post')) {
 			$files = $this->request->data['menu_upload'];
+			$this->Session->write('Upload.attempting', true);
 			if ( AppController::update_tables_from_file($files['opts']['tmp_name'], $files['menu']['tmp_name']) ) {
 				$this->Session->write('Upload.successful', true);
 			} else {
 				$this->Session->write('Upload.successful', false);
 			}
+		} else {
+			$this->Session->delete( 'Upload' );
 		}
 
 	}

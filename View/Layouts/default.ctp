@@ -8,7 +8,7 @@
 	<?php
 		$vendor_scripts = array(
 			"/bower_components/jquery/dist/jquery.min",
-			//"//code.jquery.com/ui/1.11.1/jquery-ui.js",
+			"//code.jquery.com/ui/1.11.1/jquery-ui.js",
 			"/bower_components/foundation/js/foundation.min",
 			"vendor/jquery.validate.min",
 			"vendor/additional-methods.min" );

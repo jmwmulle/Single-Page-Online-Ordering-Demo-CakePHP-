@@ -22,7 +22,7 @@ window.XBS = {
 		XBS.data.store_status = store_status;;
 		XBS.data.cfg.page_name = page_name;
 		XBS.data.cfg.is_splash = is_splash === true;
-		XBS.data.debug = true;
+		XBS.data.debug = false;
 		var init_status = {
 			cart: XBS.cart.init(cart),
 			layout: XBS.layout.init(),
