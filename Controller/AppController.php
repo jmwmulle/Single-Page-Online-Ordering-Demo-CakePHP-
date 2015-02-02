@@ -313,15 +313,15 @@ class AppController extends Controller {
 				break;
 		}
 		if ( $fetch_all ) {
-			try {
-				$result->fetch_all();
-			} catch ( Exception $e ) {
+//			try {
+//				$result->fetch_all();
+//			} catch ( Exception $e ) {
 				$result_array = array();
 				for ( $i = 0; $i < $result->num_rows; $i++ ) {
 					$result_array[ ] = $result->fetch_assoc();
 				}
 				return $result_array;
-			}
+//			}
 		} else {
 			return $result;
 		}
