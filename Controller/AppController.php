@@ -312,7 +312,19 @@ class AppController extends Controller {
 				if ( $result !== true ) throw new Exception( mysqli_error($db) );
 				break;
 		}
-		return $fetch_all ? $result->fetch_all() : $result;
+		if ( $fetch_all ) {
+			try {
+				$result->fetch_all();
+			} catch ( Exception $e ) {
+				$result_array = array();
+				for ( $i = 0; $i < $result->num_rows; $i++ ) {
+					$result_array[ ] = $result->fetch_assoc();
+				}
+				return $result_array;
+			}
+		} else {
+			return $result;
+		}
 	}
 
 	static function update_tables_from_file($opts_file, $menu_file) {
@@ -330,7 +342,6 @@ class AppController extends Controller {
 			default:
 				echo "got to default :(";
 				die();
-			//$db = mysqli_connect('xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com','xtremeAdmin','xtremePizzaDBDB!','development_xtreme');
 		}
 		$primary_orbcats = array('APPETIZERS', 'ASSORTED FINGERS', 'DRINKS & SAUCES', 'BURGERS', 'CHICKEN & CHIPS', 'DESSERTS', 'DONAIRS', 'FISH & CHIPS', 'FRIES & POUTINES', 'PANZAROTTIS', 'PASTA', 'PITAS & SANDWICHES', 'SALADS', 'SUBS' => array('', 'XTREME'), 'PIZZAS' => array('ORIGINAL', 'SUPER', 'SPECIALTY'));
 		$drop_tables_query = "DROP TABLES `orbs`, `orbopts`, `orbs_orbopts`, `orbcats`, `orbs_orbcats`, `pricedicts`, `pricelists`;";
