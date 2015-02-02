@@ -246,3 +246,21 @@ font-family: monaco, Consolas, "courier new", courier, monospaced;
   }
 }
 
+h1, h2, h3, h4, h5 {
+  &.success {
+    color : $success-color;
+    padding: 0.5rem;
+    border:1px solid $success-color;
+    text-transform: uppercase;
+  }
+}
+
+#upload-menu-form-container {
+  margin-top : 2rem;
+  padding:1rem;
+  background-color: lighten($dark-grey, 10%);
+  border:2px solid $white;
+  label {
+    color : $xtreme-blue;
+  }
+}
