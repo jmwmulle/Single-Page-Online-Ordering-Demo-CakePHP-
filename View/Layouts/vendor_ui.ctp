@@ -62,7 +62,7 @@
 		$body_id = $this->get( 'page_name' );
 		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" ); ?>
 </head>
-<body id="vendor-ui">
+<body id="vendor" class="ui">
 <?php echo $this->fetch('content'); ?>
 </body>
 </html>

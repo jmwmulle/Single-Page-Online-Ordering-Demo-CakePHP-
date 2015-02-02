@@ -1,3 +1,4 @@
+<?php echo  $this->Element( "top_bar" ); ?>
 <main id="splash" class="pane loading">
 	<div class="spacer"></div>
 	<div class="content">

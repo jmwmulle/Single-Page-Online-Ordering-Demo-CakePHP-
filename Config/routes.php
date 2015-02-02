@@ -58,6 +58,7 @@
 	Router::connect('/order-accepted', array('controller' => 'pages', 'action' => 'display', "order_accepted"));
 	Router::connect('/print_response/*', array('controller' => 'orders', 'action' => 'log_printer'));
 	Router::connect('/launch-apology', array('controller' => 'pages', 'action' => 'display', 'launch_apology'));
+	Router::connect('/update-menu', array('controller' => 'orbs', 'action' => 'upload_menu'));
 
 
 
