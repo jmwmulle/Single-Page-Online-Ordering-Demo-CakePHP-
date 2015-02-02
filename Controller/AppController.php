@@ -454,7 +454,7 @@ class AppController extends Controller {
 			$orbcat_id = null;
 			$orbcat_id = AppController::verbose_query($db, $orbcat_query_str, true);
 			if ( !empty($orbcat_id) ) {
-				$orbcat_id = $orbcat_id[0][0];
+				$orbcat_id = $orbcat_id[0]['id'];
 			} else {
 				$q = sprintf("INSERT INTO `orbcats` (`primary_menu`, `title`, `subtitle`) VALUES (0, '%s', '%s')", $orb[6], $orb[7]);
 				AppController::verbose_query($db, $q);
@@ -477,7 +477,7 @@ class AppController extends Controller {
 			if ($included_flags > 0) {
 				$matched_opts = AppController::verbose_query($db, $orbcat_query_str, true);
 				foreach($matched_opts as $opt) {
-					$opt_q = sprintf('INSERT INTO `orbs_orbopts` (`orb_id`, `orbopt_id`) VALUES (%s, %s)', $orb_id, $opt[0]);
+					$opt_q = sprintf('INSERT INTO `orbs_orbopts` (`orb_id`, `orbopt_id`) VALUES (%s, %s)', $orb_id, $opt['id']);
 					AppController::verbose_query($db, $opt_q);
 				}
 			}
@@ -497,7 +497,7 @@ class AppController extends Controller {
 
 			$price_list_id = AppController::verbose_query($db, $price_list_query_str, true);
 			if ( !empty($price_list_id) ) {
-				$price_list_id = $price_list_id[0][0];
+				$price_list_id = $price_list_id[0]['id'];
 			} else {
 				$price_list_query_str = "INSERT INTO `pricelists` %s VALUES % s";
 				$fields = "(";
@@ -517,7 +517,7 @@ class AppController extends Controller {
 				AppController::verbose_query($db, $price_list_query_str);
 				$price_list_id = $db->insert_id;
 			}
-			$update_orb_price_list = "UPDATE `orbs` SET `pricelist_id` = $price_list_id WHERE `orbs`.`id` = $orb_id";
+			$update_orb_price_list = sprintf("UPDATE `orbs` SET `orbs`.`pricelist_id` = %s WHERE `orbs`.`id` = %s", $price_list_id, $orb_id);
 			AppController::verbose_query($db, $update_orb_price_list);
 
 			// PRICEDICTS
@@ -537,7 +537,7 @@ class AppController extends Controller {
 
 			$price_dict_id =  AppController::verbose_query($db, $price_dict_query_str, true);
 			if ( !empty($price_dict_id) ) {
-				$price_dict_id = $price_dict_id[0][0];
+				$price_dict_id = $price_dict_id[0]['id'];
 			} else {
 				$price_dict_query_str = "INSERT INTO `pricedicts` (`l1`, `l2`, `l3`, `l4`, `l5`, `l6`) VALUES ('%s', '%s', '%s', '%s', '%s', '')";
 				AppController::verbose_query($db, sprintf($price_dict_query_str, $pd[0], $pd[1], $pd[2], $pd[3], $pd[4]));
