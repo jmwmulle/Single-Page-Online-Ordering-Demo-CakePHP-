@@ -40,7 +40,7 @@ class AppController extends Controller {
 							    'fields' => array('username' => 'email')
 						    )
 					    )
-				    ), ); //"DebugKit.Toolbar",
+				    ),  "DebugKit.Toolbar");
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
 	protected $topnav = array('Menu','Deals','Favs', 'Order',);
@@ -277,6 +277,8 @@ class AppController extends Controller {
 	}
 
 	public function beforeRender() {
+		if (preg_match('/(?i)msie [0-9]/',$_SERVER['HTTP_USER_AGENT'])) return $this->redirect( 'pages/no_service' );
+
 		$statusFile = new File(APP.'status/sfile');
 		$status = $statusFile->read(true, 'r');
 		$this->set("store_status", $status); 
@@ -313,19 +315,16 @@ class AppController extends Controller {
 				break;
 		}
 		if ( $fetch_all ) {
-//			try {
-//				$result->fetch_all();
-//			} catch ( Exception $e ) {
-				$result_array = array();
-				for ( $i = 0; $i < $result->num_rows; $i++ ) {
-					$result_array[ ] = $result->fetch_assoc();
-				}
-				return $result_array;
-//			}
+			$result_array = array();
+			for ( $i = 0; $i < $result->num_rows; $i++ ) {
+				$result_array[ ] = $result->fetch_assoc();
+			}
+			return $result_array;
 		} else {
 			return $result;
 		}
 	}
+
 
 	static function update_tables_from_file($opts_file, $menu_file) {
 		$db = null;
