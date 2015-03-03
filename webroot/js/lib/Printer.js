@@ -138,7 +138,6 @@ function XtremePrinter() {
 	}
 
 	this.play_order_tone = function() {
-		return
 		if ( XBS.printer.is_xtreme_tablet() ) {
 			Android.playTone();
 		} else {

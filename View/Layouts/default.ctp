@@ -56,7 +56,7 @@
 
 <body id="<?php echo $body_id; ?>" <?php echo ___cD( $body_class ); ?>>
 
-<div id="page-content">
+<div id="page-content" class="show-for-medium-up">
 	<?php
 		echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );
 		echo $this->fetch( 'content' );
