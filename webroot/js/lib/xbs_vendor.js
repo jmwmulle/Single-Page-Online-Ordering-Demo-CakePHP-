@@ -97,7 +97,7 @@ var xbs_vendor = {
 					setTimeout(function() {
 						if (now() - XBS.vendor.last_tone_play > 10000) {
 							XBS.printer.play_order_tone();
-							XBS.data.last_tone_play = now();
+							XBS.vendor.last_tone_play = now();
 						}
 						$(XSM.vendor.next_order).removeClass(XSM.effects.slide_up);
 					}, 30);

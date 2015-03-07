@@ -54,11 +54,11 @@ var xbs_data = {
 				instructions: null
 			}
 		},
-	cfg: {
-		root: null,
-		developmentMode: false,
-		minLoadTime: 1,
-		store_status_inspection_timeout: 61000  // ie. 61 seconds
-	}
+		cfg: {
+			root: null,
+			developmentMode: false,
+			minLoadTime: 1,
+			store_status_inspection_timeout: 61000  // ie. 61 seconds
+		}
 };
 
