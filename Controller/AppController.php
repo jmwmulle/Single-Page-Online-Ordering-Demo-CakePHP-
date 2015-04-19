@@ -40,7 +40,7 @@ class AppController extends Controller {
 							    'fields' => array('username' => 'email')
 						    )
 					    )
-				    ),  "DebugKit.Toolbar");
+				    ),);
 	public $helpers = array( "Session", "Html", "Form");
 	public $actsAs = array('containable');
 	protected $topnav = array('Menu','Deals','Favs', 'Order',);
@@ -274,6 +274,26 @@ class AppController extends Controller {
 		}
 
 		return $date_time->format( "H:i:s" );
+	}
+
+	public function setOpenStatus($status) {
+		$store_status = $status;	
+	}
+
+	public function setClosesAt($date_time) {
+		$sfile = new File('../status/sfile');
+		$data = json_decode($sfile->read());
+		$data['closes_at'] = $date_time;
+		$sfile->write(json_encode($data));
+		$sfile->close();
+	}
+
+	public function setOpensAt($date_time) {
+		$sfile = new File('../status/sfile');
+		$data = json_decode($sfile->read());
+		$data['opens_at'] = $date_time;
+		$sfile->write(json_encode($data));
+		$sfile->close();
 	}
 
 	public function beforeRender() {
