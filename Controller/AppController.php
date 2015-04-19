@@ -325,7 +325,7 @@ class AppController extends Controller {
 	}	
 
 	static function verbose_query($db, $query, $fetch_all=false) {
-		$verbose_mode = false;
+		$verbose_mode = true;
 		if ($verbose_mode) pr($query);
 		$result = $db->query( $query );
 		switch ( gettype($result) ) {
@@ -333,8 +333,8 @@ class AppController extends Controller {
 				if ( !get_class($result) || get_class($result) != 'mysqli_result' ) throw new Exception( mysqli_error($db) );
 				break;
 			case 'boolean' && $result:
-				if ( $result !== true ) throw new Exception( mysqli_error($db) );
 				if ($verbose_mode) pr( mysqli_error($db));
+				if ( $result !== true ) throw new Exception( mysqli_error($db) );
 				break;
 		}
 		if ( $fetch_all ) {
