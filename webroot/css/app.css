@@ -4933,6 +4933,16 @@ span.tiny-opt {
   top: -1px;
   padding-left: 3px; }
 
+#no-service {
+  margin-top: 3rem;
+  padding: 2rem; }
+
+.user-info h4.expanded {
+  text-transform: uppercase; }
+.user-info p {
+  line-height: 1rem;
+  margin: 0.5rem; }
+
 @media only screen and (min-width:64.063em) {
   body, html, main, nav {
     overflow: hidden !important; } }
