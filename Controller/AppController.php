@@ -443,11 +443,11 @@ class AppController extends Controller {
 		  PRIMARY KEY (`id`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
 
-		try {
-			$result = AppController::verbose_query( $db, $drop_tables_query );
-		} catch (Exception $e) {
-			null;
-		}
+//		try {
+//			$result = AppController::verbose_query( $db, $drop_tables_query );
+//		} catch (Exception $e) {
+//			null;
+//		}
 
 		foreach ($create_queries as $q) { AppController::verbose_query($db, $q); }
 
