@@ -330,7 +330,8 @@ class AppController extends Controller {
 			case 'object':
 				if ( !get_class($result) || get_class($result) != 'mysqli_result' ) throw new Exception( mysqli_error($db) );
 				break;
-			case 'boolean':
+			case 'boolean' && $result != true:
+//				db( mysqli_error($db));
 				if ( $result !== true ) throw new Exception( mysqli_error($db) );
 				break;
 		}
@@ -350,7 +351,7 @@ class AppController extends Controller {
 		$db = null;
 		switch ($_SERVER['HTTP_ORIGIN']) {
 			case 'http://localhost':
-				$db = mysqli_connect( 'localhost', 'root', 'fr0gstar', 'xtreme' );
+				$db = mysqli_connect( 'kleinlab.psychology.dal.ca', 'jono', 'fr0gstar', 'xtreme' );
 				break;
 			case 'http://development-xtreme-pizza.ca':
 				$db = mysqli_connect( 'development-xtreme.cvvd66fye9y7.us-east-1.rds.amazonaws.com', 'xtremeAdmin', 'xtremePizzaDBDB!', 'development_xtreme' );
@@ -440,12 +441,17 @@ class AppController extends Controller {
 		  PRIMARY KEY (`id`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
 
-		$result = AppController::verbose_query( $db, $drop_tables_query );
+		try {
+			$result = AppController::verbose_query( $db, $drop_tables_query );
+		} catch (Exception $e) {
+			null;
+		}
 
 		foreach ($create_queries as $q) { AppController::verbose_query($db, $q); }
 
 		// ORBOPTS
-		$opts = explode("\n", file_get_contents($opts_file));
+		$opts = mysql_real_escape_string(file_get_contents($opts_file));
+		$opts = explode("\n", $opts);
 		$opts = array_slice($opts, 1, 56);
 
 		foreach($opts as $opt) {
@@ -455,6 +461,7 @@ class AppController extends Controller {
 			AppController::verbose_query($db, $opt_query_str);
 		}
 
+		$xtreme_data = mysql_real_escape_string( file_get_contents($menu_file) );
 		$xtreme_data = explode("\n", file_get_contents($menu_file));
 		$xtreme_data = array_slice($xtreme_data, 2);
 		foreach ($xtreme_data as $i => $row) {
