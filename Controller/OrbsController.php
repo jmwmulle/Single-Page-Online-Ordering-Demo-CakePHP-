@@ -174,7 +174,7 @@ class OrbsController extends AppController {
 		} else {
 			$this->Session->delete( 'Upload' );
 		}
-	exit();
+
 	}
 
 	public function before_filter() {
