@@ -325,8 +325,8 @@ class AppController extends Controller {
 	}	
 
 	static function verbose_query($db, $query, $fetch_all=false) {
-		$verbose_mode = true;
-//		if ($verbose_mode) pr($query);
+		$verbose_mode = false;
+		if ($verbose_mode) pr($query);
 		$result = $db->query( $query );
 		switch ( gettype($result) ) {
 			case 'object':
@@ -445,13 +445,13 @@ class AppController extends Controller {
 		  `p5` float DEFAULT NULL,
 		  `p6` float DEFAULT NULL,
 		  PRIMARY KEY (`id`)
-		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1");
 
-		try {
+//		try {
 			$result = AppController::verbose_query( $db, $drop_tables_query );
-		} catch (Exception $e) {
-			db($e);
-		}
+//		} catch (Exception $e) {
+//			db($e);
+//		}
 
 		foreach ($create_queries as $q) { AppController::verbose_query($db, $q); }
 
@@ -467,12 +467,12 @@ class AppController extends Controller {
 			AppController::verbose_query($db, $opt_query_str);
 		}
 
-		$xtreme_data = mysql_real_escape_string( file_get_contents($menu_file) );
+		$xtreme_data = file_get_contents($menu_file);
 		$xtreme_data = explode("\n", $xtreme_data);
 		$xtreme_data = array_slice($xtreme_data, 2);
 		try {
 			foreach ($xtreme_data as $i => $row) {
-				$orb = explode("\t", $row);
+				$orb = explode("\t", mysql_real_escape_string($row));
 
 				// ORBS
 				if ($orb[13] == "FALSE") $orb[13] = ""; // description set to blank str.
@@ -595,9 +595,9 @@ class AppController extends Controller {
 					AppController::verbose_query($db, $query );
 				}
 			}
-			return true;
 		} catch (Exception $e) {
 			db($e);
 		}
+		return true;
 	}
 }
