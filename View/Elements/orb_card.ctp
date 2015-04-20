@@ -161,6 +161,7 @@ $logged_in = $this->Session->read('Auth');
 	</div>
 
 <?php if ($ajax) { ?>
+
 	<div id="orb-opts-container" class="true-hidden"
 		<?php
 			echo $this->Element('orb_opts_menu_header', array('filters' => $orb['filters']));

@@ -128,6 +128,7 @@ class OrbsController extends AppController {
 			$orb = $orb['Orb'];
 
 			foreach($orb['Orbopt'] as $opt) {
+
 				foreach ($filters as $filter => $count) {
 					if ($opt[$filter]) $filters[$filter]++;
 				}
