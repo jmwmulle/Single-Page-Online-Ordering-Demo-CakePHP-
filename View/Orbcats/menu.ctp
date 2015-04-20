@@ -18,6 +18,7 @@ $orbcat_menu_classes = array("large-block-grid-6", "small-block-grid-3", "float-
 <ul id="orbcat-menu" <?php echo ___cD($orbcat_menu_classes);?>>
 	<?php
 	$m_title = $active_orbcat['name'];
+//	db($orbcats_list);
 	foreach ($orbcats_list as $id => $orbcat) {
 		$orbcat_item_classes = array("orbcat", $id == $active_orbcat['id'] ? "active" : "inactive", "route" );
 		$data = array("route" =>implode(DS,array("orbcat",$id, ucwords($orbcat))));
