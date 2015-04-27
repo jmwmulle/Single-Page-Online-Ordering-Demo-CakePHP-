@@ -521,7 +521,7 @@
 					                          "fingers" );
 					$orb_flags       = array_slice( $orb, -9 );
 					$orb_flags       = array_combine( $orb_flag_labels, $orb_flags );
-					$opt_search_str  = "SELECT `id` FROM `orbopts` WHERE ";
+					$opt_search_str  = "SELECT `id`, `title` FROM `orbopts` WHERE ";
 					$included_flags  = 0;
 					foreach ( $orb_flags as $flag => $value ) {
 						if ( $value == "TRUE" ) {
@@ -533,16 +533,24 @@
 					if ( $included_flags > 0 ) {
 //						pr($opt_search_str);
 						$matched_opts = AppController::verbose_query( $db, $opt_search_str, true );
-//						echo "matched opts:";
-//						pr($matched_opts);
+						echo sprintf("<br />-------<b>%s</b>-------<br />", $orb[0]);
+						echo sprintf('&nbsp;&nbsp;&nbsp;&nbsp;$included_flags: %s<br />&nbsp;&nbsp;&nbsp;&nbsp;$opt_search_str: %s', $included_flags, $opt_search_str);
+						pr($orb_flags);
+						echo '&nbsp;&nbsp;&nbsp;&nbsp;$matched opts:<br />';
+						foreach ($matched_opts as $opt) {
+							echo sprintf("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>%s</i> (id = %s)<br />", $opt['title'], $opt['id']);
+						}
 						if (is_array($matched_opts) ) {
-							foreach ( $matched_opts as $opt ) {
-								$opt_q = sprintf( 'INSERT INTO `orbs_orbopts` (`orb_id`, `orbopt_id`) VALUES (%s, %s)', $orb_id, $opt[ 'id' ] );
-								try {
-									AppController::verbose_query( $db, $opt_q );
-								} catch ( Exception $e ) {
-									db( $e );
-								}
+							$opt_q = "INSERT INTO `orbs_orbopts` (`orb_id`, `orbopt_id`) VALUES ";
+							foreach ( $matched_opts as $i => $opt ) {
+								$opt_q .= sprintf(" (%s, %s)", $orb_id, $opt[ 'id' ]);
+								if ($i + 1 < count($matched_opts) ) $opt_q .= ",";
+							}
+							try {
+								pr(sprintf('&nbsp;&nbsp;&nbsp;&nbsp;$opt_q: %s', $opt_q));
+								AppController::verbose_query( $db, $opt_q );
+							} catch ( Exception $e ) {
+								db( $e );
 							}
 						}
 					}
@@ -638,7 +646,7 @@
 					AppController::verbose_query( $db, $query );
 				}
 			}
-//			die();
+			die();
 
 			return true;
 		}

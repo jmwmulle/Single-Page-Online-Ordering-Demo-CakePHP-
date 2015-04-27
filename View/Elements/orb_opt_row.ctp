@@ -6,7 +6,7 @@
 	 * Twitter: @thisimpetus
 	 * About.me: about.me/thisimpetus
 	 */
-	$filter_flags =  array("premium", "meat", "veggie", "sauce", "cheese");
+	$filter_flags =  array("premium", "meat", "veggie", "sauce", "cheese", "condiment");
 	$id = sprintf("orb-opt-%s", $opt['id']);
 	$list_classes = array("fade-out", "orb-opt", "inactive", "xtreme-select-list");
 	$icons = array('right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D");
