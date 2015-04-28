@@ -336,11 +336,9 @@
 					break;
 				default:
 					if ( $fetch_all ) {
-//						pr(sprintf("Result->num_rows %s", $result->num_rows) );
 						$result_array = array();
 						for ( $i = 0; $i < $result->num_rows; $i++ ) {
 							$record = $result->fetch_assoc();
-//							pr( $record, "Record: " );
 							$result_array[ $i ] = $record;
 						}
 

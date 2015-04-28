@@ -125,11 +125,11 @@ class OrbsController extends AppController {
 			$orb['Orb']['price_table'] = array_filter(array_slice(array_combine($orb['Pricedict'], $orb['Pricelist']), 1));
 			$orb['Orb']['Orbopt'] = $orb['Orbopt'];
 			$orb = $orb['Orb'];
-//			echo "<pre>";
-//			var_export($orb['Orbopt']);
-//			echo "</pre>";
-//			pr($orb['Orbopt']);
-			usort($orb['Orbopt'],
+			echo "<pre>";
+			var_export($orb);
+			echo "</pre>";
+			pr($orb['Orbopt']);
+			$worked = usort($orb['Orbopt'],
 				function($opt_a, $opt_b) {
 					$scores = array("a" =>  0, "b" => 0);
 					foreach( array("a" => $opt_a, "b" => $opt_b) as $index => $opt) {
@@ -143,11 +143,11 @@ class OrbsController extends AppController {
 					return $scores['b'] - $scores['a'];
 				}
 			);
-//			echo "<h1>".$worked."</h1>";
-//			echo "<br  /><pre>";
-//			var_export($orb['Orbopt']);
-//			echo "</pre>";
-//			die();
+			echo "<h1>".$worked."</h1>";
+			echo "<br  /><pre>";
+			var_export($orb['Orbopt']);
+			echo "</pre>";
+			die();
 //			db($orb);
 			foreach($orb['Orbopt'] as $opt) {
 				foreach ($filters as $filter => $count) {
@@ -195,6 +195,13 @@ class OrbsController extends AppController {
 		} else {
 			$this->Session->delete( 'Upload' );
 		}
+
+		$orbs = $this->Orb->find('all');
+		$opts = $this->Orb->Orbopt->find('all');
+		$cats = array_unique(Hash::combine($orbs, "{n}.Orbcat.{n}.id", "{n}.Orbcat.{n}.title"));
+		$subcats = array_unique(Hash::combine($orbs, "{n}.Orbcat.{n}.id", "{n}.Orbcat.{n}.subtitle"));
+
+		$this->set(compact('orbs', 'cats', 'subcats', 'opts'));
 
 	}
 
