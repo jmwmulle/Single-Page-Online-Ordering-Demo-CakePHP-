@@ -276,12 +276,35 @@ class AppController extends Controller {
 		return $date_time->format( "H:i:s" );
 	}
 
+	static function setOpenStatus($status) {
+		$sfile          = new File( APP.'status/sfile' );
+		$data           = json_decode( $sfile->read() );
+		#db($data);
+		$data->open = $status;
+		$sfile->write( json_encode( $data ) );
+		$sfile->close();
+	}
+
+	static function getHoursOfOperation() {
+		$hrsfile = new File( APP.'status/hoursofoperation' );
+		$hrs     = json_decode( $hrsfile->read() );
+		return $hrs;
+	}
+
+	static function setHoursOfOperation($hours) {
+		$hrsfile = new File( APP.'status/hoursofoperation' );
+		$hrsfile->write( json_encode( $hours ) );
+		$hrsfile->close();
+	}
+
 	public function beforeRender() {
 		if (preg_match('/(?i)msie [0-9]/',$_SERVER['HTTP_USER_AGENT'])) return $this->redirect( 'pages/no_service' );
 
 		$statusFile = new File(APP.'status/sfile');
 		$status = $statusFile->read(true, 'r');
-		$this->set("store_status", $status); 
+		$this->set("store_status", $status);
+		$this->setOpenStatus("closed");
+		$this->Session->write("hours_of_operation", $this->getHoursOfOperation());	
 		$this->set("topnav", $this->topnav);
 	}
 
