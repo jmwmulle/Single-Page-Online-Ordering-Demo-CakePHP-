@@ -176,6 +176,7 @@
 			                                                                                     'subtitle' ),
 			                                                              'conditions' => array( '`Orbcat`.`primary_menu`' => true ) )
 			);  // for actual orbcat menu
+//			db($orbcats);
 			$orbcats_list            = array();
 			foreach ( $orbcats as $i => $orbcat ) {
 				$orbcat                          = $orbcat[ 'Orbcat' ];

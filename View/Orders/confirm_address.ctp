@@ -24,6 +24,7 @@
 	$email = $this->Session->read('Cart.Order.email');
 	$address = $this->Session->read('Cart.Order.address');
 	if ( is_array($address) ) array_merge($__address, $address);
+	if (!is_array($address)) $address = [];
 	if (array_key_exists("first_name", $address) ) {
 	    $address['firstname'] = $address['first_name'];
 		unset($address['first_name']);

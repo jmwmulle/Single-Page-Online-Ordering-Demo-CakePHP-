@@ -114,11 +114,10 @@ class OrbsController extends AppController {
 	}
 
 	public function menu_item($id) {
-		if ($this->request->is('ajax') && $this->Orb->exists($id)) {
-			$filters =  array("premium" => 0, "meat" => 0, "veggie" => 0, "sauce" => 0, "cheese" => 0);
+		if ($this->request->is('ajax') && $this->Orb->exists($id) || true) {
+			$filters =  array("premium" => 0, "meat" => 0, "veggie" => 0, "sauce" => 0, "cheese" => 0, "condiment" => 0);
 			$this->layout = 'ajax';
 			$orb = $this->Orb->findById($id);
-
 			unset($orb['Orbcat']);
 			unset($orb['Order']);
 			unset($orb['Orb']['created']);
@@ -126,7 +125,30 @@ class OrbsController extends AppController {
 			$orb['Orb']['price_table'] = array_filter(array_slice(array_combine($orb['Pricedict'], $orb['Pricelist']), 1));
 			$orb['Orb']['Orbopt'] = $orb['Orbopt'];
 			$orb = $orb['Orb'];
+			echo "<pre>";
+			var_export($orb);
+			echo "</pre>";
+			pr($orb['Orbopt']);
+			$worked = usort($orb['Orbopt'],
+				function($opt_a, $opt_b) {
+					$scores = array("a" =>  0, "b" => 0);
+					foreach( array("a" => $opt_a, "b" => $opt_b) as $index => $opt) {
+						if ($opt['meat']) $scores[$index] = 5;
+						if ($opt['veggie']) $scores[$index] = 4;
+						if ($opt['sauce']) $scores[$index] = 3;
+						if ($opt['cheese']) $scores[$index] = 2;
+						if ($opt['condiment']) $scores[$index] = 1;
+					}
 
+					return $scores['b'] - $scores['a'];
+				}
+			);
+			echo "<h1>".$worked."</h1>";
+			echo "<br  /><pre>";
+			var_export($orb['Orbopt']);
+			echo "</pre>";
+			die();
+//			db($orb);
 			foreach($orb['Orbopt'] as $opt) {
 				foreach ($filters as $filter => $count) {
 					if ($opt[$filter]) $filters[$filter]++;
@@ -137,7 +159,6 @@ class OrbsController extends AppController {
 			}
 
 			$orb['filters'] = array_keys($filters);
-
 			$this->set(compact('orb'));
 			$this->render();
 		} else {
@@ -147,7 +168,7 @@ class OrbsController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('menu_item, upload_menu');
+		$this->Auth->allow('menu_item', 'upload_menu');
 	}
 
 /**
@@ -174,6 +195,13 @@ class OrbsController extends AppController {
 		} else {
 			$this->Session->delete( 'Upload' );
 		}
+
+		$orbs = $this->Orb->find('all');
+		$opts = $this->Orb->Orbopt->find('all');
+		$cats = array_unique(Hash::combine($orbs, "{n}.Orbcat.{n}.id", "{n}.Orbcat.{n}.title"));
+		$subcats = array_unique(Hash::combine($orbs, "{n}.Orbcat.{n}.id", "{n}.Orbcat.{n}.subtitle"));
+
+		$this->set(compact('orbs', 'cats', 'subcats', 'opts'));
 
 	}
 
