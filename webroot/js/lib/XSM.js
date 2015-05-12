@@ -19,6 +19,7 @@ var XSM = {
 		page_content: "#page-content",
 		preserve_aspect_ratio: ".preserve-aspect-ratio",
 		route: "*[data-route]",
+		onchange_route: "*[data-changeroute]",
 		store_status: "#store-status",
 		delivery_status: "#delivery-status",
 		unknown_status: "#delivery-status",
@@ -26,35 +27,36 @@ var XSM = {
 	effects: {
 		active: "active",
 		activizing: "activizing",
-		checked: "icon-checked",
 		active_by_default: "default",
-		disabled: "disabled",
+		checked: "icon-checked",
 		detach: "detach",
+		disabled: "disabled",
 		enabled: "enabled",
 		exposed: "exposed",
+		fade_out: "fade-out",
 		fastened: "fastened",
+		flipped_x: "flipped-x",
+		flipped_y: "flipped-y",
+		float_label: "float-labeled",
+		hidden: "hidden",
 		inactive: "inactive",
 		inelligible: "inelligible",
-		hidden: "hidden",
-		fade_out: "fade-out",
 		launching: "launching",
 		loading: "loading",
 		lr_only: "lr-only",
 		max_of_type: "max-of-type",
-		slide_right: "slide-right",
-		slide_left: "slide-left",
-		slide_up: "slide-up",
-		slide_down: "slide-down",
-		flipped_x: "flipped-x",
-		flipped_y: "flipped-y",
-		float_label: "float-labeled",
 		overlay: "overlay",
 		pressed: "pressed",
-		solidify: "solidify",
-		share_icon: "icon-orb-card-share",
-		share_icon_reveal: "icon-orb-card-share-reveal",
+		slide_right: "slide-right",
 		register_icon: "icon-orb-card-register",
 		register_reveal: "icon-orb-card-register-reveal",
+		secondary:"secondary",
+		share_icon: "icon-orb-card-share",
+		share_icon_reveal: "icon-orb-card-share-reveal",
+		slide_down: "slide-down",
+		slide_left: "slide-left",
+		slide_up: "slide-up",
+		solidify: "solidify",
 		stash: "stash",
 		success: "success",
 		swap_width: "swap-width",
@@ -215,10 +217,18 @@ var XSM = {
 		order_address: "#order-title",
 		pending_orders_list: "#pending-orders-list"
 	},
+	vendor_ui: {
+		menu_table: "#menu-table",
+		orbopt_config_form_wrapper: ".orbopt-config-form",
+		orbopt_selection_template: "#orbopt-selection-template",
+		ui_tabs: "#ui-tabs"
+	},
 	footer: {
 		self:"footer#footer"
 	},
 	generated: {
+		vendor_ui_opts_input: function(orb_id) { return "#orb-" + orb_id + "-orbopts"; },
+		vendor_ui_opts_config_id: function(orb_id) { return "#orb-" + orb_id + "-orbopts-config" },
 		vendor_orb_desc: function(orb_desc, orb_details) {
 			var orb_opts = orb_details.opts;
 			var orb_str = "<li><ul class='orb'><li> &#8226; ";
@@ -280,6 +290,9 @@ var XSM = {
 				.append("<span class='tiny-opt-label'>" + name + "</span>")
 				.append(C[weight])[0];
 		}
+	},
+	page_name: {
+		vendor_menu: "Vendor Menu Update"
 	}
 };
 

@@ -18,6 +18,7 @@ window.XBS = {
 		XBS.splash = xbs_splash;
 		XBS.validation = xbs_validation;
 		XBS.vendor = xbs_vendor;
+		XBS.vendor_menu = xbs_vendor_menu;
 		XBS.setHost(host);
 		XBS.data.store_status = store_status;;
 		XBS.data.cfg.page_name = page_name;
@@ -34,8 +35,9 @@ window.XBS = {
 			vendor: XBS.vendor.init()
 		};
 
+		if (XBS.data.cfg.page_name = XSM.page_name.vendor_menu) XBS.vendor_menu.init();
 		if (XBS.data.debug) pr(init_status, "init status");
-		if (!XBS.data.debug) $(XBS.routing).trigger(C.ROUTE_REQUEST, {request: 'launch_apology', trigger: {}});
+		if (!XBS.data.debug && XBS.data.cfg.page_name != XSM.page_name.vendor_menu) $(XBS.routing).trigger(C.ROUTE_REQUEST, {request: 'launch_apology', trigger: {}});
 	},
 	exec_init_sequence: function (init_list) {
 		var meta_sit_rep = {state: true, report: {}};

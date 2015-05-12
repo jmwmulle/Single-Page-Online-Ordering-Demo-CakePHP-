@@ -7,9 +7,15 @@ var xbs_routing = {
 			/* For launching routes via the DOM */
 			$(C.BODY).on(C.CLK, XSM.global.route, null, function (e) {
 				var disabled = $(e.currentTarget).hasClass(XSM.effects.disabled);
-//				var inelligible = $(e.currentTarget).hasClass(XSM.effects.disabled)
 				if ( !disabled ) {
 					$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: $(e.currentTarget).data('route'), trigger: e});
+				}
+			});
+
+			$(C.BODY).on(C.CHANGE, XSM.global.onchange_route, null, function (e) {
+				var disabled = $(e.currentTarget).hasClass(XSM.effects.disabled);
+				if ( !disabled ) {
+					$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: $(e.currentTarget).data('changeroute'), trigger: e});
 				}
 			});
 
@@ -162,7 +168,7 @@ var xbs_routing = {
 					}
 				}),
 				launch_apology: new XtremeRoute("launch_apology", {
-					url:{url:'launch-apology', type: C.GET, defer:false},
+					url:{url:'launch-apology', type: C.GET, defer:true},
 					modal: XSM.modal.primary,
 					params:['action'],
 					callbacks: {
@@ -338,14 +344,63 @@ var xbs_routing = {
 						}
 					}
 				}),
+				orb_config: new XtremeRoute("orb_config", {
+					params: ["target", "action", "attribute"],
+					callbacks: {
+						params_set: function() {
+							XBS.vendor_menu.edit_orb(this.read('target'),
+													 this.read('attribute'),
+													 this.trigger.event.target);
+						}
+					}
+				}),
+				orbopt_config: new XtremeRoute("orbopt_config", {
+					url: {url:"orbs/orbopt_config", method: C.GET},
+					modal:XSM.modal.primary,
+					params: {action:{}, target:{url_fragment:true}, state:{}},
+					callbacks: {
+						params_set: function() {
+							if (this.read('action') != "launch") {
+								this.unset('url');
+								this.unset('modal');
+							}
+							switch ( this.read('action') ) {
+								case 'toggle':
+									this.set_callback('launch', function() {
+										XBS.vendor_menu.toggle_orbopt(this.read('target'));
+									});
+									break;
+								case 'set_opt_state':
+									this.set_callback('launch', function() {
+//										pr({target:this.read('target'), state:this.read('state')}, "set opt state route");
+										XBS.vendor_menu.set_orbopt_state(this.read('target'), this.read('state'));
+									});
+									break;
+								case 'toggle_group':
+									this.set_callback('launch', function() {
+										XBS.vendor_menu.toggle_orbopt_group($(this.trigger.event.target).val());
+									});
+									break;
+								case 'filter':
+									this.set_callback('launch', function() {
+										XBS.vendor_menu.toggle_filter(this.read('target'));
+									});
+								default:
+									break;
+							}
+						},
+						launch: function() {
+							$(document).foundation();
+						}
+					}
+				}),
 				orb_card: new XtremeRoute("orb_card", {
 					params: ["method", "channel", "data"],
 					stop_propagation: true,
 					callbacks: {
 						params_set: function () {
 							var launch = false;
-							var method = this.read('method');
-							switch ( method ) {
+							switch ( this.read('method') ) {
 								case 'configure':
 									XBS.menu.configure_orb(this.read('channel'), this.read('data'));
 									break;
@@ -679,6 +734,31 @@ var xbs_routing = {
 						launch: function () { XBS.validation.submit_address(this);}
 					}
 				}),
+				update_menu: new XtremeRoute("update_menu", {
+					params: { orb_id:{url_fragment:true}, updating: {url_fragment:true} },
+					url: { url:"orbs" + C.DS + "update_menu", type: C.POST, data:null },
+					callbacks: {
+						params_set: function() {
+							switch ( this.read('updating') ) {
+								case "orbopts":
+									this.url = {
+										url:["orbs", "update_menu", this.read('orb_id'), this.read('updating')].join(C.DS),
+										type: C.POST,
+										defer: true,
+										data: $(XSM.vendor_ui.orbopt_config_form_wrapper).serialize()
+									};
+									pr(this.url, "UPDATE_MENU.ORBOPTS");
+									break;
+							}
+						},
+						launch: function() {
+							var response = $.parseJSON(this.deferal_data)
+							if ("success" in response && response.success == true) {
+								$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"close_modal/priamry", trigger:{}});
+							}
+						}
+					}
+				}),
 				vendor_get_pending: new XtremeRoute('vendor_get_pending', {
 					url: {url:'pending', defer:true, type: C.GET},
 					callbacks: {
@@ -768,6 +848,13 @@ var xbs_routing = {
 						}
 					}
 				}),
+				vendor_menu: new XtremeRoute("vendor_menu", {
+					params:['method', 'orb_id'],
+					modal:XSM.modal.primary,
+					callbacks: {
+						params_set: XBS.vendor_menu.launch_editor
+					}
+				}),
 				view_order: new XtremeRoute("view_order", {
 					params: {context: {value: "default", url_fragment: false}},
 					modal: XSM.modal.primary,
@@ -778,7 +865,7 @@ var xbs_routing = {
 			var request = request.split(C.DS);
 			if (request[0] in routes) {
 				var route = routes[request[0]];
-				route.__init(request[0], event);
+				route.__init(request, request[0], event);
 				route.init(request.slice(1));
 				return route;
 			}
@@ -793,7 +880,7 @@ var xbs_routing = {
  */
 
 var launch = function (route) {
-			var debug_this = 1;
+			var debug_this = 0;
 			if (debug_this > 0) pr({route: route}, "XBS.routing.launch(route)", 2);
 			var launch_delay = 0
 			var hide_class = false;

@@ -6,6 +6,7 @@ var constants = {
 	POST: "POST",
 	GET: "GET",
 	CLK: "click",
+	CHANGE: "change",
 	CHECK: "check",
 	DELIVERY: "delivery",
 	PICKUP: "pickup",
@@ -69,7 +70,7 @@ var constants = {
 	CLOSED: "CLOSED",
 	DELIVERING: "DELIVERING",
 	PICKUP_ONLY: "PICKUP ONLY",
-	UNAVAILABLE: "UNAVAILABLE"
+	UNAVAILABLE: "UNAVAILABLE",
 };
 
 var C = constants;

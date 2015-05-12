@@ -36,7 +36,8 @@
 				                            'fields' => array( 'username' => 'email' )
 			                            )
 		                            )
-		                            ), );
+		                            ),
+		);
 		public $helpers = array( "Session", "Html", "Form" );
 		public $actsAs = array( 'containable' );
 		protected $topnav = array( 'Menu', 'Deals', 'Favs', 'Order', );

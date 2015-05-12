@@ -125,11 +125,7 @@ class OrbsController extends AppController {
 			$orb['Orb']['price_table'] = array_filter(array_slice(array_combine($orb['Pricedict'], $orb['Pricelist']), 1));
 			$orb['Orb']['Orbopt'] = $orb['Orbopt'];
 			$orb = $orb['Orb'];
-			echo "<pre>";
-			var_export($orb);
-			echo "</pre>";
-			pr($orb['Orbopt']);
-			$worked = usort($orb['Orbopt'],
+			usort($orb['Orbopt'],
 				function($opt_a, $opt_b) {
 					$scores = array("a" =>  0, "b" => 0);
 					foreach( array("a" => $opt_a, "b" => $opt_b) as $index => $opt) {
@@ -143,12 +139,6 @@ class OrbsController extends AppController {
 					return $scores['b'] - $scores['a'];
 				}
 			);
-			echo "<h1>".$worked."</h1>";
-			echo "<br  /><pre>";
-			var_export($orb['Orbopt']);
-			echo "</pre>";
-			die();
-//			db($orb);
 			foreach($orb['Orbopt'] as $opt) {
 				foreach ($filters as $filter => $count) {
 					if ($opt[$filter]) $filters[$filter]++;
@@ -182,8 +172,9 @@ class OrbsController extends AppController {
 /**
  * upload a csv to the database to set menu parameters
  */
-	public function upload_menu() {
+	public function upload_menu($new_ui=false) {
 		$this->layout = 'vendor_ui';
+		$this->set('page_name', "Vendor Menu Update");
 		if ($this->request->is('post')) {
 			$files = $this->request->data['menu_upload'];
 			$this->Session->write('Upload.attempting', true);
@@ -196,13 +187,67 @@ class OrbsController extends AppController {
 			$this->Session->delete( 'Upload' );
 		}
 
-		$orbs = $this->Orb->find('all');
-		$opts = $this->Orb->Orbopt->find('all');
-		$cats = array_unique(Hash::combine($orbs, "{n}.Orbcat.{n}.id", "{n}.Orbcat.{n}.title"));
-		$subcats = array_unique(Hash::combine($orbs, "{n}.Orbcat.{n}.id", "{n}.Orbcat.{n}.subtitle"));
+		$orbs = $this->Orb->find('all', array('recursive' => 1));
+		$orbopts = Hash::remove($this->Orb->Orbopt->find('all'), "{n}.Orb");
 
-		$this->set(compact('orbs', 'cats', 'subcats', 'opts'));
 
+		$orbopts_groups = $this->Orb->Orbcat->find('list',  array('conditions' => array('`orbcat`.`orbopt_group`' => 1)));
+		$orbcats = $this->Orb->Orbcat->find('list');
+		$optflags = $this->Orb->Orbopt->Optflag->find('list');
+		$this->set(compact('orbs', 'orbcats', 'orbopts', 'orbopts_groups', 'optflags' ));
+
+	}
+
+	public function orbopt_config($orb_id) {
+		if ( $this->request->is('ajax') || true ) {
+			$this->layout = "ajax";
+			$orb = $this->Orb->find('all', array('conditions' => array('`Orb`.`id`' => $orb_id)));
+			$orb = $orb[0];
+			$active_orbopts = Hash::extract($orb['Orbopt'], "{n}.id");
+			$orbcats = $this->Orb->Orbcat->find('all',  array('recursive' => -1));
+			$optflags = $this->Orb->Orbopt->Optflag->find('list');
+			$orbopts_groups = $this->Orb->Orbcat->find('list',  array('conditions' => array('`orbcat`.`orbopt_group`' => 1)));
+			$orbopts = Hash::remove($this->Orb->Orbopt->find('all'), "{n}.Orb");
+			foreach($orbopts as $i => $opt) {
+				$orbopts[$i] = Hash::insert($opt, "Orbopt.flags", Hash::extract($opt, "Optflag.{n}.id"));
+			}
+			$this->set(compact('orb', 'orbcats', 'optflags', 'orbopts_groups', 'orbopts', 'active_orbopts'));
+		} else {
+			$this->redirect(___cakeUrl('orbcats', 'menu'));
+		}
+	}
+
+	public function update_menu($orb_id, $updating) {
+		if ($this->request->is('ajax') && $this->request->is('post') ) {
+			$this->layout = "ajax";
+			$response =  array('success' => true, 'error' => false, 'submitted_data' => $this->request->data);
+			try {
+				switch($updating) {
+					case "orbopts":
+						$this->loadModel('OrbsOrbopt');
+						$this->OrbsOrbopt->deleteAll(array("`OrbsOrbopt`.`orb_id`" => $orb_id));
+						$response['orbs_orbopts_ids'] = array();
+						$save_data = array();
+						foreach ($this->request->data['Orbopt'] as $opt_id => $state) {
+							if ($state) {
+								array_push($save_data, array('orb_id' => $orb_id, 'orbopt_id' => $opt_id));
+							}
+						}
+						if ( $this->OrbsOrbopt->saveMany($save_data, array('atomic' => true)) ) {
+							array_push($response['orbs_orbopts_ids'], $this->OrbsOrbopt->id);
+						} else {
+							$response['success'] = false;
+						}
+
+				}
+			} catch (Exception $e) {
+				$response['error'] = $e;
+				$response['success'] = false;
+			}
+			$this->set('response', $response);
+		} else {
+			$this->redirect(___cakeUrl('orbcats', 'menu'));
+		}
 	}
 
 	public function before_filter() {

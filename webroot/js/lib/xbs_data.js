@@ -6,7 +6,7 @@ var xbs_events = {
 		order_form_update: eCustom(C.ORDER_FORM_UPDATE),
 		order_ui_update: eCustom(C.ORDER_UI_UPDATE),
 		route_request: eCustom(C.ROUTE_REQUEST),
-		orb_row_animation_complete: eCustom(C.ORB_ROW_ANIMATION_COMPLETE)
+		orb_row_animation_complete: eCustom(C.ORB_ROW_ANIMATION_COMPLETE),
 };
 var xbs_data = {
 		store_status: null,

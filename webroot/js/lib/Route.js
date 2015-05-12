@@ -6,6 +6,7 @@ function XtremeRoute(name, data) {
 	this.route_data = data;
 	// data
 	this.route_name = "";
+	this.request = "";
 
 	this.trigger = {event: false, element: false};
 	this.modal = false;
@@ -34,8 +35,9 @@ function XtremeRoute(name, data) {
 	 * @returns {boolean}
 	 * @private
 	 */
-	this.__init = function (name, e) {
+	this.__init = function (request, name, e) {
 		this.trigger = {event: e, element: e.currentTarget};
+		this.request = request.join(C.DS);
 		data = this.route_data;
 		var debug_this = 0;
 		if (debug_this > 0) pr([name, data], this.__debug("init", ["name", "data"]));
@@ -44,17 +46,7 @@ function XtremeRoute(name, data) {
 			this.modal = data.modal;
 			this.modal_content = data.modal + "-content";
 		}
-		if ("url" in data) {
-			if ( is_string(data.url) ) {
-				this.url.url = data.url;
-				this.url.type = C.GET;
-				this.url.defer = false;
-			} else {
-				this.url.url = data.url.url == C.UNSET ? null : data.url.url;
-				this.url.type = "type" in data.url ? data.url.type : C.GET;
-				this.url.defer = "defer" in data.url ? data.url.defer : false;
-			}
-		}
+		if ("url" in data) { this.set_url(data.url) }
 
 		if ("params" in data) {
 			this.params = {};
@@ -85,6 +77,22 @@ function XtremeRoute(name, data) {
 		if (this.post_init_callback) this.post_init_callback();
 
 		return true;
+	}
+
+	/**
+	 * __debug() gives method string for printing to console
+	 * @param method_str
+	 * @param args
+	 * @returns {string}
+	 * @private
+	 */
+	this.__debug = function (method_str, args) {
+		if (!!args) {
+			if (is_array(args)) args = args.join(", ");
+			return this.toString() + "::" + method_str + "(" + args + ")"
+		} else {
+			return this.toString() + "::" + method_str + "#"
+		}
 	}
 
 	this.__set_behavior = function (behavior_mask) {
@@ -137,42 +145,6 @@ function XtremeRoute(name, data) {
 
 
 	/**
-	 * init() instance initiation
-	 * @param param_values
-	 */
-	this.init = function (param_values) {
-		$(this).off();
-		var debug_this = 0;
-		if (debug_this > 0) pr(param_values, "XtremeRoute::init_instance(param_values)");
-		this.route_name = "*" + this.route_name + "[" + new Date().getTime() + "]";
-		if (this.launch_callback) $(this).on("route_launched", this.launch_callback);
-		if (param_values) this.__set_params(param_values);
-		return true;
-	}
-
-	/**
-	 * toString() re-implementing prototype method
-	 * @returns {string}
-	 */
-	this.toString = function () { return "XtremeRoute[" + this.route_name + "]";}
-
-	/**
-	 * __debug() gives method string for printing to console
-	 * @param method_str
-	 * @param args
-	 * @returns {string}
-	 * @private
-	 */
-	this.__debug = function (method_str, args) {
-		if (!!args) {
-			if (is_array(args)) args = args.join(", ");
-			return this.toString() + "::" + method_str + "(" + args + ")"
-		} else {
-			return this.toString() + "::" + method_str + "#"
-		}
-	}
-
-	/**
 	 * __set_params() readies instance with param data pulled from data-route attr of initiating html element
 	 * @param param_values
 	 * @returns {boolean}
@@ -215,6 +187,143 @@ function XtremeRoute(name, data) {
 	}
 
 	/**
+	 * init() instance initiation
+	 * @param param_values
+	 */
+	this.init = function (param_values) {
+		$(this).off();
+		var debug_this = 0;
+		if (debug_this > 0) pr(param_values, "XtremeRoute::init_instance(param_values)");
+		this.route_name = "*" + this.route_name + "[" + new Date().getTime() + "]";
+		if (this.launch_callback) $(this).on("route_launched", this.launch_callback);
+		if (param_values) this.__set_params(param_values);
+		return true;
+	}
+
+
+	/**
+	 * add_param()
+	 * @param name
+	 * @param value
+	 * @param url_fragment
+	 * @returns {boolean}
+	 */
+	this.add_param = function (name, value, url_fragment) {
+		this.params[name] = {
+			value: value != "undefined" ? value : false,
+			url_fragment: url_fragment === true,
+			post_init: true
+		};
+		return true;
+	}
+
+
+	this.change_behavior = function (behavior_mask) { this.__set_behavior(behavior_mask); }
+
+
+	/**
+	 * read() returns param value if it is found in the params attr.
+	 * @param param_str
+	 * @returns {*}
+	 */
+	this.read = function (param_str) {
+		var debug_this = 0;
+		if (debug_this > 0) pr(param_str, "XtremRoute::read(param_str)");
+		if (param_str in this.params) {
+			if (debug_this > 1) pr("param_str found in this.params", "XtremeRoute::read()");
+			return this.params[param_str].value;
+		} else {
+			return null;
+		}
+	};
+
+
+	this.set = function (attr, value) {
+		var debug_this = 1;
+		if (debug_this > 0) pr({attr: attr, value: value}, "XtremeRoute::set(attr, value)");
+		if (attr in this) {
+			if (debug_this > 1) pr(attr + " in 'this'");
+			switch (attr) {
+				case "url":
+					this.url = {url: false, type: false, defer: false};
+					break;
+				case "launch_callback":
+					$(this).off(C.ROUTE_LAUNCHED);
+					this.launch_callback = false;
+					break;
+				case 'modal':
+					this.set_modal(value);
+					break;
+			}
+			return this[attr];
+		}
+	}
+
+
+	/**
+	 * set_callback() set a callback post-initialization and re-init
+	 * @param callback
+	 * @param callback_function
+	 * @returns {*}
+	 */
+	this.set_callback = function (callback, callback_function) {
+		switch (callback) {
+			case "launch":
+				$(this).off(C.ROUTE_LAUNCHED);
+				this.launch_callback = callback_function;
+				break;
+			case "params_set":
+				this.params_set_callback = callback_function;
+				break;
+		}
+		return this.init();
+	}
+
+
+	this.set_deferal_data = function (data) { this.deferal_data = data};
+
+
+	/**
+	 * set_modal() setter for modal attr
+	 * @param modal
+	 */
+	this.set_modal = function (modal) {
+		this.modal = modal;
+		this.modal_content = modal + "-content";
+	};
+
+
+	/**
+	 * set_url() setter for url attr; can provide a string URL or full/partially complete url data hash
+	 * @param url_hash
+	 */
+	this.set_url = function (url_hash) {
+		if (is_string(url_hash.url)) {
+			this.url.url = url_hash.url;
+			this.url.type = C.GET;
+			this.url.defer = false;
+		} else {
+			this.url.url = url_hash.url.url == C.UNSET ? null : url_hash.url.url;
+			this.url.type = "type" in url_hash.url ? url_hash.url.type : C.GET;
+			this.url.defer = "defer" in url_hash.url ? url_hash.url.defer : false;
+		}
+	}
+
+
+	this.stop_propagation = function () {
+		if (this.__stop_propagation) this.trigger.event.stopPropagation();
+		return this.__stop_propagation;
+	}
+
+
+	/**
+	 * toString() re-implementing prototype method
+	 * @returns {string}
+	 */
+	this.toString = function () { return "XtremeRoute[" + this.route_name + "]";}
+
+
+	/**
 	 * url_append() maintains internal url attr structure when working with an instance
 	 * @param fragment
 	 * @returns {boolean}
@@ -236,64 +345,6 @@ function XtremeRoute(name, data) {
 		return false;
 	}
 
-	/**
-	 * set_modal() setter for modal attr
-	 * @param modal
-	 */
-	this.set_modal = function (modal) {
-		this.modal = modal;
-		this.modal_content = modal + "-content";
-	};
-
-	/**
-	 * add_param()
-	 * @param name
-	 * @param value
-	 * @param url_fragment
-	 * @returns {boolean}
-	 */
-	this.add_param = function (name, value, url_fragment) {
-		this.params[name] = {
-			value: value != "undefined" ? value : false,
-			url_fragment: url_fragment === true,
-			post_init: true
-		};
-		return true;
-	}
-
-	this.write = function(path, value, context) {
-		if (!context) context = this;
-		path = path.split(".");
-		if (path[0] in context) {
-			if (path.length > 1) {
-				var context = context[path[0]]
-				return this.write(path.slice(1).join("."), value, context);
-			}  else {
-				context[path[0]] = value;
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * set_callback() set a callback post-initialization and re-init
-	 * @param callback
-	 * @param callback_function
-	 * @returns {*}
-	 */
-	this.set_callback = function (callback, callback_function) {
-		switch (callback) {
-			case "launch":
-				$(this).off(C.ROUTE_LAUNCHED);
-				this.launch_callback = callback_function;
-				break;
-			case "params_set":
-				this.params_set_callback = callback_function;
-				break;
-		}
-		return this.init();
-	}
 
 	/**
 	 * unset() safely unsets instance attrs
@@ -321,28 +372,21 @@ function XtremeRoute(name, data) {
 		return false;
 	};
 
-	/**
-	 * read() returns param value if it is found in the params attr.
-	 * @param param_str
-	 * @returns {*}
-	 */
-	this.read = function (param_str) {
-		var debug_this = 0;
-		if (debug_this > 0) pr(param_str, "XtremRoute::read(param_str)");
-		if (param_str in this.params) {
-			if (debug_this > 1) pr("param_str found in this.params", "XtremeRoute::read()");
-			return this.params[param_str].value;
-		} else {
-			return null;
-		}
-	};
 
-	this.stop_propagation = function () {
-		if (this.__stop_propagation) this.trigger.event.stopPropagation();
-		return this.__stop_propagation;
+	this.write = function (path, value, context) {
+		if (!context) context = this;
+		path = path.split(".");
+		if (path[0] in context) {
+			if (path.length > 1) {
+				var context = context[path[0]]
+				return this.write(path.slice(1).join("."), value, context);
+			} else {
+				context[path[0]] = value;
+				return true;
+			}
+		}
+		return false;
 	}
 
-	this.change_behavior = function (behavior_mask) { this.__set_behavior(behavior_mask); }
-	this.set_deferal_data = function (data) { this.deferal_data = data};
 	return this;
 }

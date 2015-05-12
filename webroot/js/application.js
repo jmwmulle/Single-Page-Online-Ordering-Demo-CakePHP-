@@ -1,3 +1,4 @@
+
 $(document).foundation();
 
 function InitError(raisedError, message) {
@@ -16,4 +17,8 @@ function InitError(raisedError, message) {
 	return this;
 }
 
-XBS.init(is_splash, page_name, host, cart);
+$(document).ready( function() {
+	XBS.init(is_splash, page_name, host, cart);
+});
+
+

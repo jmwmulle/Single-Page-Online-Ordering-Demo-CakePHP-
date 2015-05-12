@@ -168,7 +168,6 @@
 				),
 				"orb_card" => null
 			);
-//		db($active_orbcat);
 
 			$active_orbcat[ 'orbs' ] = $active_orbcat[ 'orbs' ][ 0 ][ 'Orb' ]; // truncate to just orbs, remove OrbCat
 			$orbcats                 = $this->Orbcat->find( 'all', array( 'recursive'  => -1,
@@ -176,7 +175,7 @@
 			                                                                                     'subtitle' ),
 			                                                              'conditions' => array( '`Orbcat`.`primary_menu`' => true ) )
 			);  // for actual orbcat menu
-//			db($orbcats);
+
 			$orbcats_list            = array();
 			foreach ( $orbcats as $i => $orbcat ) {
 				$orbcat                          = $orbcat[ 'Orbcat' ];

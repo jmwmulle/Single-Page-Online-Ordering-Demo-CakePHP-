@@ -17,15 +17,29 @@
 	<?php
 		$vendor_scripts = array(
 			"/bower_components/jquery/dist/jquery.min",
-			//"//code.jquery.com/ui/1.11.1/jquery-ui.js",
 			"/bower_components/foundation/js/foundation.min",
+		    "vendor/jquery.dataTables.min",
+//		    "vendor/jquery.jeditable",
+			"//code.jquery.com/ui/1.11.1/jquery-ui.js",
 			"vendor/jquery.validate.min",
-			"vendor/additional-methods.min" );
+		    "vendor/jquery.dataTables.editable",
+		    "vendor/jquery.dataTables.rowGrouping",
+		    "vendor/jquery.form",
+//		    "vendor/jquery.jeditable.ajaxUpload",
+//		    "vendor/jquery.jeditable.checkbox",
+//		    "vendor/jquery.jeditable.datepicker",
+//		    "vendor/jquery.jeditable.time",
+		    "vendor/ColReorder",
+		    "vendor/ColVis",
+			"vendor/additional-methods.min",
+//		    "vendor/complete",
+		);
 		$xbs_scripts = array( "utilities",
-		                      "lib/XSM.js",
+		                      "lib/XSM",
 		                      "lib/XCL",
 		                      "lib/Route",
 		                      "lib/Printer",
+		                      "lib/xbs_vendor_menu",
 		                      "lib/xbs_data",
 		                      "lib/xbs_routing",
 		                      "lib/xbs_layout",
@@ -37,7 +51,7 @@
 		                      "lib/XBS",
 		                      "application" );
 		echo $this->Html->meta( 'icon' );
-		echo $this->Html->css( "vendor" );
+		echo $this->Html->css( array( "jquery-ui.min", "vendor" ) );
 		echo $this->Html->script( "/bower_components/modernizr/modernizr" );
 		echo $this->Html->script( $vendor_scripts, array( 'block' => 'vendor' ) );
 		echo $this->Html->script( $xbs_scripts, array( 'block' => 'app' ) );
@@ -57,12 +71,25 @@
 		var store_status = <?php echo $this->get('store_status') ? $this->get('store_status') : "{reachable:false, delivering:false, time:0}"; ?>;
 		var is_splash = <?php echo ($this->get("is_splash")) ? 'true' : 'false';?>;
 		var page_name = "<?php echo ($this->get("page_name")) ? $this->get("page_name") : "default"; ?>";
+		var vendor_ui = true;
+		var cart = {};
 	</script>
 	<?php
 		$body_id = $this->get( 'page_name' );
 		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" ); ?>
 </head>
-<body id="vendor" class="ui">
-<?php echo $this->fetch('content'); ?>
+<body>
+<?php
+echo $this->fetch('content');
+echo $this->fetch( 'vendor' );
+echo $this->fetch( 'app' );
+//echo $this->fetch( 'main' );
+?>
+<div id="primary-modal" class="slide-up">
+	<div class="row">
+		<div id="primary-modal-content" class="large-12 columns"></div>
+		<a href="#" id="close-modal" data-route="close_modal/primary" class="box rightward"><span>CANCEL</span><span class="icon-cancel icon-hn-inline"></span></a>
+	</div>
+</div>
 </body>
 </html>

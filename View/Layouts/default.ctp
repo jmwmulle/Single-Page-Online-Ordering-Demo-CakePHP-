@@ -17,6 +17,7 @@
 		                      "lib/XCL",
 		                      "lib/Route",
 		                      "lib/Printer",
+		                      "lib/xbs_vendor_menu",
 		                      "lib/xbs_data",
 		                      "lib/xbs_routing",
 		                      "lib/xbs_layout",
@@ -48,6 +49,7 @@
 		var store_status = <?php echo $this->get('store_status') ? $this->get('store_status') : "{reachable:false, delivering:false, time:0}"; ?>;
 		var is_splash = <?php echo ($this->get("is_splash")) ? 'true' : 'false';?>;
 		var page_name = "<?php echo ($this->get("page_name")) ? $this->get("page_name") : "default"; ?>";
+		var vendor_ui = false;
 	</script>
 	<?php
 		$body_id = $this->get( 'page_name' );
