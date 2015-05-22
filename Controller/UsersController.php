@@ -364,11 +364,11 @@
 		public function initDB() {
 			$group = $this->User->Group;
 
-			// Allow admins to everything
+			//Admins
 			$group->id = 2;
 			$this->Acl->allow( $group, 'controllers' );
 
-			// allow managers to posts and widgets
+			//Users
 			$group->id = 1;
 			$this->Acl->deny( $group, 'controllers' );
 			$this->Acl->allow( $group, 'controllers/users/home' );
@@ -376,13 +376,14 @@
 			$this->Acl->allow( $group, 'controllers/users/add_favourite' );
 			$this->Acl->allow( $group, 'controllers/users/add_address' );
 
+			//Storefront
 			$group->id = 3;
 			$this->Acl->deny($group, 'controllers');
 			$this->Acl->allow($group, 'controllers/orders/getPending');
 			$this->Acl->allow($group, 'controllers/pages/vendor');
 			$this->Acl->allow($group, 'controllers/orders/setStatus');
 			$this->Acl->allow($group, 'controllers/users/tabletlogin');
-			// we add an exit to avoid an ugly "missing views" error message
+			
 			echo "all done";
 			exit;
 		}

@@ -294,11 +294,27 @@
 			$sfile->close();
 		}
 
+	static function getOpenStatus() {
+		$sfile		= new File( APP.'status/sfile' );
+		$data		= json_decode( $sfile->read() );
+		$sfile->close()
+		if ($data->override) {
+			return $data->override;
+		} else {
+			return $data->open;
+		}
+	}
+	
+	/**
+ 	 * Pass "open", "closed", or "false" to reset to the normal schedule
+	 * If set to "open" or "closed" it will reset back to the normal schedule the next
+	 * time the store would naturally open or close, respectively.
+	 */
 	static function setOpenStatus($status) {
 		$sfile          = new File( APP.'status/sfile' );
 		$data           = json_decode( $sfile->read() );
 		#db($data);
-		$data->open = $status;
+		$data->override = $status;
 		$sfile->write( json_encode( $data ) );
 		$sfile->close();
 	}
@@ -306,6 +322,7 @@
 	static function getHoursOfOperation() {
 		$hrsfile = new File( APP.'status/hoursofoperation' );
 		$hrs     = json_decode( $hrsfile->read() );
+		$hrsfile->close();
 		return $hrs;
 	}
 
@@ -320,6 +337,7 @@
 
 		$statusFile = new File(APP.'status/sfile');
 		$status = $statusFile->read(true, 'r');
+		$statusFile->close();
 		$this->set("store_status", $status);
 		$this->set("topnav", $this->topnav);
 	}
