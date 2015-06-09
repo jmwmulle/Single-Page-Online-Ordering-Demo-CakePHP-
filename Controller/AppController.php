@@ -295,31 +295,79 @@
 			$sfile->close();
 		}
 
-		public function beforeFilter() {
-			if ( preg_match( '/(?i)msie [0-9]/', $_SERVER[ 'HTTP_USER_AGENT' ] ) ) {
-				return $this->redirect( 'pages/no_service' );
-			}
+	public function beforeFilter() {
+		if ( preg_match( '/(?i)msie [0-9]/', $_SERVER[ 'HTTP_USER_AGENT' ] ) ) {
+			return $this->redirect( 'pages/no_service' );
+		}
 
-			$statusFile = new File( APP . 'status/sfile' );
-			$status     = $statusFile->read( true, 'r' );
-			$this->set( "store_status", $status );
-			$this->set( "topnav", $this->topnav );
+		$statusFile = new File( APP . 'status/sfile' );
+		$status     = $statusFile->read( true, 'r' );
+		$this->set( "store_status", $status );
+		$this->set( "topnav", $this->topnav );
+	}
 
-			//Configure AuthComponent
-			if ( isset( $this->request->params[ 'pass' ][ 0 ] ) ) {
-				if ( $this->request->params[ 'pass' ][ 0 ] == 'home' && $this->Session->read( 'Auth.User' ) ) {
-					$this->redirect( ___cakeUrl( "users", "home" ) );
-				}
-			}
-			$this->Auth->loginAction    = array(
-				'controller' => 'menu',
-				'action'     => ''
-			);
-			$this->Auth->logoutRedirect = array(
-				'controller' => 'menu',
-				'action'     => ''
-			);
-			$this->Auth->loginRedirect  = ___cakeUrl( "users", "edit", array( 'id' => $this->Auth->user( 'id' ) ) );
-			$this->Auth->allow();
+	static function getOpenStatus() {
+		$sfile		= new File( APP.'status/sfile' );
+		$data		= json_decode( $sfile->read() );
+		$sfile->close();
+		if ($data->override) {
+			return $data->override;
+		} else {
+			return $data->open;
 		}
 	}
+	
+	/**
+ 	 * Pass "open", "closed", or "false" to reset to the normal schedule
+	 * If set to "open" or "closed" it will reset back to the normal schedule the next
+	 * time the store would naturally open or close, respectively.
+	 */
+	static function setOpenStatus($status) {
+		$sfile          = new File( APP.'status/sfile' );
+		$data           = json_decode( $sfile->read() );
+		#db($data);
+		$data->override = $status;
+		$sfile->write( json_encode( $data ) );
+		$sfile->close();
+	}
+
+	static function getHoursOfOperation() {
+		$hrsfile = new File( APP.'status/hoursofoperation' );
+		$hrs     = json_decode( $hrsfile->read() );
+		$hrsfile->close();
+		return $hrs;
+	}
+
+	static function setHoursOfOperation($hours) {
+		$hrsfile = new File( APP.'status/hoursofoperation' );
+		$hrsfile->write( json_encode( $hours ) );
+		$hrsfile->close();
+	}
+
+	public function beforeRender() {
+		if (preg_match('/(?i)msie [0-9]/',$_SERVER['HTTP_USER_AGENT'])) return $this->redirect( 'pages/no_service' );
+
+		$statusFile = new File(APP.'status/sfile');
+		$status = $statusFile->read(true, 'r');
+		$statusFile->close();
+		$this->set("store_status", $status);
+		$this->set("topnav", $this->topnav);
+
+		//Configure AuthComponent
+		if ( isset( $this->request->params[ 'pass' ][ 0 ] ) ) {
+			if ( $this->request->params[ 'pass' ][ 0 ] == 'home' && $this->Session->read( 'Auth.User' ) ) {
+				$this->redirect( ___cakeUrl( "users", "home" ) );
+			}
+		}
+		$this->Auth->loginAction    = array(
+			'controller' => 'menu',
+			'action'     => ''
+		);
+		$this->Auth->logoutRedirect = array(
+			'controller' => 'menu',
+			'action'     => ''
+		);
+		$this->Auth->loginRedirect  = ___cakeUrl( "users", "edit", array( 'id' => $this->Auth->user( 'id' ) ) );
+		$this->Auth->allow();
+	}
+}
