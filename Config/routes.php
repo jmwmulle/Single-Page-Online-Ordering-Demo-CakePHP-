@@ -33,7 +33,7 @@
 	Router::connect('/menu/*', array('controller' => 'orbcats', 'action' => 'menu'));
 	Router::connect('/users/update', array('controller' => 'users', 'action' => 'edit'));
 	Router::connect('/cart/*', array('controller' => 'orders', 'action' => 'cart'));
-	Router::connect('/menuitem/*', array('controller' => 'orbs', 'action' => 'menu_item'));
+	Router::connect('/menu-item/*', array('controller' => 'orbs', 'action' => 'menu_item'));
 	Router::connect('/register', array('controller' => 'pages', 'action' => 'signup'));
 	Router::connect('/order-method/*', array('controller' => 'orders', 'action' => 'order_method'));
 	Router::connect('/confirm-address/*', array('controller' => 'orders', 'action' => 'confirm_address'));
@@ -49,6 +49,14 @@
 	Router::connect('/finish-ordering/*', array('controller' => 'orders', 'action' => 'review'));
 	Router::connect('/order-confirmation/*', array('controller' => 'orders', 'action' => 'get_status'));
 	Router::connect('/vendor', array('controller' => 'orders', 'action' => 'vendor'));
+	Router::connect('/vendor-ui/*', array('controller' => 'orbs', 'action' => 'vendor_ui'));
+	Router::connect('/optflag-config/*', array('controller' => 'orboptsoptflags', 'action' => 'ajax_add'));
+	Router::connect('/orbopt-optgroup-config/*', array('controller' => 'orboptsorbcats', 'action' => 'ajax_add'));
+	Router::connect('/add-price-labels', array('controller' => 'orbs', 'action' => 'pricedict_add'));
+	Router::connect('/add-menu-item', array('controller' => 'orbs', 'action' => 'add'));
+	Router::connect('/add-menu-option', array('controller' => 'orbopts', 'action' => 'add'));
+	Router::connect('/delete-menu-item/*', array('controller' => 'orbs', 'action' => 'deprecate'));
+	Router::connect('/delete-menu-option/*', array('controller' => 'orbopts', 'action' => 'deprecate'));
 	Router::connect('/vendor-accept/*', array('controller' => 'orders', 'action' => 'set_status'));
 	Router::connect('/vendor-reject/*', array('controller' => 'orders', 'action' => 'set_status'));
 	Router::connect('/pending', array('controller' => 'orders', 'action' => 'get_pending', false));
@@ -58,7 +66,8 @@
 	Router::connect('/order-accepted', array('controller' => 'pages', 'action' => 'display', "order_accepted"));
 	Router::connect('/print_response/*', array('controller' => 'orders', 'action' => 'log_printer'));
 	Router::connect('/launch-apology', array('controller' => 'pages', 'action' => 'display', 'launch_apology'));
-	Router::connect('/update-menu', array('controller' => 'orbs', 'action' => 'upload_menu'));
+//	Router::connect('/update-menu', array('controller' => 'orbs', 'action' => 'upload_menu'));
+	Router::connect('/opt-price-factors/*', array('controller' => 'optflags', 'action' => 'price_factors'));
 
 
 

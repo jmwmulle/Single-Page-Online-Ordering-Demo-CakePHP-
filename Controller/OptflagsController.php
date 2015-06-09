@@ -105,4 +105,12 @@ class OptflagsController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+
+	public function price_factors() {
+		if ( $this->request->is('ajax') ) {
+			$this->render_ajax_response($this->Optflag->find('list', array('conditions' => array('price_factor' => true))));
+			return;
+		}
+		$this->redirect(___cakeUrl('orbcats', 'menu'));
+	}
 }

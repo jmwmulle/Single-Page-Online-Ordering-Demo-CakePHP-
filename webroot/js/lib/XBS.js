@@ -18,12 +18,11 @@ window.XBS = {
 		XBS.splash = xbs_splash;
 		XBS.validation = xbs_validation;
 		XBS.vendor = xbs_vendor;
-		XBS.vendor_menu = xbs_vendor_menu;
+		XBS.vendor_ui = xbs_vendor_ui;
 		XBS.setHost(host);
 		XBS.data.store_status = store_status;;
 		XBS.data.cfg.page_name = page_name;
 		XBS.data.cfg.is_splash = is_splash === true;
-		XBS.data.debug = false;
 		var init_status = {
 			cart: XBS.cart.init(cart),
 			layout: XBS.layout.init(),
@@ -35,9 +34,11 @@ window.XBS = {
 			vendor: XBS.vendor.init()
 		};
 
-		if (XBS.data.cfg.page_name = XSM.page_name.vendor_menu) XBS.vendor_menu.init();
-		if (XBS.data.debug) pr(init_status, "init status");
-		if (!XBS.data.debug && XBS.data.cfg.page_name != XSM.page_name.vendor_menu) $(XBS.routing).trigger(C.ROUTE_REQUEST, {request: 'launch_apology', trigger: {}});
+		if (XBS.data.cfg.page_name == XSM.page_name.vendor_ui) XBS.vendor_ui.init();
+
+		if (XBS.data.debug === false && XBS.data.cfg.page_name != XSM.page_name.vendor_ui) {
+			$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: 'launch_apology', trigger: {}});
+		}
 	},
 	exec_init_sequence: function (init_list) {
 		var meta_sit_rep = {state: true, report: {}};

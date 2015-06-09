@@ -28,6 +28,7 @@ var XSM = {
 		active: "active",
 		activizing: "activizing",
 		active_by_default: "default",
+		breakout: ".breakout",
 		checked: "icon-checked",
 		detach: "detach",
 		disabled: "disabled",
@@ -35,6 +36,7 @@ var XSM = {
 		exposed: "exposed",
 		fade_out: "fade-out",
 		fastened: "fastened",
+		fill_parent: ".fill-parent",
 		flipped_x: "flipped-x",
 		flipped_y: "flipped-y",
 		float_label: "float-labeled",
@@ -122,7 +124,8 @@ var XSM = {
 		orb_opt_icon: ".orb-opt-coverage",
 		orb_opt_icon_active: ".orb-opt-coverage.active",
 		orb_opt_filter: ".orb-opt-filter",
-		orb_opt_filters: "#orb-opt-filters",
+		orb_opt_filters: "#orb-opt-filters",  // marked for deletion
+		optflag_filter_header: "#optflag-filter-header",
 		orb_opt_filter_span: ".orb-opt-filter span",
 		orb_opt_filter_span_checked: ".orb-opt-filter span.icon-checked",
 		orb_opt_filter_span_unchecked: ".orb-opt-filter span.icon-unchecked",
@@ -218,9 +221,18 @@ var XSM = {
 		pending_orders_list: "#pending-orders-list"
 	},
 	vendor_ui: {
+		add_orbopt_form: "#OrboptVendorUiForm",
 		menu_table: "#menu-table",
+		menu_options_tab: "#menu-options-tab",
+		menu_tab: "#menu-tab",
+		orbopts_table: "#menu-options-table",
+		orb_attr_display: "div.orb-attr.display",
+		orb_attr_edit: "div.orb-attr.edit",
+		orb_add_form: "#OrbAddForm",
 		orbopt_config_form_wrapper: ".orbopt-config-form",
+		orbopt_optgroup_config_form: "#orbopt-optgroup-config-form",
 		orbopt_selection_template: "#orbopt-selection-template",
+		price_dict_update_form: ".price-dict-update-form",
 		ui_tabs: "#ui-tabs"
 	},
 	footer: {
@@ -292,7 +304,7 @@ var XSM = {
 		}
 	},
 	page_name: {
-		vendor_menu: "Vendor Menu Update"
+		vendor_ui: "Vendor Interface"
 	}
 };
 

@@ -143,95 +143,95 @@
 		public function menu($orbcat_id = null, $orb_id = null, $return = false) {
 			$page_name = 'menu';
 
-//		$this->layout = "menu";
-
 			if ( !$orbcat_id || !$this->Orbcat->exists( $orbcat_id ) ) {
-				$original_pizzas = $this->Orbcat->find( 'all', array( 'recursive'  => -1,
-				                                   'conditions' => array( '`Orbcat`.`title`'    => 'PIZZAS',
-				                                                          '`Orbcat`.`subtitle`' => 'ORIGINAL' ),
-				                                   'fields'     => '`Orbcat`.`id`'
-					)
-				);
-				$orbcat_id = $original_pizzas[0]['Orbcat']['id'];
+				$orbcat_id = $this->Orbcat->field( 'id', array( '`Orbcat`.`title`'    => 'PIZZAS',
+				                                                '`Orbcat`.`subtitle`' => 'ORIGINAL' ));
 			}
 			$this->Orbcat->id = $orbcat_id;
-
 			$active_orbcat_title = strtoupper( $this->Orbcat->field( 'title', array( '`Orbcat`.`id`' => $orbcat_id ) ) );
 			if ( $active_orbcat_title != "XTREME SUBS" ) {
 				$active_orbcat_title = str_replace( "XTREME", "", $active_orbcat_title );
 			}
+			$this->Orbcat->Behaviors->load('Containable');
 			$active_orbcat = array(
 				"id"       => $orbcat_id,
 				"name"     => $active_orbcat_title,
-				"orbs"     => $this->Orbcat->find( 'all', array( 'recursive'  => 2,
-				                                                 "conditions" => array( "`Orbcat`.`id`" => $orbcat_id ) )
-				),
+				"orbs"     => Hash::remove(
+			                        Hash::remove($this->Orbcat->find( 'all', array(
+						                        'conditions' => array('id' => $orbcat_id),
+															'contain' => array(
+																'Orb' =>  array(
+																	'conditions' => array('`Orb`.`deprecated`' => false),
+																	'fields' => array('id', 'orbcat_id', 'title', 'description', 'config'),
+																	'Pricedict',
+																	'Pricelist',
+																	'Orbopt' => array(
+																		'conditions' => array('`Orbopt`.`deprecated`' => false),
+																		'Optflag' => array ('fields' => array('id', 'title')
+																		)
+																	)
+																)
+															),
+														)
+									),
+								"{n}.Orb.{n}.Orbopt.{n}.OrbsOrbopt"),
+							"{n}.Orb.{n}.Orbopt.{n}.Optflag.{n}.OrboptsOptflag"),
+				"optflags" => array(),
 				"orb_card" => null
 			);
-
-			$active_orbcat[ 'orbs' ] = $active_orbcat[ 'orbs' ][ 0 ][ 'Orb' ]; // truncate to just orbs, remove OrbCat
+			$allow_half_portions = $active_orbcat['orbs'][0]['Orbcat']['allow_half_portions'];
+			$active_orbcat['orbs'] = $active_orbcat['orbs'][0]['Orb'];
+			foreach($active_orbcat['orbs'] as $i => $orb) $active_orbcat['orbs'][$i]['allow_half_portions'] = $allow_half_portions;
 			$orbcats                 = $this->Orbcat->find( 'all', array( 'recursive'  => -1,
 			                                                              'fields'     => array( 'id', 'title',
 			                                                                                     'subtitle' ),
-			                                                              'conditions' => array( '`Orbcat`.`primary_menu`' => true ) )
+			                                                              'conditions' => array( '`Orbcat`.`primary_menu`' => true ))
 			);  // for actual orbcat menu
 
 			$orbcats_list            = array();
 			foreach ( $orbcats as $i => $orbcat ) {
 				$orbcat                          = $orbcat[ 'Orbcat' ];
-				$orbcats_list[ $orbcat[ 'id' ] ] = $orbcat[ 'subtitle' ] ?
-					$orbcat[ 'subtitle' ] . " " . $orbcat[ 'title' ] : $orbcat[ 'title' ];
+				$orbcats_list[ $orbcat[ 'id' ] ] = $orbcat[ 'subtitle' ] ? $orbcat[ 'subtitle' ] . " " . $orbcat[ 'title' ] : $orbcat[ 'title' ];
 			}
+
 			foreach ( $active_orbcat[ 'orbs' ] as $i => $orb ) {
 				// next line drops the 'id' field after combining the pricelist & pricedict into a table
-				$orb[ 'price_table' ]          = array_filter( array_slice( array_combine( $orb[ 'Pricedict' ], $orb[ 'Pricelist' ] ), 1 ) );
+				$orb[ 'Prices' ]          = array_filter( array_slice( array_combine( $orb[ 'Pricedict' ], $orb[ 'Pricelist' ] ), 1 ) );
+				unset($orb['Pricelist']);
+				unset($orb['pricelist_id']);
+				unset($orb['Pricedict']);
+				unset($orb['pricedict_id']);
+				$orb = array('Orb' => array_slice(array_filter($orb), 0, 5),
+				             'Prices' => $orb['Prices'],
+				             'Orbopt' => array_key_exists('Orbopt', $orb) ? $orb['Orbopt'] : array()
+				);
+				if ( !in_array('config', $orb['Orb']) ) $orb['Orb']['config'] = false;
 				$active_orbcat[ 'orbs' ][ $i ] = $orb;
-				if ( $orb[ 'id' ] == $orb_id ) {
-					$active_orbcat[ "orb_card" ] = $orb;
-				} // active orb set here if orb requested
-			}
-			if ( $active_orbcat[ "orb_card" ] == null ) {
-				$active_orbcat[ "orb_card" ] = $active_orbcat[ 'orbs' ][ 0 ];
-			}
-
-			$filters = array( "premium" => 0, "meat" => 0, "veggie" => 0, "sauce" => 0, "cheese" => 0 );
-
-			foreach ( $active_orbcat[ "orb_card" ][ 'Orbopt' ] as $opt ) {
-				foreach ( $filters as $filter => $count ) {
-					if ( $opt[ $filter ] ) {
-						$filters[ $filter ]++;
+				foreach($orb['Orbopt'] as $j => $opt) {
+					foreach ($opt['Optflag'] as $fl) {
+						if (!in_array($fl, $active_orbcat[ 'optflags' ]) ) {
+							$active_orbcat[ 'optflags' ][$fl['id']] = $fl['title'];
+						}
 					}
 				}
+				if ( $orb['Orb'][ 'id' ] == $orb_id ) $active_orbcat[ "orb_card" ] = $orb; // active orb set here if orb requested
 			}
-
-			foreach ( $filters as $filter => $count ) {
-				if ( !( $count > 0 ) ) {
-					unset( $filters[ $filter ] );
-				}
-			}
-
-			$active_orbcat[ "orb_card" ][ 'filters' ] = array_keys( $filters );
-
+			$optflags_list = $this->Orbcat->Orb->Orbopt->Optflag->find('list');
+			if ( $active_orbcat[ "orb_card" ] == null ) $active_orbcat[ "orb_card" ] = $active_orbcat[ 'orbs' ][ 0 ];
+			$active_orbcat[ "orb_card" ]['Orb']['allow_half_portions'] = $allow_half_portions;
+//			db($active_orbcat['orb_card']);
 			if ( count( $active_orbcat[ 'orbs' ] ) < $this->min_orb_count ) {
 				// fills active orb menu with dummy orbs
 				while ( count( $active_orbcat[ 'orbs' ] ) != $this->min_orb_count ) {
 					array_push( $active_orbcat[ 'orbs' ], $this->empty_orb );
 				}
 			}
-			$this->set( compact( 'active_orbcat', 'orbcats_list', 'page_name' ) );
-			if ( $this->request->is( "ajax" ) ) {
-				if ( $return ) { // ie. if "menu" is being delivered from splash via ajax
-					$this->layout = "ajax";
-					$this->render();
-				}
-				else {
-					$this->render( 'ajax_menu', 'ajax' ); // ie. if orbcat menu is just being updated from within menu
-				}
-			}
+			$this->set( compact( 'active_orbcat', 'orbcats_list', 'page_name', 'optflags_list' ) );
+
+			if ( $this->request->is( "ajax" ) ) $this->render( $return ? 'menu' : 'ajax_menu', 'ajax' );
 		}
 
-		public
-		function beforeFilter() {
+		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->Auth->allow( 'index', 'view', 'menu' );
 		}

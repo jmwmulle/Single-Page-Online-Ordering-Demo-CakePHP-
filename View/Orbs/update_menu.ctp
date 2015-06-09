@@ -6,11 +6,8 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-//$value = json_decode($data['value'], true);
 
-	echo json_encode($response);
-//switch ($data['columnPosition']) {
-//	default:  // ie. size columns
-//		echo $this->Element('menu_update/size_column', array('dict_val' => $value['dict'], 'list_val' => $value['list']));
-//		break;
-//}
+if ( array_key_exists("replace", $response) ) {
+	$response['replace'] = $this->element($response['replace']['element'], $response['replace']['options']);
+}
+echo json_encode($response);

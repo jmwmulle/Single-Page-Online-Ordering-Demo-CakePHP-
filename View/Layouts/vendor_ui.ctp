@@ -19,16 +19,11 @@
 			"/bower_components/jquery/dist/jquery.min",
 			"/bower_components/foundation/js/foundation.min",
 		    "vendor/jquery.dataTables.min",
-//		    "vendor/jquery.jeditable",
 			"//code.jquery.com/ui/1.11.1/jquery-ui.js",
 			"vendor/jquery.validate.min",
 		    "vendor/jquery.dataTables.editable",
 		    "vendor/jquery.dataTables.rowGrouping",
 		    "vendor/jquery.form",
-//		    "vendor/jquery.jeditable.ajaxUpload",
-//		    "vendor/jquery.jeditable.checkbox",
-//		    "vendor/jquery.jeditable.datepicker",
-//		    "vendor/jquery.jeditable.time",
 		    "vendor/ColReorder",
 		    "vendor/ColVis",
 			"vendor/additional-methods.min",
@@ -39,7 +34,7 @@
 		                      "lib/XCL",
 		                      "lib/Route",
 		                      "lib/Printer",
-		                      "lib/xbs_vendor_menu",
+		                      "lib/xbs_vendor_ui",
 		                      "lib/xbs_data",
 		                      "lib/xbs_routing",
 		                      "lib/xbs_layout",
@@ -91,5 +86,6 @@ echo $this->fetch( 'app' );
 		<a href="#" id="close-modal" data-route="close_modal/primary" class="box rightward"><span>CANCEL</span><span class="icon-cancel icon-hn-inline"></span></a>
 	</div>
 </div>
+
 </body>
 </html>

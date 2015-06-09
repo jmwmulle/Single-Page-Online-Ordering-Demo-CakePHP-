@@ -17,7 +17,7 @@
 		                      "lib/XCL",
 		                      "lib/Route",
 		                      "lib/Printer",
-		                      "lib/xbs_vendor_menu",
+		                      "lib/xbs_vendor_ui",
 		                      "lib/xbs_data",
 		                      "lib/xbs_routing",
 		                      "lib/xbs_layout",
@@ -69,6 +69,7 @@
 	echo $this->fetch( 'vendor' );
 	echo $this->fetch( 'app' );
 	echo $this->fetch( 'main' );
+	echo $this->fetch( 'debug' );
 ?>
 <script>
 /*	window.___gcfg = {

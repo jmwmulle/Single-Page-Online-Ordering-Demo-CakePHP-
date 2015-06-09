@@ -4711,6 +4711,12 @@ span.icon-hn-inline {
 .icon-pick-up:before {
   content: "T"; }
 
+.icon-check-mark:before {
+  content: "U"; }
+
+.icon-add:before {
+  content: "V"; }
+
 @font-face {
   font-family: "Helvetica Neue Condensed Black";
   src: url('../files/font/HelveticaNeueLTStdBlkCn.otf');

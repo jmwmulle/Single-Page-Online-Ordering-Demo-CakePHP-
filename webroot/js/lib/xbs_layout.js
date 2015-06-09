@@ -7,6 +7,7 @@ var xbs_layout = {
 			if (XBS.data.cfg.is_splash) XBS.layout.detachAnimationTargets();
 			var page_content_height = window.innerHeight - ($(XSM.global.topbar).innerHeight() + 3 * C.REM) + C.PX;
 			$(XSM.global.page_content).css({minHeight: page_content_height});
+			$(XSM.effects.fill_parent).each(function() { XBS.layout.match_parent_dimensions(this)});
 			setTimeout(function () {
 				$(XSM.topbar.social_loading).addClass(XSM.effects.fade_out);
 				setTimeout(function () {
@@ -176,6 +177,10 @@ var xbs_layout = {
 				$(sel).css(styles).addClass(XSM.effects.fastened);
 			}
 			return  (is_array(selector) ) ? selector : $(selector);
+		},
+		match_parent_dimensions: function(element) {
+			var parent = $(element).parent();
+			$(element).css({height: $(parent).innerHeight(), width: $(parent).innerWidth()});
 		},
 		multi_activize: function (element) {
 			if ($(element).hasClass('active')) {

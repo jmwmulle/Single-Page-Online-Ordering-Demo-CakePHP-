@@ -58,7 +58,7 @@ function XtremeRoute(name, data) {
 				for (var param in data.params) {
 					this.params[param] = {value: false, url_fragment: false, post_init: false};
 					if ("value" in data.params[param]) this.params[param].value = data.params[param].value;
-					if ("url_fragment" in data.params[param]) this.params[param].url_fragment = data.params[param].url_fragment;
+					if ("url_fragment" in data.params[param]) this.params[param].url_fragment = data.params[param].url_fragment === true;
 					if ("post_init" in data.params[param]) this.params[param].post_init = data.params[param].post_init === true;
 				}
 			}

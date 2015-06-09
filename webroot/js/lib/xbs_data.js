@@ -9,6 +9,7 @@ var xbs_events = {
 		orb_row_animation_complete: eCustom(C.ORB_ROW_ANIMATION_COMPLETE),
 };
 var xbs_data = {
+		debug:true,
 		store_status: null,
 		host_root_dirs: {
 			xDev: "",
@@ -31,7 +32,7 @@ var xbs_data = {
 			},
 			payment: null
 		},
-		current_orb_card: null,
+		current_orb: null,
 		delays: {
 			global_transition: 300,
 			default_js_refresh: 30,

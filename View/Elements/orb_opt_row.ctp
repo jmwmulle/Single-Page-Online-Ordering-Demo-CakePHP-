@@ -6,20 +6,21 @@
 	 * Twitter: @thisimpetus
 	 * About.me: about.me/thisimpetus
 	 */
-	$filter_flags =  array("premium", "meat", "veggie", "sauce", "cheese", "condiment");
-	$id = sprintf("orb-opt-%s", $opt['id']);
 	$list_classes = array("fade-out", "orb-opt", "inactive", "xtreme-select-list");
+	if ($opt) {
+	$optflags =  $this->get('optflags_list');
+	$id = sprintf("orb-opt-%s", $opt['id']);
 	$icons = array('right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D");
-	$data = array("route" => "orb_opt/opt" . DS . sprintf("#%s", $id) . DS .___as_file_name($opt['title']));
-	foreach (array_slice($opt, 3, -1) as $flag => $value) {
-		if ($value) {
-			if (in_array($flag, $filter_flags) ) $list_classes[] = $flag;
-			$data['flags'][] = $flag;
+	if (!$allow_half_portions) $icons = array_slice($icons, -1);
+	$data = array("route" => "orb_opt/opt" . DS . sprintf("#%s", $id) . DS .___as_file_name($opt['title']), 'optflags' => array());
+	foreach ($opt['Optflag'] as $flag) {
+		if ($flag['title']) {
+			array_push($list_classes, $flag['title']);
+			array_push($data['optflags'], $flag['id']);
 		}
 	}
 ?>
-<li id="<?php echo $id; ?>" <?php echo ___cD($list_classes); ?> <?php echo ___dA($data); ?>
-	>
+<li id="<?php echo $id; ?>" <?php echo ___cD($list_classes); ?> <?php echo ___dA($data); ?>>
 	<ul class="stretch inline"
 		<?php foreach ($icons as $icon => $value) {
 			$classes = array("orb-opt-coverage", $icon, "icon-$icon", "inactive", "disabled");
@@ -30,8 +31,7 @@
 		<li <?php echo ___cD($classes); ?> data-route="<?php echo "orb_opt/weight" . DS . sprintf("#%s", $id) . DS . "false" . DS . $value; ?>"></li
 			<?php } ?>
 			>
-		<li><a href="#"><?php echo strtoupper($opt['title']); ?></a></li
-			>
-	</ul
-		>
+		<li><a href="#"><?php echo strtoupper($opt['title']); ?></a></li>
+	</ul>
 </li>
+<?php } else { echo sprintf('<li %s></li>', ___cD($list_classes));}

@@ -1,4 +1,5 @@
 var xbs_cart = {
+	pricable_optflags: {},
 	orbs: {}, // CONFIRMED BY SERVER
 	configuring: {orbopts: {}}, // ORB_ID: {CONFIG}
 	initialized: false,
@@ -41,11 +42,14 @@ var xbs_cart = {
 		var debug_this = 0;
 		if (debug_this > 0 ) pr(cart_from_session, "XBS.cart.init(cart details)", 2);
 		if ('Order' in cart_from_session) XBS.data.order = cart_from_session.Order;
-		try {
-			XBS.cart.orbs = cart_from_session.OrderItem;
-		} catch(e) {
-			XBS.cart.orbs = {};
-		}
+		XBS.cart.orbs = is_object(cart_from_session) && "OrderItem" in cart_from_session ? cart_from_session.OrderItem : {};
+
+		$.get(["", xbs_data.cfg.root, "opt-price-factors"].join(C.DS), function(response) {
+				XBS.cart.pricable_optflags = integer_keys($.parseJSON(response));
+				XBS.cart.pricable_optflags[0] = "regular";
+			}
+		);
+
 		XBS.cart.initialized = true;
 		XBS.cart.configuring = {};
 		return true;
@@ -136,7 +140,7 @@ var xbs_cart = {
 			XBS.cart.configuring[orb_uid].orbopts[id] = {
 				id: id,
 				weight: $(this).val(),
-				flags: $(as_id("orb-opt-" + id)).data('flags')
+				optflags: $(as_id("orb-opt-" + id)).data('optflags')
 			}
 		});
 		XBS.cart.inspect_configuration(orb_uid);
@@ -156,18 +160,15 @@ var xbs_cart = {
 	},
 	inspect_configuration: function(uid) {
 		var orb = XBS.cart.configuring[uid];
-		var opt_weights = {
-			sauce:0,
-			premium:0,
-			regular:0,
-			cheese:0
-		};
+		pr(orb, "orb");
+		var opt_weights = copy(XBS.cart.pricable_optflags);
+		XBS.cart.pricable_optflags[3] = "fart";
 		for (var opt_id in orb.orbopts) {
 			var opt = orb.orbopts[opt_id];
-			for (var i = 0; i < opt.flags.length; i++) {
-				if ( opt.flags[i] in opt_weights ) {
+			for (var id in opt.optflags.length) {
+				if ( opt.optflags[id] in opt_weights ) {
 					var weight_val = XBS.cart.weight_to_int(opt.weight);
-					opt_weights[opt.flags[i]] += weight_val > -1 ? weight_val : 0;
+					xbs_cart.pricable_optflags[opt.optflags[id]] += weight_val > -1 ? weight_val : 0;
 				}
 			}
 		}

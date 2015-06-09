@@ -60,6 +60,33 @@ class OrboptsOrbcatsController extends AppController {
 		$this->set(compact('orbopts', 'orbcats'));
 	}
 
+	public function ajax_add($orbopt_id) {
+		if ($this->request->is('ajax') && $this->request->is('post') ) {
+			$response = array('success' => true, 'error' => false, 'submitted_data' => $this->request->data);
+			if (!$this->OrboptsOrbcat->deleteAll(array('orbopt_id' => $orbopt_id, 'orbcat_id !=' => array_values($this->request->data['OrboptOrbcat'])) )) {
+				$response['error'] = $this->OrboptsOrbcat->validationErrors;
+				return $this->render_ajax_response($response);
+			}
+			$data = array();
+			foreach($this->request->data['OrboptOrbcat'] as $og_id => $include) {
+				if ($include) array_push($data, array('orbopt_id' => $orbopt_id, 'orbcat_id' => $og_id));
+			}
+			if ( !$this->OrboptsOrbcat->saveAll($data) ) {
+				$response['error'] = $this->OrboptsOrbcat->validationErrors;
+			}
+			return $this->render_ajax_response($response);
+		}
+//		$orbopts_optgroups = $this->OrboptsOrbcat->find('all', array('recursive' => -1,
+//		                                                             'conditions' => array('orbopt_id' => $orbopt_id)
+//			));
+		$orbopt_optgroups = $this->OrboptsOrbcat->Orbcat->find('list', array('conditions' => array('orbopt_group' => 1)));
+		$orbopt = $this->OrboptsOrbcat->Orbopt->findById($orbopt_id);
+		$orbopt['Orbcat'] = Hash::extract($orbopt['Orbcat'], "{n}.id");
+		$orbopt = array('Orbopt' => $orbopt['Orbopt'], 'Orbcat' => $orbopt['Orbcat']);
+		$this->set(compact('orbopts_optgroups', 'orbopt_optgroups', 'orbopt'));
+		$this->render('ajax_add', 'ajax');
+	}
+
 /**
  * edit method
  *

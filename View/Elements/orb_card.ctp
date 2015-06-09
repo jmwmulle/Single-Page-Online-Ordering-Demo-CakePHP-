@@ -7,6 +7,8 @@
 	 * About.me: about.me/thisimpetus
 	 */
 $logged_in = $this->Session->read('Auth');
+$orb = $orb_data['Orb'];
+$prices = $orb_data['Prices'];
 ?>
 <div id="orb-card-stage" class="l-2 box retracted">
 	<div id="orb-card-container" class="box abs l-2-2">
@@ -51,7 +53,7 @@ $logged_in = $this->Session->read('Auth');
 					<!-- MIDDLE  ROW -->
 						<li id="orb-card-row-2" class="orb-card-row">
 							<?php $data_array = array(
-							                          "price-rank" => floor(count($orb["price_table"])/2),
+							                          "price-rank" => floor(count($orb_data["Prices"])/2),
 							                          "float-label" => "order",
 							                          "route" => "orb_card/configure/".$orb['id']
 							);
@@ -65,10 +67,10 @@ $logged_in = $this->Session->read('Auth');
 									<h5 id="price-matrix-size" class="text-left price-matrix-header">SIZE</h5
 									><h5 id="price-matrix-price" class="text-right price-matrix-header">PRICE</h5
 									><ul class="price-matrix-content">
-									<?php foreach ( $orb[ "price_table" ] as $opt => $price ) {
-										$route = "orb_card/configure/".$orb["id"].DS.array_search($opt, array_keys($orb[ "price_table" ]));?>
+									<?php foreach ( $orb_data[ "Prices" ] as $label => $price ) {
+										$route = "orb_card/configure/".$orb["id"].DS.array_search($label, array_keys($orb_data[ "Prices" ]));?>
 										<li class="add-to-cart" data-route="<?php echo $route?>">
-											<div class="orb-size text-left"><?php echo $opt == "base" ? "Regular" : ucwords( $opt ); ?></div
+											<div class="orb-size text-left"><?php echo $label == "base" ? "Regular" : ucwords( $label ); ?></div
 											><div class="orb-price text-right"><?php echo money_format("%#3.2n", $price ); ?></div>
 										</li>
 									<?php } ?>
@@ -110,10 +112,10 @@ $logged_in = $this->Session->read('Auth');
 				</section>
 				<section id="orb-card-back" class="preserve-3d card-face back-face-y m-pad">
 					<?php $class_array = array("orb-configuration", "orb-size-panel", "activizing", "flush", "stretch",
-					                           sprintf("large-block-grid-%s", count($orb["price_table"])));?>
+					                           sprintf("large-block-grid-%s", count($prices)));?>
 					<h3 class="orb-opt-configure-header"><?php echo strtoupper($orb["title"]); ?></h3>
 					<ul <?php echo ___cD($class_array);?>>
-					<?php foreach ( array_keys($orb[ "price_table" ]) as $rank => $opt ) {?>
+					<?php foreach ( array_keys($prices) as $rank => $opt ) {?>
 						<li class="orb-size-button inactive" data-price-rank="<?php echo $rank;?>">
 							<h3 class="flush xtreme-select-list"><?php echo strtoupper($opt);?></h3>
 						</li>
@@ -159,16 +161,5 @@ $logged_in = $this->Session->read('Auth');
 			</div>
 		</div>
 	</div>
-
-<?php if ($ajax) { ?>
-
-	<div id="orb-opts-container" class="true-hidden"
-		<?php
-			echo $this->Element('orb_opts_menu_header', array('filters' => $orb['filters']));
-			echo $this->Element('orb_opts_list', array('orb' => $orb, 'ul' => true));?>
-	</div>
-<?php } ?>
 </div>
-
-
 

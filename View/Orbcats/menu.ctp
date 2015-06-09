@@ -64,12 +64,12 @@ $this->end('monthly_content');
 
 
 $this->start('active_orbcat_menu');
-	echo $this->Element('active_orbcat_menu', array('active_orbcat' => $active_orbcat, 'hide_text' => false, 'ajax'=> false));
+	echo $this->Element('active_orbcat_menu', array('active_orbcat' => $active_orbcat, 'ajax'=> false));
 $this->end('active_orbcat_menu');
 
 $this->start('active_orb_card');
 	// element (instead of inline to view) so it can also be fetched by ajax alone
-	echo $this->Element('orb_card', array('orb' => $active_orbcat['orb_card'], 'ajax' => false));
+	echo $this->Element('orb_card', array('orb_data' => $active_orbcat['orb_card'], 'ajax' => false));
 $this->end('active_orb_card');
 ?>
 <?php echo  $this->Element( "top_bar" ); ?>

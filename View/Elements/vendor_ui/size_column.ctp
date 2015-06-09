@@ -11,8 +11,8 @@ if ( $list_val ) {
 	$list_val = str_replace(array('$',' '), array('',''), $list_val);  // pull whitespace & dollar signs out if present
 	?>
 
-	<span data-controller="PriceDict" data-value="<?php echo $dict_val;?>" class='price-dict label'><?php echo $dict_val;?></span>
+	<span data-value="<?php echo $dict_val;?>" class='price-dict label'><?php echo $dict_val;?></span>
 	<br />
-	<span class='price-list' data-controller="PriceList" data-value="<?php echo $list_val;?>" ><?php echo money_format( "%#3.2n", $list_val);?></span>
+	<span class='price-list' data-value="<?php echo $list_val;?>" ><?php echo money_format( "%#3.2n", $list_val);?></span>
 <?php
 } else { echo "-"; }?>

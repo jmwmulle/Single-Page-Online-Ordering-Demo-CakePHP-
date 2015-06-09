@@ -21,7 +21,7 @@
 			<form class="orbopt-config-form">
 				<div id="orboopt-groups" class="content">
 					<span><em>Automatically select all toppings that are assigned to the menu category:</em></span>
-					<select id="orbgroup" name="orbgroup"  data-changeroute="orbopt_config/toggle_group">
+					<select id="orbgroup" name="orbgroup"  data-changeroute="orbopt_config/-1/toggle_group">
 					<?php
 						foreach($orbopts_groups as $id => $name) { echo sprintf("<option value='%s'>%s</option>", $id, $name); }?>
 						<option value="-1" selected="selected">---</option>
@@ -32,7 +32,7 @@
 						<dt>Filter:</dt>
 						<?php foreach($optflags as $id => $name) { ?>
 							<dd id="<?php echo sprintf("orbopt-flag-%s", $id);?>" data-id="<?php echo $id;?>" class="orbopt-flag active"
-								><a href="#" data-route="orbopt_config/filter/<?php echo $id;?>"><?php echo $name;?></a
+								><a href="#" data-route="orbopt_config/<?php echo $id;?>/filter"><?php echo $name;?></a
 							></dd>
 						<?php } ?>
 					</dl>

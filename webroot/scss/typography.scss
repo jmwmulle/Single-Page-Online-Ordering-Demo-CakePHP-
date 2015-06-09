@@ -180,6 +180,12 @@ span.icon-hn-inline {
 .icon-pick-up:before {
   content: "T";
 }
+.icon-check-mark:before {
+  content: "U";
+}
+.icon-add:before {
+  content: "V";
+}
 
 
 @mixin font-faces() {

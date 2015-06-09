@@ -60,6 +60,27 @@ class OrboptsOptflagsController extends AppController {
 		$this->set(compact('orbopts', 'optflags'));
 	}
 
+	public function ajax_add($orbopt_id, $optflag_id) {
+		if ($this->request->is('ajax') && $this->request->is('post') || true) {
+			$this->layout = "ajax";
+			$response = array('success' => true, 'error' => false, 'submitted_data' => array('orbopt_id' => $orbopt_id, 'optflag_id' => $optflag_id));
+			$exists = $this->OrboptsOptflag->find('all', array('conditions' => array('orbopt_id' => $orbopt_id,
+			                                                                         'optflag_id' => $optflag_id),
+			                                                   'recursive' => -1
+				));
+			if ( is_array($exists) && count($exists) > 0) {
+				$this->OrboptsOptflag->delete($exists[0]['OrboptsOptflag']['id']);
+			} else {
+				if ( !$this->OrboptsOptflag->save($response['submitted_data']) ) {
+					$response['success'] = false;
+					$response['error'] = $this->OrboptsOrbflag->validationErrors();
+				}
+			}
+			$this->set('response', $response);
+		} else {
+			$this->redirect(___cakeUrl('orbcat','menu'));
+		}
+	}
 /**
  * edit method
  *

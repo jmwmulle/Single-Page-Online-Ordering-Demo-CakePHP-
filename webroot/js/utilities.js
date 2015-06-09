@@ -21,6 +21,7 @@ $.fn.scrollTo = function (target, options, callback) {
 	});
 }
 
+
 /**
  * sprintf() method for String primitive that I jacked from stack overflow and then lost the URL to
  */
@@ -69,6 +70,8 @@ if (!String.prototype.toTitleCase) {
 		}
 	}
 
+	function is_object(obj) { return typeof obj === 'object' && obj != null;}
+
 	function is_array(obj) { return obj instanceof Array; }
 
 	function isFloat(n) { return n === +n && n !== (n | 0); }
@@ -84,7 +87,8 @@ if (!String.prototype.toTitleCase) {
 	 * @param obj
 	 * @returns {boolean}
 	 */
-	function isFunction(obj) {
+	function is_function(obj) {
+		return typeof(obj) === "function";
 		var getType = {};
 		return obj && getType.toString.call(obj) === '[object Function]';
 	}
@@ -132,6 +136,7 @@ if (!String.prototype.toTitleCase) {
 		}
 		return jQuery.Event(eName, defaultProps);
 	}
+
 
 	function is_mobile() {
 		var check = false;
@@ -474,6 +479,20 @@ if (!String.prototype.toTitleCase) {
 		return "BOOLEAN_NOT_PASSED";
 	}
 
+	function integer_keys(obj) {
+		if ( !is_object(obj) ) return false;
+		if ( is_array(obj) ) return obj
+		var new_obj = {}
+		for (var key in obj) {
+			try {
+				new_obj[Number(key)] = obj[key];
+			} catch(Exception) {
+				new_obj[key] = obj[key];
+			}
+		}
+		return new_obj;
+	}
+
 	function exists(varName) {
 		return jQuery(varName).length > 0;
 	}
@@ -530,6 +549,26 @@ if (!String.prototype.toTitleCase) {
 		}
 	});
 
+	function copy(obj) {
+		var new_obj = null;
+		if (is_array(obj) ) {
+			new_obj = Array();
+		} else if (typeof(obj) === "string") {
+			return "" + obj;
+		} else if (is_object(obj) ) {
+			new_obj = {};
+		} else if (isInt(obj) || isFloat(obj) ) {
+			return 0 + obj
+		} else if (obj === true || obj === false) {
+			return obj === true;
+		} else {
+			return null;
+		}
+
+		for (var i in obj) { new_obj[i] = obj[i] }
+		for (var i in obj.prototype) { new_obj.prototype[i] = obj.prototype[i] }
+		return new_obj
+	}
 
 	function obj_len(object) {
 		var size = 0, key;
