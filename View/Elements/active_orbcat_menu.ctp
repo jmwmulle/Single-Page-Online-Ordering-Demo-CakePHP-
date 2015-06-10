@@ -9,7 +9,7 @@
 $active_orb = null;
 
 $classes = array('flush', 'l-3', "box", "rel", "rightward", "stretch", "activizing", 'orb-card-stage-menu', 'text-center');
-echo $this->Html->scriptBlock("pr($.parseJSON('".json_encode($active_orbcat)."'));", array('block' => 'debug')); ?>
+//echo $this->Html->scriptBlock("pr($.parseJSON('".json_encode($active_orbcat)."'), 'active_orbcat');", array('block' => 'debug')); ?>
 <?='<div id="orb-stage-menu-header-container">';?>
 <?=     '<div id="active-orbcat-menu-header" class="html5-3d-perspective-container box rel text-center orb-card-stage-menu-header">';?>
 <?=         '<div id="active-orb-name-3d-context" class="html5-3d-context preserve-3d">';?>
