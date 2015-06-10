@@ -92,7 +92,6 @@ Cart = function(cart_details) {
 	}
 
 	XBS.cart.configure = function() {
-		pr(XBS.cart.configuring, "configuring!");
 		var orb_id = $(XSM.menu.orb_order_form_orb_id).val();
 		if ( XBS.cart.configuring === null ) XBS.cart.configuring[orb_id] = XBS.cart.empty_config();
 		if ( !(String(orb_id) in XBS.cart.configuring) ) XBS.cart.configuring[orb_id] = $(XBS.cart.empty_config).clone();

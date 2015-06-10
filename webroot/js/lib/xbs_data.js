@@ -14,7 +14,7 @@ var xbs_data = {
 		host_root_dirs: {
 			xDev: "",
 			xProd: "",
-			xLoc: "xtreme"
+			xLoc: "/xtreme"
 		},
 		orb_card_out_face: C.FRONT_FACE,
 		tiny_orb_opts_list: {},

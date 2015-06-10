@@ -8,6 +8,7 @@
 
 window.XBS = {
 	init: function (is_splash, page_name, host, cart) {
+		pr(host);
 		XBS.cart = xbs_cart;
 		XBS.data = xbs_data;
 		XBS.event = xbs_events;

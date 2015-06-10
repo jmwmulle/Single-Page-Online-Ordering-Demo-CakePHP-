@@ -363,12 +363,7 @@ var xbs_routing = {
 										type: C.GET,
 										defer: true};
 									this.set_callback('launch', function() {
-										var data = null;
-										try {
-											data = $.parseJSON(this.deferal_data);
-										} catch(e) {
-											pr(this.deferal_data);
-										}
+										var data = $.parseJSON(this.deferal_data);
 										XBS.menu.refresh_orb_card_stage(this.read('id'), data)
 									});
 									break;
@@ -465,11 +460,12 @@ var xbs_routing = {
 					}
 				}),
 				orbopt_config: new XtremeRoute("orbopt_config", {
-					url: {url:"orbs/orbopt_config", method: C.GET},
+					url: {url:"orbopt-config", method: C.GET},
 					modal:XSM.modal.primary,
 					params: {id:{url_fragment:true}, action:{}, action_arg:{}},
 					callbacks: {
 						params_set: function() {
+							pr(this.read('action'));
 							if (this.read('action') != "launch") {
 								this.unset('url');
 								this.unset('modal');
@@ -1128,7 +1124,7 @@ var launch = function (route) {
 					$(XSM.global.loading).removeClass(XSM.effects.fade_out);
 					$.ajax({
 						type: route.url.type ? route.url.type : C.POST,
-						url: ["",XBS.data.cfg.root, route.url.url].join(C.DS),
+						url: [XBS.data.cfg.root, route.url.url].join(C.DS),
 						data: "data" in route.url ? route.url.data : null,
 						statusCode: {
 							403: function () {

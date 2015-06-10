@@ -1,5 +1,17 @@
 /**
  * Created by jono on 4/30/15.
+
+
+
+
+
+ * HEY JONO!!!!!!
+ * SOLUTION TO LOADING: When #ui-tabs is finally the appropriate height, wait 1s and reveal
+
+
+
+
+ *
  */
 var xbs_vendor_ui = {
 	init: function () {
