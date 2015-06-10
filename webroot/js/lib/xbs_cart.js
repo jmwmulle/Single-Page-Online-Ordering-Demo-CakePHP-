@@ -44,7 +44,7 @@ var xbs_cart = {
 		if ('Order' in cart_from_session) XBS.data.order = cart_from_session.Order;
 		XBS.cart.orbs = is_object(cart_from_session) && "OrderItem" in cart_from_session ? cart_from_session.OrderItem : {};
 
-		$.get(["", xbs_data.cfg.root, "opt-price-factors"].join(C.DS), function(response) {
+		$.get([xbs_data.cfg.root, "opt-price-factors"].join(C.DS), function(response) {
 				XBS.cart.pricable_optflags = integer_keys($.parseJSON(response));
 				XBS.cart.pricable_optflags[0] = "regular";
 			}

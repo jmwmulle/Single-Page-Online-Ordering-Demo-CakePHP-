@@ -12,7 +12,7 @@ var xbs_data = {
 		debug:true,
 		store_status: null,
 		host_root_dirs: {
-			xDev: "development-xtreme-pizza.ca",
+			xDev: "",
 			xProd: "",
 			xLoc: "/xtreme"
 		},
