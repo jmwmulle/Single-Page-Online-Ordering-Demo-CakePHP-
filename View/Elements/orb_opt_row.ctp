@@ -7,7 +7,7 @@
 	 * About.me: about.me/thisimpetus
 	 */
 	$list_classes = array("fade-out", "orb-opt", "inactive", "xtreme-select-list");
-	if ($opt) {
+if ($opt) {
 	$optflags =  $this->get('optflags_list');
 	$id = sprintf("orb-opt-%s", $opt['id']);
 	$icons = array('right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D");
@@ -18,20 +18,20 @@
 			array_push($list_classes, $flag['title']);
 			array_push($data['optflags'], $flag['id']);
 		}
-	}
-?>
-<li id="<?php echo $id; ?>" <?php echo ___cD($list_classes); ?> <?php echo ___dA($data); ?>>
-	<ul class="stretch inline"
-		<?php foreach ($icons as $icon => $value) {
-			$classes = array("orb-opt-coverage", $icon, "icon-$icon", "inactive", "disabled");
-			if ($icon == "full") $classes[3] = "active";
-			$id = sprintf("orb-opt-%s-weight-%s", $opt['id'], $value);
-		?>
-		>
-		<li <?php echo ___cD($classes); ?> data-route="<?php echo "orb_opt/weight" . DS . sprintf("#%s", $id) . DS . "false" . DS . $value; ?>"></li
-			<?php } ?>
-			>
-		<li><a href="#"><?php echo strtoupper($opt['title']); ?></a></li>
-	</ul>
-</li>
-<?php } else { echo sprintf('<li %s></li>', ___cD($list_classes));}
+	}?>
+	<?=sprintf("<li id='$id' %s %s>", ___cD($list_classes), ___dA($data)); ?>
+	<?='<ul class="stretch inline">';?>
+	<?php foreach ($icons as $icon => $value) {
+				$classes = array("orb-opt-coverage", $icon, "icon-$icon", "inactive", "disabled");
+				if ($icon == "full") $classes[3] = "active";
+				$id = sprintf("orb-opt-%s-weight-%s", $opt['id'], $value);
+				$data = array('route' => implode(DS, array("orb_opt","weight","#$id","false",$value)),
+			                  'weight' => $value);
+				echo sprintf("<li %s %s></li>", ___cD($classes), ___dA($data));
+			}?>
+	<?=sprintf('<li><a href="#">%s</a></li>', strtoupper($opt['title']));?>
+	<?='</ul>';?>
+	<?='</li>';?>
+<?php } else {
+	echo sprintf('<li %s></li>', ___cD($list_classes));
+}

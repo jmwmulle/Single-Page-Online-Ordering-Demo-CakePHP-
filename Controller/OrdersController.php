@@ -2,7 +2,12 @@
 	App::uses( 'AppController', 'Controller' );
 
 	class OrdersController extends AppController {
-
+		private $orb_template = array(  "id"                       => -1,
+										"uid"			           => -1,
+										"quantity"                 => -1,
+										"price_rank"               => 0,
+										"orbopts"                  => array(),
+										"preparation_instructions" => "" );
 
 		public $components = array(
 			'Cart',
@@ -12,7 +17,7 @@
 			#'AuthorizeNet'
 		);
 
-		public $uses = array( 'User', 'Address', 'Order', 'Orb', 'Orbopt' );
+		public $uses = array( 'User', 'Address', 'Order', 'Orb', 'Orbopt', 'Optflag' );
 
 		/**
 		 * index method
@@ -69,37 +74,34 @@
 		 * @return the item information in AJAX
 		 */
 		public function add_to_cart() {
-			if ( $this->request->is( 'ajax' ) ) {
+			if ( $this->request->is( 'ajax' ) && $this->request->is( 'post' )  ) {
 				$this->layout = "ajax";
-				$response     = array( "order", "success", "cart_total" );
-				if ( $this->request->is( 'post' ) ) {
-					$products = array();
-
-					foreach ( $this->request->data[ 'Order' ] as $orb ) {
-						extract( array_merge( array(
-									"id"                       => -1,
-									"uid"			   => -1,
-									"quantity"                 => -1,
-									"price_rank"               => 0,
-									"orbopts"                  => array(),
-									"preparation_instructions" => "" ),
-								$orb
-							)
-						);
-						$item = $this->Cart->add( $id, $uid, $quantity, $price_rank, $orbopts, $preparation_instructions );
-						array_push( $products, $item );
-					}
-					$this->Cart->update();
-					if ( !empty( $products ) ) {
-						$total    = $this->Session->check( 'Cart.Order.total' ) ? $this->Session->read( 'Cart.Order.total' ) : null;
-						$response = array_combine( $response, array( array( "Orbs" => $products ), true, $total ) );
-					}
-					else {
-						$response = array_combine( $response, array( array(), false, null ) );
+				$response     = array( "success" => false,
+				                       "error" => false,
+				                       "order" => array('Orbs' => array()),
+				                       "cart_total" => null,
+				                       "submitted_data" => $this->request->data[ 'Order' ]
+				);
+				foreach ( $this->request->data[ 'Order' ] as $orb ) {
+					try {
+						$item = $this->Cart->add(array_merge($this->orb_template, $orb ));
+						array_push( $response['order']['Orbs'], $item );
+					} catch (Exception $e) {
+						$response['success'] = false;
+						$response['error'] = $e->getMessage();
+						$this->render_ajax_response($response);
 					}
 				}
-				$this->set( compact( 'response' ) );
-				$this->render();
+
+				try {
+					$this->Cart->update();
+				}   catch (Exception $e) {
+					$response['success'] = false;
+					$response['error'] = $e->getMessage();
+					$this->render_ajax_response($response);
+				}
+				$response['total'] = $this->Session->check( 'Cart.Order.total' ) ? $this->Session->read( 'Cart.Order.total' ) : null;
+				$this->render_ajax_response($response);
 			}
 			else {
 				$this->redirect( "/menu" );
@@ -486,22 +488,21 @@
 		}
 
 
-		/* order_method */
+		/**
+		 * order_method
+		 */
 		public function order_method($method) {
 			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = 'ajax';
 				if ( $this->request->is( 'post' ) ) {
-					if ( !$this->Session->read( "Cart.Order.address_checked" ) ) {
-						$this->Session->write( 'Cart.Order.address_checked', false );
-					}
+					if ( !$this->Session->read( "Cart.Order.address_checked" ) ) $this->Session->write( 'Cart.Order.address_checked', false );
 					if ( in_array( $method, array( DELIVERY, PICKUP, JUST_BROWSING ) ) ) {
 						$this->Session->write( "Cart.Order.order_method", $method );
 						if ( $this->Auth->loggedIn() and $method == DELIVERY ) {
 							$options         = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
 							$user            = $this->User->find( 'first', $options );
 							$address_matches = in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] );
-						}
-						else {
+						} else {
 							$address_matches = null;
 						}
 						$this->Session->write( "User.address_matches", $address_matches );

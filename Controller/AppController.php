@@ -299,7 +299,7 @@
 		if ( preg_match( '/(?i)msie [0-9]/', $_SERVER[ 'HTTP_USER_AGENT' ] ) ) {
 			return $this->redirect( 'pages/no_service' );
 		}
-
+		$this->Auth->allow();
 		$statusFile = new File( APP . 'status/sfile' );
 		$status     = $statusFile->read( true, 'r' );
 		$this->set( "store_status", $status );
@@ -368,6 +368,5 @@
 			'action'     => ''
 		);
 		$this->Auth->loginRedirect  = ___cakeUrl( "users", "edit", array( 'id' => $this->Auth->user( 'id' ) ) );
-		$this->Auth->allow();
 	}
 }

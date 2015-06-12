@@ -4,10 +4,10 @@
 
 		public $components = array( 'Session' );
 
-		public $controller;
+		public $Controller;
 
 		public function __construct(ComponentCollection $collection, $settings = array()) {
-			$this->controller = $collection->getController();
+			$this->Controller = $collection->getController();
 			parent::__construct( $collection, array_merge( $this->settings, (array)$settings ) );
 		}
 
@@ -16,88 +16,84 @@
 
 		public $maxQuantity = 99;
 
-		public function add($orb_id, $uid, $quantity = 1, $price_rank = 0, $orbopts_list = null, $preparation_instructions = '') {
+		/**
+		 * returns array of orbopt model records from values of orbopt_ids array
+		 * @param $orbopt_ids
+		 *
+		 * @return array
+		 */
+		private function fetch_orbopts_from_ids($orbopt_ids) {
+			$this->Controller->Orbopt->Behaviors->load( 'Containable' );
+			foreach ( $orbopt_ids as $opt_id => $coverage ) {
+				if ($coverage != -1) {
+					$conditions = array( 'recursive'  => 1,
+										 'conditions' => array('Orbopt.id' => $opt_id),
+										 'contain'    => array( 'Pricelist',
+										                        'Optflag' => array(
+											                        'conditions' => array('price_factor' => 1)
+										                        )));
+					$orbopt_ids[$opt_id] =  $this->Controller->Orbopt->find( 'first', $conditions);
+					$orbopt_ids[$opt_id]['Orbopt']['coverage'] = $coverage;
+				} else { unset($orbopt_ids[$opt_id]); }
+			}
+			return array_filter($orbopt_ids);
+		}
+
+		private function orbopt_pricing_map($orbopts) {
+			$priceable_flags['regular'] = 0;
+			foreach ( $orbopts as $id => $orbopt ) {
+				$opts_by_val = array_values( $orbopt[ 'Pricelist' ] );
+				foreach($orbopt['Optflag'] as $of_id => $flag) {
+					try {
+						$priceable_flags[$flag['title']]++;
+					} catch (Exception $e) {
+						$priceable_flags['regular']++;
+					}
+				}
+			}
+			return $priceable_flags;
+		}
+
+		public function add($orb_cfg) {
+			 // $orb_cfg = [orb_id, uid, quantity, price_rank, orbopts, preparation_instructions]
 			$position_to_price = array( 'F' => 1, 'L' => 0.5, 'R' => 0.5, 'D' => 2 );
-			if ( !is_numeric( $quantity ) ) {
-				$quantity = 1;
-			}
-			$quantity = abs( $quantity );
-			if ( $quantity > $this->maxQuantity ) {
-				$quantity = $this->maxQuantity;
-			}
-			$orb = $this->controller->Orb->find( 'first', array(
-					'conditions' => array(
-						'Orb.id' => $orb_id
-					)
-				)
-			);
+			$quantity = !is_numeric( $orb_cfg['quantity'] ) ? 1 : abs( $orb_cfg['quantity'] );
+			if ( $quantity > $this->maxQuantity ) $quantity = $this->maxQuantity;
 
-			if ( empty( $orb ) ) {
-				return null;
-			}
-			if ( ( $key = array_search( -1, $orbopts_list ) ) !== false ) {
-				unset( $orbopts_list[ $key ] );
-			}
-			$orbopts = array();
-			if ( $orbopts_list ) {
-				$this->controller->Orbopt->Behaviors->load( 'Containable' );
-				foreach ( array_keys( $orbopts_list ) as $orbopt_id ) {
-					if ( $orbopts_list[ $orbopt_id ] != -1 ) {
-						$orbopts[ $orbopt_id ] = $this->controller->Orbopt->find( 'first', array(
-								'recursive'  => 1,
-								'conditions' => array(
-									'Orbopt.id' => $orbopt_id,
-								),
-								'contain'    => array(
-									'Pricelist',
-								),
-							)
-						);
-					}
-				}
-			}
-			$regular_opts_prices = array();
-			$premium_opts_prices = array();
-			if ( !empty( $orbopts ) ) {
-				foreach ( $orbopts as $key => $orbopt ) {
-					$opts_by_val = array_values( $orbopt[ 'Pricelist' ] );
-					#Check if Sauce and not Xtra
-					if ( !$orbopt[ 'Orbopt' ][ 'sauce' ] or ( $orbopts_list[ $key ] == "D" ) ) {
-						if ( $orbopt[ 'Orbopt' ][ 'premium' ] ) {
-							array_push( $premium_opts_prices,
-								$opts_by_val[ $price_rank ] * $position_to_price[ $orbopts_list[ $key ] ]
-							);
-						}
-						else {
-							array_push( $regular_opts_prices,
-								$opts_by_val[ $price_rank ] * $position_to_price[ $orbopts_list[ $key ] ]
-							);
-						}
-					}
-				}
-			}
+			// get orb details from id
+			$orb = $this->Controller->Orb->find( 'first', array( 'conditions' => array('Orb.id' => $orb_cfg['id'])));
 
+			// if bad orb_id passed, exit quietly
+			if ( empty( $orb ) ) { return null; }
+
+			// get orbopt data
+			$orbopts = $this->fetch_orbopts_from_ids($orb_cfg['orbopts']);
+			return $orbopts;
+			// get the pricing info for each opt
+
+			$opt_price_cfg = $this->orbopt_pricing_map($orbopts);
+			return $opt_price_cfg;
 			$prices       = array_values( $orb[ 'Pricelist' ] );
 			$size_names   = array_values( $orb[ 'Pricedict' ] );
 			$matched      = false;
 			$current_data = array();
 			if ( $this->Session->check( 'Cart.OrderItem' ) ) {
 				$current_data = $this->Session->read( 'Cart.OrderItem' );
-				foreach ( $current_data as $key => $item ) {
+				foreach ( $current_data as $id => $item ) {
 					$cur_item                          = compact( "price_rank", "orb_id", "preparation_instructions" );
 					$cur_item[ 'orbopts_arrangement' ] = $orbopts_list;
 					if ( array_intersect_key( $item, $cur_item ) == $cur_item
 					) { #Consider making this a hash table for speed
 						if ( $item[ 'quantity' ] + $quantity <= 0 ) {
-							$this->Session->delete( 'Cart.OrderItem.' . $key );
+							$this->Session->delete( 'Cart.OrderItem.' . $id );
 						}
 						else {
 							$item[ 'quantity' ] += $quantity;
 							if ( $item[ 'quantity' ] > $this->maxQuantity ) {
 								$this[ 'quantity' ] = $this->maxQuantity;
 							}
-							$this->Session->write( 'Cart.OrderItem.' . $key . '.quantity', $item[ 'quantity' ] );
-							$this->Session->write( 'Cart.OrderItem.' . $key . '.subtotal',
+							$this->Session->write( 'Cart.OrderItem.' . $id . '.quantity', $item[ 'quantity' ] );
+							$this->Session->write( 'Cart.OrderItem.' . $id . '.subtotal',
 								sprintf( '%01.2f', ( $item[ 'base_price' ] + array_sum( $item[ 'orbopts_prices' ] ) ) *
 								                   $item[ 'quantity' ]
 								)
