@@ -195,6 +195,9 @@ var xbs_layout = {
 					});
 			}
 		},
+		reveal_orb_card_modal: function() {
+			$(XSM.modal.orb_card).show('clip');
+		},
 		resize_modal: function (modal) {
 			if (!modal) return;
 			var modal_width;

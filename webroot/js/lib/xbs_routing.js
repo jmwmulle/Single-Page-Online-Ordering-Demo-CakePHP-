@@ -28,7 +28,8 @@ var xbs_routing = {
 		launch: null,
 		route: function (request, event) {
 			var routes = {
-				close_modal: new XtremeRoute("close_modal", {
+
+				close_modal: {
 									params: ["modal", "on_close"],
 									callbacks: {
 										launch: function () {
@@ -40,8 +41,8 @@ var xbs_routing = {
 											}
 										}
 									}
-								}),
-				confirm_address: new XtremeRoute("confirm_address", {
+								},
+				confirm_address: {
 					modal: XSM.modal.primary,
 					url: {url: "confirm-address", type: C.GET, defer: true},
 					params: ['context', 'restore'],
@@ -110,8 +111,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				continue_ordering: new XtremeRoute("continue_ordering", {
+				},
+				continue_ordering: {
 					callbacks: {
 						launch: function () {
 							XBS.menu.show_orb_card_front_face()
@@ -121,8 +122,8 @@ var xbs_routing = {
 							}, 900);
 						}
 					}
-				}),
-				flash: new XtremeRoute("flash", {
+				},
+				flash: {
 					params: {type: { url_fragment: false}},
 					modal: XSM.modal.flash,
 					behavior: C.OL,
@@ -132,8 +133,8 @@ var xbs_routing = {
 							$(this.modal).removeClass(XSM.effects.slide_up);
 						}
 					}
-				}),
-				favorite: new XtremeRoute("favorite", {
+				},
+				favorite: {
 					params: {context: {value: null, url_fragment: false}},
 					url: {url: "favorite"},
 					data: false,
@@ -142,13 +143,13 @@ var xbs_routing = {
 						params: function () { this.data = $(XSM.menu.orb_order_form).serialize(); },
 						launch: function (e, resp) { pr(resp);}
 					}
-				}),
-				finish_ordering: new XtremeRoute("finish_ordering", {
+				},
+				finish_ordering: {
 					modal: XSM.modal.primary,
 					url: {url: "review-order"},
 					behavior: C.STASH_STOP
-				}),
-				footer: new XtremeRoute("footer", {
+				},
+				footer: {
 					params: ["method"],
 					callbacks: {
 						launch: function () {
@@ -166,8 +167,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				launch_apology: new XtremeRoute("launch_apology", {
+				},
+				launch_apology: {
 					url:{url:'launch-apology', type: C.GET, defer:true},
 					modal: XSM.modal.primary,
 					params:['action'],
@@ -179,8 +180,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				login: new XtremeRoute("login", {
+				},
+				login: {
 					url: {url: false, type: C.POST},
 					modal: XSM.modal.primary,
 					params: {
@@ -243,8 +244,8 @@ var xbs_routing = {
 							window.location = "http://development-xtreme-pizza.ca/auth/" + this.read('channel');
 						}
 					}
-				}),
-				menu: new XtremeRoute("menu", {
+				},
+				menu: {
 					params: ['reveal_method'],
 					modal: false,
 					url: {url: "menu"},
@@ -259,16 +260,16 @@ var xbs_routing = {
 						},
 						launch: function () { XBS.splash.fold();}
 					}
-				}),
-				menuitem: new XtremeRoute("menuitem", {
+				},
+				menuitem: {
 					url: {url: "menuitem"},
 					params: {orb_id: {value: null, url_fragment: true}}
-				}),
-				order_accepted: new XtremeRoute('order_accepted', {
+				},
+				order_accepted: {
 					url:"order-accepted",
 					modal:XSM.modal.primary
-				}),
-				order_update: new XtremeRoute('order_update', {
+				},
+				order_update: {
 					params: ['source'],
 					callbacks: {
 						params_set: function() {
@@ -286,8 +287,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				orbcat: new XtremeRoute("orbcat", {
+				},
+				orbcat: {
 					url: {url:"menu", defer:true},
 					params: {
 						id: {value:null,  url_fragment:true},
@@ -300,8 +301,8 @@ var xbs_routing = {
 						},
 						launch: function() { XBS.menu.refresh_active_orbcat_menu(this.deferal_data); }
 					}
-				}),
-				orb: new XtremeRoute("orb", {
+				},
+				orb: {
 					params: { id: {value: null}, action:{}, action_arg:{} },
 					callbacks: {
 						params_set: function () {
@@ -371,32 +372,16 @@ var xbs_routing = {
 						},
 						launch: function() { XBS.routing.cake_ajax_response(this.deferal_data, {}, true, true);}
 					}
-				}),
-				orb_opt: new XtremeRoute("orb_opt", {
+				},
+				orb_opt: {
 					params: ["context", "element", "title", "weight"],
 					behavior: C.STOP,
 					callbacks: {
 						params_set: function () {
 							switch (this.read('context')) {
 								case "form_update":
-									var weight = -1;
-									/*
-										1. get the real weighting if the opt has been activated
-										2. set the corresponding form field to the opt's weighting
-
-									 #1 */
-									var element = this.read('element');
 									if (!this.read('weight') ) this.write("params.title.value", title_case(this.read('title')) );
-
-									if ( $(this.read('element')).hasClass(XSM.effects.active)) {
-										weight = $($(element).find(XSM.menu.orb_opt_icon_active)[0])
-												.data('route').split("/")[4];
-										var opt_list_item = XSM.generated.tiny_orb_opt_list_item(this.read('title'), weight);
-										XBS.data.tiny_orb_opts_list[element] = opt_list_item;
-									} else XBS.data.tiny_orb_opts_list[element] = false;
-									/* #2 */
-									var form_opt_id = XSM.generated.order_form_opt_id(element);
-									$(form_opt_id).val(weight);
+									XBS.menu.set_orbopt_form_state(this.read('element'), this.read('title'));
 									break;
 								case "weight":
 									var parent_opt = $(this.trigger.element).parents(XSM.menu.orb_opt)[0];
@@ -412,8 +397,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				orb_config: new XtremeRoute("orb_config", {
+				},
+				orb_config: {
 					params: ["target", "action", "attribute"],
 					callbacks: {
 						params_set: function() {
@@ -427,8 +412,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				optflag: new XtremeRoute("optflag", {
+				},
+				optflag: {
 					params: ['target', 'action'],
 					callbacks: {
 						params_set: function() {
@@ -439,8 +424,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				orbflag_config: new XtremeRoute("orbflag_config", {
+				},
+				orbflag_config: {
 					params: {orbopt: {url_fragment:true}, optflag:{url_fragment:true}},
 					url: {url:"optflag-config", type: C.POST, defer: true},
 					callbacks: {
@@ -458,8 +443,8 @@ var xbs_routing = {
 							true, true);
 						}
 					}
-				}),
-				orbopt_config: new XtremeRoute("orbopt_config", {
+				},
+				orbopt_config: {
 					url: {url:"orbopt-config", method: C.GET},
 					modal:XSM.modal.primary,
 					params: {id:{url_fragment:true}, action:{}, action_arg:{}},
@@ -541,8 +526,8 @@ var xbs_routing = {
 							$(document).foundation();
 						}
 					}
-				}),
-				orbopt_optgroup_config: new XtremeRoute("orbopt_optgroup_config", {
+				},
+				orbopt_optgroup_config: {
 					url:{url:"orbopt-optgroup-config", method: C.GET},
 					modal:XSM.modal.primary,
 					params: {id:{url_fragment:true}, action:{}, action_arg:{}},
@@ -580,8 +565,8 @@ var xbs_routing = {
 						},
 						launch: function() { $(document).foundation(); }
 					}
-				}),
-				orb_card: new XtremeRoute("orb_card", {
+				},
+				orb_card: {
 					params: ["method", "channel", "data"],
 					stop_propagation: true,
 					callbacks: {
@@ -601,14 +586,14 @@ var xbs_routing = {
 												data: $(XSM.menu.orb_order_form).serialize()
 											};
 											launch = function () {
-												var data = JSON.parse(this.deferal_data);
-												if (data.success == true) {
-													XBS.cart.add_to_cart();
-													$(XSM.modal.orb_card).show('clip');
-													$(XSM.topbar.topbar_cart_button).show()
-													setTimeout(function () {
-														$(XSM.topbar.topbar_cart_button).removeClass(XSM.effects.fade_out);
-													}, 300);
+												try {
+													var data = JSON.parse(this.deferal_data);
+													pr(data);
+													if (data.success == true && XBS.cart.add_to_cart() ) {
+														XBS.layout.reveal_orb_card_modal();
+													}
+												} catch (e) {
+													throw "Add to cart failed at server:\n " + this.deferal_data;
 												}
 											}
 											break;
@@ -624,8 +609,8 @@ var xbs_routing = {
 							if (launch) this.set_callback("launch", launch)
 						}
 					}
-				}),
-				order: new XtremeRoute("order", {
+				},
+				order: {
 					params: ["method", "context"],
 					url: { url: "review-order", type: C.GET, defer: false},
 					modal: XSM.modal.primary,
@@ -695,8 +680,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				order_method: new XtremeRoute("order_method", {
+				},
+				order_method: {
 					modal: XSM.modal.primary,
 					url: {url: "order-method", type: C.POST, defer: true},
 					params: {
@@ -730,8 +715,8 @@ var xbs_routing = {
 							$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: route, trigger: trigger});
 						}
 					}
-				}),
-				payment_method: new XtremeRoute("payment_method", {
+				},
+				payment_method: {
 					params: ['context', 'method'],
 					callbacks: {
 						params_set: function() {
@@ -743,8 +728,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				pending_order: new XtremeRoute("pending_order", {
+				},
+				pending_order: {
 					params:{
 						order_id: {value:null, url_fragment:true},
 						status: {value:null, url_fragment:true}
@@ -789,8 +774,8 @@ var xbs_routing = {
 
 						}
 					}
-				}),
-				print_from_queue: new XtremeRoute("print_from_queue", {
+				},
+				print_from_queue: {
 					params:['context'],
 					callbacks: {
 						params_set: function() {
@@ -826,8 +811,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				register: new XtremeRoute("register", {
+				},
+				register: {
 					modal: XSM.modal.primary,
 					url: {url: "sign-up", type: C.POST, defer: true},
 					params: {
@@ -890,8 +875,8 @@ var xbs_routing = {
 							}, 300);
 						}
 					}
-				}),
-				splash_order: new XtremeRoute("splash_order", {
+				},
+				splash_order: {
 					params: {method: { value: null, url_fragment: false}},
 					callbacks: {
 						launch: function () {
@@ -899,8 +884,8 @@ var xbs_routing = {
 							$(XSM.splash.order_pickup).removeClass(XSM.effects.slide_right);
 						}
 					}
-				}),
-				submit_registration: new XtremeRoute("submit_registration", {
+				},
+				submit_registration: {
 					modal: XSM.modal.primary,
 					url: {url: false, type: C.POST, defer: true},
 					params: {channel: {value: false, url_fragment: false}},
@@ -913,15 +898,15 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				submit_order_address: new XtremeRoute("submit_order_address", {
+				},
+				submit_order_address: {
 					params: { is_splash: {value: null, url_fragment: false}},
 					url: {url: "confirm-address" + C.DS + "session", type: C.GET, defer: false},
 					callbacks: {
 						launch: function () { XBS.validation.submit_address(this);}
 					}
-				}),
-				update_menu: new XtremeRoute("update_menu", {
+				},
+				update_menu: {
 					params: { target:{url_fragment:true}, attribute: {url_fragment:true} },
 					url: { url:"orbs" + C.DS + "update_menu", type: C.POST, data:null },
 					callbacks: {
@@ -976,8 +961,8 @@ var xbs_routing = {
 							);
 						}
 					}
-				}),
-				vendor_get_pending: new XtremeRoute('vendor_get_pending', {
+				},
+				vendor_get_pending: {
 					url: {url:'pending', defer:true, type: C.GET},
 					callbacks: {
 						params_set: function() {
@@ -1003,8 +988,8 @@ var xbs_routing = {
 						}
 					}
 
-				}),
-				vendor_reject: new XtremeRoute("vendor_reject", {
+				},
+				vendor_reject: {
 					params: ['state'],
 					callbacks: {
 						params_set: function() {
@@ -1030,8 +1015,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				vendor_accept: new XtremeRoute("vendor_accept", {
+				},
+				vendor_accept: {
 					params: ['method', 'context'],
 					url: { url:"vendor-accept", type: C.POST, defer:true},
 					callbacks: {
@@ -1065,8 +1050,8 @@ var xbs_routing = {
 							}
 						}
 					}
-				}),
-				vendor_ui: new XtremeRoute("vendor_ui", {
+				},
+				vendor_ui: {
 					params:['target', 'status'],
 					modal:XSM.modal.primary,
 					callbacks: {
@@ -1074,17 +1059,19 @@ var xbs_routing = {
 							pr({target:this.read('target'), status:this.read('status')});
 						}
 					}
-				}),
-				view_order: new XtremeRoute("view_order", {
+				},
+				view_order: {
 					params: {context: {value: "default", url_fragment: false}},
 					modal: XSM.modal.primary,
 					url: {url: "cart"},
 					behavior: C.STASH_STOP
-				})
+				}
 			}
 			var request = request.split(C.DS);
 			if (request[0] in routes) {
-				var route = copy(routes[request[0]]);
+				var route = new XtremeRoute(request[0], routes[request[0]]);
+				// please forgive the dual init functions. It was an insane decision to write the class that way
+				// but it's not pressing to fix and the budget is long spent
 				route.__init(request, request[0], event);
 				route.init(request.slice(1));
 				return route;

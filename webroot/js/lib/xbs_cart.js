@@ -44,7 +44,7 @@ var xbs_cart = {
 		if ('Order' in cart_from_session) XBS.data.order = cart_from_session.Order;
 		XBS.cart.orbs = is_object(cart_from_session) && "OrderItem" in cart_from_session ? cart_from_session.OrderItem : {};
 
-		$.get(["", xbs_data.cfg.root, "opt-price-factors"].join(C.DS), function(response) {
+		$.get([xbs_data.cfg.root, "opt-price-factors"].join(C.DS), function(response) {
 				XBS.cart.pricable_optflags = integer_keys($.parseJSON(response));
 				XBS.cart.pricable_optflags[0] = "regular";
 			}
@@ -130,7 +130,10 @@ var xbs_cart = {
 		if (debug_this > 0) pr("<no args>", "XBS.cart.configure()", 2);
 		var orb_id = $(XSM.menu.orb_order_form_orb_id).val();
 		var orb_uid = $(XSM.menu.orb_order_form_orb_uid).val();
-		if (!orb_uid) orb_uid = [orb_id, now()].join("_");
+		if (!orb_uid)  {
+			orb_uid = XBS.cart.orb_uid(orb_id);
+			$(XSM.menu.orb_order_form_orb_uid).val(orb_uid);
+		}
 		if (!(orb_uid in XBS.cart.configuring)) XBS.cart.configuring[orb_uid] = XBS.cart.empty_config();
 		XBS.cart.configuring[orb_uid].quantity = $(XSM.menu.orb_order_form_quantity).val();
 		XBS.cart.configuring[orb_uid].price_rank = $(XSM.menu.orb_order_form_price_rank).val();
@@ -160,7 +163,6 @@ var xbs_cart = {
 	},
 	inspect_configuration: function(uid) {
 		var orb = XBS.cart.configuring[uid];
-		pr(orb, "orb");
 		var opt_weights = copy(XBS.cart.pricable_optflags);
 		XBS.cart.pricable_optflags[3] = "fart";
 		for (var opt_id in orb.orbopts) {
@@ -185,6 +187,6 @@ var xbs_cart = {
 		if (valid) {
 			$(XSM.modal.finalize_order_button).removeClass(XSM.effects.disabled);
 		}
-
 	}
+
 };

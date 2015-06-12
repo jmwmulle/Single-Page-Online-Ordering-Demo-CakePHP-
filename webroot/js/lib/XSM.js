@@ -308,3 +308,4 @@ var XSM = {
 	}
 };
 
+var FX = XSM.effects;
