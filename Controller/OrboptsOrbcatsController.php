@@ -134,4 +134,9 @@ class OrboptsOrbcatsController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+
+	public function beforeFilter() {
+		parent::before_filter();
+		$this->Auth->allow('ajax_add');
+	}
 }
