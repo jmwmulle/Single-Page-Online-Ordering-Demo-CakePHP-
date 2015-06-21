@@ -209,7 +209,7 @@
 			foreach ( $orbopts as $i => $opt ) {
 				$orbopts[ $i ] = Hash::insert( $opt, "Orbopt.flags", Hash::extract( $opt, "Optflag.{n}.id" ) );
 			}
-			$orbopts_groups = $this->Orb->Orbcat->find( 'list', array( 'conditions' => array( '`orbcat`.`orbopt_group`' => 1 ) ) );
+			$orbopts_groups = $this->Orb->Orbcat->find( 'list', array( 'conditions' => array( '`Orbcat`.`orbopt_group`' => 1 ) ) );
 			$oc_cond = array( 'recursive' => -1, 'fields' => array( 'id', 'full_title' ), 'conditions' => array( 'primary_menu' => 1 ));
 			$orbcats        = Hash::combine( $this->Orb->Orbcat->find( 'all', $oc_cond), "{n}.Orbcat.id", "{n}.Orbcat.full_title");
 			$optflags       = $this->Orb->Orbopt->Optflag->find( 'list' );
@@ -257,7 +257,7 @@
 				$active_orbopts = Hash::extract( $orb[ 'Orbopt' ], "{n}.id" );
 				$orbcats        = $this->Orb->Orbcat->find( 'all', array( 'recursive' => -1 ) );
 				$optflags       = $this->Orb->Orbopt->Optflag->find( 'list' );
-				$orbopts_groups = $this->Orb->Orbcat->find( 'list', array( 'conditions' => array( '`orbcat`.`orbopt_group`' => 1 ) ) );
+				$orbopts_groups = $this->Orb->Orbcat->find( 'list', array( 'conditions' => array( '`Orbcat`.`orbopt_group`' => 1 ) ) );
 				$orbopts        = Hash::remove( $this->Orb->Orbopt->find( 'all' ), "{n}.Orb" );
 				foreach ( $orbopts as $i => $opt ) {
 					$orbopts[ $i ] = Hash::insert( $opt, "Orbopt.flags", Hash::extract( $opt, "Optflag.{n}.id" ) );
