@@ -330,6 +330,131 @@ var xbs_routing = {
 							XBS.menu.refresh_active_orbcat_menu(this.deferal_data); }
 					}
 				},
+				orb_opt: {
+					params: ["context", "element", "title", "weight"],
+					behavior: C.STOP,
+					callbacks: {
+						params_set: function () {
+							switch (this.read('context')) {
+								case "form_update":
+									if (!this.read('weight') ) this.write("params.title.value", title_case(this.read('title')) );
+									XBS.menu.set_orbopt_form_state(this.read('element'), this.read('title'));
+									break;
+								case "weight":
+									var parent_opt = $(this.trigger.element).parents(XSM.menu.orb_opt)[0];
+									if ( $(parent_opt).hasClass(XSM.effects.active) ) {
+										this.trigger.event.stopPropagation();
+									}
+									if ($(this).hasClass(XSM.effects.inelligible) ) return;
+									XBS.menu.toggle_orb_opt_icon(this.trigger.element, true);
+									break;
+								case "opt":
+									XBS.menu.toggle_orb_opt(this.read('element'), true);
+									break;
+							}
+						}
+					}
+				},
+				orbopt_config: {
+					url: {url:"orbopt-config", method: C.GET},
+					modal:XSM.modal.primary,
+					params: {id:{url_fragment:true}, action:{}, action_arg:{}},
+					callbacks: {
+						params_set: function() {
+							if (this.read('action') != "launch") {
+								this.unset('url');
+								this.unset('modal');
+							}
+							switch ( this.read('action') ) {
+								case 'add':
+									this.url = {
+										url:"add-menu-option",
+										type: C.POST,
+										defer: true,
+										data: $(XSM.vendor_ui.add_orbopt_form).serialize()
+									};
+									this.set_callback("launch", function() {
+										XBS.routing.cake_ajax_response(this.deferal_data, {
+											callback: function() {
+												$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/opts",
+													function() {
+														XBS.vendor_ui.data_tables('opts');
+														XBS.vendor_ui.fix_breakouts();
+													});
+											}
+										}, true);
+									});
+								case 'delete':
+									var confirmation_box = as_id(['delete', 'orbopt', this.read('id')].join("-"));
+									switch ( this.read('action_arg') ) {
+										case "confirm":
+											$(confirmation_box).addClass(XSM.effects.fade_out).removeClass(XSM.effects.hidden);
+											setTimeout(function() { $(confirmation_box).removeClass(XSM.effects.fade_out);}, 300);
+											this.unset('launch');
+											break;
+										case "cancel":
+											$(confirmation_box).addClass(XSM.effects.fade_out);
+											setTimeout(function() { $(confirmation_box).addClass(XSM.effects.hidden); }, 300);
+											this.unset('launch');
+											break;
+										case "delete":
+											this.url = {
+												url:["delete-menu-option", this.read('id')].join(C.DS),
+												type: C.POST,
+												defer: true
+											};
+											this.set_callback("launch", function() {
+												XBS.routing.cake_ajax_response(this.deferal_data, {
+													callback: function() {
+														$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/opts",
+															function() {
+																XBS.vendor_ui.data_tables('opts');
+																XBS.vendor_ui.fix_breakouts();
+															});
+													}
+												}, true);
+											});
+
+									}
+									break;
+								case 'toggle':
+									this.set_callback('launch', function() {
+										XBS.vendor_ui.toggle_orbopt(this.read('id'));
+									});
+									break;
+								case 'set_opt_state':
+									this.set_callback('launch', function() {
+										pr([this.read('id'), this.read('action_arg')]);
+										XBS.vendor_ui.set_orbopt_state(this.read('id'), this.read('action_arg'));
+									});
+									break;
+								case 'toggle_group':
+									this.set_callback('launch', function() {
+										XBS.vendor_ui.toggle_orbopt_group($(this.trigger.event.target).val());
+									});
+									break;
+								case 'filter':
+									this.set_callback('launch', function() {
+										XBS.vendor_ui.toggle_filter(this.read('id'));
+									});
+								default:
+									break;
+							}
+						},
+						launch: function() {
+							var prim_con_h = $(XSM.modal.primary_content).innerHeight();
+							var prim_mod_max = $(XSM.modal.primary).innerHeight() - 48;
+							if (prim_con_h > prim_mod_max) {
+								$(XSM.modal.primary_content).css({
+									height: prim_mod_max,
+									overflowY:"auto"
+								});
+							};
+
+							$(document).foundation();
+						}
+					}
+				},
 				orb: {
 					params: { id: {value: null}, action:{}, action_arg:{} },
 					callbacks: {
@@ -359,6 +484,7 @@ var xbs_routing = {
 													callback: function() {
 														$(XSM.vendor_ui.menu_tab).load("vendor-ui/menu", function() {
 															XBS.vendor_ui.data_tables('menu');
+															XBS.vendor_ui.fix_breakouts();
 														});
 													}
 												}, true, true);
@@ -374,7 +500,7 @@ var xbs_routing = {
 												defer:false
 											}
 											this.unset('launch');
-										break;
+											break;
 										case "save":
 											this.unset('modal');
 											this.url = {
@@ -388,7 +514,9 @@ var xbs_routing = {
 													callback: function() {
 														$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/menu",
 															function() {
-																XBS.vendor_ui.data_tables('menu'); });
+																XBS.vendor_ui.data_tables('menu');
+																XBS.vendor_ui.fix_breakouts();
+															});
 													}
 												}, true);
 											});
@@ -409,31 +537,6 @@ var xbs_routing = {
 							}
 						},
 						launch: function() { XBS.routing.cake_ajax_response(this.deferal_data, {}, true, true);}
-					}
-				},
-				orb_opt: {
-					params: ["context", "element", "title", "weight"],
-					behavior: C.STOP,
-					callbacks: {
-						params_set: function () {
-							switch (this.read('context')) {
-								case "form_update":
-									if (!this.read('weight') ) this.write("params.title.value", title_case(this.read('title')) );
-									XBS.menu.set_orbopt_form_state(this.read('element'), this.read('title'));
-									break;
-								case "weight":
-									var parent_opt = $(this.trigger.element).parents(XSM.menu.orb_opt)[0];
-									if ( $(parent_opt).hasClass(XSM.effects.active) ) {
-										this.trigger.event.stopPropagation();
-									}
-									if ($(this).hasClass(XSM.effects.inelligible) ) return;
-									XBS.menu.toggle_orb_opt_icon(this.trigger.element, true);
-									break;
-								case "opt":
-									XBS.menu.toggle_orb_opt(this.read('element'), true);
-									break;
-							}
-						}
 					}
 				},
 				orb_config: {
@@ -479,93 +582,6 @@ var xbs_routing = {
 								data: { orbopt: this.read('orbopt'), optflag: this.read('optflag') }
 							},
 							true, true);
-						}
-					}
-				},
-				orbopt_config: {
-					url: {url:"orbopt-config", method: C.GET},
-					modal:XSM.modal.primary,
-					params: {id:{url_fragment:true}, action:{}, action_arg:{}},
-					callbacks: {
-						params_set: function() {
-							if (this.read('action') != "launch") {
-								this.unset('url');
-								this.unset('modal');
-							}
-							switch ( this.read('action') ) {
-								case 'add':
-									this.url = {
-										url:"add-menu-option",
-										type: C.POST,
-										defer: true,
-										data: $(XSM.vendor_ui.add_orbopt_form).serialize()
-									};
-									this.set_callback("launch", function() {
-										XBS.routing.cake_ajax_response(this.deferal_data, {
-											callback: function() {
-												$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/opts",
-													function() {
-														XBS.vendor_ui.data_tables('opts'); });
-											}
-										}, true);
-									});
-								case 'delete':
-									var confirmation_box = as_id(['delete', 'orbopt', this.read('id')].join("-"));
-									switch ( this.read('action_arg') ) {
-										case "confirm":
-											$(confirmation_box).addClass(XSM.effects.fade_out).removeClass(XSM.effects.hidden);
-											setTimeout(function() { $(confirmation_box).removeClass(XSM.effects.fade_out);}, 300);
-											this.unset('launch');
-											break;
-										case "cancel":
-											$(confirmation_box).addClass(XSM.effects.fade_out);
-											setTimeout(function() { $(confirmation_box).addClass(XSM.effects.hidden); }, 300);
-											this.unset('launch');
-											break;
-										case "delete":
-											this.url = {
-												url:["delete-menu-option", this.read('id')].join(C.DS),
-												type: C.POST,
-												defer: true
-											};
-											this.set_callback("launch", function() {
-												XBS.routing.cake_ajax_response(this.deferal_data, {
-													callback: function() {
-														$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/opts",
-															function() {
-																XBS.vendor_ui.data_tables('opts'); });
-													}
-												}, true);
-											});
-
-									}
-									break;
-								case 'toggle':
-									this.set_callback('launch', function() {
-										XBS.vendor_ui.toggle_orbopt(this.read('id'));
-									});
-									break;
-								case 'set_opt_state':
-									this.set_callback('launch', function() {
-										pr([this.read('id'), this.read('action_arg')]);
-										XBS.vendor_ui.set_orbopt_state(this.read('id'), this.read('action_arg'));
-									});
-									break;
-								case 'toggle_group':
-									this.set_callback('launch', function() {
-										XBS.vendor_ui.toggle_orbopt_group($(this.trigger.event.target).val());
-									});
-									break;
-								case 'filter':
-									this.set_callback('launch', function() {
-										XBS.vendor_ui.toggle_filter(this.read('id'));
-									});
-								default:
-									break;
-							}
-						},
-						launch: function() {
-							$(document).foundation();
 						}
 					}
 				},
