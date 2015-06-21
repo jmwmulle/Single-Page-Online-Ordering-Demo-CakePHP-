@@ -7,13 +7,13 @@
 	 * About.me: about.me/thisimpetus
 	 */
 $logged_in = $this->Session->read('Auth');
-$orb = $orb_data['Orb'];
-$prices = $orb_data['Prices'];
+$orb = $content['Orb'];
+$prices = $content['Prices'];
 ?>
 <div id="orb-card-stage" class="l-2 box retracted">
 	<div id="orb-card-container" class="box abs l-2-2">
 		<h3 id="float-label" class="box float-label text-center"></h3>
-		<div id="orb-card" class="html5-3d-perspective-container box rel flush">
+		<div id="orb-card" class="html5-3d-perspective-container box rel flush" data-default-opts="<?=json_encode($orb['default_opts']);?>">
 			<div id="orb-card-3d-context" class="html5-3d-context preserve-3d">
 				<section id="orb-card-front" class="preserve-3d card-face m-pad">
 					<ul class="orb-card">
@@ -53,7 +53,7 @@ $prices = $orb_data['Prices'];
 					<!-- MIDDLE  ROW -->
 						<li id="orb-card-row-2" class="orb-card-row">
 							<?php $data_array = array(
-							                          "price-rank" => floor(count($orb_data["Prices"])/2),
+							                          "price-rank" => floor( count($prices) / 2 ),
 							                          "float-label" => "order",
 							                          "route" => "orb_card/configure/".$orb['id']
 							);
@@ -67,8 +67,8 @@ $prices = $orb_data['Prices'];
 									<h5 id="price-matrix-size" class="text-left price-matrix-header">SIZE</h5
 									><h5 id="price-matrix-price" class="text-right price-matrix-header">PRICE</h5
 									><ul class="price-matrix-content">
-									<?php foreach ( $orb_data[ "Prices" ] as $label => $price ) {
-										$route = "orb_card/configure/".$orb["id"].DS.array_search($label, array_keys($orb_data[ "Prices" ]));?>
+									<?php foreach ( $content[ "Prices" ] as $label => $price ) {
+										$route = "orb_card/configure/".$orb["id"].DS.array_search($label, array_keys($content[ "Prices" ]));?>
 										<li class="add-to-cart" data-route="<?php echo $route?>">
 											<div class="orb-size text-left"><?php echo $label == "base" ? "Regular" : ucwords( $label ); ?></div
 											><div class="orb-price text-right"><?php echo money_format("%#3.2n", $price ); ?></div>
@@ -138,7 +138,7 @@ $prices = $orb_data['Prices'];
 								<input type="text" name="data[Order][Orb][quantity]" id="OrderOrbQuantity" value="1" />
 							</div>
 							<?php
-							foreach($orb["Orbopt"] as $opt) {
+							foreach($content['Orb']['Orbopt'] as $opt) {
 								$field_name = sprintf("Order.Orb.orbopts.%s", $opt["id"]);
 								echo $this->Form->input($field_name, array( "type" => "hidden", "value" => -1, "class" => array("orb-opt-weight")));
 							}
@@ -150,10 +150,10 @@ $prices = $orb_data['Prices'];
 						></div
 					></div
 					><div id="orb-finalize-details" class="orb-card-row text-center">
-						<a id="cancel-order-button" href="#" class="rounded modal-button bisecting cancel left" data-route="orb_card/add_to_cart/cancel">
+						<a id="cancel-order-button" href="#" class="rounded modal-button bisecting cancel left" data-route="cart/add/cancel">
 							<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span>
 						</a>
-						<a id="confirm-order-button" href="#" class="rounded modal-button bisecting confirm right" data-route="orb_card/add_to_cart/confirm">
+						<a id="confirm-order-button" href="#" class="rounded modal-button bisecting confirm right" data-route="cart/add/confirm">
 							<span class="text">Confirm</span><span class="icon-circle-arrow-r right"></span>
 						</a>
 					</div>
@@ -162,4 +162,9 @@ $prices = $orb_data['Prices'];
 		</div>
 	</div>
 </div>
-
+<?='<div id="orb-card-stage-menu-wrapper" class="box rightward xtreme-blue-bg">';?>
+<?=$this->Element('orbcard_menu', array('content' => $menu,
+                                        'active' => $orb,
+                                        'optflags' => $orb['Optflag'],
+                                        'portionable' => $orb['allow_half_portions']));?>
+</div>

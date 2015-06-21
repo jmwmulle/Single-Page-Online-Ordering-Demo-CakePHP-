@@ -1,12 +1,12 @@
 var xbs_events = {
-		wakeFromSleep: eCustom("wakeFromSleep"),
-		assetsLoaded: eCustom("assetsLoaded"),
-		route_launched: eCustom("route_launched"),
-		orb_card_refresh: eCustom(C.ORB_CARD_REFRESH),
-		order_form_update: eCustom(C.ORDER_FORM_UPDATE),
-		order_ui_update: eCustom(C.ORDER_UI_UPDATE),
-		route_request: eCustom(C.ROUTE_REQUEST),
-		orb_row_animation_complete: eCustom(C.ORB_ROW_ANIMATION_COMPLETE),
+		wakeFromSleep: createCustomEvent("wakeFromSleep"),
+		assetsLoaded: createCustomEvent("assetsLoaded"),
+		route_launched: createCustomEvent("route_launched"),
+		orb_card_refresh: createCustomEvent(C.ORB_CARD_REFRESH),
+		order_form_update: createCustomEvent(C.ORDER_FORM_UPDATE),
+		order_ui_update: createCustomEvent(C.ORDER_UI_UPDATE),
+		route_request: createCustomEvent(C.ROUTE_REQUEST),
+		orb_row_animation_complete: createCustomEvent(C.ORB_ROW_ANIMATION_COMPLETE),
 };
 var xbs_data = {
 		debug:true,

@@ -32,7 +32,7 @@
 					<div class="large-6 columns">
 						<div class="row">
 							<div class="large-12 columns">
-								<?php echo $this->Form->input('Orbcat.id', array('type' => 'select', 'options' => $orbcats, 'label' => 'Category')); ?>
+								<?php echo $this->Form->input('orbcat_id', array('type' => 'select', 'options' => $orbcats, 'label' => 'Category')); ?>
 							</div>
 						</div>
 						<div class="row">

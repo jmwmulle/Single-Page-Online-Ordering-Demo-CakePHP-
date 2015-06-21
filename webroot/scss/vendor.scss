@@ -576,3 +576,26 @@ span.inactive { opacity: 0;}
 #menu-options-table {
   td.optflag { text-align: center;}
 }
+
+#individual-orbopts {
+  .orbopt {
+    text-align: center;
+    border:1px solid $white;
+    background-color: $very-light-grey;
+    padding: 0.8rem 0 !important;
+    span { color: $text-grey; }
+    &:hover { background-color: lighten($very-light-grey, 5%); }
+    &.active {
+      background-color: $success-color;
+      span { color: $white; }
+      &:hover {
+        background-color: lighten($success-color, 10%);
+      }
+    }
+    &.active-plus {
+      background-color: $xtreme-yellow;
+      span { color: $text-grey; }
+      &:hover { background-color: lighten($xtreme-yellow, 10%); }
+    }
+  }
+}

@@ -197,7 +197,7 @@ function XtremeRoute(name, data) {
 		this.route_name = "*" + this.route_name + "[" + new Date().getTime() + "]";
 		if (this.launch_callback) $(this).on("route_launched", this.launch_callback);
 		if (param_values) this.__set_params(param_values);
-		return true;
+		return this;
 	}
 
 
@@ -298,18 +298,19 @@ function XtremeRoute(name, data) {
 	 * @param url_hash
 	 */
 	this.set_url = function (url_hash) {
-		if (is_string(url_hash.url)) {
-			this.url.url = url_hash.url;
-			this.url.type = C.GET;
-			this.url.defer = false;
-		} else {
-			this.url.url = url_hash.url.url == C.UNSET ? null : url_hash.url.url;
-			this.url.type = "type" in url_hash.url ? url_hash.url.type : C.GET;
-			this.url.defer = "defer" in url_hash.url ? url_hash.url.defer : false;
+		try {
+			this.url.url = 'url' in url_hash ? url_hash.url : false;
+			this.url.type = "type" in url_hash ? url_hash.type : C.GET;
+			this.url.defer = "defer" in url_hash ? url_hash.defer : false;
+		} catch(e) {
+			throw "Invalid url_hash supplied to Route.set_url:\n\t [" + e +"]";
 		}
 	}
 
-
+	/**
+	 *
+	 * @returns {boolean|*}
+	 */
 	this.stop_propagation = function () {
 		if (this.__stop_propagation) this.trigger.event.stopPropagation();
 		return this.__stop_propagation;

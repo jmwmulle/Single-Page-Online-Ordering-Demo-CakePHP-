@@ -30,6 +30,7 @@ var XSM = {
 		active_by_default: "default",
 		breakout: ".breakout",
 		checked: "icon-checked",
+		active_plus: "active-plus",
 		detach: "detach",
 		disabled: "disabled",
 		enabled: "enabled",
@@ -308,3 +309,4 @@ var XSM = {
 	}
 };
 
+var FX = XSM.effects;

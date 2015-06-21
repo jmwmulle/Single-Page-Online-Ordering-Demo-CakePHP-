@@ -16,7 +16,7 @@
 var xbs_vendor_ui = {
 	init: function () {
 		$(XSM.vendor_ui.ui_tabs).tabs();
-		$(XSM.effects.breakout).each(function () {
+		$(FX.breakout).each(function () {
 			$(this).css({
 				left: (($(window).width() - $(this).innerWidth()) / 2) + "px",
 				top: (($(window).height() - $(this).innerHeight()) / 2) + "px"
@@ -63,9 +63,9 @@ var xbs_vendor_ui = {
 
 	edit_orb: function (orb_id, attribute) {
 		var cell_id = as_id(["orb", orb_id, attribute].join("-"));
-		$(XSM.vendor_ui.orb_attr_display, cell_id).addClass(XSM.effects.hidden);
-		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(XSM.effects.fade_out).removeClass(XSM.effects.hidden);
-		setTimeout(function () { $(XSM.vendor_ui.orb_attr_edit, cell_id).removeClass(XSM.effects.fade_out); }, 30);
+		$(XSM.vendor_ui.orb_attr_display, cell_id).addClass(FX.hidden);
+		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(FX.fade_out).removeClass(FX.hidden);
+		setTimeout(function () { $(XSM.vendor_ui.orb_attr_edit, cell_id).removeClass(FX.fade_out); }, 30);
 	},
 
 	save_orb: function (orb_id, attribute, replacement) {
@@ -97,14 +97,14 @@ var xbs_vendor_ui = {
 				break;
 		}
 
-		$(XSM.vendor_ui.orb_attr_display, cell_id).removeClass(XSM.effects.hidden);
-		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(XSM.effects.hidden);
+		$(XSM.vendor_ui.orb_attr_display, cell_id).removeClass(FX.hidden);
+		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(FX.hidden);
 	},
 
 	cancel_editing: function (orb_id, attribute) {
 		var cell_id = as_id(["orb", orb_id, attribute].join("-"));
-		$(XSM.vendor_ui.orb_attr_display, cell_id).removeClass(XSM.effects.hidden);
-		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(XSM.effects.hidden);
+		$(XSM.vendor_ui.orb_attr_display, cell_id).removeClass(FX.hidden);
+		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(FX.hidden);
 	},
 
 
@@ -112,6 +112,7 @@ var xbs_vendor_ui = {
 		orbcat_id = Number(orbcat_id);
 		$("li.orbopt", XSM.modal.primary).each(function () {
 			var data = $(this).data();
+			pr([orbcat_id, data]);
 			if (in_array(orbcat_id, data.groups)) {
 				$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: ["orbopt_config", data.orbopt , "set_opt_state", "active"].join(C.DS), trigger: {}});
 			} else {
@@ -125,25 +126,27 @@ var xbs_vendor_ui = {
 		var opt_label_wrapper = label ? label : "#orbopt-" + opt_id + "-label";
 		var opt_label = opt_label_wrapper + " span";
 		var opt_input = input ? input : "li[data-orbopt='" + opt_id + "'] input";
-		if (state == XSM.effects.active) {
-			$(opt_label_wrapper, XSM.modal.primary).addClass(XSM.effects.active);
-			$(opt_label, XSM.modal.primary).removeClass(XSM.effects.secondary).addClass(XSM.effects.success);
+		if (state == FX.active) {
+			$(opt_label_wrapper, XSM.modal.primary).removeClass(FX.active_plus).removeClass(FX.inactive).addClass(FX.active);
 			$(opt_input, XSM.modal.primary).val(1);
 		}
-		if (state == XSM.effects.inactive) {
-			$(opt_label_wrapper, XSM.modal.primary).removeClass(XSM.effects.active);
-			$(opt_label, XSM.modal.primary).removeClass(XSM.effects.success).addClass(XSM.effects.secondary);
+		if (state == FX.inactive) {
+			$(opt_label_wrapper, XSM.modal.primary).removeClass(FX.active).removeClass(FX.active_plus).addClass(FX.inactive);
 			$(opt_input, XSM.modal.primary).val(0);
+		}
+		if (state == FX.active_plus) {
+			$(opt_label_wrapper, XSM.modal.primary).removeClass(FX.active).removeClass(FX.inactive).addClass(FX.active_plus);
+			$(opt_input, XSM.modal.primary).val(2);
 		}
 	},
 
 
 	toggle_filter: function (filter_id) {
 		var filter = "#orbopt-flag-" + filter_id;
-		if ($(filter, XSM.modal.primary).hasClass(XSM.effects.active)) {
-			$(filter).removeClass(XSM.effects.active);
+		if ($(filter, XSM.modal.primary).hasClass(FX.active)) {
+			$(filter).removeClass(FX.active);
 		} else {
-			$(filter).addClass(XSM.effects.active);
+			$(filter).addClass(FX.active);
 		}
 		XBS.vendor_ui.filter_opts()
 	},
@@ -152,17 +155,24 @@ var xbs_vendor_ui = {
 		var orbopt_id = data.orbopt;
 		var optflag_id = data.optflag;
 		var cell_id = as_id(["orbopt", orbopt_id, "optflag", optflag_id].join("-"));
-		if ($("span", cell_id).hasClass(XSM.effects.active)) {
-			$("span", cell_id).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+		if ($("span", cell_id).hasClass(FX.active)) {
+			$("span", cell_id).removeClass(FX.active).addClass(FX.inactive);
 		} else {
-			$("span", cell_id).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
+			$("span", cell_id).removeClass(FX.inactive).addClass(FX.active);
 		}
 	},
 
 	toggle_orbopt: function (opt_id) {
 		var opt_label = "#orbopt-" + opt_id + "-label";
 		var opt_input = "li[data-orbopt='" + opt_id + "'] input";
-		var state = $(opt_label, XSM.modal.primary).hasClass(XSM.effects.active) ? XSM.effects.inactive : XSM.effects.active;
+		var state = null;
+		if ( $(opt_label, XSM.modal.primary).hasClass(FX.active) ) {
+			state = FX.active_plus;
+		} else if ($(opt_label, XSM.modal.primary).hasClass(FX.active_plus) ) {
+			state =  FX.inactive;
+		} else {
+			state = FX.active;
+		}
 		XBS.vendor_ui.set_orbopt_state(opt_id, state, opt_label, opt_input)
 	},
 
@@ -177,9 +187,9 @@ var xbs_vendor_ui = {
 				if (active_flags.indexOf(flags[i]) > -1) active = true;
 			}
 			if (active) {
-				$(this).removeClass(XSM.effects.hidden);
+				$(this).removeClass(FX.hidden);
 			} else {
-				$(this).addClass(XSM.effects.hidden)
+				$(this).addClass(FX.hidden)
 			}
 			$(document).foundation();
 		});

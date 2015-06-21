@@ -19,6 +19,11 @@ echo $this->element("modal_masthead", array(
 			</div>
 		</div>
 		<?php } else { ?>
+		<div class="row">
+			<div class="large-3 columns end">
+				<a href="#" class="cancel left tiny" data-route="order/clear"><span class="icon-cancel icon"></span><span class="text">Clear Cart</span></a>
+			</div>
+		</div>
 		<div class="row view-cart-row cart-header">
 			<div class="large-7 columns"><span>ITEM</span></div>
 			<div class="large-2 columns text-center"><span>QUANTITY</span></div>
@@ -105,7 +110,7 @@ echo $this->element("modal_masthead", array(
 		</div>
 		<div class="row">
 			<div class="large-12 large-centered columns">
-				<a href="#" class="modal-button bisecting cancel left" data-route="order/clear"><span class="icon-circle-arrow-l icon"></span><span class="text">Clear Cart</span></a
+				<a href="#" class="modal-button bisecting cancel left" data-route="menu/unstash"><span class="icon-circle-arrow-l icon"></span><span class="text">Continue Ordering</span></a
 				><a href="#" class="modal-button bisecting confirm right" data-route="order/review"><span class="text">Review My Order</span><span class="icon-circle-arrow-r icon"></span></a
 			></div>
 		</div>

@@ -26,7 +26,7 @@ var xbs_menu = {
 			has_init_sequence: true,
 			hide_orb_card_back_face_elements: function () {
 				$(XSM.menu.orb_opt).hide();
-				$(XSM.menu.optflag_filter_header).hide().removeClass(XSM.effects.hidden);
+				$(XSM.menu.optflag_filter_header).hide().removeClass(FX.hidden);
 				return true;
 			},
 			bind_orbsize_update: function () {
@@ -71,7 +71,7 @@ var xbs_menu = {
 						$(XSM.modal.orb_card).show('clip');
 						$(XSM.topbar.topbar_cart_button).show()
 						setTimeout(function () {
-							$(XSM.topbar.topbar_cart_button).removeClass(XSM.effects.fade_out);
+							$(XSM.topbar.topbar_cart_button).removeClass(FX.fade_out);
 						}, 300);
 					}
 				}
@@ -79,7 +79,7 @@ var xbs_menu = {
 		},
 		clear_cart: function () {
 			XBS.data.cart = {};
-			$(XSM.topbar.topbar_cart_button).addClass(XSM.effects.fade_out);
+			$(XSM.topbar.topbar_cart_button).addClass(FX.fade_out);
 			setTimeout(function () {
 				$(XSM.topbar.topbar_cart_button).hide();
 				XBS.menu.unstash_menu();
@@ -95,8 +95,8 @@ var xbs_menu = {
 			XBS.menu.show_orb_card_back_face()
 		},
 		reset_orb_opt_filters: function () {
-			$(XSM.menu.orb_opt_filter).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
-			$(XSM.menu.orb_opt_filter_span).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
+			$(XSM.menu.orb_opt_filter).removeClass(FX.inactive).addClass(FX.active);
+			$(XSM.menu.orb_opt_filter_span).removeClass(FX.unchecked).addClass(FX.checked);
 			XBS.menu.rebuild_optflag_filters(C.CHECK);
 			return true;
 		},
@@ -106,32 +106,32 @@ var xbs_menu = {
 			// todo: add a layer to check for rules based on orb-type
 			$(XSM.menu.sauce).each(function() {
 				var children = $(this).find(XSM.menu.orb_opt_icon);
-				var is_active = $(this).hasClass(XSM.effects.active)
+				var is_active = $(this).hasClass(FX.active)
 				switch (weights.sauce) {
 					case 0:
-						$(this).removeClass(XSM.effects.inelligible);
-						$(children).each(function() { $(this).removeClass(XSM.effects.inelligible);});
+						$(this).removeClass(FX.inelligible);
+						$(children).each(function() { $(this).removeClass(FX.inelligible);});
 						break;
 						$(this).addClass('lr-only').removeClass('max-of-type');
 					case 0.5:
-						$(this).removeClass(XSM.effects.inelligible);
+						$(this).removeClass(FX.inelligible);
 						/*  if 'full' is inelligible, left-side = 'active' weight unless right-side was already set */
 						var right_side_active = false;
 						var left_side_element = null;
 						$(children).each(function() {
 							if (is_active) {
 								/* active & side-weighted implies all other weights are available for this opt */
-								$(this).removeClass(XSM.effects.inelligible);
+								$(this).removeClass(FX.inelligible);
 							} else {
 								if ( $(this).hasClass(stripCSS(XSM.menu.full)) ) {
-									$(this).addClass(XSM.effects.inelligible);
-									$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+									$(this).addClass(FX.inelligible);
+									$(this).removeClass(FX.active).addClass(FX.inactive);
 								} else if ( $(this).hasClass(stripCSS(XSM.menu.double)) ) {
-									$(this).addClass(XSM.effects.inelligible);
-									$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+									$(this).addClass(FX.inelligible);
+									$(this).removeClass(FX.active).addClass(FX.inactive);
 								} else {
-									$(this).removeClass(XSM.effects.inelligible)
-									if ( $(this).hasClass(stripCSS(XSM.menu.right_side)) && $(this).hasClass(XSM.effects.active) ) {
+									$(this).removeClass(FX.inelligible)
+									if ( $(this).hasClass(stripCSS(XSM.menu.right_side)) && $(this).hasClass(FX.active) ) {
 										right_side_active = true;
 									}
 									if ( $(this).hasClass(stripCSS(XSM.menu.left_side)) ) left_side_element = this;
@@ -140,30 +140,30 @@ var xbs_menu = {
 						});
 						if (!right_side_active) {
 							pr(left_side_element, "lse");
-							$(left_side_element).addClass(XSM.effects.active);
+							$(left_side_element).addClass(FX.active);
 						}
 						break;
 					case 1:
 						var active_icon = false;
 						var active_weight = false;
 						if (is_active) {
-							$(this).removeClass(XSM.effects.inelligible);
+							$(this).removeClass(FX.inelligible);
 							active_icon = $(this).find(XSM.menu.orb_opt_icon_active)[0];
 							active_weight = XBS.cart.weight_to_int($(active_icon).data('route').split("/")[4]);
 						} else {
-							$(this).addClass(XSM.effects.inelligible);
+							$(this).addClass(FX.inelligible);
 						}
 						$(children).each(function() {
 							if (is_active) {
 								if (active_weight == 1) {
-									$(this).removeClass(XSM.effects.inelligible);
+									$(this).removeClass(FX.inelligible);
 								} else {
 									var this_weight = XBS.cart.weight_to_int($(this).data('route').split("/")[4]);
-									if (this_weight + active_weight > 1) $(this).addClass(XSM.effects.inelligible);
+									if (this_weight + active_weight > 1) $(this).addClass(FX.inelligible);
 								}
 								return;
 							}
-							$(this).addClass(XSM.effects.inelligible);
+							$(this).addClass(FX.inelligible);
 						});
 						break;
 				}
@@ -174,14 +174,14 @@ var xbs_menu = {
 			pr([optflag_id, all], "toggle_optflag(optflag_id, all)");
 			// next two if statements toggle all optflags on or off
 			if (all == C.CHECK) {
-				$(XSM.menu.orb_opt_filter).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
-				$(XSM.menu.orb_opt_filter_span).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
+				$(XSM.menu.orb_opt_filter).removeClass(FX.inactive).addClass(FX.active);
+				$(XSM.menu.orb_opt_filter_span).removeClass(FX.unchecked).addClass(FX.checked);
 				XBS.menu.rebuild_optflag_filters(C.CHECK);
 			}
 
 			if (all == C.UNCHECK) {
-				$(XSM.menu.orb_opt_filter).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
-				$(XSM.menu.orb_opt_filter_span).removeClass(XSM.effects.checked).addClass(XSM.effects.unchecked);
+				$(XSM.menu.orb_opt_filter).removeClass(FX.active).addClass(FX.inactive);
+				$(XSM.menu.orb_opt_filter_span).removeClass(FX.checked).addClass(FX.unchecked);
 				XBS.menu.rebuild_optflag_filters(C.UNCHECK);
 				pr(XBS.data.orb_opt_filters, "filters post uncheck all");
 			}
@@ -195,12 +195,12 @@ var xbs_menu = {
 					XBS.data.orb_opt_filters[optflag_id] = C.CHECK;
 				}
 				var checkbox = $(list_el_id).children(XSM.menu.orb_opt_filter_span)[0];
-				if ($(list_el_id).hasClass(XSM.effects.active)) {
-					$(list_el_id).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
-					$(checkbox).removeClass(XSM.effects.checked).addClass(XSM.effects.unchecked);
+				if ($(list_el_id).hasClass(FX.active)) {
+					$(list_el_id).removeClass(FX.active).addClass(FX.inactive);
+					$(checkbox).removeClass(FX.checked).addClass(FX.unchecked);
 				} else {
-					$(list_el_id).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
-					$(checkbox).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
+					$(list_el_id).removeClass(FX.inactive).addClass(FX.active);
+					$(checkbox).removeClass(FX.unchecked).addClass(FX.checked);
 				}
 			}
 			XBS.menu.filter_orb_opts(optflag_id);
@@ -213,7 +213,7 @@ var xbs_menu = {
 	 * @returns {boolean}
 	 */
 	filter_orb_opts: function(optflag_id) {
-			$(XSM.menu.orb_opt).addClass(XSM.effects.fade_out);
+			$(XSM.menu.orb_opt).addClass(FX.fade_out);
 			setTimeout(function () {
 				$(XSM.menu.orb_opt).show();
 				$.map($(XSM.menu.orb_opt), function (orb_opt, index) {
@@ -225,7 +225,7 @@ var xbs_menu = {
 						}
 					});
 				});
-				setTimeout(function () { $(XSM.menu.orb_opt).removeClass(XSM.effects.fade_out); }, 30);
+				setTimeout(function () { $(XSM.menu.orb_opt).removeClass(FX.fade_out); }, 30);
 			}, 300);
 
 			return true;
@@ -265,34 +265,34 @@ var xbs_menu = {
 			var orbcat_name = $($("h2", data)[0]).html();
 
 			// >>> TOGGLE MENU HEADER; alternates rotating front-to-back or back-to-front <<<
-			if ($(XSM.menu.active_orb_name_3d_context).hasClass(XSM.effects.flipped_x)) {
+			if ($(XSM.menu.active_orb_name_3d_context).hasClass(FX.flipped_x)) {
 				$(XSM.menu.active_orb_name_front_face).html(orbcat_name);
-				$(XSM.menu.active_orb_name_3d_context).removeClass(XSM.effects.flipped_x);
+				$(XSM.menu.active_orb_name_3d_context).removeClass(FX.flipped_x);
 			} else {
 				$(XSM.menu.active_orb_name_back_face).html(orbcat_name);
-				$(XSM.menu.active_orb_name_3d_context).addClass(XSM.effects.flipped_x);
+				$(XSM.menu.active_orb_name_3d_context).addClass(FX.flipped_x);
 			}
 
 			// >>> HIDE INCOMING ORBCATS; hide new data so they fade-in when shown <<<
 			$(active_orbcat_menu).find(XSM.menu.active_orbcat_item).each(function () {
-				$(this).addClass(XSM.effects.fade_out);
+				$(this).addClass(FX.fade_out);
 			});
 
 			// >>> HIDE OUTGOING ORBCATS; hide all active orbcats in orb card stage menu before replacing them <<<
-			$(XSM.menu.active_orbcat_item).addClass(XSM.effects.fade_out);
-			$(XSM.menu.orbcat_menu_title_subtitle).addClass(XSM.effects.fade_out);
+			$(XSM.menu.active_orbcat_item).addClass(FX.fade_out);
+			$(XSM.menu.orbcat_menu_title_subtitle).addClass(FX.fade_out);
 			$(XBS.routing).trigger(C.ROUTE_REQUEST, {'request': 'orb/'+active_orb_id, trigger: {}});
 //			XBS.menu.refresh_orb_card_stage(active_orb_id);
 
 			setTimeout(function () {
 				$(XSM.menu.active_orbcat_item).remove()
 				setTimeout(function () {
-					$(XSM.menu.orbcat_menu_title_subtitle).html(orbcat_name).removeClass(XSM.effects.fade_out);
+					$(XSM.menu.orbcat_menu_title_subtitle).html(orbcat_name).removeClass(FX.fade_out);
 					$(active_orbcat_menu).find(XSM.menu.active_orbcat_item).each(function () {
 						$(this).appendTo(XSM.menu.orb_card_stage_menu);
 					});
 					setTimeout(function () {
-						$(XSM.menu.active_orbcat_item).removeClass(XSM.effects.fade_out);
+						$(XSM.menu.active_orbcat_item).removeClass(FX.fade_out);
 						$(C.BODY).trigger(C.ORB_CARD_REFRESH)},
 						30);
 				}, 300);
@@ -318,31 +318,31 @@ var xbs_menu = {
 //			$(orb_card_stage).find(XSM.menu.orb_opt_container)[0].remove();
 
 			// >>> HIDE INCOMING ORBOPTS <<<
-			$(orbopts_list).each(function () { $(this).hide().addClass(XSM.effects.fade_out);});
+			$(orbopts_list).each(function () { $(this).hide().addClass(FX.fade_out);});
 
 			// >>> HIDE INCOMING ORBCARD SPECIFICS & ORB OPTS <<<
 			$(orb_card_stage).find(XSM.menu.orb_card_content_container).each(function () {
-				$(this).addClass(XSM.effects.fade_out);
+				$(this).addClass(FX.fade_out);
 			});
 			$($(orb_card_stage).find(XSM.menu.orb_opt_container)[0]).find(XSM.menu.orb_opt).each(function () {
-				$(this).addClass([XSM.effects.fadeOut, XSM.effects.true_hidden].join(" "));
+				$(this).addClass([FX.fadeOut, FX.true_hidden].join(" "));
 			});
 			// >>> UNFLIP ORBCARD IF FLIPPED <<<
-			if ($(XSM.menu.orb_card_3d_context).hasClass(XSM.effects.flipped_y)) {
+			if ($(XSM.menu.orb_card_3d_context).hasClass(FX.flipped_y)) {
 				replace_time = 950;
 				XBS.menu.show_orb_card_front_face();
 			}
-			$(as_class(XSM.effects.swap_width)).each(function () {
+			$(as_class(FX.swap_width)).each(function () {
 				replace_time = 800;
 				XBS.menu.toggle_orb_card_row_menu($($(this).children(".orb-card-button")[0]).attr('id'), C.HIDE)
 			});
 			setTimeout(function () {
 				// >>> FADE OUT OUTGOING ORBCARD CONTENT <<<
-				$(XSM.menu.orb_card_content_container).addClass(XSM.effects.fade_out);
+				$(XSM.menu.orb_card_content_container).addClass(FX.fade_out);
 				setTimeout(function () {
 					// >>> REPLACE ORBCARD <<<
 					$(XSM.menu.orb_card_stage).replaceWith(orb_card_stage);
-					setTimeout(function () { $(XSM.menu.orb_card_content_container).removeClass(XSM.effects.fade_out);}, 30);
+					setTimeout(function () { $(XSM.menu.orb_card_content_container).removeClass(FX.fade_out);}, 30);
 					// >>> REPLACE ORBOPTS (REMAIN HIDDEN/ FADED) <<<
 					$(XSM.menu.orb_opt).remove();
 					$(XSM.menu.optflag_filter_header).replaceWith(optflag_header);
@@ -357,15 +357,15 @@ var xbs_menu = {
 			if (debug_this > 0) pr("<no args>", "menu.reset_orb_card_stage()", 2);
 			$(XSM.menu.orb_order_form_price_rank).val(0);
 			$(XSM.menu.orb_size_button).each(function () {
-				$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+				$(this).removeClass(FX.active).addClass(FX.inactive);
 			});
 			$(XSM.menu.orb_order_form_quantity).val(1);
 			$(XSM.menu.orb_order_form_prep_instrux).val("");
-			$(XSM.menu.orb_opt).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+			$(XSM.menu.orb_opt).removeClass(FX.active).addClass(FX.inactive);
 			$(XSM.menu.orb_opt_icon)
-				.removeClass([XSM.effects.inelligible, XSM.effects.active, XSM.effects.enabled].join(" "))
-				.addClass([XSM.effects.inactive, XSM.effects.disabled].join(" "));
-			$(XSM.menu.full).addClass(XSM.effects.active);
+				.removeClass([FX.inelligible, FX.active, FX.enabled].join(" "))
+				.addClass([FX.inactive, FX.disabled].join(" "));
+			$(XSM.menu.full).addClass(FX.active);
 			$(XSM.menu.orb_opt_weight).val(-1);
 
 			XBS.cart.cancel_config($(XSM.menu.orb_order_form_orb_id).val());
@@ -387,8 +387,8 @@ var xbs_menu = {
 				panel = XSM.menu.social_panel;
 			}
 
-			if ($(panel).hasClass(XSM.effects.true_hidden)) $(panel).removeClass(XSM.effects.true_hidden);
-			if (!state) state = $(row).hasClass(XSM.effects.swap_width) ? C.HIDE : C.SHOW;
+			if ($(panel).hasClass(FX.true_hidden)) $(panel).removeClass(FX.true_hidden);
+			if (!state) state = $(row).hasClass(FX.swap_width) ? C.HIDE : C.SHOW;
 
 			if (state == C.HIDE) {
 				var wait_for_complete = 0;
@@ -401,14 +401,14 @@ var xbs_menu = {
 				}
 				setTimeout(function () {
 					XBS.data.orb_card_animation_queue.start = new Date().getTime();
-					if (!$(row).hasClass(XSM.effects.swap_width)) return;
-					$(panel).addClass(XSM.effects.fade_out);
+					if (!$(row).hasClass(FX.swap_width)) return;
+					$(panel).addClass(FX.fade_out);
 					setTimeout(function () {
 						$(panel).hide();
-						$(button).addClass(XSM.effects.stash);
+						$(button).addClass(FX.stash);
 						setTimeout(function () {
-							$(row).removeClass(XSM.effects.swap_width);
-							setTimeout(function () { $(button).removeClass(XSM.effects.stash);}, 300);
+							$(row).removeClass(FX.swap_width);
+							setTimeout(function () { $(button).removeClass(FX.stash);}, 300);
 							$(XBS).trigger(C.ORB_ROW_ANIMATION_COMPLETE, {menu: menu, finished: C.SHOW});
 						}, 500)
 					}, 300);
@@ -426,13 +426,13 @@ var xbs_menu = {
 				}
 				setTimeout(function () {
 					XBS.data.orb_card_animation_queue.start = new Date().getTime();
-					if ($(row).hasClass(XSM.effects.swap_width)) return;
-					$(row).addClass(XSM.effects.swap_width);
-					if (!$(panel).hasClass(XSM.effects.fade_out)) $(panel).addClass(XSM.effects.fade_out);
+					if ($(row).hasClass(FX.swap_width)) return;
+					$(row).addClass(FX.swap_width);
+					if (!$(panel).hasClass(FX.fade_out)) $(panel).addClass(FX.fade_out);
 					$(panel).show();
 					setTimeout(function () {
 						setTimeout(function () {
-							$(panel).removeClass(XSM.effects.fade_out);
+							$(panel).removeClass(FX.fade_out);
 						}, 300);
 						$(XBS).trigger(C.ORB_ROW_ANIMATION_COMPLETE, {menu: menu, finished: C.HIDE});
 					}, 300)
@@ -455,9 +455,9 @@ var xbs_menu = {
 				var route = $($(this).children()[0]).data('route');
 				if (route) {
 					if (route.split(C.DS)[2] == method) {
-						$(this).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
+						$(this).removeClass(FX.inactive).addClass(FX.active);
 					} else {
-						$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+						$(this).removeClass(FX.active).addClass(FX.inactive);
 					}
 				}
 			});
@@ -468,23 +468,23 @@ var xbs_menu = {
 			if (debug_this > 0) pr("<no args>", "XBS.menu.show_orb_card_front_face()", 2);
 			XBS.data.orb_card_out_face = C.FRONT_FACE;
 			// >>> START FLIP & FADE OUT ORBOPTS TOGETHER <<<
-			$(XSM.menu.orb_card_3d_context).removeClass(XSM.effects.flipped_y);
-			$(XSM.menu.orb_opt).addClass(XSM.effects.fade_out);
+			$(XSM.menu.orb_card_3d_context).removeClass(FX.flipped_y);
+			$(XSM.menu.orb_opt).addClass(FX.fade_out);
 			setTimeout(function () {
 				// >>> SLIDE OUT FILTER HEADER, HIDE ORBOPTS <<<
-				$(XSM.menu.optflag_filter_header).addClass(XSM.effects.slide_right);
+				$(XSM.menu.optflag_filter_header).addClass(FX.slide_right);
 				$(XSM.menu.orb_opt).hide();
 				setTimeout(function () {
 					// >>> RESET FILTERS & SHOW ORBCAT ITEMS <<<
 					XBS.menu.reset_orb_opt_filters();
 					$(XSM.menu.active_orbcat_item).show()
-					setTimeout(function () { $(XSM.menu.active_orbcat_item).removeClass(XSM.effects.fade_out);}, 30);
+					setTimeout(function () { $(XSM.menu.active_orbcat_item).removeClass(FX.fade_out);}, 30);
 					setTimeout(function () {
 						// >>> SLIDE IN ORBCAT ITEMS HEADER; RESTORE 'ACTIVIZING' <<<
 						$(XSM.menu.optflag_filter_header).hide()
 						$(XSM.menu.active_orbcat_menu_header).show();
-						setTimeout(function () { $(XSM.menu.active_orbcat_menu_header).removeClass(XSM.effects.slide_left);}, 30);
-						$(XSM.menu.orb_card_stage_menu).addClass(XSM.effects.activizing);
+						setTimeout(function () { $(XSM.menu.active_orbcat_menu_header).removeClass(FX.slide_left);}, 30);
+						$(XSM.menu.orb_card_stage_menu).addClass(FX.activizing);
 					}, 300);
 				}, 300);
 			}, 300);
@@ -492,30 +492,39 @@ var xbs_menu = {
 			return true;
 		},
 		show_orb_card_back_face: function () {
+			XBS.menu.update_orb_form();
+			XBS.menu.update_orb_configuration_ui();
+			/**
+			 *
+			 *
+			 * TODO: If you choose an orb, flip to back face, flip back, and return to backface all default options have been cleared.
+			 * might be a better id to keep all the defaults in a data-default on the orb itself in addition to the server-side formatting
+			 *
+			 */
 			XBS.data.orb_card_out_face = C.BACK_FACE;
 			var row_menu_hide_time = 0;
-			$(as_class(XSM.effects.swap_width)).each(function () {
+			$(as_class(FX.swap_width)).each(function () {
 				row_menu_hide_time = 800;
 				XBS.menu.toggle_orb_card_row_menu($($(this).children(".orb-card-button")[0]).attr('id'), C.HIDE)
 			});
 			setTimeout(function () {
 				// >>> START FLIP & FADE OUT ORBOPTS TOGETHER <<<
-				$(XSM.menu.orb_card_3d_context).addClass(XSM.effects.flipped_y);
-				$(XSM.menu.active_orbcat_item).addClass(XSM.effects.fade_out);
+				$(XSM.menu.orb_card_3d_context).addClass(FX.flipped_y);
+				$(XSM.menu.active_orbcat_item).addClass(FX.fade_out);
 				setTimeout(function () {
 					// >>> SLIDE OUT ORBCAT ITEMS HEADER, HIDE ORBCAT ITEMS <<<
-					$(XSM.menu.active_orbcat_menu_header).addClass(XSM.effects.slide_left);
+					$(XSM.menu.active_orbcat_menu_header).addClass(FX.slide_left);
 					$(XSM.menu.active_orbcat_item).hide();
 					setTimeout(function () {
 						// >>> SHOW & FADE IN ORBOPTS<<<
 						$(XSM.menu.orb_opt).show()
-						setTimeout(function () {$(XSM.menu.orb_opt).removeClass(XSM.effects.fade_out);}, 30);
+						setTimeout(function () {$(XSM.menu.orb_opt).removeClass(FX.fade_out);}, 30);
 						setTimeout(function () {
 							// >>> SLIDE IN FILTER HEADER; REMOVE 'ACTIVIZING' <<<
 							$(XSM.menu.active_orbcat_menu_header).hide();
 							$(XSM.menu.optflag_filter_header).show();
-							setTimeout(function () { $(XSM.menu.optflag_filter_header).removeClass(XSM.effects.slide_right);}, 30);
-							$(XSM.menu.orb_card_stage_menu).removeClass(XSM.effects.activizing);
+							setTimeout(function () { $(XSM.menu.optflag_filter_header).removeClass(FX.slide_right);}, 30);
+							$(XSM.menu.orb_card_stage_menu).removeClass(FX.activizing);
 						}, 300);
 					}, 300);
 				}, 300);
@@ -528,25 +537,25 @@ var xbs_menu = {
 				XBS.menu.show_orb_card_front_face();
 			}
 			setTimeout(function () {
-				$(XSM.menu.user_activity_panel).addClass(XSM.effects.slide_up);
+				$(XSM.menu.user_activity_panel).addClass(FX.slide_up);
 				setTimeout(function () {
-					$(XSM.menu.orb_card_wrapper).addClass([XSM.effects.slide_left, XSM.effects.fade_out].join(" "));
+					$(XSM.menu.orb_card_wrapper).addClass([FX.slide_left, FX.fade_out].join(" "));
 					setTimeout(function () {
-						$(XSM.menu.orbcat_menu).addClass([XSM.effects.slide_right, XSM.effects.fade_out].join(" "));
+						$(XSM.menu.orbcat_menu).addClass([FX.slide_right, FX.fade_out].join(" "));
 					}, 300);
 				}, 300);
 			}, orb_card_timeout);
 		},
 		unstash_menu: function () {
-			$(XSM.menu.orbcat_menu).removeClass([XSM.effects.slide_right, XSM.effects.fade_out].join(" "));
+			$(XSM.menu.orbcat_menu).removeClass([FX.slide_right, FX.fade_out].join(" "));
 			// todo: this is a bit of a hack; the over-all logic should preclude this next line, but,
 			// todo: "activizing" gets toggled during the orbcard flip, and if it's in the wrong state, toggles inversely
 			// todo: making orb-opts unselectable
-			$(XSM.menu.orb_card_stage_menu).addClass(XSM.effects.activizing);
+			$(XSM.menu.orb_card_stage_menu).addClass(FX.activizing);
 			setTimeout(function () {
-				$(XSM.menu.orb_card_wrapper).removeClass([XSM.effects.slide_left, XSM.effects.fade_out].join(" "));
+				$(XSM.menu.orb_card_wrapper).removeClass([FX.slide_left, FX.fade_out].join(" "));
 				setTimeout(function () {
-					$(XSM.menu.user_activity_panel).removeClass(XSM.effects.slide_up);
+					$(XSM.menu.user_activity_panel).removeClass(FX.slide_up);
 				}, 300);
 			}, 300);
 			XBS.menu.set_order_method();
@@ -554,20 +563,14 @@ var xbs_menu = {
 		toggle_orb_opt: function (element, trigger_update) {
 			var debug_this = 1;
 			if (debug_this > 0) pr([element, trigger_update], "XBS.menu.toggle_orb_opt(element, trigger_update)", 2);
-			var flags = $(element).data('flags');
-			if ( $(element).hasClass(XSM.effects.inelligible) ) return true;
-			if ($(element).hasClass(XSM.effects.active)) {
-				$(element).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
-				$(element).find(XSM.menu.orb_opt_icon).each(function () {
-					$(this).removeClass(XSM.effects.enabled).addClass(XSM.effects.disabled);
-				});
-			} else {
-				$(element).removeClass(XSM.effects.inactive).addClass(XSM.effects.active);
-				$(element).find(XSM.menu.orb_opt_icon).each(function () {
-//					if ($(this).hasClass(XSM.effects.inelligible) ) return;
-					$(this).removeClass(XSM.effects.disabled).addClass(XSM.effects.enabled);
-				});
-			}
+			var flags = $(element).data('optflags');
+			if ( $(element).hasClass(FX.inelligible) ) return true;
+
+			var remove = $(element).hasClass(FX.active) ? [FX.active, FX.enabled] : [FX.inactive, FX.disabled]
+			var add = $(element).hasClass(FX.active) ? [FX.inactive, FX.disabled] : [FX.active, FX.enabled]
+			$(element).removeClass(remove[0]).addClass(add[0]);
+			$(XSM.menu.orb_opt_icon, element).each(function () { $(this).removeClass(remove[1]).addClass(add[1])});
+
 			if (trigger_update === true) {
 				setTimeout(function () {
 					$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"order_update/ui", trigger:this});
@@ -582,25 +585,35 @@ var xbs_menu = {
 			if (trigger_update === true) $(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"order_update/ui", trigger:this});
 			return true;
 		},
+
+		set_orbopt_form_state: function(element, opt_title) {
+			var weight = -1;
+			// get the real weighting if the opt has been activated
+			if ( $(element).hasClass(FX.active)) {
+				weight = $(XSM.menu.orb_opt_icon_active, element).data('weight');
+				XBS.data.tiny_orb_opts_list[element] = XSM.generated.tiny_orb_opt_list_item(opt_title, weight);
+			} else XBS.data.tiny_orb_opts_list[element] = false;
+
+			// set the corresponding form field to the opt's weighting
+			var form_opt_id = XSM.generated.order_form_opt_id(element);
+			$(form_opt_id).val(weight);
+		},
+
 		update_orb_form: function () {
-			/*  1. walk the opts ui and map every value onto the orb form (will populate tiny_opts list in XBS.data)
-				2. build tiny_opts list
-				3. replace the tiny_opts list in the orbcard
-			 */
-			// #1
+			// walk the orbopts list [ui] and map every value onto the orb form (will populate tiny_opts list in XBS.data)
 			$(XSM.menu.orb_opt).each(function () {
 				$(XBS.routing).trigger(C.ROUTE_REQUEST,     {
 					request: ($(this).data("route")).replace("\/opt\/", "\/form_update\/"),
 					trigger: {}
 				});
 			});
-			// #2
+			// build tiny_opts list
 			var tiny_toppings_list = $("<ul/>").addClass(sel_to_str(XSM.menu.tiny_orb_opts_list));
 			for (var el in XBS.data.tiny_orb_opts_list) {
 				if (XBS.data.tiny_orb_opts_list[el]) tiny_toppings_list.append(XBS.data.tiny_orb_opts_list[el]);
 			}
 
-			// #3
+			// replace the tiny_opts list in the orbcard
 			$(XSM.menu.tiny_orb_opts_list_wrapper).html(tiny_toppings_list);
 			XBS.cart.configure();
 

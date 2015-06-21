@@ -6871,6 +6871,9 @@ input#orderOrbQuantity {
   .orb-opt.active li.orb-opt-coverage.active {
     color: #191919; }
 
+ul.portionable li.orb-opt-coverage.full, ul.portionable li.orb-opt-coverage.right-side, ul.portionable li.orb-opt-coverage.left-side {
+  display: none; }
+
 #orb-opt-filters {
   width: 34.17969rem;
   height: 3.4125rem;

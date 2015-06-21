@@ -11,22 +11,16 @@
 <div id="menu-options-tab">
 	<div class="row">
 		<div class="large-12 columns">
-			<div class="row panel">
-				<div class="large-12 columns">
-					<h1>Add A New Menu Option</h1>
-					<div class="orbopts form">
-						<?php echo $this->Form->create('Orbopt'); ?>
-							<div class="row">
-								<div class="large-12 columns">
-									<?php echo $this->Form->input('title'); ?>
-								</div>
-							</div>
-						<a href="#" class="modal-button full-width med" data-route="orbopt_config/-1/add/save">
-							<span class="text">Save & Reload</span>
-						</a>
-					<?php echo $this->Form->end(); ?>
-					</div>
+			<div class="panel">
+				<h1>Add A New Menu Option</h1>
+				<div class="orbopts form">
+					<?=$this->Form->create('Orbopt'); ?>
+					<?=$this->Form->input('title'); ?>
+					<a href="#" class="modal-button full-width med" data-route="orbopt_config/-1/add/save">
+						<span class="text">Save & Reload</span>
+					</a>
 				</div>
+			<?php echo $this->Form->end(); ?>
 			</div>
 		</div>
 	</div>

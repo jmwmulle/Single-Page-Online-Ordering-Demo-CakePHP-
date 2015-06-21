@@ -118,14 +118,14 @@ if (!String.prototype.toTitleCase) {
 
 
 	/**
-	 * eCustom method
+	 * createCustomEvent method
 	 *
 	 * @desc Creates custom jQuery events with standard W3C properties
 	 * @param eName
 	 * @param eProperties
 	 * @returns {*}
 	 */
-	function eCustom(eName, eProperties) {
+	function createCustomEvent(eName, eProperties) {
 		var defaultProps = {"bubbles": true, "cancelable": false, "eventPhase": 0, "type": eName};
 		if (typeof(eProperties) == "object") {
 			for (var prop in eProperties) {
@@ -582,6 +582,29 @@ if (!String.prototype.toTitleCase) {
 	function b64JSON(jsobject) {
 		return btoa(JSON.stringify(jsobject));
 	}
+
+	function die() {
+		function ExitRequest(){ Error.apply(this, arguments); this.name = "ExitRequest"; }
+		ExitRequest.prototype = Object.create(Error.prototype);
+		throw new ExitRequest("Exiting..");
+	}
+
+/**
+ * Returns an object with all the keys of both objects; values from vals_obj have precedence, otherwise keys_obj values
+ * are used.
+ *
+ * @param keys_obj
+ * @param vals_obj
+ * @returns {{}}
+ */
+function obj_merge(keys_obj, vals_obj) {
+	if (!is_object(keys_obj) || !is_object(vals_obj)) throw "keys_obj and vals_obj must both be javascript objects";
+	var merged_obj = {};
+	for (var key in keys_obj) merged_obj[key] = key in vals_obj ? vals_obj[key] : keys_obj[key];
+	for (var key in vals_obj) if (!(key in merged_obj)) merged_obj[key] = vals_obj[key];
+
+	return merged_obj;
+}
 
 //
 //

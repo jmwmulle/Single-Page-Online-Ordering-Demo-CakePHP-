@@ -188,7 +188,7 @@
 							$val = null; // ie. attr; this line does nothing but keep things visually tidy
 					}
 				}
-				if ( is_array( $val ) ) { // assume this should be an js array or object
+				if ( is_array( $val ) ) { // assume this should be a js array or object
 					$vStr = "";
 					if ( AppController::is_associative_array( $val ) ) {
 						$kvPairs = array();
@@ -223,6 +223,7 @@
 			return implode( " ", $data_attributes );
 		}
 
+		public function set_page_name($name) { $this->set('page_name', $name);}
 
 		static function as_file_name($string) {
 			$pattern = array( "/ /", "/'/", "/—/" );
@@ -372,5 +373,15 @@
 				}
 			}
 			
-		}
+		$this->Auth->loginAction    = array(
+			'controller' => 'menu',
+			'action'     => ''
+		);
+		$this->Auth->logoutRedirect = array(
+			'controller' => 'menu',
+			'action'     => ''
+		);
+		$this->Auth->loginRedirect  = ___cakeUrl( "users", "edit", array( 'id' => $this->Auth->user( 'id' ) ) );
+	}
+
 }
