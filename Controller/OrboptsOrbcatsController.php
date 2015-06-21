@@ -136,7 +136,7 @@ class OrboptsOrbcatsController extends AppController {
 	}
 
 	public function beforeFilter() {
-		parent::before_filter();
+		parent::beforeFilter();
 		$this->Auth->allow('ajax_add');
 	}
 }
