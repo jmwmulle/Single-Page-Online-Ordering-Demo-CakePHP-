@@ -52,9 +52,9 @@
 	Router::connect('/vendor-ui/opts', array('controller' => 'orbs', 'action' => 'vendor_ui', 'opts'));
 	Router::connect('/vendor-ui/menu', array('controller' => 'orbs', 'action' => 'vendor_ui', 'menu'));
 	Router::connect('/vendor-ui', array('controller' => 'orbs', 'action' => 'vendor_ui'));
-	Router::connect('/optflag-config/*', array('controller' => 'orboptsoptflags', 'action' => 'ajax_add'));
+	Router::connect('/optflag-config/*', array('controller' => 'orboptsOptflags', 'action' => 'ajax_add'));
 	Router::connect('/orbopt-config/*', array('controller' => 'orbs', 'action' => 'orbopt_config'));
-	Router::connect('/orbopt-optgroup-config/*', array('controller' => 'orboptsorbcats', 'action' => 'ajax_add'));
+	Router::connect('/orbopt-optgroup-config/*', array('controller' => 'orboptsOrbcats', 'action' => 'ajax_add'));
 	Router::connect('/add-price-labels', array('controller' => 'orbs', 'action' => 'pricedict_add'));
 	Router::connect('/add-menu-item', array('controller' => 'orbs', 'action' => 'add'));
 	Router::connect('/add-menu-option', array('controller' => 'orbopts', 'action' => 'add'));
