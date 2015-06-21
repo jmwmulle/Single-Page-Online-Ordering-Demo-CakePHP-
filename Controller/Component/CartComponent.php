@@ -40,10 +40,12 @@
 		}
 
 		private function orbopt_pricing_map($orbopts) {
+			$priceable_flags = [];
 			$priceable_flags['regular'] = 0;
 			foreach ( $orbopts as $id => $orbopt ) {
 				$opts_by_val = array_values( $orbopt[ 'Pricelist' ] );
 				foreach($orbopt['Optflag'] as $of_id => $flag) {
+					if (!array_key_exists($flag['title'], $priceable_flags) ) $priceable_flags[$flag['title']] = 0;
 					try {
 						$priceable_flags[$flag['title']]++;
 					} catch (Exception $e) {
@@ -68,11 +70,11 @@
 
 			// get orbopt data
 			$orbopts = $this->fetch_orbopts_from_ids($orb_cfg['orbopts']);
-			return $orbopts;
 			// get the pricing info for each opt
 
 			$opt_price_cfg = $this->orbopt_pricing_map($orbopts);
 			return $opt_price_cfg;
+
 			$prices       = array_values( $orb[ 'Pricelist' ] );
 			$size_names   = array_values( $orb[ 'Pricedict' ] );
 			$matched      = false;

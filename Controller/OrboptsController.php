@@ -49,6 +49,7 @@ class OrboptsController extends AppController {
 		if ($this->request->is('post')) {
 			if ( $this->request->is('ajax') ) {
 				$response = array('success' => true, 'error' => false, 'submitted_data' => $this->request->data);
+//				return $this->render_ajax_response($response);
 				$data = $this->request->data;
 				$data['Orbopt']['pricelist_id'] = -1;
 				if ( !$this->Orbopt->save($data) ) {

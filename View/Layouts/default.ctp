@@ -17,6 +17,7 @@
 		                      "lib/XCL",
 		                      "lib/Route",
 		                      "lib/Printer",
+		                      "lib/EffectChain",
 		                      "lib/xbs_vendor_ui",
 		                      "lib/xbs_data",
 		                      "lib/xbs_routing",

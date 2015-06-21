@@ -5385,3 +5385,25 @@ span.inactive {
 
 #menu-options-table td.optflag {
   text-align: center; }
+
+#individual-orbopts .orbopt {
+  text-align: center;
+  border: 1px solid white;
+  background-color: #e1e1e1;
+  padding: 0.8rem 0 !important; }
+  #individual-orbopts .orbopt span {
+    color: #373737; }
+  #individual-orbopts .orbopt:hover {
+    background-color: #eeeeee; }
+  #individual-orbopts .orbopt.active {
+    background-color: #43ac6a; }
+    #individual-orbopts .orbopt.active span {
+      color: white; }
+    #individual-orbopts .orbopt.active:hover {
+      background-color: #61c184; }
+  #individual-orbopts .orbopt.active-plus {
+    background-color: #faea06; }
+    #individual-orbopts .orbopt.active-plus span {
+      color: #373737; }
+    #individual-orbopts .orbopt.active-plus:hover {
+      background-color: #fbee38; }

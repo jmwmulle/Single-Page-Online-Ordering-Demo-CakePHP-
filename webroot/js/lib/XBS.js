@@ -6,8 +6,11 @@
  * About.me: about.me/thisimpetus
  */
 
+
+
 window.XBS = {
 	init: function (is_splash, page_name, host, cart) {
+
 		XBS.cart = xbs_cart;
 		XBS.data = xbs_data;
 		XBS.event = xbs_events;
@@ -20,7 +23,7 @@ window.XBS = {
 		XBS.vendor = xbs_vendor;
 		XBS.vendor_ui = xbs_vendor_ui;
 		XBS.setHost(host);
-		XBS.data.store_status = store_status;;
+		XBS.data.store_status = store_status;
 		XBS.data.cfg.page_name = page_name;
 		XBS.data.cfg.is_splash = is_splash === true;
 		var init_status = {

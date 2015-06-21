@@ -1,6 +1,6 @@
 <?php
 	App::uses( 'AuthComponent', 'Controller/Component');
-
+	App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 	/**
 	 * User Model
 	 *
@@ -190,14 +190,14 @@
 		);
 
 		public function beforeSave($options = array()) {
-			if (isset($this->data['User']['password'])) {
-				$this->data[ 'User' ][ 'password' ] = AuthComponent::password(
-					$this->data[ 'User' ][ 'password' ]
-				);
-			}
-
-			return true;
-		}
+		      if (!empty($this->data[$this->alias]['password'])) {
+			    $passwordHasher = new BlowfishPasswordHasher();
+			    $this->data[$this->alias]['password'] = $passwordHasher->hash(
+			          $this->data[$this->alias]['password']
+			    );
+		      }
+	    	      return true;
+		}		   
 
 		public function parentNode() {
 			if ( !$this->id && empty( $this->data ) ) {

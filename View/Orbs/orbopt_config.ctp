@@ -9,6 +9,7 @@
 //db($orb);
 echo $this->element('vendor_ui/orbopt_config', array('orb' => $orb,
                                                      'orbopts' => $orbopts,
+                                                     'default_opts' => $default_opts,
                                                      'optflags' => $optflags,
                                                      'orbcats' => $orbcats,
                                                      'orbopts_groups' => $orbopts_groups,

@@ -55,6 +55,8 @@ if (!function_exists("orb_attribute_buttons") ) {
 				<?php
 					$orb_count = 0;
 					foreach ( $orbs as $orb ) {
+						$orb_count++;
+						if ($orb_count > 10) break;
 						if ( $orb[ 'Orb' ][ 'deprecated' ] ) {
 							continue;
 						}

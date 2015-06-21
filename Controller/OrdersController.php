@@ -92,7 +92,7 @@
 						$this->render_ajax_response($response);
 					}
 				}
-
+				return $this->render_ajax_response($response);
 				try {
 					$this->Cart->update();
 				}   catch (Exception $e) {

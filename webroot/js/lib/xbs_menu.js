@@ -492,6 +492,15 @@ var xbs_menu = {
 			return true;
 		},
 		show_orb_card_back_face: function () {
+			XBS.menu.update_orb_form();
+			XBS.menu.update_orb_configuration_ui();
+			/**
+			 *
+			 *
+			 * TODO: If you choose an orb, flip to back face, flip back, and return to backface all default options have been cleared.
+			 * might be a better id to keep all the defaults in a data-default on the orb itself in addition to the server-side formatting
+			 *
+			 */
 			XBS.data.orb_card_out_face = C.BACK_FACE;
 			var row_menu_hide_time = 0;
 			$(as_class(FX.swap_width)).each(function () {

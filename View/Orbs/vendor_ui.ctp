@@ -15,12 +15,15 @@
 <div id="vendor-ui" class="row">
 	<div class="large-12 columns">
 		<div id="ui-tabs">
-
-			<ul>
-				<li><a href="#vendor-home-tab">Home</a></li>
-				<li><a href="#menu-tab">Menu</a></li>
-				<li><a href="#menu-options-tab">Menu Options</a></li>
-			</ul>
+			<div class="row">
+				<div class="large-12 columns">
+					<ul>
+						<li><a href="#vendor-home-tab">Home</a></li>
+						<li><a href="#menu-tab">Menu</a></li>
+						<li><a href="#menu-options-tab">Menu Options</a></li>
+					</ul>
+				</div>
+			</div>
 
 			<!------------------------------------- TAB 1: VENDOR UI ------------------------------->
 			<?php //echo $this->Element('vendor_ui/vendor_home', array('store' => $this->get('store_status'), 'delivery' => $this->get('delivery_status')));?>

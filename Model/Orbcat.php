@@ -7,7 +7,9 @@ App::uses('AppModel', 'Model');
  */
 class Orbcat extends AppModel {
 
-	public $virtualFields = array('full_title' => 'CONCAT(Orbcat.title, " ", Orbcat.subtitle)');
+	public $virtualFields = array('full_title' => 'CONCAT(Orbcat.title, " ", Orbcat.subtitle)',
+	                              'menu_title' => 'CONCAT(Orbcat.subtitle, " ", Orbcat.title)'
+	);
 
 /**
  * Validation rules

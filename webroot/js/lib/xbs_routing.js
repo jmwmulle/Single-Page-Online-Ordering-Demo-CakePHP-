@@ -28,7 +28,33 @@ var xbs_routing = {
 		launch: null,
 		route: function (request, event) {
 			var routes = {
-
+				cart: {
+					params: ["action", "action_arg", "data"],
+					url:{
+						url:"add-to-cart",
+						type: C.POST,
+						defer:true,
+						data: $(XSM.menu.orb_order_form).serialize()
+					},
+					stop_propagation:true,
+					callbacks: {
+						params_set: function() {
+							switch (this.read("action") ) {
+								case "add":
+									if (this.read('action_arg') == 'cancel') {
+										this.unset('url');
+										this.set_callback('launch',  XBS.menu.reset_orb_card_stage);
+									}
+							}
+						},
+						launch: function () {
+							try {
+								var data = JSON.parse(this.deferal_data);
+								if (data.success == true && XBS.cart.add_to_cart() ) XBS.layout.reveal_orb_card_modal();
+							} catch (e) { throw "Add to cart failed at server:\n " + this.deferal_data; }
+						}
+					}
+				},
 				close_modal: {
 									params: ["modal", "on_close"],
 									callbacks: {
@@ -297,9 +323,11 @@ var xbs_routing = {
 					callbacks: {
 						params_set: function () {
 							// dunno why, another one of those strange Route-instance-not-resetting things
-							this.url = {url:["menu", this.read('id')].join(C.DS), method: C.GET, defer:true}
+							this.url = {url:["menu", this.read('id'), -1, true].join(C.DS), method: C.GET, defer:true}
 						},
-						launch: function() { XBS.menu.refresh_active_orbcat_menu(this.deferal_data); }
+						launch: function() {
+							pr(this.deferal_data);
+							XBS.menu.refresh_active_orbcat_menu(this.deferal_data); }
 					}
 				},
 				orb: {
@@ -355,10 +383,20 @@ var xbs_routing = {
 												defer:true,
 												data: $(XSM.vendor_ui.orb_add_form, XSM.modal.primary).serialize()
 											}
+											this.set_callback("launch", function() {
+												XBS.routing.cake_ajax_response(this.deferal_data, {
+													callback: function() {
+														$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/menu",
+															function() {
+																XBS.vendor_ui.data_tables('menu'); });
+													}
+												}, true);
+											});
 											break;
 									}
 									break;
 								default:
+									return true;
 									this.url = {
 										url: ["menu-item", this.read('id')].join(C.DS),
 										type: C.GET,
@@ -450,7 +488,6 @@ var xbs_routing = {
 					params: {id:{url_fragment:true}, action:{}, action_arg:{}},
 					callbacks: {
 						params_set: function() {
-							pr(this.read('action'));
 							if (this.read('action') != "launch") {
 								this.unset('url');
 								this.unset('modal');
@@ -463,10 +500,15 @@ var xbs_routing = {
 										defer: true,
 										data: $(XSM.vendor_ui.add_orbopt_form).serialize()
 									};
-									this.set_callback('launch', function() {
-										XBS.routing.cake_ajax_response(this.deferal_data, null, true, true);}
-									);
-									break;
+									this.set_callback("launch", function() {
+										XBS.routing.cake_ajax_response(this.deferal_data, {
+											callback: function() {
+												$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/opts",
+													function() {
+														XBS.vendor_ui.data_tables('opts'); });
+											}
+										}, true);
+									});
 								case 'delete':
 									var confirmation_box = as_id(['delete', 'orbopt', this.read('id')].join("-"));
 									switch ( this.read('action_arg') ) {
@@ -491,7 +533,6 @@ var xbs_routing = {
 													callback: function() {
 														$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/opts",
 															function() {
-																pr("fudge");
 																XBS.vendor_ui.data_tables('opts'); });
 													}
 												}, true);
@@ -506,6 +547,7 @@ var xbs_routing = {
 									break;
 								case 'set_opt_state':
 									this.set_callback('launch', function() {
+										pr([this.read('id'), this.read('action_arg')]);
 										XBS.vendor_ui.set_orbopt_state(this.read('id'), this.read('action_arg'));
 									});
 									break;
@@ -1052,11 +1094,22 @@ var xbs_routing = {
 					}
 				},
 				vendor_ui: {
-					params:['target', 'status'],
+					params:{target:{url_fragment:true}},
+					url: {url:"vendor-ui", defer:true, type: C.POST},
 					modal:XSM.modal.primary,
 					callbacks: {
 						params_set: function() {
-							pr({target:this.read('target'), status:this.read('status')});
+							pr(this.read('target'), "vendor_ui");
+						},
+						launch: function() {
+							if (this.read('target') == "opts")  {
+								$("#menu-options-tab").replaceWith(this.deferal_data);
+							}
+							if (this.read('target') == "menu")  {
+								$("#menu-tab").replaceWith(this.deferal_data);
+							}
+							$(document).foundation();
+//							XBS.vendor_ui.init();
 						}
 					}
 				},

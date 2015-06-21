@@ -20,7 +20,9 @@
 			</a>
 			<form class="orbopt-config-form">
 				<div id="orboopt-groups" class="content">
-					<span><em>Automatically select all toppings that are assigned to the menu category:</em></span>
+					<p>Toppings in green will be available to customers. Toppings in yellow will be selected by default <em>and</em> included in the price of the item.</p>
+					<p>Customers will be able to swap any default toppings  of equal or less price from the same general category (ie. toppings, cheeses and sauces).<span class="true-hidden" title="Choosing 'marinara sauce' here sets marinara by default in the customer's menu. Customers will be able to change this to another sauce, but they will not be able to remove their sauce and add a cheese or normal topping">Example</span></p>
+					<span><em>Choosing from this list automatically selects all toppings normally available to items in the chosen menu category:</em></span>
 					<select id="orbgroup" name="orbgroup"  data-changeroute="orbopt_config/-1/toggle_group">
 					<?php
 						foreach($orbopts_groups as $id => $name) { echo sprintf("<option value='%s'>%s</option>", $id, $name); }?>
@@ -28,6 +30,7 @@
 					</select>
 				</div>
 				<div id="individual-orbopts" class="content">
+					<?php if (false) {?>
 					<dl class="sub-nav large-8 large-centered columns">
 						<dt>Filter:</dt>
 						<?php foreach($optflags as $id => $name) { ?>
@@ -36,6 +39,7 @@
 							></dd>
 						<?php } ?>
 					</dl>
+					<?php } ?>
 					<ul class="large-block-grid-6">
 					<?php
 						foreach($orbopts as $opt) {
@@ -43,19 +47,26 @@
 							foreach ($opt['Orbcat'] as $orbcat) { array_push($group_ids, $orbcat['id']); }
 							$data = array('orbopt' => $opt['Orbopt']['id'],
 							              'groups' => sprintf("[%s]", implode(",",$group_ids)),
-							              'route' => sprintf("orbopt_config/toggle/%s", $opt['Orbopt']['id']),
+							              'route' => sprintf("orbopt_config/%s/toggle", $opt['Orbopt']['id']),
 							              'flags' => sprintf("[%s]", implode(",", $opt['Orbopt']['flags'] ))
 							);
 							$classes = array('orbopt');
-							$span_classes = array('label', 'secondary');
-							$active = in_array($opt['Orbopt']['id'], $active_orbopts);
-							if ($active) {
-								array_push($classes, "active");
-								$span_classes[1] = "success";
+							$val = false;
+							if ( in_array($opt['Orbopt']['id'], $active_orbopts) ) {
+								if (in_array($opt['Orbopt']['id'], $default_opts) ) {
+									$val = 2;
+									array_push($classes, 'active-plus');
+								} else {
+									$val = 1;
+									array_push($classes, 'active');
+								}
+							} else {
+								$val = 0;
+								array_push($classes, 'inactive');
 							}
 							echo sprintf("<li id='orbopt-%s-label' %s %s>", $opt['Orbopt']['id'], ___dA($data), ___cD($classes) );?>
-								<span <?php echo ___cD($span_classes);?>><?php echo $opt['Orbopt']['title']; ?></span>
-								<input type="hidden" name="Orbopt[<?php echo $opt['Orbopt']['id'];?>]" value="<?php echo $active ? 1 : 0;?>" />
+								<span><?=$opt['Orbopt']['title']; ?></span>
+								<input type="hidden" name="Orbopt[<?=$opt['Orbopt']['id'];?>]" value="<?=$val;?>" />
 							</li>
 					<?php } ?>
 					</ul>

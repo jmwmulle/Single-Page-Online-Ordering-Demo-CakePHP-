@@ -50,6 +50,8 @@
 		 * @return void
 		 */
 		public function add() {
+			$this->set('groups', $this->User->Group->find('list'));
+
 			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = "ajax";
 			}
@@ -61,10 +63,10 @@
 					);
 				}
 				else {
-					$this->request->data[ 'User' ][ 'group_id' ] = 2;
+					#$this->request->data[ 'User' ][ 'group_id' ] = 2;
 					$this->User->create();
 					if ( $this->User->save( $this->request->data ) ) {
-						$this->User->saveAssociated( $this->request->data );
+						#$this->User->saveAssociated( $this->request->data );
 						$this->Session->setFlash( __( 'Account created.' ) );
 						$cur_user = $this->User->find( 'first', array( 'recursive' => -1 ) );
 
@@ -76,8 +78,7 @@
 				}
 			}
 		}
-		/*$groups = $this->User->Group->find('list');
-		$this->set(compact('groups'));*/
+		
 
 		/**
 		 * edit method
@@ -186,6 +187,7 @@
 
 		/*login	*/
 		public function login() {
+			
 			if ( $this->Auth->loggedIn() ) {
 				$this->Session->setFlash( 'You are already logged in!' );
 				return $this->redirect( '/menu' );
@@ -357,32 +359,34 @@
 		/*beforeFilter*/
 		public function beforeFilter() {
 			parent::beforeFilter();
-
-			$this->Auth->allow( 'opauth_complete', 'login', 'logout' ); #, 'initDB');
+			$this->Auth->userModel='User';
+			$this->Auth->fields = array('username' => 'email', 'password' => 'password');
+			$this->Auth->allow( 'opauth_complete', 'login', 'logout', 'initDB');
 		}
 
 		public function initDB() {
 			$group = $this->User->Group;
 
 			//Admins
-			$group->id = 2;
+			$group->id = 1;
 			$this->Acl->allow( $group, 'controllers' );
 
 			//Users
-			$group->id = 1;
+			$group->id = 4;
 			$this->Acl->deny( $group, 'controllers' );
 			$this->Acl->allow( $group, 'controllers/users/home' );
 			$this->Acl->allow( $group, 'controllers/users/settings' );
 			$this->Acl->allow( $group, 'controllers/users/add_favourite' );
 			$this->Acl->allow( $group, 'controllers/users/add_address' );
+			$this->Acl->allow( $group, 'controllers/optflags/price_factors' );
 
 			//Storefront
 			$group->id = 3;
 			$this->Acl->deny($group, 'controllers');
+			$this->Acl->allow($group, 'controllers/Users');
 			$this->Acl->allow($group, 'controllers/orders/getPending');
 			$this->Acl->allow($group, 'controllers/pages/vendor');
 			$this->Acl->allow($group, 'controllers/orders/setStatus');
-			$this->Acl->allow($group, 'controllers/users/tabletlogin');
 			
 			echo "all done";
 			exit;

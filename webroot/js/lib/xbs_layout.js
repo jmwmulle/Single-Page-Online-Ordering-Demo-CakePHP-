@@ -7,16 +7,16 @@ var xbs_layout = {
 			if (XBS.data.cfg.is_splash) XBS.layout.detachAnimationTargets();
 			var page_content_height = window.innerHeight - ($(XSM.global.topbar).innerHeight() + 3 * C.REM) + C.PX;
 			$(XSM.global.page_content).css({minHeight: page_content_height});
-			$(XSM.effects.fill_parent).each(function() { XBS.layout.match_parent_dimensions(this)});
+			$(FX.fill_parent).each(function() { XBS.layout.match_parent_dimensions(this)});
 			setTimeout(function () {
-				$(XSM.topbar.social_loading).addClass(XSM.effects.fade_out);
+				$(XSM.topbar.social_loading).addClass(FX.fade_out);
 				setTimeout(function () {
 					$(XSM.topbar.social_loading).hide();
 					setTimeout(function () {
 						$(XSM.topbar.icon_row).show();
 						setTimeout(function () {
-							$(XSM.topbar.icon_row).removeClass(XSM.effects.fade_out);
-							$(XSM.topbar.icon_row).removeClass(XSM.effects.true_hidden);
+							$(XSM.topbar.icon_row).removeClass(FX.fade_out);
+							$(XSM.topbar.icon_row).removeClass(FX.true_hidden);
 						}, 30);
 					}, 30);
 				}, 300);
@@ -25,7 +25,7 @@ var xbs_layout = {
 			return sit_rep;
 		},
 		detachAnimationTargets: function () {
-			$(as_class(XSM.effects.detach)).each(function () { XBS.layout.detach(this);});
+			$(as_class(FX.detach)).each(function () { XBS.layout.detach(this);});
 		},
 		jq_binds: {
 			has_init_sequence: true,
@@ -38,7 +38,7 @@ var xbs_layout = {
 			},
 			init_modals: function () {
 				/** initially hide overlay & bind dismiss-on-click */
-				$(XSM.modal.overlay).addClass(XSM.effects.fade_out).hide().removeClass(XSM.effects.true_hidden);
+				$(XSM.modal.overlay).addClass(FX.fade_out).hide().removeClass(FX.true_hidden);
 //				$(C.BODY).on(C.CLK, XSM.modal.overlay, null, XBS.layout.dismiss_modal);
 			},
 			bind_activizing_lists: function () {
@@ -56,10 +56,10 @@ var xbs_layout = {
 				return true
 			},
 			bind_float_labels: function () {
-				$(C.BODY).on(C.MOUSEENTER, as_class(XSM.effects.float_label), null, function (e) {
+				$(C.BODY).on(C.MOUSEENTER, as_class(FX.float_label), null, function (e) {
 					XBS.layout.toggle_float_label($(e.currentTarget).data('float-label'), C.SHOW);
 				});
-				$(C.BODY).on(C.MOUSEOUT, as_class(XSM.effects.float_label), null, function (e) {
+				$(C.BODY).on(C.MOUSEOUT, as_class(FX.float_label), null, function (e) {
 					XBS.layout.toggle_float_label($(e.currentTarget).data('float-label'), C.HIDE);
 				});
 
@@ -75,13 +75,13 @@ var xbs_layout = {
 				var debug_this = false;
 				/** show hover-text */
 				$(C.BODY).on(C.MOUSEENTER, XSM.topbar.hover_text_link, null, function (e) {
-					if (!$(e.currentTarget).hasClass(XSM.effects.disabled)) {
+					if (!$(e.currentTarget).hasClass(FX.disabled)) {
 						if (debug_this) pr("firing!");
 						XBS.layout.toggle_topbar_hover_text($(e.currentTarget).data('hover_text'));
 					}
 				});
 				$(C.BODY).on(C.MOUSEOUT, XSM.topbar.hover_text_link, null, function (e) {
-					if (!$(e.currentTarget).hasClass(XSM.effects.disabled)) XBS.layout.decay_topbar_hover();
+					if (!$(e.currentTarget).hasClass(FX.disabled)) XBS.layout.decay_topbar_hover();
 				});
 			},
 			window_resize_listener: function () {
@@ -117,12 +117,12 @@ var xbs_layout = {
 		},
 		activize: function (element) {
 			if (isEvent(arguments[0])) element = element.currentTarget;
-			if ($(element).hasClass(XSM.effects.inactive)) {
-				$(element).removeClass(XSM.effects.inactive)
-					.addClass(XSM.effects.active)
+			if ($(element).hasClass(FX.inactive)) {
+				$(element).removeClass(FX.inactive)
+					.addClass(FX.active)
 					.siblings(XSM.global.active_list_item)
 					.each(function () {
-						$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+						$(this).removeClass(FX.active).addClass(FX.inactive);
 					});
 			}
 		},
@@ -136,22 +136,22 @@ var xbs_layout = {
 		dismiss_modal: function (modal, action) {
 			var debug_this = 0;
 			if (debug_this > 0) pr([modal, action], "XBS.layout.dismiss_modal(modal, action)", 2);
-			$(XSM.modal.primary).addClass(XSM.effects.slide_up);
-			$(XSM.modal.flash).addClass(XSM.effects.slide_up);
-			$(XSM.modal.splash).addClass(XSM.effects.slide_up);
+			$(XSM.modal.primary).addClass(FX.slide_up);
+			$(XSM.modal.flash).addClass(FX.slide_up);
+			$(XSM.modal.splash).addClass(FX.slide_up);
 			$(XSM.modal.orb_card).hide('clip');
 			setTimeout(function () {
-				$(XSM.modal.overlay).addClass(XSM.effects.fade_out);
+				$(XSM.modal.overlay).addClass(FX.fade_out);
 				setTimeout(function () { $(XSM.modal.overlay).hide(); }, 300);
 			}, 300);
 			if (action) {
 				switch (action) {
 					case "reset-user-activity":
 						$(XSM.menu.user_activity_panel).children().each(function () {
-							if ($(this).hasClass(XSM.effects.active)) {
-								$(this).removeClass(XSM.effects.active).addClass(XSM.effects.inactive);
+							if ($(this).hasClass(FX.active)) {
+								$(this).removeClass(FX.active).addClass(FX.inactive);
 							}
-							if ($(this).hasClass(XSM.effects.active_by_default)) $(this).addClass(XSM.effects.active);
+							if ($(this).hasClass(FX.active_by_default)) $(this).addClass(FX.active);
 						});
 						break;
 					case "unstash":
@@ -174,7 +174,7 @@ var xbs_layout = {
 					height: Math.floor($(sel).outerHeight() + px_to_int($(sel).css("padding-top")))};
 				var styles = {position: "fixed", top: offset.top, left: offset.left, height: dims.height, width: dims.width};
 				if (debug_this > 1) pr(styles);
-				$(sel).css(styles).addClass(XSM.effects.fastened);
+				$(sel).css(styles).addClass(FX.fastened);
 			}
 			return  (is_array(selector) ) ? selector : $(selector);
 		},
@@ -185,13 +185,13 @@ var xbs_layout = {
 		multi_activize: function (element) {
 			if ($(element).hasClass('active')) {
 				$(element).removeClass('active').addClass('inactive')
-					.children(as_class(XSM.effects.checked)).each(function () {
-						$(this).removeClass(XSM.effects.checked).addClass(XSM.effects.unchecked);
+					.children(as_class(FX.checked)).each(function () {
+						$(this).removeClass(FX.checked).addClass(FX.unchecked);
 					});
 			} else if ($(element).hasClass('inactive')) {
 				$(element).removeClass('inactive').addClass('active')
-					.children(as_class(XSM.effects.unchecked)).each(function () {
-						$(this).removeClass(XSM.effects.unchecked).addClass(XSM.effects.checked);
+					.children(as_class(FX.unchecked)).each(function () {
+						$(this).removeClass(FX.unchecked).addClass(FX.checked);
 					});
 			}
 		},
@@ -231,8 +231,8 @@ var xbs_layout = {
 			});
 		},
 		toggle_float_label: function (label, state) {
-			if (state == C.SHOW) $(XSM.menu.float_label).html(str_to_upper(label)).addClass(XSM.effects.exposed);
-			if (state == C.HIDE) $(XSM.menu.float_label).removeClass(XSM.effects.exposed).html('');
+			if (state == C.SHOW) $(XSM.menu.float_label).html(str_to_upper(label)).addClass(FX.exposed);
+			if (state == C.HIDE) $(XSM.menu.float_label).removeClass(FX.exposed).html('');
 
 			return true;
 		},
@@ -241,10 +241,10 @@ var xbs_layout = {
 			var debug_this = false;
 			if ($(XSM.topbar.hover_text_label_outgoing).html() == hover_text) return;
 			if (debug_this) pr([hover_text, state], "toggle_topbar_hover_text(hover_text, state)");
-			$(XSM.topbar.hover_text_label_outgoing).removeClass("decay").addClass(XSM.effects.slide_right);
-			$(XSM.topbar.hover_text_label_incoming).html(hover_text).removeClass(XSM.effects.true_hidden);
+			$(XSM.topbar.hover_text_label_outgoing).removeClass("decay").addClass(FX.slide_right);
+			$(XSM.topbar.hover_text_label_incoming).html(hover_text).removeClass(FX.true_hidden);
 			setTimeout(function () {
-				$(XSM.topbar.hover_text_label_incoming).removeClass(XSM.effects.slide_left);
+				$(XSM.topbar.hover_text_label_incoming).removeClass(FX.slide_left);
 				setTimeout(function () {
 					setTimeout(function () {
 						$(XSM.topbar.hover_text_label_outgoing).remove();
@@ -260,7 +260,7 @@ var xbs_layout = {
 			var id = (new Date).getTime();
 			$(XSM.topbar.hover_text_label_outgoing).addClass("decay " + id);
 			setTimeout(function () {
-				$(XSM.topbar.hover_text_label_outgoing + ".decay." + id).addClass(XSM.effects.fade_out);
+				$(XSM.topbar.hover_text_label_outgoing + ".decay." + id).addClass(FX.fade_out);
 				setTimeout(function () {
 					$(XSM.topbar.hover_text_label_outgoing + ".decay." + id).replaceWith(
 						"<span class='outgoing'>Halifax loves pizza and we love halifax!</span>");
