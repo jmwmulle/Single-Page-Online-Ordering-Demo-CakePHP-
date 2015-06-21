@@ -16,16 +16,19 @@
 var xbs_vendor_ui = {
 	init: function () {
 		$(XSM.vendor_ui.ui_tabs).tabs();
+		XBS.vendor_ui.fix_breakouts();
+		for ( var table in {menu:null, opts:null } ) {
+			XBS.vendor_ui.data_tables(table);
+		}
+
+	},
+	fix_breakouts: function() {
 		$(FX.breakout).each(function () {
 			$(this).css({
 				left: (($(window).width() - $(this).innerWidth()) / 2) + "px",
 				top: (($(window).height() - $(this).innerHeight()) / 2) + "px"
 			})
 		});
-		for ( var table in {menu:null, opts:null } ) {
-			XBS.vendor_ui.data_tables(table);
-		}
-
 	},
 	data_tables: function (table) {
 		var tables = {
