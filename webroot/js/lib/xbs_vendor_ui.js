@@ -15,12 +15,24 @@
  */
 var xbs_vendor_ui = {
 	init: function () {
-		$(XSM.vendor_ui.ui_tabs).tabs();
+		XBS.vendor_ui.loading_screen(0);
 		XBS.vendor_ui.fix_breakouts();
+		$(XSM.vendor_ui.ui_tabs).tabs();
 		for ( var table in {menu:null, opts:null } ) {
 			XBS.vendor_ui.data_tables(table);
 		}
 
+	},
+	loading_screen: function(last_height) {
+		var ui_height = $(XSM.vendor_ui.ui_tabs).innerHeight();
+		if (last_height == ui_height) {
+			$("#loading-screen").addClass(FX.fade_out);
+			setTimeout(function(){ $("#loading-screen").addClass(FX.hidden); }, 300);
+		} else {
+			setTimeout( function() {
+				pr("height: " + ui_height);
+				XBS.vendor_ui.loading_screen(ui_height)}, 300);
+		}
 	},
 	fix_breakouts: function() {
 		$(FX.breakout).each(function () {

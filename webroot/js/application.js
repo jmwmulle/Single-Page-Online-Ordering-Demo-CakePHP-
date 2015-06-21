@@ -1,5 +1,13 @@
 
-$(document).foundation();
+if (page_name ==  "Vendor Interface") {
+	$(".breakout").each(function () {
+	$(this).css({
+		left: (($(window).width() - $(this).innerWidth()) / 2) + "px",
+		top: (($(window).height() - $(this).innerHeight()) / 2) + "px"
+	})
+});
+}
+
 
 function InitError(raisedError, message) {
 	this.prototype = Error.prototype;

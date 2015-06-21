@@ -74,6 +74,12 @@
 		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" ); ?>
 </head>
 <body>
+<div id="loading-screen">
+	<div id="loading-screen-message" class="breakout">
+		<h2>Loading...</h2>
+		<?=$this->Html->image('ajax-loader.gif');?>
+	</div>
+</div>
 <?php
 echo $this->fetch('content');
 echo $this->fetch( 'vendor' );

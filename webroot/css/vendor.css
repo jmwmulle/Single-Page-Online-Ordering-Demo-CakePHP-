@@ -5407,3 +5407,19 @@ span.inactive {
       color: #373737; }
     #individual-orbopts .orbopt.active-plus:hover {
       background-color: #fbee38; }
+
+#loading-screen {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  positioned: fixed;
+  z-index: 999999999999;
+  background-color: #333f46; }
+  #loading-screen #loading-screen-message {
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    box-shadow: none; }
+    #loading-screen #loading-screen-message h2 {
+      color: white; }
