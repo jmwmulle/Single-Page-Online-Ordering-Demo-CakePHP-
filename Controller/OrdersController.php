@@ -474,6 +474,7 @@
 						}
 
 						if ( $save ) {
+							//This sets a view variable for the cart, in case it needs to be displayed
 							$this->set( compact( 'cart' ) ); // what's this do? still valid?
 
 							/*App::uses('CakeEmail', 'Network/Email');
@@ -487,7 +488,7 @@
 									->viewVars(array('cart' => $cart))
 									->send();*/
 							$response = array_combine( $response, array( true, false, $this->Order->id ) );
-//							$this->Session->destroy('Cart');
+							//$this->Session->destroy('Cart');
 						}
 						else {
 							$response = array_combine( $response, array( false, $this->Order->invalidFields(), false )
