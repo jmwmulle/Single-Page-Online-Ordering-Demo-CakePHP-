@@ -109,11 +109,8 @@ class OrbsOrboptsController extends AppController {
 	}
 
 	public function fetch_default_opts($orb_id) {
-		if ( $this->request->is('get') ) {
 			$conditions =  array('conditions' => array('orb_id' => $orb_id,  'default' => true), 'recursive' => -1);
-			return Hash::extract($this->OrbsOrbopt->find('all', $conditions), "{n}.OrbsOrbopt.id");
-		} else {
-			$this->redirect(array('orbcats', 'menu'));
-		}
+			$opts = $this->OrbsOrbopt->find('all', $conditions);
+			return Hash::extract($opts, "{n}.OrbsOrbopt.id");
 	}
 }

@@ -175,11 +175,12 @@
 			                     ),
 			);
 
+			$orb_card = $this->requestAction( "orbs/orbcard/$orb_id/0");
+
 			$data       = array( $this->requestAction( "orbs/orbcard/$orb_id/0" ),
 			                     $this->Orbcat->find( 'all', $conditions )[ 0 ] );
-			db($data);
 			foreach ( $data[ 1 ][ 'Orb' ] as $i => $orb ) {
-				$prices                                    = array_filter( array_slice( array_combine( $orb[ 'Pricedict' ], $orb[ 'Pricelist' ] ), 1 ) );
+				$prices                                    = array_filter( array_slice( array_combine( $orb[ 'Pricedict' ], array_slice($orb[ 'Pricelist' ],0,-1) ), 1 ) );
 				$data[ 1 ][ 'Orb' ][ $i ]             = array_slice( $orb, 0, 5 );
 				$data[ 1 ][ 'Orb' ][ $i ][ 'Prices' ] = $prices;
 			}
@@ -191,10 +192,17 @@
 		}
 
 		/**
+		 * @param $orb_id
+		 *
 		 * @return mixed
 		 */
-		private function default_orbcat_id() {
-			return $this->Orbcat->field( 'id', array( 'title' => 'PIZZAS', 'subtitle' => 'ORIGINAL' ) );
+		private function default_orbcat_id($orb_id) {
+			// get the orbcat_id of the passed orb_id if provided;
+			if ($orb_id && $this->Orbcat->Orb->exists($orb_id) ) {
+				return $this->Orbcat->Orb->field('orbcat_id', array('`Orb`.`id`' => $orb_id));
+			} else {
+				return $this->Orbcat->field( 'id', array( 'title' => 'PIZZAS', 'subtitle' => 'ORIGINAL' ) );
+			}
 		}
 
 		/**
@@ -219,25 +227,27 @@
 		 */
 		public function menu($orbcat_id = null, $orb_id = null, $return = false) {
 			$this->set_page_name( 'menu' );
-			if ( !$orbcat_id || !$this->Orbcat->exists( $orbcat_id ) ) { $orbcat_id = $this->default_orbcat_id(); }
+			$refreshing = false;  // ie. refreshing the orbcard menu with a new orbcat
+			if ( $this->request->is( "ajax" ) ) {
+				$this->layout = 'ajax';
+				$refreshing = !$return;
+			}
+
+			if ( !$orbcat_id || !$this->Orbcat->exists( $orbcat_id ) ) {
+				$orbcat_id = $this->default_orbcat_id($orb_id);
+			}
 			$this->Orbcat->id = $orbcat_id;
 			list($orbcard, $menu) = $this->orbcard_stage( $orbcat_id, $orb_id );
-//			db($orbcard);
-//			$deets = $this->orbcard_stage( $orbcat_id, $orb_id );
-//			db($deets);
+
 			$orbcats       = $this->orbcats_by_formatted_title();
 			$optflags_list = $this->Orbcat->Orb->Orbopt->Optflag->find( 'list' );
 			$order         = $this->Session->read( 'Cart.Order' ) ? $this->Session->read( 'Cart.Order' ) : array();
 
-			$this->set( compact( 'orbcard', 'menu', 'orbcats', 'optflags_list', 'order' ) );
-			if ( $this->request->is( "ajax" ) ) {
-//				$this->render( $return ? 'menu' : 'ajax_menu', 'ajax' );
-				$this->render( $return ? 'menu' : 'ajax_menu', 'ajax' );
-			}
+			$this->set( compact( 'orbcard', 'menu', 'orbcats', 'optflags_list', 'order', 'refreshing' ) );
 		}
 
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$this->Auth->allow( 'index', 'view', 'menu' );
+			$this->Auth->allow( 'menu' );
 		}
 	}

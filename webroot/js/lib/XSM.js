@@ -229,6 +229,9 @@ var XSM = {
 		orbopts_table: "#menu-options-table",
 		orb_attr_display: "div.orb-attr.display",
 		orb_attr_edit: "div.orb-attr.edit",
+		orbopt_attr_display: "div.orbopt-attr.display",
+		orbopt_attr_edit: "div.orbopt-attr.edit",
+		orbopt_pricelist_add: "#orbopt-pricelist-add",
 		orb_add_form: "#OrbAddForm",
 		orbopt_config_form_wrapper: ".orbopt-config-form",
 		orbopt_optgroup_config_form: "#orbopt-optgroup-config-form",
@@ -270,7 +273,7 @@ var XSM = {
 		},
 		order_form_opt_id: function(opt_id) {
 			opt_id = opt_id.split("-")[2]
-			return as_id("OrderOrbOrbopts" + opt_id)
+			return as_id("OrderOrbOrbopt" + opt_id)
 		},
 		orb_card_row_content: function(row) { return "#orb-card-row-" + row + " div.orb-card-content" },
 		orb_opt_id: function(opt_id) { return as_id("orb-opt-coverage-" + opt_id); },

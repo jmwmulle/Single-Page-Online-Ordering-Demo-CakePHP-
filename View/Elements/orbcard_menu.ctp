@@ -8,7 +8,7 @@
  */
 $oc = $content['Orbcat'];
 $classes = array('flush', 'l-3', "box", "rel", "rightward", "stretch", "activizing", 'orb-card-stage-menu', 'text-center');
-if ($portionable) array_push($classes, "portionable");
+if ($menu['Orbcat']['portionable']) array_push($classes, "portionable");
 ?>
 
 <?='<div id="orb-stage-menu-header-container">';?>

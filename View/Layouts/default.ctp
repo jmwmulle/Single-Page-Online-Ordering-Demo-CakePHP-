@@ -3,6 +3,7 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>XtremePizza</title>
 
 	<?php
@@ -58,7 +59,7 @@
 </head>
 
 <body id="<?php echo $body_id; ?>" data-poop="true" <?php echo ___cD( $body_class ); ?>>
-
+<div id="cake-error-overlay" class="true-hidden"></div>
 <div id="page-content" class="show-for-medium-up">
 	<?php
 		echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );

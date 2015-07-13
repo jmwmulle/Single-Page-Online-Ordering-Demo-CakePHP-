@@ -5176,6 +5176,23 @@ textarea.note {
   width: 15.85938rem;
   vertical-align: top; }
 
+div#cake-error-overlay {
+  width: 1000px;
+  height: auto;
+  margin: 1rem;
+  padding: 1rem;
+  background-color: #191919;
+  font-size: 0.75rem;
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 999999999999999;
+  clear: both;
+  display: block;
+  float: none;
+  overflow: auto; }
+
 a.xtreme-button {
   transition: background-color 0.3s ease-in-out;
   color: white;
@@ -6864,15 +6881,20 @@ input#orderOrbQuantity {
     float: left;
     width: 13.75rem; }
 
-.orb-opt.active li.orb-opt-coverage {
+.orb-card-stage-menu .orb-opt.active ul li.orb-opt-coverage {
   opacity: 1; }
-  .orb-opt.active li.orb-opt-coverage:hover {
+  .orb-card-stage-menu .orb-opt.active ul li.orb-opt-coverage:hover {
     color: #e02027; }
-  .orb-opt.active li.orb-opt-coverage.active {
+  .orb-card-stage-menu .orb-opt.active ul li.orb-opt-coverage.active {
     color: #191919; }
 
-ul.portionable li.orb-opt-coverage.full, ul.portionable li.orb-opt-coverage.right-side, ul.portionable li.orb-opt-coverage.left-side {
-  display: none; }
+.orb-card-stage-menu .orb-opt ul li.orb-opt-coverage.full, .orb-card-stage-menu .orb-opt ul li.orb-opt-coverage.right-side, .orb-card-stage-menu .orb-opt ul li.orb-opt-coverage.left-side {
+  display: none !important; }
+.orb-card-stage-menu .orb-opt ul li.orb-opt-coverage.double {
+  margin-right: 10px; }
+
+.orb-card-stage-menu.portionable .orb-opt ul li.orb-opt-coverage.full, .orb-card-stage-menu.portionable .orb-opt ul li.orb-opt-coverage.right-side, .orb-card-stage-menu.portionable .orb-opt ul li.orb-opt-coverage.left-side {
+  display: initial !important; }
 
 #orb-opt-filters {
   width: 34.17969rem;

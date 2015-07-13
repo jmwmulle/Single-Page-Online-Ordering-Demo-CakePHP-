@@ -7,6 +7,7 @@
 	 * About.me: about.me/thisimpetus
 	 */
 
+
 //db($orbs);
 	//pr($optflags);
 //		db($orbopts);
@@ -41,7 +42,8 @@
 			<!------------------------------------- TAB 3: MENU OPTIONS ---------------------------->
 			<?php echo $this->Element( 'vendor_ui/menu_options', array( 'optflags' => $optflags,
 			                                                            'orbopts'  => $orbopts,
-			                                                            'orbopts_groups' => $orbopts_groups
+			                                                            'orbopts_groups' => $orbopts_groups,
+			                                                            'opt_pricelists' => $opt_pricelists
 				)
 			);?>
 

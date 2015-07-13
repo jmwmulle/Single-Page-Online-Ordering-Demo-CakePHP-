@@ -1,2 +1,2 @@
 
-<?=$this->Element('orbcat_menu', array('active' => $menu['Orbcat'], 'orbcats' => $orbcats));?>
+<?=$this->Element('orbcard', array('content' => $orbcard, 'orbcats' => $orbcats));?>

@@ -75,7 +75,7 @@
 </head>
 <body>
 <div id="loading-screen">
-	<div id="loading-screen-message" class="breakout">
+	<div id="loading-screen-message">
 		<h2>Loading...</h2>
 		<?=$this->Html->image('ajax-loader.gif');?>
 	</div>

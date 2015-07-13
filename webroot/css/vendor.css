@@ -236,7 +236,7 @@ html, body {
   box-sizing: border-box; }
 
 html, body {
-  font-size: 0.75rem; }
+  font-size: 12px; }
 
 body {
   background: white;
@@ -5417,9 +5417,17 @@ span.inactive {
   z-index: 999999999999;
   background-color: #333f46; }
   #loading-screen #loading-screen-message {
+    position: relative;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 300px;
     background-color: transparent;
     text-align: center;
     border: none;
     box-shadow: none; }
     #loading-screen #loading-screen-message h2 {
       color: white; }
+
+th {
+  text-transform: uppercase; }

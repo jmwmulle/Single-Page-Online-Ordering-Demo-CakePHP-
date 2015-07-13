@@ -240,8 +240,9 @@ $dark-grey: rgb(25,25,25);
 $transparent: rgba(0,0,0,0);
 
 @import "foundation/functions";
-$base-font-size: 0.75rem;
+$base-font-size: 12px;
 $base-line-height: 0.75rem;
+//$rem-base: $base-font-size;
 $row-width: 1200px;
 @import "foundation";
 
@@ -259,6 +260,7 @@ body  {
 
 
 div#vendor-ui {
+//  a, table, td, ul, li, p, span { font-size: rem-calc(12px); }
   padding: 2rem 0!important;
   #ui-tabs { box-shadow: 0 0 1rem $black-a50;}
 }
@@ -609,10 +611,19 @@ positioned:fixed;
 z-index:999999999999;
 background-color:rgb(51, 63, 70);
   #loading-screen-message {
+    position:relative;
+    width:800px;
+    margin-left:auto;
+    margin-right:auto;
+    padding-top:300px;
     background-color: transparent;
     h2 { color: $white;}
     text-align: center;
     border:none;
     box-shadow:none;
   }
+}
+
+th {
+  text-transform:uppercase;
 }

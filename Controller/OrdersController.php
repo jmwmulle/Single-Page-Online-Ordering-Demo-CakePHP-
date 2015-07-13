@@ -8,6 +8,28 @@
 										"price_rank"               => 0,
 										"orbopts"                  => array(),
 										"preparation_instructions" => "" );
+		private $cart_template = array('Order' => [],
+		                               'User' => [
+			                               'Address' => [   'address'               => null,
+	                                                        'address_2'             => null,
+	                                                        'postal_code'           => null,
+	                                                        'building_type'         => null,
+	                                                        'phone' => null,
+	                                                        'delivery_instructions' => null,
+	                                                        'city'                  => 'Halifax',
+	                                                        'province'              => 'NS',
+	                                                        'delivery_time'         => null,
+	                                                        'firstname'             => null,
+	                                                        'lastname'              => null ]
+		                               ],
+		                               'Receipt' => ['subtotal' => 0,
+		                               						 'total' => 0,
+		                               						 'item_count' => 0,
+		                               						 'receipt_rows' => 0,
+		                               						 'hst'=> 0],
+		                               'Service' => ['deliverable' => false,
+		                                             'order_method' => 'just_browsing']
+		);
 
 		public $components = array(
 			'Cart',
@@ -52,6 +74,7 @@
 		 * @return void
 		 */
 		public function add() {
+
 			if ( $this->request->is( 'post' ) ) {
 				$this->Order->create();
 				if ( $this->Order->save( $this->request->data ) ) {
@@ -67,6 +90,18 @@
 			$this->set( compact( 'users', 'orbs' ) );
 		}
 
+		private function init_cart() {
+			// $this->Session->destroy();
+			if ( !$this->Session->check('Cart') ) $this->Session->write('Cart', $this->cart_template);
+				foreach ($this->cart_template as $key => $value) {
+					if (!$this->Session->check("Cart.$key") ) $this->Session->write("Cart.$key", $value);
+					foreach($value as $subkey => $subvalue) {
+						if (!$this->Session->check("Cart.$key.$subkey") ) $this->Session->write("Cart.$key.$subkey", $subvalue);
+					}
+				}
+			return true;
+		}
+
 		/**
 		 * add_to_cart method
 		 * Adds a new item to the cart session key
@@ -74,38 +109,42 @@
 		 * @return the item information in AJAX
 		 */
 		public function add_to_cart() {
+			$this->init_cart();
 			if ( $this->request->is( 'ajax' ) && $this->request->is( 'post' )  ) {
-				$this->layout = "ajax";
-				$response     = array( "success" => false,
-				                       "error" => false,
-				                       "order" => array('Orbs' => array()),
-				                       "cart_total" => null,
-				                       "submitted_data" => $this->request->data[ 'Order' ]
-				);
-				foreach ( $this->request->data[ 'Order' ] as $orb ) {
-					try {
-						$item = $this->Cart->add(array_merge($this->orb_template, $orb ));
-						array_push( $response['order']['Orbs'], $item );
-					} catch (Exception $e) {
-						$response['success'] = false;
-						$response['error'] = $e->getMessage();
-						$this->render_ajax_response($response);
+					$cart_restore = $this->Session->read('Cart');
+					$response     = array( "success" => true,
+					                       "error" => false,
+					                       "cart" => [],
+					                       "submitted_data" => $this->request->data
+					);
+
+					foreach ( $this->request->data[ 'Order' ] as $orb ) {
+						try {
+							$this->Cart->add(array_merge($this->orb_template, $orb ));
+						} catch (Exception $e) {
+							$response['success'] = false;
+							$response['error'] = $e->getMessage();
+							$this->Session->write('Cart', $cart_restore);
+							break;
+						}
 					}
-				}
-				return $this->render_ajax_response($response);
-				try {
-					$this->Cart->update();
-				}   catch (Exception $e) {
-					$response['success'] = false;
-					$response['error'] = $e->getMessage();
+
+					if ( !$response['error'] ) {
+						try {
+							$this->Cart->update_invoice();
+						}   catch (Exception $e) {
+							$response['success'] = false;
+							$response['error'] = $e->getMessage();
+							$this->Session->write('Cart', $cart_restore);
+							$this->render_ajax_response($response);
+						}
+					}
+					$response['cart'] = $this->Session->read('Cart');
 					$this->render_ajax_response($response);
-				}
-				$response['total'] = $this->Session->check( 'Cart.Order.total' ) ? $this->Session->read( 'Cart.Order.total' ) : null;
-				$this->render_ajax_response($response);
-			}
-			else {
+			} else {
 				$this->redirect( "/menu" );
 			}
+
 		}
 
 		/**
@@ -118,6 +157,7 @@
 		 * @return void
 		 */
 		public function edit($id = null) {
+			$this->init_cart();;
 			if ( !$this->Order->exists( $id ) ) {
 				throw new NotFoundException( __( 'Invalid order' ) );
 			}
@@ -169,12 +209,14 @@
 		public function clear() {
 			$this->layout = "ajax";
 			$this->Cart->clear();
+			$this->init_cart();;
 			$this->set( 'response', json_encode( array( 'success' => true ) ) );
 			$this->autoRender = false;
 		}
 
 
 		public function itemupdate() {
+			$this->init_cart();
 			if ( $this->request->is( 'ajax' ) ) {
 
 				foreach ( $this->request->data[ 'Order' ][ 'Orbs' ] as $orb ) {
@@ -224,7 +266,7 @@
 							$args
 						)
 					);
-					$this->Cart->add( $id, $quantity, $price_rank, $orbopts, $preparation_instructions );
+//					$this->Cart->add( $id, $quantity, $price_rank, $orbopts, $preparation_instructions );
 				}
 			}
 

@@ -70,6 +70,10 @@
 	Router::connect('/print_response/*', array('controller' => 'orders', 'action' => 'log_printer'));
 	Router::connect('/launch-apology', array('controller' => 'pages', 'action' => 'display', 'launch_apology'));
 	Router::connect('/opt-price-factors/*', array('controller' => 'optflags', 'action' => 'price_factors'));
+	Router::connect('/update-orbopt/*', array('controller' => 'orbopts', 'action' => 'update'));
+	Router::connect('/add-orbopt-pricelist/*', array('controller' => 'orbopts', 'action' => 'pricelist_add'));
+
+
 
 
 

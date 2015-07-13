@@ -5,8 +5,7 @@
 
 
 
- * HEY JONO!!!!!!
- * SOLUTION TO LOADING: When #ui-tabs is finally the appropriate height, wait 1s and reveal
+ * TODO: limit menu_options tab so that "premium", "cheese" & "sauce" are mutually exclusive
 
 
 
@@ -21,7 +20,6 @@ var xbs_vendor_ui = {
 		for ( var table in {menu:null, opts:null } ) {
 			XBS.vendor_ui.data_tables(table);
 		}
-
 	},
 	loading_screen: function(last_height) {
 		var ui_height = $(XSM.vendor_ui.ui_tabs).innerHeight();
@@ -58,6 +56,7 @@ var xbs_vendor_ui = {
 				id: XSM.vendor_ui.orbopts_table,
 				cols: [
 					{ width: 100 },
+					{ width: 100 },
 					{ width: 76 },
 					{ width: 76 },
 					{ width: 76 },
@@ -68,10 +67,10 @@ var xbs_vendor_ui = {
 			}
 		};
 		$(tables[table].id).dataTable({
-			bJQueryUI: true,
-			bDeferRender: false,
-			autoWidth: false,
-			columns: tables[table].cols
+				bJQueryUI: true,
+				bDeferRender: false,
+				autoWidth: false,
+				columns: tables[table]
 		});
 
 	},
@@ -82,7 +81,6 @@ var xbs_vendor_ui = {
 		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(FX.fade_out).removeClass(FX.hidden);
 		setTimeout(function () { $(XSM.vendor_ui.orb_attr_edit, cell_id).removeClass(FX.fade_out); }, 30);
 	},
-
 	save_orb: function (orb_id, attribute, replacement) {
 		var cell_id = as_id(["orb", orb_id, attribute].join("-"));
 		var saved_value = null;
@@ -111,18 +109,54 @@ var xbs_vendor_ui = {
 				$(cell_id).html(replacement);
 				break;
 		}
-
-		$(XSM.vendor_ui.orb_attr_display, cell_id).removeClass(FX.hidden);
-		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(FX.hidden);
+		XBS.vendor_ui.cancel_editing(orb_id, attribute)
 	},
-
 	cancel_editing: function (orb_id, attribute) {
 		var cell_id = as_id(["orb", orb_id, attribute].join("-"));
 		$(XSM.vendor_ui.orb_attr_display, cell_id).removeClass(FX.hidden);
 		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(FX.hidden);
 	},
-
-
+	edit_orbopt: function (orbopt_id, attribute) {
+		var cell_id = as_id(["orbopt", orbopt_id, attribute].join("-"));
+		if (attribute == "pricing") {
+			var select_id = as_id(["orbopt", orbopt_id, "pricelist"].join("-"));
+			var route = ["orbopt_edit", orbopt_id, 'save', 'pricing'].join(C.DS);
+			return $(XBS.routing).trigger(C.ROUTE_REQUEST, {request:route, trigger:{}});
+		} else {
+			$(XSM.vendor_ui.orbopt_attr_display, cell_id).addClass(FX.hidden);
+			$(XSM.vendor_ui.orbopt_attr_edit, cell_id).removeClass(FX.hidden);
+			setTimeout(function () { $(XSM.vendor_ui.orbopt_attr_edit, cell_id).removeClass(FX.fade_out); }, 30);
+		}
+	},
+	save_orbopt: function(response, data) {
+		var cell_id;
+		if (data.attribute == "pricing") {
+			cell_id = XSM.vendor_ui.orbopt_pricelist_add;
+			$(cell_id, C.BODY).addClass([FX.hidden, FX.fade_out].join(" "));
+		} else {
+			cell_id = as_id(["orbopt", data.id, data.attribute].join("-"));
+		}
+		switch (data.attribute) {
+			case "title":
+				$(XSM.vendor_ui.orbopt_attr_display, cell_id).html(response.submitted_data.data.Orbopt.title);
+				break;
+			case "vendor-title":
+				$(XSM.vendor_ui.orbopt_attr_display, cell_id).html(response.submitted_data.data.Orbopt.vendor_title);
+				break;
+		}
+		if ("replacement" in data) $(XSM.vendor_ui.orbopt_attr_display, cell_id).html(data.replacement);
+		XBS.vendor_ui.cancel_orbopt_edit(data.id, data.attribute);
+	},
+	cancel_orbopt_edit: function (orbopt_id, attribute) {
+		var cell_id = as_id(["orbopt", orbopt_id, attribute].join("-"));
+		if (attribute == "pricing") {
+			$("input.pricelist", XSM.vendor_ui.orbopt_pricelist_add).each(function() { $(this).val('');});
+			$(XSM.vendor_ui.orbopt_pricelist_add, C.BODY).addClass([FX.hidden, FX.fade_out].join(" "));
+		} else {
+			$(XSM.vendor_ui.orbopt_attr_display, cell_id).removeClass(FX.hidden);
+			$(XSM.vendor_ui.orbopt_attr_edit, cell_id).addClass(FX.hidden);
+		}
+	},
 	toggle_orbopt_group: function (orbcat_id) {
 		orbcat_id = Number(orbcat_id);
 		$("li.orbopt", XSM.modal.primary).each(function () {
@@ -208,6 +242,19 @@ var xbs_vendor_ui = {
 			}
 			$(document).foundation();
 		});
+	},
+
+	reload_tab: function( tab ) {
+		if (tab == "opts") {
+			$(XSM.vendor_ui.menu_options_tab).load(["vendor-ui", "opts"].join(C.DS), function() {
+																	XBS.vendor_ui.data_tables(tab);
+																	XBS.vendor_ui.fix_breakouts();
+																});
+		}
+		$(XSM.vendor_ui.menu_options_tab).load(["vendor-ui", "menu"].join(C.DS), function() {
+														XBS.vendor_ui.data_tables(tab);
+														XBS.vendor_ui.fix_breakouts();
+													});
 	}
 
 }

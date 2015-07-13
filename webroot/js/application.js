@@ -1,13 +1,13 @@
-
-if (page_name ==  "Vendor Interface") {
-	$(".breakout").each(function () {
-	$(this).css({
-		left: (($(window).width() - $(this).innerWidth()) / 2) + "px",
-		top: (($(window).height() - $(this).innerHeight()) / 2) + "px"
-	})
-});
-}
-
+//
+//if (page_name ==  "Vendor Interface") {
+//	$(".breakout").each(function () {
+//	$(this).css({
+//		left: (($(window).width() - $(this).innerWidth()) / 2) + "px",
+//		top: (($(window).height() - $(this).innerHeight()) / 2) + "px"
+//	})
+//});
+//}
+setTimeout(function() {
 
 function InitError(raisedError, message) {
 	this.prototype = Error.prototype;
@@ -28,5 +28,6 @@ function InitError(raisedError, message) {
 $(document).ready( function() {
 	XBS.init(is_splash, page_name, host, cart);
 });
+}, 1000);
 
 

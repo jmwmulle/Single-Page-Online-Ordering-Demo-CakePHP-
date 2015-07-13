@@ -1,7 +1,8 @@
 /**
  * Created by jono on 1/22/15.
  */
-	var print_from_queue_requests = 0;
+var print_from_queue_requests = 0;
+
 var xbs_routing = {
 		init: function () {
 			/* For launching routes via the DOM */
@@ -39,19 +40,42 @@ var xbs_routing = {
 					stop_propagation:true,
 					callbacks: {
 						params_set: function() {
-							switch (this.read("action") ) {
-								case "add":
-									if (this.read('action_arg') == 'cancel') {
-										this.unset('url');
-										this.set_callback('launch',  XBS.menu.reset_orb_card_stage);
-									}
+							if (this.read("action") == "add" && this.read('action_arg') == 'cancel' ) {
+								this.unset('url');
+								this.set_callback('launch',  XBS.menu.reset_orb_card_stage);
+							} else {
+								this.url = {
+											url:"add-to-cart",
+											type: C.POST,
+											defer:true,
+											data: $(XSM.menu.orb_order_form).serialize()
+										};
 							}
 						},
 						launch: function () {
+							var debug_this = 1;
+							if (debug_this > 0) {
+								try {
+									pr(JSON.parse(this.deferal_data), "cart.add");
+								} catch (e) {
+									pr("Error trying to parse deferal_data as JSON.", "cart.add", true);
+									pr(this.deferal_data, "cart.add");
+									XBS.routing.reveal_cake_error(this.deferal_data);
+								}
+							}
 							try {
 								var data = JSON.parse(this.deferal_data);
-								if (data.success == true && XBS.cart.add_to_cart() ) XBS.layout.reveal_orb_card_modal();
-							} catch (e) { throw "Add to cart failed at server:\n " + this.deferal_data; }
+								if (data.success === true && XBS.cart.add_to_cart() ) {
+									XBS.layout.reveal_orb_card_modal();
+								} else { throw "Add to cart failed at server:\n " + this.deferal_data; }
+							} catch (e) {
+								try {
+									pr(JSON.parse(this.deferal_data), "cart->order", true);
+									throw "Add to cart failed at server:\n " + this.deferal_data;
+								} catch (e) {
+									throw "Add to cart failed at server:\n " + this.deferal_data;
+								}
+							}
 						}
 					}
 				},
@@ -291,9 +315,117 @@ var xbs_routing = {
 					url: {url: "menuitem"},
 					params: {orb_id: {value: null, url_fragment: true}}
 				},
+
+
 				order_accepted: {
 					url:"order-accepted",
 					modal:XSM.modal.primary
+				},
+				order: {
+					params: ["method", "context"],
+					url: { url: "review-order", type: C.GET, defer: false},
+					modal: XSM.modal.primary,
+					callbacks: {
+						params_set: function () {
+							switch (this.read('method')) {
+								case "clear":
+									this.url = { url: "clear-cart", type: C.GET, defer: true};
+									this.set_callback("launch", function () {
+										if (this.deferal_data) {
+											// todo: handle cart-clearance verification
+										}
+										XBS.menu.clear_cart();
+										XBS.layout.dismiss_modal(XSM.modal.primary);
+									});
+									break;
+								case "view":
+									this.url.url = "cart";
+									this.url.defer = false;
+									this.change_behavior(C.STASH_STOP);
+									this.unset("launch");
+									break;
+								case "finalize":
+									this.url = {
+										url: "orders" + C.DS + "finalize",
+										defer:true,
+										data:$("#OrderReviewForm").serialize(),
+										type:C.POST
+									}
+									this.set_callback("launch", function() {
+										var data = $.parseJSON(this.deferal_data);
+										var trigger = this.trigger;
+										if (!data.error) {
+											if (data.order_id) {
+												var route = "pending_order"+ C.DS + data.order_id + C.DS + "launching";
+												$(XBS.routing).trigger(C.ROUTE_REQUEST, {
+													request: route,
+													trigger: trigger.event
+												});
+											}
+										}
+									});
+									break;
+								case "review":
+									if (this.read('context') == 'orb_card') {
+										this.__set_behavior(C.STASH_STOP);
+									}
+									break;
+							}
+						},
+						launch: function (e, fired_from) {
+							if (this.deferal_data) {
+								var data = $.parseHTML(this.deferal_data);
+								$(XSM.modal.primary).addClass(XSM.effects.slide_down);
+								setTimeout(function () {
+									var default_content = $(XSM.modal.primary).find(XSM.modal.default_content)[0];
+									$(default_content).replaceWith(data);
+									$(XSM.modal.primary).hide()
+										.removeClass(XSM.effects.slide_down)
+										.addClass(XSM.effects.slide_up).show();
+									setTimeout(function () {
+										$(XSM.modal.primary).removeClass(XSM.effects.slide_up);
+									}, 30);
+								}, 300);
+							} else {
+								XBS.cart.validate_order_review();
+							}
+						}
+					}
+				},
+				order_method: {
+					modal: XSM.modal.primary,
+					url: {url: "order-method", type: C.POST, defer: true},
+					params: {
+						context: {value: null, url_fragment: false},
+						method: {value: null, url_fragment: true}
+					},
+					callbacks: {
+						launch: function () {
+							var route = "flash/We weren't able to reach the store to place a delivery request. But you can always try calling!"
+					        var response = $.parseJSON(this.deferal_data);
+							var trigger = this.trigger.event;
+							if ("success" in response && response.success === true) {
+								XBS.data.order.order_method = this.read('method');
+								if (this.read('method') == "delivery") {
+									route = "confirm_address/" + this.read('context')
+								} else {
+									switch (this.read('context')) {
+										case "splash":
+											route = "menu";
+											break;
+										case "review":
+											route = "order/review";
+											break;
+										case "menu":
+											return true;
+									}
+								}
+							} else if ("error" in response) {
+								route = "flash/" + response.error;
+							}
+							$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: route, trigger: trigger});
+						}
+					}
 				},
 				order_update: {
 					params: ['source'],
@@ -314,6 +446,8 @@ var xbs_routing = {
 						}
 					}
 				},
+
+
 				orbcat: {
 					url: {url:"menu", defer:true},
 					params: {
@@ -321,13 +455,7 @@ var xbs_routing = {
 						name: {}
 					},
 					callbacks: {
-						params_set: function () {
-							// dunno why, another one of those strange Route-instance-not-resetting things
-							this.url = {url:["menu", this.read('id'), -1, true].join(C.DS), method: C.GET, defer:true}
-						},
-						launch: function() {
-							pr(this.deferal_data);
-							XBS.menu.refresh_active_orbcat_menu(this.deferal_data); }
+						launch: function() { XBS.menu.refresh_active_orbcat_menu(this.deferal_data); }
 					}
 				},
 				orb_opt: {
@@ -375,13 +503,7 @@ var xbs_routing = {
 									};
 									this.set_callback("launch", function() {
 										XBS.routing.cake_ajax_response(this.deferal_data, {
-											callback: function() {
-												$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/opts",
-													function() {
-														XBS.vendor_ui.data_tables('opts');
-														XBS.vendor_ui.fix_breakouts();
-													});
-											}
+											callback: function() { XBS.vendor_ui.reload_tab('opts'); }
 										}, true);
 									});
 								case 'delete':
@@ -455,6 +577,61 @@ var xbs_routing = {
 						}
 					}
 				},
+				orbopt_edit: {
+					params: ['id', 'action', 'attribute'],
+					callbacks: {
+						params_set: function() {
+							switch ( this.read('action') ) {
+								case 'edit':
+									XBS.vendor_ui.edit_orbopt(this.read('id'), this.read('attribute'));
+									break;
+								case 'cancel':
+									XBS.vendor_ui.cancel_orbopt_edit(this.read('id'), this.read('attribute'));
+									break;
+								case 'save':
+									this.url = {
+										url: ["update-orbopt", this.read('id'), this.read('attribute')].join(C.DS),
+										type: C.POST,
+										defer:true,
+										data: $("form",  as_id(["orbopt", this.read('id'), this.read('attribute')].join("-"))).serialize()
+									};
+									this.set_callback("launch", function() {
+											XBS.routing.cake_ajax_response(this.deferal_data, {
+												callback: XBS.vendor_ui.save_orbopt,
+												data: { id: this.read('id'), attribute: this.read('attribute') }
+											},
+											true, true);
+										});
+									break;
+							}
+						}
+					}
+				},
+				orbopt_pricelist: {
+					params: ['action'],
+					callbacks: {
+						params_set: function() {
+							switch ( this.read('action') ) {
+								case "cancel":
+									$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"orbopt_edit/-1/cancel/pricing", trigger:{}});
+									break;
+								case "save":
+									this.url = {
+										url: "add-orbopt-pricelist",
+										type: C.POST,
+										defer:true,
+										data: $("form", XSM.vendor_ui.orbopt_pricelist_add).serialize()
+									};
+									this.set_callback("launch", function() {
+										XBS.routing.cake_ajax_response(this.deferal_data, {
+											callback: function() { XBS.vendor_ui.reload_tab('opts')}
+										}, true, true);
+									});
+									break;
+							}
+						}
+					}
+				},
 				orb: {
 					params: { id: {value: null}, action:{}, action_arg:{} },
 					callbacks: {
@@ -524,7 +701,6 @@ var xbs_routing = {
 									}
 									break;
 								default:
-									return true;
 									this.url = {
 										url: ["menu-item", this.read('id')].join(C.DS),
 										type: C.GET,
@@ -665,112 +841,6 @@ var xbs_routing = {
 									break;
 							}
 							if (launch) this.set_callback("launch", launch)
-						}
-					}
-				},
-				order: {
-					params: ["method", "context"],
-					url: { url: "review-order", type: C.GET, defer: false},
-					modal: XSM.modal.primary,
-					callbacks: {
-						params_set: function () {
-							switch (this.read('method')) {
-								case "clear":
-									this.url = { url: "clear-cart", type: C.GET, defer: true};
-									this.set_callback("launch", function () {
-										if (this.deferal_data) {
-											// todo: handle cart-clearance verification
-										}
-										XBS.menu.clear_cart();
-										XBS.layout.dismiss_modal(XSM.modal.primary);
-									});
-									break;
-								case "view":
-									this.url.url = "cart";
-									this.url.defer = false;
-									this.change_behavior(C.STASH_STOP);
-									this.unset("launch");
-									break;
-								case "finalize":
-									this.url = {
-										url: "orders" + C.DS + "finalize",
-										defer:true,
-										data:$("#OrderReviewForm").serialize(),
-										type:C.POST
-									}
-									this.set_callback("launch", function() {
-										var data = $.parseJSON(this.deferal_data);
-										var trigger = this.trigger;
-										if (!data.error) {
-											if (data.order_id) {
-												var route = "pending_order"+ C.DS + data.order_id + C.DS + "launching";
-												$(XBS.routing).trigger(C.ROUTE_REQUEST, {
-													request: route,
-													trigger: trigger.event
-												});
-											}
-										}
-									});
-									break;
-								case "review":
-									if (this.read('context') == 'orb_card') {
-										this.__set_behavior(C.STASH_STOP);
-									}
-									break;
-							}
-						},
-						launch: function (e, fired_from) {
-							if (this.deferal_data) {
-								var data = $.parseHTML(this.deferal_data);
-								$(XSM.modal.primary).addClass(XSM.effects.slide_down);
-								setTimeout(function () {
-									var default_content = $(XSM.modal.primary).find(XSM.modal.default_content)[0];
-									$(default_content).replaceWith(data);
-									$(XSM.modal.primary).hide()
-										.removeClass(XSM.effects.slide_down)
-										.addClass(XSM.effects.slide_up).show();
-									setTimeout(function () {
-										$(XSM.modal.primary).removeClass(XSM.effects.slide_up);
-									}, 30);
-								}, 300);
-							} else {
-								XBS.cart.validate_order_review();
-							}
-						}
-					}
-				},
-				order_method: {
-					modal: XSM.modal.primary,
-					url: {url: "order-method", type: C.POST, defer: true},
-					params: {
-						context: {value: null, url_fragment: false},
-						method: {value: null, url_fragment: true}
-					},
-					callbacks: {
-						launch: function () {
-							var route = "flash/We weren't able to reach the store to place a delivery request. But you can always try calling!"
-					        var response = $.parseJSON(this.deferal_data);
-							var trigger = this.trigger.event;
-							if ("success" in response && response.success === true) {
-								XBS.data.order.order_method = this.read('method');
-								if (this.read('method') == "delivery") {
-									route = "confirm_address/" + this.read('context')
-								} else {
-									switch (this.read('context')) {
-										case "splash":
-											route = "menu";
-											break;
-										case "review":
-											route = "order/review";
-											break;
-										case "menu":
-											return true;
-									}
-								}
-							} else if ("error" in response) {
-								route = "flash/" + response.error;
-							}
-							$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: route, trigger: trigger});
 						}
 					}
 				},
@@ -1155,7 +1225,7 @@ var xbs_routing = {
  * @returns {boolean}
  */
 
-var launch = function (route) {
+xbs_routing.launch  = function (route) {
 			var debug_this = 0;
 			if (debug_this > 0) pr({route: route}, "XBS.routing.launch(route)", 2);
 			var launch_delay = 0
@@ -1240,14 +1310,16 @@ var launch = function (route) {
 			return true;
 		};
 
-var cake_ajax_response = function(deferal_data, success_handler, print_response, print_deferal_data) {
+xbs_routing.cake_ajax_response = function(deferal_data, success_handler, print_response, print_deferal_data) {
 	if (print_deferal_data) pr(deferal_data, "DEFERAL DATA");
 	if (deferal_data.substr(0,4) == "<pre") {
-		$(XSM.modal.primary_content).html(this.deferal_data);
+		$(XSM.modal.primary_content).html(deferal_data);
 		$(XSM.modal.primary).removeClass(XSM.effects.slide_up);
 	}
 	var response = $.parseJSON(deferal_data)
 	if (print_response) pr(response, "RESPONSE");
+
+	// don't proceed to sucess handler if any part of the request failed
 	if ("success" in response) {
 		if ( !is_object(response) && response.success != true )  return
 		if ( is_object(response.success) ) {
@@ -1259,5 +1331,21 @@ var cake_ajax_response = function(deferal_data, success_handler, print_response,
 		"data" in success_handler ?  success_handler.callback(response, success_handler.data) : success_handler.callback(response);
 	}
 };
-xbs_routing.launch = launch;
-xbs_routing.cake_ajax_response = cake_ajax_response;
+
+
+xbs_routing.reveal_cake_error = function(deferal_data) {
+	$("div#cake-error-overlay", C.BODY).on(C.CLK, function() {
+		$("div#cake-error-overlay", C.BODY).addClass(FX.true_hidden);
+	});
+	if (deferal_data.substr(0,4) == "<pre") {
+		$("div#cake-error-overlay", C.BODY).html(deferal_data).removeClass(FX.true_hidden);
+	}
+}
+
+xbs_routing.route_split = function(route_string, start_index, stop_index) {
+	var route = route_string.split(C.DS);
+	if ( isInt(start_index) ) {
+		return isInt(stop_index) ? route.slice(start_index, stop_index) : route.slice(start_index);
+	}
+	return route;
+}

@@ -197,3 +197,105 @@ function EffectChain(config) {
 	effect_chain.init(config);
 	return effect_chain;
 }
+
+
+var eChain = new EffectChain();
+
+eChain.add([
+      {
+        target: 'li.inactive',
+        context: 'ul.top_menu',
+        interval: 300, // ms
+        state: {
+          add: ['active', 'focus'],
+          remove: ['inactive'],
+          attr: { disabled: false}
+        },
+          // this could just as easily be supplied in the 'target' key of the next added step;
+          // this is a trivial example; the "next" key, in practice, would usually point to a function (see below)
+          next: ["div#breadcrumbs", "div#topbar"]
+      },
+      {
+        target: undefined,
+        context: undefined, // will default to 'body' if a different 'default' isn't supplied on constructon
+        interval: 150,
+        state: { // in reality I'm imagining more complicated functions (ie. something $.toggleClass() wouldn't cover!)
+          add: ['focus',
+            function(target) {
+              return $(target).hasClass('active enabled') ? 'disabled' : undefined;
+            }
+          ],
+          remove: ['inactive',
+            function(target) {
+              return $(target).hasClass('inactive disabled') ? 'enabled' : undefined;
+            }
+          ]
+        },
+        next: function(target, context) {
+          return $(target).find('span.icon', context)[0];
+        }
+      }
+]);
+
+eChain.add([{
+    target: 'li.active',
+    context: 'div.topbar',
+    interval: 150, // ms
+    state: {
+      add: ['inactive'],
+      remove: ['active']
+    },
+    next: function(target, context) {
+        return target
+      } // ie. return whatever was passed to this step at runtime
+  }, {
+    target: undefined,
+    context: 'li.active',
+    interval: 150,
+    state: {
+      add: ['active']
+    },
+    next: function(target, context) {
+      return $(target).data('pane');
+    }
+  }, {
+    interval: 10,
+    state: {
+      add:['inbound'],
+      remove: ['hidden']
+    }
+  },
+    {
+    target: ".content-pane.active",
+    interval: 500, // can't remove display:none simultaneously with adding a transition
+    state: {
+      add:['shelved-left']
+    }
+  }, {
+    target:".content-pane.active",
+    interval:10,
+    state: {
+      add:['hidden'],
+      remove:['active']
+    }
+  },
+
+{
+  target:'.conent-pane.inbound',
+    interval: 500, // can't remove display:none simultaneously with adding a transition
+    state: {
+      add:['active'],
+      remove: ['shelved-left', 'inbound']
+    },
+    next: function(target, context) {
+      return $(target).children('h1')[0];
+    }
+  },
+    {
+      interval: 0, // last step doesn't matter
+      state: {
+           remove:['fade-out']
+           }
+    }
+
+]);

@@ -29,47 +29,68 @@
 						<option value="-1" selected="selected">---</option>
 					</select>
 				</div>
-				<div id="individual-orbopts" class="content">
-					<?php if (false) {?>
-					<dl class="sub-nav large-8 large-centered columns">
-						<dt>Filter:</dt>
-						<?php foreach($optflags as $id => $name) { ?>
-							<dd id="<?php echo sprintf("orbopt-flag-%s", $id);?>" data-id="<?php echo $id;?>" class="orbopt-flag active"
-								><a href="#" data-route="orbopt_config/<?php echo $id;?>/filter"><?php echo $name;?></a
-							></dd>
-						<?php } ?>
-					</dl>
-					<?php } ?>
-					<ul class="large-block-grid-6">
-					<?php
-						foreach($orbopts as $opt) {
-							$group_ids = array();
-							foreach ($opt['Orbcat'] as $orbcat) { array_push($group_ids, $orbcat['id']); }
-							$data = array('orbopt' => $opt['Orbopt']['id'],
-							              'groups' => sprintf("[%s]", implode(",",$group_ids)),
-							              'route' => sprintf("orbopt_config/%s/toggle", $opt['Orbopt']['id']),
-							              'flags' => sprintf("[%s]", implode(",", $opt['Orbopt']['flags'] ))
-							);
-							$classes = array('orbopt');
-							$val = false;
-							if ( in_array($opt['Orbopt']['id'], $active_orbopts) ) {
-								if (in_array($opt['Orbopt']['id'], $default_opts) ) {
-									$val = 2;
-									array_push($classes, 'active-plus');
+				<div class="row">
+					<?php foreach (['opt', 'premium', 'cheese'] as $count) {?>
+					<div class="large-4 columns">
+						<label><?=ucfirst($count);?> Count</label>
+						<select name="Orb[<?=$count;?>_count]">
+							<?php for ($i=0; $i<11; $i++) {
+								if ($i == $orb['Orb'][$count."_count"]) {
+									echo "<option selected value='$i'>$i</option>";
 								} else {
-									$val = 1;
-									array_push($classes, 'active');
+									echo "<option value='$i'>$i</option>";
 								}
-							} else {
-								$val = 0;
-								array_push($classes, 'inactive');
-							}
-							echo sprintf("<li id='orbopt-%s-label' %s %s>", $opt['Orbopt']['id'], ___dA($data), ___cD($classes) );?>
-								<span><?=$opt['Orbopt']['title']; ?></span>
-								<input type="hidden" name="Orbopt[<?=$opt['Orbopt']['id'];?>]" value="<?=$val;?>" />
-							</li>
-					<?php } ?>
-					</ul>
+							}?>
+						</select>
+					</div>
+					<?php }?>
+				</div>
+				<div class="row">
+					<div class="large-12 columns">
+						<div id="individual-orbopts" class="content">
+						<?php if (false) {?>
+						<dl class="sub-nav large-8 large-centered columns">
+							<dt>Filter:</dt>
+							<?php foreach($optflags as $id => $name) { ?>
+								<dd id="<?php echo sprintf("orbopt-flag-%s", $id);?>" data-id="<?php echo $id;?>" class="orbopt-flag active"
+									><a href="#" data-route="orbopt_config/<?php echo $id;?>/filter"><?php echo $name;?></a
+								></dd>
+							<?php } ?>
+						</dl>
+						<?php } ?>
+						<ul class="large-block-grid-6">
+						<?php
+							foreach($orbopts as $opt) {
+								//if ($opt['deprecated']) continue;
+								$group_ids = array();
+								foreach ($opt['Orbcat'] as $orbcat) { array_push($group_ids, $orbcat['id']); }
+								$data = array('orbopt' => $opt['Orbopt']['id'],
+								              'groups' => sprintf("[%s]", implode(",",$group_ids)),
+								              'route' => sprintf("orbopt_config/%s/toggle", $opt['Orbopt']['id']),
+								              'flags' => sprintf("[%s]", implode(",", $opt['Orbopt']['flags'] ))
+								);
+								$classes = array('orbopt');
+								$val = false;
+								if ( in_array($opt['Orbopt']['id'], $active_orbopts) ) {
+									if (in_array($opt['Orbopt']['id'], $default_opts) ) {
+										$val = 2;
+										array_push($classes, 'active-plus');
+									} else {
+										$val = 1;
+										array_push($classes, 'active');
+									}
+								} else {
+									$val = 0;
+									array_push($classes, 'inactive');
+								}
+								echo sprintf("<li id='orbopt-%s-label' %s %s>", $opt['Orbopt']['id'], ___dA($data), ___cD($classes) );?>
+									<span><?=$opt['Orbopt']['title']; ?></span>
+									<input type="hidden" name="Orbopt[<?=$opt['Orbopt']['id'];?>]" value="<?=$val;?>" />
+								</li>
+						<?php } ?>
+						</ul>
+					</div>
+					</div>
 				</div>
 			</form>
 		</div>

@@ -264,6 +264,7 @@ var xbs_menu = {
 			var active_orb_id = orb_route.split(C.DS)[1];
 			var orbcat_name = $($("h2", data)[0]).html();
 
+
 			// >>> TOGGLE MENU HEADER; alternates rotating front-to-back or back-to-front <<<
 			if ($(XSM.menu.active_orb_name_3d_context).hasClass(FX.flipped_x)) {
 				$(XSM.menu.active_orb_name_front_face).html(orbcat_name);
@@ -281,6 +282,7 @@ var xbs_menu = {
 			// >>> HIDE OUTGOING ORBCATS; hide all active orbcats in orb card stage menu before replacing them <<<
 			$(XSM.menu.active_orbcat_item).addClass(FX.fade_out);
 			$(XSM.menu.orbcat_menu_title_subtitle).addClass(FX.fade_out);
+
 			$(XBS.routing).trigger(C.ROUTE_REQUEST, {'request': 'orb/'+active_orb_id, trigger: {}});
 //			XBS.menu.refresh_orb_card_stage(active_orb_id);
 
@@ -309,10 +311,11 @@ var xbs_menu = {
 			// todo: fallback on ajax fail
 			XBS.data.current_orb = orb_id;
 			var orb_card_stage = $.parseHTML(data.orb_card_stage);
-			var orbopts_list = $.parseHTML(data.orbopts_list);
+			var orbopts_list = $.parseHTML(data.orbopts_list.list);
 			var optflag_header = data.optflag_header;
-//			pr(optflags_header);
 			var replace_time = 0;
+			pr(data.orbopts_list.portionable, "portionable");
+
 
 //			>>> REMOVE ORB OPTS BEFORE EXTRACTION <<<
 //			$(orb_card_stage).find(XSM.menu.orb_opt_container)[0].remove();
@@ -348,6 +351,12 @@ var xbs_menu = {
 					$(XSM.menu.optflag_filter_header).replaceWith(optflag_header);
 					XBS.menu.rebuild_optflag_filters(C.CHECK);
 					$(orbopts_list).each(function () { $(this).appendTo(XSM.menu.orb_card_stage_menu); });
+					// >>> UPDATE ORBCARD STAGE 'PORTIONABLE' CLASS <<<
+					if (data.orbopts_list.portionable != 0) {
+						$(XSM.menu.orb_card_stage_menu).addClass('portionable');
+					} else {
+						$(XSM.menu.orb_card_stage_menu).removeClass('portionable');
+					}
 					XBS.menu.load_from_cart(orb_id);
 				}, 300);
 			}, replace_time);
@@ -602,8 +611,9 @@ var xbs_menu = {
 		update_orb_form: function () {
 			// walk the orbopts list [ui] and map every value onto the orb form (will populate tiny_opts list in XBS.data)
 			$(XSM.menu.orb_opt).each(function () {
+				var tail = XBS.routing.route_split($(this).data('route'), 2);
 				$(XBS.routing).trigger(C.ROUTE_REQUEST,     {
-					request: ($(this).data("route")).replace("\/opt\/", "\/form_update\/"),
+					request: ["orb_opt", "form_update", tail[0], tail[1]].join(C.DS),
 					trigger: {}
 				});
 			});

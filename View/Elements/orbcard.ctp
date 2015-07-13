@@ -139,7 +139,7 @@ $prices = $content['Prices'];
 							</div>
 							<?php
 							foreach($content['Orb']['Orbopt'] as $opt) {
-								$field_name = sprintf("Order.Orb.orbopts.%s", $opt["id"]);
+								$field_name = sprintf("Order.Orb.Orbopt.%s", $opt["id"]);
 								echo $this->Form->input($field_name, array( "type" => "hidden", "value" => -1, "class" => array("orb-opt-weight")));
 							}
 							echo $this->Form->end();?>
@@ -161,10 +161,4 @@ $prices = $content['Prices'];
 			</div>
 		</div>
 	</div>
-</div>
-<?='<div id="orb-card-stage-menu-wrapper" class="box rightward xtreme-blue-bg">';?>
-<?=$this->Element('orbcard_menu', array('content' => $menu,
-                                        'active' => $orb,
-                                        'optflags' => $orb['Optflag'],
-                                        'portionable' => $orb['allow_half_portions']));?>
 </div>

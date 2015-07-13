@@ -257,3 +257,21 @@ textarea.note { height:2rem;}
 //    }
 //  }
 //}
+div#cake-error-overlay {
+  width:1000px;
+  height:auto;
+  margin: 1rem;
+  padding: 1rem;
+  background-color:$dark-grey;
+  font-size: rem-calc(12px);
+  @include HelveticaMdCn;
+  position:fixed;
+  top:1rem;
+  left: 1rem;
+  z-index:999999999999999;
+  clear: both;
+  display:block;
+  float:none;
+  overflow:auto;
+}
+

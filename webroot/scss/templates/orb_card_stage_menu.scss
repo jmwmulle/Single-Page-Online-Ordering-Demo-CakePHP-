@@ -62,15 +62,21 @@
   }
 }
 
-.orb-opt.active li.orb-opt-coverage {
+.orb-card-stage-menu .orb-opt.active ul li.orb-opt-coverage {
   opacity : 1;
-  &:hover { color : $xtreme-red; }
-  &.active { color : $dark-grey; }
+ &:hover { color : $xtreme-red; }
+ &.active { color : $dark-grey; }
+}
+.orb-card-stage-menu .orb-opt ul li.orb-opt-coverage {
+  &.full, &.right-side, &.left-side { display:none !important; }
+  &.double { margin-right: 10px;}
 }
 
-ul.portionable li.orb-opt-coverage {
-  &.full, &.right-side, &.left-side { display:none; }
+.orb-card-stage-menu.portionable .orb-opt ul li.orb-opt-coverage {
+  &.full, &.right-side, &.left-side { display:initial !important; }
 }
+
+
 #orb-opt-filters {
     width            : $orb-card-stage-menu-width;
     height           : $orb-card-stage-menu-item-height;

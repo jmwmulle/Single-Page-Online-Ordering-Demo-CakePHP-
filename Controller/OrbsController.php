@@ -53,21 +53,22 @@
 		 * @return void
 		 */
 		public function add() {
-			if ( $this->request->is( 'ajax' ) ) $this->layout = "ajax";
+			if ( $this->request->is( 'ajax' ) ) {
+				$this->layout = "ajax";
+			}
 			if ( $this->request->is( 'post' ) && $this->request->is( 'ajax' ) ) {
-				$response = array("success" => true, "error" => false, "submitted_data" => $this->request->data);
-				$orb_id = null;
-				if ( !$this->Orb->save( $this->request->data['Orb'] ) ) {
-					$response['error']['Orb'] = $this->Orb->validationErrors;
-					$response['success'] = false;
+				$response = array( "success" => true, "error" => false, "submitted_data" => $this->request->data );
+				$orb_id   = null;
+				if ( !$this->Orb->save( $this->request->data[ 'Orb' ] ) ) {
+					$response[ 'error' ][ 'Orb' ] = $this->Orb->validationErrors;
+					$response[ 'success' ]        = false;
 				}
 
-				return $this->render_ajax_response($response);
-				$this->set(compact('response'));
-
+				return $this->render_ajax_response( $response );
+				$this->set( compact( 'response' ) );
 			}
 
-			$orbcats   = $this->Orb->Orbcat->find( 'list' );
+			$orbcats = $this->Orb->Orbcat->find( 'list' );
 			$this->set( compact( 'orbcats' ) );
 		}
 
@@ -135,61 +136,67 @@
 		 * @param null $id
 		 */
 		public function deprecate($id = null) {
-			if ($this->request->is('ajax') && $this->request->is('post') ) {
+			if ( $this->request->is( 'ajax' ) && $this->request->is( 'post' ) ) {
 				$this->Orb->id = $id;
-				$response =  array('success' => array('orb' => true, 'orb_orbopt' => true), 'error' => false, 'submitted_data' => array('id' => $id));
-				if ( !$this->Orb->save(array('deprecated' => true)) ) {
-					$response['success']['orb'] = false;
-					$response['error'] = $this->Orb->validationErrors;
+				$response      = array( 'success' => array( 'orb' => true, 'orb_orbopt' => true ),
+				                        'error'   => false, 'submitted_data' => array( 'id' => $id ) );
+				if ( !$this->Orb->save( array( 'deprecated' => true ) ) ) {
+					$response[ 'success' ][ 'orb' ] = false;
+					$response[ 'error' ]            = $this->Orb->validationErrors;
 				}
-				$this->loadModel('OrbsOrbopt');
-				if (!$this->OrbsOrbopt->updateAll(array('deprecated' => true), array('orb_id' => $id)) ) {
-					$response['success']['orbs_orbopt'] = false;
-					$response['error'] = $this->OrbsOrbopt->validationErrors;
+				$this->loadModel( 'OrbsOrbopt' );
+				if ( !$this->OrbsOrbopt->updateAll( array( 'deprecated' => true ), array( 'orb_id' => $id ) ) ) {
+					$response[ 'success' ][ 'orbs_orbopt' ] = false;
+					$response[ 'error' ]                    = $this->OrbsOrbopt->validationErrors;
 				}
-				$this->render_ajax_response($response);
-
-			} else {
-				$this->redirect(___cakeUrl('orbcats', 'menu'));
+				$this->render_ajax_response( $response );
+			}
+			else {
+				$this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
 			}
 		}
 
 		public function orbcard($id, $render = true) {
+
 			// todo: some way to identify a request as comign from internal to cake
 			if ( $this->request->is( 'ajax' ) && $this->Orb->exists( $id ) || true ) {
-				$this->Orb->Behaviors->load('Containable');
-				$orb  = Hash::remove($this->Orb->find( 'all', array(
-						'conditions' => array('`Orb`.`id`' => $id),
-									'contain' => array(
-											'Pricedict',
-											'Pricelist',
-											'Orbopt' => array(
-												'conditions' => array('`Orbopt`.`deprecated`' => false),
-												'Optflag' => array ('fields' => array('id', 'title')),
-											    'OrbsOrbopt'
-											)
-									),
-								)
-						),
-//				 Hash::combine($orb['Orbopt'], "{n}.Optflag.{n}.id", "{n}.Optflag.{n}.title");
-				"{n}.Orbopt.{n}.Optflag.{n}.OrboptsOptflag");
-				$orb = $orb[0];
-				$orb['Orb']['allow_half_portions'] = $this->Orb->Orbcat->field('allow_half_portions', array('id' => $orb['Orb']['orbcat_id']));
-				$orb['Orb']['Optflag'] = array();
-				if (!array_key_exists('Orbopt', $orb)) $orb['Orbopt'] = array();
-				foreach($orb['Orbopt'] as $i => $opt) {
-					$orb['Orbopt'][$i]['default'] = $opt['OrbsOrbopt']['default'];
-					foreach($opt['Optflag'] as $optflag) $orb['Orb']['Optflag'][$optflag['id']] = $optflag['title'];
+				$this->Orb->Behaviors->load( 'Containable' );
+				$orb_conditions                            = array( 'conditions' => array( '`Orb`.`id`' => $id ),
+				                                                'contain'    => array(
+					                                                'Pricedict',
+					                                                'Pricelist',
+					                                                'Orbopt' => array(
+						                                                'conditions' => array( '`Orbopt`.`deprecated`' => false ),
+						                                                'Optflag'    => array( 'fields' => array( 'id',
+						                                                                                          'title' ) ),
+						                                                'OrbsOrbopt'
+					                                                )
+				                                                ),
+				);
+				$orb = Hash::remove( $this->Orb->find( 'all', $orb_conditions), "{n}.Orbopt.{n}.Optflag.{n}.OrboptsOptflag")[0];
+				$portionable = $this->Orb->Orbcat->field( 'portionable', [ 'id' => $orb[ 'Orb' ][ 'orbcat_id' ] ] );
+				$orb[ 'Orb' ][ 'Optflag' ]             = array();
+
+				if ( !array_key_exists( 'Orbopt', $orb ) ) {
+					$orb[ 'Orbopt' ] = array();
 				}
-				$orb['Orb']['Orbopt'] = $orb['Orbopt'];
-				$orb[ 'Prices' ] = array_filter( array_slice( array_combine( $orb[ 'Pricedict' ], $orb[ 'Pricelist' ] ), 1 ) );
-				unset($orb['Pricelist']);
-				unset($orb['Pricedict']);
-				unset($orb['Orbopt']);
-				$orb = array_filter($orb);
-				$orb['Orb']['default_opts'] = $this->requestAction("orbsorbopts/fetch_default_opts/$id");
-				$this->set( 'orb', $orb );
-				return $render ? $this->render('menu_item', 'ajax') : $orb;
+				foreach ( $orb[ 'Orbopt' ] as $i => $opt ) {
+					$orb[ 'Orbopt' ][ $i ][ 'default' ] = $opt[ 'OrbsOrbopt' ][ 'default' ];
+					foreach ( $opt[ 'Optflag' ] as $optflag ) {
+						$orb[ 'Orb' ][ 'Optflag' ][ $optflag[ 'id' ] ] = $optflag[ 'title' ];
+					}
+				}
+				$orb[ 'Orb' ][ 'Orbopt' ] = $orb[ 'Orbopt' ];
+				$orb[ 'Prices' ]          = array_filter( array_slice( array_combine( $orb[ 'Pricedict' ], array_slice($orb[ 'Pricelist' ],0, -1) ), 1 ) );
+				unset( $orb[ 'Pricelist' ] );
+				unset( $orb[ 'Pricedict' ] );
+				unset( $orb[ 'Orbopt' ] );
+				$orb                            = array_filter( $orb );
+				$orb[ 'Orb' ][ 'default_opts' ] = $this->requestAction( "OrbsOrbopts/fetch_default_opts/$id" );
+
+				$this->set( compact('orb', 'portionable') );
+
+				return $render ? $this->render( 'menu_item', 'ajax' ) : $orb;
 			}
 			else {
 				$this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
@@ -204,20 +211,35 @@
 		public function vendor_ui($refreshing = false) {
 			$this->layout = 'vendor_ui';
 			$this->set( 'page_name', "Vendor Interface" );
-			$orbs           = $this->Orb->find( 'all', array( 'recursive' => 1 ) );
-			$orbopts        = Hash::remove( $this->Orb->Orbopt->find( 'all' ), "{n}.Orb" );
+			$orbs    = $this->Orb->find( 'all', array( 'recursive' => 1 ) );
+			$orbopts = Hash::remove( $this->Orb->Orbopt->find( 'all' ), "{n}.Orb" );
 			foreach ( $orbopts as $i => $opt ) {
 				$orbopts[ $i ] = Hash::insert( $opt, "Orbopt.flags", Hash::extract( $opt, "Optflag.{n}.id" ) );
 			}
 			$orbopts_groups = $this->Orb->Orbcat->find( 'list', array( 'conditions' => array( '`Orbcat`.`orbopt_group`' => 1 ) ) );
-			$oc_cond = array( 'recursive' => -1, 'fields' => array( 'id', 'full_title' ), 'conditions' => array( 'primary_menu' => 1 ));
-			$orbcats        = Hash::combine( $this->Orb->Orbcat->find( 'all', $oc_cond), "{n}.Orbcat.id", "{n}.Orbcat.full_title");
+			$oc_cond        = array( 'recursive'  => -1, 'fields' => array( 'id', 'full_title' ),
+			                         'conditions' => array( 'primary_menu' => 1 ) );
+			$orbcats        = Hash::combine( $this->Orb->Orbcat->find( 'all', $oc_cond ), "{n}.Orbcat.id", "{n}.Orbcat.full_title" );
 			$optflags       = $this->Orb->Orbopt->Optflag->find( 'list' );
-
 			$pricedicts = $this->build_pricedicts();
-			$this->set( compact( 'orbs', 'orbcats', 'orbopts', 'orbopts_groups', 'optflags', 'pricedicts' ) );
-			if ($refreshing == "menu") return $this->render("/Elements/vendor_ui/menu_table", "ajax");
-			if ($refreshing == "opts") return $this->render("/Elements/vendor_ui/menu_options", "ajax");
+			$opt_pricelists = $this->build_opt_pricelists();
+			$this->set( compact( 'orbs', 'orbcats', 'orbopts', 'orbopts_groups', 'optflags', 'pricedicts', 'opt_pricelists' ) );
+			if ( $refreshing == "menu" ) {
+				return $this->render( "/Elements/vendor_ui/menu_table", "ajax" );
+			}
+			if ( $refreshing == "opts" ) {
+				return $this->render( "/Elements/vendor_ui/menu_options", "ajax" );
+			}
+		}
+
+		private function build_opt_pricelists() {
+			$this->loadModel( 'Pricelist' );
+			$opt_pricelist_ids = Hash::extract(
+			                         $this->Orb->Orbopt->find('all', ['recursive' => -1, 'fields' => ['pricelist_id']]),
+				                         "{n}.Orbopt.pricelist_id");
+			return Hash::extract( $this->Pricelist->find('all', ['recursive' => -1,
+			                                      'conditions' => ['NOT' => ['label' => '']]]),
+			       "{n}.Pricelist");
 		}
 
 		private function build_pricedicts() {
@@ -238,20 +260,22 @@
 
 			$pricedicts = array_filter( $reduced_pricedicts );
 			asort( $pricedicts );
+
 			return $pricedicts;
 		}
 
 		public function orbopt_config($orb_id) {
-			if ( $this->request->is( 'ajax' ) || true) {
-				$this->layout   = "ajax";
-				$orb            = $this->Orb->find( 'all', array( 'conditions' => array( '`Orb`.`id`' => $orb_id )));
-				$this->loadModel('OrbsOrbopt');
-				$default_opts = $this->OrbsOrbopt->find('all', array('conditions' => array('orb_id' => $orb_id,
-				                                                                           'default' => true,
-				                                                                           'deprecated' => false),
-				                                                    'fields' => array('orbopt_id')));
+			if ( $this->request->is( 'ajax' ) || true ) {
+				$this->layout = "ajax";
+				$orb          = $this->Orb->find( 'all', array( 'conditions' => array( '`Orb`.`id`' => $orb_id ) ) );
+				$this->loadModel( 'OrbsOrbopt' );
+				$default_opts = $this->OrbsOrbopt->find( 'all', array( 'conditions' => array( 'orb_id'     => $orb_id,
+				                                                                              'default'    => true,
+				                                                                              'deprecated' => 0 ),
+				                                                       'fields'     => array( 'orbopt_id' ) )
+				);
 //				db($default_opts);
-				$default_opts = Hash::extract($default_opts, "{n}.OrbsOrbopt.orbopt_id");
+				$default_opts = Hash::extract( $default_opts, "{n}.OrbsOrbopt.orbopt_id" );
 
 				$orb            = $orb[ 0 ];
 				$active_orbopts = Hash::extract( $orb[ 'Orbopt' ], "{n}.id" );
@@ -260,8 +284,14 @@
 				$orbopts_groups = $this->Orb->Orbcat->find( 'list', array( 'conditions' => array( '`Orbcat`.`orbopt_group`' => 1 ) ) );
 				$orbopts        = Hash::remove( $this->Orb->Orbopt->find( 'all' ), "{n}.Orb" );
 				foreach ( $orbopts as $i => $opt ) {
-					$orbopts[ $i ] = Hash::insert( $opt, "Orbopt.flags", Hash::extract( $opt, "Optflag.{n}.id" ) );
+					if ($opt['Orbopt']['deprecated'] == true) {
+						unset($orbopts[$i]);
+					} else {
+						$orbopts[ $i ] = Hash::insert( $opt, "Orbopt.flags", Hash::extract( $opt, "Optflag.{n}.id" ) );
+					}
 				}
+				$orbopts = array_filter($orbopts);
+
 				$this->set( compact( 'orb', 'orbcats', 'optflags', 'orbopts_groups', 'orbopts', 'active_orbopts', 'default_opts' ) );
 			}
 			else {
@@ -277,29 +307,38 @@
 				try {
 					switch ( $attribute ) {
 						case "orbopts":
+							$response['success'] = ['orb' => true, 'orbopt' => true];
+							$response['error'] = ['orb' => false, 'orbopt' => false];
+							$this->Orb->id = $orb_id;
+							if ( !$this->Orb->save($this->request->data['Orb']) ) {
+								$response['success'][ 'orb' ] = false;
+								$response['success'][ 'orb' ]   = $this->Orb->validationErrors;
+							}
+
 							$this->loadModel( 'OrbsOrbopt' );
 							$this->OrbsOrbopt->deleteAll( array( "`OrbsOrbopt`.`orb_id`" => $orb_id ) );
 							$response[ 'orbs_orbopts_ids' ] = array();
 							$save_data                      = array();
 							foreach ( $this->request->data[ 'Orbopt' ] as $opt_id => $state ) {
 								if ( $state ) {
-									array_push( $save_data, array( 'orb_id' => $orb_id,
+									array_push( $save_data, array( 'orb_id'    => $orb_id,
 									                               'orbopt_id' => $opt_id,
-									                               'default' =>  $state == 2 ? 1 : 0) );
+									                               'default'   => $state == 2 ? 1 : 0 )
+									);
 								}
 							}
 							if ( $this->OrbsOrbopt->saveMany( $save_data, array( 'atomic' => true ) ) ) {
 								array_push( $response[ 'orbs_orbopts_ids' ], $this->OrbsOrbopt->id );
 							}
 							else {
-								$response[ 'success' ] = false;
-								$response[ 'error' ]   = $this->OrbsOrbopt->validationErrors;
+								$response[ 'success' ]['orbopt'] = false;
+								$response[ 'error' ]['orbopt']   = $this->OrbsOrbopt->validationErrors;
 							}
 							break;
 						case "orbcat":
 							$this->Orb->id = $orb_id;
-							$this->Orb->set(array('orbcat_id' => $data[ 'Orb' ][ 'orbcat' ]));
-							if ( !$this->Orb->save()) {
+							$this->Orb->set( array( 'orbcat_id' => $data[ 'Orb' ][ 'orbcat' ] ) );
+							if ( !$this->Orb->save() ) {
 								$response[ 'success' ] = false;
 								$response[ 'error' ]   = $this->Orb->validationErrors;
 							}
@@ -418,7 +457,8 @@
 			else {
 				$orb                   = $this->Orb->find( 'all', array( 'conditions' => array( '`Orb`.`id`' => $orb_id ) ) );
 				$response[ 'replace' ] = array( 'element' => 'vendor_ui/prices',
-				                                'options' => array( 'orb' => $orb[ 0 ], 'pricedicts' => $this->build_pricedicts() ) );
+				                                'options' => array( 'orb'        => $orb[ 0 ],
+				                                                    'pricedicts' => $this->build_pricedicts() ) );
 			}
 
 			return $response;
@@ -426,20 +466,21 @@
 
 		public function pricedict_add() {
 			// yes I know how fucking stupid this is, I didn't feel like making a controller for one function
-			if ($this->request->is('ajax') ) {
+			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = "ajax";
-				if ($this->request->is('post') ) {
-					$response = array("success" => true, "error" => false, "submitted_data" => $this->request->data);
-					$this->loadModel('Pricedict');
-					if ( count(array_filter($this->request->data['Pricedict'])) > 0) {
-						if (!$this->Pricedict->save($this->request->data) ) {
-							$response['success'] = false;
-							$response['error'] = $this->Pricedict->validationErrors();
+				if ( $this->request->is( 'post' ) ) {
+					$response = array( "success" => true, "error" => false, "submitted_data" => $this->request->data );
+					$this->loadModel( 'Pricedict' );
+					if ( count( array_filter( $this->request->data[ 'Pricedict' ] ) ) > 0 ) {
+						if ( !$this->Pricedict->save( $this->request->data ) ) {
+							$response[ 'success' ] = false;
+							$response[ 'error' ]   = $this->Pricedict->validationErrors();
 						}
 					}
-					$this->set('response', $response);
+					$this->set( 'response', $response );
 				}
-			} else {
+			}
+			else {
 				$this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
 			}
 		}
