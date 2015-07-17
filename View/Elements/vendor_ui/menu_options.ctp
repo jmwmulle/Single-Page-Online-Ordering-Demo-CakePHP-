@@ -129,6 +129,7 @@
 							<td id="orbopt-<?=$oid;?>-pricing">
 								<form>
 									<select name="Orbopt[pricelist_id]" data-changeroute="orbopt_edit/<?=$oid;?>/edit/pricing">
+										<option> &nbsp; </option>
 										<?php foreach ($opt_pricelists as $pl) {
 											$prices = array_slice($pl, 1, -1);
 											foreach ($prices as $rank => $p) {
