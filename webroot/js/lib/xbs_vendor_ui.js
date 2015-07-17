@@ -251,7 +251,7 @@ var xbs_vendor_ui = {
 																	XBS.vendor_ui.fix_breakouts();
 																});
 		}
-		$(XSM.vendor_ui.menu_options_tab).load(["vendor-ui", "menu"].join(C.DS), function() {
+		$(XSM.vendor_ui.menu_tab).load(["vendor-ui", "menu"].join(C.DS), function() {
 														XBS.vendor_ui.data_tables(tab);
 														XBS.vendor_ui.fix_breakouts();
 													});
