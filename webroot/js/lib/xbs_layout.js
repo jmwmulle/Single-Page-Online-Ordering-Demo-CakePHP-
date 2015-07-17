@@ -21,12 +21,9 @@ var xbs_layout = {
 					}, 30);
 				}, 300);
 			}, 800);
-
 			return sit_rep;
 		},
-		detachAnimationTargets: function () {
-			$(as_class(FX.detach)).each(function () { XBS.layout.detach(this);});
-		},
+		detachAnimationTargets: function () { $(as_class(FX.detach)).each(function () { XBS.layout.detach(this);}); },
 		jq_binds: {
 			has_init_sequence: true,
 			bind_orb_card_config_archiving: function () {
@@ -71,8 +68,26 @@ var xbs_layout = {
 				});
 				return true;
 			},
+//			bind_disabled_tool_tips: function() { // TODO: good idea, implement when has a time
+//				var debug_ths = true;
+//				$(C.BODY).on(C.MOUSEENTER, as_class(FX.disabled), null, function(e) {
+//					if (debug_ths) pr("shiver me timbers");
+//						var tip = $(e.currentTarget).data('disabled-tip')
+//						var offset = $(e.currentTarget).offset();
+//						if (tip) {
+//							$(C.BODY).append(
+//								$("div").addClass('disabled-tip').html(tip).css({
+//									top: offset.top,
+//									left: offset.left,
+//									width: $(e.currentTarget).innerWidth(),
+//									height: $(e.currentTarget).innerHeight()
+//								}));
+//						}
+//				});
+//
+//			},
 			bind_topbar_hover_links: function () {
-				var debug_this = false;
+				var debug_this = true;
 				/** show hover-text */
 				$(C.BODY).on(C.MOUSEENTER, XSM.topbar.hover_text_link, null, function (e) {
 					if (!$(e.currentTarget).hasClass(FX.disabled)) {

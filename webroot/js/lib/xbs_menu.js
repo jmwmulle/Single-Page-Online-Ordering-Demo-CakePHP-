@@ -568,6 +568,7 @@ var xbs_menu = {
 				}, 300);
 			}, 300);
 			XBS.menu.set_order_method();
+			XBS.menu.reset_orb_card_stage();
 		},
 		toggle_orb_opt: function (element, trigger_update) {
 			var debug_this = 1;

@@ -223,8 +223,6 @@
 			return implode( " ", $data_attributes );
 		}
 
-		public function set_page_name($name) { $this->set('page_name', $name);}
-
 		static function as_file_name($string) {
 			$pattern = array( "/ /", "/'/", "/—/" );
 			$replace = array( "_", null, "-" );
@@ -247,7 +245,6 @@
 		static function b64JSON($string, $encode = false) {
 			return $encode ? base64_encode( json_encode( $string ) ) : base64_decode( json_decode( $string ) );
 		}
-
 
 		/**
 		 * asClockTime method
@@ -280,6 +277,17 @@
 			}
 
 			return $date_time->format( "H:i:s" );
+		}
+
+
+		public function set_page_name($name) { $this->set('page_name', $name);}
+
+		public function is_ajax_post() {
+			return $this->request->is('ajax') && $this->request->is('post');
+		}
+
+		public function is_ajax_get() {
+			return $this->request->is('ajax') && $this->request->is('get');
 		}
 
 		public function render_ajax_response($response) {

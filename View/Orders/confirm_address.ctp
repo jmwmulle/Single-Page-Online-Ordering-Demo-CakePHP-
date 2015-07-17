@@ -38,9 +38,7 @@
 
 <div class="row">
 	<div class="large-12 columns">
-	<?php echo $this->element("modal_masthead", array(
-								"header" => "Delivery! Yay for sitting!",
-								"subheader" => "But let's confirm your address, yeah?"));?>
+	<?php echo $this->element("primary_modal/masthead", compact("header", "subheader") );?>
 		<div class="row">
 			<div class="large-12 columns">
 				<div class="row">

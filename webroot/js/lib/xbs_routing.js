@@ -339,7 +339,7 @@ var xbs_routing = {
 									});
 									break;
 								case "view":
-									this.url.url = "cart";
+									this.url.url = "review-cart";
 									this.url.defer = false;
 									this.change_behavior(C.STASH_STOP);
 									this.unset("launch");

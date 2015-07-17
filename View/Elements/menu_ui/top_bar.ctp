@@ -58,7 +58,7 @@ $account_icon = "<span class='icon-settings'></span>";
 $account_data = array('route' => 'topbar_link/settings', 'text' => "View Your Favorites");
 
 /*  Cart Deets  */
-$cart_css = !$this->Session->read('Cart.OrderItem') ?"style='display:none;' class='fade-out' " : ' ';
+$cart_css = !$this->Session->read('Cart.OrderItem') ?" class='' " : ' ';
 $cart_data =  array('hover-text' => "View Your Cart", 'route' => 'order/view');
 $cart_icon = "<span class='icon-shopping'></span>";
 

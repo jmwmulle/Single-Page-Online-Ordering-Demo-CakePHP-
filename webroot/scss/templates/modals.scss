@@ -381,6 +381,24 @@ div.view-cart-row {
    }
 }
 
+// hack to retroactively combine .activizing JS with modal-buttons
+ul.activizing {
+    li.active .modal-button {
+      background-color: $xtreme-yellow;
+      span { color: $text-grey !important; }
+      &:hover { span { color: $text-grey !important; } }
+    }
+    li.inactive .modal-button {
+      background-color: $very-light-grey;
+      span { color: $light-grey !important; }
+      &:hover {
+        background-color: lighten($light-grey, 10%);
+        span { color: $xtreme-red !important; }
+      }
+    }
+  }
+
+
 /*******   modal pages ********/
 //registration
 #registration-method-bar {
@@ -427,4 +445,13 @@ p {
   font-size   : 0.75rem;
   @include HelveticaMdCn;
   line-height : 1rem;
+}
+
+.disabled-tip {
+  position:fixed;
+  padding: $base-padding;
+  display:inline-block;
+  background-color: $black-a50;
+  color: $xtreme-red;
+  z-index:99999;
 }

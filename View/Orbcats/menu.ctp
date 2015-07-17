@@ -10,46 +10,43 @@
 //db($orbcard);
 //	db($menu);
 if ( $refreshing ) { // ie. replacing contents of #orb-card-stage-menu-wrapper (line 49 below)
-	echo $this->Element( 'orbcard_menu', array( 'content'     => $menu,
+	echo $this->Element( 'orbcard/menu', array( 'content'     => $menu,
 	                                            'active'      => $orbcard[ 'Orb' ],
 	                                            'optflags'    => $orbcard[ 'Orb' ][ 'Optflag' ])
-//	                                            'portionable' => $orbcard[ 'Orb' ][ 'allow_half_portions' ] )
 	);
 }
-else {
-	?>
+else {?>
 
-	<?= $this->Element( "top_bar" ); ?>
+	<?= $this->Element( "menu_ui/top_bar" ); ?>
 	<div class="row">
 		<main id="menu" class="large-12 columns<?= $this->get( "is_splash" ) ? " fade-out" : null; ?>">
 			<div class="row">
 				<div class="large-9 small-5 columns">
 					<div class="row">
 						<div class="large-1 columns show-for-large-up">
-							<?= $this->Element( 'user_activity_panel', [ 'order' => $order ] ); ?>
+							<?= $this->Element( 'menu_ui/user_activity_panel', [ 'order' => $order ] ); ?>
 						</div>
 						<div class="large-11 small-12 columns">
-							<?= $this->Element( 'orbcat_menu', array( 'active'  => $menu[ 'Orbcat' ],
+							<?= $this->Element( 'menu_ui/orbcat_menu', array( 'active'  => $menu[ 'Orbcat' ],
 							                                          'orbcats' => $orbcats )
 							); ?>
 						</div>
 					</div>
 				</div>
 				<div class="large-3 columns show-for-large-up">
-					<?= $this->Element( 'specials' ); ?>
+					<?= $this->Element( 'menu_ui/specials' ); ?>
 				</div>
 			</div>
 			<div class="row">
 				<div class="large-12  columns show-for-large-up">
 					<?= '<div id="orb-card-wrapper" class="float-pane box rel xtreme-blue-bg">' ?>
-					<?= $this->Element( 'orbcard_modal' ); ?>
-					<?= $this->Element( 'orbcard', array( 'content' => $orbcard, 'menu' => $menu ) ); ?>
+					<?= $this->Element( 'orbcard/modal' ); ?>
+					<?= $this->Element( 'orbcard/orbcard', array( 'content' => $orbcard, 'menu' => $menu ) ); ?>
 					<?= '<div id="orb-card-stage-menu-wrapper" class="box rightward xtreme-blue-bg">'; ?>
 					<?=
-						$this->Element( 'orbcard_menu', array( 'content'     => $menu,
+						$this->Element( 'orbcard/menu', array( 'content'     => $menu,
 						                                       'active'      => $orbcard[ 'Orb' ],
 						                                       'optflags'    => $orbcard[ 'Orb' ][ 'Optflag' ])
-//						                                       'portionable' => $orbcard[ 'Orb' ][ 'allow_half_portions' ] )
 						);?>
 				</div>
 			</div>

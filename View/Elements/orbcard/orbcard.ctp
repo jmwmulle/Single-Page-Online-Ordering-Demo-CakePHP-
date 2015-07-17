@@ -129,9 +129,9 @@ $prices = $content['Prices'];
 							echo $this->Form->input("Order.Orb.id", array("type" => "hidden", "value" => $orb['id']));
 							echo $this->Form->input("Order.Orb.uid", array("type" => "hidden", "value" => null));
 							echo $this->Form->input("Order.Orb.price_rank", array("type" => "hidden", "value" => 0));?>
-							<div id="OrderOrbPreparationInstructions-wrapper" class="t-pad inline">
-								<label for="orderOrbPreparationInstructions">PREPARATION INSTRUCTIONS</label
-								><input name="data[Order][Orb][preparation_instructions]" type="text" id="OrderOrbPreparationInstructions">
+							<div id="OrderOrbOrbNote-wrapper" class="t-pad inline">
+								<label for="orderOrbOrbNote">PREPARATION INSTRUCTIONS</label
+								><input name="data[Order][Orb][orb_note]" type="text" id="OrderOrbOrbNote">
 							</div
 							><div id="OrderOrbQuantity-wrapper" class="inline">
 								<label for="orderOrbQuantity">QUANTIY</label>

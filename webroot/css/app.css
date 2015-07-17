@@ -6102,6 +6102,21 @@ div.view-cart-row.total * {
       .modal-button.secondary:hover span {
         color: #b4b4b4 !important; }
 
+ul.activizing li.active .modal-button {
+  background-color: #faea06; }
+  ul.activizing li.active .modal-button span {
+    color: #373737 !important; }
+  ul.activizing li.active .modal-button:hover span {
+    color: #373737 !important; }
+ul.activizing li.inactive .modal-button {
+  background-color: #e1e1e1; }
+  ul.activizing li.inactive .modal-button span {
+    color: #b4b4b4 !important; }
+  ul.activizing li.inactive .modal-button:hover {
+    background-color: #cecece; }
+    ul.activizing li.inactive .modal-button:hover span {
+      color: #e02027 !important; }
+
 /*******   modal pages ********/
 #registration-method-bar {
   margin: 0 10%;
@@ -6142,6 +6157,14 @@ p {
   font-size: 0.75rem;
   font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
   line-height: 1rem; }
+
+.disabled-tip {
+  position: fixed;
+  padding: 0.9375rem;
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #e02027;
+  z-index: 99999; }
 
 #loadingScreen {
   -webkit-touch-callout: none;
