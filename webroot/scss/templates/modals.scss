@@ -183,6 +183,9 @@ div.view-cart-row {
     div { background-color : $white; }
     span { top : 0.15em; }
   }
+  span.cart-row-item-title { padding-left: $base-padding;}
+  .secondary-row a:first-of-type { margin-left: $base-padding;} //this is a stupid hack, fix
+
   &:nth-of-type(odd) .row-wrapper { background-color : $black-a15; }
   &:nth-of-type(even) .row-wrapper { background-color : $black-a05; }
   .secondary-row {
@@ -447,11 +450,6 @@ p {
   line-height : 1rem;
 }
 
-.disabled-tip {
-  position:fixed;
-  padding: $base-padding;
-  display:inline-block;
-  background-color: $black-a50;
-  color: $xtreme-red;
-  z-index:99999;
+div.modal-nav {
+  margin-top:$base-padding;
 }
