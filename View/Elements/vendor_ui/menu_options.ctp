@@ -82,7 +82,7 @@
 						<tr data-opt="<?=$oid;?>">
 							<td id='orbopt-<?=$oid;?>-vendor-title'>
 								<div class="orbopt-attr display" data-route="orbopt_edit/<?=$oid;?>/edit/vendor-title">
-									<?=$opt[ 'Orbopt' ][ 'vendor_title' ] ?>
+									<?=$opt[ 'Orbopt' ][ 'vendor_title' ] ?  $opt[ 'Orbopt' ][ 'vendor_title' ] : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"?>
 								</div>
 								<div class="orbopt-attr edit fade-out hidden">
 									<form>
