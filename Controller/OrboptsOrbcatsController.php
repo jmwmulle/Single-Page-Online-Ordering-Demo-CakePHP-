@@ -61,9 +61,11 @@ class OrboptsOrbcatsController extends AppController {
 	}
 
 	public function ajax_add($orbopt_id) {
-		if ($this->request->is('ajax') && $this->request->is('post') ) {
+		if ( $this->is_ajax_post() ) {
 			$response = array('success' => true, 'error' => false, 'submitted_data' => $this->request->data);
-			if (!$this->OrboptsOrbcat->deleteAll(array('orbopt_id' => $orbopt_id, 'orbcat_id !=' => array_values($this->request->data['OrboptOrbcat'])) )) {
+			$orbcat_ids = array_keys( array_filter($this->request->data['OrboptOrbcat']) );
+			if (!$this->OrboptsOrbcat->deleteAll(['orbopt_id' => $orbopt_id,
+			                                      'NOT' =>['orbcat_id ' =>  $orbcat_ids]]) ) {
 				$response['error'] = $this->OrboptsOrbcat->validationErrors;
 				return $this->render_ajax_response($response);
 			}

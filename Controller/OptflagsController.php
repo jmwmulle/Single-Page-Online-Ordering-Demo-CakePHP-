@@ -107,7 +107,7 @@ class OptflagsController extends AppController {
 	}
 
 /**
- * price_factors methd
+ * price_factors method
  *
  */ 
 	public function price_factors() {

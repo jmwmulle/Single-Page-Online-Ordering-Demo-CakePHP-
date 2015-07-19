@@ -66,7 +66,7 @@ var xbs_vendor_ui = {
 				]
 			}
 		};
-		$(tables[table].id).dataTable({
+		$(tables[table].id, C.BODY).dataTable({
 				bJQueryUI: true,
 				bDeferRender: false,
 				autoWidth: false,

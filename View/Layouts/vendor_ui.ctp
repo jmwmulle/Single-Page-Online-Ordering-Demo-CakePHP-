@@ -53,16 +53,16 @@
 	?>
 	<script type="text/javascript">
 		var host = "<?php switch($_SERVER['HTTP_HOST']) {
-					case "kleinlab.psychology.dal.ca":
-						echo "xLoc";
-						break;
-					case "development-xtreme-pizza.ca":
-						echo "xDev";
-						break;
-					default:
-						echo "xProd";
-						break;
-					}?>";
+							case "xtreme-pizza.ca":
+								echo "xProd";
+								break;
+							case "development-xtreme-pizza.ca":
+								echo "xDev";
+								break;
+							default:
+								echo "xLoc";
+								break;
+							}?>";
 		var store_status = <?php echo $this->get('store_status') ? $this->get('store_status') : "{reachable:false, delivering:false, time:0}"; ?>;
 		var is_splash = <?php echo ($this->get("is_splash")) ? 'true' : 'false';?>;
 		var page_name = "<?php echo ($this->get("page_name")) ? $this->get("page_name") : "default"; ?>";

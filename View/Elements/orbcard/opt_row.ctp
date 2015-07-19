@@ -15,10 +15,12 @@ if ($opt) {
 	$icons = array('right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D");
 //	if (!$allow_half_portions) $icons = array_slice($icons, -1);
 	$data = array("route" => "orb_opt/opt" . DS . sprintf("#%s", $id) . DS .___as_file_name($opt['title']), 'optflags' => array());
-	foreach ($opt['Optflag'] as $flag) {
-		if ($flag['title']) {
-			array_push($list_classes, $flag['title']);
-			array_push($data['optflags'], $flag['id']);
+	if ( in_array("Optflag", $opt) ) {
+		foreach ($opt['Optflag'] as $flag) {
+			if ( $flag[ 'title' ] ) {
+				array_push( $list_classes, $flag[ 'title' ] );
+				array_push( $data[ 'optflags' ], $flag[ 'id' ] );
+			}
 		}
 	}?>
 	<?=sprintf("<li id='$id' %s %s>", ___cD($list_classes), ___dA($data)); ?>
