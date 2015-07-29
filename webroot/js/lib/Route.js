@@ -73,6 +73,7 @@ function XtremeRoute(name, data) {
 				this.launch_callback = data.callbacks.launch;
 				$(this).on("route_launched", this.launch_callback);
 			}
+
 		}
 		if (this.post_init_callback) this.post_init_callback();
 

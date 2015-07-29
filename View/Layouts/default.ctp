@@ -24,6 +24,7 @@
 		                      "lib/xbs_routing",
 		                      "lib/xbs_layout",
 		                      "lib/xbs_menu",
+		                      "lib/xbs_modal",
 		                      "lib/xbs_cart",
 		                      "lib/xbs_splash",
 		                      "lib/xbs_validation",

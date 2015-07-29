@@ -14,6 +14,7 @@ window.XBS = {
 		XBS.data = xbs_data;
 		XBS.event = xbs_events;
 		XBS.layout = xbs_layout;
+		XBS.modal = xbs_modal;
 		XBS.menu = xbs_menu;
 		XBS.printer = new XtremePrinter();
 		XBS.routing = xbs_routing;
@@ -28,11 +29,12 @@ window.XBS = {
 		var init_status = {
 			cart: XBS.cart.init(cart),
 			layout: XBS.layout.init(),
-			splash: XBS.splash.init(),
 			menu: XBS.menu.init(),
+			modal: XBS.modal.init(),
 			printer: XBS.printer.is_xtreme_tablet() ? XBS.printer.init() : 'not_tablet',
-			store: XBS.store_status(),
 			routing: XBS.routing.init(),
+			store: XBS.store_status(),
+			splash: XBS.splash.init(),
 			vendor: XBS.vendor.init()
 		};
 

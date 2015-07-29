@@ -21,12 +21,16 @@ if (!function_exists("orb_attribute_routes") ) {
 if (!function_exists("orb_attribute_buttons") ) {
 	function orb_attribute_buttons($routes) {
 		echo "<div class='button-box'>";
-		echo sprintf( '<a href="#" class="modal-button sml bisecting cancel right" %s>', ___dA( $routes[ 'cancel' ] ) );
-		echo '<span class="icon-cancel solo"></span></a>';
-		echo sprintf( '<a href="#" class="modal-button sml bisecting confirm left" %s>', ___dA( $routes[ 'save' ] ) );
-		echo '<span class="text">Save</span></a></div>';
+		echo sprintf( '<a href="#" class="modal-button bisecting cancel left" %s>', ___dA( $routes[ 'cancel' ] ) );
+		echo '<span class="icon-circle-arrow-l"></span>';
+		echo '<span class="text">Cancel</span></a>';
+		echo sprintf( '<a href="#" class="modal-button bisecting confirm right" %s>', ___dA( $routes[ 'save' ] ) );
+		echo '<span class="text">Save</span>';
+		echo '<span class="icon-circle-arrow-r"></span></a>';
+		echo '</div>';
 	}
 }
+
 $oid = $orb['Orb']['id'];
 $routes = array("prices"     => orb_attribute_routes( $oid, 'prices' ) );
 ?>

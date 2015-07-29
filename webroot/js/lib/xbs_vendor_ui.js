@@ -32,11 +32,14 @@ var xbs_vendor_ui = {
 	},
 	fix_breakouts: function() {
 		$(FX.breakout).each(function () {
-			pr([$(window).height(), $(this).innerHeight()]);
+//			pr([this, $(this).innerWidth(), $(this).innerHeight(), $(window).width(), $(window).height()]);
+//			var temp_class_removal = [stripCSS(FX.breakout), FX.hidden].join(" ");
+//			$(this).removeClass( temp_class_removal );
 			$(this).css({
-				left: (($(window).width() - $(this).innerWidth()) / 2) + "px",
-				top: (($(window).height() - $(this).innerHeight()) / 2) + "px"
+				left: (0.5 * $(window).width() - 400) + "px", // all breakouts are 800px wide, vendor.scss ~L514
+				top: "300px"
 			})
+//			$(this).addClass( temp_class_removal );
 		});
 	},
 	data_tables: function (table) {

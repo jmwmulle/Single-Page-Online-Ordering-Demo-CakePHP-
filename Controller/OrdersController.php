@@ -16,7 +16,48 @@
 		                          "orb_note"   => "" ];
 
 		private $cart_template = [ 'Order'   => [ ],
-		                           'User'    => [ ],
+		                           'User' => [
+		                           		'firstname' => "Jimmy",
+		                           		'lastname' => "TheKids",
+		                           		'email' => "jimmy-the-kid@jimmyserv.com",
+		                           		"email_verified" => true,
+		                           		"Address" => [['id' => 0,
+		                           					'firstname'=> "Jimmy",
+		                                              'lastname' => "TheKid",
+		                                              'address' => "1234 Somewhere",
+		                                              'address_2' => "Apt. 7",
+		                                              'phone' => "9025551111",
+		                                              'email' => "heyo_i_have_a_damn_long_email_of_ffs_i_hate_these_peopel@gmail.com",
+		                                              'building_type' => "Apartment",
+		                                              'note' => "You'll have to answer all 3 of the troll's questions to enter...",
+		                                              'postal_code' => "B4r6j8",
+		                                              'delivery_time' => null,
+		                                              'city' => "Halifax",
+		                                              'province' => "Nova Scotia"],
+		                           				['id'=>1,'firstname'=> "Jimmy",
+		                                              'lastname' => "TheKid",
+		                                              'address' => "123-6B MyHouse St.",
+		                                              'address_2' => null,
+		                                              'phone' => "9025551111",
+		                                              'email' => "better_address@hotmail.com",
+		                                              'building_type' => "House",
+		                                              'note' => null,
+		                                              'postal_code' => "B1J2F3",
+		                                              'delivery_time' => null,
+		                                              'city' => "Halifax",
+		                                              'province' => "Nova Scotia"],
+		                           				['id'=> 2, 'firstname'=> "Jimmy",
+		                                              'lastname' => "TheKid",
+		                                              'address' => "1 Topstreet Row",
+		                                              'address_2' => "Department of Long Addresses, Excessive Address Building, 3rd Floor",
+		                                              'phone' => "9021115555",
+		                                              'email' => "best_email@gmail.com",
+		                                              'building_type' => "Office / Other",
+		                                              'note' => "Take the elevator to the third floor then scream for assistance",
+		                                              'postal_code' => "B2G5T9",
+		                                              'delivery_time' => null,
+		                                              'city' => "Halifax",
+		                                              'province' => "Nova Scotia"]]],
 		                           'Invoice' => [ 'subtotal'     => 0,
 		                                          'total'        => 0,
 		                                          'item_count'   => 0,
@@ -544,15 +585,34 @@
 
 		/**
 		 * Sets Cart.Service.order_method session key
-		 *
+		 * @param $request_context
 		 * @param $method
 		 */
-		public function order_method( $method ) {
+		public function order_method( $method, $request_context ) {
 			if ( $this->is_ajax_post() ) {
+				$this->init_cart();
+				$response = [ "success" => true,
+				              "error" => false,
+				              "delegate_route" => null,
+				              "data" => ["Cart" => $this->Session->read( "Cart" ),
+				                         "method" => $method,
+				                         "request_context" => $request_context]
+				              ];
+				// depending on where this was called in the menu UI, fire different routes on reply
+				switch ($request_context) {
+					case "review":
+						$response['delegate_route'] = "order".DS."review";
+						break;
+					case "splash":
+						$response['delegate_route'] = "menu";
+						break;
+					default:
+						$response['delegate_route'] = "confirm_address".DS."menu".DS."false";
+				}
+
+
 				$this->Session->write( "Cart.Service.order_method", $method );
 
-				// check if current User.address key is incomplete, invalid or valid; save it if valid & logged in
-//				$this->Session->write("Cart.Service.flags.address_valid", $this->Order->User->validate_session());
 				if ( $this->Auth->loggedIn() and $method == DELIVERY ) {
 					$options = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
 					$user    = $this->User->find( 'first', $options );
@@ -562,7 +622,6 @@
 						}
 					}
 				}
-				$response = [ "success" => true, "error" => false, "data" => $this->Session->read( "Cart" ) ];
 
 				return $this->render_ajax_response( $response );
 			} else {

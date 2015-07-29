@@ -41,7 +41,7 @@ var xbs_cart = {
 	init: function (cart_from_session) {
 		var debug_this = 0;
 		if (debug_this > 0 ) pr(cart_from_session, "XBS.cart.init(cart details)", 2);
-		if ('Order' in cart_from_session) XBS.data.order = cart_from_session.Order;
+		for (var key in cart_from_session) XBS.data[key] = cart_from_session[key];
 		XBS.cart.orbs = is_object(cart_from_session) && "OrderItem" in cart_from_session ? cart_from_session.OrderItem : {};
 
 		$.get([xbs_data.cfg.root, "opt-price-factors"].join(C.DS), function(response) {

@@ -291,6 +291,27 @@ if (!String.prototype.toTitleCase) {
 	 * @returns {*}
 	 */
 	function pr(obj, label, message_type) {
+		var stacktrace = new Error().stack.split("\n").slice(2);
+//		console.log(stacktrace);
+		var stack = [];
+		var func = "Null";
+		var file = "//nowhere";
+		var line_no = "-1";
+		for (var i = 0; i < stacktrace.length - 1; i++) {
+			try {
+				func = stacktrace[i].match( /^ at (.*) \(/ )[1];
+			} catch (e) {}
+			try {
+				file = "/" + stacktrace[i].match(/^.*\/\/[a-z.-]*\/(.*):[0-9]*:[0-9]*/)[1];
+			} catch (e) {};
+
+			try {
+				line_no = stacktrace[i].match(/^.*\/\/[a-z.-]*\/.*:([0-9]*):[0-9]*/)[1];
+			} catch (e) {}
+			stack.push(func + " in  " + file + ":" + line_no);
+		}
+		console.log("\nPrinting From: " + stack[0] + "\n");
+
 		var method = message_type == 1 ? "error" : "log";
 		label = !!label && typeof(label) === "string" ? "%c " + label + " " : '%c';
 		var note_delim = "*";
@@ -299,102 +320,102 @@ if (!String.prototype.toTitleCase) {
 		var label_border = "rgb(28, 37 40)";
 		var ins_color= "rgb(247, 126, 239)";
 		switch (message_type) {
-		case 1:
-			var label_css = "color:rgb(255,0,0); text-transform:uppercase; background-color:rgb(255,245,245); border:1px solid rgb(255,0,0);";
-			break;
-		case 2:
-			var label_left_css = "color:rgb(100,160,175); background-color:"+label_bg+"; border:1px solid rgb(35,55,63); border-right:none;";
-			var label_center_css = "color:rgb(100,160,175); background-color:"+label_bg+"; border:1px solid rgb(35,55,63); border-left:none, border-right:none;";
-			var label_right_css = "color:rgb(100,160,175); background-color:"+label_bg+"; border:1px solid rgb(35,55,63); border-left:none;";
-			var label_ins_replace = label.replace("[", "__LBRAC__");
-			var label_ins_replace = label_ins_replace.replace("]", "__RBRAC__");
-			var label_ins_replace = label_ins_replace.replace(/__LBRAC__(.*)__RBRAC__/, "[%c$1%c]");
-			var instances = false;
-			var internal_to_method = false;
-			if (label != label_ins_replace) {
-				label =  label_ins_replace;
-				instances = true;
-			}
-			label = label.replace(/\((.*)\)/, "(%c$1%c) %c");
-			var meth_label = label.replace(/(#)/, "%c#%c %c");
-			if (meth_label != label) {
-				internal_to_method = true;
-				label = meth_label;
-			}
-			break;
-		default:
-			var label_css = "color:rgb(0,150,0); text-transform:uppercase; background-color:rgb(245,245,245); border:1px solid rgb(220,220,220);";
-		}
-		var type_css = "color:rgb(200,200,200); font-style:italics; display:inline-block; width: 12px; min-width:12px; max-width:12px;";
-		var num_css = "color:rgb(0,0,100);";
-		var bool_css = "color:rgb(225,125,80); font-weight: bold";
-		var str_css = "color:rgb(125,125,125); font-family:arial";
-		var note_css = "color:#008cba; background-color:rgb(247,247,247); border:1px solid #008cba;";
-		var arg_css = "color:rgb(252,122,0); background-color:"+label_bg+"; border-top:1px solid rgb(35,55,63); border-bottom:1px solid rgb(35,55,63);";
-		var ins_css = "color:"+ins_color+"; background-color:"+label_bg+"; border-top:1px solid rgb(35,55,63); border-bottom:1px solid rgb(35,55,63);";
-		var msg_css = "color:rgb(252,240,244); background-color:"+label_bg+"; border-top:1px solid rgb(35,55,63); border-bottom:1px solid rgb(35,55,63);";
-		var debug = message_type == 2 || message_type == 3;
-		if (debug) {
-			switch (obj) {
-				case obj === false:
-					label += "%s";
-					obj = "false";
-					break;
-				case obj === true:
-					label += "%s";
-					obj = "true";
-					break;
-				case obj === null:
-					label += "%s"
-					obj = "null"
-					break;
-				case typeof(obj) === 'undefined':
-					label += "%s"
-					obj = "undefined"
-					break;
-				case typeof(obj) === 'number':
-					break;
-				default:
-					label += "%O";
-			}
-			if ( instances) {
-			console[method](label, label_left_css, ins_css, label_center_css, arg_css, label_right_css, msg_css, obj);
-			} else {
-				console[method](label, label_left_css, arg_css, label_right_css, msg_css, obj);
-			}
-		} else {
-		switch (obj) {
-			case obj === 0:
-				console[method](label + "%c(int) %c", label_css, type_css, num_css, 0);
+			case 1:
+				var label_css = "color:rgb(255,0,0); text-transform:uppercase; background-color:rgb(255,245,245); border:1px solid rgb(255,0,0);";
 				break;
-			case obj === 1:
-				console[method](label + "%c(int) %c%s", label_css, type_css, num_css, 1);
-				break
-			case obj === false:
-				console[method](label + "%c(bool) %c%s", label_css, type_css, bool_css, "false");
-				break;
-			case obj === true:
-				console[method](label + "%c(bool) %c%s", label_css, type_css, bool_css, "true");
-				break;
-			case obj === null:
-				console[method](label + "%c(!def) %c%s", label_css, type_css, bool_css, "null");
-				break;
-			case typeof(obj) === 'undefined':
-				console[method](label + "%c(!def) %c%s", label_css, type_css, bool_css, "undefined");
-				break;
-			case typeof(obj) === 'string':
-				if (obj.substring(0, note_delim_length) === note_delim) {
-					console[method](label + "%c%s", label_css, note_css, " " + obj.substring(1) + " ");
-				} else {
-					console[method](label + "%c(str) %c%s", label_css, type_css, str_css, obj);
+			case 2:
+				var label_left_css = "color:rgb(100,160,175); background-color:"+label_bg+"; border:1px solid rgb(35,55,63); border-right:none;";
+				var label_center_css = "color:rgb(100,160,175); background-color:"+label_bg+"; border:1px solid rgb(35,55,63); border-left:none, border-right:none;";
+				var label_right_css = "color:rgb(100,160,175); background-color:"+label_bg+"; border:1px solid rgb(35,55,63); border-left:none;";
+				var label_ins_replace = label.replace("[", "__LBRAC__");
+				var label_ins_replace = label_ins_replace.replace("]", "__RBRAC__");
+				var label_ins_replace = label_ins_replace.replace(/__LBRAC__(.*)__RBRAC__/, "[%c$1%c]");
+				var instances = false;
+				var internal_to_method = false;
+				if (label != label_ins_replace) {
+					label =  label_ins_replace;
+					instances = true;
+				}
+				label = label.replace(/\((.*)\)/, "(%c$1%c) %c");
+				var meth_label = label.replace(/(#)/, "%c#%c %c");
+				if (meth_label != label) {
+					internal_to_method = true;
+					label = meth_label;
 				}
 				break;
-			case typeof(obj) === 'number':
-				obj % 1 === 0 ? console[method](label + "%c(int) %c%s", label_css, type_css, num_css, obj) : console[method](label + "%c(float) %c%s", label_css, type_css, num_css, obj);
-				break;
 			default:
-				console[method](label + "%c(obj) %O", label_css, type_css, obj);
-		}
+				var label_css = "color:rgb(0,150,0); text-transform:uppercase; background-color:rgb(245,245,245); border:1px solid rgb(220,220,220);";
+			}
+			var type_css = "color:rgb(200,200,200); font-style:italics; display:inline-block; width: 12px; min-width:12px; max-width:12px;";
+			var num_css = "color:rgb(0,0,100);";
+			var bool_css = "color:rgb(225,125,80); font-weight: bold";
+			var str_css = "color:rgb(125,125,125); font-family:arial";
+			var note_css = "color:#008cba; background-color:rgb(247,247,247); border:1px solid #008cba;";
+			var arg_css = "color:rgb(252,122,0); background-color:"+label_bg+"; border-top:1px solid rgb(35,55,63); border-bottom:1px solid rgb(35,55,63);";
+			var ins_css = "color:"+ins_color+"; background-color:"+label_bg+"; border-top:1px solid rgb(35,55,63); border-bottom:1px solid rgb(35,55,63);";
+			var msg_css = "color:rgb(252,240,244); background-color:"+label_bg+"; border-top:1px solid rgb(35,55,63); border-bottom:1px solid rgb(35,55,63);";
+			var debug = message_type == 2 || message_type == 3;
+			if (debug) {
+				switch (obj) {
+					case obj === false:
+						label += "%s";
+						obj = "false";
+						break;
+					case obj === true:
+						label += "%s";
+						obj = "true";
+						break;
+					case obj === null:
+						label += "%s"
+						obj = "null"
+						break;
+					case typeof(obj) === 'undefined':
+						label += "%s"
+						obj = "undefined"
+						break;
+					case typeof(obj) === 'number':
+						break;
+					default:
+						label += "%O";
+				}
+				if ( instances) {
+				console[method](label, label_left_css, ins_css, label_center_css, arg_css, label_right_css, msg_css, obj);
+				} else {
+					console[method](label, label_left_css, arg_css, label_right_css, msg_css, obj);
+				}
+			} else {
+			switch (obj) {
+				case obj === 0:
+					console[method](label + "%c(int) %c", label_css, type_css, num_css, 0);
+					break;
+				case obj === 1:
+					console[method](label + "%c(int) %c%s", label_css, type_css, num_css, 1);
+					break
+				case obj === false:
+					console[method](label + "%c(bool) %c%s", label_css, type_css, bool_css, "false");
+					break;
+				case obj === true:
+					console[method](label + "%c(bool) %c%s", label_css, type_css, bool_css, "true");
+					break;
+				case obj === null:
+					console[method](label + "%c(!def) %c%s", label_css, type_css, bool_css, "null");
+					break;
+				case typeof(obj) === 'undefined':
+					console[method](label + "%c(!def) %c%s", label_css, type_css, bool_css, "undefined");
+					break;
+				case typeof(obj) === 'string':
+					if (obj.substring(0, note_delim_length) === note_delim) {
+						console[method](label + "%c%s", label_css, note_css, " " + obj.substring(1) + " ");
+					} else {
+						console[method](label + "%c(str) %c%s", label_css, type_css, str_css, obj);
+					}
+					break;
+				case typeof(obj) === 'number':
+					obj % 1 === 0 ? console[method](label + "%c(int) %c%s", label_css, type_css, num_css, obj) : console[method](label + "%c(float) %c%s", label_css, type_css, num_css, obj);
+					break;
+				default:
+					console[method](label + "%c(obj) %O", label_css, type_css, obj);
+			}
 		}
 
 
@@ -605,6 +626,8 @@ function obj_merge(keys_obj, vals_obj) {
 
 	return merged_obj;
 }
+
+
 
 //
 //
