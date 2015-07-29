@@ -787,11 +787,11 @@ var xbs_routing = {
 									if ( $(label_id).hasClass(XSM.effects.success) ) {
 										$(label_id).removeClass(XSM.effects.success);
 										$(label_id).addClass(XSM.effects.secondary);
-										$(field_sel).val(false);
+										$(field_sel).val(0);
 									} else {
 										$(label_id).addClass(XSM.effects.success);
 										$(label_id).removeClass(XSM.effects.secondary);
-										$(field_sel).val(true);
+										$(field_sel).val(1);
 									}
 									break;
 								case "save":

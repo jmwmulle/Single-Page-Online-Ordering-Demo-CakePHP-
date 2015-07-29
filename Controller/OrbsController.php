@@ -182,8 +182,10 @@
 				}
 				foreach ( $orb[ 'Orbopt' ] as $i => $opt ) {
 					$orb[ 'Orbopt' ][ $i ][ 'default' ] = $opt[ 'OrbsOrbopt' ][ 'default' ];
-					foreach ( $opt[ 'Optflag' ] as $optflag ) {
-						$orb[ 'Orb' ][ 'Optflag' ][ $optflag[ 'id' ] ] = $optflag[ 'title' ];
+					if ( in_array('Optflag', $opt) ) {
+						foreach ( $opt[ 'Optflag' ] as $optflag ) {
+							$orb[ 'Orb' ][ 'Optflag' ][ $optflag[ 'id' ] ] = $optflag[ 'title' ];
+						}
 					}
 				}
 				$orb[ 'Orb' ][ 'Orbopt' ] = $orb[ 'Orbopt' ];

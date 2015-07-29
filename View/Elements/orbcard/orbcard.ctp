@@ -15,6 +15,7 @@ $prices = $content['Prices'];
 		<h3 id="float-label" class="box float-label text-center"></h3>
 		<div id="orb-card" class="html5-3d-perspective-container box rel flush" data-default-opts="<?=json_encode($orb['default_opts']);?>">
 			<div id="orb-card-3d-context" class="html5-3d-context preserve-3d">
+<!--  FRONT ------->
 				<section id="orb-card-front" class="preserve-3d card-face m-pad">
 					<ul class="orb-card">
 					<!-- TOP  ROW --> <?php // every row has a button at left and content at right ;?>
@@ -110,6 +111,9 @@ $prices = $content['Prices'];
 						</li>
 					</ul>
 				</section>
+
+<!--  BACK ------->
+
 				<section id="orb-card-back" class="preserve-3d card-face back-face-y m-pad">
 					<?php $class_array = array("orb-configuration", "orb-size-panel", "activizing", "flush", "stretch",
 					                           sprintf("large-block-grid-%s", count($prices)));?>
