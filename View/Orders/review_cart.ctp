@@ -17,8 +17,8 @@
 				<a href="#" class="cancel left tiny" data-route="order/clear"><span class="icon-cancel icon"></span><span class="text">Clear Cart</span></a>
 			</div>
 		</div>
-		<div class="row view-cart-row cart-header">
-			<div class="large-7 columns"><span>ITEM</span></div>
+		<div class="row view-cart-row cart-header <?php if ( empty($cart[ 'Order' ]) ) echo " true-hidden";?>">
+			<div class="large-7 columns"><span class="cart-row-item-title">ITEM</span></div>
 			<div class="large-2 columns text-center"><span>QUANTITY</span></div>
 			<div class="large-2 columns"><span>PRICE</span></div>
 			<div class="large-1 columns text-center">&nbsp;</div>
@@ -27,7 +27,7 @@
 		<?php foreach ($cart[ 'Order' ] as $uid => $oi) echo $this->element("cart/review_cart_row", compact("uid", "oi"));?>
 
 		<div class="row">
-			<div class="large-12 large-centered columns">
+			<div class="large-12 modal-nav columns">
 				<a href="#" class="modal-button bisecting cancel left" data-route="menu/unstash">
 					<span class="icon-circle-arrow-l icon"></span><span class="text">Continue Ordering</span>
 				</a>

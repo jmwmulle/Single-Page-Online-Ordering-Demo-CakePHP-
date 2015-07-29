@@ -8,38 +8,38 @@
 	 * @property CartComponent        $Cart
 	 */
 	class OrdersController extends AppController {
-		private $orb_template = [  "id"         => -1,
-	                               "uid"        => -1,
-	                               "quantity"   => -1,
-	                               "price_rank" => 0,
-	                               "orbopts"    => [],
-	                               "orb_note"   => "" ];
+		private $orb_template = [ "id"         => -1,
+		                          "uid"        => -1,
+		                          "quantity"   => -1,
+		                          "price_rank" => 0,
+		                          "orbopts"    => [ ],
+		                          "orb_note"   => "" ];
 
 		private $cart_template = [ 'Order'   => [ ],
-		                                'User'    => [
-			                                'Address' => [ 'address'               => null,
-			                                               'address_2'             => null,
-			                                               'postal_code'           => null,
-			                                               'building_type'         => null,
-			                                               'phone'                 => null,
-			                                               'delivery_instructions' => null,
-			                                               'city'                  => 'Halifax',
-			                                               'province'              => 'NS',
-			                                               'delivery_time'         => null,
-			                                               'firstname'             => null,
-			                                               'lastname'              => null ]
-		                                ],
-		                                'Invoice' => [ 'subtotal'     => 0,
-		                                               'total'        => 0,
-		                                               'item_count'   => 0,
-		                                               'receipt_rows' => 0,
-		                                               'hst'          => 0 ],
-		                                'Service' => [ 'deliverable'  => false,
-		                                               'order_method' => JUST_BROWSING,
-		                                               'flags'        => [
-			                                               "address_valid" => null,
-		                                                   "request_address_save" => null
-		                                               ] ]
+		                           'User'    => [ ],
+		                           'Invoice' => [ 'subtotal'     => 0,
+		                                          'total'        => 0,
+		                                          'item_count'   => 0,
+		                                          'receipt_rows' => 0,
+		                                          'hst'          => 0 ],
+		                           'Service' => [ 'deliverable'  => false,
+		                                          'order_method' => JUST_BROWSING,
+		                                          'address'      => [ 'address'       => null,
+		                                                              'address_2'     => null,
+		                                                              'postal_code'   => null,
+		                                                              'building_type' => null,
+		                                                              'phone'         => null,
+		                                                              'note'          => null,
+		                                                              'city'          => 'Halifax',
+		                                                              'province'      => 'NS',
+		                                                              'delivery_time' => null,
+		                                                              'firstname'     => null,
+		                                                              'lastname'      => null ],
+		                                          'flags'        => [
+			                                          "user_address_set"     => false,
+			                                          "address_valid"        => null,
+			                                          "request_address_save" => null
+		                                          ] ]
 		];
 
 		public $components = array(
@@ -74,7 +74,7 @@
 				if ( $this->Order->save( $this->request->data ) ) {
 					$this->Session->setFlash( __( 'The order has been saved.' ) );
 
-					return $this->redirect( ['action' => 'index' ] );
+					return $this->redirect( [ 'action' => 'index' ] );
 				} else {
 					$this->Session->setFlash( __( 'The order could not be saved. Please, try again.' ) );
 				}
@@ -157,6 +157,7 @@
 
 		/**
 		 * init_cart() called before all cart-related functions; ensures any missing required keys exist
+		 *
 		 * @return bool
 		 */
 		private function init_cart() {
@@ -233,7 +234,7 @@
 			if ( $this->is_ajax_get() ) {
 				$this->Cart->clear();
 				$this->init_cart();
-				$this->render_ajax_response(['success' => true, 'error' => false, 'data' => false]);
+				$this->render_ajax_response( [ 'success' => true, 'error' => false, 'data' => false ] );
 			} else {
 				return $this->redirect( cakeUrl( array( "controller" => 'menu', "action" => null ) ) );
 			}
@@ -283,11 +284,11 @@
 			if ( $this->is_ajax_post() ) {
 				foreach ( $this->request->data[ 'Orb' ] as $args ) {
 					extract( array_merge( array(
-						                      "id"                       => -1,
-						                      "quantity"                 => -1,
-						                      "price_rank"               => 0,
-						                      "orbopts"                  => array(),
-						                      "orb_note" => "" ),
+						                      "id"         => -1,
+						                      "quantity"   => -1,
+						                      "price_rank" => 0,
+						                      "orbopts"    => array(),
+						                      "orb_note"   => "" ),
 					                      $args
 					         )
 					);
@@ -300,6 +301,7 @@
 
 		/**
 		 * Review cart only (ie. no order details like payment or service)
+		 *
 		 * @return mixed
 		 */
 		public function review_cart() {
@@ -379,6 +381,7 @@
 
 		/**
 		 * Review order, ie. cart as well as payment & service info
+		 *
 		 * @return mixed
 		 */
 		public function review_order() {
@@ -541,6 +544,7 @@
 
 		/**
 		 * Sets Cart.Service.order_method session key
+		 *
 		 * @param $method
 		 */
 		public function order_method( $method ) {
@@ -550,95 +554,98 @@
 				// check if current User.address key is incomplete, invalid or valid; save it if valid & logged in
 //				$this->Session->write("Cart.Service.flags.address_valid", $this->Order->User->validate_session());
 				if ( $this->Auth->loggedIn() and $method == DELIVERY ) {
-					$options         = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
-					$user            = $this->User->find( 'first', $options );
-					if ( $this->Session->read("Cart.Service.flags.address_valid") ) {
+					$options = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
+					$user    = $this->User->find( 'first', $options );
+					if ( $this->Session->read( "Cart.Service.flags.address_valid" ) ) {
 						if ( !in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] ) ) {
-							$this->Session->write("Cart.Service.flags.request_save_address", true);
+							$this->Session->write( "Cart.Service.flags.request_save_address", true );
 						}
 					}
 				}
-				$response = [ "success" => true, "error" => false, "data" => $this->Session->read("Cart")];
-				return $this->render_ajax_response($response);
+				$response = [ "success" => true, "error" => false, "data" => $this->Session->read( "Cart" ) ];
+
+				return $this->render_ajax_response( $response );
 			} else {
 				return $this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
 			}
 		}
 
 		/**
-		 * @param null $command
+		 * @param null $scope
 		 *
 		 * @return mixed
 		 */
-		public function confirm_address( $command = null ) {
+		public function confirm_address( $scope = null ) {
 			if ( $this->request->is( 'ajax' ) ) {
+				// get request returns empty form
 				if ( $this->request->is( 'get' ) ) {
-					$this->set(["header" => "Delivery! Yay for sitting!",
-								"subheader" => "But let's confirm your address, yeah?"]);
+					$this->set( [ "header"    => "Delivery! Yay for sitting!",
+					              "subheader" => "But let's confirm your address, yeah?" ] );
+
 					return $this->render( 'confirm_address' );
 				}
-				if ( !$this->Session->check( "Cart.Order.address_checked" ) ) {
-					$this->Session->write( 'Cart.Order.address_checked', false );
-				}
-				$data = $this->request->data;
-				if ( $command == 'database' ) {
-					if ( $this->Auth->loggedIn() ) {
-						$conditions = array( 'conditions' => array( 'Address.user_id' => $this->Auth->user( 'id' ),
-						                                            'Address.id'      => $data[ 'address_id' ] ) );
-						$address    = $this->Address->find( 'first', $conditions );
-						$this->Session->write( 'Cart.Order.address_checked', true );
-						$this->Session->write( 'Cart.Order.address', $address );
-					} else {
-						$this->set( "response", array( "success" => false,
-						                               "address" => false,
-						                               "error"   => "User not logged in." )
-						);
-					}
-				} elseif ( $command == 'update_database' ) {
-					if ( $this->Auth->loggedIn() ) {
-						$conditions = array( 'conditions' => array( 'User.id' => $this->Auth->user[ 'id' ] ) );
-						$this->User->find( 'first', $conditions );
-						if ( array_key_exists( 'address_id', $data ) ) {
-							$conditions = array( 'conditions' => array( 'Address.user_id' => $this->Auth->user[ 'id' ],
-							                                            'Address.id'      => $data[ 'address_id' ] ) );
-							$address    = $this->Address->find( 'first', $conditions );
-							$address    = array_merge( $address, $data[ 'orderAddress' ] );
-							$to_save    = array( 'User' => $this->User, 'Address' => $address );
+				$data     = $this->request->data;
+				$response = [ 'success' => true, 'error' => false, 'data' => $data ];
+				switch ( $scope ) {
+					case CONF_ADR_DB:
+						if ( $this->Auth->loggedIn() ) {
+							$conditions = [ 'conditions' => [ 'Address.user_id' => $this->Auth->user( 'id' ),
+							                                  'Address.id'      => $data[ 'address_id' ] ] ];
+							$this->Session->write( 'Cart.address', $this->Address->find( 'first', $conditions ) );
+
+							$this->Session->write( 'Cart.Order.address_checked', true );
 						} else {
-							$to_save = array( 'User' => $this->User, 'Address' => $data[ 'orderAddress' ] );
-						}
-						if ( $this->User->saveAssociated( $to_save ) ) {
-							// I always need all the keys, it's just a lot easier than manually checking
-							$this->set( "response", array( "success" => true,
-							                               "address" => $data[ 'orderAddress' ],
-							                               "error"   => false )
-							);
+							$response[ 'success' ] = false;
+							$response[ 'error' ]   = "User not logged in.";
+						};
+						break;
+					case CONF_ADR_DB_UPD:
+						if ( $this->Auth->loggedIn() ) {
+							$conditions = array( 'conditions' => array( 'User.id' => $this->Auth->user[ 'id' ] ) );
+							$this->User->find( 'first', $conditions );
+							if ( array_key_exists( 'address_id', $data ) ) {
+								$conditions = array( 'conditions' => array( 'Address.user_id' => $this->Auth->user[ 'id' ],
+								                                            'Address.id'      => $data[ 'address_id' ] ) );
+								$address    = $this->Address->find( 'first', $conditions );
+								$address    = array_merge( $address, $data[ 'orderAddress' ] );
+								$to_save    = array( 'User' => $this->User, 'Address' => $address );
+							} else {
+								$to_save = array( 'User' => $this->User, 'Address' => $data[ 'orderAddress' ] );
+							}
+							if ( $this->User->saveAssociated( $to_save ) ) {
+								// I always need all the keys, it's just a lot easier than manually checking
+								$this->set( "response", array( "success" => true,
+								                               "address" => $data[ 'orderAddress' ],
+								                               "error"   => false )
+								);
+							} else {
+								$this->set( "response", array( "success" => false,
+								                               "address" => false,
+								                               "error"   => "Data could not be saved." )
+								);
+							}
 						} else {
 							$this->set( "response", array( "success" => false,
 							                               "address" => false,
-							                               "error"   => "Data could not be saved." )
+							                               "error"   => "User not logged in." )
 							);
+						};
+						break;
+					case CONF_ADR_SESSION:
+						if ( !empty( $data[ 'orderAddress' ] ) ) {
+							$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
+							$this->Session->write( 'Cart.Order.email', $data[ 'orderAddress' ][ 'email' ] );
+							$this->Session->write( 'Cart.Order.delivery_instructions', $data[ 'orderAddress' ][ 'delivery_instructions' ] );
+						} else {
+							$this->Session->write( 'Cart.Order.triedToSetEmptyAddress', true );
 						}
-					} else {
-						$this->set( "response", array( "success" => false,
-						                               "address" => false,
-						                               "error"   => "User not logged in." )
+						$this->Session->write( 'Cart.Order.address_checked', true );
+						$this->set( "response", array( "success" => true,
+						                               "address" => $data [ 'orderAddress' ],
+						                               "error"   => false
+						                      )
 						);
-					}
-				} elseif ( $command == 'session' ) {
-					if ( !empty( $data[ 'orderAddress' ] ) ) {
-						$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
-						$this->Session->write( 'Cart.Order.email', $data[ 'orderAddress' ][ 'email' ] );
-						$this->Session->write( 'Cart.Order.delivery_instructions', $data[ 'orderAddress' ][ 'delivery_instructions' ] );
-					} else {
-						$this->Session->write( 'Cart.Order.triedToSetEmptyAddress', true );
-					}
-					$this->Session->write( 'Cart.Order.address_checked', true );
-					$this->set( "response", array( "success" => true,
-					                               "address" => $data [ 'orderAddress' ],
-					                               "error"   => false
-					                      )
-					);
+						break;
 				}
 				$this->render( 'confirm_address_reply' ); // this is the JSON reply; this is more reliable for some reason
 			} else {
@@ -661,6 +668,7 @@
 
 				return $first_call ? $this->render( 'get_status' ) : $this->render( 'get_status_update' );
 			}
+
 			return $this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
 		}
 

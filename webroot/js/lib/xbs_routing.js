@@ -582,6 +582,16 @@ var xbs_routing = {
 					callbacks: {
 						params_set: function() {
 							switch ( this.read('action') ) {
+								case 'breakout':
+									this.unset('launch');
+									this.unset('url');
+									var target = null;
+									if ( this.read('attribute') == 'add_opt' ) {
+										target = XSM.vendor_ui.orbopt_add_breakout;
+									} else {
+										target = XSM.vendor_ui.orbopt_pricelist_add_breakout;
+									}
+									XBS.vendor_ui.toggle_menu_options_breakout(target);
 								case 'edit':
 									XBS.vendor_ui.edit_orbopt(this.read('id'), this.read('attribute'));
 									break;

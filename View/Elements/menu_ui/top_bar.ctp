@@ -13,19 +13,19 @@
  * $here = (str) << currently viewed page,  must exactly match one of the navopts >>
  */
 
-$logged_in =  $this->Session->read('Auth.User') ? true : false;
+$auth_user =  $this->Session->read('Auth.User') ? true : false;
 $auth_str = "http://development-xtreme-pizza.ca/auth/";
 $login_route_str = "data-route='login/topbar/%s'";
 $social_route_str = "data-route='social/%s'";
 
 /*  Twitter Deets  */
 $twitter_auth = sprintf($auth_str, 'twitter');
-$twitter_text = $logged_in ? "Tweet about Xtreme!" : "Login via Twitter";
+$twitter_text = $auth_user ? "Tweet about Xtreme!" : "Login via Twitter";
 $twitter_icon = "<span class='icon-twitter'></span>";
 
 /*  Google Deets  */
 $google_icon = "<span class='icon-gplus'></span>";
-$google_text = $logged_in ? "+1 Xtreme!" : "Login via GooglePlus";
+$google_text = $auth_user ? "+1 Xtreme!" : "Login via GooglePlus";
 $google_auth = sprintf($auth_str, 'google');
 
 /* Facebook Deets  */
@@ -63,7 +63,7 @@ $cart_data =  array('hover-text' => "View Your Cart", 'route' => 'order/view');
 $cart_icon = "<span class='icon-shopping'></span>";
 
 
-$social_route = $logged_in ? "social" : "login/topbar";
+$social_route = $auth_user ? "social" : "login/topbar";
 $social_live = false;
 $auth_live = false;
 ?>
@@ -79,7 +79,7 @@ $auth_live = false;
 				</div>
 				<div class="large-12 columns icon-row fade-out true-hidden">
 					<?php
-						if (!$logged_in) {
+						if (!$auth_user) {
 							if ( $auth_live ) {
 								echo sprintf( "<a href='%s' data-hover-text='%s'>%s</a>", $twitter_auth, $twitter_text, $twitter_icon );
 								echo sprintf( "<a href='%s' data-hover-text='%s'>%s</a>", $fb_auth, $fb_text, $fb_icon );

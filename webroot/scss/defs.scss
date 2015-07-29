@@ -197,3 +197,12 @@ $monthly-content-wrapper-height: $orbcat-menu-height;
 /*  FOOTER  */
 $footer-height: rem-calc(600px);
 $footer-top-margin: rem-calc(30px);
+
+
+/* PRIMARY-MODAL */
+
+  // addresses
+  $address-card-row-height: rem-calc(18px);
+  $address-card-note-height: rem-calc(30px);
+  $address-card-links-height: rem-calc(24px);
+  $address-card-list-height: rem-calc(126px); // 6 * line-height

@@ -183,6 +183,9 @@ define('PICKUP', 'pickup');
 define('ADDRESS_VALID', true);
 define('ADDRESS_INVALID', false);
 define('ADDRESS_INCOMPLETE', null);
+define('CONF_ADR_DB', 'database');
+define('CONF_ADR_DB_UPD', 'update_database');
+define('CONF_ADR_SESSION', 'session');
 
 define('CREDIT_CARD', 'credit_card');
 define('PAYPAL', 'paypal');

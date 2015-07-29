@@ -12,7 +12,11 @@
 	<!-- New Orbopt Price List form (hidden, breakout) -->
 	<div class="row">
 		<div class="large-12 columns">
-			<div class="panel">
+			<a href="#" class="modal-button full-width med" data-route="orbopt_edit/-1/breakout/add_pricelist">
+				<span class="icon-add"></span>
+				<span>Add New Pricing Labels</span>
+			</a>
+			<div id="orbopt-pricelist-add-breakout" class="panel breakout hidden">
 				<h1>Add Option Pricing</h1>
 				<div id='orbopt-pricelist-add' class="orbopts form">
 					<form>
@@ -27,8 +31,13 @@
 							</div>
 						</div>
 					<?php } ?>
-					<a href="#" class="modal-button med full-width" data-route="orbopt_pricelist/save">
+					<a href="#" class="modal-button bisecting right confirm" data-route="orbopt_pricelist/save">
 						<span class="text">Save</span>
+						<span class="icon-circle-arrow-r"></span>
+					</a>
+					<a href="#" class="modal-button bisecting cancel left" data-route="orbopt_edit/-1/breakout/add_pricelist">
+						<span class="icon-circle-arrow-l"></span>
+						<span class="text">Cancel</span>
 					</a>
 					</form>
 				</div>
@@ -38,14 +47,24 @@
 	<!-- Menu Options tab proper -->
 	<div class="row">
 		<div class="large-12 columns">
-			<div class="panel">
+			<br />
+			<a href="#" class="modal-button full-width med" data-route="orbopt_edit/-1/breakout/add_opt">
+				<span class="icon-add"></span>
+				<span>Add A New Menu Option</span>
+			</a>
+			<div id="orbopt-add-breakout" class="panel breakout hidden">
 				<h1>Add A New Menu Option</h1>
 				<div class="orbopts form">
 					<?=$this->Form->create('Orbopt'); ?>
 					<?=$this->Form->input('title', ['label' => 'Menu Title (ie. what *customers* see)']); ?>
 					<?=$this->Form->input('vendor_title', ['label' => 'Vendor Title (ie. what *you* see)']); ?>
-					<a href="#" class="modal-button full-width med" data-route="orbopt_config/-1/add/save">
+					<a href="#" class="modal-button bisecting confirm right" data-route="orbopt_config/-1/add/save">
 						<span class="text">Save & Reload</span>
+						<span class="icon-circle-arrow-r"></span>
+					</a>
+					<a href="#" class="modal-button bisecting cancel left" data-route="orbopt_edit/-1/breakout/add_opt">
+						<span class="icon-circle-arrow-l"></span>
+						<span class="text">Cancel</span>
 					</a>
 				</div>
 			<?=$this->Form->end(); ?>

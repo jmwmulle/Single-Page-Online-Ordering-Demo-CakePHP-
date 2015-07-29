@@ -231,6 +231,8 @@ var XSM = {
 		orb_attr_edit: "div.orb-attr.edit",
 		orbopt_attr_display: "div.orbopt-attr.display",
 		orbopt_attr_edit: "div.orbopt-attr.edit",
+		orbopt_add_breakout: "#orbopt-add-breakout",
+		orbopt_pricelist_add_breakout: "#orbopt-pricelist-add-breakout",
 		orbopt_pricelist_add: "#orbopt-pricelist-add",
 		orb_add_form: "#OrbAddForm",
 		orbopt_config_form_wrapper: ".orbopt-config-form",

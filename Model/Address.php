@@ -48,7 +48,7 @@ class Address extends AppModel {
 				'message' => 'You must supply a valid Postal Code.',
 			),
 		),
-		'details' => array(),
+		'note' => array(), // TODO: max. 600char
 
 	);
 
