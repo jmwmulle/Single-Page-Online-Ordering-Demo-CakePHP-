@@ -204,7 +204,7 @@
 		 *
 		 * @return bool
 		 */
-		private function init_cart() {
+		public function init_cart() {
 //			$this->Session->destroy();
 			if ( !$this->Session->check( 'Cart' ) ) $this->Session->write( 'Cart', $this->cart_template );
 			foreach ( $this->cart_template as $key => $value ) {
