@@ -19,7 +19,7 @@ var xbs_menu = {
 					XBS.layout.fasten(XSM.menu.self).css({overflow: "hidden"});
 				}
 			}
-			XBS.menu.set_order_method();
+			if (XBS.data.cfg.page_name != XSM.page_name.vendor_ui) XBS.menu.set_order_method();
 			return  init_ok
 		},
 		jq_binds: {
