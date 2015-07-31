@@ -13,13 +13,13 @@
 					<div id="splash-bar" class="detach">
 						<div id="splash-bar-content" class="text-center"
 							><div id="splash-order-delivery-wrapper">
-								<a id="splash-order-delivery" href="#" class="slide-left"  data-route="order_method/splash/delivery">Delivery</a>
+								<a id="splash-order-delivery" href="#" class="slide-left"  data-route="set_order_method/splash/delivery">Delivery</a>
 							</div
 							><div id="splash-logo-wrapper">
 								<div id="splash-logo" data-route='launch_apology' class="preserve-aspect-ratio" <?php echo ___dA(array('aspect-ratio' => array('x'=>552,'y'=>274, 'respect'=> 'y')));?>></div>
 							</div
 							><div id="splash-order-pickup-wrapper">
-								<a id="splash-order-pickup" href="#" class="slide-right" data-route="order_method/splash/pickup">Pick-Up</a>
+								<a id="splash-order-pickup" href="#" class="slide-right" data-route="set_order_method/splash/pickup">Pick-Up</a>
 							</div
 						></div>
 					</div>
