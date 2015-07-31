@@ -597,7 +597,7 @@
 				$delegate_routes = [
 					"review" => [ DELIVERY => "order".DS."review", PICKUP => "order".DS."review"],
 					"splash" => [ DELIVERY => "menu", PICKUP => "menu"],
-					"menu"   => [ DELIVERY => "confirm_address".DS."menu".DS."false", PICKUP => null]
+					"menu"   => [ DELIVERY => "confirm_address".DS."menu".DS."false", PICKUP => null, JUST_BROWSING => null]
 				 ];
 
 				$response = [ "success" => true,
