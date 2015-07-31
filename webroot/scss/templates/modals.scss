@@ -280,6 +280,7 @@ div.view-cart-row {
       font-size         : 1.6em;
       padding-right:1rem;
     }
+    &.hidden { display:none;}
     &[class*="-arrow-"] { padding:0;}
     &.icon-circle-arrow-l, &.icon-tab-arrow-l { float : left; }
     &.icon-circle-arrow-r, &.icon-tab-arrow-r { float : right; }
@@ -386,6 +387,24 @@ div.view-cart-row {
        span { color:$light-grey !important;}
      }
    }
+
+  &.hover-switch {
+    span.hover {
+      display:none;
+      opacity:0;
+    }
+    &:hover {
+      span.unhover {
+        display:none;
+        opacity:0;
+      }
+      span.hover {
+        display:inline-block;
+        opacity:1;
+      }
+    }
+
+  }
 }
 
 // hack to retroactively combine .activizing JS with modal-buttons

@@ -13,8 +13,4 @@ class AddressesController extends AppController {
  */
 	public $scaffold;
 
-
-	public function validate_session() {
-		return $this->Session->check("Cart.User.Address");
-	}
 }

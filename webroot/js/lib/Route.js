@@ -367,6 +367,7 @@ function XtremeRoute(name, data) {
 					break;
 				case 'modal':
 					this.modal = false;
+					this.modal_content = false;
 					break;
 			}
 			return this[attr];

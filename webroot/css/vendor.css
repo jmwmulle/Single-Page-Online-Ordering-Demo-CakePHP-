@@ -5205,13 +5205,13 @@ li.orbopt.disabled {
     .modal-button span tiny {
       color: white !important;
       font-size: 0.75rem; }
-  .modal-button.grey-on-white {
+  .modal-button.grey-scale {
     background-color: white; }
-    .modal-button.grey-on-white span {
+    .modal-button.grey-scale span {
       color: #373737 !important; }
-    .modal-button.grey-on-white:hover {
+    .modal-button.grey-scale:hover {
       background-color: white; }
-      .modal-button.grey-on-white:hover span {
+      .modal-button.grey-scale:hover span {
         color: #0779be !important; }
   .modal-button.lrg {
     padding: 0.75rem; }

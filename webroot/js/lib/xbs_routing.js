@@ -41,8 +41,8 @@ var xbs_routing = {
 		var request = request.split(C.DS);
 		if (request[0] in XBS.routing.routes) {
 			var route = new XtremeRoute(request[0], XBS.routing.routes[request[0]]);
-			// please forgive the dual init functions. It was an insane decision to write the class that way
-			// but it's not pressing to fix and the budget is long spent
+			// please forgive the dual init functions. It was an insane decision to write the "class" that way
+			// I learned how to properly use prototype after the budget was long spent
 			route.__init(request, request[0], event);
 			route.init(request.slice(1));
 			return route;
@@ -176,18 +176,23 @@ xbs_routing.route_groups = {
 			callbacks: {
 				launch: function () {
 					XBS.routing.cake_ajax_response(this.deferal_data, {
-						callback: function(response) {
-							XBS.cart.init(response.data.Cart);
-						}
-					});
+						callback: function(response) { XBS.cart.init(response.data.Cart) }
+					}, true, true);
 				}
 			}
 		},
 		set_user_address: {
-			params: ['id'],
+			params: ['id', 'action'],
 			callbacks: {
 				params_set: function() {
-					XBS.modal.order_method.populate_address_form(this.read('id'));
+					switch (this.read('action') ) {
+						case 'reveal':
+							XBS.modal.order_method.reveal_user_addresses(this.read('id'));
+							break;
+						case 'set':
+							XBS.modal.order_method.populate_address_form(this.read('id'));
+							break;
+					}
 				}
 			}
 		}
@@ -1050,13 +1055,6 @@ xbs_routing.route_groups = {
 				}
 			}
 		},
-		submit_order_address: {
-			params: { is_splash: {value: null, url_fragment: false}},
-			url: {url: "confirm-address" + C.DS + "session", type: C.GET, defer: false},
-			callbacks: {
-				launch: function () { XBS.validation.submit_address(this);}
-			}
-		},
 		update_menu: {
 			params: { target: {url_fragment: true}, attribute: {url_fragment: true} },
 			url: { url: "orbs" + C.DS + "update_menu", type: C.POST, data: null },
@@ -1114,12 +1112,12 @@ xbs_routing.route_groups = {
 			}
 		},
 		validate_form: {
-			params: ['target', 'context', 'load'],
+			params: ['target', 'context', 'delegate_route'],
 			callbacks: {
-				params: function () {
+				params_set: function () {
 					switch (this.read('target')) {
 						case 'address':
-							XBS.validation.submit_address(this.read('context'), this.read('load'));
+							XBS.validation.submit_address(this.read('context'), this.read('delegate_route'));
 							break;
 					}
 				}
@@ -1253,7 +1251,6 @@ xbs_routing.launch = function (route) {
 	if (route.url.url) {
 		var launch_triggered = false;
 		try {
-			$(XSM.global.loading).removeClass(XSM.effects.fade_out);
 			$.ajax({
 				type: route.url.type ? route.url.type : C.POST,
 				url: [XBS.data.cfg.root, route.url.url].join(C.DS),
@@ -1271,7 +1268,7 @@ xbs_routing.launch = function (route) {
 					// >>> DO PRE-LAUNCH EFFECTS <<<
 					$(XSM.global.loading).addClass(XSM.effects.fade_out);
 					if (route.stash) XBS.menu.stash_menu();
-					if (route.overlay) $(XSM.modal.overlay).show().removeClass(XSM.effects.fade_out);
+
 					setTimeout(function () {
 						if (debug_this > 2) pr([route, data], route.__debug("launch/success"));
 						if (route.url.defer) {

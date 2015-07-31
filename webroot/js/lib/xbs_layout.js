@@ -26,6 +26,18 @@ var xbs_layout = {
 		detachAnimationTargets: function () { $(as_class(FX.detach)).each(function () { XBS.layout.detach(this);}); },
 		jq_binds: {
 			has_init_sequence: true,
+//			bind_hover_text_switching: function() {
+//				$(C.BODY).on([C.HOVER, C.MOUSEENTER, C.MOUSEOUT, C.MOUSEOVER],  "a.hover-switch span", function(e) {
+//						e.stopPropagation();
+//				});
+//
+//				$(C.BODY).on(C.MOUSEENTER, "a.hover-switch", function(e) {
+//									XBS.layout.hovertext_switch(e.currentTarget);
+//								});
+//				$(C.BODY).on(C.MOUSEOUT, "a.hover-switch", function(e) {
+//					XBS.layout.hovertext_switch(e.currentTarget);
+//				});
+//			},
 			bind_orb_card_config_archiving: function () {
 				$(C.BODY).on(xbs_events.orb_card_refresh, null, null, function (e) {
 					XBS.menu.archive_orb_card_config(e.data);
@@ -192,6 +204,18 @@ var xbs_layout = {
 				$(sel).css(styles).addClass(FX.fastened);
 			}
 			return  (is_array(selector) ) ? selector : $(selector);
+		},
+		hovertext_switch: function(target) {
+			var incoming = $("span.text.inactive", target)[0];
+			var outgoing = $("span.text.active", target)[0];
+			$(outgoing, target).addClass(FX.fade_out);
+			setTimeout(function() {
+				$(incoming).removeClass([FX.hidden, FX.inactive].join(" ")).addClass(FX.active);
+				$(outgoing).removeClass(FX.active).addClass([FX.hidden, FX.inactive].join(" "));
+				setTimeout( function() {
+					$(incoming).removeClass(FX.fade_out);
+				}, 10)
+			}, 300);
 		},
 		match_parent_dimensions: function(element) {
 			var parent = $(element).parent();

@@ -30,7 +30,10 @@
 					<?php } else {?>
 						<h3 class="inline"> <?php if (array_key_exists('firstname', $user) ) echo $user['firstname']; ?></h3>
 						<h3 class="inline"> <?php if (array_key_exists('lastname', $user) ) echo $user['lastname']; ?></h3>
-					<?php } ?>
+						<?php  if (count($user_addresses) > 1) {?>
+						<a id="switch-user-address" class="hidden" href="#" data-route="set_user_address/-1/reveal">Switch Address</a>
+						<?php }
+					} ?>
 					</div>
 					<div class="large-2 columns modal-header">
 
@@ -76,7 +79,8 @@
 				</div>
 			</div>
 		</div>
-		<?php echo $this->Form->create( 'orderAddress', array( 'action' => false, 'inputDefaults' => array("div" => false) ) );?>
+		<?=$this->Form->create( 'orderAddress', [ 'action' => false, 'inputDefaults' => ["div" => false] ] );?>
+		<?=$this->Form->input( 'id', [ 'type' => 'hidden']);?>
 		<div id="user-address-form" class="row <?php if ($auth_user | $this->Session->read('Cart.Service.flags.address_valid') ) echo "fade-out hidden";?>">
 			<div class="large-12 columns">
 				<div class="row">

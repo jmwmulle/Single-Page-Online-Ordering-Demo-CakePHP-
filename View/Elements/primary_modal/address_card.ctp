@@ -15,7 +15,7 @@
 <div class="large-4 columns">
 	<div class="row">
 		<div class="large-12 columns">
-			<div class="address-row" data-route="set_user_address/<?=$address['id'];?>">
+			<div class="address-row" data-route="set_user_address/<?=$address['id'];?>/set">
 				<div class="row">
 					<div class="large-12 columns">
 						<ul id="user-address-<?=$address['id'];?>" class="address">

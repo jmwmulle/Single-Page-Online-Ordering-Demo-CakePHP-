@@ -466,6 +466,15 @@ if (!String.prototype.toTitleCase) {
 		return string_name.toUpperCase();
 	}
 
+	function camel_to_snake(str) {
+		return str.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+	}
+
+	function title_to_snake(str) {
+		str = str_to_lower(str[0]) + str.slice(1);
+		return str.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+	}
+
 	function title_case(string_name) {
 		string_name = string_name.replace('_', ' ').split(' ');
 		for (var i = 0; i < string_name.length; i++) string_name[i] = ucfirst(string_name[i]);

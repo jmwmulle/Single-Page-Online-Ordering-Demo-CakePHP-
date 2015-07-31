@@ -18,15 +18,15 @@
 		private $cart_template = [ 'Order'   => [ ],
 		                           'User' => [
 		                           		'firstname' => "Jimmy",
-		                           		'lastname' => "TheKids",
+		                           		'lastname' => "TheKid",
 		                           		'email' => "jimmy-the-kid@jimmyserv.com",
 		                           		"email_verified" => true,
 		                           		"Address" => [['id' => 0,
-		                           					'firstname'=> "Jimmy",
+		                           					  'firstname'=> "Jimmy",
 		                                              'lastname' => "TheKid",
 		                                              'address' => "1234 Somewhere",
 		                                              'address_2' => "Apt. 7",
-		                                              'phone' => "9025551111",
+		                                              'phone' => 9027187019,
 		                                              'email' => "heyo_i_have_a_damn_long_email_of_ffs_i_hate_these_peopel@gmail.com",
 		                                              'building_type' => "Apartment",
 		                                              'note' => "You'll have to answer all 3 of the troll's questions to enter...",
@@ -34,11 +34,12 @@
 		                                              'delivery_time' => null,
 		                                              'city' => "Halifax",
 		                                              'province' => "Nova Scotia"],
-		                           				['id'=>1,'firstname'=> "Jimmy",
+		                           				[     'id'=>1,
+					                                  'firstname'=> "Jimmy",
 		                                              'lastname' => "TheKid",
 		                                              'address' => "123-6B MyHouse St.",
 		                                              'address_2' => null,
-		                                              'phone' => "9025551111",
+		                                              'phone' => 9027187019,
 		                                              'email' => "better_address@hotmail.com",
 		                                              'building_type' => "House",
 		                                              'note' => null,
@@ -46,13 +47,14 @@
 		                                              'delivery_time' => null,
 		                                              'city' => "Halifax",
 		                                              'province' => "Nova Scotia"],
-		                           				['id'=> 2, 'firstname'=> "Jimmy",
+		                           				[     'id'=> 2,
+					                                  'firstname'=> "Jimmy",
 		                                              'lastname' => "TheKid",
 		                                              'address' => "1 Topstreet Row",
 		                                              'address_2' => "Department of Long Addresses, Excessive Address Building, 3rd Floor",
-		                                              'phone' => "9021115555",
+		                                              'phone' => 9027187019,
 		                                              'email' => "best_email@gmail.com",
-		                                              'building_type' => "Office / Other",
+		                                              'building_type' => "Office/Other",
 		                                              'note' => "Take the elevator to the third floor then scream for assistance",
 		                                              'postal_code' => "B2G5T9",
 		                                              'delivery_time' => null,
@@ -63,23 +65,24 @@
 		                                          'item_count'   => 0,
 		                                          'receipt_rows' => 0,
 		                                          'hst'          => 0 ],
-		                           'Service' => [ 'deliverable'  => false,
+		                           'Service' => [ 'deliverable'  => true,
 		                                          'order_method' => JUST_BROWSING,
-		                                          'address'      => [ 'address'       => null,
-		                                                              'address_2'     => null,
-		                                                              'postal_code'   => null,
-		                                                              'building_type' => null,
-		                                                              'phone'         => null,
-		                                                              'note'          => null,
-		                                                              'city'          => 'Halifax',
-		                                                              'province'      => 'NS',
-		                                                              'delivery_time' => null,
+		                                          'address'      => [ 'id'            => null,
 		                                                              'firstname'     => null,
-		                                                              'lastname'      => null ],
+		                                                              'lastname'      => null,
+			                                                          'address'       => null,
+		                                                              'address_2'     => null,
+		                                                              'phone'         => null,
+		                                                              'email'         => null,
+		                                                              'building_type' => null,
+		                                                              'note'          => null,
+		                                                              'postal_code'   => null,
+		                                                              'delivery_time' => null,
+		                                                              'city'          => 'Halifax',
+		                                                              'province'      => 'NS'],
 		                                          'flags'        => [
 			                                          "user_address_set"     => false,
 			                                          "address_valid"        => null,
-			                                          "request_address_save" => null
 		                                          ] ]
 		];
 
@@ -428,10 +431,8 @@
 		public function review_order() {
 			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = 'ajax';
-				$cart         = $this->Session->read( 'Cart' );
-				if ( empty( $cart ) ) {
-					return $this->redirect( '/' );
-				}
+				$this->set("masthead", [ 'header' => "Review Your Order",
+				                         'subheader' => "So close to food you can almost taste it..."]);
 			} else {
 				return $this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
 			}
@@ -588,28 +589,24 @@
 		 * @param $request_context
 		 * @param $method
 		 */
-		public function order_method( $method, $request_context ) {
+		public function order_method( $request_context, $method  ) {
 			if ( $this->is_ajax_post() ) {
 				$this->init_cart();
+
+				// depending on where this was called in the menu UI, fire different routes on reply
+				$delegate_routes = [
+					"review" => [ DELIVERY => "order".DS."review", PICKUP => "order".DS."review"],
+					"splash" => [ DELIVERY => "menu", PICKUP => "menu"],
+					"menu"   => [ DELIVERY => "confirm_address".DS."menu".DS."false", PICKUP => null]
+				 ];
+
 				$response = [ "success" => true,
 				              "error" => false,
-				              "delegate_route" => null,
+				              "delegate_route" => $delegate_routes[$request_context][$method],
 				              "data" => ["Cart" => $this->Session->read( "Cart" ),
 				                         "method" => $method,
 				                         "request_context" => $request_context]
 				              ];
-				// depending on where this was called in the menu UI, fire different routes on reply
-				switch ($request_context) {
-					case "review":
-						$response['delegate_route'] = "order".DS."review";
-						break;
-					case "splash":
-						$response['delegate_route'] = "menu";
-						break;
-					default:
-						$response['delegate_route'] = "confirm_address".DS."menu".DS."false";
-				}
-
 
 				$this->Session->write( "Cart.Service.order_method", $method );
 
@@ -630,6 +627,20 @@
 		}
 
 		/**
+		 * @param      $address_id
+		 * @param bool $return_address
+		 *
+		 * @return bool
+		 */
+		function address_on_file($address_id, $return_address = true) {
+			$addresses_on_file = $this->Session->read('Cart.User.Address');
+			foreach ($addresses_on_file as $address) {
+				if ($address_id == $address['id']) return $return_address ?  $address : true;
+			}
+			return false;
+		}
+
+		/**
 		 * @param null $scope
 		 *
 		 * @return mixed
@@ -643,70 +654,36 @@
 
 					return $this->render( 'confirm_address' );
 				}
-				$data     = $this->request->data;
-				$response = [ 'success' => true, 'error' => false, 'data' => $data ];
-				switch ( $scope ) {
-					case CONF_ADR_DB:
-						if ( $this->Auth->loggedIn() ) {
-							$conditions = [ 'conditions' => [ 'Address.user_id' => $this->Auth->user( 'id' ),
-							                                  'Address.id'      => $data[ 'address_id' ] ] ];
-							$this->Session->write( 'Cart.address', $this->Address->find( 'first', $conditions ) );
+				$data     = $this->request->data['orderAddress'];
 
-							$this->Session->write( 'Cart.Order.address_checked', true );
-						} else {
-							$response[ 'success' ] = false;
-							$response[ 'error' ]   = "User not logged in.";
-						};
-						break;
-					case CONF_ADR_DB_UPD:
-						if ( $this->Auth->loggedIn() ) {
-							$conditions = array( 'conditions' => array( 'User.id' => $this->Auth->user[ 'id' ] ) );
-							$this->User->find( 'first', $conditions );
-							if ( array_key_exists( 'address_id', $data ) ) {
-								$conditions = array( 'conditions' => array( 'Address.user_id' => $this->Auth->user[ 'id' ],
-								                                            'Address.id'      => $data[ 'address_id' ] ) );
-								$address    = $this->Address->find( 'first', $conditions );
-								$address    = array_merge( $address, $data[ 'orderAddress' ] );
-								$to_save    = array( 'User' => $this->User, 'Address' => $address );
-							} else {
-								$to_save = array( 'User' => $this->User, 'Address' => $data[ 'orderAddress' ] );
-							}
-							if ( $this->User->saveAssociated( $to_save ) ) {
-								// I always need all the keys, it's just a lot easier than manually checking
-								$this->set( "response", array( "success" => true,
-								                               "address" => $data[ 'orderAddress' ],
-								                               "error"   => false )
-								);
-							} else {
-								$this->set( "response", array( "success" => false,
-								                               "address" => false,
-								                               "error"   => "Data could not be saved." )
-								);
-							}
-						} else {
-							$this->set( "response", array( "success" => false,
-							                               "address" => false,
-							                               "error"   => "User not logged in." )
-							);
-						};
-						break;
-					case CONF_ADR_SESSION:
-						if ( !empty( $data[ 'orderAddress' ] ) ) {
-							$this->Session->write( 'Cart.Order.address', $data[ 'orderAddress' ] );
-							$this->Session->write( 'Cart.Order.email', $data[ 'orderAddress' ][ 'email' ] );
-							$this->Session->write( 'Cart.Order.delivery_instructions', $data[ 'orderAddress' ][ 'delivery_instructions' ] );
-						} else {
-							$this->Session->write( 'Cart.Order.triedToSetEmptyAddress', true );
-						}
-						$this->Session->write( 'Cart.Order.address_checked', true );
-						$this->set( "response", array( "success" => true,
-						                               "address" => $data [ 'orderAddress' ],
-						                               "error"   => false
-						                      )
-						);
-						break;
+				// naughty attempts to hack must has fail
+				if ( !$this->Auth->loggedIn() ) {
+					$data['id'] = -1;
+					$scope = CONF_ADR_SESSION;
 				}
-				$this->render( 'confirm_address_reply' ); // this is the JSON reply; this is more reliable for some reason
+
+				$response = [ 'success' => true, 'error' => false, 'data' => ["submitted_data" => $data,
+				                                                              "scope" => $scope,
+				                                                              "testing" => null
+				] ];
+
+				$adr_on_file = $this->address_on_file($data['id']);
+
+				if ($scope == CONF_ADR_DB and !$adr_on_file ) {
+						$response[ 'success' ] = false;
+						$response[ 'error' ]   = "Address with that id not on file or does not belong to User.";
+				};
+				if ($scope == CONF_ADR_DB_UPD and $data != $adr_on_file) {
+					if ( !$this->Address->save( $data ) ) {
+						$response['success'] = false;
+						$response['error'] = $this->User->validationErrors;
+					}
+					if ($adr_on_file and $data['id'] != $adr_on_file['id']) $data['id'] = $this->Address->getInsertId();
+				}
+				$this->Session->write("Cart.Service.address", $data);
+				$this->Session->write("Cart.Service.flags.address_valid", true);
+				$response['data']['Cart'] = $this->Session->read('Cart');
+				$this->render_ajax_response($response);
 			} else {
 				return $this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
 			}

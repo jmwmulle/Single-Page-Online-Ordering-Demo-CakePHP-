@@ -462,3 +462,10 @@ span.tiny-opt, span.tiny-opt-label {
      margin:0.5rem;
    }
  }
+
+ span.information {
+   display:block;
+   font-size:rem-calc(12px);
+   line-height: rem-calc(14px);
+  @include HelveticaMdCn;
+ }

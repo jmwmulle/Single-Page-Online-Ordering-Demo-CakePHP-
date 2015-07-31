@@ -452,12 +452,12 @@ var xbs_menu = {
 		},
 		set_order_method: function (method) {
 			if (method)  {
-				XBS.data.order.order_method = method;
+				XBS.data.Service.order_method = method;
 			} else {
-				method = XBS.data.order.order_method;
+				method = XBS.data.Service.order_method;
 			}
 			if (!method) {
-				XBS.data.order.order_method = C.JUST_BROWSING;
+				XBS.data.Service.order_method = C.JUST_BROWSING;
 				method = C.JUST_BROWSING;
 			}
 			$(XSM.menu.user_activity_panel_items).each(function () {

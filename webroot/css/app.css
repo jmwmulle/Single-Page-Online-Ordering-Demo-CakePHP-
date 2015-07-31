@@ -4950,6 +4950,12 @@ span.tiny-opt {
   line-height: 1rem;
   margin: 0.5rem; }
 
+span.information {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 0.875rem;
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif; }
+
 @media only screen and (min-width:64.063em) {
   body, html, main, nav {
     overflow: hidden !important; } }
@@ -6022,6 +6028,8 @@ div.view-cart-row.total * {
       -webkit-transform: translateY(0.25rem) !important;
       font-size: 1.6em;
       padding-right: 1rem; }
+    .modal-button span.hidden {
+      display: none; }
     .modal-button span[class*="-arrow-"] {
       padding: 0; }
     .modal-button span.icon-circle-arrow-l, .modal-button span.icon-tab-arrow-l {
@@ -6110,6 +6118,15 @@ div.view-cart-row.total * {
       background-color: transparent; }
       .modal-button.secondary:hover span {
         color: #b4b4b4 !important; }
+  .modal-button.hover-switch span.hover {
+    display: none;
+    opacity: 0; }
+  .modal-button.hover-switch:hover span.unhover {
+    display: none;
+    opacity: 0; }
+  .modal-button.hover-switch:hover span.hover {
+    display: inline-block;
+    opacity: 1; }
 
 ul.activizing li.active .modal-button {
   background-color: #faea06; }

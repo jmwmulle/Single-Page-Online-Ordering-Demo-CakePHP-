@@ -3,13 +3,11 @@
  */
 var xbs_validation = {
 		init: function () { return true;},
-		submit_address: function (route, secondary_route) {
+		submit_address: function (context, delegate_route) {
 			var debug_this = 2;
-			if (debug_this > 0) pr(route, "XBS.validation.submit_address(route)", 2);
-			var context = route.read("context");
-			var method = route.read("method");
+			if (debug_this > 0) pr([context, delegate_route], "XBS.validation.submit_address(route)", 2);
 			$(XSM.forms.order_address_form).validate({
-				debug: false,
+				debug: true,
 				rules: {
 					"data[orderAddress][firstname]": "required",
 					"data[orderAddress][phone]": {required: true, phoneUS: true},
@@ -21,8 +19,8 @@ var xbs_validation = {
 					"data[orderAddress][firstname]": "Well we have to call you <em>something!</em>",
 					"data[orderAddress][email]": "No spam, promise—just for sending receipts!",
 					"data[orderAddress][phone]": {
-						required: "We'll need route in case there's a problem with your order.",
-						phoneUS: "Jusst ten little digits, separated by hyphens if you like..."},
+						required: "We'll need this in case there's a problem with your order.",
+						phoneUS: "Just ten little digits, separated by hyphens if you like..."},
 					"data[orderAddress][address]": "It's, err, <em>delivery</em> after all...",
 					"data[orderAddress][postal_code]": {
 						required: "This is how we check if you're in our delivery area!",
@@ -35,20 +33,26 @@ var xbs_validation = {
 						type: C.POST,
 						url: "confirm-address/session",
 						data: $(XSM.forms.order_address_form).serialize(),
-						success: function (data) {
-							if (debug_this > 1) pr(data, 'XBS.validation.submit_address()->confirm_address_validation', 2);
+						success: function (response) {
+							if (debug_this > 1) pr(response, 'XBS.validation.submit_address()->confirm_address_validation', 2);
 							try {
-								data = $.parseJSON(data);
-								xbs_data.user.address = data.address;
+								response.delegate_route = delegate_route;
+								XBS.routing.cake_ajax_response(response, {
+									callback: function(response) {
+										XBS.layout.dismiss_modal(XSM.modal.primary);
+										XBS.data.Service = response.cart.Service;
+									}
+								}, true, true);
+
 							} catch (e) {
+								pr(e, null, true);
 								// todo: something... with... this... eror?
 							}
-							XBS.layout.dismiss_modal(XSM.modal.primary);
-							if (secondary_route) {
-								setTimeout(function () {
-									$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: secondary_route, trigger: route.trigger.event});
-								}, 300);
-							}
+//							if (delegate_route) {
+//								setTimeout(function () {
+//									$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: delegate_route, trigger: {}});
+//								}, 300);
+//							}
 						}
 					});
 				}

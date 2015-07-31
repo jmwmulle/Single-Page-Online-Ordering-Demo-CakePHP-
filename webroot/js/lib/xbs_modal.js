@@ -11,6 +11,17 @@ var xbs_modal = {
 		return true;
 	},
 	order_method: {
+		reveal_user_addresses: function() {
+			$("#user-address-form", C.BODY).addClass(FX.fade_out);
+			setTimeout( function() {
+				$("#switch-user-address", C.BODY).addClass(FX.hidden);
+				$("#user-address-form", C.BODY).addClass(FX.hidden);
+				$("#user-address-select", C.BODY).removeClass(FX.hidden);
+					setTimeout( function() {
+						$("#user-address-select", C.BODY).removeClass(FX.fade_out);
+					}, 10);
+			}, 300);
+		},
 		populate_address_form: function( address_id ) {
 			var address = null;
 			for ( var index in XBS.data.User.Address) {
@@ -22,7 +33,27 @@ var xbs_modal = {
 						$("#user-address-select", C.BODY).addClass(FX.hidden);
 						$("#user-address-form", C.BODY).removeClass(FX.hidden);
 						setTimeout( function() {
-								$("#user-address-form", C.BODY).removeClass(FX.fade_out)
+								var form_elements = $("#orderAddressForm")[0];
+								for (var i = 1; i < form_elements.length; i++) {
+									var field_id = $(form_elements[i]).attr('id');
+									var address_component = title_to_snake(field_id.match( /^orderAddress(.*)$/)[1]);
+									if (address_component == "address2") address_component = "address_2";
+									if (address_component in address) {
+										if (address_component != "building_type") {
+											$(as_id(field_id), XSM.modal.primary).val(address[address_component]);
+										} else {
+											$(as_id(field_id) + " option", XSM.modal.primary).each(function() {
+												if ( $(this).html() == address[address_component] ) {
+													$(this).attr("selected", true);
+												} else {
+													$(this).removeAttr("selected");
+												}
+											})
+										}
+									}
+									$("#switch-user-address", C.BODY).removeClass(FX.hidden);
+									$("#user-address-form", C.BODY).removeClass(FX.fade_out);
+								};
 						}, 10)
 				}, 300);
 			}
