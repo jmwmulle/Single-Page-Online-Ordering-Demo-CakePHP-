@@ -121,7 +121,8 @@ class PricelistsController extends AppController {
 				}
 				$this->render_ajax_response($response);
 			} else {
-				$this->set('pricelist', $this->Pricelist->find('first', ['conditions' => ['`pricelist`.`id`' => $id]]));
+				$pricelist =  $this->Pricelist->find('first', ['conditions' => ['id' => $id]]);
+				$this->set(compact('pricelist'));
 				$this->render('vendor_edit', 'ajax');
 			}
 		} else {
