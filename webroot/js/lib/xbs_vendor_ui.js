@@ -112,7 +112,7 @@ var xbs_vendor_ui = {
 	},
 	edit_orbopt_pricelist: function() {
 		var url = ["edit-orbopt-pricing", $("#orbopt-pricelist-select").val()].join(C.DS);
-		$("#orbopt-pricelist-add-container").load(url, function() { XBS.vendor_ui.toggle_pricelist_add("reveal", true); });
+		$("#orbopt-pricelist-add-container").load([XBS.data.cfg.root,url].join(C.DS), function() { XBS.vendor_ui.toggle_pricelist_add("reveal", true); });
 	},
 	toggle_pricelist_add: function(state, preserve_fields) {
 		if (!preserve_fields || state != "reveal") {

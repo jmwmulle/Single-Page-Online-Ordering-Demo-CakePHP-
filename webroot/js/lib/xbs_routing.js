@@ -101,9 +101,6 @@ xbs_routing.route_groups = {
 									defer: true,
 									data: $("#orbopt-pricelist-add-edit-form").serialize()
 								};
-								this.set_callback("launch", function () {
-																XBS.routing.cake_ajax_response(this.deferal_data, {}, true, true);
-															});
 							} else {
 								XBS.vendor_ui.edit_orbopt_pricelist();
 							}
@@ -1415,18 +1412,6 @@ xbs_routing.cake_ajax_response = function (deferal_data, success_handler, print_
 
 };
 
-/**
- *
- * @param deferal_data
- */
-xbs_routing.reveal_cake_error = function (deferal_data) {
-	$("div#cake-error-overlay", C.BODY).on(C.CLK, function () {
-		$("div#cake-error-overlay", C.BODY).addClass(FX.true_hidden);
-	});
-	if (deferal_data.substr(0, 4) == "<pre") {
-		$("div#cake-error-overlay", C.BODY).html(deferal_data).removeClass(FX.true_hidden);
-	}
-}
 
 /**
  *
