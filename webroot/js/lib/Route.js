@@ -25,7 +25,7 @@ function XtremeRoute(name, data) {
 	// behaviors
 	this.stash = false;
 	this.overlay = false;
-	this.__stop_propagation = false;
+	this.__stop_propagation = true;
 
 	/**
 	 * class initiation
@@ -47,6 +47,13 @@ function XtremeRoute(name, data) {
 			this.modal_content = data.modal + "-content";
 		}
 		if ("url" in data) { this.set_url(data.url) }
+
+		if ("propagates" in data) {
+			if (data.propagates == false) {
+				this.__stop_propagation = true;
+			}
+		}
+		this.stop_propagation();
 
 		if ("params" in data) {
 			this.params = {};
@@ -313,7 +320,10 @@ function XtremeRoute(name, data) {
 	 * @returns {boolean|*}
 	 */
 	this.stop_propagation = function () {
-		if (this.__stop_propagation) this.trigger.event.stopPropagation();
+		// if execute from jQuery.trigger() event will be an empty object
+		if (this.__stop_propagation && isEvent(this.trigger.event) ) {
+			this.trigger.event.stopPropagation();
+		}
 		return this.__stop_propagation;
 	}
 
@@ -354,6 +364,12 @@ function XtremeRoute(name, data) {
 	 * @returns {*}
 	 */
 	this.unset = function (attr) {
+		if ( is_array(attr) ) {
+			for (var i in attr) {
+				this.unset(attr[i]);
+			}
+			return;
+		}
 		if (in_array(attr, ["launch", "params_set", "post_init"])) attr += "_callback";
 		// todo: make this recursive one day so you can unset url.url.etc.
 		if (attr in this) {

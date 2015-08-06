@@ -27,7 +27,7 @@
 				<div class="large-7 columns"><span class="cart-row-item-title"><?= $orb[ 'title' ]; ?></span></div>
 				<div class="large-2 columns text-center"><span><?= $pricing[ 'quantity' ]; ?></span></div>
 				<div class="large-2 columns "><span><?=money_format( "%#3.2n", $pricing[ 'net' ] ); ?></span></div>
-				<div class="large-1 columns text-center"><span class="icon-cancel"></div>
+				<div class="large-1 columns text-center data-route="cart_edit/delete/<?=$uid;?>"><span class="icon-cancel"></div>
 			</div>
 
 			<!-- Item Opts-->

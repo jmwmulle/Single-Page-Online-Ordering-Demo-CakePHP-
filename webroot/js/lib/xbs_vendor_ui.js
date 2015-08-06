@@ -13,6 +13,8 @@
  *
  */
 var xbs_vendor_ui = {
+	orbopt_pricelist_id:-1,
+
 	init: function () {
 		XBS.vendor_ui.loading_screen(0);
 		XBS.vendor_ui.fix_breakouts();
@@ -32,14 +34,10 @@ var xbs_vendor_ui = {
 	},
 	fix_breakouts: function() {
 		$(FX.breakout).each(function () {
-//			pr([this, $(this).innerWidth(), $(this).innerHeight(), $(window).width(), $(window).height()]);
-//			var temp_class_removal = [stripCSS(FX.breakout), FX.hidden].join(" ");
-//			$(this).removeClass( temp_class_removal );
 			$(this).css({
 				left: (0.5 * $(window).width() - 400) + "px", // all breakouts are 800px wide, vendor.scss ~L514
 				top: "300px"
 			})
-//			$(this).addClass( temp_class_removal );
 		});
 	},
 	data_tables: function (table) {
@@ -75,15 +73,8 @@ var xbs_vendor_ui = {
 				autoWidth: false,
 				columns: tables[table]
 		});
-
 	},
 
-	edit_orb: function (orb_id, attribute) {
-		var cell_id = as_id(["orb", orb_id, attribute].join("-"));
-		$(XSM.vendor_ui.orb_attr_display, cell_id).addClass(FX.hidden);
-		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(FX.fade_out).removeClass(FX.hidden);
-		setTimeout(function () { $(XSM.vendor_ui.orb_attr_edit, cell_id).removeClass(FX.fade_out); }, 30);
-	},
 	save_orb: function (orb_id, attribute, replacement) {
 		var cell_id = as_id(["orb", orb_id, attribute].join("-"));
 		var saved_value = null;
@@ -112,24 +103,86 @@ var xbs_vendor_ui = {
 				$(cell_id).html(replacement);
 				break;
 		}
-		XBS.vendor_ui.cancel_editing(orb_id, attribute)
+		XBS.vendor_ui.cancel_cell_editing('orb', orb_id, attribute);
 	},
-	cancel_editing: function (orb_id, attribute) {
-		var cell_id = as_id(["orb", orb_id, attribute].join("-"));
-		$(XSM.vendor_ui.orb_attr_display, cell_id).removeClass(FX.hidden);
-		$(XSM.vendor_ui.orb_attr_edit, cell_id).addClass(FX.hidden);
+	set_orbopt_pricelist_focus: function() {
+		$("#orbopt-pricelist-add input[name='Pricelist[id]']", C.BODY).val($("#orbopt-pricelist-select").val());
+		XBS.vendor_ui.toggle_pricelist_add("stow");
+		$( "#orbopt-pricelist-buttons .modal-button.disabled", C.BODY).removeClass(FX.disabled).addClass(FX.enabled);
 	},
-	edit_orbopt: function (orbopt_id, attribute) {
-		var cell_id = as_id(["orbopt", orbopt_id, attribute].join("-"));
-		if (attribute == "pricing") {
-			var select_id = as_id(["orbopt", orbopt_id, "pricelist"].join("-"));
-			var route = ["orbopt_edit", orbopt_id, 'save', 'pricing'].join(C.DS);
-			return $(XBS.routing).trigger(C.ROUTE_REQUEST, {request:route, trigger:{}});
-		} else {
-			$(XSM.vendor_ui.orbopt_attr_display, cell_id).addClass(FX.hidden);
-			$(XSM.vendor_ui.orbopt_attr_edit, cell_id).removeClass(FX.hidden);
-			setTimeout(function () { $(XSM.vendor_ui.orbopt_attr_edit, cell_id).removeClass(FX.fade_out); }, 30);
+	edit_orbopt_pricelist: function() {
+		var url = ["edit-orbopt-pricing", $("#orbopt-pricelist-select").val()].join(C.DS);
+		$("#orbopt-pricelist-add-container").load(url, function() { XBS.vendor_ui.toggle_pricelist_add("reveal", true); });
+	},
+	toggle_pricelist_add: function(state, preserve_fields) {
+		if (!preserve_fields || state != "reveal") {
+			$("input", "#orbopt-pricelist-add-container").each(function() { $(this).val("");});
 		}
+		if (state == "reveal") {
+			$( ".modal-button.enabled", "#orbopt-pricelist-buttons").removeClass(FX.enabled).addClass(FX.disabled);
+			$("#orbopt-pricelist-add-container").removeClass(FX.hidden);
+			setTimeout(function() { $("#orbopt-pricelist-add-container").removeClass(FX.fade_out); }, 10);
+		}
+		if (state == "stow") {
+			$("#orbopt-pricelist-add-container").addClass(FX.fade_out);
+			setTimeout(function() { $("#orbopt-pricelist-add-container").addClass(FX.hidden); }, 300);
+		}
+	},
+	delete_orbopt_pricelist: function(action) {
+		var pricelist_id = $("#orbopt-pricelist-select").val();
+		switch (action) {
+			case "confirm":
+				$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:["orbopt_pricelist", "delete","delete", pricelist_id].join(C.DS), trigger:{}});
+				break;
+			case "warn":
+				$("#delete-orbopt-pricelist-confirmation").removeClass(FX.hidden);
+				setTimeout(function() { $("#delete-orbopt-pricelist-confirmation").removeClass(FX.fade_out); }, 10);
+				break;
+			case "cancel":
+				$("#delete-orbopt-pricelist-confirmation").addClass(FX.fade_out);
+				setTimeout(function() { $("#delete-orbopt-pricelist-confirmation").addClass(FX.hidden); }, 300);
+				break;
+			case "print_opts":
+				XBS.vendor_ui.delete_orbopt_pricelist("cancel"); // close the cancellation warning
+				XBS.vendor_ui.reload_orbopt_pricelist_config();
+				break;
+		};
+	},
+	reload_orbopt_pricelist_config: function() {
+		var opt_id = $("#orbopt-pricelist-select-form", C.BODY).data('opt');
+		$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:["orbopt_pricelist","launch","false",opt_id].join(C.DS), trigger:{}});
+	},
+	edit_cell: function (table, id, attribute) {
+		var display_element = XSM.vendor_ui.orb_attr_display;
+		var edit_element = XSM.vendor_ui.orb_attr_edit;
+		var cell_id = as_id([table, id, attribute].join("-"));
+		if (table == "orbopt") {
+			display_element = XSM.vendor_ui.orbopt_attr_display;
+			edit_element = XSM.vendor_ui.orbopt_attr_edit;
+		}
+		pr([table, id, attribute, cell_id], "edit_cell");
+		$(display_element, cell_id).addClass(FX.fade_out);
+		setTimeout( function() {
+			$(display_element, cell_id).addClass(FX.hidden);
+			$(edit_element, cell_id).removeClass(FX.hidden);
+			setTimeout(function () { $(edit_element, cell_id).removeClass(FX.fade_out); }, 30);
+		}, 300);
+	},
+	cancel_cell_editing: function (table, id, attribute) {
+		var display_element = XSM.vendor_ui.orb_attr_display;
+		var edit_element = XSM.vendor_ui.orb_attr_edit;
+		var cell_id = as_id([table, id, attribute].join("-"));
+		if (table == "orbopt") {
+			display_element = XSM.vendor_ui.orbopt_attr_display;
+			edit_element = XSM.vendor_ui.orbopt_attr_edit;
+		}
+		pr([table, id, attribute, cell_id], "cancel_cell_editing");
+		$(edit_element, cell_id).addClass(FX.fade_out);
+		setTimeout(function() {
+			$(edit_element, cell_id).addClass(FX.hidden);
+			$(display_element, cell_id).removeClass(FX.hidden);
+			setTimeout(function() { $(display_element, cell_id).removeClass(FX.fade_out);}, 30)
+		}, 300);
 	},
 	save_orbopt: function(response, data) {
 		var cell_id;
@@ -148,17 +201,7 @@ var xbs_vendor_ui = {
 				break;
 		}
 		if ("replacement" in data) $(XSM.vendor_ui.orbopt_attr_display, cell_id).html(data.replacement);
-		XBS.vendor_ui.cancel_orbopt_edit(data.id, data.attribute);
-	},
-	cancel_orbopt_edit: function (orbopt_id, attribute) {
-		var cell_id = as_id(["orbopt", orbopt_id, attribute].join("-"));
-		if (attribute == "pricing") {
-			$("input.pricelist", XSM.vendor_ui.orbopt_pricelist_add).each(function() { $(this).val('');});
-			$(XSM.vendor_ui.orbopt_pricelist_add, C.BODY).addClass([FX.hidden, FX.fade_out].join(" "));
-		} else {
-			$(XSM.vendor_ui.orbopt_attr_display, cell_id).removeClass(FX.hidden);
-			$(XSM.vendor_ui.orbopt_attr_edit, cell_id).addClass(FX.hidden);
-		}
+		XBS.vendor_ui.cancel_cell_editing("orbopt", data.id, data.attribute);
 	},
 	toggle_orbopt_group: function (orbcat_id) {
 		orbcat_id = Number(orbcat_id);

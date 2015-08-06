@@ -227,6 +227,8 @@
 		 */
 		public function menu($orbcat_id = null, $orb_id = null, $return = false) {
 			$this->set_page_name( 'menu' );
+			$this->requestAction("orders/init_cart");
+//			$this->Order->init_cart();
 			$refreshing = false;  // ie. refreshing the orbcard menu with a new orbcat
 			if ( $this->request->is( "ajax" ) ) {
 				$this->layout = 'ajax';

@@ -152,13 +152,19 @@ class OrboptsController extends AppController {
 
 	public function update($id, $attribute) {
 		if ($this->request->is('ajax') && $this->request->is('post') ) {
-			$response = ['success' => true, 'error' => false, 'submitted_data' => array('id' => $id,
-	                                                                               'attribute' => $attribute,
-	                                                                               'data' => $this->request->data)];
+			$response = ['success' => true,
+			             'error' => false,
+			             'delegate_route' => null,
+			             'submitted_data' => ['id' => $id,
+                                                   'attribute' => $attribute,
+                                                   'data' => $this->request->data]];
 			if ( !$this->Orbopt->exists($id) && $attribute != "pricing" ) {
 				$response['success'] = false;
 				$response['error'] = "Orbopt doesn't exist!";
 			}
+
+			if ($attribute == "pricing") $response['delegate_route'] = "close_modal/primary";
+
 
 			$this->Orbopt->id = $id;
 			if (!$this->Orbopt->save($this->request->data) ) {
@@ -171,18 +177,6 @@ class OrboptsController extends AppController {
 		}
 	}
 
-	public function pricelist_add() {
-		if ($this->request->is('ajax') && $this->request->is('post') ) {
-			$response = ['success' => true, 'error' => false, 'submitted_data' => $this->request->data];
-			$this->loadModel('Pricelist');
-			if (!$this->Pricelist->save($this->request->data) ) {
-				$response['success'] = false;
-				$response['error'] = $this->Pricelist->validationErrors;
-			}
-			$this->render_ajax_response($response);
-		} else {
-			$this->redirect(___cakeUrl('orbcats', 'menu'));
-		}
-	}
+
 
 }

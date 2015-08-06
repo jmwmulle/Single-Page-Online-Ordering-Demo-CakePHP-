@@ -30,6 +30,7 @@ var XSM = {
 		active_by_default: "default",
 		breakout: ".breakout",
 		checked: "icon-checked",
+		cancel: "cancel",
 		active_plus: "active-plus",
 		detach: "detach",
 		disabled: "disabled",
@@ -145,6 +146,7 @@ var XSM = {
 		user_activity_panel_items: "#user-activity-panel li"
 	},
 	modal: {
+		button: ".modal-button",
 		close_modal: "#close-modal",
 		confirm_address_login_panel: "#confirm-address-login-panel",
 		default_content: ".default-content",

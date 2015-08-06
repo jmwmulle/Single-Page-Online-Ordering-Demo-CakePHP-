@@ -5117,6 +5117,8 @@ img#vendor-home-logo {
 
 table {
   width: 100%; }
+  table td[data-route]:hover {
+    background-color: #faea06; }
 
 table#menu-table tr td, table#menu-table tr th {
   -webkit-touch-callout: none;
@@ -5431,3 +5433,9 @@ span.inactive {
 
 th {
   text-transform: uppercase; }
+
+ul.inline {
+  list-style-type: none;
+  font-size: 0.75rem; }
+  ul.inline li {
+    display: inline-block; }

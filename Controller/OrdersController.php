@@ -80,10 +80,10 @@
 		                                                              'delivery_time' => null,
 		                                                              'city'          => 'Halifax',
 		                                                              'province'      => 'NS'],
-		                                          'flags'        => [
-			                                          "user_address_set"     => false,
-			                                          "address_valid"        => null,
-		                                          ] ]
+		                                          "address_valid"        => null,
+		                                          "address_set"          => false,
+		                                          "unsaved"              => null
+		                                          ]
 		];
 
 		public $components = array(
@@ -231,11 +231,12 @@
 			$this->init_cart();
 			if ( $this->is_ajax_post() ) {
 				$cart_restore = $this->Session->read( 'Cart' );
-				$response     = array( "success"        => true,
-				                       "error"          => false,
-				                       "cart"           => [ ],
-				                       "submitted_data" => $this->request->data
-				);
+				$response     = [  "success"        => true,
+			                       "error"          => false,
+			                       "data" => [
+				                       "submitted_data" => $this->request->data,
+			                           "Cart" => null]
+				];
 
 				// process the item, price it and write it to the cart
 				foreach ( $this->request->data[ 'Order' ] as $orb ) {
@@ -261,7 +262,7 @@
 					}
 				}
 
-				$response[ 'cart' ] = $this->Session->read( 'Cart' );
+				$response['data'][ 'Cart' ] = $this->Session->read( 'Cart' );
 				$this->render_ajax_response( $response );
 			} else {
 				return $this->redirect( cakeUrl( array( "controller" => 'menu', "action" => null ) ) );
@@ -278,7 +279,10 @@
 			if ( $this->is_ajax_get() ) {
 				$this->Cart->clear();
 				$this->init_cart();
-				$this->render_ajax_response( [ 'success' => true, 'error' => false, 'data' => false ] );
+				$this->render_ajax_response( [ 'success' => true,
+				                               'error' => false,
+				                               'delegate_route' => "close_modal/primary",
+				                               'data' => false ] );
 			} else {
 				return $this->redirect( cakeUrl( array( "controller" => 'menu', "action" => null ) ) );
 			}
@@ -603,23 +607,27 @@
 				$response = [ "success" => true,
 				              "error" => false,
 				              "delegate_route" => $delegate_routes[$request_context][$method],
-				              "data" => ["Cart" => $this->Session->read( "Cart" ),
+				              "data" => ["Cart" => null,
 				                         "method" => $method,
 				                         "request_context" => $request_context]
 				              ];
 
 				$this->Session->write( "Cart.Service.order_method", $method );
 
+
 				if ( $this->Auth->loggedIn() and $method == DELIVERY ) {
 					$options = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
 					$user    = $this->User->find( 'first', $options );
 					if ( $this->Session->read( "Cart.Service.flags.address_valid" ) ) {
+						// if the address is already valid assume they wish to edit it, therefore making it invalid until
+						// it's been edited and rechecked
+						$this->Session->write( "Cart.Service.flags.address_valid", false);
 						if ( !in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] ) ) {
-							$this->Session->write( "Cart.Service.flags.request_save_address", true );
+							$this->Session->write( "Cart.Service.saved", false );
 						}
 					}
 				}
-
+				$response['data']['Cart'] = $this->Session->read( "Cart" );
 				return $this->render_ajax_response( $response );
 			} else {
 				return $this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
@@ -649,6 +657,7 @@
 			if ( $this->request->is( 'ajax' ) ) {
 				// get request returns empty form
 				if ( $this->request->is( 'get' ) ) {
+					$this->Session->write("Cart.Service.address_valid", null);
 					$this->set( [ "header"    => "Delivery! Yay for sitting!",
 					              "subheader" => "But let's confirm your address, yeah?" ] );
 
@@ -664,7 +673,6 @@
 
 				$response = [ 'success' => true, 'error' => false, 'data' => ["submitted_data" => $data,
 				                                                              "scope" => $scope,
-				                                                              "testing" => null
 				] ];
 
 				$adr_on_file = $this->address_on_file($data['id']);
@@ -681,7 +689,8 @@
 					if ($adr_on_file and $data['id'] != $adr_on_file['id']) $data['id'] = $this->Address->getInsertId();
 				}
 				$this->Session->write("Cart.Service.address", $data);
-				$this->Session->write("Cart.Service.flags.address_valid", true);
+				$this->Session->write("Cart.Service.address_set", true);
+				$this->Session->write("Cart.Service.address_valid", true);
 				$response['data']['Cart'] = $this->Session->read('Cart');
 				$this->render_ajax_response($response);
 			} else {

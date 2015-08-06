@@ -6,44 +6,9 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-
+//	db($orbopts);
 ?>
 <div id="menu-options-tab">
-	<!-- New Orbopt Price List form (hidden, breakout) -->
-	<div class="row">
-		<div class="large-12 columns">
-			<a href="#" class="modal-button full-width med" data-route="orbopt_edit/-1/breakout/add_pricelist">
-				<span class="icon-add"></span>
-				<span>Add New Pricing Labels</span>
-			</a>
-			<div id="orbopt-pricelist-add-breakout" class="panel breakout hidden">
-				<h1>Add Option Pricing</h1>
-				<div id='orbopt-pricelist-add' class="orbopts form">
-					<form>
-						<label>Label  (ie. a handy way to re-use this price scheme later)</label>
-						<input type="text" name="Pricelist[label]">
-					<?php for ( $i = 1; $i <= 5; $i++ ) { ?>
-						<div class="price-rank-edit">
-							<div class="price-value">
-								<label>Price <?=$i;?></label>
-								<span>$&nbsp;</span>
-								<input class='pricelist' type='text' name='Pricelist[p<?=$i;?>]' value=''>
-							</div>
-						</div>
-					<?php } ?>
-					<a href="#" class="modal-button bisecting right confirm" data-route="orbopt_pricelist/save">
-						<span class="text">Save</span>
-						<span class="icon-circle-arrow-r"></span>
-					</a>
-					<a href="#" class="modal-button bisecting cancel left" data-route="orbopt_edit/-1/breakout/add_pricelist">
-						<span class="icon-circle-arrow-l"></span>
-						<span class="text">Cancel</span>
-					</a>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
 	<!-- Menu Options tab proper -->
 	<div class="row">
 		<div class="large-12 columns">
@@ -99,8 +64,8 @@
 						$inactive_check = "<span class='icon-check-mark inactive'></span>";
 						?>
 						<tr data-opt="<?=$oid;?>">
-							<td id='orbopt-<?=$oid;?>-vendor-title'>
-								<div class="orbopt-attr display" data-route="orbopt_edit/<?=$oid;?>/edit/vendor-title">
+							<td id='orbopt-<?=$oid;?>-vendor-title' data-route="orbopt_edit/<?=$oid;?>/edit/vendor-title">
+								<div class="orbopt-attr display">
 									<?=$opt[ 'Orbopt' ][ 'vendor_title' ] ?  $opt[ 'Orbopt' ][ 'vendor_title' ] : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"?>
 								</div>
 								<div class="orbopt-attr edit fade-out hidden">
@@ -117,8 +82,8 @@
 									</div>
 								</div>
 							</td>
-							<td id='orbopt-<?=$oid;?>-title'>
-								<div class="orbopt-attr display" data-route="orbopt_edit/<?=$oid;?>/edit/title">
+							<td id='orbopt-<?=$oid;?>-title' data-route="orbopt_edit/<?=$oid;?>/edit/title">
+								<div class="orbopt-attr display" >
 									<?=$opt[ 'Orbopt' ][ 'title' ] ?>
 								</div>
 								<div class="orbopt-attr edit fade-out hidden">
@@ -142,27 +107,11 @@
 								$pl_id = $opt['Pricelist']['id'];
 								echo sprintf("<td id='%s' class='optflag' %s>%s</td>", $id, ___dA($data), $flag_active ? $active_check : $inactive_check);
 							}?>
-							<td>
-								<a href="#" data-route="orbopt_optgroup_config/<?php echo $oid;?>/launch">Click to Choose Categories</a>
+							<td data-route="orbopt_optgroup_config/<?php echo $oid;?>/launch">
+								<a href="#">Choose...</a>
 							</td>
-							<td id="orbopt-<?=$oid;?>-pricing">
-								<form>
-									<select name="Orbopt[pricelist_id]" data-changeroute="orbopt_edit/<?=$oid;?>/edit/pricing">
-										<option> &nbsp; </option>
-										<?php foreach ($opt_pricelists as $pl) {
-											$prices = array_slice($pl, 1, -1);
-											foreach ($prices as $rank => $p) {
-												$prices[$rank] = $p ? money_format( "%#3.2n", $p ) : null;
-											}
-											$p_string = implode(", ", array_filter($prices));
-											if ($pl_id == $pl['id']) {
-												echo sprintf("<option selected='selected' data-default value='%s'>%s: %s</option>", $pl['id'], $pl['label'], $p_string);
-											} else {
-												echo sprintf("<option value='%s'>%s: %s</option>", $pl['id'], $pl['label'], $p_string);
-											}
-										}?>
-									</select>
-								</form>
+							<td id="orbopt-<?=$oid;?>-pricing" data-route="orbopt_pricelist/launch/false/<?=$oid;?>">
+								<a href="#">Choose...</a>
 							<td>
 								<a href="#" class="modal-button lrg delete full-width text-center" data-route="orbopt_config/<?php echo $oid; ?>/delete/confirm">
 									<span class="icon-cancel textless"></span>

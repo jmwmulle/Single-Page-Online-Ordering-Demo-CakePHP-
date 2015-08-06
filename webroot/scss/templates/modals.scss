@@ -177,6 +177,8 @@
 }
 
 // VIEW CART MODAL
+a.cancel:hover span { color: $xtreme-red; }
+
 div.view-cart-row {
   span {
     position : relative;

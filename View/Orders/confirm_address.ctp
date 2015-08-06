@@ -9,11 +9,17 @@
 	$user_addresses = $this->Session->read('Cart.User.Address');
 	if ( empty($user_addresses) ) $user_addresses = false;
 	$address = $this->Session->read('Cart.Service.address');
+	$address_valid = $this->Session->read('Cart.Service.address_valid');
+	$address_set = $this->Session->read('Cart.Service.address_set');
 	$auth_user = $this->Session->read('Auth.User');
 	$user = $this->Session->read('Cart.User');
 
 	// TEST DATA ONLY
 	$auth_user = true;
+	$show_user_addresses = true;
+	if (!$auth_user or $address_set == "add") $show_user_addresses = false;
+
+
 ?>
 
 <div class="row">
@@ -31,7 +37,10 @@
 						<h3 class="inline"> <?php if (array_key_exists('firstname', $user) ) echo $user['firstname']; ?></h3>
 						<h3 class="inline"> <?php if (array_key_exists('lastname', $user) ) echo $user['lastname']; ?></h3>
 						<?php  if (count($user_addresses) > 1) {?>
-						<a id="switch-user-address" class="hidden" href="#" data-route="set_user_address/-1/reveal">Switch Address</a>
+							|
+						<a id="switch-user-address" class="<?php if ($show_user_addresses) echo "fade-out hidden";?>" href="#" data-route="set_user_address/-1/reveal">
+							<span class="text">Use An Address On File</span>
+						</a>
 						<?php }
 					} ?>
 					</div>
@@ -39,6 +48,7 @@
 
 					</div>
 				</div>
+				<?php if ( !$auth_user) {?>
 				<div id="confirm-address-login-panel" class="row">
 					<div class="large-12 columns">
 						<a href="#" data-route="login/confirm-address/twitter"><span class="icon-twitter"></span></a
@@ -48,9 +58,11 @@
 						></div>
 					</div>
 				</div>
+			<?php } ?>
 		</div>
 		<hr />
-		<div id="user-address-select" class="row <?php if (!$auth_user | $this->Session->read('Cart.Service.flags.user_address_set') ) echo "true-hidden";?>">
+		<!-----      USER ADDRESS CARDS ------->
+		<div id="user-address-select" class="row <?php if ( !$show_user_addresses ) echo "hidden fade-out";?>">
 			<div class="large-12 columns">
 			<?php
 				foreach( array_chunk($user_addresses, 3) as $user_address_row) {
@@ -70,7 +82,7 @@
 								<span class="icon-circle-arrow-l"></span>
 								<span class="text">Cancel</span>
 							</a>
-							<a href="#" id="submit-order-address" class="modal-button lrg bisecting confirm right" data-route="confirm_address/submit/menu">
+							<a href="#" id="submit-order-address" class="modal-button lrg bisecting confirm right" data-route="set_user_address/-1/set">
 								<span class="icon-add"></span>
 								<span class="text">Add New Address</span>
 							</a>
@@ -81,7 +93,9 @@
 		</div>
 		<?=$this->Form->create( 'orderAddress', [ 'action' => false, 'inputDefaults' => ["div" => false] ] );?>
 		<?=$this->Form->input( 'id', [ 'type' => 'hidden']);?>
-		<div id="user-address-form" class="row <?php if ($auth_user | $this->Session->read('Cart.Service.flags.address_valid') ) echo "fade-out hidden";?>">
+
+		<!-----      ADDRESS FORM ------->
+		<div id="user-address-form" class="row <?php if ( $show_user_addresses ) echo "fade-out hidden";?>">
 			<div class="large-12 columns">
 				<div class="row">
 					<div class="large-6 columns">

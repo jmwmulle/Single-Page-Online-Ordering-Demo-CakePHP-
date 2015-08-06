@@ -14,7 +14,10 @@
 		</div>
 		<div class="row<?php if ( empty($cart[ 'Order' ]) ) echo " true-hidden";?>">
 			<div class="large-3 columns end">
-				<a href="#" class="cancel left tiny" data-route="order/clear"><span class="icon-cancel icon"></span><span class="text">Clear Cart</span></a>
+				<a href="#" class="cancel left tiny" data-route="cart/clear">
+					<span class="icon-cancel icon"></span>
+					<span class="text">Clear Cart</span>
+				</a>
 			</div>
 		</div>
 		<div class="row view-cart-row cart-header <?php if ( empty($cart[ 'Order' ]) ) echo " true-hidden";?>">

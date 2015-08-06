@@ -269,7 +269,10 @@ img#vendor-home-logo {
   width:auto;
   height: 70px;
 }
-table {width:100%;}
+table {
+  width:100%;
+  td[data-route]:hover { background-color: $xtreme-yellow;};
+}
 table#menu-table {
   tr {
     td, th {
@@ -627,3 +630,13 @@ background-color:rgb(51, 63, 70);
 th {
   text-transform:uppercase;
 }
+
+ul.inline {
+  list-style-type: none;
+  font-size:rem-calc(12px);
+  li {
+    display:inline-block;
+
+  }
+}
+

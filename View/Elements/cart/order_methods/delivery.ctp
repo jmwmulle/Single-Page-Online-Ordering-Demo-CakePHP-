@@ -17,14 +17,14 @@
 		</a>
 	</div>
 </div>
-<div class="row <?php if ( $service['flags']['address_valid'] ) echo " true-hidden";?>">
+<div class="row <?php if ( $service['address_valid'] ) echo " true-hidden";?>">
 	<div class="large-12 columns">
 		<a href="#" class="modal-button lrg full-width confirm" data-route="set_order_method/review/delivery">
 			<span class="icon-delivery"></span><span class="text">Click to Set Delivery Address</span>
 		</a>
 	</div>
 </div>
-<div class="row <?php if ( !$service['flags']['address_valid'] ) echo " true-hidden";?>">
+<div class="row <?php if ( !$service['address_valid'] ) echo " true-hidden";?>">
 	<div class="large-12 large-centered columns">
 		<div class="row">
 			<div class="large-6 columns">

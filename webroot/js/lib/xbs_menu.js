@@ -87,12 +87,13 @@ var xbs_menu = {
 			return true;
 		},
 		configure_orb: function (orb_id, price_rank) {
-			var debug_this = 0;
+			var debug_this = 2;
 			if (debug_this > 1) pr([orb_id, price_rank], "XBS.menu.configure_orb(orb_id, price_rank)", 2);
+			XBS.menu.show_orb_card_back_face(); // if this doesn't happen first the rank-assignment is reset
 			$(XSM.menu.orb_size_button).each(function () {
-				if ($(this).data('priceRank') == price_rank) XBS.layout.activize(this);
+				pr($(this).data('priceRank'));
+				if ( Number($(this).data('priceRank')) == Number(price_rank) ) XBS.layout.activize(this);
 			});
-			XBS.menu.show_orb_card_back_face()
 		},
 		reset_orb_opt_filters: function () {
 			$(XSM.menu.orb_opt_filter).removeClass(FX.inactive).addClass(FX.active);

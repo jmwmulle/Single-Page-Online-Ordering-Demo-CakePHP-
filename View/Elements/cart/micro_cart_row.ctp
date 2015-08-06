@@ -18,7 +18,7 @@
 $size = $oi['orb']['Pricedict']["l".$oi['pricing']['rank']];
 ?>
 <div class="row">
-	<div class="large-6 columns"><?=sprintf("%s %s", $size, $oi['orb']['Orb']['title'])?></div>
-	<div class="large-2 columns"><?=$oi['pricing']['quantity']?></div>
-	<div class="large-4 columns"><?=money_format( "%#3.2n", $oi['pricing']['configured_unit_price'])?></div>
+	<div class="large-8 columns"><?=sprintf("%s %s", $size, $oi['orb']['Orb']['title'])?></div>
+	<div class="large-1 columns"><?=$oi['pricing']['quantity']?></div>
+	<div class="large-3 columns"><?=money_format( "%#3.2n", $oi['pricing']['configured_unit_price'])?></div>
 </div>

@@ -27,6 +27,18 @@ var xbs_modal = {
 			for ( var index in XBS.data.User.Address) {
 				if (XBS.data.User.Address[index].id === Number(address_id)) address = XBS.data.User.Address[index];
 			};
+			if (address_id == -1) {
+				address = XBS.data.User.Address[0];
+				address.address  = null;
+				address.address_2 = null;
+				address.phone = null;
+				address.email = null;
+				address.building_type = null;
+				address.note = null;
+				address.postal_code = null;
+				address.delivery_time = null;
+				address.id = null;
+			}
 			if (address) {
 				$("#user-address-select", C.BODY).addClass(FX.fade_out);
 				setTimeout( function() {
@@ -69,5 +81,19 @@ var xbs_modal = {
 				setTimeout(function () { $(modal).removeClass(XSM.effects.slide_up);}, 30);
 			}, 600);
 		}
+	},
+	payment_method: function(payment_type) {
+		XBS.data.order.payment = payment_type;
+		$(XSM.modal.payment_method_input).val(payment_type);
+		if (payment_type == "cash") {
+			$("#payment-cash").removeClass([FX.inactive, FX.cancel].join(" ")).addClass(FX.active);
+			$("#payment-debit").removeClass(FX.active).addClass([FX.inactive, FX.cancel].join(" "));
+		}
+		if (payment_type == "debit") {
+			$("#payment-debit").removeClass([FX.inactive, FX.cancel].join(" ")).addClass(FX.active);
+			$("#payment-cash").removeClass(FX.active).addClass([FX.inactive, FX.cancel].join(" "));
+		}
 	}
+
+
 }

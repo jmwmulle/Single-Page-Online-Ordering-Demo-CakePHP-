@@ -59,7 +59,7 @@ $account_data = array('route' => 'topbar_link/settings', 'text' => "View Your Fa
 
 /*  Cart Deets  */
 $cart_css = !$this->Session->read('Cart.OrderItem') ?" class='' " : ' ';
-$cart_data =  array('hover-text' => "View Your Cart", 'route' => 'order/view');
+$cart_data =  array('hover-text' => "View Your Cart", 'route' => 'cart/review');
 $cart_icon = "<span class='icon-shopping'></span>";
 
 

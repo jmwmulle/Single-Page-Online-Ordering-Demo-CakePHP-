@@ -13,7 +13,13 @@
 <?=$this->Element( 'cart'.DS.'order_methods'.DS.$service['order_method'], compact('service'))?>
 <hr/>
 
-<div class="row">
+<div class="row<?php if ( !empty($cart[ 'Order' ]) ) echo " true-hidden";?>">
+	<div id="empty-cart-message" class="large-8 large-centered columns">
+			<p>Well, "nothing" probably won't make for a satisfying meal.</p>
+			<p>But on the upside it's free?</p>
+	</div>
+</div>
+<div class="row<?php if ( empty($cart[ 'Order' ]) ) echo " true-hidden";?>">
 	<div id="micro-cart-contents" class="large-6 columns">
 		<div class="row">
 			<div class="large-12 columns"><h5 class="panel-title">Your Order</h5></div>
@@ -23,18 +29,12 @@
 	<div class="large-6 columns">
 		<div id="payment-method" class="row<?php if ( $service['order_method'] != DELIVERY ) echo " true-hidden";?>">
 			<div class="large-12 columns">
-				<ul class="large-block-grid-2 activizing">
-					<li id="order-payment-cash" class="active">
-						<a href="#" class="modal-button full-width rounded" data-route="payment_method/review_modal/cash">
-							<span class="text">Cash</span>
-						</a>
-					</li>
-					<li id="order-payment-cash" class="inactive">
-						<a href="#" class="modal-button full-width rounded" data-route="payment_method/review_modal/debit">
-							<span class="text">Debit</span>
-						</a>
-					</li>
-				</ul>
+				<a id="payment-cash" href="#" class="modal-button sml discreet bisecting active" data-route="payment_method/review_modal/cash">
+					<span>Cash</span>
+				</a>
+				<a id="payment-debit" href="#" class="modal-button sml discreet bisecting cancel  inactive" data-route="payment_method/review_modal/debit">
+					<span>Debit</span>
+				</a>
 			</div>
 		</div>
 		<div class="row">

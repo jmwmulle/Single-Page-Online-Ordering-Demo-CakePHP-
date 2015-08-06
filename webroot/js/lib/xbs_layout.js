@@ -26,18 +26,6 @@ var xbs_layout = {
 		detachAnimationTargets: function () { $(as_class(FX.detach)).each(function () { XBS.layout.detach(this);}); },
 		jq_binds: {
 			has_init_sequence: true,
-//			bind_hover_text_switching: function() {
-//				$(C.BODY).on([C.HOVER, C.MOUSEENTER, C.MOUSEOUT, C.MOUSEOVER],  "a.hover-switch span", function(e) {
-//						e.stopPropagation();
-//				});
-//
-//				$(C.BODY).on(C.MOUSEENTER, "a.hover-switch", function(e) {
-//									XBS.layout.hovertext_switch(e.currentTarget);
-//								});
-//				$(C.BODY).on(C.MOUSEOUT, "a.hover-switch", function(e) {
-//					XBS.layout.hovertext_switch(e.currentTarget);
-//				});
-//			},
 			bind_orb_card_config_archiving: function () {
 				$(C.BODY).on(xbs_events.orb_card_refresh, null, null, function (e) {
 					XBS.menu.archive_orb_card_config(e.data);
@@ -51,7 +39,7 @@ var xbs_layout = {
 //				$(C.BODY).on(C.CLK, XSM.modal.overlay, null, XBS.layout.dismiss_modal);
 			},
 			bind_activizing_lists: function () {
-				$("body").on(C.CLK, XSM.global.activizing_list, function (e) {
+				$(C.BODY).on(C.CLK, XSM.global.activizing_list, function (e) {
 					XBS.layout.activize(e.currentTarget);
 				});
 

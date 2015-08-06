@@ -80,11 +80,18 @@
 	/** ORBOPTS-ORBCATS CONTROLLER */
 	Router::connect( '/orbopt-optgroup-config/*',   array( CTR => 'orboptsOrbcats', ATN => 'ajax_add' ) );
 
+	/** PRICELISTS CONTROLLER */
+	Router::connect( '/launch-orbopt-pricelist-config/*',   array( CTR => 'pricelists', ATN => 'index' ) );
+	Router::connect( '/edit-orbopt-pricing/*',   array( CTR => 'pricelists', ATN => 'ajax_edit' ) );
+	Router::connect( '/save-orbopt-pricing-edit/*',   array( CTR => 'pricelists', ATN => 'ajax_edit' ) );
+	Router::connect( '/orbopt-pricing-delete/*',   array( CTR => 'pricelists', ATN => 'ajax_delete' ) );
+	Router::connect( '/add-orbopt-pricelist/*',     array( CTR => 'pricelists', ATN => 'ajax_add' ) );
+
+
 	/** ORBOPTS CONTROLLER */
 	Router::connect( '/add-menu-option',            array( CTR => 'orbopts', ATN => 'add' ) );
 	Router::connect( '/delete-menu-option/*',       array( CTR => 'orbopts', ATN => 'deprecate' ) );
 	Router::connect( '/update-orbopt/*',            array( CTR => 'orbopts', ATN => 'update' ) );
-	Router::connect( '/add-orbopt-pricelist/*',     array( CTR => 'orbopts', ATN => 'pricelist_add' ) );
 
 	/** OPTFLAGS CONTROLLER */
 	Router::connect( '/opt-price-factors/*',        array( CTR => 'optflags', ATN => 'price_factors' ) );

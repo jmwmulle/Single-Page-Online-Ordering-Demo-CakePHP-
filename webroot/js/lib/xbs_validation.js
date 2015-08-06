@@ -36,23 +36,13 @@ var xbs_validation = {
 						success: function (response) {
 							if (debug_this > 1) pr(response, 'XBS.validation.submit_address()->confirm_address_validation', 2);
 							try {
-								response.delegate_route = delegate_route;
-								XBS.routing.cake_ajax_response(response, {
-									callback: function(response) {
-										XBS.layout.dismiss_modal(XSM.modal.primary);
-										XBS.data.Service = response.cart.Service;
-									}
-								}, true, true);
-
+								XBS.layout.dismiss_modal(XSM.modal.primary);
+								XBS.data.Service = response.cart.Service;
+								XBS.menu.set_order_method();
 							} catch (e) {
 								pr(e, null, true);
 								// todo: something... with... this... eror?
 							}
-//							if (delegate_route) {
-//								setTimeout(function () {
-//									$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: delegate_route, trigger: {}});
-//								}, 300);
-//							}
 						}
 					});
 				}
