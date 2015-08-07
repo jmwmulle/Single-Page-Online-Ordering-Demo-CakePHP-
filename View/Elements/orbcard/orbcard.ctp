@@ -56,7 +56,7 @@ $prices = $content['Prices'];
 							<?php $data_array = array(
 							                          "price-rank" => floor( count($prices) / 2 ),
 							                          "float-label" => "order",
-							                          "route" => "orb_card/configure/".$orb['id']
+							                          "route" => "configure_orb/".$orb['id']
 							);
 								$class_array = array("orb-card-button", "float-labeled", "inline");
 							?>
@@ -69,7 +69,7 @@ $prices = $content['Prices'];
 									><h5 id="price-matrix-price" class="text-right price-matrix-header">PRICE</h5
 									><ul class="price-matrix-content">
 									<?php foreach ( $content[ "Prices" ] as $label => $price ) {
-										$route = "orb_card/configure/".$orb["id"].DS.array_search($label, array_keys($content[ "Prices" ]));?>
+										$route = "configure_orb".DS.$orb["id"].DS.array_search($label, array_keys($content[ "Prices" ]));?>
 										<li class="add-to-cart" data-route="<?php echo $route?>">
 											<div class="orb-size text-left"><?php echo $label == "base" ? "Regular" : ucwords( $label ); ?></div
 											><div class="orb-price text-right"><?php echo money_format("%#3.2n", $price ); ?></div>

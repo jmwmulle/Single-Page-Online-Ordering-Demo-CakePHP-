@@ -17,7 +17,6 @@ var xbs_data = {
 			xLoc: "/xtreme"
 		},
 		orb_card_out_face: C.FRONT_FACE,
-		tiny_orb_opts_list: {},
 		orb_opts: {
 		},
 		orb_opt_filters: {

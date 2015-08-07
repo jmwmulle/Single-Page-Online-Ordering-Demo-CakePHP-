@@ -185,8 +185,8 @@ var xbs_layout = {
 				var sel = selectors[i];
 				var offset = $(sel).offset();
 
-				var dims = {width: Math.floor($(sel).outerWidth() + px_to_int($(sel).css("padding-left"))),
-					height: Math.floor($(sel).outerHeight() + px_to_int($(sel).css("padding-top")))};
+				var dims = {width: Math.floor( $(sel).outerWidth() + px_to_int($(sel).css("padding-left"))),
+					height: Math.floor( $(sel).outerHeight() + px_to_int($(sel).css("padding-top")))};
 				var styles = {position: "fixed", top: offset.top, left: offset.left, height: dims.height, width: dims.width};
 				if (debug_this > 1) pr(styles);
 				$(sel).css(styles).addClass(FX.fastened);

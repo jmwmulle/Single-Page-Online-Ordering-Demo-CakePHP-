@@ -23,7 +23,7 @@ if ($menu['Orbcat']['portionable']) array_push($classes, "portionable");
 <?php foreach($content['Orb'] as $i => $orb) {
 		$classes = array('active-orbcat-item', "xtreme-select-list", "inactive");
 		if ( $orb['id'] == $active['id'] ) $classes[2] = 'active';
-		echo sprintf('<li %s data-route="orb/%s">', $orb['id'] != -1 ? ___cD($classes) : null, $orb['id']);
+		echo sprintf('<li %s data-route="load_orb/%s">', $orb['id'] != -1 ? ___cD($classes) : null, $orb['id']);
 		echo sprintf('<a href="#">%s</a></li>', $orb['id'] == -1 ? "&nbsp" : strtoupper($orb['title']));
 		}
 	foreach ($active["Orbopt"] as $opt) echo $this->Element("orbcard/opt_row", array("opt" => $opt));

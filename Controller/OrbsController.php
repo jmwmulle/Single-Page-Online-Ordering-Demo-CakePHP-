@@ -157,7 +157,7 @@
 		}
 
 		public function orbcard($id, $render = true) {
-
+			$submitted_data = compact('id', 'render');
 			// todo: some way to identify a request as comign from internal to cake
 			if ( $this->request->is( 'ajax' ) && $this->Orb->exists( $id ) || true ) {
 				$this->Orb->Behaviors->load( 'Containable' );
@@ -196,7 +196,7 @@
 				$orb                            = array_filter( $orb );
 				$orb[ 'Orb' ][ 'default_opts' ] = $this->requestAction( "OrbsOrbopts/fetch_default_opts/$id" );
 
-				$this->set( compact('orb', 'portionable') );
+				$this->set( compact('orb', 'portionable', 'submitted_data') );
 
 				return $render ? $this->render( 'menu_item', 'ajax' ) : $orb;
 			}

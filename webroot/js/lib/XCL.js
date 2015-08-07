@@ -71,6 +71,8 @@ var constants = {
 	DELIVERING: "DELIVERING",
 	PICKUP_ONLY: "PICKUP ONLY",
 	UNAVAILABLE: "UNAVAILABLE",
+	CONFIGURING: "configuring",
+	CONFIGURED: "configured"
 };
 
 var C = constants;

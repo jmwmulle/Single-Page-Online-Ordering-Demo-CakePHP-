@@ -281,9 +281,6 @@ var XSM = {
 		},
 		orb_card_row_content: function(row) { return "#orb-card-row-" + row + " div.orb-card-content" },
 		orb_opt_id: function(opt_id) { return as_id("orb-opt-coverage-" + opt_id); },
-		orb_opt_icon: function(opt_id, weight) {
-			return $(opt_id).find(XSM.menu.orb_opt_icon + '[data-weight="' + weight + '"]')[0];
-		},
 		order_address_button: function(context) {
 			var classes;
 			var route = "confirm_address/submit" + C.DS + context;
@@ -305,11 +302,6 @@ var XSM = {
 			wrapper += classes.join(" ") + '" data-route="' + route + '">';
 			return cancel + wrapper + message;
 		},
-		tiny_orb_opt_list_item: function(name, weight) {
-			return $("<li/>").addClass(stripCSS(XSM.menu.tiny_orb_opts_list_item))
-				.append("<span class='tiny-opt-label'>" + name + "</span>")
-				.append(C[weight])[0];
-		}
 	},
 	page_name: {
 		vendor_ui: "Vendor Interface"

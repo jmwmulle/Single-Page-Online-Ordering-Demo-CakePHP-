@@ -93,9 +93,6 @@
 	Router::connect( '/delete-menu-option/*',       array( CTR => 'orbopts', ATN => 'deprecate' ) );
 	Router::connect( '/update-orbopt/*',            array( CTR => 'orbopts', ATN => 'update' ) );
 
-	/** OPTFLAGS CONTROLLER */
-	Router::connect( '/opt-price-factors/*',        array( CTR => 'optflags', ATN => 'price_factors' ) );
-
 
 	Router::connect( '/auth/email',                 array( CTR => 'users', ATN => 'login' ) );
 

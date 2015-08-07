@@ -33,7 +33,7 @@
 <div id="menu-tab">
 	<div class="row">
 		<div class="large-12 columns">
-			<a href="#" class="modal-button full-width" data-route="orb/-1/add/create">
+			<a href="#" class="modal-button full-width" data-route="orb_edit/-1/add/create">
 				<span class="icon-add"></span><span class="text">Add New Menu Item</span>
 			</a>
 			<br/>
@@ -145,18 +145,18 @@
 								<?php } ?>
 							<!------------------------------------  DELETION  -------------------------------------->
 							<td>
-								<a href="#" class="modal-button lrg delete full-width text-center" data-route="orb/<?=$oid;?>/delete/confirm">
+								<a href="#" class="modal-button lrg delete full-width text-center" data-route="orb_edit/<?=$oid;?>/delete/confirm">
 									<span class="icon-cancel textless"></span>
 								</a>
 
 								<div id="delete-orb-<?=$oid;?>" class="breakout hidden">
 									<h4>Are you sure you want to delete "<?=$o[ 'title' ];?>"?</h4>
 									<a href="#" class="modal-button bisecting confirm right"
-									   data-route="orb/<?= $oid; ?>/delete/delete">
+									   data-route="orb_edit/<?= $oid; ?>/delete/delete">
 										<span class="text">Confirm</span><span class="icon-circle-arrow-r"></span>
 									</a>
 									<a href="#" class="modal-button bisecting cancel left"
-									   data-route="orb/<?= $oid; ?>/delete/cancel">
+									   data-route="orb_edit/<?= $oid; ?>/delete/cancel">
 										<span class="icon-circle-arrow-l"></span>
 										<span class="text">Cancel</span>
 									</a>

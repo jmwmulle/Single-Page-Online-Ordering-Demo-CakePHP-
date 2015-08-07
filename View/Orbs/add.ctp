@@ -80,7 +80,7 @@
 					<?php echo $this->Form->input( 'pricedict_id', array( 'type' => 'hidden', 'value' => -1 ) ); ?>
 					<?php echo $this->Form->input( 'pricelist_id', array( 'type' => 'hidden', 'value' => -1 ) ); ?>
 					<?php echo $this->Form->input( 'config', array( 'type' => 'hidden', 'value' => "" ) ); ?>
-					<a href="#" class="modal-button full-width med" data-route="orb/-1/add/save">
+					<a href="#" class="modal-button full-width med" data-route="orb_edit/-1/add/save">
 						<span class="text">Save & Reload</span>
 					</a>
 					<?php echo $this->Form->end(); ?>

@@ -21,6 +21,11 @@ $.fn.scrollTo = function (target, options, callback) {
 	});
 }
 
+function array_remove (array_ob, remove_from, remove_to)  {
+	  var rest = array_ob.slice((remove_to || remove_from) + 1 || array_ob.length);
+	  array_ob.length = remove_from < 0 ? array_ob.length + remove_from : remove_from;
+	  return array_ob.push.apply(array_ob, rest);
+}
 
 /**
  * sprintf() method for String primitive that I jacked from stack overflow and then lost the URL to
@@ -509,7 +514,7 @@ if (!String.prototype.toTitleCase) {
 		return "BOOLEAN_NOT_PASSED";
 	}
 
-	function integer_keys(obj) {
+	function integer_keys(obj, as_array) {
 		if ( !is_object(obj) ) return false;
 		if ( is_array(obj) ) return obj
 		var new_obj = {}
@@ -521,6 +526,22 @@ if (!String.prototype.toTitleCase) {
 			}
 		}
 		return new_obj;
+	}
+
+	function obj_values(obj, from, to) {
+		var return_array = [];
+		var count = -1;
+		if ( !from ) from == 0;
+		if ( from < 0 ) from = obj.length - Math.abs(from);
+		if (!to) to == obj.length;
+		if ( to < 0 ) to = obj.length - Math.abs(from);
+		if (to > from) throw("ValueError: end index cannot precede start index");
+
+		for (var key in obj) {
+			count++;
+			if (count >= from && count <= to) return_array.push(obj[key]);
+		}
+		return return_array;
 	}
 
 	function exists(varName) {
