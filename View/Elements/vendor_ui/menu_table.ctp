@@ -68,9 +68,9 @@
 						                 'orb-opts'        => Hash::extract( $orb[ 'Orbopt' ], "{n}.id" ),
 						                 'orbopts-orbcats' => [] ];
 						$routes = [ "title"       => orb_attribute_routes( $oid, 'title' ),
-						                 "description" => orb_attribute_routes( $oid, 'description' ),
-						                 "orbcat"      => orb_attribute_routes( $oid, 'orbcat' ),
-						                 "prices"      => orb_attribute_routes( $oid, 'prices' ) ];
+					                 "description" => orb_attribute_routes( $oid, 'description' ),
+					                 "orbcat"      => orb_attribute_routes( $oid, 'orbcat' ),
+					                 "prices"      => orb_attribute_routes( $oid, 'prices' ) ];
 						$buttons = ["title" => orb_attribute_buttons( $routes[ 'title' ] ),
 					                "description" => orb_attribute_buttons($routes['description']),
 					                "orbcat" => orb_attribute_buttons($routes['orbcat']),

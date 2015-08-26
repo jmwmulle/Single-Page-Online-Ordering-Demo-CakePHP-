@@ -459,6 +459,7 @@
 			}
 			else {
 				$orb                   = $this->Orb->find( 'all', array( 'conditions' => array( '`Orb`.`id`' => $orb_id ) ) );
+				$this->set('price_buttons', false);
 				$response[ 'replace' ] = array( 'element' => 'vendor_ui/prices',
 				                                'options' => array( 'orb'        => $orb[ 0 ],
 				                                                    'pricedicts' => $this->build_pricedicts() ) );

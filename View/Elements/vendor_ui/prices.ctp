@@ -11,6 +11,7 @@
  * where the functions below and that dumbass $routes array actually make sense.
  */
 $oid = $orb['Orb']['id'];
+//	pr($orb);
 ?>
 <!---    DISPLAY   ----->
 <div class="orb-attr display">
@@ -75,7 +76,19 @@ $oid = $orb['Orb']['id'];
 				</div>
 			<?php } ?>
 			</form>
-			<?=$price_buttons;?>
+			<?php
+
+			if ($price_buttons):
+				echo $price_buttons;
+			else:?>
+				<div class="button-box">
+					<a href="#" class="modal-button bisecting cancel left" data-route="orb_config/<?=$oid;?>/cancel/prices">
+						<span class="icon-cancel"></span>
+					</a>
+					<a href="#" class="modal-button bisecting confirm right" data-route="update_menu/<?=$oid?>/prices">
+						<span class="text">Save</span><span class="icon-circle-arrow-r"></span></a></div>
+			<?php endif;?>
+
 		</div>
 	</div>
 </div>
