@@ -582,13 +582,14 @@ span.inactive { opacity: 0;}
   td.optflag { text-align: center;}
 }
 
-#individual-orbopts {
-  .orbopt {
+.content {
+  .orbopt, .orbopt-optgroup {
+    cursor: pointer;
     text-align: center;
     border:1px solid $white;
     background-color: $very-light-grey;
     padding: 0.8rem 0 !important;
-    span { color: $text-grey; }
+    span { display: block; color: $text-grey; }
     &:hover { background-color: lighten($very-light-grey, 5%); }
     &.active {
       background-color: $success-color;

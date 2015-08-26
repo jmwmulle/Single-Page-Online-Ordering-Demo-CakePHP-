@@ -57,7 +57,11 @@
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ( $orbopts as $opt ) {
+				<?php
+					$opt_count = 0;
+					foreach ( $orbopts as $opt ) {
+						$opt_count++;
+						if ($opt_count == 10) break;
 						if ($opt["Orbopt"]["deprecated"]) continue;
 						$oid = $opt['Orbopt']['id'];
 						$active_check = "<span class='icon-check-mark active'></span>";

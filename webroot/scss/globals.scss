@@ -64,9 +64,9 @@ button.unavailable {
 .hidden { display:none;}
 .inline { display: inline-block;}
 .true-hidden {
-  visibility: none;
-  display:none;
-  opacity:none;
+  visibility: none !important;
+  display:none !important;
+  opacity:none !important;
 }
 
 .flush {

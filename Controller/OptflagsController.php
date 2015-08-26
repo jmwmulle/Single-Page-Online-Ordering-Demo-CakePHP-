@@ -25,6 +25,15 @@ class OptflagsController extends AppController {
 		$this->set('optflags', $this->Paginator->paginate());
 	}
 
+	public function ajax_list() {
+		if ( $this->request->is('ajax' ) ) {
+			$response = ["success" => true, "error" => false, "data" => $this->Optflag->find('list')];
+			$this->render_ajax_response($response);
+	    } else {
+			$this->redireect(___cakeUrl('orbcats', 'menu') );
+		}
+	}
+
 /**
  * view method
  *

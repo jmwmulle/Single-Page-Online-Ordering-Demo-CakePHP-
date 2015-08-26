@@ -6,7 +6,7 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-
+//db($orbopt_optgroups);
 //db($orbopt);
 $oid =  $orbopt['Orbopt']['id'];
 ?>
@@ -31,14 +31,14 @@ $oid =  $orbopt['Orbopt']['id'];
 
 				<form id="orbopt-optgroup-config-form">
 					<div id="individual-optgroups" class="content">
-						<ul class="large-block-grid-6">
+						<ul class="large-block-grid-6" data-equalizer>
 						<?php
 							foreach($orbopt_optgroups as $og_id => $og_name) {
-								$data = array('route' => "orbopt_optgroup_config/$og_id/toggle");
+								$data = array('route' => "orbopt_optgroup_config/$og_id/toggle", "equalizer-watch" => "");
 								$classes = array('orbopt-optgroup');
-								if (in_array($og_id, $orbopt['Orbcat']) ) $classes[] = 'active';
+								if (in_array($og_id, $orbopt['Orbcat']) ) array_push($classes, "active");
 								echo sprintf("<li id='optgroup-%s-label' %s %s>", $og_id, ___dA($data), ___cD($classes) );?>
-									<span class="label <?= in_array('active', $classes) ? 'success' : 'secondary';?> "><?= $og_name; ?></span>
+									<span class=""><?= $og_name; ?></span>
 									<input type="hidden" name="OrboptOrbcat[<?= $og_id;?>]" value="<?= in_array('active', $classes);?>" />
 								</li>
 						<?php } ?>

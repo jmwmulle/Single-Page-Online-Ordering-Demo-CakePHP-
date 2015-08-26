@@ -136,7 +136,7 @@
 			$uid               = $orb_cfg[ 'uid' ];
 			$quantity          = $orb_cfg[ 'quantity' ];
 			$price_rank        = $orb_cfg[ 'price_rank' ] + 1; // table columns are p1...p5, indices are 0...4
-			$orbopts           = $orb_cfg[ 'Orbopt' ];
+			$orbopts           = array_key_exists('Orbopt', $orb_cfg) ? $orb_cfg[ 'Orbopt' ] : [];
 
 			$quantity = !is_numeric( $quantity ) ? 1 : abs( $quantity );
 			if ( $quantity == 0 ) {

@@ -5388,26 +5388,28 @@ span.inactive {
 #menu-options-table td.optflag {
   text-align: center; }
 
-#individual-orbopts .orbopt {
+.content .orbopt, .content .orbopt-optgroup {
+  cursor: pointer;
   text-align: center;
   border: 1px solid white;
   background-color: #e1e1e1;
   padding: 0.8rem 0 !important; }
-  #individual-orbopts .orbopt span {
+  .content .orbopt span, .content .orbopt-optgroup span {
+    display: block;
     color: #373737; }
-  #individual-orbopts .orbopt:hover {
+  .content .orbopt:hover, .content .orbopt-optgroup:hover {
     background-color: #eeeeee; }
-  #individual-orbopts .orbopt.active {
+  .content .orbopt.active, .content .orbopt-optgroup.active {
     background-color: #43ac6a; }
-    #individual-orbopts .orbopt.active span {
+    .content .orbopt.active span, .content .orbopt-optgroup.active span {
       color: white; }
-    #individual-orbopts .orbopt.active:hover {
+    .content .orbopt.active:hover, .content .orbopt-optgroup.active:hover {
       background-color: #61c184; }
-  #individual-orbopts .orbopt.active-plus {
+  .content .orbopt.active-plus, .content .orbopt-optgroup.active-plus {
     background-color: #faea06; }
-    #individual-orbopts .orbopt.active-plus span {
+    .content .orbopt.active-plus span, .content .orbopt-optgroup.active-plus span {
       color: #373737; }
-    #individual-orbopts .orbopt.active-plus:hover {
+    .content .orbopt.active-plus:hover, .content .orbopt-optgroup.active-plus:hover {
       background-color: #fbee38; }
 
 #loading-screen {

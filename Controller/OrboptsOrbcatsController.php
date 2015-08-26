@@ -61,8 +61,9 @@ class OrboptsOrbcatsController extends AppController {
 	}
 
 	public function ajax_add($orbopt_id) {
-		if ( $this->is_ajax_post() ) {
-			$response = array('success' => true, 'error' => false, 'submitted_data' => $this->request->data);
+		if ( $this->is_ajax_post()) {
+			$response = [ 'success' => true, 'error' => false,
+		                  'submitted_data' => ['orbopt_id' => $orbopt_id, 'form_data' => $this->request->data]];
 			$orbcat_ids = array_keys( array_filter($this->request->data['OrboptOrbcat']) );
 			if (!$this->OrboptsOrbcat->deleteAll(['orbopt_id' => $orbopt_id,
 			                                      'NOT' =>['orbcat_id ' =>  $orbcat_ids]]) ) {

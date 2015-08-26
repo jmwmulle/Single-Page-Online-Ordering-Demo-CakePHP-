@@ -15,7 +15,8 @@
 		                          "orbopts"    => [ ],
 		                          "orb_note"   => "" ];
 
-		private $cart_template = [ 'Order'   => [ ],
+		private $cart_template = [ 'uid' => null,
+								   'Order'   => [ ],
 		                           'User' => [
 		                           		'firstname' => "Jimmy",
 		                           		'lastname' => "TheKid",
@@ -67,6 +68,7 @@
 		                                          'hst'          => 0 ],
 		                           'Service' => [ 'deliverable'  => true,
 		                                          'order_method' => JUST_BROWSING,
+		                                          'pay_method'   => CASH,
 		                                          'address'      => [ 'id'            => null,
 		                                                              'firstname'     => null,
 		                                                              'lastname'      => null,
@@ -202,23 +204,26 @@
 		/**
 		 * init_cart() called before all cart-related functions; ensures any missing required keys exist
 		 *
-		 * @return bool
+		 * @param boolean $destroy
 		 */
-		public function init_cart() {
-//			$this->Session->destroy();
+		public function init_cart($destroy = false) {
+			if ($destroy) $this->Session->destroy();
 			if ( !$this->Session->check( 'Cart' ) ) $this->Session->write( 'Cart', $this->cart_template );
 			foreach ( $this->cart_template as $key => $value ) {
 				if ( !$this->Session->check( "Cart.$key" ) ) {
 					$this->Session->write( "Cart.$key", $value );
 				}
-				foreach ( $value as $subkey => $subvalue ) {
-					if ( !$this->Session->check( "Cart.$key.$subkey" ) ) {
-						$this->Session->write( "Cart.$key.$subkey", $subvalue );
+				if ( is_array($value) ) {
+					foreach ( $value as $subkey => $subvalue ) {
+						if ( !$this->Session->check( "Cart.$key.$subkey" ) ) {
+							$this->Session->write( "Cart.$key.$subkey", $subvalue );
+						}
 					}
 				}
 			}
+			if ( $this->Session->read('Cart.uid') === null ) $this->Session->write('Cart.uid', String::uuid());
 
-			return true;
+			if ($this->request->url === "!" ) $this->redirect(___cakeUrl("orbcats", "menu") );
 		}
 
 		/**
@@ -276,43 +281,20 @@
 		 * @return mixed
 		 */
 		public function clear_cart() {
-			if ( $this->is_ajax_get() ) {
+			if ( $this->request->is('ajax')) {
 				$this->Cart->clear();
 				$this->init_cart();
 				$this->render_ajax_response( [ 'success' => true,
 				                               'error' => false,
-				                               'delegate_route' => "close_modal/primary",
+				                               'delegate_route' => "menu/unstash",
 				                               'data' => false ] );
 			} else {
 				return $this->redirect( cakeUrl( array( "controller" => 'menu', "action" => null ) ) );
 			}
 		}
 
-//      THIS IS MARKED FOR DELETION; CAN'T FIND ANY REFERENCE TO IT AT THE MOMENT (July 16)
-//
-//		public function item_update() {
-//			if ( $this->is_ajax_post() ) {
-//				$this->init_cart();
-//				foreach ( $this->request->data[ 'Order' ][ 'Orbs' ] as $orb ) {
-//					$id                = isset( $orb[ 'id' ] ) ? $orb[ 'id' ] : null;
-//					$quantity          = isset( $orb[ 'quantity' ] ) ? $orb[ 'quantity' ] : null;
-//					$price_rank        = isset( $orb[ 'price_rank' ] ) ? $orb[ 'price_rank' ] : null;
-//					$orbopts           = isset( $orb[ 'Orbopts' ] ) ? $orb[ 'Orbopts' ] : null;
-//					$prep_instructions = isset( $orb[ 'prep_instructions' ] ) ? $orb[ 'prep_instructions' ] : null;
-//					array_push( $products, $this->Cart->add( $id, $quantity, $price_rank, $orbopts, $prep_instructions ) );
-//				}
-//				$cart = $this->Session->read( 'Cart' );
-//				echo json_encode( $cart );
-//				$this->autoRender = false;
-//			} else {
-//				return $this->redirect( cakeUrl( array( "controller" => 'menu', "action" => null ) ) );
-//			}
-//		}
-
-
-		public function update() {
-			$this->Cart->update( $this->request->data[ 'Orb' ][ 'id' ], 1 );
-		}
+//      MARKED FOR DELETION
+//		public function update() { $this->Cart->update( $this->request->data[ 'Orb' ][ 'id' ], 1 ); }
 
 
 		public function remove_from_cart( $uid, $quantity = 0 ) {
@@ -567,6 +549,12 @@
 			}
 		}
 
+		public function read_cart($uid = null) {
+			$this->init_cart( ($uid && $this->Session->read('Cart.uid') != $uid) );
+			$response = [ 'success' => true, 'error' => false, 'data' => $this->Session->read('Cart')];
+			return $this->render_ajax_response( $response );
+		}
+
 		private function invoice( $cart ) {
 			//todo: make this fucking ledgible haha.
 			$address = implode( "\n", $cart[ 'Order' ][ 'address' ] );
@@ -594,14 +582,14 @@
 		 * @param $method
 		 */
 		public function order_method( $request_context, $method  ) {
-			if ( $this->is_ajax_post() ) {
-				$this->init_cart();
+			if ( $this->is_ajax_post()  || true) {
+//				$this->init_cart();
 
 				// depending on where this was called in the menu UI, fire different routes on reply
 				$delegate_routes = [
-					"review" => [ DELIVERY => "order".DS."review", PICKUP => "order".DS."review"],
+					"review" => [ DELIVERY => "review_order", PICKUP => "review_order"],
 					"splash" => [ DELIVERY => "menu", PICKUP => "menu"],
-					"menu"   => [ DELIVERY => "confirm_address".DS."menu".DS."false", PICKUP => null, JUST_BROWSING => null]
+					"menu"   => [ DELIVERY => "set_delivery_address".DS."menu".DS."false", PICKUP => null, JUST_BROWSING => null]
 				 ];
 
 				$response = [ "success" => true,
@@ -614,19 +602,19 @@
 
 				$this->Session->write( "Cart.Service.order_method", $method );
 
-
-				if ( $this->Auth->loggedIn() and $method == DELIVERY ) {
-					$options = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
-					$user    = $this->User->find( 'first', $options );
-					if ( $this->Session->read( "Cart.Service.flags.address_valid" ) ) {
-						// if the address is already valid assume they wish to edit it, therefore making it invalid until
-						// it's been edited and rechecked
-						$this->Session->write( "Cart.Service.flags.address_valid", false);
-						if ( !in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] ) ) {
-							$this->Session->write( "Cart.Service.saved", false );
-						}
-					}
-				}
+//
+//				if ( $this->Auth->loggedIn() and $method == DELIVERY ) {
+//					$options = array( 'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ) );
+//					$user    = $this->User->find( 'first', $options );
+//					if ( $this->Session->read( "Cart.Service.flags.address_valid" ) ) {
+//						// if the address is already valid assume they wish to edit it, therefore making it invalid until
+//						// it's been edited and rechecked
+//						$this->Session->write( "Cart.Service.flags.address_valid", false);
+//						if ( !in_array( $this->Session->read( 'User.Address' ), $user[ 'Address' ] ) ) {
+//							$this->Session->write( "Cart.Service.saved", false );
+//						}
+//					}
+//				}
 				$response['data']['Cart'] = $this->Session->read( "Cart" );
 				return $this->render_ajax_response( $response );
 			} else {
@@ -648,6 +636,20 @@
 			return false;
 		}
 
+
+		public function set_address_form($restore = null) {
+			if ( $this->request->is( 'ajax' ) && $this->request->is( 'get' ) ) {
+				$this->Session->write("Cart.Service.address_valid", null);
+				$this->set( [ "header"    => "Delivery! Yay for sitting!",
+				              "subheader" => "But let's confirm your address, yeah?",
+				              "restore"   => $restore ? $restore : "menu/unstash"
+				            ] );
+
+				return $this->render( 'confirm_address' );
+			} else {
+				return $this->redirect(___cakeUrl("orbcats", "menu"));
+			}
+		}
 		/**
 		 * @param null $scope
 		 *
@@ -655,14 +657,6 @@
 		 */
 		public function confirm_address( $scope = null ) {
 			if ( $this->request->is( 'ajax' ) ) {
-				// get request returns empty form
-				if ( $this->request->is( 'get' ) ) {
-					$this->Session->write("Cart.Service.address_valid", null);
-					$this->set( [ "header"    => "Delivery! Yay for sitting!",
-					              "subheader" => "But let's confirm your address, yeah?" ] );
-
-					return $this->render( 'confirm_address' );
-				}
 				$data     = $this->request->data['orderAddress'];
 
 				// naughty attempts to hack must has fail

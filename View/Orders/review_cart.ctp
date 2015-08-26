@@ -14,7 +14,7 @@
 		</div>
 		<div class="row<?php if ( empty($cart[ 'Order' ]) ) echo " true-hidden";?>">
 			<div class="large-3 columns end">
-				<a href="#" class="cancel left tiny" data-route="cart/clear">
+				<a href="#" class="cancel left tiny" data-route="clear_cart">
 					<span class="icon-cancel icon"></span>
 					<span class="text">Clear Cart</span>
 				</a>
@@ -34,7 +34,7 @@
 				<a href="#" class="modal-button bisecting cancel left" data-route="menu/unstash">
 					<span class="icon-circle-arrow-l icon"></span><span class="text">Continue Ordering</span>
 				</a>
-				<a href="#" class="modal-button bisecting confirm right<?php if ( empty($cart['Order']) ) echo " disabled";?>" data-route="order/review">
+				<a href="#" class="modal-button bisecting confirm right<?php if ( empty($cart['Order']) ) echo " disabled";?>" data-route="review_order">
 					<span class="text">Review My Order</span><span class="icon-circle-arrow-r icon"></span>
 				</a>
 			</div>

@@ -23,6 +23,13 @@
    }
 }
 
+#orb-card-overlay {
+  height : $orb-card-wrapper-height;
+  width  : $orb-card-wrapper-width; // active orbs floats right (ie. this - orbcard stage = visible space for active orbs)
+  margin : -1 * $tight-padding;
+  overflow: hidden;
+  background-color: $black-a33;
+}
 #orb-card-container {
   left                       : -1 * $float-pane-border-width;
   top                        : -0.9 * $float-pane-border-width;

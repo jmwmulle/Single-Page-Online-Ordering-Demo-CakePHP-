@@ -22,7 +22,7 @@
 
 ?>
 
-<div class="row">
+
 	<div class="large-12 columns">
 	<?php echo $this->element("primary_modal/masthead", compact("header", "subheader") );?>
 		<div class="row">
@@ -37,8 +37,8 @@
 						<h3 class="inline"> <?php if (array_key_exists('firstname', $user) ) echo $user['firstname']; ?></h3>
 						<h3 class="inline"> <?php if (array_key_exists('lastname', $user) ) echo $user['lastname']; ?></h3>
 						<?php  if (count($user_addresses) > 1) {?>
-							|
-						<a id="switch-user-address" class="<?php if ($show_user_addresses) echo "fade-out hidden";?>" href="#" data-route="set_user_address/-1/reveal">
+						<?=$show_user_addresses ? "" : "|";?>
+						<a id="switch-user-address" class="<?=$show_user_addresses ? "fade-out hidden" : "";?>" href="#" data-route="set_user_address/-1/reveal">
 							<span class="text">Use An Address On File</span>
 						</a>
 						<?php }
@@ -78,7 +78,7 @@
 					<div class="large-12 columns">
 						<label>&nbsp</label>
 						<div id="submit-order-button-wrapper">
-							<a href="#" class="modal-button lrg bisecting cancel left" data-route="confirm_address/cancel/menu">
+							<a href="#" class="modal-button lrg bisecting cancel left" data-route="set_delivery_address/cancel/<?=$restore;?>">
 								<span class="icon-circle-arrow-l"></span>
 								<span class="text">Cancel</span>
 							</a>
@@ -94,7 +94,7 @@
 		<?=$this->Form->create( 'orderAddress', [ 'action' => false, 'inputDefaults' => ["div" => false] ] );?>
 		<?=$this->Form->input( 'id', [ 'type' => 'hidden']);?>
 
-		<!-----      ADDRESS FORM ------->
+		<!----- ADDRESS FORM ------->
 		<div id="user-address-form" class="row <?php if ( $show_user_addresses ) echo "fade-out hidden";?>">
 			<div class="large-12 columns">
 				<div class="row">
@@ -175,10 +175,10 @@
 					<div class="large-12 columns">
 						<label> &nbsp; </label>
 						<div id="submit-order-button-wrapper">
-							<a href="#" class="modal-button lrg bisecting cancel left" data-route="confirm_address/cancel/menu">
+							<a href="#" class="modal-button lrg bisecting cancel left" data-route="set_delivery_address/cancel/<?=$restore;?>">
 								<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span>
 							</a
-							><a href="#" id="submit-order-address" class="modal-button lrg bisecting confirm right" data-route="validate_form/address/menu">
+							><a href="#" id="submit-order-address" class="modal-button lrg bisecting confirm right" data-route="validate_form/address/<?=$restore;?>">
 								<span class="text">OK!</span><span class="icon-circle-arrow-r"></span>
 							</a>
 						</div>
@@ -188,4 +188,3 @@
 		</div>
 	</div>
 	<div id="on-close" class="true-hidden" data-action="reset-user-activity"></div>
-</div>

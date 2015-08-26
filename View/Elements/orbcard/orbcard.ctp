@@ -25,8 +25,8 @@ $prices = $content['Prices'];
 								$data = array("float-label" => $logged_in ? "favorite" : "join & favorite");
 								$data["route"] = $logged_in ? "favorite/orb_card" : "orb_card/register";
 							?>
-							<div id="<?php echo $logged_in ? "favorite" : "register";?>" <?php echo ___cD($classes);?> <?php echo ___dA($data); ?>>
-								<span class="<?php echo $logged_in ? "icon-orb-card-favorite" : "icon-orb-card-register";?>"></span
+							<div id="<?=$logged_in ? "favorite" : "register";?>" <?=___cD($classes);?> <?=___dA($data); ?>>
+								<span class="<?=$logged_in ? "icon-orb-card-favorite" : "icon-orb-card-register";?>"></span
 								<?php if (!$logged_in) {?>
 									><div id="orb-card-register-panel" class="fade-out true-hidden orb-card-row-panel"
 										><a id="orb-card-register-twitter" href="http://development-xtreme-pizza.ca/auth/twitter"
@@ -45,41 +45,40 @@ $prices = $content['Prices'];
 								<?php } ?>
 							></div
 							><div id="description" class="orb-card-content inline">
-								<div class="orb-card-content-container">
-									<p><?php echo $orb[ "description" ]; ?></p>
-									<h4 id="hidden-description"><?php echo strtoupper($orb[ "title" ]); ?></h4>
+								<div class="orb-card-content-box<?=$ajax ? " fade-out" : "";?>">
+									<p><?=$orb[ "description" ]; ?></p>
+									<h4 id="hidden-description"><?=strtoupper($orb[ "title" ]); ?></h4>
 								</div>
 							</div>
 						</li>
 					<!-- MIDDLE  ROW -->
 						<li id="orb-card-row-2" class="orb-card-row">
-							<?php $data_array = array(
+							<?php $data_array = [
 							                          "price-rank" => floor( count($prices) / 2 ),
 							                          "float-label" => "order",
-							                          "route" => "configure_orb/".$orb['id']
-							);
-								$class_array = array("orb-card-button", "float-labeled", "inline");
+							                          "route" => "configure_orb".DS.$orb['id'].DS.'0'];
+								$class_array = ["orb-card-button", "float-labeled", "inline"];
 							?>
-							<div id="order" <?php echo ___cD($class_array);?> <?php echo ___dA($data_array);?>>
+							<div id="order" <?=___cD($class_array);?> <?=___dA($data_array);?>>
 								<span class="icon-orb-card-cart"></span>
 							</div
 							><div id="price-matrix" class="flush orb-card-content inline">
-								<div class="orb-card-content-container">
+								<div class="orb-card-content-box<?=$ajax ? " fade-out" : "";?>">
 									<h5 id="price-matrix-size" class="text-left price-matrix-header">SIZE</h5
 									><h5 id="price-matrix-price" class="text-right price-matrix-header">PRICE</h5
 									><ul class="price-matrix-content">
 									<?php foreach ( $content[ "Prices" ] as $label => $price ) {
 										$route = "configure_orb".DS.$orb["id"].DS.array_search($label, array_keys($content[ "Prices" ]));?>
-										<li class="add-to-cart" data-route="<?php echo $route?>">
-											<div class="orb-size text-left"><?php echo $label == "base" ? "Regular" : ucwords( $label ); ?></div
-											><div class="orb-price text-right"><?php echo money_format("%#3.2n", $price ); ?></div>
+										<li class="add-to-cart" data-route="<?=$route?>">
+											<div class="orb-size text-left"><?=$label == "base" ? "Regular" : ucwords( $label ); ?></div
+											><div class="orb-price text-right"><?=money_format("%#3.2n", $price ); ?></div>
 										</li>
 									<?php } ?>
 									</ul>
 								</div>
 							</div>
-						</li
-						><li id="orb-card-row-3" class="orb-card-row">
+						</li><?=""
+					  ?><li id="orb-card-row-3" class="orb-card-row">
 							<div id="like" class="orb-card-button inline float-labeled" data-float-label="share">
 								<span class="icon-orb-card-share" data-route="orb_card/share"></span
 								<?php if (!$logged_in) {?>
@@ -97,12 +96,12 @@ $prices = $content['Prices'];
 							<?php } ?>
 							></div
 							><div id="orb-card-options" class="orb-card-content inline">
-								<div class="orb-card-content-container">
+								<div class="orb-card-content-box<?=$ajax ? " fade-out" : "";?>">
 									<ul class="large-block-grid-4">
 									<?php
 										if (is_array($orb["config"] && count($orb["config"]) > 0) ) {
 											foreach ($orb["config"] as $opt) {?>
-										<li class="orb-card-option"><?php echo $opt;?></li>
+										<li class="orb-card-option"><?=$opt;?></li>
 										<?php }
 										}?>
 									</ul>
@@ -115,24 +114,22 @@ $prices = $content['Prices'];
 <!--  BACK ------->
 
 				<section id="orb-card-back" class="preserve-3d card-face back-face-y m-pad">
-					<?php $class_array = array("orb-configuration", "orb-size-panel", "activizing", "flush", "stretch",
-					                           sprintf("large-block-grid-%s", count($prices)));?>
-					<h3 class="orb-opt-configure-header"><?php echo strtoupper($orb["title"]); ?></h3>
-					<ul <?php echo ___cD($class_array);?>>
-					<?php foreach ( array_keys($prices) as $rank => $opt ) {?>
-						<li class="orb-size-button inactive" data-price-rank="<?php echo $rank;?>">
-							<h3 class="flush xtreme-select-list"><?php echo strtoupper($opt);?></h3>
+					<?php $class_array = ["orb-configuration", "orb-size-panel", "activizing", "flush", "stretch",
+					                           sprintf("large-block-grid-%s", count($prices))];?>
+					<h3 class="orb-opt-configure-header"><?=strtoupper($orb["title"]); ?></h3>
+					<ul <?=___cD($class_array);?>>
+					<?php foreach ( array_keys($prices) as $rank => $opt ):?>
+						<li class="orb-size-button inactive" data-rank=<?=$rank;?> data-route="price_rank/<?=$rank;?>">
+							<h3 class="flush xtreme-select-list"><?=strtoupper($opt);?></h3>
 						</li>
-					<?php };?>
-					</ul
-
-					><div id="order-details" class="orb-card-row"
-						><div id="orb-order-form" class="inline">
-							<?php
-							echo $this->Form->create("Order", array("action" => "add_to_cart", "id" => "orderOrbForm"));
-							echo $this->Form->input("Order.Orb.id", array("type" => "hidden", "value" => $orb['id']));
-							echo $this->Form->input("Order.Orb.uid", array("type" => "hidden", "value" => null));
-							echo $this->Form->input("Order.Orb.price_rank", array("type" => "hidden", "value" => 0));?>
+					<?php endforeach;?>
+					</ul><?=""
+				       ?><div id="order-details" class="orb-card-row"><?=""
+					   ?><div id="orb-order-form" class="inline">
+							<?=$this->Form->create("Order", ["action" => "add_to_cart", "id" => "orderOrbForm"]);?>
+							<?=$this->Form->input("Order.Orb.id", ["type" => "hidden", "value" => $orb['id']]);?>
+							<?=$this->Form->input("Order.Orb.uid", ["type" => "hidden", "value" => null]);?>
+							<?=$this->Form->input("Order.Orb.price_rank", ["type" => "hidden", "value" => 0]);?>
 							<div id="OrderOrbOrbNote-wrapper" class="t-pad inline">
 								<label for="orderOrbOrbNote">PREPARATION INSTRUCTIONS</label
 								><input name="data[Order][Orb][orb_note]" type="text" id="OrderOrbOrbNote">
@@ -144,7 +141,7 @@ $prices = $content['Prices'];
 							<?php
 							foreach($content['Orb']['Orbopt'] as $opt) {
 								$field_name = sprintf("Order.Orb.Orbopt.%s", $opt["id"]);
-								echo $this->Form->input($field_name, array( "type" => "hidden", "value" => -1, "class" => array("orb-opt-weight")));
+								echo $this->Form->input($field_name, [ "type" => "hidden", "value" => -1, "data-id" => $opt['id'], "class" => ["orb-opt-weight"]]);
 							}
 							echo $this->Form->end();?>
 						</div
@@ -154,10 +151,10 @@ $prices = $content['Prices'];
 						></div
 					></div
 					><div id="orb-finalize-details" class="orb-card-row text-center">
-						<a id="cancel-order-button" href="#" class="rounded modal-button bisecting cancel left" data-route="cart/add/cancel">
+						<a id="cancel-order-button" href="#" class="rounded modal-button bisecting cancel left" data-route="cart/cancel">
 							<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span>
 						</a>
-						<a id="confirm-order-button" href="#" class="rounded modal-button bisecting confirm right" data-route="cart/add/confirm">
+						<a id="confirm-order-button" href="#" class="rounded modal-button bisecting confirm right" data-route="cart/add">
 							<span class="text">Confirm</span><span class="icon-circle-arrow-r right"></span>
 						</a>
 					</div>

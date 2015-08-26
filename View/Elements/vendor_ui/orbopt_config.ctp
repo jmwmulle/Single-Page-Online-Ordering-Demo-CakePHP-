@@ -84,7 +84,7 @@
 									array_push($classes, 'inactive');
 								}
 								echo sprintf("<li id='orbopt-%s-label' %s %s>", $opt['Orbopt']['id'], ___dA($data), ___cD($classes) );?>
-									<span><?=$opt['Orbopt']['title']; ?></span>
+									<span><?=ucwords($opt['Orbopt']['vendor_title']); ?></span>
 									<input type="hidden" name="Orbopt[<?=$opt['Orbopt']['id'];?>]" value="<?=$val;?>" />
 								</li>
 						<?php } ?>

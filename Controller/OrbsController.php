@@ -160,6 +160,7 @@
 			$submitted_data = compact('id', 'render');
 			// todo: some way to identify a request as comign from internal to cake
 			if ( $this->request->is( 'ajax' ) && $this->Orb->exists( $id ) || true ) {
+				$this->set('ajax', true);
 				$this->Orb->Behaviors->load( 'Containable' );
 				$orb_conditions                            = array( 'conditions' => array( '`Orb`.`id`' => $id ),
 				                                                'contain'    => array(
@@ -182,7 +183,7 @@
 				}
 				foreach ( $orb[ 'Orbopt' ] as $i => $opt ) {
 					$orb[ 'Orbopt' ][ $i ][ 'default' ] = $opt[ 'OrbsOrbopt' ][ 'default' ];
-					if ( in_array('Optflag', $opt) ) {
+					if (array_key_exists('Optflag', $opt) ) {
 						foreach ( $opt[ 'Optflag' ] as $optflag ) {
 							$orb[ 'Orb' ][ 'Optflag' ][ $optflag[ 'id' ] ] = $optflag[ 'title' ];
 						}

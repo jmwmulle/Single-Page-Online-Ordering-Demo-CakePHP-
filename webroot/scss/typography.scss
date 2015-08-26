@@ -186,6 +186,16 @@ span.icon-hn-inline {
 .icon-add:before {
   content: "V";
 }
+.icon-payment-debit:before {
+  content: "W";
+}
+.icon-payment-credit:before {
+  content: "X";
+}
+.icon-payment-cash:before {
+  content: "Y";
+}
+
 
 
 @mixin font-faces() {

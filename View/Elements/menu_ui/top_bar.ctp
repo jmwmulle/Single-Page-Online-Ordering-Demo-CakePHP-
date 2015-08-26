@@ -72,12 +72,12 @@ $auth_live = false;
 	<div class="row">
 		<div class="large-4 small-12 columns text-center topbar-social third">
 			<div class="row">
-				<div id="social-loading" class="large-12 columns">
+				<div id="social-loading" class="large-12 columns fade-out true-hidden">
 					<span class="one icon-full"></span>
 					<span class="two icon-full"></span>
 					<span class="three icon-full"></span>
 				</div>
-				<div class="large-12 columns icon-row fade-out true-hidden">
+				<div class="large-12 columns icon-row">
 					<?php
 						if (!$auth_user) {
 							if ( $auth_live ) {

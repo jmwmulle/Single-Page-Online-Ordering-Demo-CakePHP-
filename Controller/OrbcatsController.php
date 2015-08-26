@@ -159,28 +159,28 @@
 				$orb_id = $this->Orbcat->Orb->find( 'first', array( 'conditions' => ['orbcat_id' => $orbcat_id] ) )['Orb']['id'];
 			}
 
-			$conditions = array( 'conditions' => array( 'id' => $orbcat_id ),
-			                     'contain'    => array(
-				                     'Orb' => array(
-					                     'conditions' => array( '`Orb`.`deprecated`' => false ),
-					                     'fields'     => array( 'id', 'orbcat_id', 'title', 'description', 'config' ),
+			$conditions = ['conditions' => ['id' => $orbcat_id ],
+			                     'contain'    => [
+				                     'Orb' => [
+					                     'conditions' => [ '`Orb`.`deprecated`' => false ],
+					                     'fields'     => ['id', 'orbcat_id', 'title', 'description', 'config' ],
 					                     'Pricedict',
 					                     'Pricelist',
-					                     'Orbopt'     => array(
-						                     'conditions' => array( '`Orbopt`.`deprecated`' => false ),
-						                     'Optflag'    => array( 'fields' => array( 'id', 'title' ) ),
+					                     'Orbopt'     => [
+						                     'conditions' => ['`Orbopt`.`deprecated`' => false ],
+						                     'Optflag'    => ['fields' => [ 'id', 'title' ] ],
 						                     'OrbsOrbopt',
-					                     )
-				                     )
-			                     ),
-			);
+					                     ]
+				                     ]
+			                     ],
+			];
 
 			$orb_card = $this->requestAction( "orbs/orbcard/$orb_id/0");
 
 			$data       = array( $this->requestAction( "orbs/orbcard/$orb_id/0" ),
 			                     $this->Orbcat->find( 'all', $conditions )[ 0 ] );
 			foreach ( $data[ 1 ][ 'Orb' ] as $i => $orb ) {
-				$prices                                    = array_filter( array_slice( array_combine( $orb[ 'Pricedict' ], array_slice($orb[ 'Pricelist' ],0,-1) ), 1 ) );
+				$prices = array_filter( array_slice( array_combine( $orb[ 'Pricedict' ], array_slice($orb[ 'Pricelist' ],0,-1) ), 1 ) );
 				$data[ 1 ][ 'Orb' ][ $i ]             = array_slice( $orb, 0, 5 );
 				$data[ 1 ][ 'Orb' ][ $i ][ 'Prices' ] = $prices;
 			}
@@ -223,29 +223,21 @@
 		/**
 		 * @param null $orbcat_id
 		 * @param null $orb_id
-		 * @param bool $return
+		 * @param boolean $return
 		 */
 		public function menu($orbcat_id = null, $orb_id = null, $return = false) {
 			$this->set_page_name( 'menu' );
 			$this->requestAction("orders/init_cart");
-//			$this->Order->init_cart();
-			$refreshing = false;  // ie. refreshing the orbcard menu with a new orbcat
-			if ( $this->request->is( "ajax" ) ) {
-				$this->layout = 'ajax';
-				$refreshing = !$return;
-			}
-
-			if ( !$orbcat_id || !$this->Orbcat->exists( $orbcat_id ) ) {
-				$orbcat_id = $this->default_orbcat_id($orb_id);
-			}
+			if (!$this->Orbcat->exists( $orbcat_id ) ) $orbcat_id = $this->default_orbcat_id($orb_id);
 			$this->Orbcat->id = $orbcat_id;
 			list($orbcard, $menu) = $this->orbcard_stage( $orbcat_id, $orb_id );
-
 			$orbcats       = $this->orbcats_by_formatted_title();
 			$optflags_list = $this->Orbcat->Orb->Orbopt->Optflag->find( 'list' );
-			$order         = $this->Session->read( 'Cart.Order' ) ? $this->Session->read( 'Cart.Order' ) : array();
-
+			$order         = $this->Session->read( 'Cart.Order' ) ? $this->Session->read( 'Cart.Order' ) : [];
 			$this->set( compact( 'orbcard', 'menu', 'orbcats', 'optflags_list', 'order', 'refreshing' ) );
+			if ( $this->request->is( "ajax" ) ) {
+				return $return ? $this->render("ajax_menu", "ajax") : $this->render("orbcard_menu", "ajax");
+			}
 		}
 
 		public function beforeFilter() {

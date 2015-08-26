@@ -5,6 +5,9 @@
 	$service = $cart['Service'];
 	$user = $cart['User'];
 	$invoice = $cart['Invoice'];
+
+	$confirm_order_classes = ["modal-button", "bisecting", "confirm", "right"];
+	if ($service['order_method'] != PICKUP and !$service['address_valid']) array_push($confirm_order_classes, "disabled");
 ?>
 
 <?=$this->Element( 'primary_modal'.DS.'masthead', $masthead);?>
@@ -61,7 +64,7 @@
 		<a href="#" class="modal-button bisecting cancel left" data-route="menu/unstash">
 			<span class="icon-circle-arrow-l"></span><span class="text">Continue Ordering</span>
 		</a>
-		<a id="finalize-order-button" href="#" class="modal-button bisecting confirm right disabled" data-disabled-tip='Choose "Order for Pick-up" or "Order for Delivery" Before Confirming!' data-data-route="order/finalize">
+		<a id="finalize-order-button" href="#" <?=___cD($confirm_order_classes);?> data-route="finalize_order">
 			<span class="text">Confirm & Order</span><span class="icon-circle-arrow-r"></span>
 		</a>
 	</div>

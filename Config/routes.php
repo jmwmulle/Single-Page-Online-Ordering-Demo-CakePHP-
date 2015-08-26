@@ -25,6 +25,7 @@
 	define('CTR', 'controller');
 	define('ATN', 'action');
 
+	Router::connect( '/!',                           array( CTR => 'orders', ATN => 'init_cart', 'true' ) );
 	/**  PAGES CONTROLLER */
 	Router::connect( '/',                           array( CTR => 'pages', ATN => 'display', 'splash' ) );
 	Router::connect( '/pages/*',                    array( CTR => 'pages', ATN => 'display' ) );
@@ -58,8 +59,10 @@
 	Router::connect( '/launch-menu/*',              array( CTR => 'orbcats', ATN => 'menu', null, null, true ) );
 
 	/** ORDERS CONTROLLER */
+	Router::connect( '/cart/*',                     array( CTR => 'orders', ATN => 'read_cart' ) );
 	Router::connect( '/add-to-cart/*',              array( CTR => 'orders', ATN => 'add_to_cart' ) );
 	Router::connect( '/review-cart/*',              array( CTR => 'orders', ATN => 'review_cart' ) );
+	Router::connect( '/set-address/*',              array( CTR => 'orders', ATN => 'set_address_form' ) );
 	Router::connect( '/confirm-address/*',          array( CTR => 'orders', ATN => 'confirm_address' ) );
 	Router::connect( '/clear-cart',                 array( CTR => 'orders', ATN => 'clear_cart' ) );
 	Router::connect( '/finish-ordering/*',          array( CTR => 'orders', ATN => 'review' ) );
@@ -73,6 +76,9 @@
 	Router::connect( '/vendor',                     array( CTR => 'orders', ATN => 'vendor' ) );
 	Router::connect( '/vendor-accept/*',            array( CTR => 'orders', ATN => 'set_status' ) );
 	Router::connect( '/vendor-reject/*',            array( CTR => 'orders', ATN => 'set_status' ) );
+
+	/** OPTFLAGS CONTROLLER */
+	Router::connect( '/flagmap',            array( CTR => 'optflags', ATN => 'ajax_list' ) );
 
 	/** ORBOPTS-OPTFLAGS CONTROLLER */
 	Router::connect( '/optflag-config/*',           array( CTR => 'orboptsOptflags', ATN => 'ajax_add' ) );

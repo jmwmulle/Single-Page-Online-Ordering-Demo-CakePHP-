@@ -8,12 +8,12 @@
  */ ?>
 <div class="row">
 	<div class="large-6 columns">
-		<a href="#" class="modal-button full-width" data-route="order_method/review/pickup">
+		<a href="#" class="modal-button full-width" data-route="set_order_method/review/pickup">
 			<span class="icon-pick-up"></span><span class="text">Order for Pick-up</span>
 		</a>
 	</div>
 	<div class="large-6 columns">
-		<a href="#" class="modal-button full-width" data-route="order_method/review/delivery">
+		<a href="#" class="modal-button full-width" data-route="set_order_method/review/delivery">
 			<span class="icon-delivery"></span><span class="text">Order for Delivery</span>
 		</a>
 	</div>

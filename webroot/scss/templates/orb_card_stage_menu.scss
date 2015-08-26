@@ -37,37 +37,64 @@
     padding-left : $orb-card-stage-menu-padding-left;
     height       : $orb-card-stage-menu-item-height;
     box-shadow   : inset 15px -5px 8px $black-a33;
-    cursor       : pointer;
   }
 }
 
-.orb-opt li {
-  box-shadow        : none;
-  background-color  : transparent;
-  margin            : 0;
-  width             : $orb-opt-icon-button-width;
-  height            : $orb-card-stage-menu-item-height;
-  float             : right;
-  padding           : $orb-opt-icon-full-padding;
-  background-size   : auto;
-  background-repeat : no-repeat;
-  &:hover, &.active { background-color : transparent; }
-  &.orb-opt-coverage {
-    color   : $white;
-    opacity : 0.33;
+.orb-opt {
+  cursor: pointer;
+  .orb-opt-coverage {
+    cursor: pointer;
+    &.disabled { cursor: default;}
   }
-  &:last-of-type {
-    float : left;
-    width : $orb-opt-text-width;
+  &.inelligible, &.disabled {
+    cursor: default;
+    * { cursor: default !important; }
+  }
+  li {
+    box-shadow        : none;
+    background-color  : transparent;
+    margin            : 0;
+    width             : $orb-opt-icon-button-width;
+    height            : $orb-card-stage-menu-item-height;
+    float             : right;
+    padding           : $orb-opt-icon-full-padding;
+    background-size   : auto;
+    background-repeat : no-repeat;
+    &:hover, &.active { background-color : transparent; }
+    &.orb-opt-coverage {
+      color   : $white;
+      opacity : 0.33;
+    }
+    &:last-of-type {
+      float : left;
+      width : $orb-opt-text-width;
+    }
   }
 }
+.orb-card-stage-menu .orb-opt.inelligible {
+  background-color: $light-grey;
+  a { color: darken($light-grey, 10%) };
+  li.orb-opt-coverage {
+      color   : $white;
+      opacity : 0.33;
+    }
+}
+
 
 .orb-card-stage-menu .orb-opt.active ul li.orb-opt-coverage {
   opacity : 1;
  &:hover { color : $xtreme-red; }
  &.active { color : $dark-grey; }
+ &.disabled {
+   opacity: 0.33;
+   &:hover { color: $white; }
+ }
 }
 .orb-card-stage-menu .orb-opt ul li.orb-opt-coverage {
+  &.inelligible {
+     opacity: 0.15;
+     &:hover { color: $white; }
+   }
   &.full, &.right-side, &.left-side { display:none !important; }
   &.double { margin-right: 10px;}
 }
@@ -108,6 +135,7 @@ li#orb-opt-filters-all {
   margin: $tight-padding 0;
   width: $orb-opt-filter-all-width;
   transform: translate($orb-opt-filter-all-transform-width, 0);
+//  transform: translate(0, 0);
   border-top-left-radius: $global-radius;
   border-bottom-left-radius: $global-radius;
   padding: $tight-padding;
