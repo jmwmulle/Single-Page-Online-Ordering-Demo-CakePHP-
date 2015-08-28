@@ -1,3 +1,4 @@
+var test = "hi mom";
 $.fn.scrollTo = function (target, options, callback) {
 	if (typeof options == 'function' && arguments.length == 2) {
 		callback = options;
@@ -544,6 +545,13 @@ if (!String.prototype.toTitleCase) {
 		return return_array;
 	}
 
+	function obj_keys(obj) {
+		var keys = [];
+		for (var k in obj) keys.push(k);
+		return keys;
+	}
+
+
 	function exists(varName) {
 		return jQuery(varName).length > 0;
 	}
@@ -665,456 +673,15 @@ function inherits(object) {
 	return new F;
 }
 
-
-
-/**
- * Created by jono on 8/22/14.
- * (X)treme(S)elector(M)anifest
- *
- */
-if ( window.xtr == undefined ) window.xtr = {};
-
-var XSM = {
-	global:{
-		activizing_list: "ul.activizing li",
-		active_list_item: "li.active",
-		ajaxLink:".ajax-link",
-		available: ".available",
-		unavailable: ".unavailable",
-		footer: "footer",
-		imageQueue: "#image-loading-queue",
-		loadingScreen: "#loadingScreen",
-		loading: "#topbar h4.loading",
-		multi_activizing: ".multi-activizing",
-		page_content: "#page-content",
-		preserve_aspect_ratio: ".preserve-aspect-ratio",
-		route: "*[data-route]",
-		onchange_route: "*[data-changeroute]",
-		store_status: "#store-status",
-		delivery_status: "#delivery-status",
-		unknown_status: "#delivery-status",
-	},
-	effects: {
-		active: "active",
-		activizing: "activizing",
-		active_by_default: "default",
-		breakout: ".breakout",
-		checked: "icon-checked",
-		cancel: "cancel",
-		active_plus: "active-plus",
-		detach: "detach",
-		disabled: "disabled",
-		enabled: "enabled",
-		exposed: "exposed",
-		fade_out: "fade-out",
-		fastened: "fastened",
-		fill_parent: ".fill-parent",
-		flipped_x: "flipped-x",
-		flipped_y: "flipped-y",
-		float_label: "float-labeled",
-		hidden: "hidden",
-		inactive: "inactive",
-		inelligible: "inelligible",
-		launching: "launching",
-		loading: "loading",
-		lr_only: "lr-only",
-		max_of_type: "max-of-type",
-		overlay: "overlay",
-		pressed: "pressed",
-		slide_right: "slide-right",
-		register_icon: "icon-orb-card-register",
-		register_reveal: "icon-orb-card-register-reveal",
-		secondary:"secondary",
-		share_icon: "icon-orb-card-share",
-		share_icon_reveal: "icon-orb-card-share-reveal",
-		slide_down: "slide-down",
-		slide_left: "slide-left",
-		slide_up: "slide-up",
-		solidify: "solidify",
-		stash: "stash",
-		success: "success",
-		swap_width: "swap-width",
-		transitioning: "transitioning",
-		true_hidden: "true-hidden",
-		unchecked: "icon-unchecked"
-	},
-	forms: {
-		orb_order_form: "#orderOrbForm",
-		order_address_form: "#orderAddressForm",
-		users_form: "#UsersForm"
-	},
-	load: {
-		dismissLSButton: "#dismiss-loading-screen",
-		pizzaLoaderGIF: "#pizza-loader-gif",
-		loadingMessage: "#loading-message",
-		readyMessage: "#ready-message"
-	},
-	menu: {
-		active_orb_name_3d_context: "#active-orb-name-3d-context",
-		active_orb_name_front_face: "#active-orb-name-front-face",
-		active_orb_name_back_face: "#active-orb-name-back-face",
-		active_orbcat_menu_header: "#active-orbcat-menu-header",
-		active_orb: ".active-orbcat-item.active",
-		active_orbcat_item: ".active-orbcat-item",
-		active_orbs_menu_item: "#active-orbs-menu li a",
-		add_to_cart:".add-to-cart",
-		cancel_order_button: "#cancel-order-button",
-		confirm_order_button: "#confirm-order-button",
-		double: ".double",
-		full: ".full",
-		left_side: ".left-side",
-		right_side: ".right-side",
-		float_label: "#float-label",
-		inactive_sauce: ".orb-opt.sauce.inactive",
-		sauce: ".orb-opt.sauce",
-		orb_card_back: "#orb-card-back",
-		ord_card_back_face: ".ord-card-back-face",
-		orb_card_content_container: ".orb-card-content-container",
-		orb_card_row_1: "#orb-card-row-1",
-		orb_card_row_2: "#orb-card-row-2",
-		orb_card_row_3: "#orb-card-row-3",
-		orb_card_stage: "#orb-card-stage",
-		orb_card_stage_menu: "#orb-card-stage-menu",
-		orb_card_stage_menu_wrapper: "#orb-card-stage-menu-wrapper",
-		orb_card_3d_context: "#orb-card-3d-context",
-		orb_card_wrapper: "#orb-card-wrapper",
-		orb_order_form: "#orderOrbForm",
-		orb_order_form_orb_id: "#OrderOrbId",
-		orb_order_form_orb_uid: "#OrderOrbUid",
-		orb_order_form_inputs: "#orderOrbForm input",
-		orb_order_form_orb_opts: "#orderOrbForm input.orb-opt-weight",
-		orb_order_form_price_rank: "#OrderOrbPriceRank",
-		orb_order_form_note: "#OrderOrbNote",
-		orb_order_form_quantity: "#OrderOrbQuantity",
-		orb_size_button: ".orb-size-button",
-		orbcat_menu_title_header: "#orbcat-menu-title h1",
-		orbcat_menu_title_subtitle: "#orbcat-menu-title h1 span",
-		orbcat_menu: "#orbcat-menu",
-		orb_opt: ".orb-opt",
-		orb_opt_active: ".orb-opt.active",
-		orb_opt_container: "#orb-opts-container",
-		orb_opt_icon: ".orb-opt-coverage",
-		orb_opt_icon_active: ".orb-opt-coverage.active",
-		orb_opt_filter: ".orb-opt-filter",
-		orb_opt_filters: "#orb-opt-filters",  // marked for deletion
-		optflag_filter_header: "#optflag-filter-header",
-		orb_opt_filter_span: ".orb-opt-filter span",
-		orb_opt_filter_span_checked: ".orb-opt-filter span.icon-checked",
-		orb_opt_filter_span_unchecked: ".orb-opt-filter span.icon-unchecked",
-		orb_opt_filter_all: ".orb-opt-filter-all",
-		orb_opt_weight: ".orb-opt-weight",
-		orb_opts_menu_header: "#orb-opts-menu-header",
-		registration_panel: "#orb-card-register-panel",
-		register_button: "#register.orb-card-button",
-		share_button: "#like.orb-card-button",
-		self:"main#menu",
-		social_panel: "#orb-card-social-panel",
-		tiny_orb_opts_list: "#tiny-orb-opts-list",
-		tiny_orb_opts_list_wrapper:"#tiny-orb-opts-list-wrapper",
-		tiny_orb_opts_list_item: ".tiny-orb-opts-list-item",
-		user_activity_panel: "#user-activity-panel",
-		user_activity_panel_items: "#user-activity-panel li"
-	},
-	modal: {
-		button: ".modal-button",
-		close_modal: "#close-modal",
-		confirm_address_login_panel: "#confirm-address-login-panel",
-		default_content: ".default-content",
-		deferred_content: ".deferred-content",
-		flash: "#flash-modal",
-		finalize_order_button: "#finalize-order-button",
-		on_close: "#on-close",
-		orb_card:"#orbcard-modal",
-		overlay: "#modal-overlay-container",
-		payment_method_input: "#OrderPaymentMethod",
-		primary: "#primary-modal",
-		primary_content: "#primary-modal-content",
-		primary_deferred_content: "#primary-modal-content .deferred-content",
-		social: "#social-modal",
-		splash: "#splash-modal",
-		submit_order_address: "#submit-order-address",
-		submit_order_button_wrapper: "#submit-order-button-wrapper"
-	},
-	splash:{
-		self:"#splash",
-		bar_contents: "#splash-bar-content",
-		content:"#splash > .content",
-		circle:"#splash-circle",
-		circleWrap:"#splash-circle-wrapper",
-		detached: "#splash .detach",
-		fastened:"#splash .fastened",
-		logo:"#splash-logo",
-		logo_wrapper:"#splash-logo-wrapper",
-		logoClone:"#splash-logo_fasten-clone",
-		menu:"#menu",
-		menu_wrapper:"#menu-wrapper",
-		menu_spacer:"#menu-wrapper .spacer",
-		modal:"#splash-modal",
-		modalWrap:"#splash-modal-wrapper",
-		modalContent:"#splash-modal .content",
-		openingDeal:"grand-opening-deal",
-		order:"#order",
-		order_delivery: "#splash-order-delivery",
-		order_delivery_wrapper: "order-delivery-wrapper",
-		order_pickup_wrapper: "order-pickup-wrapper",
-		order_pickup: "#splash-order-pickup",
-		order_spacer:"#order-wrapper .spacer",
-		preserve_aspect_ratio: "#splash *.preserve-aspect-ratio",
-		splash_bar:"#splash-bar",
-		splash_bar_wrapper:"#splash-bar-wrapper",
-		splash_link: ".splash-link"
-	},
-	topbar: {
-		self: "#topbar",
-		social_loading: "#social-loading",
-		icon_row: "#topbar .icon-row",
-		topbar_cart_button: "#top-bar-view-cart",
-		hover_text_link: ".topbar-social  a",
-		hover_text_label: "#topbar-hover-text-label",
-		hover_text_label_incoming: "#topbar-hover-text-label span.incoming",
-		hover_text_label_outgoing: "#topbar-hover-text-label span.outgoing"
-	},
-	vendor: {
-		self: "body#vendor",
-		back_splash: "#back-splash",
-		customer_name: "#customer-name",
-		error_pane: "#error-pane",
-		food_list: "#food-list",
-		next_order: "#next-order",
-		new_order_tone: "files/new_order_tone.mp3",
-		accept_acknowledge: "#accept-acknowledge",
-		order_accept_button: "#order-accept-button",
-		order_accept_button_pressed: "#order-accept-button.pressed",
-		order_content_detail: "#order-content-detail",
-		order_content_sample: "#order-content-sample",
-		order_count: "#order-count",
-		order_count_bubble: "#pending-orders-count",
-		order_reject_confirmation: "#order-reject-confirmation",
-		order_address: "#order-title",
-		pending_orders_list: "#pending-orders-list"
-	},
-	vendor_ui: {
-		add_orbopt_form: "#OrboptVendorUiForm",
-		menu_table: "#menu-table",
-		menu_options_tab: "#menu-options-tab",
-		menu_tab: "#menu-tab",
-		orbopts_table: "#menu-options-table",
-		orb_attr_display: "div.orb-attr.display",
-		orb_attr_edit: "div.orb-attr.edit",
-		orbopt_attr_display: "div.orbopt-attr.display",
-		orbopt_attr_edit: "div.orbopt-attr.edit",
-		orbopt_add_breakout: "#orbopt-add-breakout",
-		orbopt_pricelist_add_breakout: "#orbopt-pricelist-add-breakout",
-		orbopt_pricelist_add: "#orbopt-pricelist-add",
-		orb_add_form: "#OrbAddForm",
-		orbopt_config_form_wrapper: ".orbopt-config-form",
-		orbopt_optgroup_config_form: "#orbopt-optgroup-config-form",
-		orbopt_selection_template: "#orbopt-selection-template",
-		price_dict_update_form: ".price-dict-update-form",
-		ui_tabs: "#ui-tabs"
-	},
-	footer: {
-		self:"footer#footer"
-	},
-	generated: {
-		vendor_ui_opts_input: function(orb_id) { return "#orb-" + orb_id + "-orbopts"; },
-		vendor_ui_opts_config_id: function(orb_id) { return "#orb-" + orb_id + "-orbopts-config" },
-		vendor_orb_desc: function(orb_desc, orb_details) {
-			var orb_opts = orb_details.opts;
-			var orb_str = "<li><ul class='orb'><li> &#8226; ";
-			orb_str += "<span class='size'>" + orb_details.size.replace('in','"') + "</span>";
-			orb_str += "<span class='title'>" + orb_desc + "</span></li>";
-			for (var opt_id in orb_opts) {
-				orb_str += "<li class='orb-opt'><span class='text'>" + orb_opts[opt_id].title + "</span>";
-				switch ( orb_opts[opt_id].weight ) {
-					case "D":
-						orb_str += '<span class="icon-double"></span></li>';
-						break;
-					case "L":
-						orb_str += '<span class="icon-left-side"></span></li>';
-						break;
-					case "R":
-						orb_str += '<span class="icon-right-side"></span></li>';
-						break;
-					default:
-						orb_str += '</li>';
-				}
-			}
-			orb_str += "</ul></li>";
-			return orb_str;
-		},
-		vendor_orb_title: function(size, title) {
-		},
-		order_form_opt_id: function(opt_id) {
-			opt_id = opt_id.split("-")[2]
-			return as_id("OrderOrbOrbopt" + opt_id)
-		},
-		orb_card_row_content: function(row) { return "#orb-card-row-" + row + " div.orb-card-content" },
-		orb_opt_id: function(opt_id) { return as_id("orb-opt-coverage-" + opt_id); },
-		order_address_button: function(context) {
-			var classes;
-			var route = "confirm_address/submit" + C.DS + context;
-			var message;
-			var wrapper = '<a href="#" id="submit-order-address" class="'
-			var cancel = '<a href="#" class="modal-button lrg bisecting cancel left""';
-				cancel += ' data-route="confirm_address/cancel' + C.DS + context +'">';
-				cancel += '<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span></a>';
-
-			if (context == "menu") {
-				classes = ["modal-button", "lrg", "bisecting", "confirm", "right"];
-				message = '<span class="text">OK!</span><span class="icon-circle-arrow-r"></span></a>';
-			}
-			if (context == "review") {
-				cancel = "";
-				classes= ["modal-button", "lrg", "full-width", "confirm"];
-				message = '<span class="text">BACK TO CHECKOUT!</span><span class="icon-circle-arrow-r"></span></a>';
-			}
-			wrapper += classes.join(" ") + '" data-route="' + route + '">';
-			return cancel + wrapper + message;
-		},
-	},
-	page_name: {
-		vendor_ui: "Vendor Interface",
-		splash: "Splash Page",
-		menu: "Xtreme Menu"
+function strip_orphan_text_nodes(parsed_html_obj) {
+	var return_array = [];
+	for (var i = 0; i < parsed_html_obj.length; i++) {
+		if (parsed_html_obj[i].nodeName != "#text") return_array.push( parsed_html_obj[i] );
 	}
-};
-
-var FX = XSM.effects;
-
-/**
- * Created by jono on 12/29/14.
- */
-var constants = {
-	PX: "px",
-	POST: "POST",
-	GET: "GET",
-	CLK: "click",
-	CHANGE: "change",
-	CHECK: "check",
-	DELIVERY: "delivery",
-	PICKUP: "pickup",
-	JUST_BROWSING:"just_browsing",
-	UNCHECK: "uncheck",
-	UNDEF: "undefined",
-	MOUSEOVER: "mouseover",
-	HOVER: "hover",
-	MOUSEENTER: "mouseenter",
-	MOUSEOUT: "mouseout",
-	HIDE: 0,
-	SHOW: 1,
-	DS: "/",
-	BODY: "body",
-	ORDER_SPACER_FACTOR: 0.45,
-	MENU_SPACER_FACTOR: 0.15,
-	BACK_FACE: "back_face",
-	FRONT_FACE: "front_face",
-	MENU: "menu",
-	DATABASE: "database",
-	SESSION: "session",
-	UPDATE_DB: "update_database",
-	UPDATE_SESSION: "update_session",
-	UNSET: -1,
-	OPT: "opt",
-	CANCEL: "cancel",
-	ORB_CARD_REFRESH: "orb_card_refresh",
-	ORDER_FORM_UPDATE: "order_form_update",
-	ORDER_UI_UPDATE: "order_ui_update",
-	ROUTE_LAUNCHED: "route_launched",
-	ROUTE_REQUEST: "route_request",
-	ORB_ROW_ANIMATION_COMPLETE:"orb_row_animation_complete",
-	F: "",
-	D: "<span class='icon-double tiny-opt icon-hnj-inline'></span>",
-	R: "<span class='icon-right-side tiny-opt icon-hnj-inline'></span>",
-	L: "<span class='icon-left-side tiny-opt icon-hnj-inline'></span>",
-	ORBCARD: "orbcard",
-	PRIMARY: "primary",
-	SPLASH: "splash",
-	FLASH: "flash",
-	WEIGHT: "weight",
-	REM: 16,
-	STASH:1,
-	OL:3,
-	STASH_OL:4,
-	STOP:5,
-	STASH_STOP: 6,
-	STOP_OL:8,
-	STASH_OL_STOP:9,
-	PENDING:0,
-	ACCEPTED:1,
-	REJECTED:2,
-	ACCEPT: "accept",
-	REJECT: "reject",
-	CUT: "cut",
-	FEED: 'feed',
-	FEED_CUT: "feed_cut",
-	XTREME_TABLET_USER_AGENT: 'xtreme-pos-tablet',
-	EPOS_EXCEPTION: "com.epson.eposprint.EposException",
-	OPEN: "OPEN",
-	CLOSED: "CLOSED",
-	DELIVERING: "DELIVERING",
-	PICKUP_ONLY: "PICKUP ONLY",
-	UNAVAILABLE: "UNAVAILABLE",
-	CONFIGURING: "configuring",
-	CONFIGURED: "configured"
-};
-
-var C = constants;
-if ( window.xtr === undefined ) window.xtr = {};
-
-window.xtr.events = {
-		route_launched: createCustomEvent("route_launched"),
-		orb_card_refresh: createCustomEvent(C.ORB_CARD_REFRESH),
-		order_form_update: createCustomEvent(C.ORDER_FORM_UPDATE),
-		order_ui_update: createCustomEvent(C.ORDER_UI_UPDATE),
-		route_request: createCustomEvent(C.ROUTE_REQUEST),
-		orb_row_animation_complete: createCustomEvent(C.ORB_ROW_ANIMATION_COMPLETE),
-};
-
-window.xtr.data = {
-		debug:true,
-		store_status: null,
-		host_root_dirs: {
-			xDev: "",
-			xProd: "",
-			xLoc: "/xtreme"
-		},
-		delays: {
-			global_transition: 300,
-			default_js_refresh: 30,
-			orb_card_row_toggle: 800,
-			menu_stash_delay: 900,
-			fold_splash: 3000,
-			splash_set_order_method: 3900
-		},
-		cfg: {
-			root: null,
-			developmentMode: true,
-			minLoadTime: 1,
-			store_status_inspection_timeout: 61000  // ie. 61 seconds
-		}
-};
+	return return_array.length > 1 ? return_array : return_array[0];
+}
 
 
-/**
- * Created by jono on 8/11/15.
- */
-window.xtr.route_collections.form_validation = function() {
-		this.validate_form = {
-			params: ['target', 'context', 'delegate_route'],
-			callbacks: {
-				params_set: function () {
-					switch (this.read('target')) {
-						case 'address':
-							XBS.validation.submit_address(this.read('context'), this.read('delegate_route'));
-							break;
-					}
-				}
-			}
-		};
-
-		return this;
-};
 /**
  * Created by jono on 8/11/15.
  */
@@ -1168,30 +735,29 @@ window.xtr.route_collections.layout_api = function() {
 /**
  * Created by jono on 8/11/15.
  */
-if (window.xtr === undefined) window.xtr = window.xtr;
 
-window.xtr.route_collections.menu_ui = function() {
+XT.route_collections.menu_ui = function() {
 	this.favorite = {
 				params: {context: {value: null, url_fragment: false}},
 				url: {url: "favorite"},
 				data: false,
 				callbacks: {
-					modal: XSM.modal.flash,
+					modal: C.FLASH,
 					params: function () { this.data = $(XSM.menu.orb_order_form).serialize(); },
 					launch: function (e, resp) { pr(resp);}
 				}
 			};
 	this.menu = {
 				params: ['reveal_method'],
-				modal: false,
+				modal: C.PRIMARY,
 				url: {url: "menu"},
 				callbacks: {
 					params_set: function () {
 						if (this.read('reveal_method') == 'unstash') {
 							this.unset('url');
 							this.unset('launch_callback');
-							window.xtr.layout.dismiss_modal(XSM.modal.primary);
-							setTimeout(function () { window.xtr.menu.unstash();}, window.xtr.data.delays.global_transition);
+							this.modal.hide();
+							setTimeout(function () { XT.menu.unstash() }, 300);
 						}
 					},
 					launch: function () { window.xtr.splash.fold();}
@@ -1208,58 +774,55 @@ window.xtr.route_collections.menu_ui = function() {
 			name: {}
 		},
 		callbacks: {
-			launch: function () { window.xtr.menu.refresh_active_orbcat_menu(this.deferral_data); }
+			launch: function () {
+				XT.router.cake_ajax_response(this.deferral_data, {
+					callback: function(response) { XT.orbcard.load_menu(response.data) }
+				}, false, false)
+			}
+		}
+	};
+	this.price_rank = {
+		params: ["rank"],
+		propagates: false,
+		callbacks: {
+			params_set: function () { XT.orbcard.orb.price_rank.set( this.read('rank') ) }
 		}
 	};
 	this.orb_opt = {
-		params: ["context", "element", "title", "weight"],
-		behavior: C.STOP,
+		params: ["action", "id"],
+		propagates: false,
 		callbacks: {
-			params_set: function () {
-				switch (this.read('context')) {
-					case "form_update":
-						if (!this.read('weight')) this.write("params.title.value", title_case(this.read('title')));
-						window.xtr.menu.set_orbopt_form_state(this.read('element'), this.read('title'));
-						break;
-					case "weight":
-						var parent_opt = $(this.trigger.element).parents(XSM.menu.orb_opt)[0];
-						if ($(parent_opt).hasClass(XSM.effects.active)) {
-							this.trigger.event.stopPropagation();
-						}
-						if ($(this).hasClass(XSM.effects.inelligible)) return;
-						orbcard.toggle_orb_opt_icon(this.trigger.element, true);
-						break;
-					case "opt":
-						orbcard.toggle_orb_opt(this.read('element'), true);
-						break;
-				}
-			}
+			params_set: function () { XT.orbcard.orb.toggle_opt( this.read('id') ) }
+		}
+	};
+	this.orb_opt_weight = {
+		propagates:false,
+		params: ["id", "weight"],
+		propagates: false,
+		callbacks: {
+			params_set: function () { XT.orbcard.orb.toggle_opt( this.read('id'), this.read("weight") ) }
 		}
 	};
 	this.optflag = {
 		params: ['target', 'action'],
 		callbacks: {
-			params_set: function () {
-				switch (this.read('action')) {
-					case "filter":
-						window.xtr.menu.toggle_optflag(Number(this.read('target')), false)
-						break;
-				}
-			}
+			launch: function () { XT.orbcard.toggle_filter(this.read('target')); }
 		}
 	};
 	this.load_orb = {
-		url: { url: "menu-item", defer: true },
-		params:{id:{url_fragment:true} },
+		url: { url: "menu-item", type: C.GET, defer: true },
+		params:{ id:{ url_fragment:true }, fart:{url_fragment:true, value:"poop"} },
+		propagates: false,
 		callbacks: {
 			launch: function () {
-				// Note: response as a deleaget route to configure_orb/id
-				window.xtr.routing.cake_ajax_response(this.deferral_data,{
-					callback: function(response, id) {
-						window.xtr.menu.load_orb(id, response.data.view_data)
+				XT.router.cake_ajax_response(this.deferral_data, {
+					callback: function(response, data) {
+						setTimeout( function() {
+							XT.orbcard.load_orb(data.id, response.data.view_data)
+						}, XT.orbcard.reset_stage() );
 					},
 					data: { id: this.read('id') }
-				}, true, true);
+				}, false, false);
 			}
 		}
 	};
@@ -1268,12 +831,9 @@ window.xtr.route_collections.menu_ui = function() {
 		callbacks: {
 			params_set: function() {
 				// populate form with any orb configurations in progress
-				window.xtr.orbcard.load_orb_configuration( window.xtr.cart.configure( this.read('id'), this.read('rank') ) );
+				 XT.orbcard.configure(this.read('id'), this.read('rank'));
 			},
-			launch: function() {
-				// flip to backface
-				window.xtr.orbcard.show_back_face(this.read('rank'));
-			}
+			launch: function() { XT.orbcard.show_face(C.BACK) }
 		}
 	};
 	this.orb_card = {
@@ -1296,7 +856,7 @@ window.xtr.route_collections.menu_ui = function() {
 									try {
 										var data = JSON.parse(this.deferral_data);
 										if (data.success == true && window.xtr.cart.add_to_cart()) {
-											window.xtr.layout.reveal_orb_card_modal();
+											XT.layout.reveal_orb_card_modal();
 										}
 									} catch (e) {
 										throw "Add to cart failed at server:\n " + this.deferral_data;
@@ -1304,131 +864,85 @@ window.xtr.route_collections.menu_ui = function() {
 								}
 								break;
 							case 'cancel':
-								launch = window.xtr.menu.reset_orb_card_stage();
+								launch = XT.menu.reset_orb_card_stage();
 								break;
 						}
 						break;
 					default:
-						launch = function () { window.xtr.menu.toggle_orb_card_row_menu(this.read('action'), null);}
+						launch = function () { XT.menu.toggle_orb_card_row_menu(this.read('action'), null);}
 						break;
 				}
 				if (launch) this.set_callback("launch", launch)
 			}
 		}
 	};
-
+	this.validate_form = {
+				params: ['target', 'restore', 'delegate'],
+				callbacks: {
+					params_set: function () {
+						pr(this.params, "vfrom");
+						XT.validate(this.read('target'), this.read('restore'), this.read('delegate')) }
+				}
+			};
+	this.close_modal = {
+			params: ["modal"],
+			callbacks: { launch: function () { new Modal(this.read('modal')).hide(true) } }
+		};
+		this.orbcard_modal = {
+				params: ["action", "target"],
+				propagates:false,
+				modal: C.PRIMARY,
+				callbacks: {
+					params_set: function() {
+						XT.orbcard.show_face(C.FRONT);
+						switch ( this.read('action') ) {
+							case "continue_ordering":
+								setTimeout(function () { XT.orbcard.modal.hide(); XT.orbcard.reset_stage(); }, 900);
+								break;
+							case "view":
+								XT.orbcard.modal.hide();
+								this.url= {
+									url: ["review", this.read('target')].join("-"),
+									defer: false,
+									type: C.GET
+								};
+								this.stash = true;
+								break;
+						}
+					}
+				}
+			};
 	return this;
 };
 /**
  * Created by jono on 8/11/15.
  */
-window.xtr.route_collections.modal_api = function() {
-	this.close_modal = {
-			params: ["modal", "on_close"],
-			callbacks: {
-				launch: function () {
-					var action = $(XSM.modal[this.read("modal")]).find(XSM.modal.on_close)[0];
-					if (action) {
-						window.xtr.layout.dismiss_modal(this.read("modal"), $(action).data('action'));
-					} else {
-						window.xtr.layout.dismiss_modal(this.read("modal"), false);
-					}
-				}
-			}
-		};
-	this.orbcard_modal = {
-			params: ["action", "target"],
-			propagates:false,
-			modal: XSM.modal.primary,
-			callbacks: {
-				params_set: function() {
-					window.xtr.orbcard.show_front_face();
-					pr(this.p);
-					switch ( this.p.action ) {
-						case "continue_ordering":
-								setTimeout(function () {
-									window.xtr.layout.dismiss_modal();
-									window.xtr.orbcard.reset_stage();
-								}, 900);
-							break;
-						case "view":
-							this.url= {
-								url: ["review", this.read('target')].join("-"),
-								defer: false,
-								type: C.GET
-							};
-							this.change_behavior(C.STASH_STOP);
-							break;
-					}
-				}
-			}
-		};
-
-	return this
-};
-/**
- * Created by jono on 8/11/15.
- */
 window.xtr.route_collections.orders_api = function() {
-	this.order = {
-		params: ["method", "context"],
-		url: { url: "review-order", type: C.GET, defer: false},
-		modal: XSM.modal.primary,
+	this.finalize_order =  {
+		url: { url: "orders" + C.DS + "finalize", defer: true, data: $("#OrderReviewForm").serialize(), type: C.POST },
 		callbacks: {
-			params_set: function () {
-				switch (this.read('method')) {
-					case "finalize":
-						this.url = {
-							url: "orders" + C.DS + "finalize",
-							defer: true,
-							data: $("#OrderReviewForm").serialize(),
-							type: C.POST
+			launch: function () {
+					var data = $.parseJSON(this.deferral_data);
+					var trigger = this.trigger;
+					if (!data.error) {
+						if (data.order_id) {
+							var route = "pending_order" + C.DS + data.order_id + C.DS + "launching";
+							$(XT.router).trigger(C.ROUTE_REQUEST, { request: route, trigger: trigger.event });
 						}
-						this.set_callback("launch", function () {
-							var data = $.parseJSON(this.deferral_data);
-							var trigger = this.trigger;
-							if (!data.error) {
-								if (data.order_id) {
-									var route = "pending_order" + C.DS + data.order_id + C.DS + "launching";
-									$(window.xtr.router).trigger(C.ROUTE_REQUEST, {
-										request: route,
-										trigger: trigger.event
-									});
-								}
-							}
-						});
-						break;
-					case "review":
-						if (this.read('context') == 'orb_card') {
-							this.change_behavior(C.STASH_STOP);
-						}
-						break;
+					}
 				}
-			},
-			launch: function (e, fired_from) {
-				if (this.deferral_data) {
-					var data = $.parseHTML(this.deferral_data);
-					$(XSM.modal.primary).addClass(XSM.effects.slide_down);
-					setTimeout(function () {
-						var default_content = $(XSM.modal.primary).find(XSM.modal.default_content)[0];
-						$(default_content).replaceWith(data);
-						$(XSM.modal.primary).hide()
-							.removeClass(XSM.effects.slide_down)
-							.addClass(XSM.effects.slide_up).show();
-						setTimeout(function () {
-							$(XSM.modal.primary).removeClass(XSM.effects.slide_up);
-						}, 30);
-					}, 300);
-				} else {
-					window.xtr.cart.validate_order_review();
-				}
-			}
 		}
+	},
+	this.review_order = {
+		url: { url: "review-order", type: C.GET, defer: false},
+		params: ["context"],
+		modal: C.PRIMARY,
+		callbacks: { params_set: function() { this.modal.hide() } }
 	};
 	this.order_accepted = {
-					url: "order-accepted",
-					modal: XSM.modal.primary
-			};
+		url: "order-accepted",
+		modal: C.PRIMARY
+	};
 	this.splash_order = {
 				params: {method: { value: null, url_fragment: false}},
 				callbacks: {
@@ -1439,23 +953,24 @@ window.xtr.route_collections.orders_api = function() {
 				}
 			};
 	this.payment_method = {
-				params: ['context', 'action'],
-				callbacks: {
-					params_set: function () {
-						switch (this.read('context')) {
-							case "review_modal":
-								window.xtr.modal.payment_method(this.read('action'));
-								break;
-						}
-					}
+		params: ['context', 'action'],
+		modal: C.PRIMARY,
+		callbacks: {
+			params_set: function () {
+				switch (this.read('context')) {
+					case "review_modal":
+						this.modal.payment_method(this.read('action'));
+						break;
 				}
-			};
+			}
+		}
+	};
 	this.pending_order = {
 		params: {
 			order_id: {value: null, url_fragment: true},
 			status: {value: null, url_fragment: true}
 		},
-		modal: XSM.modal.primary,
+		modal: C.PRIMARY,
 		url: {url: "order-confirmation", defer: true, type: C.POST},
 		callbacks: {
 			params_set: function () {
@@ -1496,147 +1011,132 @@ window.xtr.route_collections.orders_api = function() {
 			}
 		}
 };
-	this.order_update = {
-		params: ['source'],
+	this.set_delivery_address = {
+		modal: C.PRIMARY,
+		url: {url: "set-address", type: C.GET, defer: false},
+		params: {context: {url_fragment:true}, restore:{url_fragment:false}},
 		callbacks: {
 			params_set: function () {
-				orbcard.load_orb_configuration();
+				if (this.read('context') == 'cancel' ) {
+					this.unset('url');
+					this.unset('launch');
+					switch (this.read('restore')) {
+						case 'menu':
+							this.modal.hide();
+							XT.menu.unstash();
+							setTimeout(function() {
+							$(XT.router).trigger(C.ROUTE_REQUEST, {request:"set_order_method/menu/just_browsing", trigger:{}});
+							XT.cart.set_order_method(C.JUST_BROWSING);
+							}, 300);
+							break;
+						case 'review':
+							$(XT.router).trigger(C.ROUTE_REQUEST, {request:"review_order", trigger:{}});
+						default:
+							this.modal.hide();
+							break;
+					}
+				}
 			}
 		}
 	};
-	this.confirm_address = {
-				modal: XSM.modal.primary,
-				url: {url: "confirm-address", type: C.GET, defer: true},
-				params: ['context', 'restore'],
-				callbacks: {
-					params_set: function () {
-						switch (this.read('context')) {
-							case "menu":
-								// ie. not from within the modal, so no need to defer
-								this.url.defer = false;
-								break;
-							case "cancel":
-								this.unset('url');
-								this.unset('launch');
-								switch (this.read('restore')) {
-									case 'menu':
-										window.xtr.menu.unstash_menu();
-										$(window.xtr.router).trigger(C.ROUTE_REQUEST, {request:"set_order_method/menu/just_browsing", trigger:{}});
-										window.xtr.menu.set_order_method(C.JUST_BROWSING);
-										break;
-									default:
-										window.xtr.layout.dismiss_modal(this.modal);
-										break;
-								}
-								break;
-						}
-					},
-					launch: function () {
-						if (is_object(this.deferral_data) && "modal" in this.deferral_data) { // super tired may be fuckin' wroooong
-							window.xtr.router.cake_ajax_response(this.deferral_data, {
-								data: {context: this.read('context'), modal: this.modal, modal_content: this.modal_content}
-							})
-						}
-					}
-				}
-			};
 	this.set_order_method = {
-		modal: XSM.modal.primary,
+		modal: C.PRIMARY,
 		url: {url: "order-method", type: C.POST, defer: true},
+		stash: true,
 		params: {
 			context: {value: null, url_fragment: true},
 			method: {value: null, url_fragment: true}
 		},
 		callbacks: {
+			params_set: function() {
+				if (this.read('context') == "menu" && this.read('method') != "delivery") this.stash = false;
+			},
 			launch: function () {
-				window.xtr.router.cake_ajax_response(this.deferral_data, {
-					callback: function(response) {
-						window.xtr.data.Service = response.data.Cart.Service;
-						window.xtr.menu.set_order_method();
-						window.xtr.cart.init(response.data.Cart);
-					}
+				XT.router.cake_ajax_response(this.deferral_data, {
+					callback: function(response) { XT.cart.import_cart(response.data.Cart) }
 				}, true, true);
 			}
 		}
 	};
 	this.set_user_address = {
 		params: ['id', 'action'],
+		modal: C.PRIMARY,
 		callbacks: {
 			params_set: function() {
 				switch (this.read('action') ) {
 					case 'reveal':
-						window.xtr.modal.order_method.reveal_user_addresses(this.read('id'));
+						this.modal.reveal_user_addresses(this.modal, this.read('id'));
 						break;
 					case 'set':
-						window.xtr.modal.order_method.populate_address_form(this.read('id'));
+						this.modal.populate_address_form(this.modal, this.read('id'));
 						break;
 				}
 			}
 		}
 	};
+	this.clear_cart = {
+		url: { url: "clear-cart", type:C.POST, defer: true},
+		callbacks: { launch: function() { XT.router.cake_ajax_response(this.deferral_data) }
+		}
+	};
+	this.edit_orb = {
+		url: {url:"update", type: C.POST, defer:true},
+		params: {uid: {url_fragment: true}, opt_id:{url_fragment: true}},
+		modal: C.PRIMARY,
+		callbacks: {
+			launch: function() {
+				XT.router.cake_ajax_response(this.deferral_data, {
+					callback: function(response, data) {
+						XT.cart.import_cart(response.data.cart);
+						if ( !(XT.cart.session_data.Order.length > 0) ) {
+							$(XT.router).trigger(C.ROUTE_REQUEST, {request:"orbcard_modal/view/cart", trigger: {}});
+						} else {
+							XT.cart.update(data.uid, data.target);
+						}
+					},
+					data: {
+						uid: this.read('uid'),
+						target: this.trigger.element
+					}
+				}, true, true);
+			}
+		}
+	},
 	this.cart = {
-				modal: XSM.modal.primary,
+				modal: C.PRIMARY,
 				params: ["action", "action_arg", "data"],
 				propagates: false,
+				url: {url: "add-to-cart", type: C.POST, defer: true},
 				callbacks: {
 					params_set: function () {
-						pr(this, "PARAMS_SET 0");
 						switch ( this.read("action") )  {
 							case "add":
-								 if ( this.read('action_arg') == 'cancel') {
-									this.unset(['url', 'launch']);
-									 pr(this, "PARAMS_SET 1");
-									 window.xtr.orbcard.reset_stage();
-								 } else {
-									 this.url = {
-						                url: "add-to-cart",
-						                type: C.POST,
-						                defer: true,
-						                data: $(XSM.menu.orb_order_form).serialize()
-						            }
-								 }
-							break;
-							case "clear":
-								this.url = {
-									url: "clear-cart",
-									type: C.POST,
-									defer: true
-								};
-								this.unset("launch");
-							break;
+								 this.url.data = $(XSM.menu.orb_order_form).serialize();
+								break;
 							case "review":
 								this.url =  {
 									url: "review-cart",
 									type: C.GET,
 									defer: false
 								};
-								this.change_behavior(C.STASH_STOP);
+								this.stash = true;
 								this.unset('launch');
+								break;
+							default: // ie. "cancel"
+								this.unset(['url', 'launch']);
+								 XT.orbcard.reset_stage( true );
 								break;
 						}
 					},
 					launch: function () {
-						window.xtr.router.cake_ajax_response(this.deferral_data, {
+						XT.router.cake_ajax_response(this.deferral_data, {
 							callback: function(response) {
-								pr(response, "add to cart resp.");
-								window.xtr.cart.init(response.data.Cart);
-								// only "clear cart" has a delegate response
-								if ( !("delegate_route" in response) ) window.xtr.layout.reveal_orb_card_modal();
+								XT.cart.import_cart(response.data.Cart);
+								if ( exists(response.delegate_route) ) return;
+								pr(XT.orbcard.modal);
+								XT.orbcard.modal.show();
 							}
 						}, true, true);
-						try {
-							var data = JSON.parse(this.deferral_data);
-							if (data.success === true && window.xtr.cart.add_to_cart()) {
-
-							} else { throw "Add to cart failed at server:\n " + this.deferral_data; }
-						} catch (e) {
-							try {
-								pr(JSON.parse(this.deferral_data), "cart->order", true);
-								throw "Add to cart failed at server:\n " + this.deferral_data;
-							} catch (e) {
-								throw "Add to cart failed at server:\n " + this.deferral_data;
-							}
-						}
 					}
 				}
 			};
@@ -1931,7 +1431,7 @@ window.xtr.route_collections.vendor_ui = function() {
 	this.vendor_ui = {
 		params: {target: {url_fragment: true}},
 		url: {url: "vendor-ui", defer: true, type: C.POST},
-		modal: XSM.modal.primary,
+		modal: C.PRIMARY,
 		callbacks: {
 			params_set: function () {
 				pr(this.read('target'), "vendor_ui");
@@ -1944,7 +1444,7 @@ window.xtr.route_collections.vendor_ui = function() {
 					$("#menu-tab").replaceWith(this.deferral_data);
 				}
 				$(document).foundation();
-				//							XT.vendor_ui.init();
+//				XT.vendor_ui.init();
 			}
 		}
 	};
@@ -1974,7 +1474,7 @@ window.xtr.route_collections.vendor_ui = function() {
 								type: C.GET,
 								defer: false
 							};
-							this.set_modal(XSM.modal.primary);
+							this.modal = new Modal(C.PRIMARY);
 							this.unset('launch');
 						}
 						if (this.read('attribute') == 'save') {
@@ -1984,6 +1484,7 @@ window.xtr.route_collections.vendor_ui = function() {
 								defer: true,
 								data: $(XSM.vendor_ui.price_dict_update_form).serialize()
 							};
+
 							this.unset('modal');
 						}
 						break;
@@ -1991,10 +1492,13 @@ window.xtr.route_collections.vendor_ui = function() {
 
 			},
 			launch: function () {
-				XT.routing.cake_ajax_response(this.deferral_data, {
+				var self = this;
+				XT.router.cake_ajax_response(this.deferral_data, {
 						callback: function (response, data) {
-							if (data.target == 'pricedicts') $("#menu-tab").load("vendor-ui/menu");
-							$(XT.routing).trigger(C.ROUTE_REQUEST, {request: "close_modal/primary", trigger: {}});
+							if (data.target == 'pricedicts') $("#menu-tab").load("vendor-ui/menu", function() {
+									XT.vendor_ui.fix_breakouts()
+							});
+							if (self.modal) self.modal.hide();
 							XT.vendor_ui.save_orb(data.target, data.attribute, 'replace' in response ? response.replace : null);
 						},
 						data: { target: this.read('target'), attribute: this.read('attribute') }
@@ -2007,6 +1511,7 @@ window.xtr.route_collections.vendor_ui = function() {
 	// ORBS
 	this.orb_edit = {
 				params: { id: {value: null}, action: {}, action_arg: {} },
+				modal: C.PRIMARY,
 				callbacks: {
 					params_set: function () {
 						switch (this.read('action')) {
@@ -2030,7 +1535,7 @@ window.xtr.route_collections.vendor_ui = function() {
 											defer: true
 										};
 										this.set_callback("launch", function () {
-											XT.routing.cake_ajax_response(this.deferral_data, {
+											XT.router.cake_ajax_response(this.deferral_data, {
 												callback: function () {
 													$(XSM.vendor_ui.menu_tab).load("vendor-ui/menu", function () {
 														XT.vendor_ui.data_tables('menu');
@@ -2043,7 +1548,6 @@ window.xtr.route_collections.vendor_ui = function() {
 							case "add":
 								switch (this.read('action_arg')) {
 									case "create":
-										this.set_modal(XSM.modal.primary);
 										this.url = {
 											url: "add-menu-item",
 											type: C.GET,
@@ -2052,7 +1556,7 @@ window.xtr.route_collections.vendor_ui = function() {
 										this.unset('launch');
 										break;
 									case "save":
-										this.unset('modal');
+										this.modal.hide();
 										this.url = {
 											url: "add-menu-item",
 											type: C.POST,
@@ -2060,15 +1564,15 @@ window.xtr.route_collections.vendor_ui = function() {
 											data: $(XSM.vendor_ui.orb_add_form, XSM.modal.primary).serialize()
 										}
 										this.set_callback("launch", function () {
-											XT.routing.cake_ajax_response(this.deferral_data, {
+											XT.router.cake_ajax_response(this.deferral_data, {
 												callback: function () {
-													$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/menu",
+													$(XSM.vendor_ui.menu_tab).load("vendor-ui/menu",
 														function () {
 															XT.vendor_ui.data_tables('menu');
 															XT.vendor_ui.fix_breakouts();
 														});
 												}
-											}, true);
+											}, true, true);
 										});
 										break;
 								}
@@ -2076,7 +1580,7 @@ window.xtr.route_collections.vendor_ui = function() {
 
 						}
 					},
-					launch: function () { XT.routing.cake_ajax_response(this.deferral_data, {}, true, true);}
+					launch: function () { XT.router.cake_ajax_response(this.deferral_data, {}, true, true);}
 				}
 			};
 	this.orb_config = {
@@ -2098,7 +1602,7 @@ window.xtr.route_collections.vendor_ui = function() {
 	// ORBOPTS
 	this.orbopt_config = {
 		url: {url: "orbopt-config", method: C.GET},
-		modal: XSM.modal.primary,
+		modal: C.PRIMARY,
 		params: {id: {url_fragment: true}, action: {}, action_arg: {}},
 		callbacks: {
 			params_set: function () {
@@ -2115,7 +1619,7 @@ window.xtr.route_collections.vendor_ui = function() {
 							data: $(XSM.vendor_ui.add_orbopt_form).serialize()
 						};
 						this.set_callback("launch", function () {
-							XT.routing.cake_ajax_response(this.deferral_data, {
+							XT.router.cake_ajax_response(this.deferral_data, {
 								callback: function () { XT.vendor_ui.reload_tab('opts'); }
 							}, true);
 						});
@@ -2139,7 +1643,7 @@ window.xtr.route_collections.vendor_ui = function() {
 									defer: true
 								};
 								this.set_callback("launch", function () {
-									XT.routing.cake_ajax_response(this.deferral_data, {
+									XT.router.cake_ajax_response(this.deferral_data, {
 										callback: function () {
 											$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/opts",
 												function () {
@@ -2185,7 +1689,16 @@ window.xtr.route_collections.vendor_ui = function() {
 						overflowY: "auto"
 					});
 				}
-				;
+				var labels = $(".content .orbopt span");
+				var i,j,temparray,chunk = 6;
+				for (i=0,j=labels.length; i<j; i+=chunk) {
+				    temparray = labels.slice(i,i+chunk);
+				    var max_h = 0;
+					for (var l =0; l < 6; l++) {
+						if ( $(temparray[l]).innerHeight() > max_h) max_h = $(temparray[l]).innerHeight();
+					}
+					for (var l =0; l < 6; l++) $(temparray[l]).css( { height:max_h} );
+				}
 
 				$(document).foundation();
 			}
@@ -2224,7 +1737,7 @@ window.xtr.route_collections.vendor_ui = function() {
 							data: $("form", as_id(["orbopt", this.read('id'), this.read('attribute')].join("-"))).serialize()
 						};
 						this.set_callback("launch", function () {
-							XT.routing.cake_ajax_response(this.deferral_data, {
+							XT.router.cake_ajax_response(this.deferral_data, {
 									callback: XT.vendor_ui.save_orbopt,
 									data: { id: this.read('id'), attribute: this.read('attribute') }
 								},
@@ -2244,7 +1757,7 @@ window.xtr.route_collections.vendor_ui = function() {
 						XT.vendor_ui.set_orbopt_pricelist_focus();
 						break;
 					case 'launch':
-						this.set('modal', XSM.modal.primary);
+						this.modal = new Modal(C.PRIMARY);
 						this.url = {
 							url:["launch-orbopt-pricelist-config", this.read('id')].join(C.DS),
 							type: C.GET,
@@ -2257,7 +1770,8 @@ window.xtr.route_collections.vendor_ui = function() {
 						break;
 					case "edit":
 						if (this.read('action-arg') == "save") {
-							var orbopt_id = $("#orbopt-pricelist-select").val();
+							var orbopt_id = $("#orbopt-pricelist-select-form").data('opt');
+
 							this.url = {
 								url: ["save-orbopt-pricing-edit", this.read('id'), orbopt_id].join(C.DS),
 								type: C.POST,
@@ -2272,7 +1786,7 @@ window.xtr.route_collections.vendor_ui = function() {
 						XT.vendor_ui.set_orbopt_pricelist_focus();
 						break;
 					case "cancel":
-						$(XT.routing).trigger(C.ROUTE_REQUEST, {request: "orbopt_edit/-1/cancel/pricing", trigger: {}});
+						$(XT.router).trigger(C.ROUTE_REQUEST, {request: "orbopt_edit/-1/cancel/pricing", trigger: {}});
 						break;
 					case "save":
 						if (this.read('action-arg') == "pricelist") {
@@ -2310,12 +1824,16 @@ window.xtr.route_collections.vendor_ui = function() {
 
 				}
 			},
-			launch: function() {XT.routing.cake_ajax_response(this.deferral_data, {}, true, true);}
+			launch: function() {
+				if (this.deferral_data != undefined) {
+					XT.router.cake_ajax_response(this.deferral_data, {}, true, true);
+				}
+			}
 		}
 	};
 	this.orbopt_optgroup_config = {
-		url: {url: "orbopt-optgroup-config", method: C.GET},
-		modal: XSM.modal.primary,
+		url: {url: "orbopt-optgroup-config", type: C.GET},
+		modal: C.PRIMARY,
 		params: {id: {url_fragment: true}, action: {}, action_arg: {}},
 		callbacks: {
 			params_set: function () {
@@ -2324,17 +1842,10 @@ window.xtr.route_collections.vendor_ui = function() {
 						this.unset('url');
 						this.unset('modal');
 						this.unset('launch');
-						var label_id = as_id(["optgroup", this.read('id'), 'label'].join("-")) + " span";
+						var label_id = as_id(["optgroup", this.read('id'), 'label'].join("-"));
 						var field_sel = "input[name='OrboptOrbcat[" + this.read('id') + "]'";
-						if ($(label_id).hasClass(XSM.effects.success)) {
-							$(label_id).removeClass(XSM.effects.success);
-							$(label_id).addClass(XSM.effects.secondary);
-							$(field_sel).val(0);
-						} else {
-							$(label_id).addClass(XSM.effects.success);
-							$(label_id).removeClass(XSM.effects.secondary);
-							$(field_sel).val(1);
-						}
+						$(label_id).toggleClass(XSM.effects.active)
+						$(field_sel).val( $(field_sel).val() == 0 ? 1 : 0 );
 						break;
 					case "save":
 						this.url = {
@@ -2343,14 +1854,28 @@ window.xtr.route_collections.vendor_ui = function() {
 							defer: true,
 							data: $(XSM.vendor_ui.orbopt_optgroup_config_form).serialize()
 						};
-						this.set_callback('launch', function () {
-								XT.routing.cake_ajax_response(this.deferral_data, null, true, true);
-							}
-						);
 						break;
 				}
 			},
-			launch: function () { $(document).foundation(); }
+			launch: function () {
+				if (this.deferral_data != undefined) {
+					var self = this;
+					XT.router.cake_ajax_response(self.deferral_data, {
+						callback: function() { self.modal.hide()}
+					}, true, true);
+				}
+				var labels = $(".content .orbopt-optgroup span");
+				var i,j,temparray,chunk = 6;
+				for (i=0,j=labels.length; i<j; i+=chunk) {
+				    temparray = labels.slice(i,i+chunk);
+				    var max_h = 0;
+					for (var l =0; l < 6; l++) {
+						if ( $(temparray[l]).innerHeight() > max_h) max_h = $(temparray[l]).innerHeight();
+					}
+					for (var l =0; l < 6; l++) $(temparray[l]).css( { height:max_h} );
+				}
+				$(document).foundation();
+			}
 		}
 	};
 	this.orbflag_config = {
@@ -2364,7 +1889,7 @@ window.xtr.route_collections.vendor_ui = function() {
 					defer: true}
 			},
 			launch: function () {
-				XT.routing.cake_ajax_response(this.deferral_data, {
+				XT.router.cake_ajax_response(this.deferral_data, {
 						callback: XT.vendor_ui.toggle_optflag,
 						data: { orbopt: this.read('orbopt'), optflag: this.read('optflag') }
 					},
@@ -2379,40 +1904,36 @@ window.xtr.route_collections.vendor_ui = function() {
  * Created by jono on 12/30/14.
  */
 
-XtremeRoute = function (name, data) {
-	this.__init(name, data);
+XtremeRoute = function (name, data, request) {
+	this.route_data =  undefined;
+	this.param_data = undefined;
+
+	// data
+	this.route_uid = undefined;
+	this.route_name = undefined;
+	this.request = undefined;
+
+	this.trigger  = undefined;
+	this.modal  = undefined;
+	this.params  = undefined;
+	this.deferral_data  = undefined;
+
+	// callbacks
+	this.params_set_callback  = undefined;
+	this.launch_callback  = undefined;
+	this.post_init_callback  = undefined;
+
+	// behaviors
+	this.stash  = false;
+	this.overlay  = false;
+	this.__stop_propagation  = true;
+	this.init(name, data, request);
 	return this;
 }
 
 XtremeRoute.prototype = {
 	constructor: XtremeRoute,
-	route_data:  undefined,
-	param_data: undefined,
 
-	// data
-	route_uid: undefined,
-	route_name: undefined,
-	request: undefined,
-
-	trigger : {event: false, element: false},
-	modal : undefined,
-	url : {url: false, type: false, defer: false},
-	params : undefined,
-	p: this.params,
-	deferral_data : undefined,
-
-	// inferred data
-	modal_content : undefined,
-
-	// callbacks
-	params_set_callback : undefined,
-	launch_callback : undefined,
-	post_init_callback : undefined,
-
-	// behaviors
-	stash : false,
-	overlay : false,
-	__stop_propagation : true,
 
 	/**
 	 * class initiation
@@ -2422,64 +1943,51 @@ XtremeRoute.prototype = {
 	 * @returns {boolean}
 	 * @private
 	 */
-	__init: function (request_obj, event) {
+	init: function (name, route_data, request_obj) {
 		var debug_this = 0;
-		if (debug_this > 0) pr([request_obj, event], this.__debug("init", ["request_obj", "event"]));
+		if (debug_this > 0) pr(request_obj, "XtremeRoute::__init( request_obj )", 2);
+		this.route_data = $.extend(true, {}, route_data);
 		this.request = request_obj.request;
-		this.trigger = {event: event, element: event.currentTarget};
-		this.route_name = request_obj.request.split(C.DS)[0];
+		this.trigger = {event: request_obj.trigger, element: request_obj.trigger.currentTarget};
 		this.param_data = request_obj.request.split(C.DS).slice(1);
-		this.route_data = window.xtr.router.route_data[ this.route_name ];
+		if ("stash" in route_data) this.stash = route_data.stash;
+		if ("modal" in route_data) this.modal = new Modal(route_data.modal);
+		this.url = {url:undefined, type: undefined, defer: undefined};
+		if ("url" in route_data) {this.set_url(route_data.url) }
 
-		if ("modal" in this.route_data) {
-			this.modal = this.route_data.modal;
-			this.modal_content = this.route_data.modal + "-content";
-		}
-		if ("url" in this.route_data) { this.set_url(this.route_data.url) }
-
-		if ("propagates" in this.route_data) {
-			if (this.route_data.propagates == false) {
-				this.__stop_propagation = true;
-			}
-		}
+		this.__stop_propagation = "propagates" in route_data ? !route_data.propagates : true;
 		this.stop_propagation();
 
-		if ("params" in this.route_data) {
+		if ("params" in route_data) {
 			this.params = {};
-			if (is_array(this.route_data.params)) {
-				for (var i = 0; i < this.route_data.params.length; i++) {
-					this.params[this.route_data.params[i]] = {value: false, url_fragment: false, post_init: false};
+			if (is_array(route_data.params)) {
+				for (var i = 0; i < route_data.params.length; i++) {
+					this.params[route_data.params[i]] = {value: false, url_fragment: false, post_init: false};
 				}
 			} else {
-				for (var param in this.route_data.params) {
+				for (var param in route_data.params) {
 					this.params[param] = {value: false, url_fragment: false, post_init: false};
-					if ("value" in this.route_data.params[param]) this.params[param].value = this.route_data.params[param].value;
-					if ("url_fragment" in this.route_data.params[param]) this.params[param].url_fragment = this.route_data.params[param].url_fragment === true;
-					if ("post_init" in this.route_data.params[param]) this.params[param].post_init = this.route_data.params[param].post_init === true;
+					if ("value" in route_data.params[param]) this.params[param].value = route_data.params[param].value;
+					if ("url_fragment" in route_data.params[param]) this.params[param].url_fragment = route_data.params[param].url_fragment === true;
+					if ("post_init" in route_data.params[param]) this.params[param].post_init = route_data.params[param].post_init === true;
 				}
 			}
 		}
 
-		this.__set_behavior("behavior" in this.route_data ? this.route_data.behavior : false);
-
-		if ("callbacks" in this.route_data) {
-			if ("post_init" in this.route_data.callbacks) this.post_init_callback = this.route_data.callbacks.post_init
-			if ("params_set" in this.route_data.callbacks) this.params_set_callback = this.route_data.callbacks.params_set
-			if ("launch" in this.route_data.callbacks) {
-				this.launch_callback = this.route_data.callbacks.launch;
-				$(this).on("route_launched", this.launch_callback);
+		if ("callbacks" in route_data) {
+			if ("post_init" in route_data.callbacks) this.post_init_callback = route_data.callbacks.post_init
+			if ("params_set" in route_data.callbacks) this.params_set_callback = route_data.callbacks.params_set
+			if ("launch" in route_data.callbacks) {
+				this.launch_callback = route_data.callbacks.launch;
+				$(this).on(C.ROUTE_LAUNCHED, this.launch_callback);
 			}
 
 		}
 		if (this.post_init_callback) this.post_init_callback();
-//		$(this).off();
-//				var debug_this = 0;
-//				if (debug_this > 0) pr(param_values, "XtremeRoute::init_instance(param_values)");
+		$(this).off();  // I don't understand why but this is fucking crucial to prevent executing every ajax call twice
 		this.route_uid = "*" + this.route_name + "[" + new Date().getTime() + "]";
+		this.set_params();
 		if (this.launch_callback) $(this).on("route_launched", this.launch_callback);
-		this.__set_params();
-
-		return true;
 	},
 
 	/**
@@ -2498,53 +2006,6 @@ XtremeRoute.prototype = {
 		}
 	},
 
-	__set_behavior: function (behavior_mask) {
-		var debug_this = 0;
-		if (debug_this > 0) pr(behavior_mask, "Route::__set_behavior(behavior_mask)", 2);
-		switch (behavior_mask) {
-			case C.STASH:
-				this.stash = true;
-				this.overlay = false;
-				this.__stop_propagation = false;
-				break;
-			case C.OL:
-				this.stash = false;
-				this.overlay = true;
-				this.__stop_propagation = false;
-				break;
-			case C.STASH_OL:
-				this.stash = true;
-				this.overlay = true;
-				this.__stop_propagation = false;
-				break;
-			case C.STOP:
-				this.stash = false;
-				this.overlay = false;
-				this.__stop_propagation = true;
-				break;
-			case C.STASH_STOP:
-				this.stash = true;
-				this.overlay = false;
-				this.__stop_propagation = true;
-				break;
-			case C.OL_STOP:
-				this.stash = false;
-				this.overlay = true;
-				this.__stop_propagation = true;
-				break;
-			case C.STASH_OL_STOP:
-				this.stash = true;
-				this.overlay = true;
-				this.__stop_propagation = true;
-				break;
-			default:
-				this.stash = false;
-				this.overlay = false;
-				this.__stop_propagation = false;
-				break;
-		}
-		return true;
-	},
 
 
 	/**
@@ -2553,7 +2014,7 @@ XtremeRoute.prototype = {
 	 * @returns {boolean}
 	 * @private
 	 */
-	__set_params: function () {
+	set_params: function () {
 		if (this.param_data.length == 0) return
 		var debug_this = 0;
 		if (debug_this > 0) pr(this.param_data, "XtremeRoute::__set_params(param vals)");
@@ -2562,16 +2023,7 @@ XtremeRoute.prototype = {
 		for (var i = 0; i < param_keys.length; i++) {
 			if (!this.param_data[i]) continue;
 			if (this.params[param_keys[i]].post_init) continue; // was dynamically set and won't be in route str.
-			if (this.params[param_keys[i]].url_fragment) {
-				if (!this.url_append(this.param_data[i]) && debug_this > 1) {
-					pr({
-							param: param_keys[i],
-							value: this.param_data[i],
-							params: this.params,
-							values: this.param_data},
-						"Route::url_append() failed", true);
-				}
-			}
+			if (this.params[param_keys[i]].url_fragment) this.url.url += C.DS + this.param_data[i];
 			// convert bool strings to bools proper, convert escaped bool strings to basic strings
 			if (this.param_data[i] === "true") this.param_data[i] = true;
 			if (this.param_data[i] === "\true") this.param_data[i] = "true";
@@ -2586,42 +2038,7 @@ XtremeRoute.prototype = {
 			this.params_set_callback();
 		}
 
-		return true;
 	},
-
-	/**
-	 * init() instance initiation
-	 * @param param_values
-	 */
-	init: function (param_values) {
-		$(this).off();
-		var debug_this = 0;
-		if (debug_this > 0) pr(param_values, "XtremeRoute::init_instance(param_values)");
-		this.route_name = "*" + this.route_name + "[" + new Date().getTime() + "]";
-		if (this.launch_callback) $(this).on("route_launched", this.launch_callback);
-		if (param_values) this.__set_params(param_values);
-		return this;
-	},
-
-
-	/**
-	 * add_param()
-	 * @param name
-	 * @param value
-	 * @param url_fragment
-	 * @returns {boolean}
-	 */
-	add_param: function (name, value, url_fragment) {
-		this.params[name] = {
-			value: value != "undefined" ? value : false,
-			url_fragment: url_fragment === true,
-			post_init: true
-		};
-		return true;
-	},
-
-
-	change_behavior: function (behavior_mask) { this.__set_behavior(behavior_mask); },
 
 
 	/**
@@ -2679,7 +2096,7 @@ XtremeRoute.prototype = {
 				this.params_set_callback = callback_function;
 				break;
 		}
-		this.init()
+//		this.init()
 	},
 
 
@@ -2687,28 +2104,11 @@ XtremeRoute.prototype = {
 
 
 	/**
-	 * set_modal() setter for modal attr
-	 * @param modal
-	 */
-	set_modal: function (modal) {
-		this.modal = modal;
-		this.modal_content = modal + "-content";
-	},
-
-
-	/**
 	 * set_url() setter for url attr; can provide a string URL or full/partially complete url data hash
 	 * @param url_hash
 	 */
-	set_url: function (url_hash) {
-		try {
-			this.url.url = 'url' in url_hash ? url_hash.url : false;
-			this.url.type = "type" in url_hash ? url_hash.type : C.GET;
-			this.url.defer = "defer" in url_hash ? url_hash.defer : false;
-		} catch(e) {
-			throw "Invalid url_hash supplied to Route.set_url:\n\t [" + e +"]";
-		}
-	},
+	set_url: function (url_hash) { for (var key in url_hash) this.url[key] = url_hash[key] },
+
 
 	/**
 	 *
@@ -2728,29 +2128,6 @@ XtremeRoute.prototype = {
 	 * @returns {string}
 	 */
 	toString: function () { return "XtremeRoute[" + this.route_name + "]"; },
-
-
-	/**
-	 * url_append() maintains internal url attr structure when working with an instance
-	 * @param fragment
-	 * @returns {boolean}
-	 */
-	url_append: function (fragment) {
-		var debug_this = 0;
-		if (debug_this > 0) pr(fragment, "Route::url_append(fragment)");
-		if (typeof(fragment) == "string") {
-			if (debug_this > 1) pr("fragment length > 0; proceeding", "Route::url_append()");
-			if (typeof(fragment) == "string") {
-				if (debug_this > 1) pr("this.url.url length > 0; appending", "Route::url_append()");
-				this.url.url += C.DS + fragment;
-			} else {
-				if (debug_this > 1) pr("this.url.url length didn't exist; creating", "Route::url_append()");
-				this.url.url = fragment;
-			}
-			return true;
-		}
-		return false;
-	},
 
 
 	/**
@@ -2811,17 +2188,17 @@ XtremeRouter = function() { this.init(); return this}
 XtremeRouter.prototype = {
 	constructor: XtremeRouter,
 	route_data: {},
-	XT: undefined,
+
 	init: function () {
-		this.XT = window.xtr;
-		for (var rc in this.XT.route_collections) {
-			rc = this.XT.route_collections[rc]();
+		for (var rc in XT.route_collections) {
+			rc = XT.route_collections[rc]();
 			for (var route in rc ) this.route_data[route] = rc[route];
 		}
 		/* For launching routes via the DOM */
 		var self = this;
 		$(C.BODY).on(C.CLK, XSM.global.route, null, function (e) {
 			if ( !$(e.currentTarget).hasClass(XSM.effects.disabled) ) {
+//				e.stopPropagation();
 				$(self).trigger(C.ROUTE_REQUEST, {request: $(e.currentTarget).data('route'), trigger: e});
 			}
 		});
@@ -2833,7 +2210,8 @@ XtremeRouter.prototype = {
 		});
 
 		/* For launching routes via ROUTE_REQUEST events */
-		$(this).on(C.ROUTE_REQUEST, function (e, data) { this.launch(data, e) });
+		$(this).on(C.ROUTE_REQUEST, function (e, data) {
+			this.launch(data) });
 	},
 
 	/**
@@ -2842,32 +2220,26 @@ XtremeRouter.prototype = {
 	 * @param event
 	 * @returns {boolean}
 	 */
-	launch: function (request_obj, event) {
-		var debug_this = 0;
-		if (debug_this > 0) pr([request_obj, event], "XtremeRouter.launch(request_obj, event)", 2);
-		var route = new XtremeRoute( request_obj, event );
+	launch: function (request_obj) {
+		var debug_this = 2;
+		if (debug_this > 0) pr([request_obj], "XtremeRouter.launch(request_obj, event)", 2);
+		var route_name = request_obj.request.split(C.DS)[0];
+		var route_data = this.route_data[ route_name ];
+		var route = new XtremeRoute( route_name, route_data, request_obj);
 		var launch_delay = 0
-		var hide_class = false;
-		if (route.stash) {
-			launch_delay += 900;
-			if (this.XT.orb_card.exposed_face == C.BACK_FACE) launch_delay += 960;
+		if (route.stash) launch_delay += XT.orbcard.exposed_face == C.BACK ? 1860 : 900;
+		if (route.modal) {
+			pr(route.modal);
+			if ( !route.modal.hidden() && route.url.url && !route.url.defer) launch_delay += route.modal.hide();
+			route.modal.resize();
 		}
-
-		if (in_array(route.modal, [XSM.modal.primary, XSM.modal.splash]))  hide_class = XSM.effects.slide_up;
-		if (hide_class && !$(route.modal).hasClass(hide_class) && route.url.defer == false) {
-			launch_delay += 300;
-			this.XT.layout.dismiss_modal(route.modal, false);
-		}
-		// >>> RESIZE & POSITION PRIMARY IF NEEDED <<<
-		this.XT.layout.resize_modal(route.modal)
-
 		// >>> LAUNCH MODALS IF REQUIRED<<<
 		if (route.url.url) {
 			var launch_triggered = false;
 			try {
 				$.ajax({
 					type: route.url.type ? route.url.type : C.POST,
-					url: [this.XT.host, route.url.url].join(C.DS),
+					url: [XT.host, route.url.url].join(C.DS),
 					data: "data" in route.url ? route.url.data : null,
 					statusCode: {
 						403: function () {
@@ -2881,16 +2253,17 @@ XtremeRouter.prototype = {
 					success: function (data) {
 						// >>> DO PRE-LAUNCH EFFECTS <<<
 						$(XSM.global.loading).addClass(XSM.effects.fade_out);
-						if (route.stash) this.XT.menu.stash();
+						if (route.stash) XT.menu.stash();
 
 						setTimeout(function () {
-							if (debug_this > 2) pr([route, data], route.__debug("launch/success"));
+							if (debug_this > 1) pr([route, data], route.__debug("launch/success"));
 							if (route.url.defer) {
 								route.set_deferral_data(data);
 							} else {
-								$(route.modal_content).html(data)
-								if (hide_class) $(route.modal).removeClass(hide_class);
+								route.modal.content.set(data);
+								route.modal.show();
 							}
+							launch_triggered = true;
 							$(route).trigger(C.ROUTE_LAUNCHED, {launch_msg: "TRIGGERED_POST_SUCCESS"});
 						}, launch_delay);
 					},
@@ -2899,7 +2272,7 @@ XtremeRouter.prototype = {
 						if ("fail_callback" in route) {
 							route.fail_callback();
 						} else {
-							this.XT.layout.launch_route(XT.routes.fail_flash);
+							XT.layout.launch_route(XT.routes.fail_flash);
 						}
 						if (!launch_triggered) {
 							launch_triggered = true;
@@ -2914,6 +2287,7 @@ XtremeRouter.prototype = {
 					}
 				});
 			} catch (e) {
+				pr(e);
 				if (!launch_triggered) {
 					launch_triggered = true;
 					$(route).trigger(C.ROUTE_LAUNCHED, {launch_msg: "CAUGHT_EXCEPTION"})
@@ -2923,8 +2297,7 @@ XtremeRouter.prototype = {
 		} else {
 			$(route).trigger(C.ROUTE_LAUNCHED, {launch_msg: "NO_AJAX"});
 		}
-		delete route;
-		return true;
+
 	},
 
 	/**
@@ -2945,20 +2318,20 @@ XtremeRouter.prototype = {
 
 		//TODO: 1) add error messages for the user on appropriate errors; 2) handle such messages via the flash/<msg> route
 
-		// don't proceed to sucess handler if any part of the request failed
+		// don't proceed to success handler if any part of the request failed
 		if ("success" in response) {
 			if (is_object(response.success)) {
 				for (var controller in response.success) if (response.success[controller] != true) return;
 			} else if (response.success !== true)  return
 		}
-		this.XT.layout.dismiss_modal(XSM.modal.primary);
-		try {
-			"data" in success_handler ? success_handler.callback(response, success_handler.data) : success_handler.callback(response);
-		} catch (e) {};
-		try {
-			$(this).trigger(C.ROUTE_REQUEST, {request: response.delegate_route, trigger: {}});
-		} catch (e) {}
 
+	//	XT.layout.dismiss_modal(XSM.modal.primary);
+		if ( success_handler && success_handler.callback != undefined ) {
+			"data" in success_handler ? success_handler.callback(response, success_handler.data) : success_handler.callback(response);
+		}
+		if ( response.delegate_route != undefined ) {
+			$(this).trigger(C.ROUTE_REQUEST, {request: response.delegate_route, trigger: {}});
+		}
 	},
 
 
@@ -3343,84 +2716,48 @@ function XtremePrinter() {
  * @constructor
  */
 function EffectChain(config) {
-	var effect_chain = Object();
+	this.init(config);
+	return this;
+}
+EffectChain.prototype = {
+	constructor: EffectChain,
 	// Only includes params that every step *must* have, but others can be added
-	effect_chain.defaults = {
+	defaults: {
 		interval: undefined,  // for any step, time between it's commencement and the next step's execution
 		context: undefined    // for constraining selectors to a parent context, vis-a-vis jQuery
-	};
-	effect_chain.step_complete = createCustomEvent("ECStepComplete");
-	effect_chain.steps = [];
-	effect_chain.step_template = {
+	},
+	step_complete: createCustomEvent("ECStepComplete"),
+	steps: [],
+	step_template: {
 		target: false,
 		context: "body",
 		state: undefined,
 		interval: undefined,
 		next: undefined
-	}
+	},
 
 	// I'm not 100% sure this feature is a good idea... basically the final step can return something if one likes, but
 	// I am sort of just hijacking extant functionality for a purpose that wasn't intended
-	effect_chain.exec_result = undefined;
+	exec_result: undefined,
 
 	/**
 	 * Optionally sets default values for the EffectChain object
 	 * @param config
 	 * @returns {effect_chain}
 	 */
-	effect_chain.init = function (config) {
+	init: function (config) {
 		// assigns a listener to the object for responding to completed steps
-		$(this).on("ECStepComplete", function (e, data) {
-			this.exec_step(data.step_index, data.target)
-		});
+		$(this).on("ECStepComplete", function (e, data) { this.exec_step(data.step_index, data.target) });
 
-		if (is_object(config)) {
-			this.defaults = obj_merge(this.defaults, config);
-		}
+		if ( !config ) return
+
+		this.defaults = obj_merge(this.defaults, config);
 		for (var key in this.defaults) {
 			if (this.defaults[key]) this.step_template[key] = this.defaults[key];
 		}
-		return this;
-	}
+	},
 
-	/**
-	 *  Adds one or more parsed 'step objects' that describe an effect to the EffectChain object's steps array.
-	 *  Basically this is where most of the action goes down.
-	 *  Here's a simple and an edge-case complexity sample of what an step object might look like:
-	 *
-	 *  simple_step = {
-	 *      target: 'li.inactive',
-	 *      context: 'ul.top_menu',
-	 *      interval: 300,  // ms
-	 *      state: {
-	 *          add: [ 'active', 'focus' ],
-	 *          remove: ['inactive'],
-	 *          attr: {disabled: false}
-	 *      },
-	 *      // this could just as easily be supplied in the 'target' key of the next added step;
-	 *      // this is a trivial example; the "next" key, in practice, would usually point to a function (see below)
-	 *      next: ["div#breadcrumbs", "div#topbar]
-	 *      };
-	 *
-	 *  complex_step = {
-	 *      target: undefined,
-	 *      context: undefined, // will default to 'body' if a different 'default' isn't supplied on constructon
-	 *      interval: 150,
-	 *      state: {  // in reality I'm imagining more complicated functions (ie. something $.toggleClass() wouldn't cover!)
-	 *          add: [  'focus',
-	 *                  function(target) {  return $(target).hasClass('active enabled') ? 'disabled' : undefined;}
-	 *               ],
-	 *          remove: [ 'inactive',
-	 *                     function(target) {  return $(target).hasClass('inactive disabled') ? 'enabled' : undefined;}
-	 *                   ]
-	 *       },
-	 *       next: function(target, context) { return $(target).find('span.icon', context)[0]; }
-	 *  }
-	 *
-	 * @param step
-	 * @returns {effect_chain}
-	 */
-	effect_chain.add = function (step) {
+	add: function (step) {
 		// if passed an array of step objects the function calls itself on each one
 		// if passed a step object function proceeds as normal
 		if (is_array(step)) {
@@ -3481,14 +2818,14 @@ function EffectChain(config) {
 		}
 		this.steps.push(step);
 		return this;
-	};
+	},
 
 	/**
 	 * Executes a passed step in the effect chain; triggers ECStepComplete event on completion.
 	 * @param step_index
 	 * @param target
 	 */
-	effect_chain.exec_step = function (step_index, target) {
+	exec_step: function (step_index, target) {
 		var self = this;
 		var step = this.steps[step_index]
 		var result = step.exec(step, target);  // may be target of next step, or else some final output
@@ -3501,26 +2838,25 @@ function EffectChain(config) {
 			this.exec_result = result;
 		}
 
-	}
+	},
+
 	/**
 	 *  Sums all step intervals except the last one; just useful information, not required for execution of the chain
 	 * @returns {number}
 	 */
-	effect_chain.duration = function () {
+	duration: function () {
 		var t = 0;
 		for (var i = 0; i < this.steps.length - 1; i++)  { t += this.steps[i].interval; }
 		return t;
-	}
+	},
 
 	/**
 	 * Starts the series of calls to exec_step(); allows for an initial element to be explicitly passed, which, depending
 	 * on how the subsequent steps are configured, can dramatically alter the results of EffectChain object.
 	 * @param initial_target
 	 */
-	effect_chain.run = function (initial_target) { this.exec_step(0, initial_target); }
+	run: function (initial_target) { this.exec_step(0, initial_target); }
 
-	effect_chain.init(config);
-	return effect_chain;
 }
 
 
@@ -3624,1139 +2960,145 @@ eChain.add([{
     }
 
 ]);
-/**
- * Created by jono on 1/24/15.
- */
-XtremeLayout = function() {};
-
-XtremeLayout.prototype = {
-	page_name: undefined,
-	constructor: XtremeLayout,
-	page_height: undefined,
-	init: function () {
-		var self = this;
-		this.jq_binds();
-		if (this.page_name == window.page_name.splash) $(as_class(FX.detach)).each(function () { XBS.layout.detach(this);});
-		this.page_height = window.innerHeight - ($(XSM.global.topbar).innerHeight() + 3 * C.REM) + C.PX;
-		$(XSM.global.page_content).css({minHeight: self.page_height});
-		$(FX.fill_parent).each(function() { self.match_parent_dimensions(this)});
-
-		// TODO: this should be an effect chain
-		setTimeout(function () {
-			$(XSM.topbar.social_loading).addClass(FX.fade_out);
-			setTimeout(function () {
-				$(XSM.topbar.social_loading).hide();
-				setTimeout(function () {
-					$(XSM.topbar.icon_row).show();
-					setTimeout(function () {
-						$(XSM.topbar.icon_row).removeClass(FX.fade_out);
-						$(XSM.topbar.icon_row).removeClass(FX.true_hidden);
-					}, 30);
-				}, 30);
-			}, 300);
-		}, 800);
-
-		if ( is_mobile() ) return;
-
-		$(XSM.global.footer).css({top: $(XSM.global.page_content).innerHeight()});
-		this.fasten(XSM.menu.self).css({overflow: "hidden"});
-	},
-	jq_binds: function() {
-		var self = this;
-		// bind_activizing_lists
-		$(C.BODY).on(C.CLK, XSM.global.activizing_list, function (e) { self.activize(e.currentTarget) });
-
-		// bind_multi_activizing_siblings
-		$(C.BODY).on(C.CLK, XSM.global.multi_activizing, function (e) { self.multi_activize(e.currentTarget) });
-
-		// bind_float_labels:
-		$(C.BODY).on(C.MOUSEENTER, as_class(FX.float_label), null, function (e) {
-			self.toggle_float_label($(e.currentTarget).data('float-label'), C.SHOW);
-		});
-		$(C.BODY).on(C.MOUSEOUT, as_class(FX.float_label), null, function (e) {
-			self.toggle_float_label($(e.currentTarget).data('float-label'), C.HIDE);
-		});
-
-		// bind_splash_links
-		$(C.BODY).on(C.CLK, XSM.splash.splash_link, null, function (e) {
-			XBS.splash.redirect($(e.currentTarget).data('url'));
-		});
-
-		// bind_topbar_hover_links
-		$(C.BODY).on(C.MOUSEENTER, XSM.topbar.hover_text_link, null, function (e) {
-			if (!$(e.currentTarget).hasClass(FX.disabled)) {
-				self.toggle_topbar_hover_text($(e.currentTarget).data('hover_text'));
-			}
-		});
-		$(C.BODY).on(C.MOUSEOUT, XSM.topbar.hover_text_link, null, function (e) {
-			if (!$(e.currentTarget).hasClass(FX.disabled)) self.decay_topbar_hover();
-		});
-		// window_resize_listener
-		if (window.page_name == XSM.page_name.splash) $(window).on("resize", XBS.splash.render);
-	},
-
-	/**
-	 *  Uses 'respect' (ie. X or y) data-attribute of an element to force it's height/width to satisfy ratio given in
-	 *  aspect-ratio data attribute.
-	 *
-	 * @param targets
-	 * @returns {boolean}
-	 */
-	assert_aspect_ratio: function (targets) {
-		$(targets).each(function () {
-			$(this).removeAttr("style");
-			var data = $(this).data("aspectRatio");
-			var ratio = Number(data.x) / Number(data.y);
-			var respect = data.respect;
-
-			/* make sure the ratio is indeed a ratio */
-			if (!isInt(ratio) && !isFloat(ratio)) {
-				var ratioVals = ratio.split("/");
-				if (ratioVals.length !== 2) throw "Invalid value for argument 'ratio'; must be int, float or string matching n/m";
-				ratio = Number(ratioVals[0]) / Number(ratioVals[1]);
-			}
-
-			var dimensions = {width: $(this).innerWidth(), height: $(this).innerHeight()};
-			if (respect != "y") {
-				dimensions.height = dimensions.width / ratio;
-			} else {
-				dimensions.width = dimensions.height * ratio;
-			}
-			$(this).css(dimensions);
-		});
-		return true;
-	},
-	activize: function (element) {
-		if (isEvent(arguments[0])) element = element.currentTarget;
-		if ($(element).hasClass(FX.inactive)) {
-			$(element).removeClass(FX.inactive)
-				.addClass(FX.active)
-				.siblings(XSM.global.active_list_item)
-				.each(function () {
-					$(this).removeClass(FX.active).addClass(FX.inactive);
-				});
-		}
-	},
-	detach: function (element) {
-		var is_static = $(element).data('static');
-		var height = $(element).innerHeight();
-		$(element).css({height: height});
-		if (is_static) XBS.layout.fasten(element);
-		return $(element);
-	},
-	dismiss_modal: function (modal, action) {
-		var debug_this = 0;
-		if (debug_this > 0) pr([modal, action], "XBS.layout.dismiss_modal(modal, action)", 2);
-		$(XSM.modal.primary).addClass(FX.slide_up);
-		$(XSM.modal.flash).addClass(FX.slide_up);
-		$(XSM.modal.splash).addClass(FX.slide_up);
-		$(XSM.modal.orb_card).hide('clip');
-		setTimeout(function () {
-			$(XSM.modal.overlay).addClass(FX.fade_out);
-			setTimeout(function () { $(XSM.modal.overlay).hide(); }, 300);
-		}, 300);
-		if (action) {
-			switch (action) {
-				case "reset-user-activity":
-					$(XSM.menu.user_activity_panel).children().each(function () {
-						if ($(this).hasClass(FX.active)) {
-							$(this).removeClass(FX.active).addClass(FX.inactive);
-						}
-						if ($(this).hasClass(FX.active_by_default)) $(this).addClass(FX.active);
-					});
-					break;
-				case "unstash":
-					window.menu.init();
-					window.menu.unstash_menu();
-					break;
-			}
-		}
-		return true;
-	},
-	fasten: function (selector) {
-		var debug_this = 0;
-		//todo: error handling & logic for objects vs arrays
-		var selectors = ( is_array(selector) ) ? selector : [selector];
-		for (var i in selectors) {
-			var sel = selectors[i];
-			var offset = $(sel).offset();
-
-			var dims = {width: Math.floor( $(sel).outerWidth() + px_to_int($(sel).css("padding-left"))),
-				height: Math.floor( $(sel).outerHeight() + px_to_int($(sel).css("padding-top")))};
-			var styles = {position: "fixed", top: offset.top, left: offset.left, height: dims.height, width: dims.width};
-			if (debug_this > 1) pr(styles);
-			$(sel).css(styles).addClass(FX.fastened);
-		}
-		return  (is_array(selector) ) ? selector : $(selector);
-	},
-	hovertext_switch: function(target) {
-		var incoming = $("span.text.inactive", target)[0];
-		var outgoing = $("span.text.active", target)[0];
-		$(outgoing, target).addClass(FX.fade_out);
-		setTimeout(function() {
-			$(incoming).removeClass([FX.hidden, FX.inactive].join(" ")).addClass(FX.active);
-			$(outgoing).removeClass(FX.active).addClass([FX.hidden, FX.inactive].join(" "));
-			setTimeout( function() {
-				$(incoming).removeClass(FX.fade_out);
-			}, 10)
-		}, 300);
-	},
-	match_parent_dimensions: function(element) {
-		var parent = $(element).parent();
-		$(element).css({height: $(parent).innerHeight(), width: $(parent).innerWidth()});
-	},
-	multi_activize: function (element) {
-		if ($(element).hasClass('active')) {
-			$(element).removeClass('active').addClass('inactive')
-				.children(as_class(FX.checked)).each(function () {
-					$(this).removeClass(FX.checked).addClass(FX.unchecked);
-				});
-		} else if ($(element).hasClass('inactive')) {
-			$(element).removeClass('inactive').addClass('active')
-				.children(as_class(FX.unchecked)).each(function () {
-					$(this).removeClass(FX.unchecked).addClass(FX.checked);
-				});
-		}
-	},
-	reveal_orb_card_modal: function() {
-		$(XSM.modal.orb_card).show('clip');
-	},
-	resize_modal: function (modal) {
-		if (!modal) return;
-		var modal_width;
-		var modal_max_height;
-		var modal_left;
-		var modal_top;
-		if (modal == XSM.modal.primary) {
-			modal_width = 1200 / 12 * 8;
-			modal_max_height = 0.8 * $(window).innerHeight();
-			modal_top = 0.1 * $(window).innerHeight();
-			var pm_width = 0.8 * $(window).innerWidth();
-			if (pm_width > modal_width) {
-				modal_left = ($(window).innerWidth() - modal_width) / 2;
-			} else {
-				modal_left = 0.1 * $(window).innerWidth();
-			}
-			if (pm_width < modal_width) modal_width = pm_width;
-		}
-		if (modal == XSM.modal.flash) {
-			modal_width = 40 * C.REM;
-			modal_left = (window.innerWidth / 2) - ( modal_width / 2);
-			modal_max_height = "default";
-			modal_top = 2 * C.REM;
-		}
-
-		$(modal).css({
-			top: modal_top,
-			left: modal_left,
-			width: modal_width,
-			maxHeight: modal_max_height
-		});
-	},
-	toggle_float_label: function (label, state) {
-		if (state == C.SHOW) $(XSM.menu.float_label).html(str_to_upper(label)).addClass(FX.exposed);
-		if (state == C.HIDE) $(XSM.menu.float_label).removeClass(FX.exposed).html('');
-
-		return true;
-	},
-	toggle_loading_screen: function () { $(XSM.global.loadingScreen).fadeToggle(); },
-	toggle_topbar_hover_text: function (hover_text, state) {
-		var debug_this = false;
-		if ($(XSM.topbar.hover_text_label_outgoing).html() == hover_text) return;
-		if (debug_this) pr([hover_text, state], "toggle_topbar_hover_text(hover_text, state)");
-		$(XSM.topbar.hover_text_label_outgoing).removeClass("decay").addClass(FX.slide_right);
-		$(XSM.topbar.hover_text_label_incoming).html(hover_text).removeClass(FX.true_hidden);
-		setTimeout(function () {
-			$(XSM.topbar.hover_text_label_incoming).removeClass(FX.slide_left);
-			setTimeout(function () {
-				setTimeout(function () {
-					$(XSM.topbar.hover_text_label_outgoing).remove();
-					setTimeout(function () {
-						$(XSM.topbar.hover_text_label_incoming).removeClass("incoming").addClass("outgoing")
-						$(XSM.topbar.hover_text_label).append("<span class='incoming slide-left true-hidden'></span>");
-					}, 10);
-				}, 280);
-			}, 10);
-		}, 10);
-	},
-	decay_topbar_hover: function () {
-		var id = (new Date).getTime();
-		$(XSM.topbar.hover_text_label_outgoing).addClass("decay " + id);
-		setTimeout(function () {
-			$(XSM.topbar.hover_text_label_outgoing + ".decay." + id).addClass(FX.fade_out);
-			setTimeout(function () {
-				$(XSM.topbar.hover_text_label_outgoing + ".decay." + id).replaceWith(
-					"<span class='outgoing'>Halifax loves pizza and we love halifax!</span>");
-			}, 300);
-		}, 1000);
-		return true;
-	}
-};
-
-/**
- * Created by jono on 1/24/15.
- */
-
-XtremeMenu = function() {}
-
-XtremeMenu.prototype = {
-	constructor: XtremeMenu,
-	XT: undefined,
-	init: function() {
-		this.XT = window.xtr;
-		if (this.XT.page_name == XSM.page_name.vendor_ui) return;
-		this.XT.orbcard.reset_filters(C.CHECK);
-		this.XT.cart.set_order_method();
-	},
-	add_to_cart: function () {
-		// todo: ajax fallbacks
-		$.ajax({
-			type: C.POST,
-			url: "orders/add_to_cart",
-			data: $(XSM.menu.orb_order_form).serialize(),
-			success: function (data) {
-				data = JSON.parse(data);
-				if (data.success == true) {
-					XT.cart.add_to_cart();
-					$(XSM.modal.orb_card).show('clip');
-					$(XSM.topbar.topbar_cart_button).show()
-					setTimeout(function () {
-						$(XSM.topbar.topbar_cart_button).removeClass(FX.fade_out);
-					}, 300);
-				}
-			}
-		});
-	},
-	stash: function () {
-			var orb_card_timeout = 0;
-			if (this.orb_card.exposed_face == C.BACK_FACE) {
-				orb_card_timeout = 960;
-				this.orb_card.show_front_face();
-			}
-			setTimeout(function () {
-				$(XSM.menu.user_activity_panel).addClass(FX.slide_up);
-				setTimeout(function () {
-					$(XSM.menu.orb_card_wrapper).addClass([FX.slide_left, FX.fade_out].join(" "));
-					setTimeout(function () {
-						$(XSM.menu.orbcat_menu).addClass([FX.slide_right, FX.fade_out].join(" "));
-					}, 300);
-				}, 300);
-			}, orb_card_timeout);
-		},
-	unstash: function () {
-		$(XSM.menu.orbcat_menu).removeClass([FX.slide_right, FX.fade_out].join(" "));
-		// todo: this is a bit of a hack; the over-all logic should preclude this next line, but,
-		// todo: "activizing" gets toggled during the orbcard flip, and if it's in the wrong state, toggles inversely
-		// todo: making orb-opts unselectable
-		$(XSM.menu.orb_card_stage_menu).addClass(FX.activizing);
-		setTimeout(function () {
-			$(XSM.menu.orb_card_wrapper).removeClass([FX.slide_left, FX.fade_out].join(" "));
-			setTimeout(function () {
-				$(XSM.menu.user_activity_panel).removeClass(FX.slide_up);
-			}, 300);
-		}, 300);
-		XT.menu.set_order_method();
-		this.orbcard.reset_stage();
-	}
-}
-
-XtremeCart = function( cart_id ) {
-	this.init(cart_id);
-	return this;
-}
-XtremeCart.prototype = {
-	constructor: this.XtremeCart,
-	configured: [], // CONFIRMED BY SERVER
-	configuring: [],
-	cart_id: undefined,
-	initialized: false,
-	session_data: undefined,
-	XT: undefined,
-
-	init: function (cart_id) {
-		var debug_this = 0
-		if (debug_this > 0 ) pr(cart_id, "XtremeCart.init(cart_id)", 2);
-		this.XT = window.xtr;
-		this.cart_id = cart_id;
-		this.import_cart(false);
-	},
-	import_cart: function(session_data) {
-		var self = this;
-		if ( !session_data ) {
-			$.get(["cart", this.cart_id].join(C.DS), function(response) { self.import_cart($.parseJSON(response).data)});
-			return;
-		}
-		this.session_data = session_data;
-		for (var uid in this.session_data.Order) {
-			var orb =  new Orb(uid);
-			orb.import_data(session_data.Order[uid]);
-			if ( this.find_by_uid(uid) ) this.delete(uid, C.CONFIGURING);
-			this.configured.push( orb );
-		}
-
-		this.configuring = [];
-	},
-
-	/**
-	 * Infers whether identifier string is a Orb model id or Orb UID
-	 * @param identifier
-	 * @returns {boolean}
-	 */
-	is_uid: function(identifier) { return identifier.split("_").length > 1},
-
-	/**
-	 * Generates a unique id from Orb model id and current time
-	 * @param orb_id
-	 * @returns {*|string}
-	 */
-	generate_uid: function(orb_id) { return [orb_id, now()].join("_");},
-
-	/**
-	 * Gets Orb model id from UID str
-	 * @param uid
-	 * @returns {*}
-	 */
-	id_from_uid: function(uid) { return uid.split("_")[0] },
-
-	/**
-	 * Uhhhh... I don't think this current;y works
-	 * @param orb_id
-	 */
-	cancel_config: function (orb_id) {
-		var uid = this.generate_uid(orb_id);
-		this.configuring[uid] = new Orb(uid);
-	},
-
-	/**
-	 * Removes an Orb object from cart.configur(ed/ing) and reindexes array
-	 *
-	 * @param uid
-	 * @param source
-	 * @returns {boolean}
-	 */
-	delete: function(uid, source) {
-		var search_in = source == C.CONFIGURED ? this.configured : this.configuring;
-		for (var i = 0; i < search_in.length; i++) {
-			if (search_in[i].uid == uid) {
-				array_remove(search_in, i);
-				return true;
-			}
-		}
-		return false;
-	},
-
-	/**
-	 * Searches cart.configuring for open configurations by either uid or id
-	 * @param identifier
-	 * @returns {*}
-	 */
-	find_configuration: function (identifier) {
-		var orb_config =  this.is_uid(identifier) ? this.find_by_uid(identifier) : this.find_by_id(identifier, true);
-		return orb_config ? orb_config[0] : false;
-	},
-
-	// DEPRECATED I THINK....
-	has_orb: function (identifier, in_configuring, as_int) {
-		var found = 0;
-		var context = in_configuring ? this.configuring : this.orbs;
-		if ( this.is_uid(identifier) ) {
-			found = identifier in context
-		} else {
-			as_int === false; // ie. if not otherwise specified, as_int should be true for searching by ids
-			for (var uid in context) { if (context[uid].id == identifier) found += 1 }
-		}
-		if (as_int === false) return found > 1 || found === true;
-		if ( found === true  ) return 1;
-		return found === false ?  0 : found;
-	},
-
-	add_to_cart: function (orb_id) {
-		var uid = this.generate_uid(orb_id);
-		if (!this.has_orb(uid, true)) {
-			this.configuring.push( new Orb(uid) );
-		}
-		return true;
-	},
-
-	orb_attr: function (orb_uid, attribute, in_configuration) {
-		if (!this.has_orb(orb_uid, in_configuration)) return false;
-		if (!attribute) return false;
-		attribute = this.html_id_from_attr(attribute)
-		if (attribute.is_id) return this.id_from_uid(orb_uid);
-		var context = in_configuration ? this.configuring : this.orbs;
-		if (attribute.str in context[orb_uid]) return context[orb_uid][attribute.str]
-
-		if (attribute.is_orbopt) {
-			if (attribute.opt_id in context[orb_uid]["orbopts"]) {
-				try {
-					if ('weight' in  context[orb_uid].orbopts[attribute.opt_id]) {
-						return context[orb_uid].orbopts[attribute.opt_id]['weight']; // orbs
-					}
-				} catch (e) {
-					return context[orb_uid].orbopts[attribute.opt_id]; // configuring
-				}
-			} else {
-				return -1;
-			}
-		}
-		return false;
-
-	},
-
-
-	/**
-	 * Returns orb with matching uid if found, else false.
-	 * @param uid
-	 * @returns {*}
-	 */
-	find_by_uid: function(uid, source) {
-		var search_in = source == C.CONFIGURED ? this.configured : this.configuring;
-		for (var i = 0; i < search_in.length; i++) {
-			if (search_in[i].uid == uid) return [search_in[i]];
-		}
-		return false;
-	},
-
-	/**
-	 * Returns array of Orbs in cart.configuring or first such Orb, else false.
-	 * @param id
-	 * @param first
-	 * @returns {*}
-	 */
-	find_by_id: function(id, first, source) {
-		var search_in = source == C.CONFIGURED ? this.configured : this.configuring;
-		var found = [];
-		for (var i = 0; i < search_in.length; i++) {
-			if (search_in[i].id == id) {
-				if (first) return [search_in[i]];
-				found.push( search_in[i] );
-			}
-		}
-		return found.length > 0 ? found : false;
-	},
-	/**
-	 * Prepares Orbcard form for new Orb configuration or loads configuration in progress
-	 * @returns {boolean}
-	 */
-	configure: function (id, price_rank) {
-		var debug_this = 1;
-		if (debug_this > 0) pr(id, "XT.cart.configure()", 2);
-		var orb = this.find_configuration(id);
-		if (!orb)  {
-			orb = new Orb( this.generate_uid(id) );
-			this.configuring.push(orb);
-		}
-		if (price_rank) orb.price_rank = price_rank;
-		$(XSM.menu.orb_order_form_quantity).val(orb.quantity);
-		$(XSM.menu.orb_order_form_price_rank).val( orb.price_rank );
-		$(XSM.menu.orb_order_form_note).val(orb.note);
-		$(XSM.menu.orb_order_form_orb_opts).each(function () {
-			orb.orbopts.push = new Orbopt(new OrbInflector( $(this).attr('id')).opt_id(), $(this).val() );
-		});
-		this.current_orb = orb;
-//      will deal with pricing and stuff, not updated to new cart methods/structure
-//		XT.cart.inspect_configuration(uid);
-		return orb; // for chaining
-	},
-	set_order_method: function (method) {
-		if (method)  {
-				this.XT.data.Service.order_method = method;
-			} else {
-				method = this.data.Service.order_method;
-			}
-			if (!method) {
-				this.data.Service.order_method = C.JUST_BROWSING;
-				method = C.JUST_BROWSING;
-			}
-			$(XSM.menu.user_activity_panel_items).each(function () {
-				var route = $($(this).children()[0]).data('route');
-				if (route) {
-					if (route.split(C.DS)[2] == method) {
-						$(this).removeClass(FX.inactive).addClass(FX.active);
-					} else {
-						$(this).removeClass(FX.active).addClass(FX.inactive);
-					}
-				}
-			});
-
-		},
-	weight_to_int: function(weight) {
-		switch (weight) {
-			case "-1":
-				return -1;
-			case "F":
-				return 1;
-			case "D":
-				return 2;
-			default:
-				return 0.5;
-		}
-	},
-	inspect_configuration: function(uid) {
-		var orb = this.find_by_uid(uid);
-		var flags = new OptflagMap();
-
-		for (var opt_id in orb.orbopts) {
-			var opt = orb.orbopts[opt_id];
-			for (var id in opt.optflags.length) {
-				if ( opt.optflags[id] in opt_weights ) {
-					var weight_val = this.weight_to_int(opt.weight);
-					this.pricable_optflags[opt.optflags[id]] += weight_val > -1 ? weight_val : 0;
-				}
-			}
-		}
-		this.XT.menu.enforce_opt_rules(orb, opt_weights);
-	},
-	validate_order_review: function() {
-		var valid = true;
-		this.XT.data.order.payment = $(XSM.modal.payment_method_input).val();
-		if (this.Service.order_method == C.JUST_BROWSING) valid = false;
-		if (this.Service.order_method == C.DELIVERY ) {
-			if ( !this.Service.address) valid = false;
-			if ( !this.Service.payment) valid = false;
-		}
-		if (valid) {
-			$(XSM.modal.finalize_order_button).removeClass(XSM.effects.disabled);
-		}
-	}
-
-};
 
 
 /**
- * Created by jono on 1/24/15.
- */
-var xbs_validation = {
-		init: function () { return true;},
-		submit_address: function (context, delegate_route) {
-			var debug_this = 2;
-			if (debug_this > 0) pr([context, delegate_route], "XBS.validation.submit_address(route)", 2);
-			$(XSM.forms.order_address_form).validate({
-				debug: true,
-				rules: {
-					"data[orderAddress][firstname]": "required",
-					"data[orderAddress][phone]": {required: true, phoneUS: true},
-					"data[orderAddress][address]": "required",
-					"data[orderAddress][email]": {required: true, email:true},
-					"data[orderAddress][postal_code]": {required: true, minlength: 6, maxlength: 7}
-				},
-				messages: {
-					"data[orderAddress][firstname]": "Well we have to call you <em>something!</em>",
-					"data[orderAddress][email]": "No spam, promise—just for sending receipts!",
-					"data[orderAddress][phone]": {
-						required: "We'll need this in case there's a problem with your order.",
-						phoneUS: "Just ten little digits, separated by hyphens if you like..."},
-					"data[orderAddress][address]": "It's, err, <em>delivery</em> after all...",
-					"data[orderAddress][postal_code]": {
-						required: "This is how we check if you're in our delivery area!",
-						minlength: "Prooooobably something like \"A0A 0A0\"...",
-						maxlength: "Prooooobably something like \"A0A 0A0\"..."
-					}
-				},
-				submitHandler: function () {
-					$.ajax({
-						type: C.POST,
-						url: "confirm-address/session",
-						data: $(XSM.forms.order_address_form).serialize(),
-						success: function (response) {
-							if (debug_this > 1) pr(response, 'XBS.validation.submit_address()->confirm_address_validation', 2);
-							try {
-								XBS.layout.dismiss_modal(XSM.modal.primary);
-								XBS.data.Service = response.cart.Service;
-								XBS.menu.set_order_method();
-							} catch (e) {
-								pr(e, null, true);
-								// todo: something... with... this... eror?
-							}
-						}
-					});
-				}
-			});
-			$(XSM.forms.order_address_form).submit();
-		},
-		submit_register: function (route) {
-			var debug_route = 0;
-			if (debug_route > 0) pr(route, "XBS.validation.submit_address(route)", 2);
-			$(XSM.forms.users_form).validate({
-				debug: true,
-				rules: {
-					"data[Users][firstname]": "required",
-					"data[Users][email]": {required: true, email: true},
-					"data[Users][phone]": {required: true, phoneUS: true},
-					"data[Users][address]": "required",
-					"data[Users][postal_code]": {required: true, minlength: 6, maxlength: 7}
-				},
-				messages: {
-					"data[Users][firstname]": "Well we have to call you <em>something!</em>",
-					"data[Users][email]": "This will be your 'username'. Don't worry, we won't share it or spam you!",
-					"data[Users][phone]": {
-						required: "We'll need route in case there's a problem with your order.",
-						phoneUS: "Jusst ten little digits, separated by hyphens if you like..."},
-					"data[Users][address]": "It's, err, <em>delivery</em> after all...",
-					"data[Users][postal_code]": {
-						required: "This is how we check if you're in our delivery area!",
-						minlength: "Prooooobably something like \"A0A 0A0\"...",
-						maxlength: "Prooooobably something like \"A0A 0A0\"..."
-					}
-				},
-				submitHandler: function () {
-					$.ajax({
-						type: route.url.type,
-						url: "users/add",
-						data: $(XSM.forms.users_form).serialize(),
-						success: function (data) {
-							//todo: handle... this?
-						},
-						fail: function () {},
-						always: function () {}
-					});
-				}
-			});
-			$(XSM.forms.users_form).submit();
-		}
-	};
-
-/**
- * Created by jono on 1/24/15.
- */
-var xbs_vendor = {
-	pending_orders:[],
-	last_check: 0,
-	last_tone_play: 0,
-	init: function() {
-		var vendor_page = $("html").find(XSM.vendor.self)[0]
-
-		if (vendor_page) {
-			XBS.data.is_vendor_page = true;
-			setTimeout(function() {
-				$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "vendor_get_pending", trigger:{}});
-			}, 3000);
-		}
-
-		$(XSM.vendor.order_accept_button).on(C.VMOUSEDOWN, function(e) { $(this).addClass(XSM.effects.pressed); });
-		var bg_string = function(success_stop, ready_stop) {
-			var success_color = "rgba(50,255,50,1)";
-			var ready_color = "rgba(125,185,232,1)";
-			var bg_str = "-webkit-linear-gradient(left, " + success_color + " " + success_stop + "%,";
-			bg_str += ready_color + " " + ready_stop +"%," + ready_color + " 100%)";
-			return bg_str;
-		}
-		$(C.BODY).on(C.VMOUSEMOVE, XSM.vendor.order_accept_button_pressed, null, function(e) {
-			var success_stop = Math.round( 100 * (e.pageX - $(XSM.vendor.order_accept_button).offset().left) / 512);
-			var ready_stop = Math.round( 100 * (e.pageX - $(XSM.vendor.order_accept_button).offset().left) / 512) + 1;
-			if (success_stop < 95) {
-				$(XSM.vendor.order_accept_button).css({ background: bg_string(success_stop, ready_stop) });
-			} else {
-				$(XSM.vendor.order_accept_button).attr("style", null);
-				$(XSM.vendor.order_accept_button).addClass('launching');
-				$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:"vendor_accept/print", trigger:this});
-			}
-		});
-		$(XSM.vendor.order_accept_button).on(C.VMOUSEOUT, function(e) {
-			$(this).removeClass(XSM.effects.pressed);
-			$(XSM.vendor.order_accept_button).css({background: bg_string(0, 0) });
-		});
-		$(XSM.vendor.order_accept_button).on(C.VMOUSEUP, function(e) {
-			$(this).removeClass(XSM.effects.pressed);
-			$(XSM.vendor.order_accept_button).css({background: bg_string(0, 0) });
-		});
-
-		return true;
-	},
-	next: function() {
-		var debug_this = 1;
-		if (debug_this > 0) pr("<no_args>", "XBS.vendor.next()", 2);
-		if (XBS.vendor.pending()) {
-			$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "vendor_get_pending", trigger:{}});
-		} else {
-			$(XSM.vendor.next_order).addClass(XSM.effects.slide_up);
-			$(XSM.vendor.back_splash).show();
-			setTimeout(function() {
-				setTimeout( function() {
-					$(XSM.vendor.back_splash).removeClass(XSM.effects.fade_out);
-					$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: "vendor_get_pending", trigger:{}});
-				}, 150);
-			}, 150);
-		}
-		return true;
-	},
-	current: function(order) {
-		if (order) XBS.vendor.current_order = order;
-		return XBS.vendor.current_order === null ? false : XBS.vendor.current_order
-	},
-	pending: function() {
-		var length = parseInt(XBS.vendor.pending_orders.length);
-		return length > 0 ? length : false;
-	},
-	post_orders: function(orders) {
-		var debug_this = 0;
-		if (debug_this > 0) pr({orders:orders, orders_length:orders.length}, "vendor.post_orders(orders)", 2);
-		XBS.vendor.pending_orders = orders;
-		XBS.vendor.update_pending_display()
-		XBS.vendor.update_current_order()
-		return;
-	},
-	update_current_order: function() {
-		if ( !XBS.vendor.current() && XBS.vendor.pending() ) {
-			/* Get a fresh copy of the basic order display HTML from a hidden element in the page. */
-			var order_content = $.parseHTML($(XSM.vendor.order_content_sample).html());
-			var order = XBS.vendor.current(XBS.vendor.pending_orders[0]);
-			var food = "";
-			for (var i in order.food) food += XSM.generated.vendor_orb_desc(i, order.food[i]);
-			$($(order_content).find(XSM.vendor.order_address)[0]).html(order.address);
-			$($(order_content).find(XSM.vendor.customer_name)[0]).html(order.customer);
-			$($(order_content).find(XSM.vendor.food_list)[0]).html(food);
-			if ( $(XSM.vendor.next_order).hasClass(XSM.effects.slide_up) ) {
-				$(XSM.vendor.order_content_detail).replaceWith(order_content)
-				$(XSM.vendor.order_content_detail).removeClass(XSM.effects.fade_out);
-				$(XSM.vendor.back_splash).addClass(XSM.effects.fade_out);
-				setTimeout(function() {
-					$(XSM.vendor.back_splash).hide();
-					setTimeout(function() {
-						if (now() - XBS.vendor.last_tone_play > 10000) {
-							XBS.printer.play_order_tone();
-							XBS.vendor.last_tone_play = now();
-						}
-						$(XSM.vendor.next_order).removeClass(XSM.effects.slide_up);
-					}, 30);
-				}, 300);
-			} else {
-				$(XSM.vendor.order_content_detail).addClass(XSM.effects.fade_out);
-				setTimeout(function() {
-					$(XSM.vendor.order_content_detail).replaceWith(order_content);
-					setTimeout(function() {
-						$(XSM.vendor.order_content_detail).removeClass(XSM.effects.fade_out);
-					},30);
-				}, 300)
-			}
-		}
-	},
-	update_pending_display: function() {
-		var debug_this = 0;
-		var current_displayed_count = parseInt($(XSM.vendor.order_count).html());
-		var pending = XBS.vendor.pending_orders.length - 1;
-		if (debug_this > 1) pr([pending, current_displayed_count], "vendor.update_pending_display()", 2);
-		if (pending > 0 ) $(XSM.vendor.order_count_bubble).removeClass(XSM.effects.fade_out);
-		else $(XSM.vendor.order_count_bubble).removeClass(XSM.effects.fade_out);
-
-		if (current_displayed_count != pending) {
-			$(XSM.vendor.order_count).addClass(XSM.effects.fade_out);
-			setTimeout(function() {
-				$(XSM.vendor.order_count).html(pending);
-				setTimeout(function() {
-					$(XSM.vendor.order_count).removeClass(XSM.effects.fade_out);
-				}, 30);
-			}, 150);
-		}
-		return true;
-	}
-};
-/**
- * Created by jono on 4/30/15.
- * TODO: limit menu_options tab so that "premium", "cheese" & "sauce" are mutually exclusive
+ *  Adds one or more parsed 'step objects' that describe an effect to the EffectChain object's steps array.
+ *  Basically this is where most of the action goes down.
+ *  Here's a simple and an edge-case complexity sample of what an step object might look like:
  *
+ *  simple_step = {
+ *      target: 'li.inactive',
+ *      context: 'ul.top_menu',
+ *      interval: 300,  // ms
+ *      state: {
+ *          add: [ 'active', 'focus' ],
+ *          remove: ['inactive'],
+ *          attr: {disabled: false}
+ *      },
+ *      // this could just as easily be supplied in the 'target' key of the next added step;
+ *      // this is a trivial example; the "next" key, in practice, would usually point to a function (see below)
+ *      next: ["div#breadcrumbs", "div#topbar]
+ *      };
+ *
+ *  complex_step = {
+ *      target: undefined,
+ *      context: undefined, // will default to 'body' if a different 'default' isn't supplied on constructon
+ *      interval: 150,
+ *      state: {  // in reality I'm imagining more complicated functions (ie. something $.toggleClass() wouldn't cover!)
+ *          add: [  'focus',
+ *                  function(target) {  return $(target).hasClass('active enabled') ? 'disabled' : undefined;}
+ *               ],
+ *          remove: [ 'inactive',
+ *                     function(target) {  return $(target).hasClass('inactive disabled') ? 'enabled' : undefined;}
+ *                   ]
+ *       },
+ *       next: function(target, context) { return $(target).find('span.icon', context)[0]; }
+ *  }
+ *
+ * @param step
+ * @returns {effect_chain}
  */
-var xbs_vendor_ui = {
-	orbopt_pricelist_id:-1,
-
-	init: function () {
-		XBS.vendor_ui.loading_screen(0);
-		XBS.vendor_ui.fix_breakouts();
-		$(XSM.vendor_ui.ui_tabs).tabs();
-		for ( var table in {menu:null, opts:null } ) {
-			XBS.vendor_ui.data_tables(table);
-		}
-	},
-	loading_screen: function(last_height) {
-		var ui_height = $(XSM.vendor_ui.ui_tabs).innerHeight();
-		if (last_height == ui_height) {
-			$("#loading-screen").addClass(FX.fade_out);
-			setTimeout(function(){ $("#loading-screen").addClass(FX.hidden); }, 300);
-		} else {
-			setTimeout( function() { XBS.vendor_ui.loading_screen(ui_height)}, 300);
-		}
-	},
-	fix_breakouts: function() {
-		$(FX.breakout).each(function () {
-			$(this).css({
-				left: (0.5 * $(window).width() - 400) + "px", // all breakouts are 800px wide, vendor.scss ~L514
-				top: "300px"
-			})
-		});
-	},
-	data_tables: function (table) {
-		var tables = {
-			menu: {
-				id: XSM.vendor_ui.menu_table,
-				cols: [
-					{ width: 200},
-					{ width: 400},
-					{ width: 100},
-					{ width: 350},
-					{ width: 50}
-				]
-			},
-			opts: {
-				id: XSM.vendor_ui.orbopts_table,
-				cols: [
-					{ width: 100 },
-					{ width: 100 },
-					{ width: 76 },
-					{ width: 76 },
-					{ width: 76 },
-					{ width: 76 },
-					{ width: 76 },
-					{ width: 76 }
-				]
+/**
+ * Created by jono on 1/24/15.
+ */
+function  validate_address(restore, delegate) {
+	var debug_this = 2;
+	if (debug_this > 0) pr([restore, delegate], "XBS.validation.submit_address(route)", 2);
+	$(XSM.forms.order_address_form).validate({
+		debug: true,
+		rules: {
+			"data[orderAddress][firstname]": "required",
+			"data[orderAddress][phone]": {required: true, phoneUS: true},
+			"data[orderAddress][address]": "required",
+			"data[orderAddress][email]": {required: true, email:true},
+			"data[orderAddress][postal_code]": {required: true, minlength: 6, maxlength: 7}
+		},
+		messages: {
+			"data[orderAddress][firstname]": "Well we have to call you <em>something!</em>",
+			"data[orderAddress][email]": "No spam, promise—just for sending receipts!",
+			"data[orderAddress][phone]": {
+				required: "We'll need this in case there's a problem with your order.",
+				phoneUS: "Just ten little digits, separated by hyphens if you like..."},
+			"data[orderAddress][address]": "It's, err, <em>delivery</em> after all...",
+			"data[orderAddress][postal_code]": {
+				required: "This is how we check if you're in our delivery area!",
+				minlength: "Prooooobably something like \"A0A 0A0\"...",
+				maxlength: "Prooooobably something like \"A0A 0A0\"..."
 			}
-		};
-		$(tables[table].id).dataTable({
-				bDestroy: true,
-				bJQueryUI: true,
-				bDeferRender: false,
-				autoWidth: false,
-				columns: tables[table]
-		});
-	},
-
-	save_orb: function (orb_id, attribute, replacement) {
-		var cell_id = as_id(["orb", orb_id, attribute].join("-"));
-		var saved_value = null;
-		switch (attribute) {
-			case 'title':
-				saved_value = $("input[name='Orb[title]']", cell_id).val();
-				$(XSM.vendor_ui.orb_attr_display, cell_id).html(saved_value);
-				break;
-			case 'orbcat':
-				var orbcat_id = $("select", cell_id).val();
-				$($("select", cell_id).find("option")).each(function () {
-					if (Number($(this).attr('value')) == orbcat_id) {
-						saved_value = $(this).text();
-						$(this).attr('selected', 'selected');
-					} else {
-						$(this).removeAttr('selected');
+		},
+		submitHandler: function () {
+			$.ajax({
+				type: C.POST,
+				url: "confirm-address/session",
+				data: $(XSM.forms.order_address_form).serialize(),
+				success: function (response) {
+					if (debug_this > 1) pr($.parseJSON(response), 'XBS.validation.submit_address()->confirm_address_validation', 2);
+					try {
+						new Modal(C.PRIMARY).hide();
+						XT.cart.import_cart(response.cart);
+						var route;
+						switch (restore) {
+							case "menu":
+								route = "menu/unstash";
+								break;
+							case "review":
+								route = "review_order"
+								break;
+						}
+						setTimeout(function() {$(XT.router).trigger(C.ROUTE_REQUEST, {request:route, trigger:{}}) }, 300);
+					} catch (e) {
+						pr(e, null, true);
+						// todo: something... with... this... eror?
 					}
-				});
-				$(XSM.vendor_ui.orb_attr_display, cell_id).html(saved_value);
-				break;
-			case 'description':
-				saved_value = $("textarea", cell_id).val();
-				$(XSM.vendor_ui.orb_attr_display, cell_id).html(saved_value);
-				break;
-			case 'prices':
-				$(cell_id).html(replacement);
-				break;
+				}
+			});
 		}
-		XBS.vendor_ui.cancel_cell_editing('orb', orb_id, attribute);
-	},
-	set_orbopt_pricelist_focus: function() {
-		$("#orbopt-pricelist-add input[name='Pricelist[id]']", C.BODY).val($("#orbopt-pricelist-select").val());
-		XBS.vendor_ui.toggle_pricelist_add("stow");
-		$( "#orbopt-pricelist-buttons .modal-button.disabled", C.BODY).removeClass(FX.disabled).addClass(FX.enabled);
-	},
-	edit_orbopt_pricelist: function() {
-		var url = ["edit-orbopt-pricing", $("#orbopt-pricelist-select").val()].join(C.DS);
-		$("#orbopt-pricelist-add-container").load([XBS.data.cfg.root,url].join(C.DS), function() { XBS.vendor_ui.toggle_pricelist_add("reveal", true); });
-	},
-	toggle_pricelist_add: function(state, preserve_fields) {
-		if (!preserve_fields || state != "reveal") {
-			$("input", "#orbopt-pricelist-add-container").each(function() { $(this).val("");});
-		}
-		if (state == "reveal") {
-			$( ".modal-button.enabled", "#orbopt-pricelist-buttons").removeClass(FX.enabled).addClass(FX.disabled);
-			$("#orbopt-pricelist-add-container").removeClass(FX.hidden);
-			setTimeout(function() { $("#orbopt-pricelist-add-container").removeClass(FX.fade_out); }, 10);
-		}
-		if (state == "stow") {
-			$("#orbopt-pricelist-add-container").addClass(FX.fade_out);
-			setTimeout(function() { $("#orbopt-pricelist-add-container").addClass(FX.hidden); }, 300);
-		}
-	},
-	delete_orbopt_pricelist: function(action) {
-		var pricelist_id = $("#orbopt-pricelist-select").val();
-		switch (action) {
-			case "confirm":
-				$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:["orbopt_pricelist", "delete","delete", pricelist_id].join(C.DS), trigger:{}});
-				break;
-			case "warn":
-				$("#delete-orbopt-pricelist-confirmation").removeClass(FX.hidden);
-				setTimeout(function() { $("#delete-orbopt-pricelist-confirmation").removeClass(FX.fade_out); }, 10);
-				break;
-			case "cancel":
-				$("#delete-orbopt-pricelist-confirmation").addClass(FX.fade_out);
-				setTimeout(function() { $("#delete-orbopt-pricelist-confirmation").addClass(FX.hidden); }, 300);
-				break;
-			case "print_opts":
-				XBS.vendor_ui.delete_orbopt_pricelist("cancel"); // close the cancellation warning
-				XBS.vendor_ui.reload_orbopt_pricelist_config();
-				break;
-		};
-	},
-	reload_orbopt_pricelist_config: function() {
-		var opt_id = $("#orbopt-pricelist-select-form", C.BODY).data('opt');
-		$(XBS.routing).trigger(C.ROUTE_REQUEST, {request:["orbopt_pricelist","launch","false",opt_id].join(C.DS), trigger:{}});
-	},
-	edit_cell: function (table, id, attribute) {
-		var display_element = XSM.vendor_ui.orb_attr_display;
-		var edit_element = XSM.vendor_ui.orb_attr_edit;
-		var cell_id = as_id([table, id, attribute].join("-"));
-		if (table == "orbopt") {
-			display_element = XSM.vendor_ui.orbopt_attr_display;
-			edit_element = XSM.vendor_ui.orbopt_attr_edit;
-		}
-		pr([table, id, attribute, cell_id], "edit_cell");
-		$(display_element, cell_id).addClass(FX.fade_out);
-		setTimeout( function() {
-			$(display_element, cell_id).addClass(FX.hidden);
-			$(edit_element, cell_id).removeClass(FX.hidden);
-			setTimeout(function () { $(edit_element, cell_id).removeClass(FX.fade_out); }, 30);
-		}, 300);
-	},
-	cancel_cell_editing: function (table, id, attribute) {
-		var display_element = XSM.vendor_ui.orb_attr_display;
-		var edit_element = XSM.vendor_ui.orb_attr_edit;
-		var cell_id = as_id([table, id, attribute].join("-"));
-		if (table == "orbopt") {
-			display_element = XSM.vendor_ui.orbopt_attr_display;
-			edit_element = XSM.vendor_ui.orbopt_attr_edit;
-		}
-		pr([table, id, attribute, cell_id], "cancel_cell_editing");
-		$(edit_element, cell_id).addClass(FX.fade_out);
-		setTimeout(function() {
-			$(edit_element, cell_id).addClass(FX.hidden);
-			$(display_element, cell_id).removeClass(FX.hidden);
-			setTimeout(function() { $(display_element, cell_id).removeClass(FX.fade_out);}, 30)
-		}, 300);
-	},
-	save_orbopt: function(response, data) {
-		var cell_id;
-		if (data.attribute == "pricing") {
-			cell_id = XSM.vendor_ui.orbopt_pricelist_add;
-			$(cell_id, C.BODY).addClass([FX.hidden, FX.fade_out].join(" "));
-		} else {
-			cell_id = as_id(["orbopt", data.id, data.attribute].join("-"));
-		}
-		switch (data.attribute) {
-			case "title":
-				$(XSM.vendor_ui.orbopt_attr_display, cell_id).html(response.submitted_data.data.Orbopt.title);
-				break;
-			case "vendor-title":
-				$(XSM.vendor_ui.orbopt_attr_display, cell_id).html(response.submitted_data.data.Orbopt.vendor_title);
-				break;
-		}
-		if ("replacement" in data) $(XSM.vendor_ui.orbopt_attr_display, cell_id).html(data.replacement);
-		XBS.vendor_ui.cancel_cell_editing("orbopt", data.id, data.attribute);
-	},
-	toggle_orbopt_group: function (orbcat_id) {
-		orbcat_id = Number(orbcat_id);
-		$("li.orbopt", XSM.modal.primary).each(function () {
-			var data = $(this).data();
-			pr([orbcat_id, data]);
-			if (in_array(orbcat_id, data.groups)) {
-				$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: ["orbopt_config", data.orbopt , "set_opt_state", "active"].join(C.DS), trigger: {}});
-			} else {
-				$(XBS.routing).trigger(C.ROUTE_REQUEST, {request: ["orbopt_config", data.orbopt, "set_opt_state", "inactive"].join(C.DS), trigger: {}});
+	});
+	$(XSM.forms.order_address_form).submit();
+};
+function validate_register(restore, delegate) {
+	var debug_route = 0;
+	if (debug_route > 0) pr(route, "XBS.validation.submit_address(route)", 2);
+	$(XSM.forms.users_form).validate({
+		debug: true,
+		rules: {
+			"data[Users][firstname]": "required",
+			"data[Users][email]": {required: true, email: true},
+			"data[Users][phone]": {required: true, phoneUS: true},
+			"data[Users][address]": "required",
+			"data[Users][postal_code]": {required: true, minlength: 6, maxlength: 7}
+		},
+		messages: {
+			"data[Users][firstname]": "Well we have to call you <em>something!</em>",
+			"data[Users][email]": "This will be your 'username'. Don't worry, we won't share it or spam you!",
+			"data[Users][phone]": {
+				required: "We'll need route in case there's a problem with your order.",
+				phoneUS: "Jusst ten little digits, separated by hyphens if you like..."},
+			"data[Users][address]": "It's, err, <em>delivery</em> after all...",
+			"data[Users][postal_code]": {
+				required: "This is how we check if you're in our delivery area!",
+				minlength: "Prooooobably something like \"A0A 0A0\"...",
+				maxlength: "Prooooobably something like \"A0A 0A0\"..."
 			}
-		});
-	},
-
-
-	set_orbopt_state: function (opt_id, state, label, input) {
-		var opt_label_wrapper = label ? label : "#orbopt-" + opt_id + "-label";
-		var opt_label = opt_label_wrapper + " span";
-		var opt_input = input ? input : "li[data-orbopt='" + opt_id + "'] input";
-		if (state == FX.active) {
-			$(opt_label_wrapper, XSM.modal.primary).removeClass(FX.active_plus).removeClass(FX.inactive).addClass(FX.active);
-			$(opt_input, XSM.modal.primary).val(1);
+		},
+		submitHandler: function () {
+			$.ajax({
+				type: route.url.type,
+				url: "users/add",
+				data: $(XSM.forms.users_form).serialize(),
+				success: function (data) {
+					//todo: handle... this?
+				},
+				fail: function () {},
+				always: function () {}
+			});
 		}
-		if (state == FX.inactive) {
-			$(opt_label_wrapper, XSM.modal.primary).removeClass(FX.active).removeClass(FX.active_plus).addClass(FX.inactive);
-			$(opt_input, XSM.modal.primary).val(0);
-		}
-		if (state == FX.active_plus) {
-			$(opt_label_wrapper, XSM.modal.primary).removeClass(FX.active).removeClass(FX.inactive).addClass(FX.active_plus);
-			$(opt_input, XSM.modal.primary).val(2);
-		}
-	},
-
-
-	toggle_filter: function (filter_id) {
-		var filter = "#orbopt-flag-" + filter_id;
-		if ($(filter, XSM.modal.primary).hasClass(FX.active)) {
-			$(filter).removeClass(FX.active);
-		} else {
-			$(filter).addClass(FX.active);
-		}
-		XBS.vendor_ui.filter_opts()
-	},
-
-	toggle_optflag: function (response, data) {
-		var orbopt_id = data.orbopt;
-		var optflag_id = data.optflag;
-		var cell_id = as_id(["orbopt", orbopt_id, "optflag", optflag_id].join("-"));
-		if ($("span", cell_id).hasClass(FX.active)) {
-			$("span", cell_id).removeClass(FX.active).addClass(FX.inactive);
-		} else {
-			$("span", cell_id).removeClass(FX.inactive).addClass(FX.active);
-		}
-	},
-
-	toggle_orbopt: function (opt_id) {
-		var opt_label = "#orbopt-" + opt_id + "-label";
-		var opt_input = "li[data-orbopt='" + opt_id + "'] input";
-		var state = null;
-		if ( $(opt_label, XSM.modal.primary).hasClass(FX.active) ) {
-			state = FX.active_plus;
-		} else if ($(opt_label, XSM.modal.primary).hasClass(FX.active_plus) ) {
-			state =  FX.inactive;
-		} else {
-			state = FX.active;
-		}
-		XBS.vendor_ui.set_orbopt_state(opt_id, state, opt_label, opt_input)
-	},
-
-
-	filter_opts: function () {
-		var active_flags = new Array();
-		$("dd.orbopt-flag.active").each(function () { active_flags.push(Number($(this).data('id'))); });
-		$("li.orbopt", XSM.modal.primary).each(function () {
-			var flags = $(this).data('flags');
-			var active = false;
-			for (var i in flags) {
-				if (active_flags.indexOf(flags[i]) > -1) active = true;
-			}
-			if (active) {
-				$(this).removeClass(FX.hidden);
-			} else {
-				$(this).addClass(FX.hidden)
-			}
-			$(document).foundation();
-		});
-	},
-
-	reload_tab: function( tab ) {
-		if (tab == "opts") {
-			$(XSM.vendor_ui.menu_options_tab).html('');
-			$(XSM.vendor_ui.menu_options_tab).load(["vendor-ui", "opts"].join(C.DS), function() {
-																	XBS.vendor_ui.data_tables(tab);
-																	XBS.vendor_ui.fix_breakouts();
-																});
-		}
-		$(XSM.vendor_ui.menu_tab).load(["vendor-ui", "menu"].join(C.DS), function() {
-														XBS.vendor_ui.data_tables(tab);
-														XBS.vendor_ui.fix_breakouts();
-													});
-	},
-
-	toggle_menu_options_breakout: function( id ) {
-		if ( $(id, XSM.vendor_ui.menu_options_tab).hasClass(FX.hidden) ) {
-			$(id, XSM.vendor_ui.menu_options_tab).removeClass(FX.hidden);
-		} else {
-			$(id, XSM.vendor_ui.menu_options_tab).addClass(FX.hidden);
-		}
-	}
-
+	});
+	$(XSM.forms.users_form).submit();
 }
+
+XT.validate = function(target, restore, delegate) { window["validate_" + target](restore, delegate) }
 /**
  * J. Mulle, for XtremePizza, 9/5/14 1:03 AM
  * www.introspectacle.net

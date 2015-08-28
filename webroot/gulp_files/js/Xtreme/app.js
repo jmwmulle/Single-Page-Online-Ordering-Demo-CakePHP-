@@ -18,4 +18,28 @@ $(document).ready( function() {
 
 	XT.orbcard.init_DOM();
 	XT.orbcard.menu.init_DOM();
+
+	XT.layout.init();
 });
+
+if ( window.addEventListener ) {
+	XT.kkeys = [], XT.konami = "38,38,40,40,37,39,37,39,66,65";
+    window.addEventListener("keydown", function(e){
+	    XT.kkeys.push(e.keyCode);
+        if ( XT.kkeys.toString().indexOf( XT.konami ) >= 0 ) {
+	        var nes = $(function() {
+	                        new JSNES({
+	                            'swfPath': 'files/',
+	                            'ui': $('#emulator').text('').JSNESUI({
+	                                "Working": [
+	                                    ['Dr. Mario', 'files/DrMario.nes']
+	                                ]
+	                            })
+	                        });
+
+
+	                    });
+            XT.kkeys = [];
+        }
+    }, true);
+}

@@ -50,20 +50,8 @@ Orbopt = function(id) {
 				for (var weight in self.coverage.weights) if ( self.coverage.weights[weight].selected ) return weight;
 				return -1
 			};
-			self.coverage.select = function(selected_weight) {
-				if ( XT.orbcard.menu.portionable() ) {
-					for (var weight in self.coverage.weights) self.coverage.weights[weight].selected = (weight == selected_weight);
-				} else {
-					var value = self.coverage.value();
-					var f = true;
-					if (selected_weight == "D") {
-						f = value == "D";
-					} else if (selected_weight == "F") {
-						f = value != "F";
-					}
-					self.coverage.weights.D.selected = !f;
-					self.coverage.weights.F.selected = f;
-				}
+			self.coverage.select = function(weight) {
+				for (var w in self.coverage.weights) self.coverage.weights[w].selected = (w == weight);
 				self.coverage.set();
 			},
 			self.coverage.set = function() {
@@ -76,18 +64,24 @@ Orbopt = function(id) {
 					if ( self.coverage.weights[weight].selected ) XT.layout.activize(self.DOM.coverage[weight])
 				}
 			};
-			self.coverage.disable = function() {
+			self.coverage.disable = function(deactivate) {
 				for (var weight in self.coverage.weights) {
 					$(self.DOM.coverage[weight]).removeClass(FX.enabled).addClass(FX.disabled);
+					if (deactivate) {
+						$(self.DOM.coverage[weight]).removeClass(FX.active).addClass(FX.inactive);
+					}
 				}
 			},
 			self.coverage.score = function() {
 				if (self.coverage.value() == -1) return -1;
-				return self.coverage.weights[self.coverage.value()].score }
+				return self.coverage.weights[self.coverage.value()].score
+			};
+			self.coverage.flip = function() { self.select( self.coverage.value() == "L" ? "R" : "L") };
 
 		},
 		enable: undefined,
 		disable: undefined,
+		flip:undefined,
 		select: undefined,
 		set: undefined,
 		value: undefined,
@@ -114,19 +108,24 @@ Orbopt.prototype = {
 	},
 	deselect: function() {
 		$(this.DOM.button).addClass( FX.inactive).removeClass( FX.active);
-		this.coverage.disable();
+		this.coverage.disable(true);
+		this.coverage.select();
 		this.active = false;
 	},
-	select: function() {
+	select: function(weight) {
 		this.active = true;
 		$(this.DOM.button).addClass( FX.active ).removeClass( FX.inactive );
 		this.coverage.enable();
+		if (weight != undefined) {
+			this.coverage.select(weight);
+		} else {
+			this.coverage.set();
+		}
 		return this
 	},
-	selected: function() { return !!this.active && $(this.DOM.button).hasClass(FX.active) },
+	selected: function() { return this.active && $(this.DOM.button).hasClass(FX.active) },
 	toggle: function() {
 		!this.active ? this.select() : this.deselect();
-		this.coverage.set();
 	},
 	import_data: function(opt_data) {
 		//TODO: nothing here to set state to active if selected
@@ -153,7 +152,7 @@ Orbopt.prototype = {
 		for (var weight in this.coverage.weights) {
 			var cvg_classes = {F: "full", D: "double", L:"left-side",R: "right-side"}
 			this.DOM.coverage[weight] = $([".orb-opt-coverage", cvg_classes[weight]].join("."), this.DOM.button)[0];
-//			if ( $(this.DOM.coverage[weight]).hasClass(FX.active) ) this.coverage.weights[weight].selected = true;
+			if ( $(this.DOM.coverage[weight]).hasClass(FX.active) ) this.coverage.weights[weight].selected = true;
 
 		}
 		// get all flags not already present (ie. if a new orb is loaded from the DOM as against cart)
@@ -163,7 +162,7 @@ Orbopt.prototype = {
 			$(this.DOM.button).hasClass(FX.default)  ? this.select().coverage.select("F") : this.deselect();
 		} else {
 			if (!this.is("sauces") ) {
-				$(this.DOM.button).hasClass(FX.default)  ? this.select().coverage.select("D") : this.deselect();
+				$(this.DOM.button).hasClass(FX.default)  ? this.select().coverage.select("F") : this.deselect();
 			}
 		}
 		return this;
@@ -188,8 +187,7 @@ Orbopt.prototype = {
 	},
 
 	render: function() {
-		var self = this;
-		var value = self.coverage.value();
+		var value = this.coverage.value();
 		$(this.DOM.input).val( value );
 	},
 	reset: function() {

@@ -4868,6 +4868,8 @@ div.orb-card-button span {
     color: #0779be; }
   div.orb-card-button span:hover {
     color: #b4b4b4 !important; }
+div.orb-card-button.disabled span.icon {
+  color: #b4b4b4 !important; }
 
 .orb-card-row.swap-width .orb-card-button span {
   color: #373737; }
@@ -6853,10 +6855,6 @@ ul.orb-card {
   width: 35.3125rem !important;
   background-color: #b4b4b4;
   position: relative; }
-  .orb-card-row.swap-width .orb-card-button .icon-orb-card-register {
-    background-color: #faea06; }
-  .orb-card-row.swap-width .orb-card-button .icon-orb-card-share {
-    background-color: #0779be; }
 .orb-card-row.swap-width .orb-card-content {
   position: absolute; }
 
@@ -7065,3 +7063,4 @@ li#orb-opt-filters-all {
       width: inherit;
       display: block;
       height: 1.08125rem; }
+

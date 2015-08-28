@@ -18,23 +18,24 @@
 	$opts = $oi[ 'orbopts' ];
 	$pricing = $oi[ 'pricing' ];
 ?>
-<div class="row view-cart-row" data-uid="<?=$uid;?>">
+<div id="order-item-<?=$uid;?>" class="row view-cart-row" data-uid="<?=$uid;?>">
 	<div class="large-12 columns">
 		<div class="row-wrapper">
 
 			<!-- Item Review Header -->
-			<div id="order-item-<?=$uid;?>" class="row primary-row">
+			<div class="row primary-row">
 				<div class="large-7 columns"><span class="cart-row-item-title"><?= $orb[ 'title' ]; ?></span></div>
 				<div class="large-2 columns text-center"><span><?= $pricing[ 'quantity' ]; ?></span></div>
-				<div class="large-2 columns "><span><?=money_format( "%#3.2n", $pricing[ 'net' ] ); ?></span></div>
-				<div class="large-1 columns text-center data-route="cart_edit/delete/<?=$uid;?>"><span class="icon-cancel"></div>
+				<div class="large-2 columns ">
+					<span id="<?=$uid;?>-price"><?=money_format( "%#3.2n", $pricing[ 'net' ] ); ?></span></div>
+				<div class="large-1 columns text-center" data-route="<?="edit_orb" . DS . $uid;?>"><span class="icon-cancel"></div>
 			</div>
 
 			<!-- Item Opts-->
 			<div class="row<?php if ( empty( $opts ) ) echo " true-hidden";?>">
 				<div class="large-12 columns secondary-row orbopts">
 					<?php foreach ( $opts as $i => $opt ) { ?>
-						<a href="#" data-route="edit_orbopt_in_cart<?= DS . $uid . DS . $opt[ 'Orbopt' ][ 'id' ]; ?>">
+						<a href="#" class="edit-orb" data-route="edit_orb<?=DS . $uid . DS . $opt[ 'Orbopt' ][ 'id' ]; ?>">
 								<span class="opt-label"><?= $opt[ 'Orbopt' ][ 'title' ]; ?>
 									<?php switch ( $opt[ 'Orbopt' ][ 'coverage' ] ) {
 											case "R":

@@ -224,14 +224,6 @@ span.icon-hn-inline {
 
 @include font-faces();
 
-@mixin mouse-memoirs {
-  font-family : "Mouse Memoirs", sans-serif;
-}
-
-@mixin Fredericka {
-  font-family : "Fredericka the Great", sans-serif;
-}
-
 @mixin HelveticaBlkCn {
   font-family : "Helvetica Neue Condensed Black", arial, sans-serif;
 }
@@ -372,6 +364,12 @@ div.orb-card-button {
          &.icon-orb-card-share, &.icon-orb-card-share-reveal { color:$xtreme-blue;}
         &:hover { color: $light-grey !important;}
   }
+  &.disabled {
+    span.icon {
+      color: $light-grey !important;
+    }
+  }
+
 }
 .orb-card-row.swap-width {
  .orb-card-button {

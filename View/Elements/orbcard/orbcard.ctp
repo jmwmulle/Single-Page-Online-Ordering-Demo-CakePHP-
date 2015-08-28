@@ -18,39 +18,7 @@ $prices = $content['Prices'];
 <!--  FRONT ------->
 				<section id="orb-card-front" class="preserve-3d card-face m-pad">
 					<ul class="orb-card">
-					<!-- TOP  ROW --> <?php // every row has a button at left and content at right ;?>
-						<li id="orb-card-row-1" class="orb-card-row">
-							<?php
-								$classes = array("orb-card-button", "inline", "float-labeled");
-								$data = array("float-label" => $logged_in ? "favorite" : "join & favorite");
-								$data["route"] = $logged_in ? "favorite/orb_card" : "orb_card/register";
-							?>
-							<div id="<?=$logged_in ? "favorite" : "register";?>" <?=___cD($classes);?> <?=___dA($data); ?>>
-								<span class="<?=$logged_in ? "icon-orb-card-favorite" : "icon-orb-card-register";?>"></span
-								<?php if (!$logged_in) {?>
-									><div id="orb-card-register-panel" class="fade-out true-hidden orb-card-row-panel"
-										><a id="orb-card-register-twitter" href="http://development-xtreme-pizza.ca/auth/twitter"
-											><span class="icon-twitter"></span
-										></a
-										><a id="orb-card-register-facebook" href="http://development-xtreme-pizza.ca/auth/facebook"
-											><span class="icon-facebook"></span
-										></a
-										><a id="orb-card-register-gplus" href="http://development-xtreme-pizza.ca/auth/google"
-											><span class="icon-gplus"></span
-										></a
-										><a id="orb-card-register-email" href="#" data-route="register/orb_card/email/"
-											><span class="icon-topbar-email"></span
-										></a
-									></div
-								<?php } ?>
-							></div
-							><div id="description" class="orb-card-content inline">
-								<div class="orb-card-content-box<?=$ajax ? " fade-out" : "";?>">
-									<p><?=$orb[ "description" ]; ?></p>
-									<h4 id="hidden-description"><?=strtoupper($orb[ "title" ]); ?></h4>
-								</div>
-							</div>
-						</li>
+					<?=$this->Element('orbcard/rows/top', compact('orb', 'ajax'))?>
 					<!-- MIDDLE  ROW -->
 						<li id="orb-card-row-2" class="orb-card-row">
 							<?php $data_array = [
@@ -79,8 +47,8 @@ $prices = $content['Prices'];
 							</div>
 						</li><?=""
 					  ?><li id="orb-card-row-3" class="orb-card-row">
-							<div id="like" class="orb-card-button inline float-labeled" data-float-label="share">
-								<span class="icon-orb-card-share" data-route="orb_card/share"></span
+							<div id="like" class="orb-card-button inline float-labeled disabled" data-float-label="coming soon">
+								<span class="disabled icon icon-orb-card-share" data-route="orb_card/share"></span
 								<?php if (!$logged_in) {?>
 								><div id="orb-card-social-panel" class="fade-out orb-card-row-panel"
 									><a id="orb-card-register-twitter" href="https://twitter.com/intent/tweet?screen_name=XtremePizza&text=XtremePizza!%20Halifax!%20Delicious!%20This%20menu%20is%20huge! #XtremePizza #XtremePizzaHalifax #iheartbigmenus" class="twitter-mention-button" data-routse="orb_card/share/twitter"

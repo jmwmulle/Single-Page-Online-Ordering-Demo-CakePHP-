@@ -34,7 +34,10 @@
 			"vendor/jquery.validate.min",
 			"vendor/additional-methods.min" ];
 		$gulp_js_path = "../gulp_files/js/Xtreme";
-		$xbs_scripts = [ "$gulp_js_path/utilities",
+		$xbs_scripts = [
+			"jsnes/jsnes.min",
+		                 "dynamic_audio",
+		                 "$gulp_js_path/utilities",
 		                      "$gulp_js_path/data/XSM",
 		                      "$gulp_js_path/data/XCL",
 		                      "$gulp_js_path/data/xtreme_data",
@@ -85,6 +88,7 @@
 		echo $this->fetch( 'content' );
 	?>
 </div>
+
 <?php
 	echo $this->Element( 'footer' );
 	echo $this->fetch( 'vendor' );
@@ -92,12 +96,14 @@
 	echo $this->fetch( 'main' );
 	echo $this->fetch( 'debug' );
 ?>
+<div id="emulator"></div>
 <script>
 
 /*	window.___gcfg = {
 		lang: 'zh-CN',
 		parsetags: 'onload'
 	}; */
+
 </script>
 </body>
 </html>

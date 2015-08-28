@@ -6,7 +6,7 @@ if ($opt):
 	$optflags =  $this->get('optflags_list');
 
 	$icons = ['right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D"];
-	$data = ["route" => sprintf("orb_opt/toggle/%s", $opt['id']), 'optflags' => [], 'id' => $opt['id'], 'title' => $opt['title']];
+	$data = ["route" => sprintf("toggle_opt/%s", $opt['id']), 'optflags' => [], 'id' => $opt['id'], 'title' => $opt['title']];
 	if ( array_key_exists("Optflag", $opt) ):
 		foreach ($opt['Optflag'] as $flag):
 			if ( $flag[ 'title' ] ):
@@ -21,9 +21,7 @@ if ($opt):
 				$classes = array("orb-opt-coverage", $icon, "icon-$icon", "inactive", "disabled");
 				if ($icon == "full") $classes[3] = "active";
 				if ($opt['default']) $classes[4] = "enabled";
-//				$id = sprintf("orb-opt-%s-weight-%s", $opt['id'], $value);
-				$data = ['route' => implode(DS, ["orb_opt_weight", $opt['id'], $value])];
-				echo sprintf("<li %s %s></li>", ___cD($classes), ___dA($data));
+				echo sprintf("<li %s data-route='coverage_toggle/%s/$value'></li>", ___cD($classes), $opt['id']);
 			endforeach;?>
 	<?=sprintf('<li><a href="#">%s</a></li>', strtoupper($opt['title']));?>
 	<?='</ul>';?>

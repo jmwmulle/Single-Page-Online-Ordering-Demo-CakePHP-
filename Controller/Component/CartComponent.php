@@ -64,7 +64,7 @@
 			$price_map = [ 'sauce'   => [ 'count'    => 0,
 			                              'included' => 1,
 			                              'price'    => 0 ],
-			               'cheese'  => [ 'count'    => 0,
+			               'cheeses'  => [ 'count'    => 0,
 			                              'included' => $included[ 'cheese_count' ],
 			                              'price'    => 0 ],
 			               'premium' => [ 'count'    => 0,
@@ -162,13 +162,7 @@
 			                                                            'cheese_count'  => $orb[ 'Orb' ][ 'cheese_count' ],
 			                                                            'premium_count' => $orb[ 'Orb' ][ 'premium_count' ] ]
 			);
-			$pricing   = [ 'rank'                  => $price_rank,
-			               'label'                 => $orb[ 'Pricedict' ][ "l$price_rank" ],
-			               'quantity'              => $quantity,
-			               'unit_base_price'       => 1 * $orb[ 'Pricelist' ][ "p$price_rank" ],
-			               'opt_price'             => $opt_price,
-			               'configured_unit_price' => 1 * $orb[ 'Pricelist' ][ "p$price_rank" ] + $opt_price,
-			               'net'                   => $quantity * ( $orb[ 'Pricelist' ][ "p$price_rank" ] + $opt_price ) ];
+			$pricing = $this->pricing_array($opt_price, $price_rank, $quantity, $orb);
 			// walk current cart (if it exists); if item of identical configuration found, update it's quantity
 			$candidate = compact( "orb", 'orbopts', 'pricing' );
 
@@ -177,15 +171,46 @@
 			return $this->Session->write("Cart.Order.$uid", $candidate);
 		}
 
+		private function pricing_array($opt_price, $price_rank, $quantity, $orb) {
+			$pricing = [ 'rank'                  => $price_rank,
+	               'label'                 => $orb[ 'Pricedict' ][ "l$price_rank" ],
+	               'quantity'              => $quantity,
+	               'unit_base_price'       => 1 * $orb[ 'Pricelist' ][ "p$price_rank" ],
+	               'opt_price'             => $opt_price,
+	               'configured_unit_price' => 1 * $orb[ 'Pricelist' ][ "p$price_rank" ] + $opt_price,
+	               'net'                   => $quantity * ( $orb[ 'Pricelist' ][ "p$price_rank" ] + $opt_price )];
+			$pricing['net_formatted'] = money_format( "%#3.2n", $pricing[ 'net' ]);
+			return $pricing;
+		}
+
+		public function edit($orb_uid, $opt_id) {
+			$orb = $this->find_by_uid($orb_uid);
+			if (!$orb) return false;
+			if (!$opt_id){
+				return $this->remove($orb_uid, 1);
+			} else {
+				unset($orb['orbopts'][$opt_id]);
+				$orb['orbopts'] = array_filter($orb['orbopts']);
+				$included = ['opt_count' => $orb['orb']['Orb']['opt_count'],
+				             'cheese_count' => $orb['orb']['Orb']['cheese_count'],
+				             'premium_count' => $orb['orb']['Orb']['premium_count']];
+				$opt_price = $this->price_orbopts($orb['orbopts'], $orb['pricing']['rank'], $included);
+				$orb['pricing'] = $this->pricing_array($opt_price, $orb['pricing']['rank'], $orb['pricing']['quantity'], $orb['orb']);
+				$this->Session->write("Cart.Order.$orb_uid", $orb);
+				$this->update_invoice();
+			}
+			return true;
+
+		}
+
 		/**
 		 * @param $uid
 		 *
 		 * @return bool
 		 */
 		public function find_by_uid($uid) {
-			foreach ($this->Session->read('Cart.Order') as $oi) {
-				if ($oi['uid'] == $uid) return $uid;
-			}
+			$order = $this->Session->read('Cart.Order');
+			foreach ( $order as $orb_uid => $orb ) if ($orb_uid == $uid) return $orb;
 			return false;
 		}
 
@@ -210,6 +235,8 @@
 			}
 
 			$this->update_invoice();
+
+			return true;
 		}
 
 

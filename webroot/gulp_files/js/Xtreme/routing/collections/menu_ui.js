@@ -54,14 +54,14 @@ XT.route_collections.menu_ui = function() {
 			params_set: function () { XT.orbcard.orb.price_rank.set( this.read('rank') ) }
 		}
 	};
-	this.orb_opt = {
-		params: ["action", "id"],
+	this.toggle_opt = {
+		params: ["id"],
 		propagates: false,
 		callbacks: {
-			params_set: function () { XT.orbcard.orb.toggle_opt( this.read('id') ) }
+			params_set: function () { XT.orbcard.orb.toggle_opt( this.read('id'), false ) }
 		}
 	};
-	this.orb_opt_weight = {
+	this.coverage_toggle = {
 		propagates:false,
 		params: ["id", "weight"],
 		propagates: false,
@@ -94,6 +94,7 @@ XT.route_collections.menu_ui = function() {
 	};
 	this.configure_orb = {
 		params: ['id', 'rank'],
+		propagates: false,
 		callbacks: {
 			params_set: function() {
 				// populate form with any orb configurations in progress
@@ -154,7 +155,7 @@ XT.route_collections.menu_ui = function() {
 			params: ["modal"],
 			callbacks: { launch: function () { new Modal(this.read('modal')).hide(true) } }
 		};
-		this.orbcard_modal = {
+	this.orbcard_modal = {
 				params: ["action", "target"],
 				propagates:false,
 				modal: C.PRIMARY,
@@ -177,6 +178,6 @@ XT.route_collections.menu_ui = function() {
 						}
 					}
 				}
-			};
+		};
 	return this;
 };

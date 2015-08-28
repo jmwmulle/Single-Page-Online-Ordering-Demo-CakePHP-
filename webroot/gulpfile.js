@@ -55,9 +55,18 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('js/'))
     .pipe(notify({ message: 'Scripts task complete' }));
 });
+gulp.task('css_prefix', function () {
+    return gulp.src('css/app.css')
+        .pipe(autoprefixer({
+            browsers: ['> 1%'],
+            cascade: false
+        }))
+	    .pipe(rename({suffix: '.pref'}))
+        .pipe(gulp.dest('css/'));
+});
 
 gulp.task('clean', function(cb) { del(['js/app.min.js', 'js/app.js'], cb) });
 
-gulp.task('default', function() { gulp.start('scripts'); });
+gulp.task('default', function() { gulp.start(['scripts', 'css_prefix']); });
 
-gulp.task('watch', function() { gulp.watch('gulp_files/js/Xtreme/**/*.js', ['scripts']); });
+gulp.task('watch', function() { gulp.watch('gulp_files/js/Xtreme/**/*.js', ['scripts', 'css_prefix']); });

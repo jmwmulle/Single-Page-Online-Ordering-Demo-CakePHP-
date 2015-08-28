@@ -4,13 +4,12 @@
 XtremeLayout = function() {};
 
 XtremeLayout.prototype = {
-	page_name: undefined,
 	constructor: XtremeLayout,
 	page_height: undefined,
 	init: function () {
 		var self = this;
 		this.jq_binds();
-		if (this.page_name == window.page_name.splash) $(as_class(FX.detach)).each(function () { XBS.layout.detach(this);});
+		if (this.page_name == XT.page_name.splash) $(as_class(FX.detach)).each(function () { XBS.layout.detach(this);});
 		this.page_height = window.innerHeight - ($(XSM.global.topbar).innerHeight() + 3 * C.REM) + C.PX;
 		$(XSM.global.page_content).css({minHeight: self.page_height});
 		$(FX.fill_parent).each(function() { self.match_parent_dimensions(this)});
@@ -37,8 +36,11 @@ XtremeLayout.prototype = {
 	},
 	jq_binds: function() {
 		var self = this;
+		pr("jq_binds");
 		// bind_activizing_lists
-		$(C.BODY).on(C.CLK, XSM.global.activizing_list, function (e) { self.activize(e.currentTarget) });
+		$(C.BODY).on(C.CLK, XSM.global.activizing_list, function (e) {
+			e.stopPropagation();
+			self.activize(e.currentTarget) });
 
 		// bind_multi_activizing_siblings
 		$(C.BODY).on(C.CLK, XSM.global.multi_activizing, function (e) { self.multi_activize(e.currentTarget) });
@@ -100,7 +102,7 @@ XtremeLayout.prototype = {
 		});
 		return true;
 	},
-	activize: function (element) {
+	activize: function (element, kill) {
 		if (isEvent(arguments[0])) element = element.currentTarget;
 		if ($(element).hasClass(FX.inactive)) {
 			$(element).removeClass(FX.inactive)

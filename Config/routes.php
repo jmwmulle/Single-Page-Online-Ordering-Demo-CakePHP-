@@ -60,19 +60,19 @@
 
 	/** ORDERS CONTROLLER */
 	Router::connect( '/cart/*',                     array( CTR => 'orders', ATN => 'read_cart' ) );
+	Router::connect( '/update/*',                   array( CTR => 'orders', ATN => 'edit_cart' ) );
 	Router::connect( '/add-to-cart/*',              array( CTR => 'orders', ATN => 'add_to_cart' ) );
 	Router::connect( '/review-cart/*',              array( CTR => 'orders', ATN => 'review_cart' ) );
 	Router::connect( '/set-address/*',              array( CTR => 'orders', ATN => 'set_address_form' ) );
 	Router::connect( '/confirm-address/*',          array( CTR => 'orders', ATN => 'confirm_address' ) );
 	Router::connect( '/clear-cart',                 array( CTR => 'orders', ATN => 'clear_cart' ) );
-	Router::connect( '/finish-ordering/*',          array( CTR => 'orders', ATN => 'review' ) );
-	Router::connect( '/order-confirmation/*',       array( CTR => 'orders', ATN => 'get_status' ) );
+	Router::connect( '/finish-ordering/*',          array( CTR => 'orders', ATN => 'finalize' ) );
+	Router::connect( '/order-confirmation/*',       array( CTR => 'orders', ATN => 'user_order_confirmation' ) );
 	Router::connect( '/order-method/*',             array( CTR => 'orders', ATN => 'order_method' ) );
 	Router::connect( '/pending',                    array( CTR => 'orders', ATN => 'get_pending', false ) );
 	Router::connect( '/pending/refreshed',          array( CTR => 'orders', ATN => 'get_pending', true ) );
 	Router::connect( '/print_response/*',           array( CTR => 'orders', ATN => 'log_printer' ) );
 	Router::connect( '/review-order',               array( CTR => 'orders', ATN => 'review_order' ) );
-	Router::connect( '/update-cart',                array( CTR => 'orders', ATN => 'update_cart' ) );
 	Router::connect( '/vendor',                     array( CTR => 'orders', ATN => 'vendor' ) );
 	Router::connect( '/vendor-accept/*',            array( CTR => 'orders', ATN => 'set_status' ) );
 	Router::connect( '/vendor-reject/*',            array( CTR => 'orders', ATN => 'set_status' ) );

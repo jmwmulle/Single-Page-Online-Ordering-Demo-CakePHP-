@@ -51,39 +51,6 @@ XtremeCart.prototype = {
 	 */
 	generate_uid: function(orb_id) { return [orb_id, now()].join("_");},
 
-//	/**
-//	 * Gets Orb model id from UID str
-//	 * @param uid
-//	 * @returns {*}
-//	 */
-//	id_from_uid: function(uid) { return uid.split("_")[0] },
-
-//	/**
-//	 * Uhhhh... I don't think this current;y works
-//	 * @param orb_id
-//	 */
-//	cancel_config: function (orb_id) {
-//		var uid = this.generate_uid(orb_id);
-//		this.configuring[uid] = new Orb(uid);
-//	},
-//
-//	/**
-//	 * Removes an Orb object from cart.configur(ed/ing) and reindexes array
-//	 *
-//	 * @param uid
-//	 * @param source
-//	 * @returns {boolean}
-//	 */
-//	delete: function(uid, source) {
-//		var search_in = source == C.CONFIGURED ? this.configured : this.configuring;
-//		for (var i = 0; i < search_in.length; i++) {
-//			if (search_in[i].uid == uid) {
-//				array_remove(search_in, i);
-//				return true;
-//			}
-//		}
-//		return false;
-//	},
 
 	/**
 	 * Searches cart.configuring for open configurations by either uid or id
@@ -95,21 +62,6 @@ XtremeCart.prototype = {
 		return orb_config ? orb_config[0] : false;
 	},
 
-//	// DEPRECATED I THINK....
-//	has_orb: function (identifier, in_configuring, as_int) {
-//		var found = 0;
-//		var context = in_configuring ? this.configuring : this.orbs;
-//		if ( this.is_uid(identifier) ) {
-//			found = identifier in context
-//		} else {
-//			as_int === false; // ie. if not otherwise specified, as_int should be true for searching by ids
-//			for (var uid in context) { if (context[uid].id == identifier) found += 1 }
-//		}
-//		if (as_int === false) return found > 1 || found === true;
-//		if ( found === true  ) return 1;
-//		return found === false ?  0 : found;
-//	},
-
 	add_to_cart: function (orb_id) {
 		var uid = this.generate_uid(orb_id);
 		if (!this.has_orb(uid, true)) {
@@ -117,31 +69,6 @@ XtremeCart.prototype = {
 		}
 		return true;
 	},
-
-//	orb_attr: function (orb_uid, attribute, in_configuration) {
-//		if (!this.has_orb(orb_uid, in_configuration)) return false;
-//		if (!attribute) return false;
-//		attribute = this.html_id_from_attr(attribute)
-//		if (attribute.is_id) return this.id_from_uid(orb_uid);
-//		var context = in_configuration ? this.configuring : this.orbs;
-//		if (attribute.str in context[orb_uid]) return context[orb_uid][attribute.str]
-//
-//		if (attribute.is_orbopt) {
-//			if (attribute.opt_id in context[orb_uid]["orbopts"]) {
-//				try {
-//					if ('weight' in  context[orb_uid].orbopts[attribute.opt_id]) {
-//						return context[orb_uid].orbopts[attribute.opt_id]['weight']; // orbs
-//					}
-//				} catch (e) {
-//					return context[orb_uid].orbopts[attribute.opt_id]; // configuring
-//				}
-//			} else {
-//				return -1;
-//			}
-//		}
-//		return false;
-//
-//	},
 
 
 	/**
@@ -174,6 +101,7 @@ XtremeCart.prototype = {
 		}
 		return found.length > 0 ? found : false;
 	},
+
 	/**
 	 * Prepares Orbcard form for new Orb configuration or loads configuration in progress
 	 * @returns Orb
@@ -191,6 +119,7 @@ XtremeCart.prototype = {
 
 		return orb; // for chaining
 	},
+
 	set_order_method: function (method) {
 		if (method)  {
 			this.session_data.Service.order_method = method;
@@ -213,6 +142,18 @@ XtremeCart.prototype = {
 		});
 
 	},
+
+	update: function(uid, target) {
+		pr([uid, target, this.session_data.Order[uid], as_id(["order-item", uid].join("-")), as_id([uid, "price"].join("-"))]);
+		if ( $(target).hasClass('edit-orb') ) {
+			var orb = this.session_data.Order[uid];
+			$( as_id([uid, "price"].join("-")) ).html(orb.pricing.net_formatted)
+			return $(target).remove()
+		}
+		$( as_id(["order-item", uid].join("-")) ).remove();
+
+	},
+
 	weight_to_int: function(weight) {
 		switch (weight) {
 			case "-1":
@@ -225,21 +166,7 @@ XtremeCart.prototype = {
 				return 0.5;
 		}
 	},
-//	inspect_configuration: function(uid) {
-//		var orb = this.find_by_uid(uid);
-//		var flags = new OptflagMap();
-//
-//		for (var opt_id in orb.orbopts) {
-//			var opt = orb.orbopts[opt_id];
-//			for (var id in opt.optflags.length) {
-//				if ( opt.optflags[id] in opt_weights ) {
-//					var weight_val = this.weight_to_int(opt.weight);
-//					this.pricable_optflags[opt.optflags[id]] += weight_val > -1 ? weight_val : 0;
-//				}
-//			}
-//		}
-//		XT.menu.enforce_opt_rules(orb, opt_weights);
-//	},
+
 	validate_order_review: function() {
 		var valid = true;
 		this.session_data.Service.pay_method = $(XSM.modal.payment_method_input).val();

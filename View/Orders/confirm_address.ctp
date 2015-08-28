@@ -7,7 +7,7 @@
 	 * About.me: about.me/thisimpetus
 	 */
 	$user_addresses = $this->Session->read('Cart.User.Address');
-	if ( empty($user_addresses) ) $user_addresses = false;
+//	if ( empty($user_addresses) ) $user_addresses = false;
 	$address = $this->Session->read('Cart.Service.address');
 	$address_valid = $this->Session->read('Cart.Service.address_valid');
 	$address_set = $this->Session->read('Cart.Service.address_set');
@@ -15,7 +15,7 @@
 	$user = $this->Session->read('Cart.User');
 
 	// TEST DATA ONLY
-	$auth_user = true;
+	$auth_user = false;
 	$show_user_addresses = true;
 	if (!$auth_user or $address_set == "add") $show_user_addresses = false;
 
@@ -29,14 +29,14 @@
 			<div class="large-12 columns">
 				<div class="row">
 					<div class="large-10 columns modal-header">
-					<?php if ( !$auth_user) {?>
+					<?php if ( !$auth_user && SOCIAL_ACTIVE) {?>
 							<span>Already have an address on file? <a href="#" data-route="login/confirm-address">Sign In</a>
 								 and load it up!
 							</span>
 					<?php } else {?>
 						<h3 class="inline"> <?php if (array_key_exists('firstname', $user) ) echo $user['firstname']; ?></h3>
 						<h3 class="inline"> <?php if (array_key_exists('lastname', $user) ) echo $user['lastname']; ?></h3>
-						<?php  if (count($user_addresses) > 1) {?>
+						<?php  if ( !empty($user_addresses) ) {?>
 						<?=$show_user_addresses ? "" : "|";?>
 						<a id="switch-user-address" class="<?=$show_user_addresses ? "fade-out hidden" : "";?>" href="#" data-route="set_user_address/-1/reveal">
 							<span class="text">Use An Address On File</span>
@@ -48,7 +48,7 @@
 
 					</div>
 				</div>
-				<?php if ( !$auth_user) {?>
+				<?php if ( !$auth_user && SOCIAL_ACTIVE) {?>
 				<div id="confirm-address-login-panel" class="row">
 					<div class="large-12 columns">
 						<a href="#" data-route="login/confirm-address/twitter"><span class="icon-twitter"></span></a

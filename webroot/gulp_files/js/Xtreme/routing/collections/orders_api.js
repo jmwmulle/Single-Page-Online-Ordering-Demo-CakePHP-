@@ -3,18 +3,13 @@
  */
 window.xtr.route_collections.orders_api = function() {
 	this.finalize_order =  {
-		url: { url: "orders" + C.DS + "finalize", defer: true, data: $("#OrderReviewForm").serialize(), type: C.POST },
+		url: { url: "finish-ordering", defer: true, data: null, type: C.POST },
+		modal: C.PRIMARY,
+		propagates: false,
 		callbacks: {
+			params_set: function() { this.url.data = $("#OrderReviewOrderForm").serialize() },
 			launch: function () {
-					var data = $.parseJSON(this.deferral_data);
-					var trigger = this.trigger;
-					if (!data.error) {
-						if (data.order_id) {
-							var route = "pending_order" + C.DS + data.order_id + C.DS + "launching";
-							$(XT.router).trigger(C.ROUTE_REQUEST, { request: route, trigger: trigger.event });
-						}
-					}
-				}
+				XT.router.cake_ajax_response(this.deferral_data, {}, true, true) }
 		}
 	},
 	this.review_order = {
@@ -49,52 +44,43 @@ window.xtr.route_collections.orders_api = function() {
 			}
 		}
 	};
-	this.pending_order = {
+	this.order_confirmation = {
 		params: {
-			order_id: {value: null, url_fragment: true},
+			id: {value: null, url_fragment: true},
 			status: {value: null, url_fragment: true}
 		},
 		modal: C.PRIMARY,
 		url: {url: "order-confirmation", defer: true, type: C.POST},
 		callbacks: {
-			params_set: function () {
-				switch (this.read('status')) {
-					case "launching":
-						this.params.status = {value: true};
-						this.url.defer = false;
-						var request = {
-							request: "pending_order" + C.DS + this.read('order_id') + C.DS + C.PENDING,
-							trigger: this.trigger
-						};
-						setTimeout(function () { $(window.xtr.router).trigger(C.ROUTE_REQUEST, request)}, 3000);
-						this.unset("launch_callback");
-						break;
-				}
-			},
+			params_set: function () { if (this.read('status') == "launching" ) this.url.defer = false },
 			launch: function () {
-				var data = $.parseJSON(this.deferral_data);
-
-				switch (Number(data.status)) {
-					case C.REJECTED:
-						break;
-					case C.ACCEPTED:
-						$(window.xtr.router).trigger(C.ROUTE_REQUEST, {request: "order_accepted", trigger: this.trigger});
-						break;
-					default:
-						var request = {
-							request: "pending_order" + C.DS + this.read('order_id') + C.DS + C.PENDING,
-							trigger: this.trigger
+				if (this.read('status') == "launching")  return;
+				XT.router.cake_ajax_response(this.deferral_data, {
+					callback: function(response) {
+						var request;
+						switch (Number(response.data) ) {
+							case 1:
+								request ="order_accepted";
+								break;
+							case 2:
+								request = "order_rejected"
+								break
+							case 2:
+								request = "order_timeout"
+								break
+							default:
+								request = ["order_confirmation", data.id, C.PENDING].join(C.DS);
+							break;
 						};
-						setTimeout(function () {
-							$(window.xtr.router).trigger(C.ROUTE_REQUEST, request);
+						setTimeout( function() {
+							$(XT.router).trigger(C.ROUTE_REQUEST, {request: request, trigger:{}})
 						}, 3000);
-						break;
-
-				}
-
+					},
+					data: {id: this.read('id')}
+				}, true, true);
 			}
 		}
-};
+	};
 	this.set_delivery_address = {
 		modal: C.PRIMARY,
 		url: {url: "set-address", type: C.GET, defer: false},
@@ -162,7 +148,30 @@ window.xtr.route_collections.orders_api = function() {
 		url: { url: "clear-cart", type:C.POST, defer: true},
 		callbacks: { launch: function() { XT.router.cake_ajax_response(this.deferral_data) }
 		}
-	}
+	};
+	this.edit_orb = {
+		url: {url:"update", type: C.POST, defer:true},
+		params: {uid: {url_fragment: true}, opt_id:{url_fragment: true}},
+		modal: C.PRIMARY,
+		callbacks: {
+			launch: function() {
+				XT.router.cake_ajax_response(this.deferral_data, {
+					callback: function(response, data) {
+						XT.cart.import_cart(response.data.cart);
+						if ( !(XT.cart.session_data.Order.length > 0) ) {
+							$(XT.router).trigger(C.ROUTE_REQUEST, {request:"orbcard_modal/view/cart", trigger: {}});
+						} else {
+							XT.cart.update(data.uid, data.target);
+						}
+					},
+					data: {
+						uid: this.read('uid'),
+						target: this.trigger.element
+					}
+				}, true, true);
+			}
+		}
+	},
 	this.cart = {
 				modal: C.PRIMARY,
 				params: ["action", "action_arg", "data"],

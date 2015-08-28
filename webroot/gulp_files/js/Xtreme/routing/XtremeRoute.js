@@ -42,8 +42,8 @@ XtremeRoute.prototype = {
 	 * @private
 	 */
 	init: function (name, route_data, request_obj) {
-		var debug_this = 0;
-		if (debug_this > 0) pr(request_obj, "XtremeRoute::__init( request_obj )", 2);
+		var debug_this = 2;
+		if (debug_this > 0) pr([name, route_data, request_obj], "XtremeRoute::__init( request_obj )", 2);
 		this.route_data = $.extend(true, {}, route_data);
 		this.request = request_obj.request;
 		this.trigger = {event: request_obj.trigger, element: request_obj.trigger.currentTarget};
@@ -113,7 +113,7 @@ XtremeRoute.prototype = {
 	 * @private
 	 */
 	set_params: function () {
-		if (this.param_data.length == 0) return
+		if (this.param_data.length == 0) return this.params_set_callback != undefined ? this.params_set_callback() : undefined;
 		var debug_this = 0;
 		if (debug_this > 0) pr(this.param_data, "XtremeRoute::__set_params(param vals)");
 

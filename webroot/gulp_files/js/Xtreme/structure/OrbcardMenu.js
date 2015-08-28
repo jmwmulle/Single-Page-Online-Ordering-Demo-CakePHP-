@@ -152,7 +152,7 @@ OrbcardMenu.prototype = {
 		this.DOM.header.back.box = $(XSM.menu.optflag_filter_header)[0];
 		this.DOM.list.front.box = $(XSM.menu.orb_card_stage_menu_orb)[0];
 		this.DOM.list.back.box = $(XSM.menu.orb_card_stage_menu_opt)[0];
-//		this.headers.set(null);
+
 		$(XSM.menu.orb_opt_filter).each( function() {
 			var flag_id = $(this).data('optflag-id');
 			self.DOM.header.back.buttons[flag_id] = this;
@@ -175,14 +175,12 @@ OrbcardMenu.prototype = {
 		if (method == "hide") classes = [FX.hidden]
 		return classes.join(" ");
 	},
-	activizing: function(state) { $(this.DOM.header.box)[state ? "addClass" : "removeClass"](FX.activizing) },
 	portionable: function(state) {
 		if (state === true) $(this.DOM.list.back.box).addClass(XSM.menu.portionable);
 		if (state === false) $(this.DOM.list.back.box).removeClass(XSM.menu.portionable);
 		return $(this.DOM.list.back.box).hasClass(XSM.menu.portionable);
 	},
 	show_face: function(show_face, intervals) {
-		this.activizing(show_face == C.FRONT);
 		var self = this;
 		var hide_face = show_face == C.FRONT ? C.BACK : C.FRONT;
 		setTimeout( function() { self.headers.hide(hide_face, "slide") }, 0);

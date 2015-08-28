@@ -86,3 +86,10 @@ var constants = {
 };
 
 var C = constants;
+
+errors = {
+	PORTION_RESELECT: "Portion reselect",
+	PORTION_COLLISION: "Portion collision",
+	SAUCE_OVERWEIGHT: "Orbopt overweight"
+}
+var E = errors;

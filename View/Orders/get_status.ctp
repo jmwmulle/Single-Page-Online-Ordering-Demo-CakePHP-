@@ -1,6 +1,4 @@
-<?php
-	echo $this->Element('modal_masthead', array('header' => 'Order Confirmation',
-	                                            'subheader' => 'Contacting a real person... might take a minute!'));?>
+<?=$this->Element('primary_modal/masthead', compact('header', 'subheader'));?>
 <div id="order-confirmation-spinner" class="row">
 	<div id="load-dot-box" class="large-8 large-centered columns">
 		<div class="row">
@@ -9,6 +7,8 @@
 			<p>This could take a minute; a real human being is making sure this order can be fulfilled. In just a moment
 				we'll let you know if it's been accepted, and then you'll receive an e-mail as further confirmation.
 				So please don't close your browser!</p>
+			<p>(And just so  you know, if something goes wrong and the store can't be reached within 90 seconds,
+				this message will update to let you know.)</p>
 			<p class="text-center">Thanks so much for your patience!</p>
 		</div>
 		</div>

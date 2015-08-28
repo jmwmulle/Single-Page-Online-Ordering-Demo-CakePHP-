@@ -6,7 +6,8 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-$classes = ['flush', 'l-3', "box", "rel", "rightward", "stretch", "activizing", 'orb-card-stage-menu', 'text-center', $type];
+$classes = ['flush', 'l-3', "box", "rel", "rightward", "stretch", 'orb-card-stage-menu', 'text-center', $type];
+if ($type == "orb") array_push($classes, "activizing");
 if ($portionable and $type == "opt") array_push($classes, "portionable");
 if ($ajax or $type == "opt") {
 	array_push($classes, "hidden");

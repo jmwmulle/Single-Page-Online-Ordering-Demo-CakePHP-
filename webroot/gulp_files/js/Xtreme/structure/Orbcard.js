@@ -79,10 +79,10 @@ Orbcard.prototype = {
 		} else {
 			this.orb = XT.cart.configure(id, rank)
 		}
-		this.render();
+		this.render(true);
 	},
 
-	render: function () { this.orb.render(); this.mini_cfg.clear().render() },
+	render: function (kill) { this.orb.render(kill); this.mini_cfg.clear().render() },
 
 	/**
 	 * Maps DOM elements into Orbcard.DOM.
@@ -129,7 +129,6 @@ Orbcard.prototype = {
 	 * @param orb_id
 	 */
 	load_orb: function (orb_id, data) {
-		pr(data);
 		var self = this;
 		var row_time = this.rows.close();
 		setTimeout(function() { self.content_boxes.hide() }, row_time);

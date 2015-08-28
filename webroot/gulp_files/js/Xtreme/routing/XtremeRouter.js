@@ -40,7 +40,7 @@ XtremeRouter.prototype = {
 	 * @returns {boolean}
 	 */
 	launch: function (request_obj) {
-		var debug_this = 2;
+		var debug_this = 0;
 		if (debug_this > 0) pr([request_obj], "XtremeRouter.launch(request_obj, event)", 2);
 		var route_name = request_obj.request.split(C.DS)[0];
 		var route_data = this.route_data[ route_name ];
@@ -48,7 +48,6 @@ XtremeRouter.prototype = {
 		var launch_delay = 0
 		if (route.stash) launch_delay += XT.orbcard.exposed_face == C.BACK ? 1860 : 900;
 		if (route.modal) {
-			pr(route.modal);
 			if ( !route.modal.hidden() && route.url.url && !route.url.defer) launch_delay += route.modal.hide();
 			route.modal.resize();
 		}
