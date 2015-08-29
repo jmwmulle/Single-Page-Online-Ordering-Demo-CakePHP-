@@ -34,6 +34,8 @@ XtremeMenu.prototype = {
 			setTimeout(function () { $(XSM.menu.orbcat_menu).addClass([FX.slide_right, FX.fade_out].join(" ")) }, 300);
 			setTimeout(function () { $(XSM.menu.orb_card_wrapper).addClass([FX.slide_left, FX.fade_out].join(" ")) }, 600);
 			setTimeout(function () { $(XSM.menu.user_activity_panel).addClass(FX.slide_up) }, orb_card_timeout);
+			setTimeout(function () { $(XSM.menu.monthly_content_wrapper).addClass(FX.slide_down) }, orb_card_timeout + 600);
+		return orb_card_timeout + 900;
 		},
 	unstash: function () {
 		if ( !$(XSM.menu.orbcat_menu).hasClass(FX.slide_right) ) return;
@@ -44,6 +46,7 @@ XtremeMenu.prototype = {
 //		$(XSM.menu.orb_card_stage_menu).addClass(FX.activizing);
 		setTimeout(function () { $(XSM.menu.user_activity_panel).removeClass(FX.slide_up) }, 300);
 		setTimeout(function () { $(XSM.menu.orb_card_wrapper).removeClass([FX.slide_left, FX.fade_out].join(" ")) }, 600);
+		$(XSM.menu.monthly_content_wrapper).removeClass(FX.slide_down);
 		XT.cart.set_order_method();
 		XT.orbcard.reset_stage();
 

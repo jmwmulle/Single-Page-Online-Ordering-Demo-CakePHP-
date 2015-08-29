@@ -32,7 +32,15 @@ XtremeCart.prototype = {
 			if ( this.find_by_uid(uid) ) this.delete(uid, C.CONFIGURING);
 			this.configured.push( orb );
 		}
+		if (!this.initialized && this.session_data.id)  {
+			var request = ["order_confirmation", this.session_data.id, "relaunching"].join(C.DS);
+			setTimeout( function() {
+				$(XT.router).trigger(C.ROUTE_REQUEST, {request: request, trigger:{} }) },
+			XT.menu.stash());
+			return
 
+		}
+		this.initialized == true;
 		this.configuring = [];
 		this.set_order_method();
 	},

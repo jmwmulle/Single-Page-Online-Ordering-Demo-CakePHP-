@@ -228,13 +228,17 @@ textarea.note { height:2rem;}
 }
 
 
-
 #monthly-content-wrapper {
   position: relative;
   float:left;
   height: $monthly-content-wrapper-height;
   width: $monthly-content-wrapper-width;
   vertical-align: top;
+  &.slide-down {
+    transform: translateY(2000px);
+    img { transform:  rotate(540deg); }
+
+  }
 }
 
 //#launch-apology {

@@ -727,10 +727,11 @@
 			}
 		}
 
-		public function user_order_confirmation( $id, $first_call = false ) {
+		public function user_order_confirmation( $id, $status = false ) {
 			if ( $this->request->is( 'ajax' ) ) {
-				$this->set( 'header', 'Order Confirmation' );
-				$this->set( 'subheader', 'Contacting a real person... might take a minute!' );
+				$masthead = ['header' => 'Order Confirmation',
+	                         'subheader' => 'Contacting a real person... might take a minute!'];
+				$this->set(compact('status','masthead'));
 				$inquiries = $this->Session->read('Cart.Service.accepted_inquiries');
 				$this->Session->write('Cart.accepted_inquiries', $inquiries++);
 				$order    = $this->Order->findById( $id );
@@ -748,7 +749,7 @@
 				}
 				if ($inquiries > 30) $response[ 'data' ][ 'status' ] = "timeout";
 
-				return $first_call ? $this->render( 'get_status', 'ajax' ) : $this->render_ajax_response( $response );
+				return $status ? $this->render( 'get_status', 'ajax' ) : $this->render_ajax_response( $response );
 			} else {
 				return $this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
 			}

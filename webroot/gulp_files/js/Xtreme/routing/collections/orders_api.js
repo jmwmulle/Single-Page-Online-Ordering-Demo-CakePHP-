@@ -52,11 +52,16 @@ window.xtr.route_collections.orders_api = function() {
 		modal: C.PRIMARY,
 		url: {url: "order-confirmation", defer: true, type: C.POST},
 		callbacks: {
-			params_set: function () { if (this.read('status') == "launching" ) this.url.defer = false },
+			params_set: function () {
+				if (this.read('status') == "launching" || "relaunching") this.url.defer = false },
 			launch: function () {
-				if (this.read('status') == "launching")  return;
+				if (this.read('status') == "launching") {
+					$("#primary-modal #close-modal").addClass(FX.fade_out);
+					$("#topbar .icon-row").addClass(FX.slide_up);
+					return;
+				}
 				XT.router.cake_ajax_response(this.deferral_data, {
-					callback: function(response) {
+					callback: function(response, data) {
 						var request;
 						switch (Number(response.data) ) {
 							case 1:

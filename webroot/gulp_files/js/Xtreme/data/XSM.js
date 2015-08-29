@@ -100,6 +100,7 @@ var XSM = {
 		float_label: "#float-label",
 		inactive_sauce: ".orb-opt.sauce.inactive",
 		sauce: ".orb-opt.sauce",
+		monthly_content_wrapper:"#monthly-content-wrapper",
 		orb_card_back: "#orb-card-back",
 		ord_card_back_face: ".ord-card-back-face",
 		orb_card_content_box: ".orb-card-content-box",

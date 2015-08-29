@@ -44,7 +44,7 @@ Orbopt = function(id) {
 	this.coverage = {
 		init: function(self) {
 			self.coverage.icon = function() {
-				if ( self.coverage.value() ) return "";
+				if ( self.coverage.value() == -1 || self.coverage.value() == "F") return "";
 				return self.coverage.weights[self.coverage.value()].icon };
 			self.coverage.value = function() {
 				for (var weight in self.coverage.weights) if ( self.coverage.weights[weight].selected ) return weight;

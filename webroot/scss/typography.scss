@@ -1,3 +1,38 @@
+@-webkit-keyframes friendly-1 {
+  0% {color: $text-grey;}
+  50% {color: $xtreme-blue;font-size:24px;
+
+  }
+  10% {color: $text-grey;}
+}
+@-webkit-keyframes friendly-font-2 {
+  0% {color: $text-grey;}
+
+  50% {
+    color: $xtreme-yellow;
+    font-size:24px;
+    transform: scale(1.25, 1.25);
+  }
+  10% {color: $text-grey;}
+}
+@-webkit-keyframes friendly-font-3 {
+  0% {color: $text-grey;}
+  50% {color: $xtreme-blue;}
+  10% {color: $text-grey;}
+}
+@-webkit-keyframes friendly-font-4 {
+  0% {color: $text-grey;}
+  50% {color: $xtreme-blue;}
+  10% {color: $text-grey;}
+}
+@-webkit-keyframes friendly-font-5 {
+  0% {color: $text-grey;}
+  80% {
+    color: $xtreme-blue;
+  }
+  100% { color: $text-grey; }
+}
+
 @charset "UTF-8";
 
 @font-face {
@@ -269,6 +304,13 @@ input { font-family : "Helvetica Neue Light Condensed", arial, sans-serif !impor
 
 .body-font-color { color : $body-font-color; }
 
+h4.friendly {
+  span.friendly-1 {  -webkit-animation : friendly-font-1 0.5s ease-in-out 1 normal 1s running forwards;}
+  span.friendly-2 {  -webkit-animation : friendly-font-2 0.5s ease-in-out 1 normal 1.2s running forwards;}
+  span.friendly-3 {  -webkit-animation : friendly-font-3 0.5s ease-in-out 1 normal 1.4s running forwards;}
+  span.friendly-4 {  -webkit-animation : friendly-font-4 0.5s ease-in-out 1 normal 1.6s running forwards;}
+  span.friendly-5 {  -webkit-animation : friendly-font-5 0.5s ease-in-out 1 normal 1.8s running forwards;}
+}
 #hours-and-location {
   text-align  : right;
   line-height : 1.25rem;

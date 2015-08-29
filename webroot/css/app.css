@@ -4541,6 +4541,59 @@ th.hide-for-touch {
   -o-transform: rotateY(180deg);
   transform: rotateY(180deg); }
 
+@-webkit-keyframes friendly-1 {
+  0% {
+    color: #373737; }
+
+  50% {
+    color: #0779be;
+    font-size: 24px; }
+
+  10% {
+    color: #373737; } }
+
+@-webkit-keyframes friendly-font-2 {
+  0% {
+    color: #373737; }
+
+  50% {
+    color: #faea06;
+    font-size: 24px;
+    transform: scale(1.25, 1.25); }
+
+  10% {
+    color: #373737; } }
+
+@-webkit-keyframes friendly-font-3 {
+  0% {
+    color: #373737; }
+
+  50% {
+    color: #0779be; }
+
+  10% {
+    color: #373737; } }
+
+@-webkit-keyframes friendly-font-4 {
+  0% {
+    color: #373737; }
+
+  50% {
+    color: #0779be; }
+
+  10% {
+    color: #373737; } }
+
+@-webkit-keyframes friendly-font-5 {
+  0% {
+    color: #373737; }
+
+  80% {
+    color: #0779be; }
+
+  100% {
+    color: #373737; } }
+
 @font-face {
   font-family: "xtreme-icons";
   src: url("../files/xtreme-icons/xtreme-icons.eot");
@@ -4787,6 +4840,17 @@ input {
 
 .body-font-color {
   color: white; }
+
+h4.friendly span.friendly-1 {
+  -webkit-animation: friendly-font-1 0.5s ease-in-out 1 normal 1s running forwards; }
+h4.friendly span.friendly-2 {
+  -webkit-animation: friendly-font-2 0.5s ease-in-out 1 normal 1.2s running forwards; }
+h4.friendly span.friendly-3 {
+  -webkit-animation: friendly-font-3 0.5s ease-in-out 1 normal 1.4s running forwards; }
+h4.friendly span.friendly-4 {
+  -webkit-animation: friendly-font-4 0.5s ease-in-out 1 normal 1.6s running forwards; }
+h4.friendly span.friendly-5 {
+  -webkit-animation: friendly-font-5 0.5s ease-in-out 1 normal 1.8s running forwards; }
 
 #hours-and-location {
   text-align: right;
@@ -5193,6 +5257,10 @@ textarea.note {
   height: 17.8125rem;
   width: 15.85938rem;
   vertical-align: top; }
+  #monthly-content-wrapper.slide-down {
+    transform: translateY(2000px); }
+    #monthly-content-wrapper.slide-down img {
+      transform: rotate(540deg); }
 
 div#cake-error-overlay {
   width: 1000px;
