@@ -3,8 +3,7 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>XtremePizza</title>
+	<title>XtremePizza - Vendor</title>
 	<script type="text/javascript">
 		if ( window.xtr === undefined) window.xtr = {};
 		var XT = window.xtr;
@@ -60,7 +59,7 @@
 		                      "$gulp_js_path/model/Orb",
 		                      "$gulp_js_path/structure/Modal",
 		                      "$gulp_js_path/structure/xbs_splash",
-							  "$gulp_js_path/structure/XtremePOS",
+		                      "$gulp_js_path/structure/XtremePOS",
 		                      "$gulp_js_path/structure/xbs_vendor_ui",
 		                      "$gulp_js_path/xbs_validation",
 		                      "$gulp_js_path/Printer",
@@ -75,37 +74,16 @@
 		echo $this->Html->script( $xbs_scripts, array( 'block' => 'app' ) );
 //		echo $this->Html->script( "xtreme", array( 'block' => 'app' ) );
 	?>
-
-	<?php
-		$body_id = $this->get( 'page_name' );
-		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" ); ?>
 </head>
 
-<body id="<?php echo $body_id; ?>" data-poop="true" <?php echo ___cD( $body_class ); ?>>
-<div id="page-content" class="show-for-medium-up">
-	<?=$this->Html->image('puff.svg', ['id' => 'loading-img', 'class'=> ['fade-out','hidden'] ]);?>
-	<?php
-		echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );
-		echo $this->fetch( 'content' );
-	?>
-</div>
+<body id="pos">
 
 <?php
-	echo $this->Element( 'footer' );
-	echo $this->fetch( 'vendor' );
-	echo $this->fetch( 'app' );
-	echo $this->fetch( 'main' );
-	echo $this->fetch( 'debug' );
+echo $this->fetch( 'content' );
+echo $this->fetch( 'vendor' );
+echo $this->fetch( 'app' );
+echo $this->fetch( 'main' );
+echo $this->fetch( 'debug' );
 ?>
-<div id="emulator"></div>
-<script>
-
-/*	window.___gcfg = {
-		lang: 'zh-CN',
-		parsetags: 'onload'
-	}; */
-
-</script>
 </body>
 </html>
-

@@ -99,6 +99,7 @@
 		<?=$this->Html->image('ajax-loader.gif');?>
 	</div>
 </div>
+<?=$this->Html->image('puff.svg', ['id' => 'loading-img', 'class'=> ['fade-out','hidden'] ]);?>
 <?php
 echo $this->fetch('content');
 echo $this->fetch( 'vendor' );

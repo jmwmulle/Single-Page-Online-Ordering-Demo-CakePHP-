@@ -82,7 +82,7 @@ var constants = {
 	CONFIGURING: "configuring",
 	CONFIGURED: "configured",
 	ACTIVE: "active",
-	INACTIVE: "inactive"
+	INACTIVE: "inactive",
 };
 
 var C = constants;
@@ -90,6 +90,7 @@ var C = constants;
 errors = {
 	PORTION_RESELECT: "Portion reselect",
 	PORTION_COLLISION: "Portion collision",
-	SAUCE_OVERWEIGHT: "Orbopt overweight"
+	SAUCE_OVERWEIGHT: "Orbopt overweight",
+	NOTHING_PENDING: "Nothing pending"
 }
 var E = errors;

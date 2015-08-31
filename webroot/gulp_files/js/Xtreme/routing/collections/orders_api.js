@@ -44,28 +44,18 @@ window.xtr.route_collections.orders_api = function() {
 			}
 		}
 	};
-	this.order_confirmation = {
-		params: {
-			id: {value: null, url_fragment: true},
-			status: {value: null, url_fragment: true}
-		},
-		modal: C.PRIMARY,
+	this.update_order_confirmation = {
+		params: {id: {value: null, url_fragment: true} },
 		url: {url: "order-confirmation", defer: true, type: C.POST},
 		callbacks: {
-			params_set: function () {
-				if (this.read('status') == "launching" || "relaunching") this.url.defer = false },
 			launch: function () {
-				if (this.read('status') == "launching") {
-					$("#primary-modal #close-modal").addClass(FX.fade_out);
-					$("#topbar .icon-row").addClass(FX.slide_up);
-					return;
-				}
 				XT.router.cake_ajax_response(this.deferral_data, {
-					callback: function(response, data) {
+					callback: function (response, data) {
+						pr(response);
 						var request;
-						switch (Number(response.data) ) {
+						switch (Number(response.data.status)) {
 							case 1:
-								request ="order_accepted";
+								request = ["launch_order_confirmation", data.id, "confirmed"].join(C.DS);
 								break;
 							case 2:
 								request = "order_rejected"
@@ -74,15 +64,36 @@ window.xtr.route_collections.orders_api = function() {
 								request = "order_timeout"
 								break
 							default:
-								request = ["order_confirmation", data.id, C.PENDING].join(C.DS);
-							break;
+								request = ["update_order_confirmation", data.id].join(C.DS);
+								break;
 						};
-						setTimeout( function() {
-							$(XT.router).trigger(C.ROUTE_REQUEST, {request: request, trigger:{}})
+
+						setTimeout(function () {
+							$(XT.router).trigger(C.ROUTE_REQUEST, {request: request, trigger: {}})
 						}, 3000);
 					},
 					data: {id: this.read('id')}
 				}, true, true);
+			}
+		}
+	};
+	this.launch_order_confirmation = {
+		params: {
+			id: {value: null, url_fragment: true},
+			status: {value: true, url_fragment: true}},
+		modal: C.PRIMARY,
+		url: {url: "order-confirmation", defer: false, type: C.POST},
+		callbacks: {
+			launch: function () {
+				$("#primary-modal #close-modal").addClass(FX.fade_out);
+				$("#topbar .icon-row").addClass(FX.slide_up);
+				var self = this;
+				if (this.read('status') != "confirmed") {
+					setTimeout(function () {
+						var request = ["update_order_confirmation", self.read('id')].join(C.DS);
+						$(XT.router).trigger(C.ROUTE_REQUEST, {request: request, trigger: {}})
+					}, 3000);
+				}
 			}
 		}
 	};

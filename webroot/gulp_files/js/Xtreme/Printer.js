@@ -1,85 +1,113 @@
 /**
  * Created by jono on 1/20/15.
  */
-var allow_tab_out = false;
+XT.allow_tab_out = false;
 
-function tab_out(output, label, error_ob) {
-	if (!allow_tab_out) return;
-	try {
-		if (output === null) output = "null";
-		if (output === true) output = "true";
-		if (output === false) output = "false";
-		if (error_ob) {
-			var error = {e_txt:output.message, e_stack:output.stack};
-			output = sprintf("<pre>%s</pre>", JSON.stringify( error, null, "\t"));
-		}
-		if (typeof(output) != "string") output = sprintf("<pre>%s</pre>", (JSON.stringify(output, null, "\t")));
-		var line = $("<div/>").addClass('jsc-line');
-		if (!label) label = "----";
-		$(line).append($("<div/>").addClass('tout-label').html(label));
-		$(line).append($("<div/>").addClass('tout-text').html(output));
-		$("main#js-console").append(line);
-	} catch (e) {
-		$('body').style({backgroundColor: 'yellow'});
-		setTimeout(function() {
-			$('body').css({backgroundColor: 'yellow'});
-			$("main").hide();
-			$("body").append($("<div/>").css({marginTop:'80px'}).html(e.message));
-		}, 250);
+
+Style =	function(printer, cfg) {
+	this.__config = cfg;
+	this.indent = 0;
+	this.scale = 1;
+	this.line_h = 1;
+	this.align = C.LEFT;
+	this.bold = false;
+	this.underline = false;
+	this.spawn = function(name, cfg) {
+		var self = this;
+		this.printer.styles[name] = new Style($.extend({}, cfg, self.__config)); return this;
+	};
+	this.init(printer, cfg)
+	return this;
+};
+
+Style.prototype = {
+	constructor: Style,
+	printer: undefined,
+	default_vals: {
+		indent: 0,
+		scale: 1,
+		line_h: 1,
+		align: C.LEFT,
+		bold: false,
+		underline: false
+	},
+	init: function(printer, cfg) {
+		this.printer = printer;
+		if ( defined(cfg) ) for (var key in cfg) this[key] = cfg[key]
 	}
-}
+};
 
-function tout_show(called_from) {
-	if (!allow_tab_out) return;
-	called_from = called_from ? called_from : "anon"
-	$("h4#called-from").html(called_from);
-	$("main").hide();
-	setTimeout(function() {
-	$("main#js-console").show();
-		setTimeout(function() {
-			$("main#js-console").css({position:'fixed', top:'80px', left:'0px', zIndex:9999999});
-		}, 100);
-	}, 50);
-}
-
-
-function XtremePrinter() {
+Printer = function() {
 	this.printer_available = false;
 	this.ip = null;
 	this.status = null;
 	this.queue = {};
-	this.styles = {}
-	this.tab_out = function(text, label) { tab_out(text, label); };
-	this.tout_show = function() {tout_show();};
-	this.style_template = function() {
-		return {
-			indent:0,
-			scale:1,
-			line_h:1,
-			align: C.LEFT,
-			bold:false,
-			underline: false
-		}
-	}
+	this.styles = {};
+
 	this.virtual_receipts = [];
 
-	this.init = function(ip) {
-		this.status = this.open_printer(ip);
-		this.add_style('default', 0, 'left', 3, 1.5, false, false);
-		this.extend_style('center', 'default', {align:'center'});
-		this.extend_style('right', 'default', {align:'right'});
-		this.extend_style('orb_opt', 'default', {indent:2, scale:2});
+	return this
+}
+
+Printer.prototype = {
+	constructor: Printer,
+	tab_out: function (output, label, error_ob) {
+		if (!allow_tab_out) return;
+		try {
+			if (output === null) output = "null";
+			if (output === true) output = "true";
+			if (output === false) output = "false";
+			if (error_ob) {
+				var error = {e_txt:output.message, e_stack:output.stack};
+				output = sprintf("<pre>%s</pre>", JSON.stringify( error, null, "\t"));
+			}
+			if (typeof(output) != "string") output = sprintf("<pre>%s</pre>", (JSON.stringify(output, null, "\t")));
+			var line = $("<div/>").addClass('jsc-line');
+			if (!label) label = "----";
+			$(line).append($("<div/>").addClass('tout-label').html(label));
+			$(line).append($("<div/>").addClass('tout-text').html(output));
+			$("main#js-console").append(line);
+		} catch (e) {
+			$('body').style({backgroundColor: 'yellow'});
+			setTimeout(function() {
+				$('body').css({backgroundColor: 'yellow'});
+				$("main").hide();
+				$("body").append($("<div/>").css({marginTop:'80px'}).html(e.message));
+			}, 250);
+		}
+	},
+	tout_show: function tout_show(called_from) {
+		if (!allow_tab_out) return;
+		called_from = called_from ? called_from : "anon"
+		$("h4#called-from").html(called_from);
+		$("main").hide();
+		setTimeout(function() {
+		$("main#js-console").show();
+			setTimeout(function() {
+				$("main#js-console").css({position:'fixed', top:'80px', left:'0px', zIndex:9999999});
+			}, 100);
+		}, 50);
+	},
+	init: function(ip) {
+		this.status = this.open(ip);
+		//return this.status;
+	},
+	build_styles: function() {
+
+		this.styles['default'] = new Style(this, {indent:0, scale: 3, line_h:1.5, align:'left', bold: false, underline: false});
+		this.styles['default'].spawn("center", {align:'center'})
+							  .spawn("right", {align:'right'})
+							  .spawn("orbopt", {align:'right'});
 
 		// headers
-		this.add_style('h1', 0, 'center', 7.5, 5, true, false);
-		this.extend_style('h2', 'h1', {scale:4, line_h:6});
-		this.extend_style('h3', 'h1', {scale:3, line_h:4.5});
-		this.extend_style('h4', 'h1', {scale:2, line_h:3});
-		this.extend_style('h5', 'h1', {scale:1, line_h:2});
+		this.styles['h1'] = new Style(this, {indent:0, scale: 5, line_h:7.5, align: "center", bold: false, underline: false});
+		this.styles['h1'].spawn('h2',  {scale:4, line_h:6})
+						 .spawn('h3',  {scale:3, line_h:4.5})
+						 .spawn('h4',  {scale:2, line_h:3})
+						 .spawn('h5',  {scale:1, line_h:2});
+	},
 
-	}
-
-	this.dequeue = function() {
+	dequeue: function() {
 		var line;
 		var queue = {}
 		var count = 0;
@@ -93,9 +121,9 @@ function XtremePrinter() {
 		}
 		this.queue = queue;
 		return line;
-	}
+	},
 
-	this.print_from_queue = function() {
+	print_from_queue: function() {
 		var response = {success: true, error:false, line:null, queue_empty:false, raw:null};
 		if ( this.queued() ) {
 			var line = this.dequeue();
@@ -115,14 +143,14 @@ function XtremePrinter() {
 			response.queue_empty = true;
 		}
 		return response;
-	}
+	},
 
-	this.queued = function() { return obj_len(this.queue) > 0;}
+	queued: function() { return obj_len(this.queue) > 0 },
 
-	this.open_printer = function(ip) {
+	open: function(ip) {
 		var status;
-		if ( XBS.printer.is_xtreme_tablet() || true) {
-			status = ip ? Android.openPrinter(ip) : Android.openDefaultPrinter();
+		if ( this.is_xtreme_tablet() ) {
+			status = defined(ip) ? Android.openPrinter(ip) : Android.openDefaultPrinter();
 			status = status.split(":");
 			status = {success: parseInt(status[0]) === 1, error:status[1] == 'false' ? false : status[1]};
 			this.printer_available = status.success ? true : false;
@@ -135,23 +163,23 @@ function XtremePrinter() {
 			status = this.status;
 		}
 		return status;
-	}
+	},
 
-	this.play_order_tone = function() {
+	play_order_tone: function() {
 		if ( XBS.printer.is_xtreme_tablet() ) {
 			Android.playTone();
 		} else {
 			var audio = new Audio(XSM.vendor.new_order_tone);
 			audio.play();
 		}
-	}
+	},
 
-	this.feed_line = function(lines) {
+	feed_line: function(lines) {
 		if (!lines && lines != 0) lines = 1;
 		for (var i = 0; i < lines; i++) this.queue_line(" \n", 'default');
-	}
+	},
 
-	this.queue_line = function(line, style, feed) {
+	queue_line: function(line, style, feed) {
 		if (!feed) feed = 0;
 		var index = obj_len(this.queue);
 		if (style) {
@@ -160,17 +188,17 @@ function XtremePrinter() {
 			this.queue[index] = {style:'default', text:line};
 		}
 		this.queue[index+1] = {style:'default', text:' '};
-	}
+	},
 
 
-	this.has_virtual_receipts = function() {
+	has_virtual_receipts: function() {
 		if ( is_array(this.virtual_receipts) ) {
 			return this.virtual_receipts.length > 0;
 		} else {
 			this.virtual_receipts = [];
 			return false;
 		}
-	}
+	},
 
 	/**
 	 * queue_order()
@@ -178,7 +206,7 @@ function XtremePrinter() {
 	 * @param {obj} order
 	 * @returns {void}
 	 */
-	this.queue_order = function(order) {
+	queue_order: function(order) {
 		pr(order, 'the order');
 		tab_out("arrived", "queue_order()");
 		try {
@@ -201,7 +229,7 @@ function XtremePrinter() {
 //		tout_show();
 		pr(this.queue, 'the queue');
 		return this.queue;
-	};
+	},
 
 	/**
 	 * add_style()
@@ -214,7 +242,7 @@ function XtremePrinter() {
 	 * @param underline
 	 * @returns {boolean}
 	 */
-	this.add_style = function(name, indent, alignment, line_space, scale, bold, underline) {
+	add_style: function(name, indent, alignment, line_space, scale, bold, underline) {
 		this.styles[name] = {
 			align: alignment ? alignment : 'left',
 			line_h: line_space ? line_space : 1,
@@ -224,25 +252,7 @@ function XtremePrinter() {
 			underline: underline ? underline : false
 		}
 		return true;
-	}
-
-	/**
-	 * extend_style()
-	 * @param {str} name
-	 * @param {str} base
-	 * @param {obj} ext
-	 * @returns {boolean}
-	 */
-	this.extend_style = function(name, base, ext) {
-		try {
-			var style = this.style_template();
-			for (var attr in style)  style[attr] = attr in ext ? ext[attr] : this.styles[base][attr];
-			this.styles[name] = style
-			return {name:name, style:style};
-		} catch (e) {
-			return e;
-		}
-	}
+	},
 
 	/**
 	 * show_dialog()
@@ -251,7 +261,7 @@ function XtremePrinter() {
 	 * @param {str} title
 	 * @returns {void}
 	 */
-	this.show_dialog = function (message, title) { if (this.printer_available) Android.showDialog(message, title);}
+	show_dialog: function (message, title) { if (this.printer_available) Android.showDialog(message, title) },
 
 	/**
 	 *  print()
@@ -260,7 +270,7 @@ function XtremePrinter() {
 	 *  @param {int} style
 	 *  @returns {string}
 	 */
-	this.print = function (text, style, virtual_cut) {
+	print: function (text, style, virtual_cut) {
 		pr({text:text, style:style, virtual_cut:virtual_cut}, "XtremePrinter::print(text, style, virtual_cut)", 2);
 		tab_out({text:text, style:style}, 'print()');
 		var response = null;
@@ -279,21 +289,21 @@ function XtremePrinter() {
 				tab_out(e, 'print error', true);
 		}
 		return response;
-	}
+	},
 
 	/**
 	 * cut()
 	 * @param {bool} feed
 	 * @returns {void}
 	 */
-	this.cut = function (feed) { feed === true ? Android.cut(feed) : Android.cut(false); }
+	cut: function (feed) { feed === true ? Android.cut(feed) : Android.cut(false); },
 
 	/**
 	 * __queue_orb_list()
 	 * @param {obj} items
 	 * @returns {string}
 	 */
-	this.__queue_orb_list = function (items) {
+	__queue_orb_list: function (items) {
 		try {
 			for (var orb_name in items)  {
 				var item = items[orb_name];
@@ -317,9 +327,9 @@ function XtremePrinter() {
 				}, "__queue_orb_list() error");
 		}
 		return true;
-	}
+	},
 
-	this.render_virtual_receipt = function() {
+	render_virtual_receipt: function() {
 		pr(this.virtual_receipts, "XtremePrinter::render_virtual_receipt()", 2 );
 		if (this.virtual_receipts.length) return;
 		var receipts = $("<ul/>").attr('id', 'virtual-receipt').addClass('virtual-receipt-container');
@@ -335,11 +345,9 @@ function XtremePrinter() {
 		$(C.BODY).append(receipts);
 		this.virtual_receipts = [];
 		return true;
-	}
+	},
 
-	this.is_xtreme_tablet = function() { return navigator.userAgent == C.XTREME_TABLET_USER_AGENT }
-
-	return this;
+	is_xtreme_tablet: function() { return navigator.userAgent == C.XTREME_TABLET_USER_AGENT }
 }
 
 

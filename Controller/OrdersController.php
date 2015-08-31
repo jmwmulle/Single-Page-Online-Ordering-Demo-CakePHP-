@@ -379,7 +379,7 @@
 				$cart[ 'id' ] = $this->Order->id;
 				$this->Session->write( 'Cart', $cart );
 				$response[ 'data' ][ 'cart' ] = $cart;
-				$response[ 'delegate_route' ] = 'order_confirmation' . DS . $this->Order->id . DS . 'launching';
+				$response[ 'delegate_route' ] = 'launch_order_confirmation' . DS . $this->Order->id . DS . true;
 
 				return $this->render_ajax_response( $response );
 
@@ -415,36 +415,6 @@
 			}
 		}
 
-//		public function address() {
-//			$cart = $this->Session->read( 'Cart' );
-//			if ( !$cart[ 'Order' ][ 'total' ] ) {
-//				return $this->redirect( '/' );
-//			}
-//
-//			if ( $this->Auth->loggedIn() ) {
-//				$User = $this->User->find( 'first', array( 'conditions' => array(
-//					                                  'User.id' => $this->Session->read( 'Auth.User.User.id' ) ) )
-//				); #TODO Investigate why this is two Users deep
-//				$this->set( 'User', $User[ 'User' ] );
-//			}
-//
-//			if ( $this->request->is( 'post' ) ) {
-//
-//				$this->Order->set( $this->request->data );
-//				if ( $this->Order->validates() ) {
-//					$order                     = $this->request->data[ 'Order' ];
-//					$order[ 'payment_method' ] = 'creditcard';
-//					$this->Session->write( 'Cart.Order', $order + $cart[ 'Order' ] );
-//
-//					return $this->redirect( array( 'action' => 'review' ) );
-//				} else {
-//					$this->Session->setFlash( 'The form could not be saved. Please, try again.', 'flash_error' );
-//				}
-//			}
-//			if ( !empty( $cart[ 'Order' ] ) ) {
-//				$this->request->data[ 'Order' ] = $cart[ 'Order' ];
-//			}
-//		}
 
 		public function step1() {
 			$paymentAmount = $this->Session->read( 'Cart.Order.total' );
@@ -612,15 +582,6 @@
 			}
 		}
 
-//		public function success() {
-//			$cart = $this->Session->read( 'Cart' );
-//			$this->Cart->clear();
-//			if ( empty( $cart ) ) {
-//				return $this->redirect( '/' );
-//			}
-//			$this->set( compact( 'cart' ) );
-//		}
-
 		public function set_address_form( $restore = null ) {
 			if ( $this->request->is( 'ajax' ) && $this->request->is( 'get' ) ) {
 				$this->Session->write( "Cart.Service.address_valid", null );
@@ -635,95 +596,49 @@
 			}
 		}
 
-		public function get_pending( $refreshed ) {
+		public function get_pending( ) {
 			if ( $this->request->is( 'ajax' ) || true ) {
-				$this->layout = "ajax";
-				$conditions   = array( 'conditions' => array( 'Order.state' => ORDER_PENDING ), 'recursive' => -1 );
-				$orders       = $this->Order->find( 'all', $conditions );
-				$response     = null;
-				$f_orders     = array();
-				try {
-					foreach ( $orders as $order ) {
-						$detail  = json_decode( $order[ 'Order' ][ 'detail' ], true );
-						$address = $detail[ 'Order' ][ 'address' ];
-						if ( !array_key_exists( 'firstname', $address ) ) {
-							$address[ 'firstname' ] = 'Anonymous';
-						}
-						if ( !array_key_exists( 'lastname', $address ) ) {
-							$address[ 'lastname' ] = 'Anonymous';
-						}
-
-						$delivery_instructions = false;
-						if ( array_key_exists( "delivery_instructions", $detail[ 'Order' ] ) ) {
-							$delivery_instructions = $detail[ 'Order' ][ 'delivery_instructions' ];
-						}
-						$f_order    = array(
-							'id'                    => $order[ 'Order' ][ 'id' ],
-							'address'               => $address[ 'address' ],
-							'customer'              => sprintf( "%s %s", $address[ 'firstname' ], $address[ 'lastname' ] ),
-							'order_method'          => $detail[ 'Order' ][ 'order_method' ],
-							'payment_method'        => $detail[ 'Order' ][ 'payment_method' ],
-							'paid'                  => false,
-							'delivery_instructions' => $delivery_instructions,
-							'time'                  => $order[ 'Order' ][ 'created' ],
-							'price'                 => $detail[ 'Order' ][ 'total' ],
-							'food'                  => array()
-						);
-						$food_array = array();
-						foreach ( $detail[ 'OrderItem' ] as $orb ) {
-							$opts = array();
-							if ( !empty( $orb[ 'orbopts' ] ) ) {
-								foreach ( $orb[ 'orbopts' ] as $opt ) {
-									$id      = $opt[ 'Orbopt' ][ 'id' ];
-									$opts[ ] = array( 'title'  => $opt[ 'Orbopt' ][ 'title' ],
-									                  'weight' => $orb[ 'orbopts_arrangement' ][ $id ] );
-								}
-							}
-							$food_array[ $orb[ 'title' ] ] = array( 'size'         => $orb[ 'size_name' ],
-							                                        'price'        => $orb[ 'subtotal' ],
-							                                        'quantity'     => $orb[ 'quantity' ],
-							                                        'opts'         => $opts,
-							                                        'instructions' => $orb[ 'preparation_instructions' ] );
-						}
-						$f_order[ 'food' ] = $food_array;
-						$f_orders[ ]       = $f_order;
-					}
-					$response = array( 'success'   => true,
-					                   'error'     => false,
-					                   'orders'    => $f_orders,
-					                   'refresh'   => true,
-					                   'refreshed' => $refreshed );
-				} catch ( Exception $e ) {
-					$response = array( 'success'   => false,
-					                   'error'     => $e,
-					                   'orders'    => false,
-					                   'refresh'   => true,
-					                   'refreshed' => $refreshed );
+				$orders = $this->Order->find( 'all', ['conditions' => ['Order.state' => ORDER_PENDING ], 'recursive' => -1 ] );
+				foreach ($orders as $i => $order) {
+					$orders[ $i ][ 'Order' ][ 'detail' ] = json_decode( $orders[ $i ][ 'Order' ][ 'detail' ], true );
 				}
+				$response     = ['success' => true,
+				                 'error' => false,
+				                 'data' => compact('orders')
+				];
 				$this->render_ajax_response( $response );
 			} else {
 				return $this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
 			}
 		}
 
-		public function set_status( $id = null, $status = null ) {
-			if ( $this->request->is( 'ajax' ) && $id != null && $status != null ) {
+		public function pos_resolve( $id = null,  $reply = null ) {
+			if ( $this->request->is( 'ajax' ) && $id && $reply ) {
 				$order    = $this->Order->findById( $id );
-				$response = array( 'success', 'error' );
-				if ( $order ) {
-					$order[ 'Order' ][ 'state' ] = $status;
-					$resp                        = $this->Order->save( $order ) ? array( true,
-					                                                                     null ) : array( false,
-					                                                                                     'Failed to save updated order' );
-					$response                    = array_combine( $response, $resp );
-				} else {
-					$response = array_combine( $response, array( false, 'Order not found.' ) );
+				$response = [ 'sucess' => true,
+				              'error'  => false,
+				              'data'   => [
+					              'submitted' => compact( 'id', 'reply' ),
+					              'success'   => true,
+					              // identical to normal similar key function; single-case exception needs different handling
+					              'error'     => false ]
+				];
+				if ( !$order ) {
+					$response[ 'success' ] = false;
+					$response[ 'erro' ]    = "Order not found";
 				}
-				$this->set( compact( 'response' ) );
+				else {
+					$order[ 'Order' ][ 'state' ] = $reply;
+				}
 
-				return $this->render();
+				if ( !$this->Order->save( $order ) ) {
+					$response[ 'data' ][ 'success' ] = false;
+					$response[ 'data' ][ 'error' ]   = $this->Order->validationErrors;
+				}
+
+				return $this->render_ajax_response( $response );
 			} else {
-				$this->redirect( "/menu" );
+				$this->redirect( ___cakeUrl("orbcats", "menu") );
 			}
 		}
 
@@ -738,8 +653,8 @@
 				$response = [ 'success' => true,
 				              'error'   => false,
 				              'data'    => [
-					              'submitted_data' => compact( 'id', 'first_call' ),
-					              'status'         => false ]
+				              'submitted_data' => compact( 'id', 'status' ),
+				              'status'         => false ]
 				];
 				if ( empty( $order ) ) {
 					$response[ 'success' ] = false;
@@ -747,8 +662,8 @@
 				} else {
 					$response[ 'data' ][ 'status' ] = $order[ 'Order' ][ 'state' ];
 				}
+				if ($status == "confirmed") $this->init_cart(true);
 				if ($inquiries > 30) $response[ 'data' ][ 'status' ] = "timeout";
-
 				return $status ? $this->render( 'get_status', 'ajax' ) : $this->render_ajax_response( $response );
 			} else {
 				return $this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
@@ -761,10 +676,10 @@
 			$this->Auth->allow( 'success', 'order_method', 'confirm_address', 'delivery', 'add_to_cart', 'update', 'clear', 'itemupdate', 'remove', 'cartupdate', 'cart', 'address', 'review', 'get_pending', 'set_status', 'get_status', 'finalize' );
 		}
 
-		public function vendor() {
-			$this->set( 'page_name', 'vendor' );
+		public function pos() {
+			$this->set( 'page_name', 'xtreme-pos' );
 			if ( $this->request->header( 'User-Agent' ) == "xtreme-pos-tablet" || true ) {
-				$this->render( "vendor" );
+				$this->render( "pos", "pos" );
 			} else {
 				$this->redirect( "/menu" );
 			}

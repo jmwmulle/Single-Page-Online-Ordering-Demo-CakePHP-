@@ -73,9 +73,8 @@
 	Router::connect( '/pending/refreshed',          array( CTR => 'orders', ATN => 'get_pending', true ) );
 	Router::connect( '/print_response/*',           array( CTR => 'orders', ATN => 'log_printer' ) );
 	Router::connect( '/review-order',               array( CTR => 'orders', ATN => 'review_order' ) );
-	Router::connect( '/vendor',                     array( CTR => 'orders', ATN => 'vendor' ) );
-	Router::connect( '/vendor-accept/*',            array( CTR => 'orders', ATN => 'set_status' ) );
-	Router::connect( '/vendor-reject/*',            array( CTR => 'orders', ATN => 'set_status' ) );
+	Router::connect( '/pos',                     array( CTR => 'orders', ATN => 'pos' ) );
+	Router::connect( '/resolve-order/*',            array( CTR => 'orders', ATN => 'pos_resolve' ) );
 
 	/** OPTFLAGS CONTROLLER */
 	Router::connect( '/flagmap',            array( CTR => 'optflags', ATN => 'ajax_list' ) );

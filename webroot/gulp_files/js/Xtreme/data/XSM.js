@@ -3,7 +3,6 @@
  * (X)treme(S)elector(M)anifest
  *
  */
-if ( window.xtr == undefined ) window.xtr = {};
 
 var XSM = {
 	global:{
@@ -213,8 +212,8 @@ var XSM = {
 		hover_text_label_incoming: "#topbar-hover-text-label span.incoming",
 		hover_text_label_outgoing: "#topbar-hover-text-label span.outgoing"
 	},
-	vendor: {
-		self: "body#vendor",
+	pos: {
+		self: "body#pos",
 		back_splash: "#back-splash",
 		customer_name: "#customer-name",
 		error_pane: "#error-pane",
@@ -258,30 +257,6 @@ var XSM = {
 	generated: {
 		vendor_ui_opts_input: function(orb_id) { return "#orb-" + orb_id + "-orbopts"; },
 		vendor_ui_opts_config_id: function(orb_id) { return "#orb-" + orb_id + "-orbopts-config" },
-		vendor_orb_desc: function(orb_desc, orb_details) {
-			var orb_opts = orb_details.opts;
-			var orb_str = "<li><ul class='orb'><li> &#8226; ";
-			orb_str += "<span class='size'>" + orb_details.size.replace('in','"') + "</span>";
-			orb_str += "<span class='title'>" + orb_desc + "</span></li>";
-			for (var opt_id in orb_opts) {
-				orb_str += "<li class='orb-opt'><span class='text'>" + orb_opts[opt_id].title + "</span>";
-				switch ( orb_opts[opt_id].weight ) {
-					case "D":
-						orb_str += '<span class="icon-double"></span></li>';
-						break;
-					case "L":
-						orb_str += '<span class="icon-left-side"></span></li>';
-						break;
-					case "R":
-						orb_str += '<span class="icon-right-side"></span></li>';
-						break;
-					default:
-						orb_str += '</li>';
-				}
-			}
-			orb_str += "</ul></li>";
-			return orb_str;
-		},
 		vendor_orb_title: function(size, title) {
 		},
 		order_form_opt_id: function(opt_id) {

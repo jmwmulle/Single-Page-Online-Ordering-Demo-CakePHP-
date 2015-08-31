@@ -26,7 +26,7 @@ gulp.task('scripts', function() {
           "gulp_files/js/Xtreme/routing/collections/menu_ui.js",
           "gulp_files/js/Xtreme/routing/collections/modal_api.js",
           "gulp_files/js/Xtreme/routing/collections/orders_api.js",
-          "gulp_files/js/Xtreme/routing/collections/tablet_ui.js",
+          "gulp_files/js/Xtreme/routing/collections/pos_api.js",
           "gulp_files/js/Xtreme/routing/collections/user_accounts.js",
           "gulp_files/js/Xtreme/routing/collections/vendor_ui.js",
           "gulp_files/js/Xtreme/routing/XtremeRoute.js",
@@ -43,7 +43,7 @@ gulp.task('scripts', function() {
           "gulp_files/js/Xtreme/xbs_modal.js",
           "gulp_files/js/Xtreme/xbs_splash.js",
           "gulp_files/js/Xtreme/xbs_validation.js",
-          "gulp_files/js/Xtreme/xbs_vendor.js",
+          "gulp_files/js/Xtreme/XtremePOS.js",
           "gulp_files/js/Xtreme/xbs_vendor_ui.js",
           "gulp_files/js/Xtreme/XBS.js",
           "gulp_files/js/Xtreme/application"

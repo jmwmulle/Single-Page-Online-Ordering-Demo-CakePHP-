@@ -54,6 +54,7 @@ XtremeRouter.prototype = {
 		// >>> LAUNCH MODALS IF REQUIRED<<<
 		if (route.url.url) {
 			var launch_triggered = false;
+			XT.layout.loader.show();
 			try {
 				$.ajax({
 					type: route.url.type ? route.url.type : C.POST,
@@ -69,8 +70,8 @@ XtremeRouter.prototype = {
 						}
 					},
 					success: function (data) {
+						XT.layout.loader.hide();
 						// >>> DO PRE-LAUNCH EFFECTS <<<
-						$(XSM.global.loading).addClass(XSM.effects.fade_out);
 						if (route.stash) XT.menu.stash();
 
 						setTimeout(function () {
@@ -86,7 +87,7 @@ XtremeRouter.prototype = {
 						}, launch_delay);
 					},
 					fail: function () {
-						$(XSM.global.loading).addClass(XSM.effects.fade_out);
+						XT.layout.loader.hide();
 						if ("fail_callback" in route) {
 							route.fail_callback();
 						} else {
@@ -98,7 +99,7 @@ XtremeRouter.prototype = {
 						}
 					},
 					always: function () {
-						$(XSM.global.loading).addClass(XSM.effects.fade_out);
+						XT.layout.loader.hide();
 						if (!launch_triggered) {
 							$(route).trigger(C.ROUTE_LAUNCHED, {launch_msg: "FALLBACK_TRIGGER"})
 						}
@@ -127,9 +128,13 @@ XtremeRouter.prototype = {
 	 */
 	cake_ajax_response: function (deferral_data, success_handler, print_response, print_deferral_data) {
 		if (print_deferral_data) pr(deferral_data, "deferral DATA");
-		if (deferral_data.substr(0, 4) == "<pre") {
-			$(XSM.modal.primary_content).html(deferral_data);
-			setTimeout(function() { $(XSM.modal.primary).removeClass(XSM.effects.slide_up); }, 30);
+		try {
+			if (deferral_data.substr(0, 4) == "<pre") {
+				$(XSM.modal.primary_content).html(deferral_data);
+				setTimeout(function () { $(XSM.modal.primary).removeClass(XSM.effects.slide_up); }, 30);
+			}
+		} catch(e) {
+			pr("Warning: deferral data wasn't defined.");
 		}
 		var response = $.parseJSON(deferral_data)
 		if (print_response) pr(response, "RESPONSE");

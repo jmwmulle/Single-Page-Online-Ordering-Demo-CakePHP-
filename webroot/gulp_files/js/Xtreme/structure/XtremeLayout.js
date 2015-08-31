@@ -6,8 +6,28 @@ XtremeLayout = function() {};
 XtremeLayout.prototype = {
 	constructor: XtremeLayout,
 	page_height: undefined,
+	loader: {
+		element: undefined,
+		init: function (self) {
+			self.loader.element = $("#loading-img")[0];
+			self.loader.position = function() { $(self.loader.element).css("left", (window.innerWidth - $(self.loader.element).innerWidth()) / 2) };
+			self.loader.hide = function () {
+				$(self.loader.element).addClass(FX.fade_out);
+				//setTimeout(function () {$(self.loader.element).addClass(FX.hidden)}, 120);
+			};
+			self.loader.show = function () {
+				$(self.loader.element).removeClass(FX.hidden);
+				setTimeout(function () {$(self.loader.element).removeClass(FX.fade_out)}, 10);
+			};
+			self.loader.position();
+		},
+		position: undefined,
+		hide: undefined,
+		show: undefined
+	},
 	init: function () {
 		var self = this;
+		this.loader.init(this);
 		this.jq_binds();
 		if (this.page_name == XT.page_name.splash) $(as_class(FX.detach)).each(function () { XBS.layout.detach(this);});
 		this.page_height = window.innerHeight - ($(XSM.global.topbar).innerHeight() + 3 * C.REM) + C.PX;
@@ -32,11 +52,11 @@ XtremeLayout.prototype = {
 		if ( is_mobile() ) return;
 
 		$(XSM.global.footer).css({top: $(XSM.global.page_content).innerHeight()});
-		this.fasten(XSM.menu.self).css({overflow: "hidden"});
+		if (XT.page_name != "xtreme-pos") this.fasten(XSM.menu.self).css({overflow: "hidden"});
+
 	},
 	jq_binds: function() {
 		var self = this;
-		pr("jq_binds");
 		// bind_activizing_lists
 		$(C.BODY).on(C.CLK, XSM.global.activizing_list, function (e) {
 			e.stopPropagation();

@@ -1,10 +1,10 @@
-body#vendor {
+body#pos {
   background-color : $dark-grey;
-  #topbar, #footer, h4.loading { display: none;}
+  background: none;
   * { @include unselectable;}
 }
 
-main#vendor-page {
+main#pos-container {
   padding-top : rem-calc(60px);
   width            : rem-calc(600px);
 }

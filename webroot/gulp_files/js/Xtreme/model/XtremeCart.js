@@ -33,7 +33,7 @@ XtremeCart.prototype = {
 			this.configured.push( orb );
 		}
 		if (!this.initialized && this.session_data.id)  {
-			var request = ["order_confirmation", this.session_data.id, "relaunching"].join(C.DS);
+			var request = ["launch_order_confirmation", this.session_data.id, "relaunching"].join(C.DS);
 			setTimeout( function() {
 				$(XT.router).trigger(C.ROUTE_REQUEST, {request: request, trigger:{} }) },
 			XT.menu.stash());

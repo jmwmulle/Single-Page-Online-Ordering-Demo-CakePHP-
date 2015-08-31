@@ -1,4 +1,3 @@
-var test = "hi mom";
 $.fn.scrollTo = function (target, options, callback) {
 	if (typeof options == 'function' && arguments.length == 2) {
 		callback = options;
@@ -551,6 +550,16 @@ if (!String.prototype.toTitleCase) {
 		return keys;
 	}
 
+	function obj_pop(obj) {
+	  for (var key in obj) {
+	    // Uncomment below to fix prototype problem.
+	    // if (!Object.hasOwnProperty.call(obj, key)) continue;
+	    var result = obj[key];
+	    // If the property can't be deleted fail with an error.
+	    if (!delete obj[key]) { throw new Error(); }
+	    return result;
+	  }
+	}
 
 	function exists(varName) {
 		return jQuery(varName).length > 0;
@@ -681,3 +690,4 @@ function strip_orphan_text_nodes(parsed_html_obj) {
 	return return_array.length > 1 ? return_array : return_array[0];
 }
 
+function defined(obj) { return typeof obj != "undefined" }
