@@ -4541,48 +4541,56 @@ th.hide-for-touch {
   -o-transform: rotateY(180deg);
   transform: rotateY(180deg); }
 
-@-webkit-keyframes friendly-1 {
+@-webkit-keyframes friendly-font-0 {
   0% {
-    color: #373737; }
+    opacity: 0; }
+
+  100% {
+    opacity: 1; } }
+
+@-webkit-keyframes friendly-font-1 {
+  0% {
+    color: white; }
 
   50% {
+    -webkit-transform: rotate(360deg) scale(3, 3);
     color: #0779be;
     font-size: 24px; }
 
-  10% {
-    color: #373737; } }
+  100% {
+    color: #e02027; } }
 
 @-webkit-keyframes friendly-font-2 {
   0% {
-    color: #373737; }
+    color: white; }
 
   50% {
     color: #faea06;
     font-size: 24px;
-    transform: scale(1.25, 1.25); }
+    transform: scale(1.5, 1.5); }
 
-  10% {
-    color: #373737; } }
+  100% {
+    color: #faea06; } }
 
 @-webkit-keyframes friendly-font-3 {
   0% {
-    color: #373737; }
+    color: white; }
 
   50% {
     color: #0779be; }
 
-  10% {
-    color: #373737; } }
+  100% {
+    color: white; } }
 
 @-webkit-keyframes friendly-font-4 {
   0% {
-    color: #373737; }
+    color: white; }
 
   50% {
     color: #0779be; }
 
-  10% {
-    color: #373737; } }
+  100% {
+    color: white; } }
 
 @-webkit-keyframes friendly-font-5 {
   0% {
@@ -4592,7 +4600,29 @@ th.hide-for-touch {
     color: #0779be; }
 
   100% {
-    color: #373737; } }
+    color: #0779be;
+    transform: skewX(-15deg); } }
+
+h4.friendly {
+  background-color: #373737;
+  padding: 0.3125rem 0.9375rem 0.625rem 0.9375rem;
+  border-radius: 1000px;
+  max-height: 2.625rem;
+  opacity: 0;
+  -webkit-animation: friendly-font-0 0.3s ease-in-out 1 normal 1s running forwards; }
+  h4.friendly span {
+    display: inline-block;
+    vertical-align: text-top; }
+  h4.friendly span.friendly-1 {
+    -webkit-animation: friendly-font-1 0.5s ease-in-out 1 normal 1.5s running forwards; }
+  h4.friendly span.friendly-2 {
+    -webkit-animation: friendly-font-2 0.5s ease-in-out 1 normal 1.7s running forwards; }
+  h4.friendly span.friendly-3 {
+    -webkit-animation: friendly-font-3 0.5s ease-in-out 1 normal 1.9s running forwards; }
+  h4.friendly span.friendly-4 {
+    -webkit-animation: friendly-font-4 0.5s ease-in-out 1 normal 2.1s running forwards; }
+  h4.friendly span.friendly-5 {
+    -webkit-animation: friendly-font-5 0.75s ease-in-out 1 normal 2.4s running forwards; }
 
 @font-face {
   font-family: "xtreme-icons";
@@ -4841,17 +4871,6 @@ input {
 .body-font-color {
   color: white; }
 
-h4.friendly span.friendly-1 {
-  -webkit-animation: friendly-font-1 0.5s ease-in-out 1 normal 1s running forwards; }
-h4.friendly span.friendly-2 {
-  -webkit-animation: friendly-font-2 0.5s ease-in-out 1 normal 1.2s running forwards; }
-h4.friendly span.friendly-3 {
-  -webkit-animation: friendly-font-3 0.5s ease-in-out 1 normal 1.4s running forwards; }
-h4.friendly span.friendly-4 {
-  -webkit-animation: friendly-font-4 0.5s ease-in-out 1 normal 1.6s running forwards; }
-h4.friendly span.friendly-5 {
-  -webkit-animation: friendly-font-5 0.5s ease-in-out 1 normal 1.8s running forwards; }
-
 #hours-and-location {
   text-align: right;
   line-height: 1.25rem;
@@ -5025,11 +5044,14 @@ span.tiny-opt {
   line-height: 1rem;
   margin: 0.5rem; }
 
-span.information {
+.information {
   display: block;
   font-size: 0.75rem;
   line-height: 0.875rem;
   font-family: "Helvetica Neue Medium Condensed", arial, sans-serif; }
+
+.warning {
+  color: #f04124 !important; }
 
 @media only screen and (min-width:64.063em) {
   body, html, main, nav {

@@ -22,6 +22,7 @@
 		                          "price_rank" => 0,
 		                          "orbopts"    => [ ],
 		                          "orb_note"   => "" ];
+		private $use_test_user = true;
 		private $test_user = [
 			'firstname'      => "Jimmy",
 			'lastname'       => "TheKid",
@@ -231,6 +232,7 @@
 					}
 				}
 			}
+			if ($this->use_test_user) $this->Session->write('Cart.User', $this->test_user);
 			if ( $this->Session->read( 'Cart.uid' ) === null ) $this->Session->write( 'Cart.uid', String::uuid() );
 
 			if ( $this->request->url === "!" ) $this->redirect( ___cakeUrl( "orbcats", "menu" ) );

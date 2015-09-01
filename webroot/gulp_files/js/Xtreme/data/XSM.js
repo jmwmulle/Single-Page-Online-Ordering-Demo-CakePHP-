@@ -223,12 +223,13 @@ var XSM = {
 		accept_acknowledge: "#accept-acknowledge",
 		order_accept_button: "#order-accept-button",
 		order_accept_button_pressed: "#order-accept-button.pressed",
-		order_content_detail: "#order-content-detail",
-		order_content_sample: "#order-content-sample",
+		order_content: "#order-content",
+		order_address: "td#address",
+		order_customer: "td#customer",
+		order_food: "td#food",
 		order_count: "#order-count",
 		order_count_bubble: "#pending-orders-count",
 		order_reject_confirmation: "#order-reject-confirmation",
-		order_address: "#order-title",
 		pending_orders_list: "#pending-orders-list"
 	},
 	vendor_ui: {

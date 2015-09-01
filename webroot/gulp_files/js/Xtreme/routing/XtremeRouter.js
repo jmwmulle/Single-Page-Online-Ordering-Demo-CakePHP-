@@ -54,7 +54,7 @@ XtremeRouter.prototype = {
 		// >>> LAUNCH MODALS IF REQUIRED<<<
 		if (route.url.url) {
 			var launch_triggered = false;
-			XT.layout.loader.show();
+			if (route.loading_animation) XT.layout.loader.show();
 			try {
 				$.ajax({
 					type: route.url.type ? route.url.type : C.POST,

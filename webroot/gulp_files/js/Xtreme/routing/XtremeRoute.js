@@ -15,6 +15,7 @@ XtremeRoute = function (name, data, request) {
 	this.modal  = undefined;
 	this.params  = undefined;
 	this.deferral_data  = undefined;
+	this.suppress_loader = false;
 
 	// callbacks
 	this.params_set_callback  = undefined;
@@ -52,6 +53,7 @@ XtremeRoute.prototype = {
 		if ("modal" in route_data) this.modal = new Modal(route_data.modal);
 		this.url = {url:undefined, type: undefined, defer: undefined};
 		if ("url" in route_data) {this.set_url(route_data.url) }
+		if ("loading_animation" in route_data) this.loading_animation = route_data.loading_animation;
 
 		this.__stop_propagation = "propagates" in route_data ? !route_data.propagates : true;
 		this.stop_propagation();

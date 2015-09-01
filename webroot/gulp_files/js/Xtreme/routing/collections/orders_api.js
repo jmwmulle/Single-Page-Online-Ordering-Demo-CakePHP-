@@ -1,7 +1,7 @@
 /**
  * Created by jono on 8/11/15.
  */
-window.xtr.route_collections.orders_api = function() {
+XT.route_collections.orders_api = function() {
 	this.finalize_order =  {
 		url: { url: "finish-ordering", defer: true, data: null, type: C.POST },
 		modal: C.PRIMARY,
@@ -47,11 +47,11 @@ window.xtr.route_collections.orders_api = function() {
 	this.update_order_confirmation = {
 		params: {id: {value: null, url_fragment: true} },
 		url: {url: "order-confirmation", defer: true, type: C.POST},
+		loading_animation: false,
 		callbacks: {
 			launch: function () {
 				XT.router.cake_ajax_response(this.deferral_data, {
 					callback: function (response, data) {
-						pr(response);
 						var request;
 						switch (Number(response.data.status)) {
 							case 1:

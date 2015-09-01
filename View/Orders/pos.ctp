@@ -21,26 +21,16 @@
 			</div>
 			<div class="small-12 columns panel">
 				<div class="row">
-					<div id="order-content" class="small-12 columns">
-						<div class="row">
-							<div class="small-12 columns">
-								<h1 id="incoming">INCOMING ORDER</h1>
-							</div>
-						</div>
-						<div id="order-content-detail" class="row">
-							<div id="labels" class="small-3 columns">
-								<span id='address' class='label'>ADDRESS:</span>
-								<span id='customer' class='label'>CUSTOMER:</span>
-								<span id='food' class='label'>ORDER:</span>
-							</div>
-							<div id='values' class="small-9 columns">
-								<span id='customer-name' class='value'></span>
-								<span id='order-title' class='value'></span>
-								<ul id='food-list' class='value'>
-								</ul>
-							</div>
-						</div>
-					</div>
+					<table id="order-content" class="small-12 columns">
+						<tr>
+							<td class="label">ADDRESS</td>
+							<td id="address" class="value"></td>
+						</tr>
+						<tr>
+							<td class="label">ORDER</td>
+							<td id="food" class="value"></td>
+						</tr>
+					</table>
 				</div>
 				<div class="row">
 					<div class="small-12 columns">

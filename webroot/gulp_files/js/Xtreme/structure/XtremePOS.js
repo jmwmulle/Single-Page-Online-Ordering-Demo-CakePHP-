@@ -8,7 +8,6 @@ XtremePOS = function() {
 
 XtremePOS.prototype = {
 	constructor: XtremePOS,
-	last_check: 0,
 	last_tone_play: 0,
 	init_list: ["buttons", "splash", "pending", "current"],
 	icon_classes: { F:"", D:"icon-double", R:"icon-right-side", L:"icon-left-side"},
@@ -16,7 +15,12 @@ XtremePOS.prototype = {
 	printer: undefined,
 	ip: undefined,
 	DOM: {
-		current: undefined,
+		current: {
+			box: undefined,
+			address: undefined,
+			customer: undefined,
+			food: undefined
+		},
 		box: undefined,
 		accept: undefined,
 		reject: undefined,
@@ -76,16 +80,13 @@ XtremePOS.prototype = {
 				return 0;
 			};
 			self.current.update = function() {
-				pr("self.current.update");
 				var hide_time = self.current.hide();
 				self.current.order = self.pending.next();
 				if ( self.current.order ) {
-					pr(self.current.order);
 					var route = ["pos_reply", self.current.order.id, C.ACCEPTED].join(C.DS);
-					pr([route, self.DOM.accept]);
 					$(self.DOM.accept).data('route', route);
-					var new_order = self.order_template(self.current.order);
-					$(self.DOM.current).replaceWith(new_order);
+					$(self.DOM.current.address).html("").append( self.customer_details(self.current.order.Service.address) );
+					$(self.DOM.current.food).html("").append( self.order_rows( self.current.order.Order) );
 					$(self.DOM.splash).addClass(FX.slide_up);
 					$(self.DOM.box).removeClass(FX.slide_up);
 					setTimeout(function () { hide_time += self.current.show() }, hide_time);
@@ -112,13 +113,14 @@ XtremePOS.prototype = {
 		orders: {},
 		init: function (self) {
 			self.pending.list = function() { return self.pending.count() > 0 ? self.pending.orders : false };
+
 			self.pending.fetch = function(orders) {
 				if ( defined(orders) && orders.length > 0 ) {
 					var update = self.pending.count() == 0;
 					for(var i = 0; i < orders.length; i++) {
 						var order = orders[i].Order.detail;
 						order.id = orders[i].Order.id;
-						if ( !(order.uid in self.pending.orders) && order.uid != self.current.order.uid ) {
+						if ( !(order.id in self.pending.orders) && order.id != self.current.order.id ) {
 							self.pending.orders[order.id] = order;
 						}
 					}
@@ -129,26 +131,32 @@ XtremePOS.prototype = {
 					setTimeout(function () { self.splash.show() }, self.current.hide())
 				}
 
-				if (self.pending.fetch_count < 10) {
+				if (self.pending.fetch_count < 1) {
 					self.pending.fetch_count++;
 					setTimeout(function () {
 						$(XT.router).trigger(C.ROUTE_REQUEST, {request: "pos_pending", trigger: {}})
 					}, self.update_interval);
 				}
 			};
+
 			self.pending.count = function() { return obj_len( self.pending.orders ) },
+
 			self.pending.update_DOM = function() {
 				var displayed = $(self.DOM.pending.box).data('count');
-				if (self.pending.count() - 1 != displayed) {
+				var current = self.pending.count();
+				current--;
+				if ( current != displayed) {
 					setTimeout(function () {
-						$(self.DOM.pending.box).data('count', displayed);
-						$(self.DOM.pending.display).html(displayed);
-						displayed = self.pending.count() - 1;
-						return displayed > 1 ? self.pending.show() : 0;
+						if (current < 0)  {
+							$(self.DOM.pending.box).data('count', current);
+							$(self.DOM.pending.display).html(current);
+						}
+						return current > 0 ? self.pending.show() : 0;
 					}, self.pending.hide());
 				}
 				return self;
 			};
+
 			self.pending.hide = function() {
 				var target = self.pending.list() ? self.DOM.pending.display : self.DOM.pending.box;
 				if ( $(target).hasClass(FX.fade_out) ) return 0;
@@ -156,6 +164,7 @@ XtremePOS.prototype = {
 				$(target).addClass(FX.fade_out);
 				return 150;
 			};
+
 			self.pending.show = function() {
 				var display_wait = 0;
 				if ( $(self.DOM.pending.box).hasClass(FX.fade_out) ) {
@@ -200,7 +209,9 @@ XtremePOS.prototype = {
 		this.DOM.box = $("#pos-ui")[0];
 		this.DOM.accept = $(XSM.pos.order_accept_button)[0];
 		this.DOM.next = $(XSM.pos.next_order)[0];
-		this.DOM.current = $(XSM.pos.order_content_detail)[0];
+		this.DOM.current.box = $(XSM.pos.order_content)[0];
+		this.DOM.current.address = $(XSM.pos.order_address)[0];
+		this.DOM.current.food = $(XSM.pos.order_food)[0];
 		this.DOM.pending.box = $("#pending-orders-count")[0];
 		this.DOM.pending.display = $("#order-count")[0];
 		this.DOM.splash = $(XSM.pos.back_splash)[0];
@@ -229,26 +240,26 @@ XtremePOS.prototype = {
 		return bg_str;
 	},
 	order_rows: function(rows) {
-		var food = [];
+		var food = $("<ul>").addClass("food");
 		for (var r in rows) {
 			r = rows[r];
-			var opts = [];
-			for (var o in r.opts) {
-				o = r.opts[o];
-				opts.push(
+			var opts = $("<ul>");
+			for (var o in r.orbopts) {
+				o = r.orbopts[o];
+				$(opts).append(
 					$("<li>").addClass("orb-opt").append([
-						$("<span>").addClass("text").html(o.title),
-						$("<span>").addClass(this.icon_classes[o.weight])
+						$("<span>").addClass("text").html(o.Orbopt.title),
+						$("<span>").addClass(this.icon_classes[o.Orbopt.coverage])
 			            ])
 				)
 			}
-			food.push(
+			$(food).append(
 				$("<li>").append(
 					$("<ul>").addClass('orb').append([
 						$("<li>").append([
-							$("<span>").html("&#8226;"),
-			                $("<span>").addClass("size").html( r.detail.size.replace("in",'"') ),
-			                $("<span>").addClass("title").html(r.desc)
+							$("<span>").addClass("quantity").html([r.pricing.quantity, "x&nbsp;"].join(" ")),
+			                $("<span>").addClass("size").html( r.pricing.label.replace("in",'"') ),
+			                $("<span>").addClass("title").html(r.orb.Orb.title)
 			            ]),
 					    $("<li>").addClass("orb-opt").append(opts)
 					])
@@ -257,18 +268,19 @@ XtremePOS.prototype = {
 		}
 		return food;
 	},
-	order_template: function() {
-		return $("<div>").attr("id", "order-content-detail").addClass('row').append([
-			$("<div>").attr("id", "labels").addClass("small-3 columns").append([
-				$("<span>").attr("id", "title").addClass("label").html("ADDRESS:"),
-				$("<span>").attr("id", "customer").addClass("label").html("CUSTOMER:"),
-				$("<span>").attr("id", "food").addClass("label").html("ORDER:")
-			]),
-			$("<div>").attr("id", "values").addClass("small-9 columns").append([
-				$("<span>").attr("id", "customer-name").addClass("value").html(this.current.order.address),
-				$("<span>").attr("id", "order-title").addClass("value").html(this.current.order.customer),
-				$("<ul>").attr("id", "food-list").addClass("value").append(this.order_rows(this.current.order.food))
-			])
-		]);
-	},
+	customer_details: function(address) {
+		var address_arr = [];
+		address_arr.push( [address.firstname, address.lastname].join(" "),
+						  address.address,
+						  address.address_2,
+						  address.postal_code,
+						  address.phone,
+						  address.note);
+		var address_el = $("<ul>")
+		for (var i =0 ; i < address_arr.length; i++) {
+			if (address_arr[i] == null) continue;
+			$(address_el).append( $("<li>").html(address_arr[i]) );
+		}
+		return address_el;
+	}
 };

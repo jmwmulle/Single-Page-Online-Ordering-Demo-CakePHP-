@@ -8,22 +8,25 @@ $(document).ready( function() {
 	XT.development_mode = true;
 	XT.router = new XtremeRouter();
 	XT.layout = new XtremeLayout();
-	if (XT.is_vendor_ui) {
-		XT.vendor_ui = xt_vendor_ui;
-		XT.vendor_ui.init();
-		return XT.layout.init();
+	switch (XT.page_name) {
+		case "vendor_ui":
+			XT.vendor_ui = xt_vendor_ui;
+			XT.vendor_ui.init();
+			break;
+		case "xtreme-pos":
+			XT.pos = new XtremePOS();
+			break;
+		default:
+			XT.sauce_id = 4;
+			XT.cart = new XtremeCart();
+			XT.orbcard = new Orbcard( $(XSM.menu.orb_order_form_orb_id).val() );
+			XT.menu = new XtremeMenu();
+			XT.orbcard.init_DOM();
+			XT.orbcard.menu.init_DOM();
+			break;
 	}
-	if (XT.page_name == "xtreme-pos") { XT.pos = new XtremePOS() };
-	XT.sauce_id = 4;
-	XT.cart = new XtremeCart();
-	XT.orbcard = new Orbcard( $(XSM.menu.orb_order_form_orb_id).val() );
-	XT.menu = new XtremeMenu();
-
-	XT.orbcard.init_DOM();
-	XT.orbcard.menu.init_DOM();
-
 	XT.layout.init();
-	if (XT.page_name == "xtreme_menu") {
+	if (XT.page_name == "menu") {
 		if (window.addEventListener) {
 			XT.kkeys = [], XT.konami = "38,38,40,40,37,39,37,39,66,65";
 			window.addEventListener("keydown", function (e) {

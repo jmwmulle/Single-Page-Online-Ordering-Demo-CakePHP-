@@ -43,7 +43,6 @@ XT.route_collections.pos_api = function() {
 		url: {url: 'pending', defer: true, type: C.GET},
 		callbacks: {
 			launch: function () {
-				pr("here");
 				XT.router.cake_ajax_response(this.deferral_data, {
 					callback: function (response) { XT.pos.pending.fetch(response.data.orders) }
 				}, true, true);

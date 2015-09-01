@@ -1,36 +1,63 @@
-@-webkit-keyframes friendly-1 {
-  0% {color: $text-grey;}
-  50% {color: $xtreme-blue;font-size:24px;
+@-webkit-keyframes friendly-font-0 {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+@-webkit-keyframes friendly-font-1 {
+  0% {color: $white;}
+  50% {
+    -webkit-transform: rotate(360deg) scale(3, 3);
+    color: $xtreme-blue;
+    font-size:24px;
 
   }
-  10% {color: $text-grey;}
+  100% {color: $xtreme-red;}
 }
 @-webkit-keyframes friendly-font-2 {
-  0% {color: $text-grey;}
+  0% {color: $white;}
 
   50% {
     color: $xtreme-yellow;
     font-size:24px;
-    transform: scale(1.25, 1.25);
+    transform: scale(1.5, 1.5);
   }
-  10% {color: $text-grey;}
+  100% {color: $xtreme-yellow;}
 }
 @-webkit-keyframes friendly-font-3 {
-  0% {color: $text-grey;}
+  0% {color: $white;}
   50% {color: $xtreme-blue;}
-  10% {color: $text-grey;}
+  100% {color: $white;}
 }
 @-webkit-keyframes friendly-font-4 {
-  0% {color: $text-grey;}
+  0% {color: $white;}
   50% {color: $xtreme-blue;}
-  10% {color: $text-grey;}
+  100% {color: $white;}
 }
 @-webkit-keyframes friendly-font-5 {
   0% {color: $text-grey;}
-  80% {
+  80% { color: $xtreme-blue; }
+  100% {
     color: $xtreme-blue;
+    transform: skewX(-15deg);
   }
-  100% { color: $text-grey; }
+}
+
+
+h4.friendly {
+  background-color: $text-grey;
+  padding: $tight-padding $base-padding $medium-padding $base-padding;
+  border-radius: $global-rounded;
+  max-height: rem-calc(42px);
+  opacity:0;
+  -webkit-animation : friendly-font-0 0.3s ease-in-out 1 normal 1.0s running forwards;
+  span {
+    display:inline-block;
+    vertical-align:text-top;
+  }
+  span.friendly-1 {  -webkit-animation : friendly-font-1 0.5s ease-in-out 1 normal 1.5s running forwards;}
+  span.friendly-2 {  -webkit-animation : friendly-font-2 0.5s ease-in-out 1 normal 1.7s running forwards;}
+  span.friendly-3 {  -webkit-animation : friendly-font-3 0.5s ease-in-out 1 normal 1.9s running forwards;}
+  span.friendly-4 {  -webkit-animation : friendly-font-4 0.5s ease-in-out 1 normal 2.1s running forwards;}
+  span.friendly-5 {  -webkit-animation : friendly-font-5 .75s ease-in-out 1 normal 2.4s running forwards;}
 }
 
 @charset "UTF-8";
@@ -304,13 +331,7 @@ input { font-family : "Helvetica Neue Light Condensed", arial, sans-serif !impor
 
 .body-font-color { color : $body-font-color; }
 
-h4.friendly {
-  span.friendly-1 {  -webkit-animation : friendly-font-1 0.5s ease-in-out 1 normal 1s running forwards;}
-  span.friendly-2 {  -webkit-animation : friendly-font-2 0.5s ease-in-out 1 normal 1.2s running forwards;}
-  span.friendly-3 {  -webkit-animation : friendly-font-3 0.5s ease-in-out 1 normal 1.4s running forwards;}
-  span.friendly-4 {  -webkit-animation : friendly-font-4 0.5s ease-in-out 1 normal 1.6s running forwards;}
-  span.friendly-5 {  -webkit-animation : friendly-font-5 0.5s ease-in-out 1 normal 1.8s running forwards;}
-}
+
 #hours-and-location {
   text-align  : right;
   line-height : 1.25rem;
@@ -513,9 +534,11 @@ span.tiny-opt, span.tiny-opt-label {
    }
  }
 
- span.information {
+ .information {
    display:block;
    font-size:rem-calc(12px);
    line-height: rem-calc(14px);
   @include HelveticaMdCn;
  }
+
+ .warning { color: $alert-color !important;}
