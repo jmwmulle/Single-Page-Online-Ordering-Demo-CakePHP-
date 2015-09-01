@@ -8,12 +8,13 @@
 
 	$confirm_order_classes = ["modal-button", "bisecting", "confirm", "right"];
 	if ($service['order_method'] != PICKUP and !$service['address_valid']) array_push($confirm_order_classes, "disabled");
+	$method_element = $service['order_method'] == JUST_BROWSING ? "unselected" : "selected";
 ?>
 
 <?=$this->Element( 'primary_modal'.DS.'masthead', $masthead);?>
 
 <hr>
-<?=$this->Element( 'cart'.DS.'order_methods'.DS.$service['order_method'], compact('service'))?>
+<?=$this->Element( 'cart'.DS.'order_methods'.DS.$method_element, compact('service'))?>
 <hr/>
 
 <div class="row<?php if ( !empty($cart[ 'Order' ]) ) echo " true-hidden";?>">

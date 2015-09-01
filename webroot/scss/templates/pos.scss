@@ -27,37 +27,101 @@ main#pos-container {
 #values { border-left : 1px solid $light-grey; }
 
 #order-content {
+  -webit-transition: opacity 150ms;
   color         : $text-grey;
-  padding       : $base-padding $tight-padding;
   height        : rem-calc(500px);
-  .wrapper {
-    @include primary-modal-bg;
-    height:inherit;
-  }
   h1, h2, h3, h4, h5, p, span, ul, li {
     background-color : transparent;
     color            : $text-grey !important;
   }
-  span {
-    display    : block;
-    min-height : 1.75rem;
+  tr.food { height:350px;}
+  td {
+    padding-bottom:$base-padding;
+    &.order-label {
+//      vertical-align: top;
+      height: 150px;
+      max-height: 150px;
+      max-width: rem-calc(45px);
+      h2 {
+        text-align:center;
+        font-size: rem-calc(28px);
+        background-color: $text-grey;
+        padding: $medium-padding !important;
+        span {
+          color: $white !important;
+          display:block;
+          transform: translateY(5px);
+        }
+        &.order-method {
+          width: 150px;
+          transform: translate(-52.5px, 10px) rotate(-90deg) !important;
+          &.pickup { background-color: $xtreme-red; }
+          &.delivery { background-color: $xtreme-blue; }
+        }
+        &.food { width:350px; transform: translate(-152.5px, 10px) rotate(-90deg) !important; }
+      }
+
+    }
+    &.value {
+      @include HelveticaMdCn;
+      color     : $xtreme-blue;
+      font-size : rem-calc(16px);
+      padding:0;
+      padding-left: $base-padding;
+      ul, li { line-height: rem-calc(22px); }
+      &#food { vertical-align: top;}
+      span {
+        display:inline-block;
+        &.text {
+          transform: translateY(2px);
+        }
+      }
+      div.quantity {
+        display:inline-block;
+        background-color: $xtreme-red;
+        border-radius: $global-rounded;
+        height:rem-calc(22px);
+        width:22px;
+        text-align:center;
+        transform:translateY(-3px);
+        span {
+          @include HelveticaBlkCn;
+          color:$white !important;
+          transform: translateY(2.5px);
+        }
+      }
+    }
   }
-  span.label { font-size : rem-calc(18px);
-    text-align           : left;
-    vertical-align       : top;
+  ul.address {
+    padding:0;
+    li {
+      line-height: rem-calc(18px);
+    }
   }
-  span.value {
-    @include HelveticaMdCn;
-    color     : $xtreme-blue;
-    font-size : rem-calc(16px);
-  }
-  ul#food-list {
+  ul.food {
     @include HelveticaMdCn;
     display : inline-block;
+    line-height: rem-calc(16px);
+    li {
+      &.orb-opt {
+        display:inline-block;
+        float:none;
+        padding: 0 $medium-padding;
+        background-color:$very-light-grey;
+        border-radius: $global-rounded;
+        margin-right: $tight-padding;
+        line-height: rem-calc(16px);
+      }
+      &.orb {
+        padding-top: rem-calc(8px);
+        padding-bottom: rem-calc(4px);
+//        &:first-of-type { margin-top:0;}
+        border-bottom: 1px dotted $light-grey;
+      }
+    }
   }
 
 }
-#order-content-detail { -webit-transition: opacity 150ms; }
 
 #pending-orders-count {
   position         : absolute;
@@ -165,6 +229,8 @@ main#pos-container {
   padding: $base-padding;
   width:100%;
 }
+
+#order-accept-button { margin-top: $tight-padding; }
 
 @-webkit-keyframes ok-zoom {
   0% {

@@ -179,7 +179,7 @@
 							<a href="#" class="modal-button lrg bisecting cancel left" data-route="set_delivery_address/cancel/<?=$restore_route;?>">
 								<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span>
 							</a
-							><a href="#" id="submit-order-address" class="modal-button lrg bisecting confirm right" data-route="validate_form/address/<?=$restore;?>">
+							><a href="#" id="submit-order-address" class="modal-button lrg bisecting confirm right" data-route="validate_form/address/<?=$restore_route;?>">
 								<span class="text">OK!</span><span class="icon-circle-arrow-r"></span>
 							</a>
 						</div>

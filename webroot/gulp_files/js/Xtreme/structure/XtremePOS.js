@@ -85,17 +85,19 @@ XtremePOS.prototype = {
 				if ( self.current.order ) {
 					var route = ["pos_reply", self.current.order.id, C.ACCEPTED].join(C.DS);
 					$(self.DOM.accept).data('route', route);
-					$(self.DOM.current.address).html("").append( self.customer_details(self.current.order.Service.address) );
+					$(self.DOM.current.address).html("").append( self.customer_details(self.current.order.Service) );
 					$(self.DOM.current.food).html("").append( self.order_rows( self.current.order.Order) );
+					self.update_order_method();
 					$(self.DOM.splash).addClass(FX.slide_up);
 					$(self.DOM.box).removeClass(FX.slide_up);
 					setTimeout(function () { hide_time += self.current.show() }, hide_time);
+				} else {
+					self.current.hide();
 				}
 				return hide_time
 			};
 			self.current.resolve = function(data) {
 				if (data.error) {
-					pr("fuck fuck fuck")
 					// confirm user has been notified
 					// if can't get confirmation, take ordering off-line
 					// else advance to next order; if it happens again, take ordering off-line
@@ -115,12 +117,21 @@ XtremePOS.prototype = {
 			self.pending.list = function() { return self.pending.count() > 0 ? self.pending.orders : false };
 
 			self.pending.fetch = function(orders) {
+				var pending_info = { orders: orders }
 				if ( defined(orders) && orders.length > 0 ) {
-					var update = self.pending.count() == 0;
+					pending_info["orders_defined"] = true;
+					pending_info["pending_count"] = self.pending.count();
+					var update = self.pending.count() == 0 && !self.current.order;
+					pending_info["update"] = update;
 					for(var i = 0; i < orders.length; i++) {
 						var order = orders[i].Order.detail;
 						order.id = orders[i].Order.id;
 						if ( !(order.id in self.pending.orders) && order.id != self.current.order.id ) {
+							if ( !("adding" in pending_info) ) {
+								pending_info['adding'] = [order];
+							} else {
+								pending_info.adding.push(order);
+							}
 							self.pending.orders[order.id] = order;
 						}
 					}
@@ -131,7 +142,7 @@ XtremePOS.prototype = {
 					setTimeout(function () { self.splash.show() }, self.current.hide())
 				}
 
-				if (self.pending.fetch_count < 1) {
+				if (self.pending.fetch_count < 1 || true) {
 					self.pending.fetch_count++;
 					setTimeout(function () {
 						$(XT.router).trigger(C.ROUTE_REQUEST, {request: "pos_pending", trigger: {}})
@@ -147,7 +158,7 @@ XtremePOS.prototype = {
 				current--;
 				if ( current != displayed) {
 					setTimeout(function () {
-						if (current < 0)  {
+						if (current > 0)  {
 							$(self.DOM.pending.box).data('count', current);
 							$(self.DOM.pending.display).html(current);
 						}
@@ -215,6 +226,7 @@ XtremePOS.prototype = {
 		this.DOM.pending.box = $("#pending-orders-count")[0];
 		this.DOM.pending.display = $("#order-count")[0];
 		this.DOM.splash = $(XSM.pos.back_splash)[0];
+		this.DOM.order_method = $("h2.order-method")[0];
 		$(this.DOM.accept).on(C.VMOUSEDOWN, function() { $(this).addClass(FX.pressed) });
 		$(this.DOM.accept).on(C.VMOUSEMOVE, function(e) {
 			if ( !self.buttons.pressed(C.ACCEPT) ) return;
@@ -255,32 +267,43 @@ XtremePOS.prototype = {
 			}
 			$(food).append(
 				$("<li>").append(
-					$("<ul>").addClass('orb').append([
-						$("<li>").append([
-							$("<span>").addClass("quantity").html([r.pricing.quantity, "x&nbsp;"].join(" ")),
-			                $("<span>").addClass("size").html( r.pricing.label.replace("in",'"') ),
-			                $("<span>").addClass("title").html(r.orb.Orb.title)
+					$("<ul>").addClass('orbs').append([
+						$("<li>").addClass('orb').append([
+							$("<div>").addClass("quantity").append($("<span>").html(r.pricing.quantity)),
+			                $("<span>").addClass("size").html( "&nbsp;x&nbsp;" + r.pricing.label.replace("in",'"') ),
+			                $("<span>").addClass("title").html("&nbsp;" + r.orb.Orb.title),
+					        $("<li>").addClass("orb-opts").append(opts)
 			            ]),
-					    $("<li>").addClass("orb-opt").append(opts)
 					])
 				)
 			)
 		}
 		return food;
 	},
-	customer_details: function(address) {
-		var address_arr = [];
-		address_arr.push( [address.firstname, address.lastname].join(" "),
-						  address.address,
-						  address.address_2,
-						  address.postal_code,
-						  address.phone,
-						  address.note);
-		var address_el = $("<ul>")
-		for (var i =0 ; i < address_arr.length; i++) {
-			if (address_arr[i] == null) continue;
-			$(address_el).append( $("<li>").html(address_arr[i]) );
+	customer_details: function(service) {
+		var address = $.extend({}, service.address);
+		var include_keys = ['address', 'address_2','postal_code', 'note'];
+		var phone;
+		try {
+		 phone = "("+[address.phone.slice(0,3), address.phone.slice(3,6), address.phone.slice(6)].join("-")+")";
+		} catch(e) {
+			phone = address.phone;
+		}
+		var address_el = $("<ul>").addClass('address').append(
+							$("<li>").addClass("customer-name").html([address.firstname, address.lastname, phone].join(" "))
+						);
+		if (address.note && address.note.length != 0) address.note = "Note: " + address.note;
+		for (var key in address) {
+			if (!in_array(key, include_keys) || !address[key] || address[key].length == 0 || !defined(address[key].length) ) continue;
+			$(address_el).append( $("<li>").addClass(key).html(address[key]) );
 		}
 		return address_el;
+	},
+	update_order_method: function() {
+		$(this.DOM.order_method)
+			.html("")
+			.removeClass("pickup delivery")
+			.addClass(this.current.order.Service.order_method)
+			.append( $("<span>").html(this.current.order.Service.order_method.toUpperCase()));
 	}
 };

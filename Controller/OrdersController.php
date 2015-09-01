@@ -587,12 +587,20 @@
 		public function set_address_form( $restore = null ) {
 			if ( $this->request->is( 'ajax' ) && $this->request->is( 'get' ) ) {
 				$this->Session->write( "Cart.Service.address_valid", null );
-				$this->set( [ "header"    => "Delivery! Yay for sitting!",
-				              "subheader" => "But let's confirm your address, yeah?",
-				              "restore"   => $restore ? $restore : "menu/unstash"
-				            ] );
+				$method = $this->Session->read("Cart.Service.order_method");
+				$restore_route = $restore ? $restore : "menu/unstash";
+				$header = null;
+				$subheader = null;
+				if ($method == PICKUP) {
+					$header = "SOMETIMES YOU WANT TO GO";
+					$subheader = "Where we're sure to know your name...";
+				} else {
+					$header = "DELIVERY! Yay for sitting!";
+					$subheader = "But first let's get your address, yeah?";
+				}
+				$this->set( compact('restore_route', 'header', 'subheader') );
 
-				return $this->render( 'confirm_address' );
+				return $this->render( $method == PICKUP ? 'confirm_information' : 'confirm_address' );
 			} else {
 				return $this->redirect( ___cakeUrl( "orbcats", "menu" ) );
 			}

@@ -5640,47 +5640,85 @@ main#pos-container {
   border-left: 1px solid #b4b4b4; }
 
 #order-content {
+  -webit-transition: opacity 150ms;
   color: #373737;
-  padding: 0.9375rem 0.3125rem;
   height: 31.25rem; }
-  #order-content .wrapper {
-    background: white;
-    /* Old browsers */
-    background: -moz-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #ffffff), color-stop(50%, #f3f3f3), color-stop(51%, #ededed), color-stop(100%, #ffffff));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
-    /* IE10+ */
-    background: linear-gradient(45deg, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 );
-    /* IE6-9 fallback on horizontal gradient */
-    height: inherit; }
   #order-content h1, #order-content h2, #order-content h3, #order-content h4, #order-content h5, #order-content p, #order-content span, #order-content ul, #order-content li {
     background-color: transparent;
     color: #373737 !important; }
-  #order-content span {
-    display: block;
-    min-height: 1.75rem; }
-  #order-content span.label {
-    font-size: 1.125rem;
-    text-align: left;
-    vertical-align: top; }
-  #order-content span.value {
+  #order-content tr.food {
+    height: 350px; }
+  #order-content td {
+    padding-bottom: 0.9375rem; }
+    #order-content td.order-label {
+      height: 150px;
+      max-height: 150px;
+      max-width: 2.8125rem; }
+      #order-content td.order-label h2 {
+        text-align: center;
+        font-size: 1.75rem;
+        background-color: #373737;
+        padding: 0.625rem !important; }
+        #order-content td.order-label h2 span {
+          color: white !important;
+          display: block;
+          transform: translateY(5px); }
+        #order-content td.order-label h2.order-method {
+          width: 150px;
+          transform: translate(-52.5px, 10px) rotate(-90deg) !important; }
+          #order-content td.order-label h2.order-method.pickup {
+            background-color: #e02027; }
+          #order-content td.order-label h2.order-method.delivery {
+            background-color: #0779be; }
+        #order-content td.order-label h2.food {
+          width: 350px;
+          transform: translate(-152.5px, 10px) rotate(-90deg) !important; }
+    #order-content td.value {
+      font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+      color: #0779be;
+      font-size: 1rem;
+      padding: 0;
+      padding-left: 0.9375rem; }
+      #order-content td.value ul, #order-content td.value li {
+        line-height: 1.375rem; }
+      #order-content td.value#food {
+        vertical-align: top; }
+      #order-content td.value span {
+        display: inline-block; }
+        #order-content td.value span.text {
+          transform: translateY(2px); }
+      #order-content td.value div.quantity {
+        display: inline-block;
+        background-color: #e02027;
+        border-radius: 1000px;
+        height: 1.375rem;
+        width: 22px;
+        text-align: center;
+        transform: translateY(-3px); }
+        #order-content td.value div.quantity span {
+          font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
+          color: white !important;
+          transform: translateY(2.5px); }
+  #order-content ul.address {
+    padding: 0; }
+    #order-content ul.address li {
+      line-height: 1.125rem; }
+  #order-content ul.food {
     font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
-    color: #0779be;
-    font-size: 1rem; }
-  #order-content ul#food-list {
-    font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
-    display: inline-block; }
-
-#order-content-detail {
-  -webit-transition: opacity 150ms; }
+    display: inline-block;
+    line-height: 1rem; }
+    #order-content ul.food li.orb-opt {
+      display: inline-block;
+      float: none;
+      padding: 0 0.625rem;
+      background-color: #e1e1e1;
+      border-radius: 1000px;
+      margin-right: 0.3125rem;
+      line-height: 1rem; }
+    #order-content ul.food li.orb {
+      padding-top: 0.5rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px dotted #b4b4b4; }
 
 #pending-orders-count {
   position: absolute;
@@ -5778,6 +5816,9 @@ main#pos-container {
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.9375rem;
   width: 100%; }
+
+#order-accept-button {
+  margin-top: 0.3125rem; }
 
 @-webkit-keyframes ok-zoom {
   0% {
