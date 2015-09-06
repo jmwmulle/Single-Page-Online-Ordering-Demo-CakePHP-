@@ -5053,6 +5053,10 @@ span.tiny-opt {
 .warning {
   color: #f04124 !important; }
 
+span#order-ready-time {
+  color: #0779be;
+  font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
+
 @media only screen and (min-width:64.063em) {
   body, html, main, nav {
     overflow: hidden !important; } }
@@ -5975,11 +5979,18 @@ h1.success, h2.success, h3.success, h4.success, h5.success {
 @-webkit-keyframes modal_loading_dots {
   0% {
     -webkit-transform: scale(1, 1);
-    background-color: #0779be; }
+    background-color: #0779be;
+    opacity: 1; }
 
   25% {
     -webkit-transform: scale(0.5, 0.5);
-    background-color: #e02027; } }
+    background-color: #e02027;
+    opacity: 1; }
+
+  100% {
+    -webkit-transform: scale(1, 1);
+    background-color: #0779be;
+    opacity: 1; } }
 
 .modal-load-dot {
   background-color: #0779be;
@@ -5987,19 +5998,20 @@ h1.success, h2.success, h3.success, h4.success, h5.success {
   height: 3rem;
   border-radius: 1000px;
   display: inline-block;
-  margin: 0.5rem; }
+  margin: 0.5rem;
+  opacity: 0; }
 
 #load-dot-1 {
-  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 0s running forwards; }
+  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 4s running forwards; }
 
 #load-dot-2 {
-  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 0.25s running forwards; }
+  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 4.25s running forwards; }
 
 #load-dot-3 {
-  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 0.5s running forwards; }
+  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 4.5s running forwards; }
 
 #load-dot-4 {
-  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 0.75s running forwards; }
+  -webkit-animation: modal_loading_dots 1s ease-in-out infinite normal 4.75s running forwards; }
 
 #modal-overlay-container {
   position: fixed;

@@ -70,6 +70,7 @@
 	Router::connect( '/clear-cart',                 [ CTR => 'orders', ATN => 'clear_cart' ] );
 	Router::connect( '/finish-ordering/*',          [ CTR => 'orders', ATN => 'finalize' ] );
 	Router::connect( '/order-confirmation/*',       [ CTR => 'orders', ATN => 'user_order_confirmation' ] );
+	Router::connect( '/order-timeout/*',            [ CTR => 'orders', ATN => 'user_order_confirmation' ] );
 	Router::connect( '/order-method/*',             [ CTR => 'orders', ATN => 'order_method' ] );
 	Router::connect( '/pending',                    [ CTR => 'orders', ATN => 'get_pending', false ] );
 	Router::connect( '/pending/refreshed',          [ CTR => 'orders', ATN => 'get_pending', true ] );
@@ -101,7 +102,7 @@
 	Router::connect( '/update-orbopt/*',            [ CTR => 'orbopts', ATN => 'update' ] );
 
 	/** VARIABLES CONTROLLER */
-	Router::connect( '/system/*',            [ CTR => 'sysvars', ATN => 'config' ] );
+	Router::connect( '/system/*',            [ CTR => 'sysvars', ATN => 'sv_config' ] );
 	Router::connect( '/set-delivery-time/*',            [ CTR => 'sysvars', ATN => 'delivery_time' ] );
 
 

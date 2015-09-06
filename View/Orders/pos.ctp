@@ -1,3 +1,4 @@
+
 <div id="order-tone-wrapper" class="true-hidden">
 	<audio controls>
 	  <source src="files/new_order_tone.mp3" type="audio/mpeg">
@@ -62,11 +63,11 @@
 		<div class="row">
 			<div class="large-12 columns">
 				<ul class="large-block-grid-2 activizing">
-					<?php for ($i=30; $i<=105; $i+=15):?>
-					<li class="delivery-time <?=$i == 45 ? "active" : "inactive";?>" data-route="set_delivery_time/<?=$i;?>">
-						<h1 class="text"><?=$i;?> MIN</h1>
+					<?php foreach (array_slice($system, 5) as $index => $sysvar):?>
+					<li class="delivery-time <?=$sysvar['Sysvar']['status'] ? "active" : "inactive";?>" data-route="set_delivery_time/<?=$sysvar['Sysvar']['id'];?>">
+						<h1 class="text"><?=$index < 5 ? ($sysvar['Sysvar']['id'] - 5) * 15 : "90+";?> MIN</h1>
 					</li>
-					<?php endfor;?>
+					<?php endforeach;?>
 				</ul>
 				<a href="#" class="modal-button lrg full-width cancel" data-route="delivery_time_buttons/hide">
 					<span class="icon-cancel"></span><span class="text">CANCEL</span>

@@ -30,8 +30,8 @@
 					</select>
 				</div>
 				<div class="row">
-					<?php foreach (['opt', 'premium', 'cheese'] as $count) {?>
-					<div class="large-4 columns">
+					<?php foreach (['opt', 'premium', 'cheese', 'sidesauce'] as $count) {?>
+					<div class="large-3 columns">
 						<label><?=ucfirst($count);?> Count</label>
 						<select name="Orb[<?=$count;?>_count]">
 							<?php for ($i=0; $i<11; $i++) {

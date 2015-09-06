@@ -371,8 +371,8 @@
 		 * $method 0 == get, 1 == set
 		 * $id -1 gets all sysvars
 		 */
-		public function system_status($id=-1, $method = 'get', $status=null) {
-			$system = $this->requestAction("sysvars/config/$id/$method/$status");
+		public function system_status($id=-1, $method = 0, $status=null) {
+			$system = $this->requestAction("sysvars/sv_config/$id/$method/$status");
 			$this->set(compact('system'));
 			return $system;
 		}

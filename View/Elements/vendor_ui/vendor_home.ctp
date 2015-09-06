@@ -26,7 +26,7 @@ $now = new DateTime('now');
 	</div>
 <?php
 	$new_row = false;
-	foreach ($system as $sysvar):
+	foreach (array_slice($system, 0, 5) as $sysvar):
 		$sv = $sysvar['Sysvar'];
 		if ($sv['id'] == POS_AVAILABLE) continue;
 		$new_row = !$new_row;

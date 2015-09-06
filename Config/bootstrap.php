@@ -176,6 +176,7 @@
 define('ORDER_PENDING', 0);
 define('ORDER_ACCEPTED', 1);
 define('ORDER_REJECTED', 2);
+define('ORDER_TIMEOUT', 3);
 
 define('JUST_BROWSING', 'just_browsing');
 define('DELIVERY', 'delivery');
@@ -207,3 +208,4 @@ define("DELIVERY_TIME_60", 9);
 define("DELIVERY_TIME_75", 10);
 define("DELIVERY_TIME_90", 11);
 define("DELIVERY_TIME_90_PLUS", 12);
+

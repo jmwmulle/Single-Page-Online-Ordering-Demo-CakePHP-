@@ -60,8 +60,8 @@ XT.route_collections.orders_api = function() {
 							case 2:
 								request = "order_rejected"
 								break
-							case 2:
-								request = "order_timeout"
+							case 3:
+								request = ["order_timeout", data.id, 'timeout'].join(C.DS);
 								break
 							default:
 								request = ["update_order_confirmation", data.id].join(C.DS);
@@ -77,10 +77,19 @@ XT.route_collections.orders_api = function() {
 			}
 		}
 	};
+	this.order_timeout = {
+		params: {
+			id: {value: null, url_fragment: true},
+			status: {value: null, url_fragment: true}
+		},
+		modal:C.PRIMARY,
+		url: {url: "order-timeout", defer: false, type: C.POST}
+	};
 	this.launch_order_confirmation = {
 		params: {
 			id: {value: null, url_fragment: true},
-			status: {value: true, url_fragment: true}},
+			status: {value: true, url_fragment: true}
+				},
 		modal: C.PRIMARY,
 		url: {url: "order-confirmation", defer: false, type: C.POST},
 		callbacks: {

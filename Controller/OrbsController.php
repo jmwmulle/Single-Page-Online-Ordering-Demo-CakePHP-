@@ -269,7 +269,7 @@
 		}
 
 		public function orbopt_config($orb_id) {
-			if ( $this->request->is( 'ajax' ) || true ) {
+			if ( $this->request->is( 'ajax' ) ) {
 				$this->layout = "ajax";
 				$orb          = $this->Orb->find( 'all', array( 'conditions' => array( '`Orb`.`id`' => $orb_id ) ) );
 				$this->loadModel( 'OrbsOrbopt' );
@@ -278,14 +278,13 @@
 				                                                                              'deprecated' => 0 ),
 				                                                       'fields'     => array( 'orbopt_id' ) )
 				);
-//				db($default_opts);
 				$default_opts = Hash::extract( $default_opts, "{n}.OrbsOrbopt.orbopt_id" );
 
 				$orb            = $orb[ 0 ];
 				$active_orbopts = Hash::extract( $orb[ 'Orbopt' ], "{n}.id" );
-				$orbcats        = $this->Orb->Orbcat->find( 'all', array( 'recursive' => -1 ) );
+				$orbcats        = $this->Orb->Orbcat->find( 'all', ['recursive' => -1] );
 				$optflags       = $this->Orb->Orbopt->Optflag->find( 'list' );
-				$orbopts_groups = $this->Orb->Orbcat->find( 'list', array( 'conditions' => array( '`Orbcat`.`orbopt_group`' => 1 ) ) );
+				$orbopts_groups = $this->Orb->Orbcat->find( 'list', ['conditions' => ['`Orbcat`.`orbopt_group`' => 1 ]] );
 				$orbopts        = Hash::remove( $this->Orb->Orbopt->find( 'all' ), "{n}.Orb" );
 				foreach ( $orbopts as $i => $opt ) {
 					if ($opt['Orbopt']['deprecated'] == true) {
@@ -331,6 +330,7 @@
 									);
 								}
 							}
+							if ( empty($save_data) ) break; // ie. orb has no opts
 							if ( $this->OrbsOrbopt->saveMany( $save_data, array( 'atomic' => true ) ) ) {
 								array_push( $response[ 'orbs_orbopts_ids' ], $this->OrbsOrbopt->id );
 							}

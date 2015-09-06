@@ -13,7 +13,7 @@ class SysvarsController extends AppController {
  *
  * @var array
  */
-	public $components = array('Paginator');
+	public $components = array('Paginator', 'Session');
 
 /**
  * index method
@@ -103,50 +103,48 @@ class SysvarsController extends AppController {
 	}
 
 
-	public function delivery_time($time) {
-		if ($this->is_ajax_post() ) {
-			$time = $time * 1;
-			$response = ['success' => true,
-			             'error' => false,
-			             'data' => ['submitted' => ["time" => $time],
-			                        'times' => []
-			             ]];
-
-			$found =  false;
-			for ($i = DELIVERY_TIME_15; $i<= DELIVERY_TIME_90_PLUS; $i++) {
-				$response['data']['times'][$i] = ["time" => 15 * ( $i - 5 ), "check" => $i  == 15 * ( $i - 5 )];
-				$this->Sysvar->id = $i;
-				if ( !($this->Sysvar->exists() ) ) {
-					$response[ 'success' ] = false;
-					$response[ 'error' ]   = "Sysvar not found";
-					break;
-				}
-				$this->Sysvar->save( [ "state" => $time == 15 * ( $i - 5 ) ] );
+	public function delivery_time($id = null) {
+		if ($this->is_ajax_post()) {
+			if ($id === null) {
+				$time = $this->Sysvar->find('first', ['conditions' =>
+					                                      ['`Sysvar`.`id` >=' => DELIVERY_TIME_30, '`Sysvar`.`status`' => true],
+				                                      'fields' => 'id'
+				]);
+				// basicaly if this fails, it should fail gracefully
+				return !empty($time) ? ($time['Sysvar']['id'] - 5) * 15 : 45;
 			}
-			$this->render_ajax_response($response);
+			$response = ['success' => false,
+			             'error' => false,
+			             'data' => ['submitted' => ["id" => $id]]];
+
+				for($i = 6; $i <= 11; $i++) {
+					if ( !$this->Sysvar->save(['id' => $i, 'status' => $i === (int) $id]) ) {
+						$response['success'] = false;
+						$response['error'] = $this->Sysvar->getValidationErrors;
+						break;
+					}
+				}
+			return $this->render_ajax_response($response);
 		} else {
 			$this->redirect( ___cakeUrl( "orders", "menu" ) );
 		}
 	}
 
-	public function config($id, $method, $status=null) {
+	public function sv_config($id, $method, $status=null, $force_no_json=false) {
 		$this->autoRender = false;
-//		if ( !$this->request->is('ajax') ) return $this->redirect(___cakeUrl('orbcats', 'menu'));
+
 		$options = [];
 
+		if ( !($status === null) ) $status = (bool) $status;
 		$response = [
 			'success' => true,
 		    'error' => false,
 		    'data' => [ 'submitted' => compact('id', 'status', 'method'),
-		                'system' => null
+		                'system' => null,
+		                'test' => [$id > 0, is_bool($status), !!$method]
 		    ]];
 		$sysvars = null;
-		if ( $id > 0 and $status != null and $method == 1) {
-			if ( !$status === true and !$status === false ) {
-				$response['success'] = false;
-				$response['error'] = "No value to set.";
-				return  $this->render_ajax_response($response);
-			}
+		if ( $id > 0 and is_bool($status) and $method) {
 			if ( !$this->Sysvar->save(compact('id', 'status')) ) {
 				$response['success'] = false;
 				$response['error'] = $this->Sysvar->getValidationErrors;
@@ -154,8 +152,9 @@ class SysvarsController extends AppController {
 			}
 			$sysvars = $this->Sysvar->find('all', $options);
 		}
+		$response['data']['system'] = $sysvars;
 
-		if ( $method == 0) {
+		if ( !$method ) {
 			if ($id != -1) $options['conditions'] = ['`variable`.`id`' => $id];
 			if ($id > 0 && !$this->Sysvar->exists($id) ) {
 				$response['success'] = false;
@@ -164,10 +163,8 @@ class SysvarsController extends AppController {
 			}
 			$sysvars = $this->Sysvar->find('all', $options);
 		}
-		$response['data']['system'] = Hash::remove(Hash::remove( Hash::combine( $sysvars,
-					"{n}.Sysvar.name", "{n}.Sysvar"),
-				"{s}.name"),
-		"{s}.id");
+		$json_v = Hash::combine( $sysvars,"{n}.Sysvar.name", "{n}.Sysvar");
+		$response['data']['system'] =  Hash::remove( Hash::remove($json_v, "{s}.name"), "{s}.id");
 		return  $this->request->is('ajax') ? $this->render_ajax_response($response) : $sysvars;
 	}
 }

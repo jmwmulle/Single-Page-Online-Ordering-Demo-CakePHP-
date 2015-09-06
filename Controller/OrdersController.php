@@ -106,6 +106,7 @@
 		                                           "paid"                => false,
 		                                           "payment_information" => [ ]
 		                           ],
+		                           'System' => []
 
 		];
 
@@ -239,6 +240,7 @@
 			if ( $this->Session->read( 'Cart.uid' ) === null ) $this->Session->write( 'Cart.uid', String::uuid() );
 
 			if ( $this->request->url === "!" ) $this->redirect( ___cakeUrl( "orbcats", "menu" ) );
+			$this->Session->write('System', $this->system_status());
 		}
 
 		/**
@@ -658,16 +660,18 @@
 				              'error'   => false,
 				              'data'    => [
 				              'submitted_data' => compact( 'id', 'status' ),
-				              'status'         => false ]
+				              'status'         => false,
+				              ]
 				];
+				$this->set('time', [$this->Session->read('Cart.Service.order_method'), $this->requestAction('sysvars/delivery_time')]);
 				if ( empty( $order ) ) {
 					$response[ 'success' ] = false;
 					$response[ 'error' ]   = "Order not found.";
 				} else {
 					$response[ 'data' ][ 'status' ] = $order[ 'Order' ][ 'state' ];
 				}
-				if ($status == "confirmed") $this->init_cart(true);
-				if ($inquiries > 30) $response[ 'data' ][ 'status' ] = "timeout";
+				if ($status == "confirmed" or $status == "timeout") $this->init_cart(true);
+				if ($inquiries > 30) $response[ 'data' ][ 'status' ] = ORDER_TIMEOUT;
 				return $status ? $this->render( 'get_status', 'ajax' ) : $this->render_ajax_response( $response );
 			} else {
 				return $this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
@@ -682,6 +686,7 @@
 
 		public function pos() {
 			$this->set( 'page_name', 'xtreme-pos' );
+			$this->system_status();
 			if ( $this->request->header( 'User-Agent' ) == "xtreme-pos-tablet" || true ) {
 				$this->render( "pos", "pos" );
 			} else {
