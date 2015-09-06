@@ -19,10 +19,10 @@ XtremeCart.prototype = {
 	import_cart: function(session_data) {
 		var self = this;
 		if ( !session_data ) {
-			$.get(["cart", this.cart_id].join(C.DS), function(response) { self.import_cart($.parseJSON(response).data)});
+			$.get([XT.host, "load-cart", this.cart_id].join(C.DS), function(response) { self.import_cart($.parseJSON(response).data)});
 			return;
 		}
-
+		pr(session_data, "session_data");
 		if ( session_data && !this.cart_id) this.cart_id = session_data.cart_id;
 
 		this.session_data = session_data;

@@ -7,7 +7,6 @@
 	 * About.me: about.me/thisimpetus
 	 */
 
-
 //db($orbs);
 	//pr($optflags);
 //		db($orbopts);
@@ -28,8 +27,8 @@
 
 			<!------------------------------------- TAB 1: VENDOR UI ------------------------------->
 			<?php //echo $this->Element('vendor_ui/vendor_home', array('store' => $this->get('store_status'), 'delivery' => $this->get('delivery_status')));?>
-			<?php echo $this->Element( 'vendor_ui/vendor_home', array( 'store'   => true, 'delivery' => false,
-			                                                           'closing' => "11PM" )
+			<?php echo $this->Element( 'vendor_ui/vendor_home', [ 'system'   => $system,
+			                                                      'closing' => "11PM"]
 			); ?>
 
 			<!------------------------------------- TAB 2: MENU ------------------------------------>

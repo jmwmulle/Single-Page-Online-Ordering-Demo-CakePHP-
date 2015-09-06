@@ -218,7 +218,10 @@
 		 * @param boolean $destroy
 		 */
 		public function init_cart( $destroy = false ) {
-			if ( $destroy ) $this->Session->destroy();
+			if ( $destroy ) {
+				$this->Session->destroy();
+				$this->Session->write("Cart", null);
+			}
 			if ( !$this->Session->check( 'Cart' ) ) $this->Session->write( 'Cart', $this->cart_template );
 			foreach ( $this->cart_template as $key => $value ) {
 				if ( !$this->Session->check( "Cart.$key" ) ) {
@@ -418,39 +421,6 @@
 		}
 
 
-		public function step1() {
-			$paymentAmount = $this->Session->read( 'Cart.Order.total' );
-			if ( !$paymentAmount ) {
-				return $this->redirect( '/' );
-			}
-			$this->Session->write( 'Cart.Order.payment_method', 'creditcard' );
-			$this->Paypal->step1( $paymentAmount );
-		}
-
-		public function step2() {
-
-			$token  = $this->request->query[ 'token' ];
-			$paypal = $this->Paypal->GetShippingDetails( $token );
-
-			$ack = strtoupper( $paypal[ 'ACK' ] );
-			if ( $ack == 'SUCCESS' || $ack == 'SUCESSWITHWARNING' ) {
-				$this->Session->write( 'Order.Paypal.Details', $paypal );
-
-				return $this->redirect( array( 'action' => 'review' ) );
-			} else {
-				$ErrorCode         = urldecode( $paypal[ 'L_ERRORCODE0' ] );
-				$ErrorShortMsg     = urldecode( $paypal[ 'L_SHORTMESSAGE0' ] );
-				$ErrorLongMsg      = urldecode( $paypal[ 'L_LONGMESSAGE0' ] );
-				$ErrorSeverityCode = urldecode( $paypal[ 'L_SEVERITYCODE0' ] );
-				echo 'GetExpressCheckoutDetails API call failed. ';
-				echo 'Detailed Error Message: ' . $ErrorLongMsg;
-				echo 'Short Error Message: ' . $ErrorShortMsg;
-				echo 'Error Code: ' . $ErrorCode;
-				echo 'Error Severity Code: ' . $ErrorSeverityCode;
-				die();
-			}
-		}
-
 		/**
 		 * Review order, ie. cart as well as payment & service info
 		 *
@@ -467,10 +437,31 @@
 		}
 
 		public function read_cart( $uid = null ) {
-			$this->init_cart( ( $uid && $this->Session->read( 'Cart.uid' ) != $uid ) );
+			$this->init_cart( ($uid && $this->Session->read( 'Cart.uid' ) != $uid) );
 			$response = [ 'success' => true, 'error' => false, 'data' => $this->Session->read( 'Cart' ) ];
 
 			return $this->render_ajax_response( $response );
+		}
+
+		public function confirm_pickup_info( $scope = null ) {
+			if ( $this->is_ajax_post() ) {
+				$this->init_cart();
+				$data = $this->request->data[ 'orderInformation' ];
+				$response = [ 'success' => true,
+				              'error'   => false,
+				              'data'    => [ "submitted" => $data,
+				                             "scope"     => $scope,
+				              ] ];
+				$this->Session->write('Cart.Service.address.firstname', $data['firstname']);
+				$this->Session->write('Cart.Service.address.lastname', $data['lastname']);
+				$this->Session->write('Cart.Service.address.phone', $data['phone']);
+				$this->Session->write('Cart.Service.address_valid', true);
+				$this->Session->write('Cart.Service.address_set', true);
+				return $this->render_ajax_response($response);
+
+			} else {
+				return $this->redirect( ___cakeUrl( 'orbcats', 'menu' ) );
+			}
 		}
 
 		/**
@@ -550,7 +541,7 @@
 					"review" => [ DELIVERY => "review_order", PICKUP => "review_order" ],
 					"splash" => [ DELIVERY => "menu", PICKUP => "menu" ],
 					"menu"   => [ DELIVERY      => "set_delivery_address" . DS . "menu" . DS . "false",
-					              PICKUP        => null,
+					              PICKUP        => "set_pickup_information" . DS . "menu" . DS . "false",
 					              JUST_BROWSING => null ]
 				];
 
@@ -607,14 +598,17 @@
 		}
 
 		public function get_pending( ) {
-			if ( $this->request->is( 'ajax' ) || true ) {
+			$this->autoRender = false;
+			if ( $this->request->is( 'ajax' ) or true) {
+				$sys = $this->system_status(POS_AVAILABLE, 1, true);
+
 				$orders = $this->Order->find( 'all', ['conditions' => ['Order.state' => ORDER_PENDING ], 'recursive' => -1 ] );
 				foreach ($orders as $i => $order) {
 					$orders[ $i ][ 'Order' ][ 'detail' ] = json_decode( $orders[ $i ][ 'Order' ][ 'detail' ], true );
 				}
 				$response     = ['success' => true,
 				                 'error' => false,
-				                 'data' => compact('orders')
+				                 'data' => compact('orders', 'sys')
 				];
 				$this->render_ajax_response( $response );
 			} else {

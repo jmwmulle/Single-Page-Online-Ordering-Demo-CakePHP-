@@ -214,6 +214,7 @@
 		public function vendor_ui($refreshing = false) {
 			$this->layout = 'vendor_ui';
 			$this->set( 'page_name', "Vendor Interface" );
+			$this->system_status();
 			$orbs    = $this->Orb->find( 'all', array( 'recursive' => 1 ) );
 			$orbopts = Hash::remove( $this->Orb->Orbopt->find( 'all' ), "{n}.Orb" );
 			foreach ( $orbopts as $i => $opt ) {

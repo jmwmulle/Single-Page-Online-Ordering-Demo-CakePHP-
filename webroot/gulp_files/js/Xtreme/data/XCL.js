@@ -83,6 +83,7 @@ var constants = {
 	CONFIGURED: "configured",
 	ACTIVE: "active",
 	INACTIVE: "inactive",
+	SYSTEM_READY: "system_ready"
 };
 
 var C = constants;

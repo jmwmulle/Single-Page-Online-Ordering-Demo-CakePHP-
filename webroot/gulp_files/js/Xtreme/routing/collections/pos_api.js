@@ -48,7 +48,6 @@ XT.route_collections.pos_api = function() {
 				}, true, true);
 			}
 		}
-
 	};
 	this.pos_reply = {
 		params: {id: {url_fragment: true}, reply:{url_fragment: true} },
@@ -61,6 +60,31 @@ XT.route_collections.pos_api = function() {
 			}
 		}
 	};
+	this.delivery_time_buttons = {
+		params:['action'],
+		callbacks: { launch: function() { XT.pos.delivery_times[this.read('action')]() } }
+	},
+	this.set_delivery_time = {
+		params:['time'],
+		url: { url: "set_delivery_time", type: C.POST, defer:true},
+		callbacks: {
+			launch: function() {
+				XT.router.cake_ajax_response(this.deferral_data, {
+					callback: function() { XT.pos.delivery_times.hide() }
+					}, true, true);
+			}
+		}
+	}
+
+	this.system = {
+		params: {sysvar: {url_fragment:true}, method: {url_fragment:true}, value: {url_fragment:true}},
+		url: {url:"system", defer:true, type: C.POST},
+		callbacks: {
+			launch: function() {
+				XT.router.cake_ajax_response(this.deferral_data, {}, true, true);
+			}
+		}
+	}
 
 	return this;
 };

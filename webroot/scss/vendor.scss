@@ -510,8 +510,32 @@ display:none !important;
       span { color: $alert-color !important; }
     }
   }
+}
 
-
+li.sysvar {
+  list-style-type: none;
+  font-weight:bold;
+  font-size: rem-calc(20px);
+    &.active {
+      .modal-button {
+        span { color: $black !important;}
+        background-color:$xtreme-yellow !important;
+        &:hover {
+        span { color: $black !important;}
+          background-color:$xtreme-yellow !important;
+        }
+      }
+    }
+      &.inactive {
+        .modal-button {
+          span { color: darken($light-grey, 15%) !important; }
+          background-color: $light-grey !important;
+          &:hover {
+              span { color: $xtreme-red !important; }
+              background-color: $light-grey !important;
+        }
+      }
+    }
 }
 
 .breakout {

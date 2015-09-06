@@ -227,6 +227,7 @@
 		 */
 		public function menu($orbcat_id = null, $orb_id = null, $return = false) {
 			$this->set_page_name( 'menu' );
+			$this->system_status();
 			$this->requestAction("orders/init_cart");
 			if (!$this->Orbcat->exists( $orbcat_id ) ) $orbcat_id = $this->default_orbcat_id($orb_id);
 			$this->Orbcat->id = $orbcat_id;

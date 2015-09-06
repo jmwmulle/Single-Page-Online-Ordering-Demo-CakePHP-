@@ -50,9 +50,8 @@ XtremeLayout.prototype = {
 		}, 800);
 
 		if ( is_mobile() ) return;
-
 		$(XSM.global.footer).css({top: $(XSM.global.page_content).innerHeight()});
-		if (XT.page_name != "xtreme-pos") this.fasten(XSM.menu.self).css({overflow: "hidden"});
+		if (XT.page_name != "xtreme-pos" && XT.page_name != "Vendor Interface") this.fasten(XSM.menu.self).css({overflow: "hidden"});
 
 	},
 	jq_binds: function() {
@@ -141,36 +140,6 @@ XtremeLayout.prototype = {
 		return $(element);
 	},
 
-//	/**
-//	 * Executes the dismissal sequence for any of the site's four modal windows.
-//	 *
-//	 * @param modal
-//	 * @param action
-//	 * @returns {XtremeLayout}
-//	 */
-//	dismiss_modal: function (modal, action) {
-//		if ( !modal ) throw "ValueError: no modal provided.";
-//		var duration  = 300;
-//		if (modal != C.ORBCARD ) {
-//			if ( $(XSM.modal[modal]).hasClass(FX.slide_up) ) duration = 0
-//			$(XSM.modal[modal]).addClass(FX.slide_up);
-//		} else {
-//			$(XSM.modal.orb_card).hide('clip');
-//			$(XSM.menu.orb_card_overlay).addClass(FX.fade_out);
-//			setTimeout(function () { $(XSM.menu.orb_card_overlay).addClass(FX.hidden); }, 300);
-//		}
-//
-//		if (action == "reset-user-activity") {
-//			$(XSM.menu.user_activity_panel).children().each(function () {
-//				if ($(this).hasClass(FX.active)) $(this).removeClass(FX.active).addClass(FX.inactive);
-//				if ($(this).hasClass(FX.active_by_default)) $(this).addClass(FX.active);
-//			})
-//		}
-//
-//		if (action == "unstash") duration += XT.menu.init().unstash();
-//
-//		return duration;
-//	},
 
 	fasten: function (selector) {
 		var debug_this = 0;

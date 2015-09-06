@@ -5320,6 +5320,27 @@ li.orbopt.disabled {
     .modal-button.delete:hover span {
       color: #ff533d !important; }
 
+li.sysvar {
+  list-style-type: none;
+  font-weight: bold;
+  font-size: 1.25rem; }
+  li.sysvar.active .modal-button {
+    background-color: #faea06 !important; }
+    li.sysvar.active .modal-button span {
+      color: black !important; }
+    li.sysvar.active .modal-button:hover {
+      background-color: #faea06 !important; }
+      li.sysvar.active .modal-button:hover span {
+        color: black !important; }
+  li.sysvar.inactive .modal-button {
+    background-color: #b4b4b4 !important; }
+    li.sysvar.inactive .modal-button span {
+      color: #8e8e8e !important; }
+    li.sysvar.inactive .modal-button:hover {
+      background-color: #b4b4b4 !important; }
+      li.sysvar.inactive .modal-button:hover span {
+        color: #e02027 !important; }
+
 .breakout {
   position: fixed;
   z-index: 9995;

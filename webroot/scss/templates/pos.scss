@@ -1,22 +1,24 @@
+@-webkit-keyframes panel-stow {
+  0% { transform: rotate(-90deg) translateY(rem-calc(375px)); }
+  20% { transform: rotate(-90deg) translateY(rem-calc(365px)); }
+  100% { transform: rotate(-90deg) translateY(rem-calc(475px)); }
+}
+
+
 body#pos {
   background-color : $dark-grey;
-  background: none;
+  background-image: none;
   * { @include unselectable;}
 }
 
-main#pos-container {
-  padding-top : rem-calc(60px);
-  width            : rem-calc(600px);
-}
 
-
-#next-order {
+#pos-ui {
+  position: relative;
   box-shadow       : 0 0 1rem $black-a50;
   padding          : $base-padding;
   margin           : 0 rem-calc(25px) 0 rem-calc(25px);
   width            : rem-calc(550px);
   float            : left;
-  position         : absolute;
   top              : rem-calc(75px);
   left             : 0;
   border           : 4px solid $white;
@@ -27,6 +29,8 @@ main#pos-container {
 #values { border-left : 1px solid $light-grey; }
 
 #order-content {
+  position:relative;
+  z-index:inherit;
   -webit-transition: opacity 150ms;
   color         : $text-grey;
   height        : rem-calc(500px);
@@ -150,7 +154,7 @@ main#pos-container {
 }
 
 #back-splash {
-  position      : fixed;
+  position      : absolute;
   top           : rem-calc(80px);
   left          : rem-calc(25);
   width         : rem-calc(550px);
@@ -159,10 +163,11 @@ main#pos-container {
   font-size     : rem-calc(134px);
   text-align    : center;
   line-height   : 200px;
-  color         : $text-grey;
+  color         : $white;
   z-index       : 1;
   border-radius : 1rem;
-  border        : 12px solid $text-grey;
+  border        : 12px solid $white;
+  transition: opacity 150ms;
 }
 
 #order-reject-confirmation {
@@ -215,54 +220,46 @@ main#pos-container {
   }
 }
 
-#order-accepted {
-  position: fixed;
-  top:0;
-  left:0;
-  z-index:999999;
-  -webkit-transition: opacity 0.1s;
-  height:rem-calc(200px);
-  margin-top:rem-calc(100px);
-  font-size:rem-calc(96px);
-  color:$white;
-  background-color:$black-a50;
-  padding: $base-padding;
-  width:100%;
-}
-
 #order-accept-button { margin-top: $tight-padding; }
 
-@-webkit-keyframes ok-zoom {
-  0% {
-    opacity:1;
-    -webkit-transform:scale(0.01);
-  }
 
-  100% {
-    opacity: 0;
-    -webkit-transform: translateX(-300px) scale(1);
-  }
-}
 #accept-acknowledge {
-//  background-color:red;
-  font-size:80rem;
-  text-align: center;
+  background-image:url("../img/pos-hero.png");
+  background-repeat:no-repeat;
+  background-position: 225px 490px;
+  background-size: auto 325px;
   width:rem-calc(600px);
   line-height:rem-calc(800px);
   height:rem-calc(800px);
-  position: absolute;
-  top:rem-calc(80px);
-  left:0;
-  -webkit-transition: none;
-  -webkit-transform:scale(0.01);
-  text-shadow: 0 0 1rem $black-a50;
-  z-index:999999999;
-  color:$xtreme-red !important;
-  &.exposed { -webkit-animation : ok-zoom 300ms ease-in 1 normal 0s running forwards; }
+  position: relative;
+  margin-top:rem-calc(80px);
+  z-index:10;
+  transition: transform 300ms ease-in-out;
+  &.slide-right {  transform: translateX( rem-calc(550px) ); }
+  #message {
+    background-image: url("../img/pos-hero-speech.png");
+    background-repeat:no-repeat;
+    background-position: 50px 275px;
+    background-size:auto 300px;
+    font-family: 'Bangers', cursive;
+    color:$black;
+    position:absolute;
+    width: 590px;
+    height: 790px;
+    z-index:11;
+    transition: opacity 150ms ease-in-out;
+    span {
+      display: block;
+      width:190px;
+      margin-top:360px;
+      margin-left:160px;
+      text-align: center;
+    }
+  }
 }
 
 #virtual-receipt {
-  position:fixed;
+  position:absolute;
   background-color:$white;
   padding:$tight-padding;
   top:rem-calc(80px);
@@ -275,7 +272,6 @@ main#pos-container {
   * { color: $text-grey !important;}
 }
 main#js-console {
-background-color: rgb(45,67,82);
 top:rem-calc(80px);
 width: rem-calc(600px);
 height:rem-calc(800px);
@@ -320,7 +316,6 @@ h1, h2, h3, h4, h5 {
     text-transform: uppercase;
   }
 }
-
 #upload-menu-form-container {
   margin-top : 2rem;
   padding:1rem;
@@ -329,4 +324,76 @@ h1, h2, h3, h4, h5 {
   label {
     color : $xtreme-blue;
   }
+}
+
+#delivery-time-button {
+  position: absolute;
+  width:400px;
+  height:60px;
+  left:0px;
+  top:400px;
+  border-top-left-radius: rem-calc(16px);
+  border-top-right-radius: rem-calc(16px);
+  box-shadow: 0px -4px 8px $black-a50;
+  background-color:$xtreme-blue;
+  border:2px solid $white;
+  border-bottom: none;
+  padding:$base-padding;
+  z-index:99999999;
+  text-align: center;
+  font-size: rem-calc(24px);
+  color: $white !important;
+  transform: rotate(-90deg) translateY(rem-calc(375px));
+  &.slide-right {
+    transform: rotate(-90deg) translateY(rem-calc(375px));
+    -webkit-animation : panel-stow 300ms ease-in 1 normal 0s running forwards;
+//    transform: rotate(-90deg) translateY(rem-calc(450px));
+  }
+}
+#delivery-times {
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color: $black-a50;
+  .container {
+    position: absolute;
+    top: rem-calc(110px);
+    left:50px;
+    width: rem-calc(500px);
+    height: 665px;
+    z-index: 9999;
+    background-color:$white;
+    border: 2px solid $text-grey;
+    border-radius: rem-calc(16px);
+    ul { margin-top: $base-padding; }
+    li.delivery-time {
+      &:first-of-type h1 { border-top-left-radius: rem-calc(16px);}
+      &:nth-of-type(2) h1 { border-top-right-radius: rem-calc(16px);}
+      height:rem-calc(190px);
+      h1 {
+        box-shadow: 0px 0px 8px $black-a50;
+        height: 100%;
+        width:100%;
+        font-size: rem-calc(60px);
+        line-height:rem-calc(180px);
+        text-align:center;
+        margin-bottom:$base-padding * 2 !important;
+      }
+      &.active h1 {
+          background-color: $xtreme-yellow;
+          color:$black !important;
+      }
+      &.inactive h1 {
+        background-color: $xtreme-blue;
+        color: $white;
+      }
+    }
+    a.cancel {
+      border-bottom-left-radius: rem-calc(16px);
+      border-bottom-right-radius: rem-calc(16px);
+    }
+  }
+
 }

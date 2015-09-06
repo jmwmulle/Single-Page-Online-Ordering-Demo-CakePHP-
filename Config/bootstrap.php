@@ -194,3 +194,9 @@ define('DEBIT', 'debit');
 
 define("USER_ACCOUNTS_ACTIVE", false);
 define("SOCIAL_ACTIVE", false);
+
+define("STORE_OPEN", 1);
+define("DEBIT_AVAILABLE", 2);
+define("POS_AVAILABLE", 3);
+define("DELIVERY_AVAILABLE", 4);
+define("CREDIT_AVAILABLE", 5);

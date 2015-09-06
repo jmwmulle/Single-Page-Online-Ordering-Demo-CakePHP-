@@ -125,6 +125,34 @@ XT.route_collections.orders_api = function() {
 			}
 		}
 	};
+	this.set_pickup_information = {
+		modal: C.PRIMARY,
+		url: {url: "set-pickup-information", type: C.GET, defer: false},
+		params: {context: {url_fragment:true}, restore:{url_fragment:false}},
+		callbacks: {
+			params_set: function () {
+				if (this.read('context') == 'cancel' ) {
+					this.unset('url');
+					this.unset('launch');
+					switch (this.read('restore')) {
+						case 'menu':
+							this.modal.hide();
+							XT.menu.unstash();
+							setTimeout(function() {
+							$(XT.router).trigger(C.ROUTE_REQUEST, {request:"set_order_method/menu/just_browsing", trigger:{}});
+							XT.cart.set_order_method(C.JUST_BROWSING);
+							}, 300);
+							break;
+						case 'review':
+							$(XT.router).trigger(C.ROUTE_REQUEST, {request:"review_order", trigger:{}});
+						default:
+							this.modal.hide();
+							break;
+					}
+				}
+			}
+		}
+	};
 	this.set_order_method = {
 		modal: C.PRIMARY,
 		url: {url: "order-method", type: C.POST, defer: true},
@@ -135,7 +163,7 @@ XT.route_collections.orders_api = function() {
 		},
 		callbacks: {
 			params_set: function() {
-				if (this.read('context') == "menu" && this.read('method') != "delivery") this.stash = false;
+				if (this.read('context') == "menu" && this.read('method') == "just_browsing") this.stash = false;
 			},
 			launch: function () {
 				XT.router.cake_ajax_response(this.deferral_data, {

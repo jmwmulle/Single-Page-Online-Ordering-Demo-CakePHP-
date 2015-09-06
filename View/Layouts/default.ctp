@@ -8,7 +8,7 @@
 	<script type="text/javascript">
 		if ( window.xtr === undefined) window.xtr = {};
 		var XT = window.xtr;
-		window.xtr.host = "<?php switch($_SERVER['HTTP_HOST']) {
+		XT.host = "<?php switch($_SERVER['HTTP_HOST']) {
 					case "xtreme-pizza.ca":
 						echo "xProd";
 						break;
@@ -19,11 +19,11 @@
 						echo "xLoc";
 						break;
 					}?>";
-		window.xtr.store_status = <?php echo $this->get('store_status') ? $this->get('store_status') : "{reachable:false, delivering:false, time:0}"; ?>;
-		window.xtr.is_splash = <?php echo ($this->get("is_splash")) ? 'true' : 'false';?>;
-		window.xtr.page_name = "<?php echo ($this->get("page_name")) ? $this->get("page_name") : "Xtreme Menu"; ?>";
-		window.xtr.vendor_ui = false;
-		window.xtr.route_collections = {};
+		XT.store_status = <?php echo $this->get('store_status') ? $this->get('store_status') : "{reachable:false, delivering:false, time:0}"; ?>;
+		XT.is_splash = <?php echo ($this->get("is_splash")) ? 'true' : 'false';?>;
+		XT.page_name = "<?php echo ($this->get("page_name")) ? $this->get("page_name") : "Xtreme Menu"; ?>";
+		XT.vendor_ui = false;
+		XT.route_collections = {};
 
 	</script>
 	<?php
@@ -67,7 +67,7 @@
 		                      "$gulp_js_path/EffectChain",
 		                      "$gulp_js_path/XBS",
 		                      "$gulp_js_path/exceptions",
-		                      "$gulp_js_path/app" ];
+		                      /*"$gulp_js_path/app" */];
 		echo $this->Html->meta( 'icon' );
 		echo $this->Html->css( "app" );
 		echo $this->Html->script( "/bower_components/modernizr/modernizr" );

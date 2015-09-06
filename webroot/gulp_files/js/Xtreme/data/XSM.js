@@ -73,6 +73,7 @@ var XSM = {
 	forms: {
 		orb_order_form: "#orderOrbForm",
 		order_address_form: "#orderAddressForm",
+		order_information_form: "#orderInformationForm",
 		users_form: "#UsersForm"
 	},
 	load: {

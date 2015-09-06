@@ -691,3 +691,5 @@ function strip_orphan_text_nodes(parsed_html_obj) {
 }
 
 function defined(obj) { return typeof obj != "undefined" }
+
+function ranged_random(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min }

@@ -5608,9 +5608,19 @@ footer#footer {
       width: 25%;
       max-width: 5rem; }
 
+@-webkit-keyframes panel-stow {
+  0% {
+    transform: rotate(-90deg) translateY(23.4375rem); }
+
+  20% {
+    transform: rotate(-90deg) translateY(22.8125rem); }
+
+  100% {
+    transform: rotate(-90deg) translateY(29.6875rem); } }
+
 body#pos {
   background-color: #191919;
-  background: none; }
+  background-image: none; }
   body#pos * {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -5619,17 +5629,13 @@ body#pos {
     -ms-user-select: none;
     user-select: none; }
 
-main#pos-container {
-  padding-top: 3.75rem;
-  width: 37.5rem; }
-
-#next-order {
+#pos-ui {
+  position: relative;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
   padding: 0.9375rem;
   margin: 0 1.5625rem 0 1.5625rem;
   width: 34.375rem;
   float: left;
-  position: absolute;
   top: 4.6875rem;
   left: 0;
   border: 4px solid white;
@@ -5640,6 +5646,8 @@ main#pos-container {
   border-left: 1px solid #b4b4b4; }
 
 #order-content {
+  position: relative;
+  z-index: inherit;
   -webit-transition: opacity 150ms;
   color: #373737;
   height: 31.25rem; }
@@ -5745,7 +5753,7 @@ main#pos-container {
     -webkit-transform: translate(-1.875rem, -1.875rem); }
 
 #back-splash {
-  position: fixed;
+  position: absolute;
   top: 5rem;
   left: 1.5625rem;
   width: 34.375rem;
@@ -5754,10 +5762,11 @@ main#pos-container {
   font-size: 8.375rem;
   text-align: center;
   line-height: 200px;
-  color: #373737;
+  color: white;
   z-index: 1;
   border-radius: 1rem;
-  border: 12px solid #373737; }
+  border: 12px solid white;
+  transition: opacity 150ms; }
 
 #order-reject-confirmation {
   width: 37.5rem;
@@ -5803,51 +5812,44 @@ main#pos-container {
       top: 0;
       float: right; }
 
-#order-accepted {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999999;
-  -webkit-transition: opacity 0.1s;
-  height: 12.5rem;
-  margin-top: 6.25rem;
-  font-size: 6rem;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 0.9375rem;
-  width: 100%; }
-
 #order-accept-button {
   margin-top: 0.3125rem; }
 
-@-webkit-keyframes ok-zoom {
-  0% {
-    opacity: 1;
-    -webkit-transform: scale(0.01); }
-
-  100% {
-    opacity: 0;
-    -webkit-transform: translateX(-300px) scale(1); } }
-
 #accept-acknowledge {
-  font-size: 80rem;
-  text-align: center;
+  background-image: url("../img/pos-hero.png");
+  background-repeat: no-repeat;
+  background-position: 225px 490px;
+  background-size: auto 325px;
   width: 37.5rem;
   line-height: 50rem;
   height: 50rem;
-  position: absolute;
-  top: 5rem;
-  left: 0;
-  -webkit-transition: none;
-  -webkit-transform: scale(0.01);
-  text-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
-  z-index: 999999999;
-  color: #e02027 !important; }
-  #accept-acknowledge.exposed {
-    -webkit-animation: ok-zoom 300ms ease-in 1 normal 0s running forwards; }
+  position: relative;
+  margin-top: 5rem;
+  z-index: 10;
+  transition: transform 300ms ease-in-out; }
+  #accept-acknowledge.slide-right {
+    transform: translateX(34.375rem); }
+  #accept-acknowledge #message {
+    background-image: url("../img/pos-hero-speech.png");
+    background-repeat: no-repeat;
+    background-position: 50px 275px;
+    background-size: auto 300px;
+    font-family: 'Bangers', cursive;
+    color: black;
+    position: absolute;
+    width: 590px;
+    height: 790px;
+    z-index: 11;
+    transition: opacity 150ms ease-in-out; }
+    #accept-acknowledge #message span {
+      display: block;
+      width: 190px;
+      margin-top: 360px;
+      margin-left: 160px;
+      text-align: center; }
 
 #virtual-receipt {
-  position: fixed;
+  position: absolute;
   background-color: white;
   padding: 0.3125rem;
   top: 5rem;
@@ -5861,7 +5863,6 @@ main#pos-container {
     color: #373737 !important; }
 
 main#js-console {
-  background-color: #2d4352;
   top: 5rem;
   width: 37.5rem;
   height: 50rem;
@@ -5905,6 +5906,71 @@ h1.success, h2.success, h3.success, h4.success, h5.success {
   border: 2px solid white; }
   #upload-menu-form-container label {
     color: #0779be; }
+
+#delivery-time-button {
+  position: absolute;
+  width: 400px;
+  height: 60px;
+  left: 0px;
+  top: 400px;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.5);
+  background-color: #0779be;
+  border: 2px solid white;
+  border-bottom: none;
+  padding: 0.9375rem;
+  z-index: 99999999;
+  text-align: center;
+  font-size: 1.5rem;
+  color: white !important;
+  transform: rotate(-90deg) translateY(23.4375rem); }
+  #delivery-time-button.slide-right {
+    transform: rotate(-90deg) translateY(23.4375rem);
+    -webkit-animation: panel-stow 300ms ease-in 1 normal 0s running forwards; }
+
+#delivery-times {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); }
+  #delivery-times .container {
+    position: absolute;
+    top: 6.875rem;
+    left: 50px;
+    width: 31.25rem;
+    height: 665px;
+    z-index: 9999;
+    background-color: white;
+    border: 2px solid #373737;
+    border-radius: 1rem; }
+    #delivery-times .container ul {
+      margin-top: 0.9375rem; }
+    #delivery-times .container li.delivery-time {
+      height: 11.875rem; }
+      #delivery-times .container li.delivery-time:first-of-type h1 {
+        border-top-left-radius: 1rem; }
+      #delivery-times .container li.delivery-time:nth-of-type(2) h1 {
+        border-top-right-radius: 1rem; }
+      #delivery-times .container li.delivery-time h1 {
+        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+        height: 100%;
+        width: 100%;
+        font-size: 3.75rem;
+        line-height: 11.25rem;
+        text-align: center;
+        margin-bottom: 1.875rem !important; }
+      #delivery-times .container li.delivery-time.active h1 {
+        background-color: #faea06;
+        color: black !important; }
+      #delivery-times .container li.delivery-time.inactive h1 {
+        background-color: #0779be;
+        color: white; }
+    #delivery-times .container a.cancel {
+      border-bottom-left-radius: 1rem;
+      border-bottom-right-radius: 1rem; }
 
 @-webkit-keyframes modal_loading_dots {
   0% {

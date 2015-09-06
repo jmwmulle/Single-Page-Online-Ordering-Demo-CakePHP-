@@ -9,7 +9,7 @@ $(document).ready( function() {
 	XT.router = new XtremeRouter();
 	XT.layout = new XtremeLayout();
 	switch (XT.page_name) {
-		case "vendor_ui":
+		case "Vendor Interface":
 			XT.vendor_ui = xt_vendor_ui;
 			XT.vendor_ui.init();
 			break;
@@ -17,6 +17,15 @@ $(document).ready( function() {
 			XT.pos = new XtremePOS();
 			break;
 		default:
+			XT.system;
+			$.get([XT.host, "system", -1, false, 0].join(C.DS), function(response) {
+				XT.router.cake_ajax_response(response, {
+					callback: function(response) {
+						XT.system = response.data.system;
+						$(XT).trigger(C.SYSTEM_READY);
+					}
+				}, true, true)
+			});
 			XT.sauce_id = 4;
 			XT.cart = new XtremeCart();
 			XT.orbcard = new Orbcard( $(XSM.menu.orb_order_form_orb_id).val() );
@@ -25,7 +34,9 @@ $(document).ready( function() {
 			XT.orbcard.menu.init_DOM();
 			break;
 	}
-	XT.layout.init();
+	if (in_array(XT.page_name, ["Vendor Interface", "xtreme-pos"])) XT.layout.init()
+	$(XT).on(C.SYSTEM_READY, function() { XT.layout.init() });
+
 	if (XT.page_name == "menu") {
 		if (window.addEventListener) {
 			XT.kkeys = [], XT.konami = "38,38,40,40,37,39,37,39,66,65";

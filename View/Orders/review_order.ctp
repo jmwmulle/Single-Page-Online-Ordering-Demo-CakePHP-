@@ -7,7 +7,7 @@
 	$invoice = $cart['Invoice'];
 
 	$confirm_order_classes = ["modal-button", "bisecting", "confirm", "right"];
-	if ($service['order_method'] != PICKUP and !$service['address_valid']) array_push($confirm_order_classes, "disabled");
+	if (!$service['address_valid']) array_push($confirm_order_classes, "disabled");
 	$method_element = $service['order_method'] == JUST_BROWSING ? "unselected" : "selected";
 ?>
 

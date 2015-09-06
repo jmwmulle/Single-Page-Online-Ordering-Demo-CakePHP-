@@ -45,6 +45,7 @@
 						    ), 
 		                            ), 
 		);
+		public $uses = ['Sysvar'];
 		public $helpers = array( "Session", "Html", "Form" );
 		protected $topnav = array( 'Menu', 'Deals', 'Favs', 'Order', );
 
@@ -365,13 +366,24 @@
 			$hrsfile->close();
 		}
 
+		/**
+		 *
+		 * $method 0 == get, 1 == set
+		 * $id -1 gets all sysvars
+		 */
+		public function system_status($id=-1, $method = 'get', $status=null) {
+			$system = $this->requestAction("sysvars/config/$id/$method/$status");
+			$this->set(compact('system'));
+			return $system;
+		}
+
 		public function beforeRender() {
 			if (preg_match('/(?i)msie [0-9]/',$_SERVER['HTTP_USER_AGENT'])) return $this->redirect( 'pages/no_service' );
 
-			$statusFile = new File(APP.'status/sfile');
-			$status = $statusFile->read(true, 'r');
-			$statusFile->close();
-			$this->set("store_status", $status);
+//			$statusFile = new File(APP.'status/sfile');
+//			$status = $statusFile->read(true, 'r');
+//			$statusFile->close();
+//			$this->set("store_status", $status);
 			$this->set("topnav", $this->topnav);
 
 			//Configure AuthComponent

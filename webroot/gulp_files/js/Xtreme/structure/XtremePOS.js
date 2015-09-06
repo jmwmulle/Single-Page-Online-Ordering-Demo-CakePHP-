@@ -1,6 +1,8 @@
 /**
  * Created by jono on 1/24/15.
  */
+var accept_messages = ["Challenge accepted.", "No stomach unfed.", "Get ready to be XTREMELY fed.", "Yes ma'am!", "Yes sir!",
+                       "I can refuse no appetite.", "Heed the call of hunger, mighty chef!"];
 XtremePOS = function() {
 	this.init();
 	return this;
@@ -9,7 +11,7 @@ XtremePOS = function() {
 XtremePOS.prototype = {
 	constructor: XtremePOS,
 	last_tone_play: 0,
-	init_list: ["buttons", "splash", "pending", "current"],
+	init_list: ["buttons", "splash", "pending", "current", "delivery_times"],
 	icon_classes: { F:"", D:"icon-double", R:"icon-right-side", L:"icon-left-side"},
 	update_interval: 3000,
 	printer: undefined,
@@ -29,6 +31,17 @@ XtremePOS.prototype = {
 		pending: {
 			box: undefined,
 			display: undefined
+		},
+		delivery_times: {
+			box: undefined,
+			button:undefined
+		},
+		pos_hero: {
+			box: undefined,
+			message: {
+				box: undefined,
+				text: undefined
+			}
 		}
 	},
 	buttons: {
@@ -60,27 +73,23 @@ XtremePOS.prototype = {
 				if (self.pending.list()) return self.pending.orders[0];
 				else throw e.NOTHING_PENDING
 			};
-			self.current.hide = function() {
-				if ( !defined(self.DOM.current) ) return;
-				var hide_class = self.pending.list() ? FX.fade_out : FX.slide_up;
-				var other_class = hide_class == FX.fade_out ? FX.slide_up : FX.fade_out;
-				if ($(self.DOM.current).hasClass(hide_class)) {
-					return 0;
-				} else {
-					$(self.DOM.current).addClass(hide_class);
-					if ( $(self.DOM.current).hasClass(other_class) ) $(self.current.fetch()).removeClass(other_class);
-					return 300;
-				}
+			self.current.hide = function(slide) {
+				var fade_time = $(self.DOM.box).hasClass(FX.fade_out) ? 0 : 300;
+				var slide_time = $(self.DOM.box).hasClass(FX.slide_up) || !slide ? 0 : 300;
+				$(self.DOM.box).addClass( FX.fade_out);
+				if (slide) setTimeout( function() { $(self.DOM.box).addClass( FX.slide_up ) }, slide_time);
+				return slide_time + fade_time;
 			};
 			self.current.show = function() {
-				if ($(self.DOM.current).hasClass(FX.fade_out) || $(self.DOM.current).hasClass(FX.slide_up)) {
-					$(self.DOM.current).removeClass([FX.fade_out, FX.slide_up].join(" "));
-					return 300
-				}
-				return 0;
+				var slide_time = $(self.DOM.box).hasClass(FX.slide_up) ? 300 : 0;
+				var fade_time = $(self.DOM.box).hasClass(FX.fade_out) ? 300 : 0;
+				setTimeout( function() { $(self.DOM.box).removeClass( FX.slide_up ) }, slide_time);
+				setTimeout( function() { $(self.DOM.box).removeClass( FX.fade_out) }, fade_time);
+				return slide_time + fade_time;
 			};
 			self.current.update = function() {
-				var hide_time = self.current.hide();
+				var hide_time = self.splash.hide();
+				setTimeout( function() { hide_time += self.current.hide() }, hide_time);
 				self.current.order = self.pending.next();
 				if ( self.current.order ) {
 					var route = ["pos_reply", self.current.order.id, C.ACCEPTED].join(C.DS);
@@ -88,8 +97,6 @@ XtremePOS.prototype = {
 					$(self.DOM.current.address).html("").append( self.customer_details(self.current.order.Service) );
 					$(self.DOM.current.food).html("").append( self.order_rows( self.current.order.Order) );
 					self.update_order_method();
-					$(self.DOM.splash).addClass(FX.slide_up);
-					$(self.DOM.box).removeClass(FX.slide_up);
 					setTimeout(function () { hide_time += self.current.show() }, hide_time);
 				} else {
 					self.current.hide();
@@ -103,7 +110,27 @@ XtremePOS.prototype = {
 					// else advance to next order; if it happens again, take ordering off-line
 					return;
 				}
-				self.current.update();
+				$(self.DOM.pos_hero.message.text).html(accept_messages[ ranged_random(0, accept_messages.length -1) ]);
+				var start_size = 10;
+				$(self.DOM.pos_hero.message.text).css({
+					fontSize: start_size,
+					lineHeight: start_size + "px"
+				});
+				while($(self.DOM.pos_hero.message.text).height() < 70) {
+					$(self.DOM.pos_hero.message.text).css({
+									fontSize: start_size,
+									lineHeight: start_size + "px"
+								});
+				  start_size++;
+				}
+				start_size--;
+				$(self.DOM.pos_hero.message.text).css("font-size", start_size)
+				$(self.DOM.pos_hero.box).removeClass(FX.slide_right);
+				setTimeout(function() { $(self.DOM.pos_hero.message.box).removeClass(FX.fade_out) }, 300);
+				setTimeout(function() { $(self.DOM.pos_hero.box).addClass(FX.slide_right) }, 1000);
+				setTimeout(function() { $(self.DOM.pos_hero.message.box).addClass(FX.fade_out) }, 1300);
+				setTimeout(function() { self.current.update() }, 1300);
+
 			}
 		},
 		hide: undefined,
@@ -117,24 +144,9 @@ XtremePOS.prototype = {
 			self.pending.list = function() { return self.pending.count() > 0 ? self.pending.orders : false };
 
 			self.pending.fetch = function(orders) {
-				var pending_info = { orders: orders }
 				if ( defined(orders) && orders.length > 0 ) {
-					pending_info["orders_defined"] = true;
-					pending_info["pending_count"] = self.pending.count();
 					var update = self.pending.count() == 0 && !self.current.order;
-					pending_info["update"] = update;
-					for(var i = 0; i < orders.length; i++) {
-						var order = orders[i].Order.detail;
-						order.id = orders[i].Order.id;
-						if ( !(order.id in self.pending.orders) && order.id != self.current.order.id ) {
-							if ( !("adding" in pending_info) ) {
-								pending_info['adding'] = [order];
-							} else {
-								pending_info.adding.push(order);
-							}
-							self.pending.orders[order.id] = order;
-						}
-					}
+					self.pending.update_list(orders);
 					var count_update_delay = 0;
 					if (update) count_update_delay = self.current.update();
 					setTimeout( function() { self.pending.update_DOM() }, count_update_delay);
@@ -142,11 +154,14 @@ XtremePOS.prototype = {
 					setTimeout(function () { self.splash.show() }, self.current.hide())
 				}
 
-				if (self.pending.fetch_count < 1 || true) {
-					self.pending.fetch_count++;
-					setTimeout(function () {
-						$(XT.router).trigger(C.ROUTE_REQUEST, {request: "pos_pending", trigger: {}})
-					}, self.update_interval);
+				setTimeout(function () { $(XT.router).trigger(C.ROUTE_REQUEST, {request: "pos_pending", trigger: {}}) }, self.update_interval);
+			};
+
+			self.pending.update_list = function(orders) {
+				for(var i = 0; i < orders.length; i++) {
+					var order = orders[i].Order.detail;
+					order.id = orders[i].Order.id;
+					if ( !(order.id in self.pending.orders) && order.id != self.current.order.id ) self.pending.orders[order.id] = order;
 				}
 			};
 
@@ -155,7 +170,7 @@ XtremePOS.prototype = {
 			self.pending.update_DOM = function() {
 				var displayed = $(self.DOM.pending.box).data('count');
 				var current = self.pending.count();
-				current--;
+				current;
 				if ( current != displayed) {
 					setTimeout(function () {
 						if (current > 0)  {
@@ -163,17 +178,22 @@ XtremePOS.prototype = {
 							$(self.DOM.pending.display).html(current);
 						}
 						return current > 0 ? self.pending.show() : 0;
-					}, self.pending.hide());
+					}, self.pending.hide(current == 0));
 				}
 				return self;
 			};
 
-			self.pending.hide = function() {
-				var target = self.pending.list() ? self.DOM.pending.display : self.DOM.pending.box;
-				if ( $(target).hasClass(FX.fade_out) ) return 0;
-				pr(target);
-				$(target).addClass(FX.fade_out);
-				return 150;
+			self.pending.hide = function(hide_box) {
+				var duration = 0;
+				if ( !$(self.DOM.pending.display).hasClass(FX.fade_out) ) {
+					$(self.DOM.pending.display).addClass(FX.fade_out);
+					duration += 150;
+				}
+				if (hide_box && !$(self.DOM.pending.box).hasClass(FX.fade_out)) {
+					$(self.DOM.pending.box).addClass(FX.fade_out);
+					duration += 150;
+				}
+				return duration;
 			};
 
 			self.pending.show = function() {
@@ -203,7 +223,24 @@ XtremePOS.prototype = {
 		list: undefined,
 		fetch: undefined,
 		next: undefined,
-		update_DOM: undefined
+		update_DOM: undefined,
+		update_list: undefined
+	},
+	delivery_times: {
+		init: function(self) {
+			self.delivery_times.show = function() {
+				$(self.DOM.delivery_times.button).addClass(FX.slide_right);
+				$(self.DOM.delivery_times.box).removeClass(FX.hidden);
+				setTimeout(function() { $(self.DOM.delivery_times.box).removeClass(FX.fade_out); }, 150);
+			};
+			self.delivery_times.hide = function() {
+				$(self.DOM.delivery_times.box).addClass(FX.fade_out);
+				setTimeout(function() { $(self.DOM.delivery_times.box).addClass(FX.hidden); }, 300);
+				setTimeout(function() { $(self.DOM.delivery_times.button).removeClass(FX.slide_right); }, 450);
+			};
+		},
+		hide: undefined,
+		show: undefined
 	},
 	init: function() {
 		this.printer = new Printer();
@@ -227,6 +264,11 @@ XtremePOS.prototype = {
 		this.DOM.pending.display = $("#order-count")[0];
 		this.DOM.splash = $(XSM.pos.back_splash)[0];
 		this.DOM.order_method = $("h2.order-method")[0];
+		this.DOM.delivery_times.box = $("#delivery-times")[0];
+		this.DOM.delivery_times.button = $("#delivery-time-button")[0];
+		this.DOM.pos_hero.box = $("#accept-acknowledge")[0];
+		this.DOM.pos_hero.message.box = $("#message")[0];
+		this.DOM.pos_hero.message.text = $("#message span")[0];
 		$(this.DOM.accept).on(C.VMOUSEDOWN, function() { $(this).addClass(FX.pressed) });
 		$(this.DOM.accept).on(C.VMOUSEMOVE, function(e) {
 			if ( !self.buttons.pressed(C.ACCEPT) ) return;

@@ -147,7 +147,6 @@ XT.route_collections.menu_ui = function() {
 				params: ['target', 'restore', 'delegate'],
 				callbacks: {
 					params_set: function () {
-						pr(this.params, "vfrom");
 						XT.validate(this.read('target'), this.read('restore'), this.read('delegate')) }
 				}
 			};
