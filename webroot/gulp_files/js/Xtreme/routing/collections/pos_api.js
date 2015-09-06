@@ -65,8 +65,8 @@ XT.route_collections.pos_api = function() {
 		callbacks: { launch: function() { XT.pos.delivery_times[this.read('action')]() } }
 	},
 	this.set_delivery_time = {
-		params:['time'],
-		url: { url: "set_delivery_time", type: C.POST, defer:true},
+		params:{time:{url_fragment:true}},
+		url: { url: "set-delivery-time", type: C.POST, defer:true},
 		callbacks: {
 			launch: function() {
 				XT.router.cake_ajax_response(this.deferral_data, {

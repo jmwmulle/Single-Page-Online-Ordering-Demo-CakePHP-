@@ -103,6 +103,32 @@ class SysvarsController extends AppController {
 	}
 
 
+	public function delivery_time($time) {
+		if ($this->is_ajax_post() ) {
+			$time = $time * 1;
+			$response = ['success' => true,
+			             'error' => false,
+			             'data' => ['submitted' => ["time" => $time],
+			                        'times' => []
+			             ]];
+
+			$found =  false;
+			for ($i = DELIVERY_TIME_15; $i<= DELIVERY_TIME_90_PLUS; $i++) {
+				$response['data']['times'][$i] = ["time" => 15 * ( $i - 5 ), "check" => $i  == 15 * ( $i - 5 )];
+				$this->Sysvar->id = $i;
+				if ( !($this->Sysvar->exists() ) ) {
+					$response[ 'success' ] = false;
+					$response[ 'error' ]   = "Sysvar not found";
+					break;
+				}
+				$this->Sysvar->save( [ "state" => $time == 15 * ( $i - 5 ) ] );
+			}
+			$this->render_ajax_response($response);
+		} else {
+			$this->redirect( ___cakeUrl( "orders", "menu" ) );
+		}
+	}
+
 	public function config($id, $method, $status=null) {
 		$this->autoRender = false;
 //		if ( !$this->request->is('ajax') ) return $this->redirect(___cakeUrl('orbcats', 'menu'));

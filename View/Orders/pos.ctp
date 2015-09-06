@@ -62,7 +62,7 @@
 		<div class="row">
 			<div class="large-12 columns">
 				<ul class="large-block-grid-2 activizing">
-					<?php for ($i=15; $i<=90; $i+=15):?>
+					<?php for ($i=30; $i<=105; $i+=15):?>
 					<li class="delivery-time <?=$i == 45 ? "active" : "inactive";?>" data-route="set_delivery_time/<?=$i;?>">
 						<h1 class="text"><?=$i;?> MIN</h1>
 					</li>

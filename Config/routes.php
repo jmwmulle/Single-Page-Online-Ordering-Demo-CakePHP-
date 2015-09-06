@@ -102,6 +102,7 @@
 
 	/** VARIABLES CONTROLLER */
 	Router::connect( '/system/*',            [ CTR => 'sysvars', ATN => 'config' ] );
+	Router::connect( '/set-delivery-time/*',            [ CTR => 'sysvars', ATN => 'delivery_time' ] );
 
 
 	Router::connect( '/auth/email',                 [ CTR => 'users', ATN => 'login' ] );

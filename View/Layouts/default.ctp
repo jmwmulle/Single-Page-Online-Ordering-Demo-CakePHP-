@@ -67,7 +67,7 @@
 		                      "$gulp_js_path/EffectChain",
 		                      "$gulp_js_path/XBS",
 		                      "$gulp_js_path/exceptions",
-		                      /*"$gulp_js_path/app" */];
+		                      "$gulp_js_path/app" ];
 		echo $this->Html->meta( 'icon' );
 		echo $this->Html->css( "app" );
 		echo $this->Html->script( "/bower_components/modernizr/modernizr" );

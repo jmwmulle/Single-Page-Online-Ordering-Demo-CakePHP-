@@ -8,6 +8,7 @@ $(document).ready( function() {
 	XT.development_mode = true;
 	XT.router = new XtremeRouter();
 	XT.layout = new XtremeLayout();
+	pr(XT.page_name, "pn");
 	switch (XT.page_name) {
 		case "Vendor Interface":
 			XT.vendor_ui = xt_vendor_ui;
@@ -17,8 +18,10 @@ $(document).ready( function() {
 			XT.pos = new XtremePOS();
 			break;
 		default:
+			pr("hi");
 			XT.system;
 			$.get([XT.host, "system", -1, false, 0].join(C.DS), function(response) {
+				pr(response);
 				XT.router.cake_ajax_response(response, {
 					callback: function(response) {
 						XT.system = response.data.system;
@@ -35,7 +38,7 @@ $(document).ready( function() {
 			break;
 	}
 	if (in_array(XT.page_name, ["Vendor Interface", "xtreme-pos"])) XT.layout.init()
-	$(XT).on(C.SYSTEM_READY, function() { XT.layout.init() });
+	$(XT).on(C.SYSTEM_READY, function() { pr("hi mom"); XT.layout.init() });
 
 	if (XT.page_name == "menu") {
 		if (window.addEventListener) {
