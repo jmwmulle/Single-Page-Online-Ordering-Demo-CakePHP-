@@ -252,13 +252,15 @@ XT.route_collections.orders_api = function() {
 						}
 					},
 					launch: function () {
+
 						XT.router.cake_ajax_response(this.deferral_data, {
-							callback: function(response) {
+							callback: function(response, data) {
+								if (data.action == "add") XT.orbcard.orb = undefined;
 								XT.cart.import_cart(response.data.Cart);
 								if ( exists(response.delegate_route) ) return;
-								pr(XT.orbcard.modal);
 								XT.orbcard.modal.show();
-							}
+							},
+							data: { action: this.read('action') }
 						}, true, true);
 					}
 				}

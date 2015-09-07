@@ -98,11 +98,13 @@ Orb = function(id, uid) {
 				self.orbopts.counts.cheeses.selected = 0;
 				self.orbopts.counts.premium.selected = 0;
 				self.orbopts.counts.regular.selected = 0;
+				self.orbopts.counts.sidesauce.selected = 0;
 			}
 		},
 		counts: {
 			reset: undefined,
 			sauces: 0,
+			sidesauce: {included: 0, selected:0},
 			regular: {included: 0, selected:0},
 			premium: {included: 0, selected:0},
 			cheeses: {included: 0, selected:0}

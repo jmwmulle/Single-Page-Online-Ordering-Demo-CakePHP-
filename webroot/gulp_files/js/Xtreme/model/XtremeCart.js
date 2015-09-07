@@ -3,6 +3,7 @@ XtremeCart = function( cart_id ) {
 	return this;
 }
 XtremeCart.prototype = {
+	orb: undefined,
 	constructor: this.XtremeCart,
 	configured: [], // CONFIRMED BY SERVER
 	configuring: [],
@@ -17,6 +18,7 @@ XtremeCart.prototype = {
 		this.import_cart(false);
 	},
 	import_cart: function(session_data) {
+		this.orb = undefined;
 		var self = this;
 		if ( !session_data ) {
 			$.get([XT.host, "load-cart", this.cart_id].join(C.DS), function(response) { self.import_cart($.parseJSON(response).data)});

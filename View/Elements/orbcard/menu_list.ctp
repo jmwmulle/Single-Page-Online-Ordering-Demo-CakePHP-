@@ -14,6 +14,22 @@ if ($ajax or $type == "opt") {
 	array_push($classes, "fade-out");
 }
 $opts = $active ? $active["Orbopt"] : $content;
+usort($opts, function($a, $b) {
+	if ( !array_key_exists("Optflag", $a) ) return 1;
+	if ( !array_key_exists("Optflag", $b) ) return -1;
+	$priorities = [1,2,3,7,4,5];
+	$a_val = 6;
+	$b_val = 6;
+	foreach ($a['Optflag'] as $fl) {
+		if ($fl['id'] != 6) $a_val = array_search($fl['id'], $priorities);
+	};
+	foreach ($b['Optflag'] as $fl) {
+		if ($fl['id'] != 6) $b_val = array_search($fl['id'], $priorities);
+	};
+//	pr([$a_val, $b_val]);
+	return $a_val - $b_val;
+});
+
 ?>
 <?=sprintf('<ul id="orb-card-stage-menu-%s" %s>', $type, ___cD($classes));?>
 <?php

@@ -488,25 +488,30 @@ div.orb-card-content {
     height:rem-calc(16px);
   }
 }
-ul#orb-opts-filter * {
-  font-size      : rem-calc(14px) !important;
+ul#orb-opt-filters * {
+  @include HelveticaMdCn;
+  font-size      : rem-calc(12px) !important;
   line-height    : 1rem !important;
   vertical-align : middle;
-  color          : $white !important;
+  li.orbopt-filter {
+    color          : $white;
+  }
   text-align     : left;
-}
-li#orb-opt-filters-all {
-  span.icon-tab-arrow-l {
-    font-size: 0.8rem;
-    @include helvetica_v_center_lh(0.8rem, $orb-opt-filter-all-inner-height);
+  span {
+    display: inline-block;
+//    &.text { transform: translateY(rem-calc(1px)); }
   }
-  a {
-    font-size:0.8rem;
-    color: $text-grey;
-    &:hover { color: lighten($text-grey, 30%);}
-  }
-}
 
+
+  li#orb-opt-filters-all {
+    span.icon-tab-arrow-l {
+      padding-top:rem-calc(4px);
+      font-size: 0.8rem;
+      color: $xtreme-red !important;
+      @include helvetica_v_center_lh(0.8rem, $orb-opt-filter-all-inner-height);
+    }
+  }
+}
 #orb-total {
   color:$dark-grey;
   font-size: $h3-font-size;

@@ -304,6 +304,42 @@ var xt_vendor_ui = {
 		} else {
 			$(id, XSM.vendor_ui.menu_options_tab).addClass(FX.hidden);
 		}
+	},
+
+	overflagged: function(opt_id, optflag_id) {
+		var true_count = 0;
+		var flag_map = {0: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null};
+		for (var  flag_id in flag_map) {
+			var cell_id = as_id(["orbopt", opt_id, "optflag", flag_id].join("-"));
+			var active = $("span", cell_id).hasClass(FX.active);
+			if (active === true) true_count++;
+			flag_map[flag_id] = active;
+		}
+		if (true_count == 0 || flag_map[optflag_id] == true /*ie. deselecting*/) return false;
+		flag_map[optflag_id] = true; // test turning it on
+		true_count++;
+		// premium & meat or premium & veg
+		if ( true_count == 2 ) {
+			if (flag_map[6]) return !(flag_map[1] || flag_map[2])
+		}
+		return true;
+	},
+
+	overflagging_alert: function(action) {
+		var method, time, class_1, class_2;
+		if (action == C.SHOW) {
+			method = "removeClass";
+			time = 300;
+			class_1 = FX.hidden;
+			class_2 = FX.fade_out;
+		} else {
+			method = "addClass";
+			time = 10;
+			class_1 = FX.fade_out;
+			class_2 = FX.hidden;
+		}
+		$("#overflagging-alert")[method](class_1);
+		setTimeout( function() { $("#overflagging-alert")[method](class_2); }, time);
 	}
 
 }

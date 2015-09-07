@@ -4,7 +4,7 @@
 	<?php foreach( $optflags  as $id => $optflag):
 		$data = ["optflag-id" => $id, "route" => "optflag/$id/filter"];
 		$classes = ["orb-opt-filter", "active"];?>
-	<?= sprintf("<li id='optflag-$id' %s %s><span class='icon-checked'></span>%s</li>", ___cD($classes), ___dA($data),strtoupper($optflag));?>
+	<?= sprintf("<li id='optflag-$id' %s %s><span class='filter-icon icon-checked'></span><span class='text'>%s</span></li>", ___cD($classes), ___dA($data),str_replace("_"," ", strtoupper($optflag)));?>
 	<?php endforeach;?>
 		<?='<li id="orb-opt-filters-all" class="box rightward">';?>
 			<?='<span class="icon-tab-arrow-l"></span>';?>

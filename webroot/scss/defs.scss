@@ -156,7 +156,7 @@ $orb-opt-icon-vertical-padding: ($orb-opt-icon-button-height - $orb-opt-icon-bg-
 $orb-opt-icon-full-padding: 0;
 $orb-opt-filter-height: $orb-card-stage-menu-item-height - 2 * $tight-padding;
 $orb-opt-filter-padding-left: $orb-card-stage-menu-width  - ($orb-card-wrapper-width / 3) + $base-padding;
-$orb-opt-filter-button-height: $orb-opt-filter-height / 2;
+$orb-opt-filter-button-height: 0.33* $orb-opt-filter-height;
 $orb-opt-filter-button-width: ($orb-card-stage-menu-width - $orb-opt-filter-padding-left - ($base-padding + 2 * $tight-padding)) / 3;
 $orb-opt-text-width: $orb-card-stage-menu-width - ($orb-opt-right-padding + $orb-opt-filter-padding-left + 5 * $orb-opt-icon-button-width);
 $orb-opt-filter-all-height: $orb-card-stage-menu-item-height - 2 * $tight-padding;

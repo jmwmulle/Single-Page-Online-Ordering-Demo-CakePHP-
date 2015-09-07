@@ -182,7 +182,7 @@ XtremeLayout.prototype = {
 		} else if ($(element).hasClass('inactive')) {
 			$(element).removeClass('inactive').addClass('active')
 				.children(as_class(FX.unchecked)).each(function () {
-					$(this).removeClass(FX.unchecked).addClass(FX.checked);
+					 $(this).removeClass(FX.unchecked).addClass(FX.checked);
 				});
 		}
 	},

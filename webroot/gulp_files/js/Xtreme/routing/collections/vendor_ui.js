@@ -457,10 +457,17 @@ window.xtr.route_collections.vendor_ui = function() {
 		url: {url: "optflag-config", type: C.POST, defer: true},
 		callbacks: {
 			params_set: function () {
-				this.url = {
-					url: ["optflag-config", this.read('orbopt'), this.read('optflag')].join(C.DS),
-					type: C.POST,
-					defer: true}
+				if (XT.vendor_ui.overflagged(this.read('orbopt'), this.read('optflag')) ) {
+					this.unset('url');
+					this.unset('launch');
+					XT.vendor_ui.overflagging_alert(C.SHOW);
+				}
+//				} else {
+//					this.url = {
+//						url: ["optflag-config", this.read('orbopt'), this.read('optflag')].join(C.DS),
+//						type: C.POST,
+//						defer: true}
+//				}
 			},
 			launch: function () {
 				XT.router.cake_ajax_response(this.deferral_data, {
@@ -469,6 +476,12 @@ window.xtr.route_collections.vendor_ui = function() {
 					},
 					true, true);
 			}
+		}
+	};
+
+	this.overflag_dismiss = {
+		callbacks: {
+			params_set: function() { XT.vendor_ui.overflagging_alert(C.HIDE); }
 		}
 	};
 

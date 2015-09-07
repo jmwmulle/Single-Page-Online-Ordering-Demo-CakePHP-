@@ -144,10 +144,10 @@ Orbcard.prototype = {
 			self.render();
 			setTimeout(function() {
 				self.content_boxes.show();
+				self.menu.DOM.list.back.box.focus();
 				$(self).trigger(C.ORB_LOADED);
 			}, 30);
 		}, row_time);
-
 	},
 
 	/**
@@ -276,7 +276,6 @@ Orbcard.prototype = {
 
 
 
-
 	/**
 	 * Apply current state of opt flag filters to visible orbopts list
 	 *
@@ -300,7 +299,7 @@ Orbcard.prototype = {
 		}, 300);
 
 		return true;
-	},
+	}
 
 //	reveal_modal: function() {
 //		$(XSM.menu.orb_card_overlay).removeClass(FX.hidden);

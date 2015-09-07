@@ -5001,21 +5001,21 @@ div.orb-card-content#orb-card-options {
   #tiny-orb-opts-list .tiny_orb-opt_list_item {
     height: 1rem; }
 
-ul#orb-opts-filter * {
-  font-size: 0.875rem !important;
+ul#orb-opt-filters * {
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+  font-size: 0.75rem !important;
   line-height: 1rem !important;
   vertical-align: middle;
-  color: white !important;
   text-align: left; }
-
-li#orb-opt-filters-all span.icon-tab-arrow-l {
-  font-size: 0.8rem;
-  line-height: 2.4265rem; }
-li#orb-opt-filters-all a {
-  font-size: 0.8rem;
-  color: #373737; }
-  li#orb-opt-filters-all a:hover {
-    color: #848484; }
+  ul#orb-opt-filters * li.orbopt-filter {
+    color: white; }
+  ul#orb-opt-filters * span {
+    display: inline-block; }
+  ul#orb-opt-filters * li#orb-opt-filters-all span.icon-tab-arrow-l {
+    padding-top: 0.25rem;
+    font-size: 0.8rem;
+    color: #e02027 !important;
+    line-height: 2.4265rem; }
 
 #orb-total {
   color: #191919;
@@ -7169,6 +7169,8 @@ input#orderOrbQuantity {
 
 .orb-opt {
   cursor: pointer; }
+  .orb-opt.sauces {
+    background-color: #a83b83; }
   .orb-opt .orb-opt-coverage {
     cursor: pointer; }
     .orb-opt .orb-opt-coverage.disabled {
@@ -7227,6 +7229,9 @@ input#orderOrbQuantity {
 .orb-card-stage-menu.portionable .orb-opt ul li.orb-opt-coverage.full, .orb-card-stage-menu.portionable .orb-opt ul li.orb-opt-coverage.right-side, .orb-card-stage-menu.portionable .orb-opt ul li.orb-opt-coverage.left-side {
   display: initial !important; }
 
+.orb-card-stage-menu .orb-opt.sidesauces ul li.orb-opt-coverage.full, .orb-card-stage-menu .orb-opt.sidesauces ul li.orb-opt-coverage.right-side, .orb-card-stage-menu .orb-opt.sidesauces ul li.orb-opt-coverage.left-side {
+  display: none !important; }
+
 #orb-opt-filters {
   width: 34.17969rem;
   height: 3.4125rem;
@@ -7241,7 +7246,7 @@ input#orderOrbQuantity {
     overflow: hidden;
     background-color: transparent;
     width: 7.29167rem;
-    height: 1.39375rem; }
+    height: 0.91988rem; }
     #orb-opt-filters li:hover {
       color: #f6bdc0; }
 
@@ -7269,9 +7274,12 @@ li#orb-opt-filters-all {
   li#orb-opt-filters-all ul, li#orb-opt-filters-all span {
     vertical-align: top;
     padding: 0;
+    padding-top: 4px;
     margin: 0;
     display: inline-block;
     height: 2.7875rem; }
+    li#orb-opt-filters-all ul.icon-tab-arrow-l, li#orb-opt-filters-all span.icon-tab-arrow-l {
+      padding-top: 8px; }
   li#orb-opt-filters-all ul {
     width: 5rem;
     background-color: transparent;
@@ -7280,4 +7288,9 @@ li#orb-opt-filters-all {
       width: inherit;
       display: block;
       height: 1.08125rem; }
+      li#orb-opt-filters-all ul li a.orb-opt-filter-all {
+        font-size: 0.8rem;
+        color: #373737 !important; }
+        li#orb-opt-filters-all ul li a.orb-opt-filter-all:hover {
+          color: #848484 !important; }
 

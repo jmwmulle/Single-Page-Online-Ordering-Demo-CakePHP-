@@ -652,9 +652,9 @@ background-color:rgb(51, 63, 70);
   }
 }
 
-th {
-  text-transform:uppercase;
-}
+th { text-transform:uppercase; }
+
+tr.over-flagged { background-color:lighten($xtreme-red, 35%) !important; }
 
 ul.inline {
   list-style-type: none;

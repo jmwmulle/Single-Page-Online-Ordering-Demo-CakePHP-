@@ -42,6 +42,12 @@
 
 .orb-opt {
   cursor: pointer;
+//  &.meats {
+//    background-color: rgb(175, 195, 205);
+//  }
+//  &.veggies { background-color: rgb(185, 175, 205);}
+//  &.cheeses { background-color: rgb(205, 175, 195);}
+  &.sauces { background-color: #A83B83;}
   .orb-opt-coverage {
     cursor: pointer;
     &.disabled { cursor: default;}
@@ -103,6 +109,10 @@
   &.full, &.right-side, &.left-side { display:initial !important; }
 }
 
+.orb-card-stage-menu .orb-opt.sidesauces ul li.orb-opt-coverage {
+  &.full, &.right-side, &.left-side { display:none !important; }
+}
+
 
 #orb-opt-filters {
     width            : $orb-card-stage-menu-width;
@@ -151,6 +161,8 @@ li#orb-opt-filters-all {
   ul, span {
     vertical-align:top;
     padding:0;
+    padding-top:4px;
+    &.icon-tab-arrow-l { padding-top: 8px;}
     margin:0;
     display:inline-block;
     height: $orb-opt-filter-all-height;
@@ -163,6 +175,11 @@ li#orb-opt-filters-all {
       width:inherit;
       display:block;
       height: $orb-opt-filter-all-inner-height / 2;
+      a.orb-opt-filter-all  {
+        font-size:0.8rem;
+        color: $text-grey !important;
+        &:hover { color: lighten($text-grey, 30%) !important;}
+      }
     }
   }
 }

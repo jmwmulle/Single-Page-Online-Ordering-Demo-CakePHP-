@@ -5457,6 +5457,9 @@ span.inactive {
 th {
   text-transform: uppercase; }
 
+tr.over-flagged {
+  background-color: #f6bdc0 !important; }
+
 ul.inline {
   list-style-type: none;
   font-size: 0.75rem; }

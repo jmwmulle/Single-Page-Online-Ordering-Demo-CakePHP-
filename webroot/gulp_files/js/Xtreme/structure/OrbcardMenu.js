@@ -95,7 +95,7 @@ OrbcardMenu.prototype = {
 						remove = FX.unchecked;
 						add = FX.checked
 					}
-					$("span", self.DOM.header.back.buttons[flag_id]).removeClass(remove).addClass(add);
+					$("span.filter-icon", self.DOM.header.back.buttons[flag_id]).removeClass(remove).addClass(add);
 				}
 			};
 			self.filters.inactive = function()  {

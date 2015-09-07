@@ -2,9 +2,6 @@
 	$list_classes = ["orb-opt", "xtreme-select-list"];
 if ($opt):
 	array_push($list_classes, $opt['default'] ? 'active default' : 'inactive');
-
-	$optflags =  $this->get('optflags_list');
-
 	$icons = ['right-side' => "R", 'full' => "F", 'left-side' => "L", 'double' => "D"];
 	$data = ["route" => sprintf("toggle_opt/%s", $opt['id']), 'optflags' => [], 'id' => $opt['id'], 'title' => $opt['title']];
 	if ( array_key_exists("Optflag", $opt) ):

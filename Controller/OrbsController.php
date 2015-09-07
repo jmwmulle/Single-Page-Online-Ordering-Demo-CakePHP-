@@ -158,29 +158,25 @@
 
 		public function orbcard($id, $render = true) {
 			$submitted_data = compact('id', 'render');
-			// todo: some way to identify a request as comign from internal to cake
-			if ( $this->request->is( 'ajax' ) && $this->Orb->exists( $id ) || true ) {
+			if ( ($this->request->is( 'ajax' ) or in_array('bare', $this->request->params)) and $this->Orb->exists( $id ) ) {
 				$this->set('ajax', true);
 				$this->Orb->Behaviors->load( 'Containable' );
-				$orb_conditions                            = array( 'conditions' => array( '`Orb`.`id`' => $id ),
-				                                                'contain'    => array(
-					                                                'Pricedict',
-					                                                'Pricelist',
-					                                                'Orbopt' => array(
-						                                                'conditions' => array( '`Orbopt`.`deprecated`' => false ),
-						                                                'Optflag'    => array( 'fields' => array( 'id',
-						                                                                                          'title' ) ),
-						                                                'OrbsOrbopt'
-					                                                )
-				                                                ),
-				);
+				$orb_conditions = [ 'conditions' => [ '`Orb`.`id`' => $id ],
+				                                    'contain'    => [
+				                                        'Pricedict',
+				                                        'Pricelist',
+				                                        'Orbopt' => [
+				                                            'conditions' => [ '`Orbopt`.`deprecated`' => false],
+				                                            'Optflag'    => ['fields' => ['id','title' ]],
+				                                            'OrbsOrbopt'
+				                                        ]
+				                                    ]];
 				$orb = Hash::remove( $this->Orb->find( 'all', $orb_conditions), "{n}.Orbopt.{n}.Optflag.{n}.OrboptsOptflag")[0];
 				$portionable = $this->Orb->Orbcat->field( 'portionable', [ 'id' => $orb[ 'Orb' ][ 'orbcat_id' ] ] );
-				$orb[ 'Orb' ][ 'Optflag' ]             = array();
+				$orb[ 'Orb' ][ 'Optflag' ] = [];
 
-				if ( !array_key_exists( 'Orbopt', $orb ) ) {
-					$orb[ 'Orbopt' ] = array();
-				}
+				if ( !array_key_exists( 'Orbopt', $orb ) ) $orb[ 'Orbopt' ] = [];
+
 				foreach ( $orb[ 'Orbopt' ] as $i => $opt ) {
 					$orb[ 'Orbopt' ][ $i ][ 'default' ] = $opt[ 'OrbsOrbopt' ][ 'default' ];
 					if (array_key_exists('Optflag', $opt) ) {
@@ -196,7 +192,7 @@
 				unset( $orb[ 'Orbopt' ] );
 				$orb                            = array_filter( $orb );
 				$orb[ 'Orb' ][ 'default_opts' ] = $this->requestAction( "OrbsOrbopts/fetch_default_opts/$id" );
-
+//				db(compact('orb', 'portionable', 'submitted_data'));
 				$this->set( compact('orb', 'portionable', 'submitted_data') );
 
 				return $render ? $this->render( 'menu_item', 'ajax' ) : $orb;

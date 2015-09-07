@@ -6,7 +6,7 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-//	db($orbopts);
+
 ?>
 <div id="menu-options-tab">
 	<!-- Menu Options tab proper -->
@@ -60,14 +60,25 @@
 				<?php
 					$opt_count = 0;
 					foreach ( $orbopts as $opt ) {
+						$ofl = $opt["Orbopt"]["flags"];
 						$opt_count++;
 //						if ($opt_count == 10) break;
 						if ($opt["Orbopt"]["deprecated"]) continue;
 						$oid = $opt['Orbopt']['id'];
 						$active_check = "<span class='icon-check-mark active'></span>";
 						$inactive_check = "<span class='icon-check-mark inactive'></span>";
+						$over_flagged = false;
+						if (count($ofl) > 1 ) {
+							// if it's a meat or veggie and contains anything else but premium it's overflagged
+							if ( in_array(1, $ofl) or in_array(2, $ofl) ) {
+								$over_flagged = !in_array(6, $ofl);
+							} else {
+								// if it's not a meat or veggie and has more than one flag it's overflagged
+								$over_flagged = true;
+							}
+						}
 						?>
-						<tr data-opt="<?=$oid;?>">
+						<tr data-opt="<?=$oid;?>" class="<?=$over_flagged ? "over-flagged" : "";?>">
 							<td id='orbopt-<?=$oid;?>-vendor-title' data-route="orbopt_edit/<?=$oid;?>/edit/vendor-title">
 								<div class="orbopt-attr display">
 									<?=$opt[ 'Orbopt' ][ 'vendor_title' ] ?  $opt[ 'Orbopt' ][ 'vendor_title' ] : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"?>
@@ -106,7 +117,7 @@
 							</td>
 							<?php foreach($optflags as $id => $of) {
 								$flag_active = in_array($id, $opt['Orbopt']['flags']);
-								$data = array("route" => "orbflag_config/$oid/$id");
+								$data = array("route" => "orbflag_config/$oid/$id", "active" => $flag_active);
 								$id = "orbopt-$oid-optflag-$id";
 								$pl_id = $opt['Pricelist']['id'];
 								echo sprintf("<td id='%s' class='optflag' %s>%s</td>", $id, ___dA($data), $flag_active ? $active_check : $inactive_check);
@@ -129,10 +140,10 @@
 									</a>
 									<a href="#" class="modal-button bisecting cancel left"
 									   data-route="orbopt_config/<?php echo $oid; ?>/delete/cancel">
-										<span class="icon-circle-arrow-l"></span>
 										<span class="text">Cancel</span>
 									</a>
 								</div>
+								<div id="delete-orbopt-<?php echo $oid; ?>" class="breakout hidden">
 							</td>
 
 						</tr>
@@ -141,5 +152,12 @@
 			</table>
 		</div>
 	</div>
-
+	<div id="overflagging-alert" class="breakout hidden fade-out">
+		<h4>Oops! Can't do that.</h4>
+		<p> Opts can only have two flags in one condition: it's a premium meat or veggie. Otherwise, it's one flag per opt or else pricing goes haywire.</p>
+		<p> If you want to change the opt's flag just remove it first and then choose a new one.</p>
+		<a href="#" class="modal-button confirm left full-width"data-route="overflag_dismiss">
+			<span class="icon-circle-arrow-l"></span><span class="text">OK</span>
+		</a>
+	</div>
 </div>
