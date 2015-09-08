@@ -177,7 +177,7 @@ Orb.prototype = {
 		for (var i = 0; i < opts.length; i++) {
 			var opt = new Orbopt();
 			opt.import_data(opts[i]);
-			this.orbopts.push( opt );
+			this.orbopts.Opts.push( opt );
 		}
 		return this;
 	},
