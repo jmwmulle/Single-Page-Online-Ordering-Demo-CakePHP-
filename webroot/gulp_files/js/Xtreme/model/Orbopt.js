@@ -32,6 +32,8 @@ Orbopt = function(id) {
 						if (inactive_flags[i] == self.flags[j]) self.filter.state = true;
 					}
 				}
+				// dirty fix to keep premiums on; 6 is the premium flag id (or was if it's broken now hahaha)
+				if (in_array("6", self.flags) && !in_array("6", inactive_flags) && self.filter.state === true)  self.filter.state = false;
 				$(self.DOM.button)[self.filter.state ? "removeClass" : "addClass"]("no-filter")
 			}
 		},

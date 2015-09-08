@@ -129,13 +129,34 @@ XtremePOS.prototype = {
 				setTimeout(function() { $(self.DOM.pos_hero.message.box).removeClass(FX.fade_out) }, 300);
 				setTimeout(function() { $(self.DOM.pos_hero.box).addClass(FX.slide_right) }, 1000);
 				setTimeout(function() { $(self.DOM.pos_hero.message.box).addClass(FX.fade_out) }, 1300);
-				setTimeout(function() { self.current.update() }, 1300);
+				self.current.receipt_lines();
+//				setTimeout(function() { self.current.update() }, 1300);
+			};
+			self.current.receipt_lines = function() {
+				pr(self.current.order);
+				var o = self.current.order;
+				var s = self.current.order.Service;
+				var a = self.current.order.Service.address;
+				var f = self.current.order.Order; //ie. [f]ood
+				var r = [];
+				r.push([s.order_method, "h1", true]);
+				r.push([a.address_1, "h3", true]);
+				if (a.address_2) r.push([a.address_2, "h3", true]);
+				r.push([s.order_method, "h1", true]);
+				r.push([s.order_method, "h1", true]);
+				r.push([s.order_method, "h1", true]);
+				r.push([s.order_method, "h1", true]);
+				r.push([s.order_method, "h1", true]);
+				r += a.address_1;
+				if (a.address_2) r += a.address_2;
 
+				pr(r, "receipt");
 			}
 		},
 		hide: undefined,
 		show: undefined,
-		update: undefined
+		update: undefined,
+		receipt_lines: undefined
 	},
 	pending: {
 		fetch_count: 0,
@@ -144,7 +165,7 @@ XtremePOS.prototype = {
 			self.pending.list = function() { return self.pending.count() > 0 ? self.pending.orders : false };
 
 			self.pending.fetch = function(orders) {
-//				if ( self.pending.fetch_count > 1) return;
+				if ( self.pending.fetch_count > 1) return;
 				self.pending.fetch_count++;
 				if ( defined(orders) && orders.length > 0 ) {
 					var update = self.pending.count() == 0 && !self.current.order;
@@ -272,7 +293,9 @@ XtremePOS.prototype = {
 		this.DOM.pos_hero.message.box = $("#message")[0];
 		this.DOM.pos_hero.message.text = $("#message span")[0];
 		$(this.DOM.accept).on(C.VMOUSEDOWN, function() { $(this).addClass(FX.pressed) });
-		$(this.DOM.accept).on(C.VMOUSEMOVE, function(e) {
+		var self = this;
+		$(XSM.pos.order_accept_button+".pressed").on(C.VMOUSEMOVE, function(e) {
+		   pr(e);
 			if ( !self.buttons.pressed(C.ACCEPT) ) return;
 			if (success_stop < 95) return $(self.DOM.accept).css({ background: self.bg_string(e) });
 			$(self.DOM.accept).attr("style", null);
@@ -280,8 +303,8 @@ XtremePOS.prototype = {
 			$(XT.router).trigger(C.ROUTE_REQUEST, {request:"pos_print", trigger:e});
 		});
 		$(this.DOM.accept).on([C.VMOUSEOUT, C.VMOUSEUP].join(" "), function(e) {
-			$(this).removeClass(FX.pressed);
-			$(self.DOM.accept).css({background: bg_string() });
+			$(self.DOM.accept).removeClass(FX.pressed);
+			$(self.DOM.accept).css({background: self.bg_gradient(e) });
 		});
 
 		return this

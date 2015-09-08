@@ -82,7 +82,8 @@
 
 <div id="accept-acknowledge" class="slide-right">
 	<p id="message" class="fade-out">
-		<span>Grumpy wizards make toxic brew for evil queen and jack.</span></p>
+		<span>Grumpy wizards make toxic brew for evil queen and jack.</span>
+	</p>
 </div>
 
 <main id="js-console" class="hidden">

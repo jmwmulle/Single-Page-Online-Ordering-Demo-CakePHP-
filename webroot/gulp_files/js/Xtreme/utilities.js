@@ -531,12 +531,11 @@ if (!String.prototype.toTitleCase) {
 	function obj_values(obj, from, to) {
 		var return_array = [];
 		var count = -1;
-		if ( !from ) from == 0;
-		if ( from < 0 ) from = obj.length - Math.abs(from);
-		if (!to) to == obj.length;
-		if ( to < 0 ) to = obj.length - Math.abs(from);
-		if (to > from) throw("ValueError: end index cannot precede start index");
-
+		if ( !from ) from = 0;
+		if ( from < 0 ) from = obj_len(obj) - Math.abs(from);
+		if (!to) to = obj_len(obj);
+		if ( to < 0 ) to = obj.length - Math.abs(to);
+		if (to < from) throw("ValueError: end index cannot precede start index");
 		for (var key in obj) {
 			count++;
 			if (count >= from && count <= to) return_array.push(obj[key]);

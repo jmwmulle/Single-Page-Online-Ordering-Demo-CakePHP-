@@ -4810,6 +4810,30 @@ span.icon-hn-inline {
 .icon-payment-cash:before {
   content: "Y"; }
 
+.icon-f-meats:before {
+  content: "Z"; }
+
+.icon-f-veggies:before {
+  content: "0"; }
+
+.icon-f-sidesauces:before {
+  content: "1"; }
+
+.icon-f-condiments:before {
+  content: "2"; }
+
+.icon-f-veggies-premium:before {
+  content: "3"; }
+
+.icon-f-meats-premium:before {
+  content: "4"; }
+
+.icon-f-sauces:before {
+  content: "5"; }
+
+.icon-f-cheeses:before {
+  content: "6"; }
+
 @font-face {
   font-family: "Helvetica Neue Condensed Black";
   src: url('../files/font/HelveticaNeueLTStdBlkCn.otf');
@@ -7169,8 +7193,10 @@ input#orderOrbQuantity {
 
 .orb-opt {
   cursor: pointer; }
-  .orb-opt.sauces {
-    background-color: #a83b83; }
+  .orb-opt span.flag-icon {
+    float: left;
+    position: absolute;
+    display: inline-block; }
   .orb-opt .orb-opt-coverage {
     cursor: pointer; }
     .orb-opt .orb-opt-coverage.disabled {
@@ -7196,7 +7222,9 @@ input#orderOrbQuantity {
       opacity: 0.33; }
     .orb-opt li:last-of-type {
       float: left;
-      width: 13.75rem; }
+      width: 13.75rem;
+      text-align: left;
+      padding-left: 2rem; }
 
 .orb-card-stage-menu .orb-opt.inelligible {
   background-color: #b4b4b4; }

@@ -257,7 +257,30 @@ span.icon-hn-inline {
 .icon-payment-cash:before {
   content: "Y";
 }
-
+.icon-f-meats:before {
+  content: "Z";
+}
+.icon-f-veggies:before {
+  content: "0";
+}
+.icon-f-sidesauces:before {
+  content: "1";
+}
+.icon-f-condiments:before {
+  content: "2";
+}
+.icon-f-veggies-premium:before {
+  content: "3";
+}
+.icon-f-meats-premium:before {
+  content: "4";
+}
+.icon-f-sauces:before {
+  content: "5";
+}
+.icon-f-cheeses:before {
+  content: "6";
+}
 
 
 @mixin font-faces() {

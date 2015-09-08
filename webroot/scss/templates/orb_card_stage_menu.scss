@@ -42,12 +42,16 @@
 
 .orb-opt {
   cursor: pointer;
-//  &.meats {
-//    background-color: rgb(175, 195, 205);
-//  }
-//  &.veggies { background-color: rgb(185, 175, 205);}
-//  &.cheeses { background-color: rgb(205, 175, 195);}
-  &.sauces { background-color: #A83B83;}
+  span.flag-icon {
+    float:left;
+    position:absolute;
+    display:inline-block;
+  }
+//  &.meats  span{ color: rgb(255, 155, 28); }
+//  &.veggies span { color: rgb(139, 214, 43  );}
+//  &.cheeses span { color: rgb(166, 71, 209);}
+//  &.sauces span { color: rgb(209, 51, 142);}
+//  &.sauces span { color: rgb(39, 199, 126);}
   .orb-opt-coverage {
     cursor: pointer;
     &.disabled { cursor: default;}
@@ -74,6 +78,8 @@
     &:last-of-type {
       float : left;
       width : $orb-opt-text-width;
+      text-align:left;
+      padding-left: 2rem;
     }
   }
 }

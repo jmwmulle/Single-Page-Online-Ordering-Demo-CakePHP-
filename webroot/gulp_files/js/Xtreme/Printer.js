@@ -165,14 +165,7 @@ Printer.prototype = {
 		return status;
 	},
 
-	play_order_tone: function() {
-		if ( XBS.printer.is_xtreme_tablet() ) {
-			Android.playTone();
-		} else {
-			var audio = new Audio(XSM.vendor.new_order_tone);
-			audio.play();
-		}
-	},
+	play_order_tone: function() { return this.is_xtreme_tablet() ? Android.playTone() : new Audio(XSM.vendor.new_order_tone).play(); },
 
 	feed_line: function(lines) {
 		if (!lines && lines != 0) lines = 1;
