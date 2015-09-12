@@ -84,14 +84,18 @@
 </head>
 
 <body id="<?php echo $body_id; ?>" <?php echo ___cD( $body_class ); ?>>
-<div id="page-content" class="show-for-medium-up">
+<div id="page-content">
+	<div id="desktop-content" class="show-for-medium-up">
 	<?=$this->Html->image('puff.svg', ['id' => 'loading-img', 'class'=> ['fade-out','hidden'] ]);?>
 	<?php
 		echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );
 		echo $this->fetch( 'content' );
 	?>
+	</div>
+	<div id="mobile-page-content" class="show-for-small-only">
+		<?=$this->fetch('mobile-content');?>
+	</div>
 </div>
-
 <?php
 	echo $this->Element( 'footer' );
 	echo $this->fetch( 'vendor' );

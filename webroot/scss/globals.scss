@@ -47,15 +47,15 @@ body#vendor {
 
 
 }
-  #loading-img {
-    transition : opacity 0.1s;
-    position   : absolute;
-    top:50%;
-    left:50%;
-    margin-top: -12.5%;
-    height: 25%;
-    z-index:9999;
-  }
+#loading-img {
+  transition : opacity 0.1s;
+  position   : absolute;
+  top:50%;
+  left:50%;
+  margin-top: -12.5%;
+  height: 25%;
+  z-index:99999;
+}
 
 
 * { transition : background-color $global-transition-time ease-in-out,

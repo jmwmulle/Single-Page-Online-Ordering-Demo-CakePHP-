@@ -5128,7 +5128,7 @@ body#vendor {
   left: 50%;
   margin-top: -12.5%;
   height: 25%;
-  z-index: 9999; }
+  z-index: 99999; }
 
 * {
   transition: background-color 0.3s ease-in-out, background-image 0.3s ease-in-out, color 0.3s ease-in-out, opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
@@ -6843,6 +6843,9 @@ p.banner {
 
 #count-down-wrapper {
   height: 2000px; }
+
+#mobile-countdown {
+  margin-top: 33%; }
 
 html, nav, body, main, footer {
   overflow: auto; }

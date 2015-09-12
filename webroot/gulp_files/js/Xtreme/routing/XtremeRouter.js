@@ -45,7 +45,7 @@ XtremeRouter.prototype = {
 		var route_name = request_obj.request.split(C.DS)[0];
 		var route_data = this.route_data[ route_name ];
 		var route = new XtremeRoute( route_name, route_data, request_obj);
-		var launch_delay = 0
+		var launch_delay = 0;
 		if (route.stash) launch_delay += XT.orbcard.exposed_face == C.BACK ? 1860 : 900;
 		if (route.modal) {
 			if ( !route.modal.hidden() && route.url.url && !route.url.defer) launch_delay += route.modal.hide();
@@ -54,7 +54,7 @@ XtremeRouter.prototype = {
 		// >>> LAUNCH MODALS IF REQUIRED<<<
 		if (route.url.url) {
 			var launch_triggered = false;
-			if (route.loading_animation) XT.layout.loader.show();
+			if (!route.suppress_loader) XT.layout.loader.show();
 			try {
 				$.ajax({
 					type: route.url.type ? route.url.type : C.POST,
