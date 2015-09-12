@@ -55,7 +55,8 @@
 	Router::connect( '/delete-menu-item/*',         [ CTR => 'orbs', ATN => 'deprecate' ] );
 
 	/** ORBCATS CONTROLLER */
-	Router::connect( '/menu/*',                     [ CTR => 'pages', ATN => 'display', 'countdown' ] );
+	Router::connect( '/menu',                     [ CTR => 'pages', ATN => 'display', 'countdown' ] );
+	Router::connect( '/menu/*',                     [ CTR => 'orbcats', ATN => 'menu'] );
 	Router::connect( '/private-menu/*',             [ CTR => 'orbcats', ATN => 'menu' ] );
 
 	/** ORDERS CONTROLLER */
