@@ -18,9 +18,17 @@ $(document).ready( function() {
 				clockFace: "DailyCounter",
 				countdown: true
 			});
-			$("#countdown").on(C.MOUSEOVER, function() {
-				$(".make-snazzy").addClass("snazzy");
+			setTimeout(function() {
+				$("#countdown").on(C.MOUSEOVER, function() {
+					$(".make-snazzy").addClass("snazzy");
+					$("#countdown").off();
+				});
+			}, 1000);
+			$("#special-box").on(C.MOUSEENTER, function () {
+				$(".make-snazzy").removeClass("snazzy");
+				setTimeout(function () { $(".make-snazzy").addClass("snazzy"); }, 30);
 			});
+
 
 			break;
 		case "Vendor Interface":

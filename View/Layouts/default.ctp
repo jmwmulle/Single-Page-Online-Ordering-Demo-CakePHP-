@@ -83,7 +83,7 @@
 		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" ); ?>
 </head>
 
-<body id="<?php echo $body_id; ?>" data-poop="true" <?php echo ___cD( $body_class ); ?>>
+<body id="<?php echo $body_id; ?>" <?php echo ___cD( $body_class ); ?>>
 <div id="page-content" class="show-for-medium-up">
 	<?=$this->Html->image('puff.svg', ['id' => 'loading-img', 'class'=> ['fade-out','hidden'] ]);?>
 	<?php

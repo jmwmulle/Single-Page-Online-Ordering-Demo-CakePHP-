@@ -4,16 +4,20 @@
 
 @-webkit-keyframes snazzy-spin {
   0% {
-    -webkit-transform: scale(1,1);
+    transform: rotate(0deg) scale(1);
     color: $white;
   }
-  50% {
-    -webkit-transform: rotate(60deg) scale(2.5, 2.5);
-    color: $xtreme-yellow;
-    opacity:1;
+  30% {
+    transform: rotate(390deg) scale(2.5, 2.5);
+    color: $xtreme-red;
   }
+  60% {
+    transform: rotate(390deg) scale(2.5, 2.5);
+      color: $xtreme-red;
+      opacity:1;
+    }
   100% {
-    -webkit-transform: scale(1,1);
+    transform: rotate(0deg) scale(1);
     color: $white;
     }
 }
@@ -251,7 +255,7 @@ main#splash {
 }
 
 
-#countdown {
+body#countdown {
   width:100%;
   height:100%;
   position:absolute;
@@ -287,14 +291,53 @@ hr.glow {
   @include HelveticaBlkCn;
 }
 
-p.banner {
-  @include HelveticaMdCn;
-  font-size: rem-calc(18px);
-}
 span.underline {
   text-decoration: underline !important;
 }
-span.snazzy {
-  display:inline-block;
-  -webkit-animation : snazzy-spin 0.5s ease-in-out 1 normal 0s running forwards;
+
+h1.shadowed {
+  text-shadow : 0px 0px 8px $black-a75;
+}
+
+p.banner {
+  position  : relative;
+  left      : 0;
+  top       : 0;
+  width: rem-calc(250px);
+  height: rem-calc(70px);
+  background-color:$xtreme-blue;
+  color: $xtreme-yellow;
+  box-shadow:6px 6px 8px $black-a50;
+  text-transform: uppercase;
+  font-size: 1.75rem;
+  @include HelveticaBlkCn;
+  transform: rotate(-30deg) translate(rem-calc(-60px), rem-calc(-75px));
+  padding-top:15px;
+  z-index:10001;
+}
+
+#special-box {
+  position:absolute;
+  background-color: $dark-grey;
+  border:2px solid $white;
+  border-radius: $global-rounded;
+  box-shadow: inset 0px 0px 16px $black-a75;
+  height:rem-calc(105px);
+  h2 {
+    left: rem-calc(116px) ;
+    top:rem-calc(25px);
+    display   : inline-block;
+    position    : absolute;
+    z-index: 10001;
+    &.no-snazz { left : rem-calc(202px); }
+    &.make-snazzy {
+      z-index: 10002;
+      &.snazzy { -webkit-animation : snazzy-spin 1s ease-in-out 1 normal 0s running forwards; }
+    }
+  }
+  p {
+    transform: translateY(rem-calc(75px));
+    width: 95%;
+    text-align: right;
+  }
 }

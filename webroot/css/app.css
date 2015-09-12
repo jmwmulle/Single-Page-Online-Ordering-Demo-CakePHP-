@@ -6508,16 +6508,20 @@ div.address-row {
 
 @-webkit-keyframes snazzy-spin {
   0% {
-    -webkit-transform: scale(1, 1);
+    transform: rotate(0deg) scale(1);
     color: white; }
 
-  50% {
-    -webkit-transform: rotate(60deg) scale(2.5, 2.5);
-    color: #faea06;
+  30% {
+    transform: rotate(390deg) scale(2.5, 2.5);
+    color: #e02027; }
+
+  60% {
+    transform: rotate(390deg) scale(2.5, 2.5);
+    color: #e02027;
     opacity: 1; }
 
   100% {
-    -webkit-transform: scale(1, 1);
+    transform: rotate(0deg) scale(1);
     color: white; } }
 
 @keyframes stash-splash {
@@ -6750,7 +6754,7 @@ main#splash {
   background-color: rgba(0, 0, 0, 0.75);
   padding-top: 3rem; }
 
-#countdown {
+body#countdown {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -6790,16 +6794,51 @@ hr.glow {
   color: white !important;
   font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
 
-p.banner {
-  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
-  font-size: 1.125rem; }
-
 span.underline {
   text-decoration: underline !important; }
 
-span.snazzy {
-  display: inline-block;
-  -webkit-animation: snazzy-spin 0.5s ease-in-out 1 normal 0s running forwards; }
+h1.shadowed {
+  text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.75); }
+
+p.banner {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 15.625rem;
+  height: 4.375rem;
+  background-color: #0779be;
+  color: #faea06;
+  box-shadow: 6px 6px 8px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  font-size: 1.75rem;
+  font-family: "Helvetica Neue Condensed Black", arial, sans-serif;
+  transform: rotate(-30deg) translate(-3.75rem, -4.6875rem);
+  padding-top: 15px;
+  z-index: 10001; }
+
+#special-box {
+  position: absolute;
+  background-color: #191919;
+  border: 2px solid white;
+  border-radius: 1000px;
+  box-shadow: inset 0px 0px 16px rgba(0, 0, 0, 0.75);
+  height: 6.5625rem; }
+  #special-box h2 {
+    left: 7.25rem;
+    top: 1.5625rem;
+    display: inline-block;
+    position: absolute;
+    z-index: 10001; }
+    #special-box h2.no-snazz {
+      left: 12.625rem; }
+    #special-box h2.make-snazzy {
+      z-index: 10002; }
+      #special-box h2.make-snazzy.snazzy {
+        -webkit-animation: snazzy-spin 1s ease-in-out 1 normal 0s running forwards; }
+  #special-box p {
+    transform: translateY(4.6875rem);
+    width: 95%;
+    text-align: right; }
 
 html, nav, body, main, footer {
   overflow: auto; }
