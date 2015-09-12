@@ -261,7 +261,7 @@ body#countdown {
   position:absolute;
   top:0;
   left:0;
-  z-index:10000;
+//  z-index:10000;
   background: rgb(30,87,153); /* Old browsers */
   background: -moz-radial-gradient(center, ellipse cover,  rgba(30,87,153,1) 0%, rgba(32,34,37,1) 100%); /* FF3.6+ */
   background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(30,87,153,1)), color-stop(100%,rgba(32,34,37,1))); /* Chrome,Safari4+ */
@@ -272,6 +272,7 @@ body#countdown {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#202225',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
   text-align:center;
+  #flash-modal { display: none; }
 }
 
 #countdown-logo {
@@ -341,3 +342,5 @@ p.banner {
     text-align: right;
   }
 }
+
+#count-down-wrapper { height:2000px}

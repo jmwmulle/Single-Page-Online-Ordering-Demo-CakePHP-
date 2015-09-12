@@ -6760,7 +6760,6 @@ body#countdown {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 10000;
   background: #1e5799;
   /* Old browsers */
   background: -moz-radial-gradient(center, ellipse cover, #1e5799 0%, #202225 100%);
@@ -6778,6 +6777,8 @@ body#countdown {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#202225',GradientType=1 );
   /* IE6-9 fallback on horizontal gradient */
   text-align: center; }
+  body#countdown #flash-modal {
+    display: none; }
 
 #countdown-logo {
   width: 50%;
@@ -6839,6 +6840,9 @@ p.banner {
     transform: translateY(4.6875rem);
     width: 95%;
     text-align: right; }
+
+#count-down-wrapper {
+  height: 2000px; }
 
 html, nav, body, main, footer {
   overflow: auto; }

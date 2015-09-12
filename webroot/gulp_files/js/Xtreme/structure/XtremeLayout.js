@@ -53,6 +53,11 @@ XtremeLayout.prototype = {
 		$(XSM.global.footer).css({top: $(XSM.global.page_content).innerHeight()});
 		if (XT.page_name != "xtreme-pos" && XT.page_name != "Vendor Interface" && XT.page_name != "countdown") this.fasten(XSM.menu.self).css({overflow: "hidden"});
 
+		// both of these pertain to the countdown page from launch
+		setTimeout(function() {
+			$("p.banner").removeClass(FX.fade_out);
+			$("#special-box").removeClass(FX.fade_out);
+		}, 1000);
 	},
 	jq_binds: function() {
 		var self = this;

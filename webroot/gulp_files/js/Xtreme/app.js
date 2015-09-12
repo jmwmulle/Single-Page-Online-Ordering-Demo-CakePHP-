@@ -21,7 +21,7 @@ $(document).ready( function() {
 			setTimeout(function() {
 				$("#countdown").on(C.MOUSEOVER, function() {
 					$(".make-snazzy").addClass("snazzy");
-					$("#countdown").off();
+					$("#countdown").off(C.MOUSEOVER);
 				});
 			}, 1000);
 			$("#special-box").on(C.MOUSEENTER, function () {
