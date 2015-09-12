@@ -194,37 +194,6 @@ Printer.prototype = {
 	},
 
 	/**
-	 * queue_order()
-	 *
-	 * @param {obj} order
-	 * @returns {void}
-	 */
-	queue_order: function(order) {
-		pr(order, 'the order');
-		tab_out("arrived", "queue_order()");
-		try {
-			this.queue_line(sprintf('Ordered At: %s', order.time), 'h4', 1);
-			this.queue_line(sprintf("For: %s", order.order_method), 'h2', 1);
-			if ( order.order_method == C.DELIVERY) {
-				if (order.customer) this.queue_line(order.customer, 'center', 'h3');
-				if (order.address) this.queue_line(order.address, 'center', 'h3');
-				if (order.delivery_instructions ) this.queue_line(order.delivery_instructions, 'h4');
-			}
-			this.queue_line(sprintf("Payment Status: %s", order.paid ? "PAYED" : "OWED"), 'h3',1);
-			this.queue_line(sprintf("Payment Type: %s", order.payment_method), 'h4');
-			this.__queue_orb_list(order.food);
-			this.queue_line(sprintf("TOTAL: $%s", order.price), 'h2');
-		} catch(e) {
-			// todo: handle this maybe?!
-			tab_out(e, 'queue_order() error', true);
-			return false;
-		}
-//		tout_show();
-		pr(this.queue, 'the queue');
-		return this.queue;
-	},
-
-	/**
 	 * add_style()
 	 * @param name
 	 * @param indent
@@ -265,9 +234,8 @@ Printer.prototype = {
 	 */
 	print: function (text, style, virtual_cut) {
 		pr({text:text, style:style, virtual_cut:virtual_cut}, "XtremePrinter::print(text, style, virtual_cut)", 2);
-		tab_out({text:text, style:style}, 'print()');
 		var response = null;
-		var s = XBS.printer.styles[style];
+		var s = this.styles[style];
 		try {
 			if (this.printer_available) {
 				response = Android.printText(text, 1, s.align, s.line_h, s.scale, s.scale, s.indent, s.bold, s.underline);
@@ -291,36 +259,6 @@ Printer.prototype = {
 	 */
 	cut: function (feed) { feed === true ? Android.cut(feed) : Android.cut(false); },
 
-	/**
-	 * __queue_orb_list()
-	 * @param {obj} items
-	 * @returns {string}
-	 */
-	__queue_orb_list: function (items) {
-		try {
-			for (var orb_name in items)  {
-				var item = items[orb_name];
-				try {
-					this.queue_line(sprintf("$%s   (%s) x %s %s", item.price, item.quantity, item.size, orb_name), 'h4');
-					for (var opt in item.opts) {
-						this.queue_line(sprintf("%s: %s", item.opts[opt].weight, item.opts[opt].title), 'orb_opt');
-						if (item.instructions) this.queue_line(item.instructions, 'opt_note');
-					}
-				} catch (e) {
-					tab_out({
-							e_txt: e.message,
-							e_stack: sprintf("<pre>%s</pre>", JSON.stringify(e.stack, null, "\t"))
-							}, "__format_orbs() error");
-				}
-			}
-		} catch (e) {
-			tab_out({
-				e_txt: e.message,
-				e_stack: sprintf("<pre>%s</pre>", JSON.stringify(e.stack, null, "\t"))
-				}, "__queue_orb_list() error");
-		}
-		return true;
-	},
 
 	render_virtual_receipt: function() {
 		pr(this.virtual_receipts, "XtremePrinter::render_virtual_receipt()", 2 );

@@ -40,29 +40,13 @@
 				</a>
 			</div>
 		</div>
-		<div class="row">
-			<div class="small-12 columns">
-				<a href="#" class="modal-button sml cancel full-width" data-route="vendor_reject/unconfirmed">
-					<span class="icon-cancel"></span><span class="text">DECLINE</span>
-				</a>
-			</div>
-		</div>
-		<div id="order-reject-confirmation" class="slide-left text-center">
-			<h1>Are you sure?</h1>
-			<a href="#" class="modal-button cancel full-width left" data-route="vendor_reject/confirm">
-				<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span>
-			</a>
-			<a href="#" class="modal-button confirm bisecting right" data-route="vendor_reject/cancel">
-				<span class="icon-circle-arrow-r"></span><span class="text">Confirm</span>
-			</a>
-		</div>
 	</div>
 </div>
 <div id="delivery-times" class="fade-out hidden">
 	<div class="container">
 		<div class="row">
 			<div class="large-12 columns">
-				<ul class="large-block-grid-2 activizing">
+				<ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-2 activizing">
 					<?php foreach (array_slice($system, 5) as $index => $sysvar):?>
 					<li class="delivery-time <?=$sysvar['Sysvar']['status'] ? "active" : "inactive";?>" data-route="set_delivery_time/<?=$sysvar['Sysvar']['id'];?>">
 						<h1 class="text"><?=$index < 5 ? ($sysvar['Sysvar']['id'] - 5) * 15 : "90+";?> MIN</h1>
@@ -82,8 +66,7 @@
 
 <div id="accept-acknowledge" class="slide-right">
 	<p id="message" class="fade-out">
-		<span>Grumpy wizards make toxic brew for evil queen and jack.</span>
-	</p>
+		<span>Grumpy wizards make toxic brew for evil queen and jack.</span></p>
 </div>
 
 <main id="js-console" class="hidden">

@@ -62,7 +62,7 @@
 			$price_map = [ 'sauce'     => [ 'count'    => 0,
 			                                'included' => 1,
 			                                'price'    => 0 ],
-			               'sidesauce' => [ 'count'    => 0,
+			               'sidesauces' => [ 'count'    => 0,
 			                                'included' => $included[ 'sidesauce_count' ],
 			                                'price'    => 0 ],
 			               'cheeses'   => [ 'count'    => 0,
@@ -158,12 +158,10 @@
 			$orbopts    = array_key_exists( 'Orbopt', $orb_cfg ) ? $orb_cfg[ 'Orbopt' ] : [ ];
 
 			$quantity = !is_numeric( $quantity ) ? 1 : abs( $quantity );
-			if ( $quantity == 0 ) {
-				return null;
-			}
-			if ( $quantity > $this->maxQuantity ) {
-				$quantity = $this->maxQuantity;
-			}
+			if ( $quantity == 0 ) return null;
+
+			if ( $quantity > $this->maxQuantity ) $quantity = $this->maxQuantity;
+
 
 			// get orb details from id
 			$orb                    = $this->Controller->Orb->find( 'first', [ 'recursive'  => 0,
@@ -281,11 +279,59 @@
 				$invoice[ 'item_count' ] += $oi[ 'pricing' ][ 'quantity' ];
 				$invoice[ 'invoice_rows' ]++;
 			}
-			$invoice[ 'hst' ]   = $invoice[ 'subtotal' ] * $this->hst_rate;
+			$invoice[ 'hst' ]   = round($invoice[ 'subtotal' ] * $this->hst_rate, 2);
 			$invoice[ 'total' ] = $invoice[ 'subtotal' ] + $invoice[ 'hst' ];
+			$debug = [];
+			$debug['total'] = $invoice['total'];
+			$debug['substr'] = (int) substr($invoice['total'], -1);
+			$invoice_int = $invoice['total'] * 100;
+			$mod = $invoice_int % 5;
+			$debug['invoice_int'] = $invoice_int;
+			$debug['modulo_5'] = $mod;
+			if ($mod) {
+				$debug['case'] = false;
+				$debug['modulo_5'] = false;
+				switch ( $mod ) {
+					case 1:
+						$invoice['total'] -= 0.01;
+						$debug['case'] = 1;
+						break;
+					case 2:
+						$invoice['total'] -= 0.02;
+						$debug['case'] = 2;
+						break;
+					case 3:
+						$invoice['total'] += 0.02;
+						$debug['case'] = 3;
+						break;
+					case 4:
+						$invoice['total'] += 0.01;
+						$debug['case'] = 4;
+						break;
+					case 6:
+						$invoice['total'] -= 0.01;
+						$debug['case'] = 6;
+						break;
+					case 7:
+						$invoice['total'] -= 0.02;
+						$debug['case'] = 7;
+						break;
+					case 8:
+						$invoice['total'] += 0.02;
+						$debug['case'] = 8;
+						break;
+					case 9:
+						$invoice['total'] += 0.01;
+						$debug['case'] = 9;
+						break;
+				}
+			$debug['new_total'] = $invoice['total'];
+			}
+
+			$this->Session->write( 'Cart.Debug', $debug);
 			$this->Session->write( 'Cart.Invoice', $invoice );
 			$this->Session->write( 'Cart.Service.deliverable',
-			                       $this->Session->read( 'Cart.Invoice.total' ) >= $this->delivery_min );
+            $this->Session->read( 'Cart.Invoice.total' ) >= $this->delivery_min );
 		}
 
 

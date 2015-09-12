@@ -32,6 +32,7 @@
 			"//code.jquery.com/ui/1.11.1/jquery-ui.js",
 			"/bower_components/foundation/js/foundation.min",
 			"vendor/jquery.validate.min",
+			"vendor/flipclock.min",
 			"vendor/additional-methods.min" ];
 		$gulp_js_path = "../gulp_files/js/Xtreme";
 		$xbs_scripts = [
@@ -70,6 +71,7 @@
 		                      "$gulp_js_path/app" ];
 		echo $this->Html->meta( 'icon' );
 		echo $this->Html->css( "app" );
+		echo $this->Html->css( "flipclock" );
 		echo $this->Html->script( "/bower_components/modernizr/modernizr" );
 		echo $this->Html->script( $vendor_scripts, array( 'block' => 'vendor' ) );
 		echo $this->Html->script( $xbs_scripts, array( 'block' => 'app' ) );

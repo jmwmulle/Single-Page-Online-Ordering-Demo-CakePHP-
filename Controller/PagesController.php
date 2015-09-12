@@ -62,6 +62,9 @@ class PagesController extends AppController {
 				$this->set("is_splash", true);
 				$this->requestAction(___cakeUrl("orders", "init_cart"));
 			}
+			if ($page === "countdown") {
+				$this->set('page_name', 'countdown');
+			}
 		}
 		if (!empty($path[1])) {
 			$subpage = $path[1];

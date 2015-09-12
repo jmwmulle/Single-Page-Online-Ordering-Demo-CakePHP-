@@ -123,7 +123,7 @@ XtremePOS.prototype = {
 								});
 				  start_size++;
 				}
-				start_size--;
+				start_size -= 2;
 				$(self.DOM.pos_hero.message.text).css("font-size", start_size)
 				$(self.DOM.pos_hero.box).removeClass(FX.slide_right);
 				setTimeout(function() { $(self.DOM.pos_hero.message.box).removeClass(FX.fade_out) }, 300);
@@ -134,23 +134,45 @@ XtremePOS.prototype = {
 			};
 			self.current.receipt_lines = function() {
 				pr(self.current.order);
-				var o = self.current.order;
 				var s = self.current.order.Service;
 				var a = self.current.order.Service.address;
-				var f = self.current.order.Order; //ie. [f]ood
 				var r = [];
-				r.push([s.order_method, "h1", true]);
-				r.push([a.address_1, "h3", true]);
-				if (a.address_2) r.push([a.address_2, "h3", true]);
-				r.push([s.order_method, "h1", true]);
-				r.push([s.order_method, "h1", true]);
-				r.push([s.order_method, "h1", true]);
-				r.push([s.order_method, "h1", true]);
-				r.push([s.order_method, "h1", true]);
-				r += a.address_1;
-				if (a.address_2) r += a.address_2;
 
-				pr(r, "receipt");
+				r.push( [ s.order_method == "delivery" ? "DELIVERY (" + str_to_upper(s.pay_method) + ")" : "PICKUP", "h1", true]);
+				r.push( [ s.paid ? ":::::: PAID ::::::" : "*** NOT PAID ***", "h1", true] );
+				r.push([ [a.firstname, a.lastname].join(" "), "h2", true]);
+				r.push([ [a.phone.substr(0,3), a.phone.substr(3,3), a.phone.substr(6)].join("."), "h2", true]);
+				if (s.order_method == "delivery") {
+					r.push([a.address, "h3", true]);
+					if ( defined(a.address_2) ) r.push([a.address_2, "h3", true]);
+					r.push([a.postal_code, "h3", true]);
+					switch (a.building_type) {
+						case 0:
+							r.push(["House", "h3", true]);
+							break;
+						case 1:
+							r.push(["Apartment", "h3", true]);
+							break;
+						case 2:
+							r.push(["Office/Other", "h3", true]);
+							break;
+					}
+					if (defined(a.note)) {
+						r.push(["*************************", "h4", true]);
+						r.push([a.note, "h4", true]);
+						r.push(["*************************", "h4", true]);
+					}
+				}
+				for (var id in self.current.order.Order) {
+					var o = self.current.order.Order[id];
+					var rank = o.pricing.rank;
+					var size = o.orb.Pricedict["l"+rank];
+					r.push(["(" + o.pricing.quantity + ")" + " x " + size + " " + o.orb.Orb.title, "h3", true]);
+					var opt_str = [];
+					for (var i = 0; i < o.orbopts.length; i++) { opt_str.push(o.orbopts[i].title) };
+					r.push([ "[ " + opt_str.join(" ], [ ") + " ]", "h4", true]);
+				}
+				for (var i = 0; i < r.length;  i++)  self.printer.print( r[i][0], r[i][1], r[i][2] );
 			}
 		},
 		hide: undefined,

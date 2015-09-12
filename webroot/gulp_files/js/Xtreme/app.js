@@ -9,6 +9,21 @@ $(document).ready( function() {
 	XT.router = new XtremeRouter();
 	XT.layout = new XtremeLayout();
 	switch (XT.page_name) {
+		case "countdown":
+			var date = new Date(2015, 8, 18);
+		    var now = new Date();
+		    var diff = (date.getTime()/1000) - (now.getTime()/1000);
+//			FlipClock.DMHSFace = FlipClock.Face.extend
+			var clock = $('#countdown-clock').FlipClock(diff, {
+				autostart:true,
+				clockFace: "DailyCounter",
+				countdown: true
+			});
+//			clock.setTime(-3600);
+//			clock.start();
+
+
+			break;
 		case "Vendor Interface":
 			XT.vendor_ui = xt_vendor_ui;
 			XT.vendor_ui.init();
@@ -34,7 +49,7 @@ $(document).ready( function() {
 			XT.orbcard.menu.init_DOM();
 			break;
 	}
-	if (in_array(XT.page_name, ["Vendor Interface", "xtreme-pos"])) XT.layout.init()
+	if (in_array(XT.page_name, ["Vendor Interface", "xtreme-pos", 'countdown'])) XT.layout.init()
 	$(XT).on(C.SYSTEM_READY, function() { XT.layout.init() });
 
 	if (XT.page_name == "menu") {

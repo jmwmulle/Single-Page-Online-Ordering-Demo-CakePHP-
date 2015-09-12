@@ -38,7 +38,7 @@ body#pos {
     background-color : transparent;
     color            : $text-grey !important;
   }
-  tr.food { height:350px;}
+  tr.food { height:380px;}
   td {
     padding-bottom:$base-padding;
     &.order-label {
@@ -62,7 +62,7 @@ body#pos {
           &.pickup { background-color: $xtreme-red; }
           &.delivery { background-color: $xtreme-blue; }
         }
-        &.food { width:350px; transform: translate(-152.5px, 10px) rotate(-90deg) !important; }
+        &.food { width:380px; transform: translate(-167.5px, 10px) rotate(-90deg) !important; }
       }
 
     }
@@ -220,7 +220,10 @@ body#pos {
   }
 }
 
-#order-accept-button { margin-top: $tight-padding; }
+#order-accept-button {
+
+  margin-top: $tight-padding;
+}
 
 
 #accept-acknowledge {
@@ -253,7 +256,7 @@ body#pos {
       width:190px;
       margin-top:360px;
       margin-left:160px;
-      text-align: center;
+//      text-align: center;
     }
   }
 }
@@ -373,9 +376,10 @@ h1, h2, h3, h4, h5 {
       &:nth-of-type(2) h1 { border-top-right-radius: rem-calc(16px);}
       height:rem-calc(190px);
       h1 {
+        display: block;
         box-shadow: 0px 0px 8px $black-a50;
+        min-width:223px !important;
         height: 100%;
-        width:100%;
         font-size: rem-calc(60px);
         line-height:rem-calc(180px);
         text-align:center;
