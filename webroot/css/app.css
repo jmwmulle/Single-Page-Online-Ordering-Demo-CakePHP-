@@ -6506,6 +6506,20 @@ div.address-row {
     max-height: 150px;
     width: 100%; }
 
+@-webkit-keyframes snazzy-spin {
+  0% {
+    -webkit-transform: scale(1, 1);
+    color: white; }
+
+  50% {
+    -webkit-transform: rotate(60deg) scale(2.5, 2.5);
+    color: #faea06;
+    opacity: 1; }
+
+  100% {
+    -webkit-transform: scale(1, 1);
+    color: white; } }
+
 @keyframes stash-splash {
   90% {
     opacity: 1; }
@@ -6763,13 +6777,29 @@ main#splash {
 
 #countdown-logo {
   width: 50%;
-  margin-top: 45%; }
+  margin-top: 30%; }
 
 hr.glow {
   box-shadow: 0px 0px 4px #3dfaff; }
 
 #countdown-clock {
   margin-left: 30px; }
+
+.flip-clock-label {
+  display: none;
+  color: white !important;
+  font-family: "Helvetica Neue Condensed Black", arial, sans-serif; }
+
+p.banner {
+  font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
+  font-size: 1.125rem; }
+
+span.underline {
+  text-decoration: underline !important; }
+
+span.snazzy {
+  display: inline-block;
+  -webkit-animation: snazzy-spin 0.5s ease-in-out 1 normal 0s running forwards; }
 
 html, nav, body, main, footer {
   overflow: auto; }

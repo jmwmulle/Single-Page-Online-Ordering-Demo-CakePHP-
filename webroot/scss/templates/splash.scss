@@ -2,6 +2,23 @@
   @return (100% - $sibling-height) /2;
 }
 
+@-webkit-keyframes snazzy-spin {
+  0% {
+    -webkit-transform: scale(1,1);
+    color: $white;
+  }
+  50% {
+    -webkit-transform: rotate(60deg) scale(2.5, 2.5);
+    color: $xtreme-yellow;
+    opacity:1;
+  }
+  100% {
+    -webkit-transform: scale(1,1);
+    color: $white;
+    }
+}
+
+
 @keyframes stash-splash {
   90% { opacity : 1; }
   100% { display : none }
@@ -255,7 +272,7 @@ main#splash {
 
 #countdown-logo {
   width:50%;
-  margin-top:45%;
+  margin-top:30%;
 }
 
 hr.glow {
@@ -263,4 +280,21 @@ hr.glow {
 }
 #countdown-clock {
  margin-left: 30px;
+}
+.flip-clock-label {
+  display:none;
+  color : $white !important;
+  @include HelveticaBlkCn;
+}
+
+p.banner {
+  @include HelveticaMdCn;
+  font-size: rem-calc(18px);
+}
+span.underline {
+  text-decoration: underline !important;
+}
+span.snazzy {
+  display:inline-block;
+  -webkit-animation : snazzy-spin 0.5s ease-in-out 1 normal 0s running forwards;
 }

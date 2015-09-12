@@ -13,15 +13,14 @@ $(document).ready( function() {
 			var date = new Date(2015, 8, 18);
 		    var now = new Date();
 		    var diff = (date.getTime()/1000) - (now.getTime()/1000);
-//			FlipClock.DMHSFace = FlipClock.Face.extend
 			var clock = $('#countdown-clock').FlipClock(diff, {
 				autostart:true,
 				clockFace: "DailyCounter",
 				countdown: true
 			});
-//			clock.setTime(-3600);
-//			clock.start();
-
+			$("#countdown").on(C.MOUSEOVER, function() {
+				$(".make-snazzy").addClass("snazzy");
+			});
 
 			break;
 		case "Vendor Interface":
