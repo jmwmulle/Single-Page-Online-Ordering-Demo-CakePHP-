@@ -222,13 +222,17 @@ XtremePOS.prototype = {
 					}
 				}
 				r.push([" ", "h5", true]);
-				r.push(["************************************************************", "h5", true]);
-				while (inv.subtotal.length != 32) { inv.subtotal = " " + inv.subtotal;}
-				while (inv.hst.length != 32) { inv.hst = " " + inv.hst;}
-				while (inv.total.length != 32) { inv.total = " " + inv.total;}
-				r.push([inv.subtotal, "h4", true]);
-				r.push([inv.hst, "h4", true]);
-				r.push([inv.total, "h4", true]);
+				r.push(["*****************************************************************", "h5", true]);
+				while (inv.subtotal.length != 10) { inv.subtotal = " " + inv.subtotal;}
+				while (inv.hst.length != 10) { inv.hst = " " + inv.hst;}
+				while (inv.total.length != 10) { inv.total = " " + inv.total;}
+				var subtotal = "           Subtotal: $" + inv.subtotal;
+				var hst = "           HST:      $" + inv.hst;
+				var total = "           Total:    $" + inv.total;
+				r.push([subtotal, "h4", true]);
+				r.push([hst, "h4", true]);
+				r.push([total, "h4", true]);
+				r.push(["*****************************************************************", "h5", true]);
 				for (var i = 0; i < r.length;  i++)  self.printer.print( r[i][0], r[i][1], r[i][2] );
 				self.printer.cut(true);
 			}
