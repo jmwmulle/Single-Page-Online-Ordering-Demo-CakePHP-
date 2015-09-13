@@ -94,9 +94,11 @@ Printer.prototype = {
 	},
 	build_styles: function() {
 
-		this.styles['default'] = new Style(this, {indent:0, scale: 3, line_h:1.5, align:'left', bold: false, underline: false});
-		this.styles['center'] = new Style(this, {indent:0, scale: 3, line_h:1.5, align:'center', bold: false, underline: false});
-		this.styles['right'] = new Style(this, {indent:0, scale: 3, line_h:1.5, align:'right', bold: false, underline: false});
+		this.styles['default'] = new Style(this, {indent:0, scale: 3, line_h:1.75, align:'left', bold: false, underline: false});
+		this.styles['center'] = new Style(this, {indent:0, scale: 3, line_h:1.75, align:'center', bold: false, underline: false});
+		this.styles['right'] = new Style(this, {indent:0, scale: 3, line_h:1.75, align:'right', bold: false, underline: false});
+		this.styles['medium'] = new Style(this, {indent:0, scale: 2.5, line_h:1.75, align:'medium', bold: false, underline: false});
+		this.styles['small'] = new Style(this, {indent:0, scale: 2, line_h:1.5, align:'left', bold: false, underline: false});
 
 		// headers
 		this.styles['h1'] = new Style(this, {indent:0, scale: 5, line_h:7.5, align: "center", bold: false, underline: false});
@@ -236,7 +238,7 @@ Printer.prototype = {
 	 *  @returns {string}
 	 */
 	print: function (text, style, virtual_cut) {
-		pr({text:text, style:style, virtual_cut:virtual_cut}, "XtremePrinter::print(text, style, virtual_cut)", 2);
+		//pr({text:text, style:style, virtual_cut:virtual_cut}, "XtremePrinter::print(text, style, virtual_cut)", 2);
 		var response = null;
 		var s = this.styles[style];
 		try {

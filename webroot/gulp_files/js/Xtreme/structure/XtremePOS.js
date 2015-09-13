@@ -133,7 +133,7 @@ XtremePOS.prototype = {
 				setTimeout(function() { self.current.update() }, 1300);
 			};
 			self.current.receipt_lines = function() {
-				pr(self.current.order);
+
 				var s = self.current.order.Service;
 				var a = self.current.order.Service.address;
 				var r = [];
@@ -171,7 +171,7 @@ XtremePOS.prototype = {
 					var o = self.current.order.Order[id];
 					var rank = o.pricing.rank;
 					var size = o.orb.Pricedict["l"+rank];
-					r.push(["(" + o.pricing.quantity + ")" + " x " + size + " " + o.orb.Orb.title, "default", true]);
+					r.push(["(" + o.pricing.quantity + ")" + " x " + size + " " + o.orb.Orb.title, "medium", true]);
 					if (obj_len(o.orbopts) > 0) {
 						var opt_str = [];
 						for (var i in o.orbopts) {
@@ -194,7 +194,7 @@ XtremePOS.prototype = {
 
 							opt_str.push(coverage + opt.title)
 						}
-						r.push(["[ " + opt_str.join(" ], [ ") + " ]", "right", true]);
+						r.push(["[ " + opt_str.join(" ], [ ") + " ]", "small", true]);
 					}
 				}
 				for (var i = 0; i < r.length;  i++)  self.printer.print( r[i][0], r[i][1], r[i][2] );
@@ -213,7 +213,7 @@ XtremePOS.prototype = {
 			self.pending.list = function() { return self.pending.count() > 0 ? self.pending.orders : false };
 
 			self.pending.fetch = function(orders) {
-				if ( self.pending.fetch_count > 2) return;
+				//if ( self.pending.fetch_count > 2) return;
 				self.pending.fetch_count++;
 				if ( defined(orders) && orders.length > 0 ) {
 					var update = self.pending.count() == 0 && !self.current.order;
