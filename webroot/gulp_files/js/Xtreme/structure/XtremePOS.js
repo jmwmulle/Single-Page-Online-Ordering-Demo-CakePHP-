@@ -170,6 +170,7 @@ XtremePOS.prototype = {
 				}
 				for (var id in self.current.order.Order) {
 					var o = self.current.order.Order[id];
+					var inv = self.current.order.Invoice;
 					var rank = o.pricing.rank;
 					var size = o.orb.Pricedict["l"+rank];
 					var o_str = "(" + o.pricing.quantity + ")" + " x " + size + " " + o.orb.Orb.title;
@@ -192,6 +193,7 @@ XtremePOS.prototype = {
 						r.push([new_ostr_l1, "medium", true]);
 						r.push([new_ostr_l2, "medium", true]);
 					} else {
+						while (o_str.length < 22) { o_str += " "; }
 						o_str += p_str;
 						r.push([o_str, "medium", true]);
 					}
@@ -219,6 +221,14 @@ XtremePOS.prototype = {
 						}
 					}
 				}
+				r.push([" ", "h5", true]);
+				r.push(["************************************************************", "h5", true]);
+				while (inv.subtotal.length != 32) { inv.subtotal = " " + inv.subtotal;}
+				while (inv.hst.length != 32) { inv.hst = " " + inv.hst;}
+				while (inv.total.length != 32) { inv.total = " " + inv.total;}
+				r.push([inv.subtotal, "h4", true]);
+				r.push([inv.hst, "h4", true]);
+				r.push([inv.total, "h4", true]);
 				for (var i = 0; i < r.length;  i++)  self.printer.print( r[i][0], r[i][1], r[i][2] );
 				self.printer.cut(true);
 			}
