@@ -5647,7 +5647,7 @@ footer#footer {
     transform: rotate(-90deg) translateY(29.6875rem); } }
 
 body#pos {
-  background-color: purple;
+  background-color: #191919;
   background-image: none; }
   body#pos * {
     -webkit-touch-callout: none;

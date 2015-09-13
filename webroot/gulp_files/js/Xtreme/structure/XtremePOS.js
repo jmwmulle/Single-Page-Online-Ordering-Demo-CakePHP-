@@ -140,9 +140,9 @@ XtremePOS.prototype = {
 
 				r.push( [ s.order_method == "delivery" ? "DELIVERY (" + str_to_upper(s.pay_method) + ")" : "PICKUP", "h2", true]);
 				r.push( [ s.paid ? "::::: PAID :::::" : "*** NOT PAID ***", "h2", true] );
-				r.push([C.FEED, "small", true]);
+				r.push([" ", "h5", true]);
 				r.push([ [a.firstname, a.lastname].join(" "), "h3", true]);
-				r.push([C.FEED, "small", true]);
+				r.push([" ", "h5", true]);
 				try {
 					r.push([[a.phone.substr(0, 3), a.phone.substr(3, 3), a.phone.substr(6)].join("."), "h4", true]);
 				} catch (e) {
@@ -194,13 +194,12 @@ XtremePOS.prototype = {
 									break
 							}
 
-							opt_str.push(coverage + opt.title)
+							r.push(["     " + coverage + opt.title, "small", true]);
 						}
-						r.push([opt_str.join(", "), "small", true]);
 					}
 				}
 				for (var i = 0; i < r.length;  i++)  self.printer.print( r[i][0], r[i][1], r[i][2] );
-				self.printer.print(C.FEED_CUT, "default", true);
+				self.printer.cut(true);
 			}
 		},
 		hide: undefined,

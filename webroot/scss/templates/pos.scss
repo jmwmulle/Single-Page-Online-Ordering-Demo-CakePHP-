@@ -6,7 +6,7 @@
 
 
 body#pos {
-  background-color : purple;
+  background-color : $dark-grey;
   background-image: none;
   * { @include unselectable;}
 }

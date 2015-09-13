@@ -98,7 +98,7 @@ Printer.prototype = {
 		this.styles['center'] = new Style(this, {indent:0, scale: 3, line_h:1.75, align:'center', bold: false, underline: false});
 		this.styles['right'] = new Style(this, {indent:0, scale: 3, line_h:1.75, align:'right', bold: false, underline: false});
 		this.styles['medium'] = new Style(this, {indent:0, scale: 2.5, line_h:2.5, align:'medium', bold: false, underline: false});
-		this.styles['small'] = new Style(this, {indent:0, scale: 2, line_h:3, align:'left', bold: false, underline: false});
+		this.styles['small'] = new Style(this, {indent:0, scale:1.5, line_h:3, align:'left', bold: false, underline: false});
 
 		// headers
 		this.styles['h1'] = new Style(this, {indent:0, scale: 5, line_h:7.5, align: "center", bold: false, underline: false});
