@@ -133,7 +133,31 @@ XtremePOS.prototype = {
 				setTimeout(function() { self.current.update() }, 1300);
 			};
 			self.current.receipt_lines = function() {
-				self.printer.test();
+
+						for (var sc1 = 0.5; sc1 < 2; sc1 += 0.5) {
+							for (var sc2 = 0.5; sc2 < 2; sc2 += 0.5) {
+								for (var lh = 0.5; lh < 2; lh += 0.5) {
+									var style = {
+										align: "left",
+										line_h: lh,
+										sc1: sc1,
+										sc2: sc2,
+										indent: 0,
+										bold: false,
+										underline: false
+									};
+									self.printer.print("abcd", style, true);
+									self.printer.print("abcdefgh", style, true);
+									self.printer.print("abcdefghijkl", style, true);
+									self.printer.print("abcdefghijklmnop", style, true);
+									self.printer.print("abcdefghijklmnopqrst", style, true);
+									self.printer.print("abcdefghijklmnopqrstvuwx", style, true);
+									self.printer.print("abcdefghijklmnopqrstvuwxyz01", style, true);
+									self.printer.print("abcdefghijklmnopqrstvuwxyz012345", style, true);
+									self.printer.print("abcdefghijklmnopqrstvuwxyz0123456789 ", style, true);
+								}
+							}
+						}
 				return;
 				var s = self.current.order.Service;
 				var a = self.current.order.Service.address;
