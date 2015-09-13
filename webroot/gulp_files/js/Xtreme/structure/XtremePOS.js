@@ -176,18 +176,19 @@ XtremePOS.prototype = {
 					var p_str = o.pricing.net_formatted;
 					while (p_str.length < 10) { p_str = " " + p_str; }
 					if (o_str.length > 22) {
-						o_str_parts = o_str.split(" ");
+						var o_str_parts = o_str.split(" ");
 						var new_ostr_l1 = "";
 						var new_ostr_l2 = "";
-						var next_line = false;
 						for (var ol_part = 0; ol_part < o_str_parts.length; ol_part++) {
-							if (new_ostr_l1.length + o_str_parts[ol_part].length < 22) {
-								new_ostr_l1 += o_str_parts[ol_part];
+							var part = o_str_parts[ol_part]
+							if (new_ostr_l1.length + 1 + part.length < 22) {
+								new_ostr_l1 += " " + part;
 							} else {
-								new_ostr_l2 += o_str_parts[ol_part];
+								new_ostr_l2 += " " + part;
 							}
 						}
-						new_ostr_l1 += p_str;
+						while (new_ostr_l2.length < 22) { new_ostr_l2 += " " };
+						new_ostr_l2 += p_str;
 						r.push([new_ostr_l1, "medium", true]);
 						r.push([new_ostr_l2, "medium", true]);
 					} else {
