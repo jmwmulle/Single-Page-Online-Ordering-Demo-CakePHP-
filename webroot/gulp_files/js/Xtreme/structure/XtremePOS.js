@@ -133,7 +133,8 @@ XtremePOS.prototype = {
 				setTimeout(function() { self.current.update() }, 1300);
 			};
 			self.current.receipt_lines = function() {
-
+				self.printer.test();
+				return;
 				var s = self.current.order.Service;
 				var a = self.current.order.Service.address;
 				var r = [];

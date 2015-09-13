@@ -238,12 +238,14 @@ Printer.prototype = {
 	 *  @returns {string}
 	 */
 	print: function (text, style, virtual_cut) {
+		var response = Android.printText(text, 1, style.align, style.line_h, style.sc1, style.sc2, style.indent, style.bold, style.underline);
+		return response;
 		//pr({text:text, style:style, virtual_cut:virtual_cut}, "XtremePrinter::print(text, style, virtual_cut)", 2);
 		var response = null;
 		var s = this.styles[style];
 		try {
 			if (this.printer_available) {
-				pr([text, 1, s.align, s.line_h, s.scale, s.scale, s.indent, s.bold, s.underline], "POS -> PRinter");
+				pr([text, 1, s.align, s.line_h, s.scale, s.scale, s.indent, s.bold, s.underline], "POS -> Printer");
 				response = Android.printText(text, 1, s.align, s.line_h, s.scale, s.scale, s.indent, s.bold, s.underline);
 			} else {
 				if (virtual_cut || this.virtual_receipts.length === 0) this.virtual_receipts.unshift([]);
@@ -256,6 +258,34 @@ Printer.prototype = {
 				tab_out(e, 'print error', true);
 		}
 		return response;
+	},
+
+	test: function() {
+		var style = {};
+		for (var sc1 = 0.5; sc1 < 2; sc1 += 0.5) {
+			for (var sc2 = 0.5; sc2 < 2; sc2 += 0.5) {
+				for (var lh = 0.5; lh < 2; lh += 0.5) {
+					style = {
+						align: "left",
+						line_h: lh,
+						sc1: sc1,
+						sc2: sc2,
+						indent: 0,
+						bold: false,
+						underline: false
+					};
+					this.print("abcd", style);
+					this.print("abcdefgh", style);
+					this.print("abcdefghijkl", style);
+					this.print("abcdefghijklmnop", style);
+					this.print("abcdefghijklmnopqrst", style);
+					this.print("abcdefghijklmnopqrstvuwx", style);
+					this.print("abcdefghijklmnopqrstvuwxyz01", style);
+					this.print("abcdefghijklmnopqrstvuwxyz012345", style);
+					this.print("abcdefghijklmnopqrstvuwxyz0123456789 ", style);
+				}
+			}
+		}
 	},
 
 	/**
