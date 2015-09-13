@@ -65,7 +65,7 @@
 	Router::connect( '/add-to-cart/*',              [ CTR => 'orders', ATN => 'add_to_cart' ] );
 	Router::connect( '/review-cart/*',              [ CTR => 'orders', ATN => 'review_cart' ] );
 	Router::connect( '/set-address/*',              [ CTR => 'orders', ATN => 'set_address_form' ] );
-	Router::connect( '/set-pickup-information/*',              [ CTR => 'orders', ATN => 'set_address_form' ] );
+	Router::connect( '/set-pickup-information/*',   [ CTR => 'orders', ATN => 'set_address_form' ] );
 	Router::connect( '/confirm-address/*',          [ CTR => 'orders', ATN => 'confirm_address' ] );
 	Router::connect( '/confirm-pickup-info/*',      [ CTR => 'orders', ATN => 'confirm_pickup_info' ] );
 	Router::connect( '/clear-cart',                 [ CTR => 'orders', ATN => 'clear_cart' ] );

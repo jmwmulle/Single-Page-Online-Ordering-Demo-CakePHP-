@@ -16,7 +16,7 @@ Style =	function(printer, cfg) {
 		var self = this;
 		this.printer.styles[name] = new Style($.extend({}, cfg, self.__config)); return this;
 	};
-	this.init(printer, cfg)
+	this.init(printer, cfg);
 	return this;
 };
 
@@ -95,16 +95,19 @@ Printer.prototype = {
 	build_styles: function() {
 
 		this.styles['default'] = new Style(this, {indent:0, scale: 3, line_h:1.5, align:'left', bold: false, underline: false});
-		this.styles['default'].spawn("center", {align:'center'})
-							  .spawn("right", {align:'right'})
-							  .spawn("orbopt", {align:'right'});
+		this.styles['center'] = new Style(this, {indent:0, scale: 3, line_h:1.5, align:'center', bold: false, underline: false});
+		this.styles['right'] = new Style(this, {indent:0, scale: 3, line_h:1.5, align:'right', bold: false, underline: false});
 
 		// headers
 		this.styles['h1'] = new Style(this, {indent:0, scale: 5, line_h:7.5, align: "center", bold: false, underline: false});
-		this.styles['h1'].spawn('h2',  {scale:4, line_h:6})
-						 .spawn('h3',  {scale:3, line_h:4.5})
-						 .spawn('h4',  {scale:2, line_h:3})
-						 .spawn('h5',  {scale:1, line_h:2});
+		this.styles['h2'] = new Style(this, {indent:0, scale: 4, line_h:6, align: "center", bold: false, underline: false});
+		this.styles['h3'] = new Style(this, {indent:0, scale: 3, line_h:4.5, align: "center", bold: false, underline: false});
+		this.styles['h4'] = new Style(this, {indent:0, scale: 2, line_h:3, align: "center", bold: false, underline: false});
+		this.styles['h5'] = new Style(this, {indent:0, scale: 1, line_h:2, align: "center", bold: false, underline: false});
+		//this.styles['h1'].spawn('h2',  {scale:4, line_h:6})
+		//				 .spawn('h3',  {scale:3, line_h:4.5})
+		//				 .spawn('h4',  {scale:2, line_h:3})
+		//				 .spawn('h5',  {scale:1, line_h:2});
 	},
 
 	dequeue: function() {
