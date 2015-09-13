@@ -175,7 +175,6 @@ XtremePOS.prototype = {
 					r.push(["(" + o.pricing.quantity + ")" + " x " + size + " " + o.orb.Orb.title, "default", true]);
 					if (obj_len(o.orbopts) > 0) {
 						var opt_str = [];
-						pr(o.orbopts);
 						for (var i in o.orbopts) {
 							var opt = o.orbopts[i].Orbopt;
 							var coverage;
@@ -199,8 +198,8 @@ XtremePOS.prototype = {
 						r.push(["[ " + opt_str.join(" ], [ ") + " ]", "right", true]);
 					}
 				}
-
 				for (var i = 0; i < r.length;  i++)  self.printer.print( r[i][0], r[i][1], r[i][2] );
+				self.printer.print(C.FEED_CUT, "default", true);
 			}
 		},
 		hide: undefined,

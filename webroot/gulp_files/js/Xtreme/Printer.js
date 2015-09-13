@@ -241,6 +241,7 @@ Printer.prototype = {
 		var s = this.styles[style];
 		try {
 			if (this.printer_available) {
+				pr([text, 1, s.align, s.line_h, s.scale, s.scale, s.indent, s.bold, s.underline], "POS -> PRinter");
 				response = Android.printText(text, 1, s.align, s.line_h, s.scale, s.scale, s.indent, s.bold, s.underline);
 			} else {
 				if (virtual_cut || this.virtual_receipts.length === 0) this.virtual_receipts.unshift([]);
