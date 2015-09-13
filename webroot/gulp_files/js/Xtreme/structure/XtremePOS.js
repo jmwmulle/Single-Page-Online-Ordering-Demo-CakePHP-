@@ -91,7 +91,6 @@ XtremePOS.prototype = {
 				var hide_time = self.splash.hide();
 				setTimeout( function() { hide_time += self.current.hide() }, hide_time);
 				self.current.order = self.pending.next();
-				pr(self.current.order, "current order");
 				if ( self.current.order ) {
 					var route = ["pos_reply", self.current.order.id, C.ACCEPTED].join(C.DS);
 					$(self.DOM.accept).data('route', route);

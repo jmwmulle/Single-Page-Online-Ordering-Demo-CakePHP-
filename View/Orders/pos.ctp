@@ -1,4 +1,4 @@
-
+<div id="loading-img"></div>
 <div id="order-tone-wrapper" class="true-hidden">
 	<audio controls>
 	  <source src="files/new_order_tone.mp3" type="audio/mpeg">

@@ -40,6 +40,7 @@ XT.route_collections.pos_api = function() {
 		}
 	};
 	this.pos_pending = {
+		loading_animation: false,
 		url: {url: 'pending', defer: true, type: C.GET},
 		callbacks: {
 			launch: function () {

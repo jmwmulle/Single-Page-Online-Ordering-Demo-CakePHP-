@@ -6,7 +6,7 @@
 
 
 body#pos {
-  background-color : $dark-grey;
+  background-color : purple;
   background-image: none;
   * { @include unselectable;}
 }
@@ -249,7 +249,7 @@ body#pos {
     position:absolute;
     width: 590px;
     height: 790px;
-    z-index:11;
+    z-index:12;
     transition: opacity 150ms ease-in-out;
     span {
       display: block;
@@ -400,4 +400,14 @@ h1, h2, h3, h4, h5 {
     }
   }
 
+}
+
+div#loading-img {
+  position: fixed;
+  top:0;
+  left:0;
+  width:600px;
+  height:1000px;
+  background-color:$black-a50;
+  z-index:11;
 }

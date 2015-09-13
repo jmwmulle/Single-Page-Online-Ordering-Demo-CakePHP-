@@ -5647,7 +5647,7 @@ footer#footer {
     transform: rotate(-90deg) translateY(29.6875rem); } }
 
 body#pos {
-  background-color: #191919;
+  background-color: purple;
   background-image: none; }
   body#pos * {
     -webkit-touch-callout: none;
@@ -5867,7 +5867,7 @@ body#pos {
     position: absolute;
     width: 590px;
     height: 790px;
-    z-index: 11;
+    z-index: 12;
     transition: opacity 150ms ease-in-out; }
     #accept-acknowledge #message span {
       display: block;
@@ -5999,6 +5999,15 @@ h1.success, h2.success, h3.success, h4.success, h5.success {
     #delivery-times .container a.cancel {
       border-bottom-left-radius: 1rem;
       border-bottom-right-radius: 1rem; }
+
+div#loading-img {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 1000px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 11; }
 
 @-webkit-keyframes modal_loading_dots {
   0% {
