@@ -163,9 +163,9 @@ XtremePOS.prototype = {
 							break;
 					}
 					if (defined(a.note)) {
-						r.push(["********************* ADDRESS NOTE *************************", "h5", true]);
+						r.push(["************************ ADDRESS NOTE **************************", "h5", true]);
 						r.push([a.note, "h4", true]);
-						r.push(["************************************************************", "h5", true]);
+						r.push(["****************************************************************", "h5", true]);
 					}
 				}
 				for (var id in self.current.order.Order) {
@@ -222,7 +222,7 @@ XtremePOS.prototype = {
 					}
 				}
 				r.push([" ", "h5", true]);
-				r.push(["*****************************************************************", "h5", true]);
+				r.push(["****************************************************************", "h5", true]);
 				while (inv.subtotal.length != 10) { inv.subtotal = " " + inv.subtotal;}
 				while (inv.hst.length != 10) { inv.hst = " " + inv.hst;}
 				while (inv.total.length != 10) { inv.total = " " + inv.total;}
@@ -232,7 +232,7 @@ XtremePOS.prototype = {
 				r.push([subtotal, "h4", true]);
 				r.push([hst, "h4", true]);
 				r.push([total, "h4", true]);
-				r.push(["*****************************************************************", "h5", true]);
+				r.push(["****************************************************************", "h5", true]);
 				for (var i = 0; i < r.length;  i++)  self.printer.print( r[i][0], r[i][1], r[i][2] );
 				self.printer.cut(true);
 			}
