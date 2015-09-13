@@ -97,14 +97,14 @@ Printer.prototype = {
 		this.styles['default'] = new Style(this, {indent:0, scale: 3, line_h:1.75, align:'left', bold: false, underline: false});
 		this.styles['center'] = new Style(this, {indent:0, scale: 3, line_h:1.75, align:'center', bold: false, underline: false});
 		this.styles['right'] = new Style(this, {indent:0, scale: 3, line_h:1.75, align:'right', bold: false, underline: false});
-		this.styles['medium'] = new Style(this, {indent:0, scale: 2.5, line_h:1.75, align:'medium', bold: false, underline: false});
-		this.styles['small'] = new Style(this, {indent:0, scale: 2, line_h:1.5, align:'left', bold: false, underline: false});
+		this.styles['medium'] = new Style(this, {indent:0, scale: 2.5, line_h:2.5, align:'medium', bold: false, underline: false});
+		this.styles['small'] = new Style(this, {indent:0, scale: 2, line_h:3, align:'left', bold: false, underline: false});
 
 		// headers
 		this.styles['h1'] = new Style(this, {indent:0, scale: 5, line_h:7.5, align: "center", bold: false, underline: false});
 		this.styles['h2'] = new Style(this, {indent:0, scale: 4, line_h:6, align: "center", bold: false, underline: false});
 		this.styles['h3'] = new Style(this, {indent:0, scale: 3, line_h:4.5, align: "center", bold: false, underline: false});
-		this.styles['h4'] = new Style(this, {indent:0, scale: 2, line_h:3, align: "center", bold: false, underline: false});
+		this.styles['h4'] = new Style(this, {indent:0, scale: 2, line_h:5, align: "center", bold: false, underline: false});
 		this.styles['h5'] = new Style(this, {indent:0, scale: 1, line_h:2, align: "center", bold: false, underline: false});
 		//this.styles['h1'].spawn('h2',  {scale:4, line_h:6})
 		//				 .spawn('h3',  {scale:3, line_h:4.5})

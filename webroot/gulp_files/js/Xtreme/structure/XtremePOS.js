@@ -140,25 +140,27 @@ XtremePOS.prototype = {
 
 				r.push( [ s.order_method == "delivery" ? "DELIVERY (" + str_to_upper(s.pay_method) + ")" : "PICKUP", "h2", true]);
 				r.push( [ s.paid ? "::::: PAID :::::" : "*** NOT PAID ***", "h2", true] );
+				r.push([C.FEED, "small", true]);
 				r.push([ [a.firstname, a.lastname].join(" "), "h3", true]);
+				r.push([C.FEED, "small", true]);
 				try {
-					r.push([[a.phone.substr(0, 3), a.phone.substr(3, 3), a.phone.substr(6)].join("."), "default", true]);
+					r.push([[a.phone.substr(0, 3), a.phone.substr(3, 3), a.phone.substr(6)].join("."), "h4", true]);
 				} catch (e) {
-					r.push("PHONE_NUM_ERROR :( :( :(", "default", true);
+					r.push("PHONE_NUM_ERROR :( :( :(", "h4", true);
 				}
 				if (s.order_method == "delivery") {
 					r.push([a.address, "default", true]);
-					if ( defined(a.address_2) ) r.push([a.address_2, "default", true]);
-					r.push([a.postal_code, "default", true]);
+					if ( defined(a.address_2) ) r.push([a.address_2, "h4", true]);
+					r.push([a.postal_code, "h4", true]);
 					switch (a.building_type) {
 						case 0:
-							r.push(["House", "default", true]);
+							r.push(["House", "h4", true]);
 							break;
 						case 1:
-							r.push(["Apartment", "default", true]);
+							r.push(["Apartment", "h4", true]);
 							break;
 						case 2:
-							r.push(["Office/Other", "default", true]);
+							r.push(["Office/Other", "h4", true]);
 							break;
 					}
 					if (defined(a.note)) {
@@ -194,7 +196,7 @@ XtremePOS.prototype = {
 
 							opt_str.push(coverage + opt.title)
 						}
-						r.push(["[ " + opt_str.join(" ], [ ") + " ]", "small", true]);
+						r.push([opt_str.join(", "), "small", true]);
 					}
 				}
 				for (var i = 0; i < r.length;  i++)  self.printer.print( r[i][0], r[i][1], r[i][2] );
