@@ -130,7 +130,7 @@ XtremePOS.prototype = {
 				setTimeout(function() { $(self.DOM.pos_hero.box).addClass(FX.slide_right) }, 1000);
 				setTimeout(function() { $(self.DOM.pos_hero.message.box).addClass(FX.fade_out) }, 1300);
 				self.current.receipt_lines();
-				//setTimeout(function() { self.current.update() }, 1300);
+				setTimeout(function() { self.current.update() }, 1300);
 			};
 			self.current.receipt_lines = function() {
 				var s = self.current.order.Service;

@@ -54,11 +54,11 @@ XT.route_collections.pos_api = function() {
 		params: {id: {url_fragment: true}, reply:{url_fragment: true} },
 		url: { url: "resolve-order", type: C.POST, defer: true},
 		callbacks: {
-			params_set: function() {
-				this.unset("url");
-				this.unset("launch");
-				XT.pos.current.resolve({})
-			},
+			//params_set: function() {
+			//	this.unset("url");
+			//	this.unset("launch");
+			//	XT.pos.current.resolve({})
+			//},
 			launch: function () {
 				XT.router.cake_ajax_response(this.deferral_data, {
 					callback: function (response) { XT.pos.current.resolve(response.data) }
