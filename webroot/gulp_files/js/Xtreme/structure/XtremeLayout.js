@@ -10,10 +10,13 @@ XtremeLayout.prototype = {
 		element: undefined,
 		init: function (self) {
 			self.loader.element = $("#loading-img")[0];
-			self.loader.position = function() { $(self.loader.element).css("left", (window.innerWidth - $(self.loader.element).innerWidth()) / 2) };
+			self.loader.position = function() {
+				if (XT.page_name == "xtreme-pos" ) return;
+				$(self.loader.element).css("left", (window.innerWidth - $(self.loader.element).innerWidth()) / 2)
+			};
 			self.loader.hide = function () {
 				$(self.loader.element).addClass(FX.fade_out);
-				//setTimeout(function () {$(self.loader.element).addClass(FX.hidden)}, 120);
+				setTimeout(function () {$(self.loader.element).addClass(FX.hidden)}, 120);
 			};
 			self.loader.show = function () {
 				$(self.loader.element).removeClass(FX.hidden);

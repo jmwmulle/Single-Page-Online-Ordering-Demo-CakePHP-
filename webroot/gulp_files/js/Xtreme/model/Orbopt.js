@@ -110,6 +110,7 @@ Orbopt.prototype = {
 	},
 	deselect: function() {
 		$(this.DOM.button).addClass( FX.inactive).removeClass( FX.active);
+		$(this.DOM.input).val(-1);
 		this.coverage.disable(true);
 		this.coverage.select();
 		this.active = false;
@@ -145,14 +146,14 @@ Orbopt.prototype = {
 
 	},
 	enable: function() {
-		$(this.DOM.button).removeClass([FX.inelligible, FX.disabled].join(" "))
+		$(this.DOM.button).removeClass([FX.inelligible, FX.disabled].join(" "));
 		$(this.DOM.coverage).each( function() { $(this).removeClass(FX.inelligible) } );
 	},
 	configure: function() {
 		this.DOM.input = $(["#OrderOrbOrbopt", this.id].join(""))[0];
 		this.DOM.button = $(["#orb-opt", this.id].join("-"))[0];
 		for (var weight in this.coverage.weights) {
-			var cvg_classes = {F: "full", D: "double", L:"left-side",R: "right-side"}
+			var cvg_classes = {F: "full", D: "double", L:"left-side",R: "right-side"};
 			this.DOM.coverage[weight] = $([".orb-opt-coverage", cvg_classes[weight]].join("."), this.DOM.button)[0];
 			if ( $(this.DOM.coverage[weight]).hasClass(FX.active) ) this.coverage.weights[weight].selected = true;
 

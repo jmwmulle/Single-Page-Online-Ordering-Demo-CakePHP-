@@ -130,49 +130,111 @@ XtremePOS.prototype = {
 				setTimeout(function() { $(self.DOM.pos_hero.box).addClass(FX.slide_right) }, 1000);
 				setTimeout(function() { $(self.DOM.pos_hero.message.box).addClass(FX.fade_out) }, 1300);
 				self.current.receipt_lines();
-//				setTimeout(function() { self.current.update() }, 1300);
+				setTimeout(function() { self.current.update() }, 1300);
 			};
 			self.current.receipt_lines = function() {
-				pr(self.current.order);
 				var s = self.current.order.Service;
 				var a = self.current.order.Service.address;
 				var r = [];
 
-				r.push( [ s.order_method == "delivery" ? "DELIVERY (" + str_to_upper(s.pay_method) + ")" : "PICKUP", "h1", true]);
-				r.push( [ s.paid ? ":::::: PAID ::::::" : "*** NOT PAID ***", "h1", true] );
-				r.push([ [a.firstname, a.lastname].join(" "), "h2", true]);
-				r.push([ [a.phone.substr(0,3), a.phone.substr(3,3), a.phone.substr(6)].join("."), "h2", true]);
+				r.push( [ s.order_method == "delivery" ? "DELIVERY (" + str_to_upper(s.pay_method) + ")" : "PICKUP", "h2", true]);
+				r.push( [ s.paid ? "::::: PAID :::::" : "*** NOT PAID ***", "h2", true] );
+				r.push([" ", "h5", true]);
+				r.push([ [a.firstname, a.lastname].join(" "), "h3", true]);
+				r.push([" ", "h5", true]);
+				try {
+					r.push([[a.phone.substr(0, 3), a.phone.substr(3, 3), a.phone.substr(6)].join("."), "h4", true]);
+				} catch (e) {
+					r.push("PHONE_NUM_ERROR :( :( :(", "h4", true);
+				}
 				if (s.order_method == "delivery") {
-					r.push([a.address, "h3", true]);
-					if ( defined(a.address_2) ) r.push([a.address_2, "h3", true]);
-					r.push([a.postal_code, "h3", true]);
+					r.push([a.address, "default", true]);
+					if ( defined(a.address_2) ) r.push([a.address_2, "h4", true]);
+					r.push([a.postal_code, "h4", true]);
 					switch (a.building_type) {
 						case 0:
-							r.push(["House", "h3", true]);
+							r.push(["House", "h4", true]);
 							break;
 						case 1:
-							r.push(["Apartment", "h3", true]);
+							r.push(["Apartment", "h4", true]);
 							break;
 						case 2:
-							r.push(["Office/Other", "h3", true]);
+							r.push(["Office/Other", "h4", true]);
 							break;
 					}
 					if (defined(a.note)) {
-						r.push(["*************************", "h4", true]);
+						r.push(["************************ ADDRESS NOTE **************************", "h5", true]);
 						r.push([a.note, "h4", true]);
-						r.push(["*************************", "h4", true]);
+						r.push(["****************************************************************", "h5", true]);
 					}
 				}
 				for (var id in self.current.order.Order) {
 					var o = self.current.order.Order[id];
+					var inv = self.current.order.Invoice;
 					var rank = o.pricing.rank;
 					var size = o.orb.Pricedict["l"+rank];
-					r.push(["(" + o.pricing.quantity + ")" + " x " + size + " " + o.orb.Orb.title, "h3", true]);
-					var opt_str = [];
-					for (var i = 0; i < o.orbopts.length; i++) { opt_str.push(o.orbopts[i].title) };
-					r.push([ "[ " + opt_str.join(" ], [ ") + " ]", "h4", true]);
+					var o_str = "(" + o.pricing.quantity + ")" + " x " + size + " " + o.orb.Orb.title;
+					var p_str = o.pricing.net_formatted;
+					while (p_str.length < 10) { p_str = " " + p_str; }
+					if (o_str.length > 22) {
+						var o_str_parts = o_str.split(" ");
+						var new_ostr_l1 = "";
+						var new_ostr_l2 = "";
+						for (var ol_part = 0; ol_part < o_str_parts.length; ol_part++) {
+							var part = o_str_parts[ol_part]
+							if (new_ostr_l1.length + 1 + part.length < 22) {
+								new_ostr_l1 += " " + part;
+							} else {
+								new_ostr_l2 += " " + part;
+							}
+						}
+						while (new_ostr_l2.length < 22) { new_ostr_l2 += " " };
+						new_ostr_l2 += p_str;
+						r.push([new_ostr_l1, "medium", true]);
+						r.push([new_ostr_l2, "medium", true]);
+					} else {
+						while (o_str.length < 22) { o_str += " "; }
+						o_str += p_str;
+						r.push([o_str, "medium", true]);
+					}
+					if (obj_len(o.orbopts) > 0) {
+						var opt_str = [];
+						for (var i in o.orbopts) {
+							var opt = o.orbopts[i].Orbopt;
+							var coverage;
+							switch (opt.coverage) {
+								case "L":
+									coverage = "(L) 0.5 x ";
+									break;
+								case "R":
+									coverage = "(R) 0.5 x";
+									break;
+								case "D" :
+									coverage = "2 x ";
+									break;
+								default:
+									coverage = "";
+									break
+							}
+
+							r.push(["     " + coverage + opt.title, "small", true]);
+						}
+					}
 				}
+				r.push([" ", "h5", true]);
+				r.push(["****************************************************************", "h5", true]);
+				while (inv.subtotal.length != 10) { inv.subtotal = " " + inv.subtotal;}
+				while (inv.hst.length != 10) { inv.hst = " " + inv.hst;}
+				while (inv.total.length != 10) { inv.total = " " + inv.total;}
+				var subtotal = "           Subtotal: $" + inv.subtotal;
+				var hst = "           HST:      $" + inv.hst;
+				var total = "           Total:    $" + inv.total;
+				r.push([subtotal, "h4", true]);
+				r.push([hst, "h4", true]);
+				r.push([total, "h4", true]);
+				r.push(["****************************************************************", "h5", true]);
 				for (var i = 0; i < r.length;  i++)  self.printer.print( r[i][0], r[i][1], r[i][2] );
+				self.printer.cut(true);
 			}
 		},
 		hide: undefined,
@@ -187,7 +249,7 @@ XtremePOS.prototype = {
 			self.pending.list = function() { return self.pending.count() > 0 ? self.pending.orders : false };
 
 			self.pending.fetch = function(orders) {
-				if ( self.pending.fetch_count > 1) return;
+				//if ( self.pending.fetch_count > 2) return;
 				self.pending.fetch_count++;
 				if ( defined(orders) && orders.length > 0 ) {
 					var update = self.pending.count() == 0 && !self.current.order;
@@ -255,6 +317,7 @@ XtremePOS.prototype = {
 			};
 			self.pending.next = function() {
 				if ( !self.pending.list() ) {
+
 					setTimeout(function () { self.splash.show() }, self.current.hide());
 					return false
 				}

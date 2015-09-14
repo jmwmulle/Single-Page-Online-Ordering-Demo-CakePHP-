@@ -59,7 +59,7 @@
 		 * @return int
 		 */
 		private function price_orbopts( $orbopts, $price_rank, $included ) {
-			$price_map = [ 'sauce'     => [ 'count'    => 0,
+			$price_map = [ 'sauces'     => [ 'count'    => 0,
 			                                'included' => 1,
 			                                'price'    => 0 ],
 			               'sidesauces' => [ 'count'    => 0,
@@ -87,8 +87,11 @@
 				foreach ( $orbopt[ 'Optflag' ] as $fl ) {
 					$index = array_key_exists( $fl[ 'title' ], $price_map ) ? $fl[ 'title' ] : "opt";
 					$counting[$ot] = compact('fl', 'index');
-					$price_map [ $index ][ 'count' ]++;
-					if ($index == 'premium') $price_map['opt']++;
+					$score = 1;
+					if ($orbopt['Orbopt']['coverage'] == "D") $score = 2;
+					if (in_array($orbopt['Orbopt']['coverage'], ["R","L"]) ) $score = 0.5;
+					$price_map [ $index ][ 'count' ] += $score;
+					if ($index == 'premium') $price_map['opt']['count'] += $score ;
 					if ( $price_map[ $index ][ 'price' ] == 0 ) $price_map[ $index ][ 'price' ] = $price;
 				}
 			}
@@ -328,7 +331,7 @@
 			$debug['new_total'] = $invoice['total'];
 			}
 
-			$this->Session->write( 'Cart.Debug', $debug);
+			$this->Session->write( 'Cart.updateInvoice', $debug);
 			$this->Session->write( 'Cart.Invoice', $invoice );
 			$this->Session->write( 'Cart.Service.deliverable',
             $this->Session->read( 'Cart.Invoice.total' ) >= $this->delivery_min );

@@ -40,6 +40,7 @@ XT.route_collections.pos_api = function() {
 		}
 	};
 	this.pos_pending = {
+		loading_animation: false,
 		url: {url: 'pending', defer: true, type: C.GET},
 		callbacks: {
 			launch: function () {
@@ -53,11 +54,11 @@ XT.route_collections.pos_api = function() {
 		params: {id: {url_fragment: true}, reply:{url_fragment: true} },
 		url: { url: "resolve-order", type: C.POST, defer: true},
 		callbacks: {
-			params_set: function() {
-				this.unset("url");
-				this.unset("launch");
-				XT.pos.current.resolve({})
-			},
+			//params_set: function() {
+			//	this.unset("url");
+			//	this.unset("launch");
+			//	XT.pos.current.resolve({})
+			//},
 			launch: function () {
 				XT.router.cake_ajax_response(this.deferral_data, {
 					callback: function (response) { XT.pos.current.resolve(response.data) }
@@ -68,7 +69,7 @@ XT.route_collections.pos_api = function() {
 	this.delivery_time_buttons = {
 		params:['action'],
 		callbacks: { launch: function() { XT.pos.delivery_times[this.read('action')]() } }
-	},
+	};
 	this.set_delivery_time = {
 		params:{time:{url_fragment:true}},
 		url: { url: "set-delivery-time", type: C.POST, defer:true},
@@ -79,7 +80,7 @@ XT.route_collections.pos_api = function() {
 					}, true, true);
 			}
 		}
-	}
+	};
 
 	this.system = {
 		params: {sysvar: {url_fragment:true}, method: {url_fragment:true}, value: {url_fragment:true}},
