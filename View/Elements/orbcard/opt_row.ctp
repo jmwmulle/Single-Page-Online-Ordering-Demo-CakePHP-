@@ -25,7 +25,7 @@ if ($opt):
 	<?='<ul class="stretch inline">';?>
 	<?php foreach ($icons as $icon => $value):
 				$classes = array("orb-opt-coverage", $icon, "icon-$icon", "inactive", "disabled");
-				if ($icon == "full") $classes[3] = "active";
+//				if ($icon == "full") $classes[3] = "active";
 				if ($opt['default']) $classes[4] = "enabled";
 				echo sprintf("<li %s data-route='coverage_toggle/%s/$value'></li>", ___cD($classes), $opt['id']);
 			endforeach;?>

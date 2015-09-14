@@ -42,7 +42,7 @@ Orb = function(id, uid) {
 					if (value) self.quantity.value = value;
 					$(self.DOM.quantity_input).val(self.quantity.value);
 					return self
-				}
+				};
 				self.quantity.reset = function() { self.quantity.set(1); return self }
 			},
 			value: 1,
@@ -193,7 +193,7 @@ Orb.prototype = {
 		this.DOM.quantity = $(XSM.menu.orb_order_form_quantity)[0];
 		this.DOM.price_rank.input = $(XSM.menu.orb_order_form_price_rank)[0];
 		$(XSM.menu.orb_size_button).each( function() { self.DOM.price_rank.buttons[$(this).data('rank')] = this; });
-		this.price_rank.set(rank)
+		this.price_rank.set(rank);
 		try {
 			this.inspect();
 		} catch (e) {

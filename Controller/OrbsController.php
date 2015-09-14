@@ -158,7 +158,7 @@
 
 		public function orbcard($id, $render = true) {
 			$submitted_data = compact('id', 'render');
-			if ( ($this->request->is( 'ajax' ) or in_array('bare', $this->request->params)) and $this->Orb->exists( $id ) ) {
+			if ( ($this->request->is( 'ajax' ) or in_array('bare', $this->request->params)) and $this->Orb->exists( $id ) or true) {
 				$this->set('ajax', true);
 				$this->Orb->Behaviors->load( 'Containable' );
 				$orb_conditions = [ 'conditions' => [ '`Orb`.`id`' => $id ],

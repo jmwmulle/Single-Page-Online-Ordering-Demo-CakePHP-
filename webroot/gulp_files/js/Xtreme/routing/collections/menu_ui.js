@@ -88,7 +88,7 @@ XT.route_collections.menu_ui = function() {
 						}, XT.orbcard.reset_stage() );
 					},
 					data: { id: this.read('id') }
-				}, false, false);
+				}, true, true);
 			}
 		}
 	};
