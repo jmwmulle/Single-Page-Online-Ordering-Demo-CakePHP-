@@ -9,14 +9,14 @@
 
 $this->start('mobile-content');?>
 <div class="row">
-	<div id="mobile-countdown" class="show-for-small-only small-10 small-centered columns">
+	<div id="mobile-countdown" class="show-for-small-only small-10 small-centered text-center columns">
 		<p>Our mobile site will follow the launch of our desktop site. For now you can visit us on your laptop, desktop or large-format tablet.</p>
 		<p>But that doesn't mean you're out of luck; you can also order on-line from Xtreme Pizza via <a href="http://www.just-eat.ca">JustEat</a></p>
 		<h3>Thanks for visiting!</h3>
 	</div>
 </div>
 <?php $this->end('mobile-content');?>
-<div id="count-down-wrapper">
+<div id="count-down-wrapper" class="text-center">
 	<div class="row">
 		<div id="countdown" class="show-for-medium-up medium-12 large-12 columns">
 			<div class="row">

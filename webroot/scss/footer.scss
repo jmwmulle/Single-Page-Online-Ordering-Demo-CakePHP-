@@ -83,30 +83,46 @@ footer#footer {
 
   }
   .pagespan {
-    width:$row-width;
     margin: 3em auto;
     padding-bottom:5rem;
-//    margin-top:3rem;
     overflow-y:auto;
     min-height:100%;
   }
-
+  #policy-row {
+    background-color: #f2f2f2;box-shadow: inset 0px 0px 16px $black-a75;
+  }
   .disclaimer {
-    * {
-      @include HelveticaLtCn;
-      color:$medium-grey;
-      font-size:0.75rem;
-      }
+    @include HelveticaLtCn;
+    color:$text-grey;
+    margin-top: 2rem;
+    p {
+      font-size:0.75rem !important;
+      font-family: "Helvetica Neue Light Condensed" !important;
     }
+    h1,h2,h3,h4,h5 {
+      color: $text-grey !important;
+      font-family: "Helvetica Neue Medium Condensed" !important;
+    }
+    h2 { font-size: 1.5rem !important; }
+    h3 { font-size: 1.25rem !important; }
+    h4 { font-size: 1rem !important; }
+  }
+  #logo-row {
+    height: rem-calc(200px);
+  }
   #footer-logo {
-    width:75%;
-    max-width:30rem;
+    position:relative;
+    margin-top: 6%;
+    height: rem-calc(125px);
   }
   #designer-plug {
     @include HelveticaLtCn;
+
+    height: rem-calc(200px);
     img {
-      width:25%;
-      max-width:5rem;
+      display:block;
+      margin-top:6.5%;
+      height:60%;
     }
   }
 

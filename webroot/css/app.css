@@ -5618,23 +5618,42 @@ footer#footer {
     footer#footer #footer-reveal:hover span.three {
       -webkit-animation: ellipses-glow-3 1.2s ease-in-out infinite normal 0.666s running forwards; }
   footer#footer .pagespan {
-    width: 75rem;
     margin: 3em auto;
     padding-bottom: 5rem;
     overflow-y: auto;
     min-height: 100%; }
-  footer#footer .disclaimer * {
+  footer#footer #policy-row {
+    background-color: #f2f2f2;
+    box-shadow: inset 0px 0px 16px rgba(0, 0, 0, 0.75); }
+  footer#footer .disclaimer {
     font-family: "Helvetica Neue Light Condensed", arial, sans-serif;
-    color: #a0a0a0;
-    font-size: 0.75rem; }
+    color: #373737;
+    margin-top: 2rem; }
+    footer#footer .disclaimer p {
+      font-size: 0.75rem !important;
+      font-family: "Helvetica Neue Light Condensed" !important; }
+    footer#footer .disclaimer h1, footer#footer .disclaimer h2, footer#footer .disclaimer h3, footer#footer .disclaimer h4, footer#footer .disclaimer h5 {
+      color: #373737 !important;
+      font-family: "Helvetica Neue Medium Condensed" !important; }
+    footer#footer .disclaimer h2 {
+      font-size: 1.5rem !important; }
+    footer#footer .disclaimer h3 {
+      font-size: 1.25rem !important; }
+    footer#footer .disclaimer h4 {
+      font-size: 1rem !important; }
+  footer#footer #logo-row {
+    height: 12.5rem; }
   footer#footer #footer-logo {
-    width: 75%;
-    max-width: 30rem; }
+    position: relative;
+    margin-top: 6%;
+    height: 7.8125rem; }
   footer#footer #designer-plug {
-    font-family: "Helvetica Neue Light Condensed", arial, sans-serif; }
+    font-family: "Helvetica Neue Light Condensed", arial, sans-serif;
+    height: 12.5rem; }
     footer#footer #designer-plug img {
-      width: 25%;
-      max-width: 5rem; }
+      display: block;
+      margin-top: 6.5%;
+      height: 60%; }
 
 @-webkit-keyframes panel-stow {
   0% {
@@ -6775,8 +6794,7 @@ body#countdown {
   background: radial-gradient(ellipse at center, #1e5799 0%, #202225 100%);
   /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#202225',GradientType=1 );
-  /* IE6-9 fallback on horizontal gradient */
-  text-align: center; }
+  /* IE6-9 fallback on horizontal gradient */ }
   body#countdown #flash-modal {
     display: none; }
 
