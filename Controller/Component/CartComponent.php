@@ -1,192 +1,349 @@
 <?php
-class CartComponent extends Component {
 
-//////////////////////////////////////////////////
+	class CartComponent extends Component {
+		public $portion_pricing = array( 'F' => 1, 'L' => 0.5, 'R' => 0.5, 'D' => 2 );
+		public $components = array( 'Session' );
+		public $Controller;
+		private $invoice_template = [ 'subtotal'     => 0,
+		                              'total'        => 0,
+		                              'item_count'   => 0,
+		                              'invoice_rows' => 0,
+		                              'hst'          => 0 ];
+		private $maxQuantity = 99;
+		private $hst_rate = 0.15;
+		private $bottle_deposit = 0.1;
+		private $delivery_min = 10;
 
-	public $components = array('Session');
 
-//////////////////////////////////////////////////
-
-	public $controller;
-
-//////////////////////////////////////////////////
-
-	public function __construct(ComponentCollection $collection, $settings = array()) {
-		$this->controller = $collection->getController();
-		parent::__construct($collection, array_merge($this->settings, (array)$settings));
-	}
-
-//////////////////////////////////////////////////
-
-	public function startup(Controller $controller) {
-		#$this->controller = $controller;
-	}
-
-//////////////////////////////////////////////////
-
-	public $maxQuantity = 99;
-
-//////////////////////////////////////////////////
-
-	public function add($id, $quantity = 1, $price_rank = 0, $orbopts_list = null) {
-		
-
-		if(!is_numeric($quantity)) {
-			$quantity = 1;
+		public function __construct( ComponentCollection $collection, $settings = array() ) {
+			$this->Controller = $collection->getController();
+			parent::__construct( $collection, array_merge( $this->settings, (array)$settings ) );
 		}
 
-		$quantity = abs($quantity);
+		public function startup( Controller $controller ) { }
 
-		if($quantity > $this->maxQuantity) {
-			$quantity = $this->maxQuantity;
-		}
 
-		if($quantity == 0) {
-			$this->remove($id);
-			return;
-		}
-		$product = $this->controller->Orb->find('first', array(
-			'conditions' => array(
-				'Orb.id' => $id
-			)
-		));
-
-		if($orbopts_list) {
-			foreach ($orbopts_list as $orbopt_id) {
-				$this->controller->Orbopt->Behaviors->load('Containable');
-				$orbopts[$orbopt_id] = $this->controller->Orbopt->find('first', array(
-					'recursive' => 1,
-					'conditions' => array(
-						'Orbopt.id' => $orbopt_id,
-					),
-					'contain' => array(
-						'Pricelist',
-					),
-				));
+		/**
+		 * returns array of orbopt model records from values of orbopt_ids array
+		 *
+		 * @param $orbopt_ids
+		 *
+		 * @return array
+		 */
+		private function fetch_orbopts_from_ids( $orbopt_ids ) {
+			$this->Controller->Orbopt->Behaviors->load( 'Containable' );
+			foreach ( $orbopt_ids as $opt_id => $coverage ) {
+				if ( $coverage != -1 ) {
+					$conditions = [ 'recursive'  => 1,
+                                     'conditions' => [ 'Orbopt.id' => $opt_id ],
+                                     'contain'    => [ 'Pricelist',
+                                                       'Optflag' => [
+                                                           'conditions' => [ 'price_factor' => 1 ]
+                                                       ] ] ];
+					$orbopt_ids[ $opt_id ]                           = $this->Controller->Orbopt->find( 'first', $conditions );
+					$orbopt_ids[ $opt_id ][ 'Orbopt' ][ 'coverage' ] = $coverage;
+				} else {
+					unset( $orbopt_ids[ $opt_id ] );
+				}
 			}
-	        }
-		
-		if(empty($product)) {
+
+			return array_filter( $orbopt_ids );
+		}
+
+
+		/**
+		 * @param $orbopts
+		 * @param $price_rank
+		 * @param $included
+		 *
+		 * @return int
+		 */
+		private function price_orbopts( $orbopts, $price_rank, $included ) {
+			$price_map = [ 'sauces'     => [ 'count'    => 0,
+			                                'included' => 1,
+			                                'price'    => 0 ],
+			               'sidesauces' => [ 'count'    => 0,
+			                                'included' => $included[ 'sidesauce_count' ],
+			                                'price'    => 0 ],
+			               'cheeses'   => [ 'count'    => 0,
+			                                'included' => $included[ 'cheese_count' ],
+			                                'price'    => 0 ],
+			               'premium'   => [ 'count'    => 0,
+			                                'included' => $included[ 'premium_count' ],
+			                                'price'    => 0 ],
+			               'opt'       => [ 'count'    => 0,
+			                                'included' => $included[ 'opt_count' ],
+			                                'price'    => 0 ],
+			];
+			$this->Session->write("Cart.Debug.orbopts.data", $orbopts);
+			$counting = [];
+			foreach ( $orbopts as $id => $orbopt ) {
+				$ot = $orbopt['Orbopt']['title'];
+				$price = $orbopt[ 'Pricelist' ][ "p$price_rank" ];
+
+				//ie. if opt !has flags but exists here (opts filtered by price_factor = true), it's a regular opt
+				if ( empty($orbopt['Optflag']) ) array_push( $orbopt[ 'Optflag' ], [ 'title' => 'opt' ] );
+
+				foreach ( $orbopt[ 'Optflag' ] as $fl ) {
+					$index = array_key_exists( $fl[ 'title' ], $price_map ) ? $fl[ 'title' ] : "opt";
+					$counting[$ot] = compact('fl', 'index');
+					$score = 1;
+					if ($orbopt['Orbopt']['coverage'] == "D") $score = 2;
+					if (in_array($orbopt['Orbopt']['coverage'], ["R","L"]) ) $score = 0.5;
+					$price_map [ $index ][ 'count' ] += $score;
+					if ($index == 'premium') $price_map['opt']['count'] += $score ;
+					if ( $price_map[ $index ][ 'price' ] == 0 ) $price_map[ $index ][ 'price' ] = $price;
+				}
+			}
+			$this->Session->write("Cart.Debug.orbopts.counts", $counting);
+			$unused_premium = $price_map['premium']['included'] - ($price_map['premium']['count'] - $price_map['premium']['included']);
+			if ($unused_premium > 0) {
+				$price_map['opt']['included'] += $unused_premium;
+			} else {
+				$price_map['opt']['included'] -= $price_map['premium']['included'];
+			}
+			$this->Session->write("Cart.Debug.orbopts.price_map", $price_map);
+			$price_breakdown = [];
+			$price = 0;
+			foreach ( $price_map as $flag => $map) {
+				$qty_diff = $map[ 'count' ] - $map['included' ];
+				if ( $qty_diff > 0 ) {
+					$price_breakdown[$flag] = $qty_diff;
+					$price += ( $qty_diff * $map[ 'price' ] );
+				}
+			}
+			$this->Session->write("Cart.Debug.orbopts.price_breakdown", $price_breakdown);
+
+			return $price;
+		}
+
+		/**
+		 * @param $candidate
+		 *
+		 * @return bool
+		 */
+		private function update_quantity( $candidate ) {
+			$i = 0;
+			foreach ( $this->Session->read( 'Cart.Order' ) as $uid => $oi ) {
+				$rank_match = $oi['pricing']['rank'] == $candidate['pricing']['rank'];
+				// slices orbs & opts for comparison
+				$this->Session->write("Cart.Debug.qty.comparison.$i", compact('oi', 'candidate', 'rank_match'));
+				if ( $rank_match ) {
+					if ( array_slice( $oi, 0, 2 ) == array_slice( $candidate, 0, 2 ) ) {
+						$candidate[ 'pricing' ][ 'quantity' ] += $oi[ 'pricing' ][ 'quantity' ];
+						if ( $candidate[ 'pricing' ][ 'quantity' ] > $this->maxQuantity ) {
+							$candidate[ 'pricing' ][ 'quantity' ] = $this->maxQuantity;
+						}
+						$candidate[ 'pricing' ][ 'net' ] = $candidate[ 'pricing' ][ 'quantity' ] * $candidate[ 'pricing' ][ 'configured_unit_price' ];
+						$this->Session->write( "Cart.Order.$uid", $candidate );
+
+						return true;
+					}
+				}
+				$i++;
+			}
+
 			return false;
 		}
 
-		$opts_prices = 0;
-		if($orbopts) {
-			foreach($orbopts as $orbopt) {
-				$opts_by_val = array_values($orbopt['Pricelist']);
-				$opts_prices += $opts_by_val[$price_rank];
-			}
-		}
 
-		$prices = array_values($product['Pricelist']);
+		/**
+		 * @param $orb_cfg
+		 *
+		 * @return mixed|null
+		 */
+		public function add( $orb_cfg ) {
+			// $orb_cfg = [orb_id, uid, quantity, price_rank, orbopts]
+			$orb_id     = $orb_cfg[ 'id' ];
+			$uid        = $orb_cfg[ 'uid' ];
+			$quantity   = $orb_cfg[ 'quantity' ];
+			$price_rank = $orb_cfg[ 'price_rank' ] + 1; // table columns are p1...p5, indices are 0...4
+			$orbopts    = array_key_exists( 'Orbopt', $orb_cfg ) ? $orb_cfg[ 'Orbopt' ] : [ ];
 
-		$data['product_id'] = $product['Orb']['id'];
-		$data['title'] = $product['Orb']['title'];
-		$data['price'] = $prices[$price_rank];
-		$data['opts_prices'] = $opts_prices;
-		$data['quantity'] = $quantity;
-		$data['subtotal'] = sprintf('%01.2f', ($data['price'] + $data['opts_prices']) * $quantity);
-		$data['price_rank'] = $price_rank;
-		$data['Orb'] = $product['Orb'];
-		$this->Session->write('Cart.OrderItem.' . $id, $data);
-		$this->Session->write('Cart.Order.shop', 1);
+			$quantity = !is_numeric( $quantity ) ? 1 : abs( $quantity );
+			if ( $quantity == 0 ) return null;
 
-		$this->Cart = ClassRegistry::init('Cart');
+			if ( $quantity > $this->maxQuantity ) $quantity = $this->maxQuantity;
 
-		$cartdata['Cart']['sessionid'] = $this->Session->id();
-		$cartdata['Cart']['quantity'] = $quantity;
-		$cartdata['Cart']['product_id'] = $product['Orb']['id'];
-		$cartdata['Cart']['title'] = $product['Orb']['title'];
-		$cartdata['Cart']['price'] = $prices[$price_rank]+$opts_prices;
-		$cartdata['Cart']['price_rank'] = $price_rank;
-		$cartdata['Cart']['subtotal'] = sprintf('%01.2f', ($cartdata['Cart']['price']) * $quantity);
 
-		$existing = $this->Cart->find('first', array(
-			'recursive' => -1,
-			'conditions' => array(
-				'Cart.sessionid' => $this->Session->id(),
-				'Cart.product_id' => $product['Orb']['id'],
-				'Cart.price_rank' => $price_rank,
-			)
-		));
-		if($existing) {
-			$cartdata['Cart']['id'] = $existing['Cart']['id'];
-		} else {
-			$this->Cart->create();
-		}
-		$this->Cart->save($cartdata, false);
-
-		$this->cart();
-
-		return $product;
-	}
-
-//////////////////////////////////////////////////
-
-	public function remove($id) {
-		if($this->Session->check('Cart.OrderItem.' . $id)) {
-			$product = $this->Session->read('Cart.OrderItem.' . $id);
-			$this->Session->delete('Cart.OrderItem.' . $id);
-
-			ClassRegistry::init('Cart')->deleteAll(
-				array(
-					'Cart.sessionid' => $this->Session->id(),
-					'Cart.product_id' => $id,
-				),
-				false
+			// get orb details from id
+			$orb                    = $this->Controller->Orb->find( 'first', [ 'recursive'  => 0,
+			                                                                   'conditions' => [ 'Orb.id' => $orb_id ] ]
 			);
+			$orb[ 'Orb' ][ 'note' ] = $orb_cfg[ 'orb_note' ];
 
-			$this->cart();
-			return $product;
+			if ( empty( $orb ) ) return null; // if bad orb_id passed, exit quietly
+
+			// get orbopt data
+			$orbopts = $this->fetch_orbopts_from_ids( $orbopts );
+
+			// get the pricing info for each opt
+			$opt_price = $this->price_orbopts( $orbopts, $price_rank, [ 'opt_count'       => $orb[ 'Orb' ][ 'opt_count' ],
+			                                                            'cheese_count'    => $orb[ 'Orb' ][ 'cheese_count' ],
+			                                                            'premium_count'   => $orb[ 'Orb' ][ 'premium_count' ],
+			                                                            'sidesauce_count' => $orb[ 'Orb' ][ 'sidesauce_count' ]
+			                                           ]
+			);
+			$pricing   = $this->pricing_array( $opt_price, $price_rank, $quantity, $orb );
+			// walk current cart (if it exists); if item of identical configuration found, update it's quantity
+			$candidate = compact( "orb", 'orbopts', 'pricing' );
+
+			if ( $this->update_quantity( $candidate ) ) return true;
+
+			return $this->Session->write( "Cart.Order.$uid", $candidate );
 		}
-		return false;
-	}
 
-//////////////////////////////////////////////////
+		private function pricing_array( $opt_price, $price_rank, $quantity, $orb ) {
+			$pricing                    = [ 'rank'                  => $price_rank,
+			                                'label'                 => $orb[ 'Pricedict' ][ "l$price_rank" ],
+			                                'quantity'              => $quantity,
+			                                'unit_base_price'       => 1 * $orb[ 'Pricelist' ][ "p$price_rank" ],
+			                                'opt_price'             => $opt_price,
+			                                'configured_unit_price' =>
+				                                1 * $orb[ 'Pricelist' ][ "p$price_rank" ] + $opt_price,
+			                                'net'                   =>
+				                                $quantity * ( $orb[ 'Pricelist' ][ "p$price_rank" ] + $opt_price ) ];
+			$pricing[ 'net_formatted' ] = money_format( "%#3.2n", $pricing[ 'net' ] );
 
-	public function cart() {
-		$cart = $this->Session->read('Cart');
-		$quantity = 0;
-		$subtotal = 0;
-		$total = 0;
-		$order_item_count = 0;
-		$HST_MULT = 0.15;
-		$HST = 0;
-		$delivery = 3.00;
+			return $pricing;
+		}
 
-		if (count($cart['OrderItem']) > 0) {
-			foreach ($cart['OrderItem'] as $item) {
-				$quantity += $item['quantity'];
-				$subtotal += $item['subtotal'];
-				$HST += $item['subtotal']*$HST_MULT;
-				$order_item_count++;
+		public function edit( $orb_uid, $opt_id ) {
+			$orb = $this->find_by_uid( $orb_uid );
+			if ( !$orb ) return false;
+			if ( !$opt_id ) {
+				return $this->remove( $orb_uid, 1 );
+			} else {
+				unset( $orb[ 'orbopts' ][ $opt_id ] );
+				$orb[ 'orbopts' ] = array_filter( $orb[ 'orbopts' ] );
+				$included         = [ 'opt_count'       => $orb[ 'orb' ][ 'Orb' ][ 'opt_count' ],
+				                      'cheese_count'    => $orb[ 'orb' ][ 'Orb' ][ 'cheese_count' ],
+				                      'premium_count'   => $orb[ 'orb' ][ 'Orb' ][ 'premium_count' ],
+				                      'sidesauce_count' => $orb[ 'orb' ][ 'Orb' ][ 'sidesauce_count' ] ];
+				$opt_price        = $this->price_orbopts( $orb[ 'orbopts' ], $orb[ 'pricing' ][ 'rank' ], $included );
+				$orb[ 'pricing' ] = $this->pricing_array( $opt_price, $orb[ 'pricing' ][ 'rank' ], $orb[ 'pricing' ][ 'quantity' ], $orb[ 'orb' ] );
+				$this->Session->write( "Cart.Order.$orb_uid", $orb );
+				$this->update_invoice();
 			}
-			$total = $subtotal+$HST+$delivery;
-			$d['order_item_count'] = $order_item_count;
-			$d['quantity'] = $quantity;
-			$d['subtotal'] = sprintf('%01.2f', $subtotal);
-			$d['HST'] = sprintf('%01.2f', $HST);
-			$d['delivery'] = sprintf('%01.2f', $delivery);
-			$d['total'] = sprintf('%01.2f', $total);
-			$this->Session->write('Cart.Order', $d + $cart['Order']);
+
 			return true;
 		}
-		else {
-			$d['quantity'] = 0;
-			$d['subtotal'] = 0;
-			$d['total'] = 0;
-			$this->Session->write('Cart.Order', $d + $cart['Order']);
+
+		/**
+		 * @param $uid
+		 *
+		 * @return bool
+		 */
+		public function find_by_uid( $uid ) {
+			$order = $this->Session->read( 'Cart.Order' );
+			foreach ( $order as $orb_uid => $orb ) if ( $orb_uid == $uid ) return $orb;
+
 			return false;
 		}
+
+		/**
+		 * @param        $uid
+		 * @param string $quantity
+		 *
+		 * @return int
+		 */
+		public function remove( $uid, $quantity ) {
+			if ( $this->Session->check( "Cart.Order.$uid" ) ) {
+				$quantity        = $this->Session->read( "Cart.Order.$uid.pricing.quantity" ) - $quantity;
+				$conf_unit_price = $this->Session->read( "Cart.Order.$uid.pricing.configured_unit_price" );
+
+				// if deleting some but not all of them item, reduce quantity
+				if ( $quantity > 0 ) {
+					$this->Session->write( "Cart.Order.$uid.pricing.quantity", $quantity );
+					$this->Session->write( "Cart.Order.$uid.pricing.configured_unit_price",
+					                       $quantity * $conf_unit_price );
+				} else {
+					$this->Session->delete( "Cart.Order.$uid" );
+				}
+			}
+
+			$this->update_invoice();
+
+			return true;
+		}
+
+
+		/**
+		 * update_invoice()
+		 *
+		 * @return bool
+		 */
+		public function update_invoice() {
+			if ( !empty( $cart[ 'Order' ] ) ) return;
+
+			$invoice = $this->invoice_template;
+			foreach ( $this->Session->read( "Cart.Order" ) as $uid => $oi ) {
+				$invoice[ 'subtotal' ] += $oi[ 'pricing' ][ 'net' ];
+				$invoice[ 'item_count' ] += $oi[ 'pricing' ][ 'quantity' ];
+				$invoice[ 'invoice_rows' ]++;
+			}
+			$invoice[ 'hst' ]   = round($invoice[ 'subtotal' ] * $this->hst_rate, 2);
+			$invoice[ 'total' ] = $invoice[ 'subtotal' ] + $invoice[ 'hst' ];
+			$debug = [];
+			$debug['total'] = $invoice['total'];
+			$debug['substr'] = (int) substr($invoice['total'], -1);
+			$invoice_int = $invoice['total'] * 100;
+			$mod = $invoice_int % 5;
+			$debug['invoice_int'] = $invoice_int;
+			$debug['modulo_5'] = $mod;
+			if ($mod) {
+				$debug['case'] = false;
+				$debug['modulo_5'] = false;
+				switch ( $mod ) {
+					case 1:
+						$invoice['total'] -= 0.01;
+						$debug['case'] = 1;
+						break;
+					case 2:
+						$invoice['total'] -= 0.02;
+						$debug['case'] = 2;
+						break;
+					case 3:
+						$invoice['total'] += 0.02;
+						$debug['case'] = 3;
+						break;
+					case 4:
+						$invoice['total'] += 0.01;
+						$debug['case'] = 4;
+						break;
+					case 6:
+						$invoice['total'] -= 0.01;
+						$debug['case'] = 6;
+						break;
+					case 7:
+						$invoice['total'] -= 0.02;
+						$debug['case'] = 7;
+						break;
+					case 8:
+						$invoice['total'] += 0.02;
+						$debug['case'] = 8;
+						break;
+					case 9:
+						$invoice['total'] += 0.01;
+						$debug['case'] = 9;
+						break;
+				}
+			$debug['new_total'] = $invoice['total'];
+			}
+
+			$this->Session->write( 'Cart.updateInvoice', $debug);
+			$this->Session->write( 'Cart.Invoice', $invoice );
+			$this->Session->write( 'Cart.Service.deliverable',
+            $this->Session->read( 'Cart.Invoice.total' ) >= $this->delivery_min );
+		}
+
+
+		public function clear() {
+			$this->Session->delete( 'Cart' );
+		}
+
+		public function beforeFilter() {
+			parent::beforeFilter();
+			$this->Auth->allow( 'add', 'clear', 'remove', 'startup' );
+		}
 	}
-
-//////////////////////////////////////////////////
-
-	public function clear() {
-		ClassRegistry::init('Cart')->deleteAll(array('Cart.sessionid' => $this->Session->id()), false);
-		$this->Session->delete('Cart');
-	}
-
-//////////////////////////////////////////////////
-
-}

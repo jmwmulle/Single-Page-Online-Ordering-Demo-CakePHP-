@@ -4,6 +4,8 @@ App::uses('AppModel', 'Model');
  * Orbopt Model
  *
  * @property Pricelist $Pricelist
+ * @property Optflag $Optflag
+ * @property Orbcat $Orbcat
  * @property Orb $Orb
  */
 class Orbopt extends AppModel {
@@ -14,16 +16,6 @@ class Orbopt extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'pricelist_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
 		'title' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
@@ -34,57 +26,7 @@ class Orbopt extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'meat' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'veggie' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'sauce' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'pizza_only' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'premium' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'global' => array(
+		'pricelist_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
@@ -119,6 +61,32 @@ class Orbopt extends AppModel {
  * @var array
  */
 	public $hasAndBelongsToMany = array(
+		'Optflag' => array(
+			'className' => 'Optflag',
+			'joinTable' => 'orbopts_optflags',
+			'foreignKey' => 'orbopt_id',
+			'associationForeignKey' => 'optflag_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+		),
+		'Orbcat' => array(
+			'className' => 'Orbcat',
+			'joinTable' => 'orbopts_orbcats',
+			'foreignKey' => 'orbopt_id',
+			'associationForeignKey' => 'orbcat_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+		),
 		'Orb' => array(
 			'className' => 'Orb',
 			'joinTable' => 'orbs_orbopts',

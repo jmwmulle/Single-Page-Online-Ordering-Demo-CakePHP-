@@ -1,41 +1,313 @@
-@font-face {
-  font-family : "Helvetica Neue Condensed Black";
-  src         : url("../files/HelveticaNeueLTStd-BlkCn.otf");
+@-webkit-keyframes friendly-font-0 {
+  0% {opacity:0;}
+  100% {opacity:1;}
 }
+@-webkit-keyframes friendly-font-1 {
+  0% {color: $white;}
+  50% {
+    -webkit-transform: rotate(360deg) scale(3, 3);
+    color: $xtreme-blue;
+    font-size:24px;
+
+  }
+  100% {color: $xtreme-red;}
+}
+@-webkit-keyframes friendly-font-2 {
+  0% {color: $white;}
+
+  50% {
+    color: $xtreme-yellow;
+    font-size:24px;
+    transform: scale(1.5, 1.5);
+  }
+  100% {color: $xtreme-yellow;}
+}
+@-webkit-keyframes friendly-font-3 {
+  0% {color: $white;}
+  50% {color: $xtreme-blue;}
+  100% {color: $white;}
+}
+@-webkit-keyframes friendly-font-4 {
+  0% {color: $white;}
+  50% {color: $xtreme-blue;}
+  100% {color: $white;}
+}
+@-webkit-keyframes friendly-font-5 {
+  0% {color: $text-grey;}
+  80% { color: $xtreme-blue; }
+  100% {
+    color: $xtreme-blue;
+    transform: skewX(-15deg);
+  }
+}
+
+
+h4.friendly {
+  background-color: $text-grey;
+  padding: $tight-padding $base-padding $medium-padding $base-padding;
+  border-radius: $global-rounded;
+  max-height: rem-calc(42px);
+  opacity:0;
+  -webkit-animation : friendly-font-0 0.3s ease-in-out 1 normal 1.0s running forwards;
+  span {
+    display:inline-block;
+    vertical-align:text-top;
+  }
+  span.friendly-1 {  -webkit-animation : friendly-font-1 0.5s ease-in-out 1 normal 1.5s running forwards;}
+  span.friendly-2 {  -webkit-animation : friendly-font-2 0.5s ease-in-out 1 normal 1.7s running forwards;}
+  span.friendly-3 {  -webkit-animation : friendly-font-3 0.5s ease-in-out 1 normal 1.9s running forwards;}
+  span.friendly-4 {  -webkit-animation : friendly-font-4 0.5s ease-in-out 1 normal 2.1s running forwards;}
+  span.friendly-5 {  -webkit-animation : friendly-font-5 .75s ease-in-out 1 normal 2.4s running forwards;}
+}
+
+@charset "UTF-8";
 
 @font-face {
-  font-family : "Helvetica Neue Medium Condensed";
-  src         : url("../files/HelveticaNeueLTStd-MdCn.otf");
+  font-family: "xtreme-icons";
+  src:url("../files/xtreme-icons/xtreme-icons.eot");
+  src:url("../files/xtreme-icons/xtreme-icons.eot?#iefix") format("embedded-opentype"),
+    url("../files/xtreme-icons/xtreme-icons.woff") format("woff"),
+    url("../files/xtreme-icons/xtreme-icons.ttf") format("truetype"),
+    url("../files/xtreme-icons/xtreme-icons.svg#xtreme-icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
 }
 
-@font-face {
-  font-family : "Helvetica Neue Light Condensed";
-  src         : url("../files/HelveticaNeueLTStd-LtCn.otf");
+[data-icon]:before {
+  font-family: "xtreme-icons" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+//  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@font-face {
-  font-family : "Helvetica Neue Thin";
-  src         : url("../files/HelveticaNeueLTStd-Th.otf");
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "xtreme-icons" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+//  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+span.icon-hn-inline {
+  position: relative; top:0.15em;
+  padding-left: 0.3rem;
 }
 
-@font-face {
-  font-family : "Helvetica Neue Thin Condensed";
-  src         : url("../files/HelveticaNeueLTStd-ThCn.otf");
+.icon-cancel:before {
+  content: "a";
+}
+.icon-double:before {
+  content: "b";
+}
+.icon-full:before {
+  content: "c";
+}
+.icon-left-side:before {
+  content: "d";
+}
+.icon-right-side:before {
+  content: "e";
+}
+.icon-checked:before {
+  content: "f";
+}
+.icon-unchecked:before {
+  content: "g";
+}
+.icon-shopping:before {
+  content: "h";
+}
+.icon-facebook:before {
+  content: "j";
+}
+.icon-gplus:before {
+  content: "k";
+}
+.icon-twitter:before {
+  content: "l";
+}
+.icon-settings:before {
+  content: "m";
+}
+.icon-favorites:before {
+  content: "n";
+}
+.icon-share:before {
+  content: "i";
+}
+.icon-circle-arrow-r:before {
+  content: "o";
+}
+.icon-circle-arrow-l:before {
+  content: "p";
+}
+.icon-tab-arrow-l:before {
+  content: "q";
+}
+.icon-generic-pizza:before {
+  content: "r";
+}
+.icon-salads:before {
+  content: "s";
+}
+.icon-assorted-fingers:before {
+  content: "t";
+}
+.icon-super-pizzas:before {
+  content: "u";
+}
+.icon-specialty-pizzas:before {
+  content: "v";
+}
+.icon-fries-and-poutines:before {
+  content: "w";
+}
+.icon-pitas-and-sandwiches:before {
+  content: "x";
+}
+.icon-original-pizzas:before {
+  content: "y";
+}
+.icon-panzarottis:before {
+  content: "z";
+}
+.icon-sandwhiches:before {
+  content: "A";
+}
+.icon-subs:before {
+  content: "B";
+}
+.icon-burgers:before {
+  content: "C";
+}
+.icon-donairs:before {
+  content: "D";
+}
+.icon-fish-and-chips:before {
+  content: "E";
+}
+.icon-chicken-and-chips:before {
+  content: "F";
+}
+.icon-xtreme-subs:before {
+  content: "G";
+}
+.icon-desserts:before {
+  content: "H";
+}
+.icon-drinks-and-sauces:before {
+  content: "I";
+}
+.icon-pasta:before {
+  content: "J";
+}
+.icon-orb-card-cart:before {
+  content: "K";
+}
+.icon-orb-card-favorite:before {
+  content: "L";
+}
+.icon-orb-card-share:before {
+  content: "M";
+}
+.icon-orb-card-register:before {
+  content: "O";
+}
+.icon-topbar-email:before {
+  content: "P";
+}
+.icon-topbar-sign-up:before {
+  content: "Q";
+}
+.icon-orb-card-share-reveal:before {
+  content: "N";
+}
+.icon-orb-card-register-reveal:before {
+  content: "R";
+}
+.icon-delivery:before {
+  content: "S";
+}
+.icon-pick-up:before {
+  content: "T";
+}
+.icon-check-mark:before {
+  content: "U";
+}
+.icon-add:before {
+  content: "V";
+}
+.icon-payment-debit:before {
+  content: "W";
+}
+.icon-payment-credit:before {
+  content: "X";
+}
+.icon-payment-cash:before {
+  content: "Y";
+}
+.icon-f-meats:before {
+  content: "Z";
+}
+.icon-f-veggies:before {
+  content: "0";
+}
+.icon-f-sidesauces:before {
+  content: "1";
+}
+.icon-f-condiments:before {
+  content: "2";
+}
+.icon-f-veggies-premium:before {
+  content: "3";
+}
+.icon-f-meats-premium:before {
+  content: "4";
+}
+.icon-f-sauces:before {
+  content: "5";
+}
+.icon-f-cheeses:before {
+  content: "6";
 }
 
 
-@font-face {
-  font-family : "Helvetica Neue Ultra Light";
-  src         : url("../files/HelveticaNeueLTStd-UltLt.otf");
+@mixin font-faces() {
+  $fonts:
+    ("Helvetica Neue Condensed Black", HelveticaBlkCn, "HelveticaNeueLTStdBlkCn" )
+    ("Helvetica Neue Medium Condensed", HelveticaMdCn, "HelveticaNeueLTStdMdCn")
+    ("Helvetica Neue Light Condensed", HelveticaLtCn, "HelveticaNeueLTStdLtCn")
+    ("Helvetica Neue Thin", HelveticaTh, "HelveticaNeueLTStdTh")
+    ("Helvetica Neue Thin Condensed", HelveticaThCn, "HelveticaNeueLTStdThCn")
+    ("Helvetica Neue Ultra Light", HelveticaUltLt, "HelveticaNeueLTStdUltThCn");
+
+  @each $font in $fonts {
+
+    @font-face {
+      font-family: "#{nth($font, 1)}";
+      src: url('../files/font/#{nth($font, 3)}.otf');
+      src: url('../files/font/#{nth($font, 3)}.eot?#iefix') format('embedded-opentype'),
+           url('../files/font/#{nth($font, 3)}.woff') format('woff'),
+           url('../files/font/#{nth($font, 3)}.ttf') format('truetype'),
+           url('../files/font/#{nth($font, 3)}.svg##{nth($font, 3)}') format('svg');
+      font-weight: normal;
+      font-style: normal;
+     };
+  }
 }
 
-@mixin mouse-memoirs {
-  font-family : "Mouse Memoirs", sans-serif;
-}
-
-@mixin Fredericka {
-  font-family : "Fredericka the Great", sans-serif;
-}
+@include font-faces();
 
 @mixin HelveticaBlkCn {
   font-family : "Helvetica Neue Condensed Black", arial, sans-serif;
@@ -61,19 +333,39 @@
   font-family : "Helvetica Neue Ultra Light", arial, sans-serif;
 }
 
+@mixin helvetica_v_center_lh($font-size, $container-height: false) {
+  @if ($container-height == false) {
+    line-height: 1.33 * $font-size;
+  } @else {
+    line-height: $container-height + 0.33 * $font-size;
+  }
+}
+.hn-l-cn { @include HelveticaLtCn; }
+.hn-ul-cn { @include HelveticaUltLt;}
+
+form, label ,.label-like {
+  @include HelveticaMdCn;
+  font-size:rem-calc(14px);
+}
+
+input { font-family : "Helvetica Neue Light Condensed", arial, sans-serif !important; }
+
+.dark-grey { color : $dark-grey; }
+
 .body-font-color { color : $body-font-color; }
 
+
 #hours-and-location {
-  text-align: right;
-  line-height: 1.25rem;
-  padding-top:rem-calc(4px);
+  text-align  : right;
+  line-height : 1.25rem;
+  padding-top : rem-calc(4px);
   @include HelveticaThCn;
   span.header-red { color : $xtreme-red; }
   li:nth-of-type(2) {
-    padding-top:rem-calc(4px);
-    font-size: 1.25 * $body-font-size;
+    padding-top : rem-calc(4px);
+    font-size   : 1.25 * $body-font-size;
   }
-  li:last-of-type {font-size: 0.75 * $body-font-size;}
+  li:last-of-type { font-size : 0.75 * $body-font-size; }
 }
 
 /**************************************************************
@@ -86,7 +378,7 @@
 #user-activity-panel {
   a {
     @include HelveticaLtCn;
-    transition: color 0.3s, font-family 0.3s;
+    transition  : color 0.3s, font-family 0.3s;
     text-align  : center;
     line-height : 0.25 * $user-activity-panel-height;
     padding-top : 0.25 * $user-activity-panel-height;
@@ -97,9 +389,9 @@
       color : invert($body-font-color);
     }
   }
-   li.active {
-      a { @include HelveticaMdCn;}
-   }
+  li.active {
+    a { @include HelveticaMdCn; }
+  }
   h2 {
     font-size   : $h3-font-size;
     line-height : $user-activity-panel-height;
@@ -113,20 +405,24 @@
   font-size      : $orbcat-menu-title-font-size;
   line-height    : $orbcat-menu-title-font-size * 1.3;
   color          : $white;
+
 }
 
 li.orbcat {
-  line-height : 1.5 * $orbcat-menu-item-height;
+//  line-height : 1.65 * $orbcat-menu-item-height;
   text-align  : center;
+  span { font-size:rem-calc(42px);}
   a {
-    transition: color $global-transition-time;
     @include HelveticaMdCn;
     color       : $body-font-color;
     font-size   : rem-calc(14px);
-    line-height : 0.1 * $orbcat-menu-height;
+    @media #{$small-only} {
+        font-size:0.7rem;
+//        @include helvetica_v_center_lh(1rem,$orbcat-menu-title-font-size);
+      }
   }
   &:hover, &.active {
-    a { color : $xtreme-yellow; }
+    a, span { color : $xtreme-yellow; }
   }
 
 }
@@ -146,34 +442,133 @@ li.orbcat {
 }
 
 div.orb-card-button {
-  text-align : center;
+  span {
+    line-height:1;
+        font-size: $orb-card-button-height * 1.2675;
+        &.icon-orb-card-favorite, &.icon-orb-card-register, &.icon-orb-card-register-reveal { color:$xtreme-yellow;}
+         &.icon-orb-card-cart { color: $xtreme-red; }
+         &.icon-orb-card-share, &.icon-orb-card-share-reveal { color:$xtreme-blue;}
+        &:hover { color: $light-grey !important;}
+  }
+  &.disabled {
+    span.icon {
+      color: $light-grey !important;
+    }
+  }
+
 }
-#active-orbs-menu {
+.orb-card-row.swap-width {
+ .orb-card-button {
+   span {
+    color: $text-grey;
+    &:hover { color:$text-grey !important; }
+  }
+   a span {
+     font-size: 0.8 * $orb-card-row-height;
+     &:hover { color: $white !important;}
+   }
+ }
 }
+
+#active-orbcat-menu-header h2 { @include helvetica_v_center_lh($h2-font-size, $orb-card-stage-menu-item-height); }
+.orb-card-stage-menu li {
+  font-size   : $h5-font-size;
+  @include helvetica_v_center_lh($h5-font-size, $orb-card-stage-menu-item-height);
+  a, h5 {
+    transition  : color $global-transition-time, opacity 0.2s;
+    line-height : inherit;
+    &.fade-out { opacity : 0; }
+  }
+  .orb-opt-coverage {
+    font-size      : rem-calc(32px);
+    line-height    : $orb-card-stage-menu-item-height;
+    vertical-align : middle;
+  }
+}
+
 div.orb-card-content {
   &#description { @include HelveticaMdCn; }
   &#price-matrix {
     @include HelveticaMdCn;
-    color: $text-grey;
-    h5 {
-      color : $xtreme-red;
-    }
-    li div{
-    };
+    color : $text-grey;
+    h5 { color : $xtreme-red; }
   }
   &#orb-card-options {
     background-color : $text-grey;
   }
 }
 
-.orb-size-panel {
-  li {
-    h3 {
-      color:$white;
-      text-align:center;
-    }
-  &.active {
-    h3 { color:$dark-grey;}
-  }
+.orb-size-panel li {
+    h3 {@include helvetica_v_center_lh($h3-font-size, 1.333333 * $h3-font-size);}
+    &.active h3 { color : $dark-grey; }
+}
+
+#tiny-orb-opts-list {
+  color:$secondary-color;
+  overflow-y:auto !important;
+  height:rem-calc(32px);
+  .tiny_orb-opt_list_item {
+    height:rem-calc(16px);
   }
 }
+ul#orb-opt-filters * {
+  @include HelveticaMdCn;
+  font-size      : rem-calc(12px) !important;
+  line-height    : 1rem !important;
+  vertical-align : middle;
+  li.orbopt-filter {
+    color          : $white;
+  }
+  text-align     : left;
+  span {
+    display: inline-block;
+//    &.text { transform: translateY(rem-calc(1px)); }
+  }
+
+
+  li#orb-opt-filters-all {
+    span.icon-tab-arrow-l {
+      padding-top:rem-calc(4px);
+      font-size: 0.8rem;
+      color: $xtreme-red !important;
+      @include helvetica_v_center_lh(0.8rem, $orb-opt-filter-all-inner-height);
+    }
+  }
+}
+#orb-total {
+  color:$dark-grey;
+  font-size: $h3-font-size;
+}
+
+span.tiny-opt, span.tiny-opt-label {
+  font-size:rem-calc(12px);
+  @include helvetica_v_center_lh( rem-calc(12px), rem-calc(16px));
+  display:inline-block !important;
+   position:relative !important;
+}
+
+ span.tiny-opt-label { top: -3px;}
+ span.tiny-opt { top:-1px; padding-left:3px;}
+
+
+#no-service {
+  margin-top:3rem;
+  padding: 2rem;}
+ .user-info {
+   h4.expanded { text-transform: uppercase;}
+   p {
+     line-height : 1rem;
+     margin:0.5rem;
+   }
+ }
+
+ .information {
+   display:block;
+   font-size:rem-calc(12px);
+   line-height: rem-calc(14px);
+  @include HelveticaMdCn;
+ }
+
+ .warning { color: $alert-color !important;}
+
+ span#order-ready-time { color: $xtreme-blue; @include HelveticaBlkCn;}

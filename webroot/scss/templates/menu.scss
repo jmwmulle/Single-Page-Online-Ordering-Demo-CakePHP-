@@ -3,25 +3,35 @@ html, nav, body, main, footer {
 }
 
 body {
-  background-attachment : fixed;
-  background-repeat: no-repeat;
-  background-size:cover;
-  .menu {
-    background-image      : url("../img/menu_bg.xlg.bright.jpg");
-    overflow              : auto;
+  background-repeat : no-repeat;
+  background-size   : cover;
+//  .menu {
+//    background-image : url("../img/menu_bg.xlg.bright.jpg");
+//    overflow         : auto;
+//  }
+}
+
+
+
+main#menu {
+
+  min-height  : 100%;
+  width       : $row-width + 6rem;
+  @media #{$small-only} { width: 40rem; }
+
+//  @media #{$large-up} {
+//    width: $row-width;
+//  }
+  padding: 3rem;
+  padding-top : $menu-top-padding;
+  overflow-x:hidden;
+  #menu-container {
+    margin-left:auto;
+    margin-right:auto;
+    width: $row-width + rem-calc(100px);
   }
 }
 
-main#menu {
-  position   : relative;
-  width      : 100%;
-  top        : 0;
-  left       : 0;
-  padding-top : $menu-top-padding;
-  overflow   : auto;
-}
-
-// in use; content area
 
 /**************************************************************
 
@@ -33,18 +43,16 @@ ul#user-activity-panel {
   float          : left;
   width          : $user-activity-panel-width;
   vertical-align : top;
-  margin: $user-activity-margin;
+  margin         : $user-activity-margin;
 
   li {
-    transition: background-color $global-transition-time, background-image $global-transition-time;
-    a { @include global-transition(color); }
+    //transition       : background-color $global-transition-time, background-image $global-transition-time;
     width            : $user-activity-panel-width;
     height           : $user-activity-panel-height;
     background-color : $black-a25;
     border           : 1px solid $black;
     border-top       : none;
-    &:hover {
-      background-color : $white-a16; }
+    &:hover { background-color : $white-a16; }
     &:first-of-type {
       transition       : none;
       background-color : $dark-grey;
@@ -52,8 +60,7 @@ ul#user-activity-panel {
     }
     &.active {
       background-color : $white-a75;
-      a {
-        color : $dark-grey; }
+      a { color : $dark-grey; }
     }
   }
 
@@ -65,13 +72,22 @@ ul#user-activity-panel {
 
 ***************************************************************/
 ul#orbcat-menu {
-  float:left;
-  position   : relative;
-  width      : $orbcat-menu-width;
-  height     : $orbcat-menu-height;
+  width:100%;
+ // @media #{$large-up} { width  : $orbcat-menu-width;}
+
+  height : $orbcat-menu-height;
   margin : $orbcat-margin;
-  vertical-align: top;
+  @media #{$small-only} {
+    margin:0;
+  }
   @include orbcat-menu-gradient;
+  &.slide-right {
+    -webkit-transform : translate(2000px, 0);
+      -moz-transform    : translate(2000px, 0);
+      -ms-transform    : translate(2000px, 0);
+      -o-transform      : translate(2000px, 0);
+      transform         : translate(2000px, 0);
+  }
 }
 
 li.orbcat {
@@ -80,31 +96,31 @@ li.orbcat {
   background-repeat   : no-repeat;
   background-position : center rem-calc(5px);
   background-size     : $orbcat-menu-icon-size;
-  transition: background-image $global-transition-time;
-  &.original-pizzas { background-image : url("../img/orbcat_icons/original-pizzas.png"); }
-  &.super-pizzas { background-image : url("../img/orbcat_icons/super-pizzas.png"); }
-  &.specialty-pizzas { background-image : url("../img/orbcat_icons/specialty-pizzas.png"); }
-  &.panzarottis { background-image : url("../img/orbcat_icons/panzarottis.png"); }
-  &.assorted-fingers { background-image : url("../img/orbcat_icons/assorted-fingers.png"); }
-  &.poutines { background-image : url("../img/orbcat_icons/poutines.png"); }
-  &.donairs { background-image : url("../img/orbcat_icons/donairs.png"); }
-  &.chicken-and-chips { background-image : url("../img/orbcat_icons/chicken-and-chips.png"); }
-  &.fish-and-chips { background-image : url("../img/orbcat_icons/fish-and-chips.png"); }
-  &.pasta { background-image : url("../img/orbcat_icons/pasta.png"); }
-  &.burgers { background-image : url("../img/orbcat_icons/burgers.png"); }
-  &.sandwiches { background-image : url("../img/orbcat_icons/sandwiches.png"); }
-  &.pita-wraps { background-image : url("../img/orbcat_icons/pita-wraps.png"); }
-  &.subs { background-image : url("../img/orbcat_icons/subs.png"); }
-  &.xtreme-subs { background-image : url("../img/orbcat_icons/xtreme-subs.png"); }
-  &.beverages { background-image : url("../img/orbcat_icons/beverages.png"); }
-  &.salads { background-image : url("../img/orbcat_icons/salads.png"); }
-  &.desserts { background-image : url("../img/orbcat_icons/desserts.png"); }
-  a {
-    height     : $orbcat-menu-anchor-height;
-    margin-top : $orbcat-menu-margin-top;
-  }
-  &:hover, &.active {
-    &.original-pizzas { background-image : url("../img/orbcat_icons/original-pizzas.hover.png"); }
+  &.bg-icons {
+    &.original-pizzas { background-image : url("../img/orbcat_icons/original-pizzas.png"); }
+    &.super-pizzas { background-image : url("../img/orbcat_icons/super-pizzas.png"); }
+    &.specialty-pizzas { background-image : url("../img/orbcat_icons/specialty-pizzas.png"); }
+    &.panzarottis { background-image : url("../img/orbcat_icons/panzarottis.png"); }
+    &.assorted-fingers { background-image : url("../img/orbcat_icons/assorted-fingers.png"); }
+    &.poutines { background-image : url("../img/orbcat_icons/poutines.png"); }
+    &.donairs { background-image : url("../img/orbcat_icons/donairs.png"); }
+    &.chicken-and-chips { background-image : url("../img/orbcat_icons/chicken-and-chips.png"); }
+    &.fish-and-chips { background-image : url("../img/orbcat_icons/fish-and-chips.png"); }
+    &.pasta { background-image : url("../img/orbcat_icons/pasta.png"); }
+    &.burgers { background-image : url("../img/orbcat_icons/burgers.png"); }
+    &.sandwiches { background-image : url("../img/orbcat_icons/sandwiches.png"); }
+    &.pita-wraps { background-image : url("../img/orbcat_icons/pita-wraps.png"); }
+    &.subs { background-image : url("../img/orbcat_icons/subs.png"); }
+    &.xtreme-subs { background-image : url("../img/orbcat_icons/xtreme-subs.png"); }
+    &.beverages { background-image : url("../img/orbcat_icons/beverages.png"); }
+    &.salads { background-image : url("../img/orbcat_icons/salads.png"); }
+    &.desserts { background-image : url("../img/orbcat_icons/desserts.png"); }
+    a {
+      height     : $orbcat-menu-anchor-height;
+      margin-top : $orbcat-menu-margin-top;
+    }
+    &:hover, &.active {
+      &.original-pizzas { background-image : url("../img/orbcat_icons/original-pizzas.hover.png"); }
       &.super-pizzas { background-image : url("../img/orbcat_icons/super-pizzas.hover.png"); }
       &.specialty-pizzas { background-image : url("../img/orbcat_icons/specialty-pizzas.hover.png"); }
       &.panzarottis { background-image : url("../img/orbcat_icons/panzarottis.hover.png"); }
@@ -123,24 +139,24 @@ li.orbcat {
       &.salads { background-image : url("../img/orbcat_icons/salads.hover.png"); }
       &.desserts { background-image : url("../img/orbcat_icons/desserts.hover.png"); }
     }
+  }
+  span.orbcat-icon {
+    display:block;
+    height:rem-calc(42px);
+    margin-bottom:$medium-padding;
+  }
 }
 
 #orbcat-menu-title {
-  width    : 100%;
-  position : relative;
-  padding  : 0;
-  bottom   : 0;
-  left     : $base-padding;
+  //width: $orbcat-menu-width;
+  width:100%;
+  left              : $base-padding;
   -webkit-transform : $orbcat-menu-title-y-adjust;
-    -moz-transform    : $orbcat-menu-title-y-adjust;
-    -o-transform      :$orbcat-menu-title-y-adjust;
-    transform         : $orbcat-menu-title-y-adjust;
-  height: $orbcat-menu-title-height;
-
-  h1 {
-    padding : 0;
-    margin : 0;
-  }
+  -moz-transform    : $orbcat-menu-title-y-adjust;
+  -ms-transform    : $orbcat-menu-title-y-adjust;
+  -o-transform      : $orbcat-menu-title-y-adjust;
+  transform         : $orbcat-menu-title-y-adjust;
+  height            : $orbcat-menu-title-height;
 }
 
 /**************************************************************
@@ -148,269 +164,7 @@ li.orbcat {
                        ORB LIST / ORB CARD STAGE / ORB CARD
 
 ***************************************************************/
-#orb-card-wrapper {
-  position         : relative;
-  height           : $orb-card-wrapper-height;
-  width            : $orb-card-wrapper-width; // active orbs floats right (ie. this - orbcard stage = visible space for active orbs)
-  background-color : $xtreme-blue;
-  margin: $orb-card-wrapper-margin;
-}
 
-#orb-card-stage {
-  position                   : absolute;
-  left                       : -1 * $float-pane-border-width;
-  top                        : -0.9 * $float-pane-border-width;
-  width                      : 75%;
-  max-width                  : $orb-card-stage-width;
-  min-width                  : 600px;
-  border                     : $orb-card-stage-border;
-  border-top-right-radius    : 1000px;
-  border-bottom-right-radius : 1000px;
-  height                     : $orb-card-stage-height;
-  background-color           : $orb-card-stage-grey;
-  @include orb-card-gradient; //todo: make this a picture or add a wrapper for the other bg
-}
 
-// FLOAT LABELS
-.float-label {
-  visibility  : hidden;
-  position    : absolute;
-  z-index     : 10;
-  width       : $orb-card-height;
--webkit-transform :rotate(270deg);
-   -moz-transform    : rotate(270deg);
-   -o-transform      : rotate(270deg);
-  transform   : rotate(270deg);
-  margin:0;
-  left        : 0;
-  bottom      : $float-label-exposed-bottom;
-  text-align  : center;
-  transition  : visibility $global-transition-time, margin-left $global-transition-time;
-  &.exposed {
-    visibility  : visible;
-    margin-left : $float-label-exposed-margin;
-  }
-}
 
-div#orb-card {
-  height      : $orb-card-height;
-  width       : $orb-card-width;
-  margin  : $orb-card-margin;
-  z-index     : 999999;
 
-  section {
-    background-color : $white;
-    padding          : $orb-card-padding;
-  }
-}
-
-.triangle {
-  position     : absolute;
-  bottom       : $triangle-extrude-position;
-  left         : $triangle-center-position;
-  width        : 0;
-  height       : 0;
-  border-left  : $triangle-border-width solid transparent;
-  border-right : $triangle-border-width solid transparent;
-  margin-left:auto;
-  margin-left:right;
-  &.tr-right {
-    right          : $triangle-extrude-position * 1.333333; // on account of the rotation
-    top           : $triangle-center-position * 1.333333;
-    -webkit-transform :rotate(-90deg);
-       -moz-transform    : rotate(-90deg);
-       -o-transform      : rotate(-90deg);
-      transform   : rotate(-90deg);
-    transform: rotate(-90deg);
-  }
-}
-
-ul.orb-card {
-  position : relative;
-  width    : 100%;
-  li.orb-card-row {
-    height        : $orb-card-row-height;
-    margin-bottom : $float-pane-margin;
-  }
-  div.orb-card-button {
-    position            : relative;
-    vertical-align      : top;
-    width               : $orb-card-button-width;
-    height              : $orb-card-button-height;
-    background-repeat   : no-repeat;
-    background-position : center;
-    cursor              : pointer;
-    z-index:9999;
-
-    &#favorite {
-      background-color : $xtreme-yellow;
-      background-image : url('../img/orb_card.icon.fav.png');
-      .triangle { border-top : 16px solid $xtreme-yellow; }
-    }
-    &#order {
-      background-color : $xtreme-red;
-      background-image : url('../img/orb_card.icon.cart.png');
-      .triangle { border-top : 16px solid $xtreme-red; }
-    }
-    &#like {
-      background-color : $xtreme-blue;
-      background-image : url('../img/orb_card.icon.like.png');
-      .triangle { border-top : 16px solid $xtreme-blue; }
-    }
-    transition: background-color $global-transition-time;
-    .triangle { transition: border-top-color $global-transition-time; }
-    &#favorite:hover, &#order:hover, &#like:hover {
-      background-color : $light-grey;
-      .triangle { border-top-color: $light-grey; }
-    }
-  }
-}
-
-div.orb-card-content {
-  width       : $orb-card-content-width;
-  margin-left : $float-pane-margin;
-  position    : relative;
-  height      : $orb-card-row-height;
-
-  &#description {
-    background-color : $light-grey;
-    padding          : $medium-padding;
-  }
-  &#price-matrix {
-    ul {
-      margin-top : -5px;
-      padding    : 0;
-      max-height : $price-matrix-max-height;
-      overflow-y : auto;
-      &::-webkit-scrollbar-track {
-        box-shadow       : inset 0 0 3px rgba(0, 0, 0, 0.3);
-        border-radius    : 4px;
-        background-color : $white;
-      }
-      &::-webkit-scrollbar {
-        width            : $medium-padding;
-        background-color : $white;
-      }
-      &::-webkit-scrollbar-thumb {
-        border-radius    : 4px;
-        background-color : $xtreme-blue;
-      }
-    }
-    li {
-      @include global-transition(background-color);
-      &:hover { background-color : $very-light-grey; }
-    }
-    h5 { height: $price-matrix-header-height;}
-    h5, li div {
-      width   : 50%;
-      padding : 0;
-      margin  : 0;
-      display : inline-block;
-      padding : $price-matrix-header-padding;
-    }
-    h5:last-of-type { padding-right : $orb-card-price-table-padding-right; }
-    &#orb-card-options { background-color : $text-grey; }
-  }
-}
-
-#orb-card-stage-right-wrapper {
-  position         : absolute;
-  right            : 0;
-  top              : 0;
-  float            : right;
-  background-color : $xtreme-blue;
-}
-
-.orb-card-stage-right-menu {
-  overflow-y : scroll;
-  overflow-x : hidden;
-  width      : $orb-card-stage-menu-width;
-  height     : $orb-card-stage-menu-height;
-  float : right;
-
-  li {
-    position         : relative;
-    padding-left     : $orb-card-stage-menu-padding-left;
-    background-color : $xtreme-blue;
-    box-shadow       : inset 15px -5px 8px $black-a33;
-    font-size        : rem-calc(18);
-    height           : $orb-card-stage-menu-item-height;
-    line-height      : $orb-card-stage-menu-item-height;
-    cursor           : pointer;
-    transition       : background-color $global-transition-time, color $global-transition-time;
-    @include HelveticaBlkCn;
-    a, span {
-      transition : color $global-transition-time, opacity 0.2s;
-      color      : $white;
-      &.fade-out { opacity : 0; }
-    }
-    &.topping {
-      padding-right : rem-calc(25px);
-      a {
-        width               : 30px;
-        height              : 60px;
-        padding             : 3px;
-        float               : right;
-        background-repeat   : no-repeat;
-        background-position : center;
-      }
-      a.left-side { background-image : url('../img/topping_icon_left.png'); }
-      a.right-side { background-image : url('../img/topping_icon_right.png'); }
-      a.full { background-image : url('../img/topping_icon_full.png'); }
-      a.double { background-image : url('../img/topping_icon_double.png'); }
-    }
-    &:hover { background-color : lighten($xtreme-blue, 15%); }
-    &:first-of-type {
-      padding: 0;
-      box-shadow       : none;
-      background-color : none;
-      cursor           : default;
-      div#active-orb-name-3d-container {
-        height: $orb-card-stage-menu-item-height;
-        width: $orb-card-stage-menu-width;
-        h2 {
-          background-color : $xtreme-red;
-          padding: rem-calc(10) 0 0 $orb-card-stage-menu-padding-left;
-          margin: 0;}
-      }
-    }
-    &.active {
-      background-color : $xtreme-yellow;
-      a, span {
-        color  : $dark-grey;
-        cursor : default;
-      }
-      transition       : none;
-      cursor           : default;
-    }
-
-  }
-}
-
-.orbcat-triangle-inner {
-  width        : 0;
-  height       : 0;
-  border-left  : 22px solid transparent;
-  border-right : 22px solid transparent;
-  border-top   : 26px solid $xtreme-red;
-}
-
-.orb-size-panel {
-  position : absolute;
-  width    : 100%;
-  padding  : $orb-card-padding;
-  li {
-    h3 {
-      padding-top      : 0.25 * $h3-font-size;
-      background-color : $xtreme-blue;
-      transition       : background-color $global-transition-time, color $global-transition-time;
-      &:hover { background-color : lighten($xtreme-blue, 15%); }
-    }
-    color : $white;
-    &.active {
-      h3 { background-color : $xtreme-yellow; }
-      color : $dark-grey;
-    }
-  ;
-  }
-}

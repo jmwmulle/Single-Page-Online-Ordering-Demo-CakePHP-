@@ -5,6 +5,6 @@
 tmp/
 tmp/*
 Config/bootstrap.php
-webroot/jonsauce
-webroot/jonsauce/*
+Config/email.php
+Config/settings.php
 Config/database.php

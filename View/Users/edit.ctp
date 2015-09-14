@@ -3,11 +3,10 @@
 	<fieldset>
 		<legend><?php echo __('Edit User'); ?></legend>
 	<?php
-		echo $this->Form->input('email');
+                echo $this->Form->input('id', array('hiddenField' => false));
+                echo $this->Form->input('email');
 		echo $this->Form->input('firstname');
 		echo $this->Form->input('lastname');
-		echo $this->Form->input('address');
-		echo $this->Form->input('postal_code');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

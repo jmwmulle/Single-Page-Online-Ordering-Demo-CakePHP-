@@ -1,6 +1,6 @@
 <?php
-	App::uses( 'AppModel', 'Model' );
-
+	App::uses( 'AuthComponent', 'Controller/Component');
+	App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 	/**
 	 * User Model
 	 *
@@ -9,7 +9,7 @@
 	 */
 	class User extends AppModel {
 
-//		public $actsAs = array( 'Acl' => array( 'type' => 'requester' ) );
+		public $actsAs = array( 'Acl' => array( 'type' => 'requester', 'enable' => false) );
 
 		/**
 		 * Validation rules
@@ -25,42 +25,49 @@
 			'firstname' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
-					//'message' => 'Your custom message here',
+					'message' => 'Please provide your name',
 					//'allowEmpty' => false,
 					//'required' => false,
 					//'last' => false, // Stop validation after this rule
 					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+				'alphaNumeric' => array(
+					'rule' => array('alphaNumeric'),
+					'message' => 'Illegal character(s) in First Name',
 				),
 			),
 			'lastname'  => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
-					//'message' => 'Your custom message here',
+					'message' => 'Please provide your name',
 					//'allowEmpty' => false,
 					//'required' => false,
 					//'last' => false, // Stop validation after this rule
 					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+				'alphaNumeric' => array(
+					'rule' => array('alphaNumeric'),
+					'message' => 'Illegal character(s) in Last Name',
 				),
 			),
 			'email'     => array(
 				'email' => array(
 					'rule' => array( 'email' ),
-					'message' => 'Enter your e-mail address',
+					'message' => 'Please enter a valid e-mail address',
 					//'allowEmpty' => false,
 					//'required' => false,
 					//'last' => false, // Stop validation after this rule
 					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
-			),
-			'address'   => array(
-				'notEmpty' => array(
-					'rule' => array( 'Your Address' ),
+				'unique' => array(
+					'rule' => array('checkUnique', array('id', 'email'), false),
+					'message' => 'Sorry, that email address is already in use.',
 				),
 			),
-			'postal_code' => array(
-				'postal' => array(
-					'rule' => array( 'postal', null, 'ca' ),
-					'message' => 'Your Postal Code',
+			'password'  => array(
+				'password' => array(
+					'rule' => array('minLength', '8'),
+					'message' => 'Password must be between 8 and 60 charcters long.',
 				),
 			),
 			'group_id'  => array(
@@ -152,32 +159,71 @@
 				'exclusive'    => '',
 				'finderQuery'  => '',
 				'counterQuery' => ''
-			)
+			),
+			'Favourite' => array(
+				'className'    => 'Favourite',
+				'foreignKey'   => 'user_id',
+				'dependent'    => false,
+				'conditions'   => '',
+				'fields'       => '',
+				'order'        => '',
+				'limit'        => '',
+				'offset'       => '',
+				'exclusive'    => '',
+				'finderQuery'  => '',
+				'counterQuery' => ''
+			),
+			'Address' => array(
+				'className'    => 'Address',
+				'foreignKey'   => 'user_id',
+				'dependent'    => false,
+				'conditions'   => '',
+				'fields'       => '',
+				'order'        => '',
+				'limit'        => '',
+				'offset'       => '',
+				'exclusive'    => '',
+				'finderQuery'  => '',
+				'counterQuery' => ''
+			),
+
 		);
 
-//		public function beforeSave($options = array()) {
-//			$this->data[ 'User' ][ 'password' ] = AuthComponent::password(
-//			                                                   $this->data[ 'User' ][ 'password' ]
-//			);
-//
-//			return true;
-//		}
+		public function beforeSave($options = array()) {
+		      if (!empty($this->data[$this->alias]['password'])) {
+			    $passwordHasher = new BlowfishPasswordHasher();
+			    $this->data[$this->alias]['password'] = $passwordHasher->hash(
+			          $this->data[$this->alias]['password']
+			    );
+		      }
+	    	      return true;
+		}		   
 
-//		public function parentNode() {
-//			if ( !$this->id && empty( $this->data ) ) {
-//				return null;
-//			}
-//			if ( isset( $this->data[ 'User' ][ 'group_id' ] ) ) {
-//				$groupId = $this->data[ 'User' ][ 'group_id' ];
-//			}
-//			else {
-//				$groupId = $this->field( 'group_id' );
-//			}
-//			if ( !$groupId ) {
-//				return null;
-//			}
-//			else {
-//				return array( 'Group' => array( 'id' => $groupId ) );
-//			}
-//		}
+		public function parentNode() {
+			if ( !$this->id && empty( $this->data ) ) {
+				return null;
+			}
+			if ( isset( $this->data[ 'User' ][ 'group_id' ] ) ) {
+				$groupId = $this->data[ 'User' ][ 'group_id' ];
+			}
+			else {
+				$groupId = $this->field( 'group_id' );
+			}
+			if ( !$groupId ) {
+				return null;
+			}
+			else {
+				return array( 'Group' => array( 'id' => $groupId ) );
+			}
+		}
+
+		public function bindNode() {
+			$data = AuthComponent::user();
+			return array('model' => 'Group', 'foreign_key' => $data['User']['group_id']);
+		
+		}
+			
+		public function checkUnique($ignoredData, $fields, $or = false) {
+			return $this->isUnique($fields, $or);
+		}
 	}

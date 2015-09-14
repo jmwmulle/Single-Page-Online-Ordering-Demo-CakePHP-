@@ -24,16 +24,7 @@ class Orb extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'subtitle' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
+
 		'description' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
@@ -53,18 +44,8 @@ class Orb extends AppModel {
 						//'last' => false, // Stop validation after this rule
 						//'on' => 'create', // Limit validation to 'create' or 'update' operations
 					)
-				),
-		'config' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
 		),
-		'pricedict_id' => array(
+		'pricelist_id' => array(
 					'notEmpty' => array(
 						'rule' => array('notEmpty'),
 						//'message' => 'Your custom message here',
@@ -73,7 +54,38 @@ class Orb extends AppModel {
 						//'last' => false, // Stop validation after this rule
 						//'on' => 'create', // Limit validation to 'create' or 'update' operations
 					),
-				)
+		),
+		'opt_count' => array(
+							'notEmpty' => array(
+								'rule' => array('notEmpty'),
+								//'message' => 'Your custom message here',
+								//'allowEmpty' => false,
+								//'required' => true,
+							    //'default' => false,
+								//'last' => false, // Stop validation after this rule
+								//'on' => 'create', // Limit validation to 'create' or 'update' operations
+							),
+				),
+		'premium_count' => array(
+							'notEmpty' => array(
+								'rule' => array('notEmpty'),
+								//'message' => 'Your custom message here',
+								//'allowEmpty' => false,
+								//'required' => false,
+								//'last' => false, // Stop validation after this rule
+								//'on' => 'create', // Limit validation to 'create' or 'update' operations
+							),
+				),
+		'cheese_count' => array(
+							'notEmpty' => array(
+								'rule' => array('notEmpty'),
+								//'message' => 'Your custom message here',
+								//'allowEmpty' => false,
+								//'required' => false,
+								//'last' => false, // Stop validation after this rule
+								//'on' => 'create', // Limit validation to 'create' or 'update' operations
+							),
+				),
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -84,6 +96,10 @@ class Orb extends AppModel {
  */
 
 	public $belongsTo = array(
+		'Orbcat' => array(
+			'className' => 'Orbcat',
+			'foreign_key' => "orbcat_id"
+		),
 		'Pricelist' => array(
 			'className' => 'Pricelist',
 			'foreign_key' => 'pricelist_id'
@@ -100,19 +116,6 @@ class Orb extends AppModel {
  * @var array
  */
 	public $hasAndBelongsToMany = array(
-		'Orbcat' => array(
-			'className' => 'Orbcat',
-			'joinTable' => 'orbs_orbcats',
-			'foreignKey' => 'orb_id',
-			'associationForeignKey' => 'orbcat_id',
-			'unique' => 'keepExisting',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-		),
 		'Orbopt' => array(
 			'className' => 'Orbopt',
 			'joinTable' => 'orbs_orbopts',

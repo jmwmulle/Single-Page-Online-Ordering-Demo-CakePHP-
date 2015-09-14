@@ -46,19 +46,15 @@
   }
 }
 
-.xtreme-button {
-  @include HelveticaBlkCn;
+a.xtreme-button {
   transition: background-color 0.3s ease-in-out;
-  &.rounded { border-radius: $global-rounded;}
-  &.lrg {
-    @include xtreme-button-body("lrg");
+  color:$white;
+  background-color:$xtreme-blue;
+  padding: $tight-padding $base-padding;
+  &:hover { background-color:lighten($xtreme-blue, 10%);}
+  &.secondary {
+    background-color: $light-grey;
+    &:hover { background-color:lighten($light-grey, 10%);}
   }
-  &.sml {
-     font-size:$h5-font-size;
-   }
-  &.yellow-on-black {
-    @include xtreme-button-skin($dark-grey, $xtreme-yellow, $transition-color:$white);
-  }
-  &.hidden { display:none;}
 }
 

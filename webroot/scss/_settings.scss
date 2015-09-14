@@ -5,6 +5,10 @@
 //
 // FOUNDATION SETTINGS
 //
+@font-face {
+  font-family : "Helvetica Neue Condensed Black";
+  src         : url("../files/HelveticaNeueLTStd-BlkCn.otf");
+}
 
 // This is the default html and body font-size for the base rem value.
 // $rem-base: 16px;
@@ -45,7 +49,7 @@ $row-width: rem-calc(1200);
 // We use these to control various global styles
 $body-bg: $body-bg-color;
 $body-font-color: white;
-// $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+$body-font-family: "Helvetica Neue Condensed Black", "Helvetica", Helvetica, Arial, sans-serif;
 $font-weight-normal:normal;
 $body-font-weight: $font-weight-normal;
 // $body-font-style: normal;
@@ -54,13 +58,14 @@ $body-font-weight: $font-weight-normal;
 // $font-smoothing: antialiased;
 
 // We use these to control text direction settings
+
 // $text-direction: ltr;
 // $opposite-direction: right;
 // $default-float: left;
 
 // We use these as default colors throughout
-$primary-color: #008CBA;
-// $secondary-color: #e7e7e7;
+$primary-color:  $xtreme-blue;
+$secondary-color: $dark-grey;
 // $alert-color: #f04124;
 // $success-color: #43AC6A;
 // $warning-color: #f08a24;
@@ -164,7 +169,7 @@ $header-text-rendering: optimizeLegibility;
 // $paragraph-font-weight: $font-weight-normal;
 // $paragraph-font-size: 1rem;
 // $paragraph-line-height: 1.6;
-// $paragraph-margin-bottom: rem-calc(20);
+$paragraph-margin-bottom: 0;
 // $paragraph-aside-font-size: rem-calc(14);
 // $paragraph-aside-line-height: 1.35;
 // $paragraph-aside-font-style: italic;
@@ -344,7 +349,7 @@ $list-nested-margin: 0;
 // BUTTONS
 //
 
-// $include-html-button-classes: $include-html-classes;
+$include-html-button-classes: false;
 
 // We use these to build padding for buttons.
 // $button-tny: rem-calc(10);
@@ -528,7 +533,7 @@ $list-nested-margin: 0;
 // $include-html-form-classes: $include-html-classes;
 
 // We use this to set the base for lots of form spacing and positioning styles
-// $form-spacing: rem-calc(16);
+$form-spacing: rem-calc(8);
 
 // We use these to style the labels in different ways
 // $form-label-pointer: pointer;
