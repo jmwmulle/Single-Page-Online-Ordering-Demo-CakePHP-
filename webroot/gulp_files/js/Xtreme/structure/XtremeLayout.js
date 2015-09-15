@@ -178,6 +178,7 @@ XtremeLayout.prototype = {
 		}, 300);
 	},
 	match_parent_dimensions: function(element) {
+		pr("matching parent dimensions");
 		var parent = $(element).parent();
 		$(element).css({height: $(parent).innerHeight(), width: $(parent).innerWidth()});
 	},
