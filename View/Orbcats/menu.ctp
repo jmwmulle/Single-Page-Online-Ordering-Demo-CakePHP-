@@ -8,9 +8,9 @@
 	 */
 ?>
 
-<?= $this->Element( "menu_ui/top_bar" ); ?>
+<?= $this->Element( "menu_ui/top_bar", compact('render_transparent') ); ?>
 <div class="row">
-	<main id="menu" class="large-12 columns<?= $this->get( "is_splash" ) ? " fade-out" : null; ?>">
+	<main id="menu" class="large-12 columns<?= $this->get( "render_transparent" ) ? " fade-out" : null; ?>">
 		<div class="row">
 			<div class="large-9 small-5 columns">
 				<div class="row">
@@ -43,5 +43,5 @@
 				</div>
 			</div>
 		</div>
+	</main>
 </div>
-</main>

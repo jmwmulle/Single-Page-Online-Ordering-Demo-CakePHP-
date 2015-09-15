@@ -75,9 +75,10 @@ XT.route_collections.pos_api = function() {
 		url: { url: "set-delivery-time", type: C.POST, defer:true},
 		callbacks: {
 			launch: function() {
+				pr("yer moms");
 				XT.router.cake_ajax_response(this.deferral_data, {
 					callback: function() { XT.pos.delivery_times.hide() }
-					}, true, true);
+				}, true, true);
 			}
 		}
 	};

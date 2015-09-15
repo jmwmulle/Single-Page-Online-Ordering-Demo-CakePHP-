@@ -16,7 +16,10 @@ $(document).ready( function() {
 			var clock = $('#countdown-clock').FlipClock(diff, {
 				autostart:true,
 				clockFace: "DailyCounter",
-				countdown: true
+				countdown: true,
+				callbacks: {
+					stop: function() { XT.layout.resolve_countdown(); }
+				}
 			});
 			setTimeout(function() {
 				$("#countdown").on(C.MOUSEOVER, function() {

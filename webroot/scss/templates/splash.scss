@@ -255,10 +255,10 @@ main#splash {
 }
 
 
-body#countdown {
+#count-down-wrapper {
   width:100%;
-  height:100%;
-  position:absolute;
+  height:2000px;
+  position:fixed;
   top:0;
   left:0;
 //  z-index:10000;
@@ -341,5 +341,7 @@ p.banner {
   }
 }
 
-#count-down-wrapper { height:2000px}
 #mobile-countdown { margin-top: 33%; }
+#countdown.slide-down {
+transform: translateY(2000px);
+}
