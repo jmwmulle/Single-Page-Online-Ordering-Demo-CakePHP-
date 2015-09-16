@@ -236,8 +236,10 @@
 			$optflags_list = $this->Orbcat->Orb->Orbopt->Optflag->find( 'list' );
 			$order         = $this->Session->read( 'Cart.Order' ) ? $this->Session->read( 'Cart.Order' ) : [];
 			$this->set( compact( 'orbcard', 'menu', 'orbcats', 'optflags_list', 'order', 'refreshing' ) );
+			$this->set('render_transparent', false);
 			if ( $this->request->is( "ajax" ) ) {
-				return $return ? $this->render("ajax_menu", "ajax") : $this->render("orbcard_menu", "ajax");
+				$this->set('render_transparent', true);
+				return $return ? $this->render("menu", "ajax") : $this->render("orbcard_menu", "ajax");
 			}
 		}
 

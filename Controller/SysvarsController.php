@@ -113,7 +113,7 @@ class SysvarsController extends AppController {
 				// basicaly if this fails, it should fail gracefully
 				return !empty($time) ? ($time['Sysvar']['id'] - 5) * 15 : 45;
 			}
-			$response = ['success' => false,
+			$response = ['success' => true,
 			             'error' => false,
 			             'data' => ['submitted' => ["id" => $id]]];
 

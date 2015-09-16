@@ -170,8 +170,6 @@ Printer.prototype = {
 		return status;
 	},
 
-	play_order_tone: function() { return this.is_xtreme_tablet() ? Android.playTone() : new Audio(XSM.vendor.new_order_tone).play(); },
-
 	feed_line: function(lines) {
 		if (!lines && lines != 0) lines = 1;
 		for (var i = 0; i < lines; i++) this.queue_line(" \n", 'default');

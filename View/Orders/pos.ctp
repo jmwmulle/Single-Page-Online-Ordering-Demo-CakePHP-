@@ -46,10 +46,10 @@
 	<div class="container">
 		<div class="row">
 			<div class="large-12 columns">
-				<ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-2 activizing">
-					<?php foreach (array_slice($system, 5) as $index => $sysvar):?>
+				<ul class="large-block-grid-1 medium-block-grid-2 small-block-grid-2 activizing">
+					<?php foreach (array_slice($system, 5, -3) as $index => $sysvar):?>
 					<li class="delivery-time <?=$sysvar['Sysvar']['status'] ? "active" : "inactive";?>" data-route="set_delivery_time/<?=$sysvar['Sysvar']['id'];?>">
-						<h1 class="text"><?=$index < 5 ? ($sysvar['Sysvar']['id'] - 5) * 15 : "90+";?> MIN</h1>
+						<h1 class="text"><?=($sysvar['Sysvar']['id'] - 4) * 15;?> MIN</h1>
 					</li>
 					<?php endforeach;?>
 				</ul>

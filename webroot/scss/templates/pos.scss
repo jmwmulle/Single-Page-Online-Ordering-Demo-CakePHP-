@@ -372,18 +372,21 @@ h1, h2, h3, h4, h5 {
     border-radius: rem-calc(16px);
     ul { margin-top: $base-padding; }
     li.delivery-time {
-      &:first-of-type h1 { border-top-left-radius: rem-calc(16px);}
-      &:nth-of-type(2) h1 { border-top-right-radius: rem-calc(16px);}
-      height:rem-calc(190px);
+      &:first-of-type h1 {
+        border-top-left-radius: rem-calc(16px);
+        border-top-right-radius: rem-calc(16px);
+      }
+      &:last-of-type h1 {
+      border-bottom-left-radius: rem-calc(16px);
+      border-bottom-right-radius: rem-calc(16px);
+      }
       h1 {
         display: block;
         box-shadow: 0px 0px 8px $black-a50;
         min-width:223px !important;
-        height: 100%;
         font-size: rem-calc(60px);
-        line-height:rem-calc(180px);
+        line-height:rem-calc(160px);
         text-align:center;
-        margin-bottom:$base-padding * 2 !important;
       }
       &.active h1 {
           background-color: $xtreme-yellow;

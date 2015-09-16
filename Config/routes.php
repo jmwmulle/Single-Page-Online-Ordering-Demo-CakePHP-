@@ -22,18 +22,22 @@
 	 * to use (in this case, /app/View/Pages/splash.ctp)...
 	 */
 	// I know this is stupid, I just think it's prettier. Blame my IDE.
+	$launch_day = new DateTime("2015-09-19");
+	$now = new DateTime("now");
 	define('CTR', 'controller');
 	define('ATN', 'action');
 
 	Router::connect( '/!',                           [ CTR => 'orders', ATN => 'init_cart', 'true' ] );
 	/**  PAGES CONTROLLER */
-	Router::connect( '/',                           [ CTR => 'pages', ATN => 'display', 'countdown' ] );
+	if ($launch_day > $now) {
+		Router::connect( '/',                           [ CTR => 'pages', ATN => 'display', 'countdown' ] );
+	} else {
+		Router::connect( '/',                           [ CTR => 'pages', ATN => 'display', 'splash' ] );
+	}
 	Router::connect( '/pages/*',                    [ CTR => 'pages', ATN => 'display' ] );
 	Router::connect( '/register',                   [ CTR => 'pages', ATN => 'signup' ] );
 	Router::connect( '/splash-order',               [ CTR => 'pages', ATN => 'display', 'splash_order_modal' ] );
 	Router::connect( '/sign-up',                    [ CTR => 'pages', ATN => 'display', 'sign_up' ] );
-	Router::connect( '/order-accepted',             [ CTR => 'pages', ATN => 'display', "order_accepted" ] );
-	Router::connect( '/launch-apology',             [ CTR => 'pages', ATN => 'display', 'launch_apology' ] );
 
 	/** USERS CONTROLLER */
 	Router::connect( '/users/update',               [ CTR => 'users', ATN => 'edit' ] );
@@ -55,8 +59,13 @@
 	Router::connect( '/delete-menu-item/*',         [ CTR => 'orbs', ATN => 'deprecate' ] );
 
 	/** ORBCATS CONTROLLER */
-	Router::connect( '/menu',                     [ CTR => 'pages', ATN => 'display', 'countdown' ] );
+	if ($launch_day > $now) {
+		Router::connect( '/menu',                       [ CTR => 'pages', ATN => 'display', 'countdown' ] );
+	} else {
+		Router::connect( '/menu/*',                     [ CTR => 'orbcats', ATN => 'menu'] );
+	}
 	Router::connect( '/menu/*',                     [ CTR => 'orbcats', ATN => 'menu'] );
+	Router::connect( '/deferred-menu',              [ CTR => 'orbcats', ATN => 'menu', null, null, true] );
 	Router::connect( '/private-menu/*',             [ CTR => 'orbcats', ATN => 'menu' ] );
 
 	/** ORDERS CONTROLLER */

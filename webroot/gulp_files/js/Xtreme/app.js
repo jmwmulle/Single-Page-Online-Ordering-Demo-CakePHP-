@@ -10,13 +10,16 @@ $(document).ready( function() {
 	XT.layout = new XtremeLayout();
 	switch (XT.page_name) {
 		case "countdown":
-			var date = new Date(2015, 8, 18);
+			var date = new Date(2015, 8, 19);
 		    var now = new Date();
 		    var diff = (date.getTime()/1000) - (now.getTime()/1000);
 			var clock = $('#countdown-clock').FlipClock(diff, {
 				autostart:true,
 				clockFace: "DailyCounter",
-				countdown: true
+				countdown: true,
+				callbacks: {
+					stop: function() { XT.layout.resolve_countdown(); }
+				}
 			});
 			setTimeout(function() {
 				$("#countdown").on(C.MOUSEOVER, function() {

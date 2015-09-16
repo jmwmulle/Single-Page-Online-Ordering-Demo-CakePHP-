@@ -68,7 +68,7 @@ $social_live = false;
 $auth_live = false;
 ?>
 
-<nav id="topbar" class="text-center">
+<nav id="topbar" class="text-center <?=$render_transparent ? "fade-out" : "";?>">
 	<div class="row">
 		<div class="large-4 small-12 columns text-center topbar-social third">
 			<div class="row">
