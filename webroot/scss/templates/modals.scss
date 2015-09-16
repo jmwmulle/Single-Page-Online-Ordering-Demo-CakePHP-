@@ -15,6 +15,28 @@
       opacity:1;
     }
 }
+
+@-webkit-keyframes flashing_button_bg {
+  0% {
+    background-color: $xtreme-blue !important;
+  }
+  50% {
+    background-color: darken($xtreme-blue, 15%) !important;
+  }
+  100% {
+    background-color: $xtreme-blue !important;
+  }
+}
+
+@-webkit-keyframes flashing_button_text {
+  0% {}
+  50% {
+    color: $xtreme-red !important;
+    text-shadow: 0px 0px 8px $white;
+  }
+  100% {}
+}
+
 .modal-load-dot {
   background-color:$xtreme-blue;
   width:3rem;
@@ -413,8 +435,11 @@ div.view-cart-row {
         opacity:1;
       }
     }
-
   }
+  &.flashing {
+        -webkit-animation : flashing_button_bg 3s ease-in-out infinite normal 0s running forwards;
+        span { -webkit-animation : flashing_button_text 3s ease-in-out infinite normal 0s running forwards; }
+      }
 }
 
 // hack to retroactively combine .activizing JS with modal-buttons
