@@ -146,6 +146,11 @@
 			return false;
 		}
 
+		private function online_launch_special() {
+			$order = $this->Session->read('Cart.Order');
+
+		}
+
 
 		/**
 		 * @param $orb_cfg
@@ -188,9 +193,9 @@
 			// walk current cart (if it exists); if item of identical configuration found, update it's quantity
 			$candidate = compact( "orb", 'orbopts', 'pricing' );
 
-			if ( $this->update_quantity( $candidate ) ) return true;
-
-			return $this->Session->write( "Cart.Order.$uid", $candidate );
+			if ( !$this->update_quantity( $candidate ) ) $this->Session->write( "Cart.Order.$uid", $candidate );
+			$this->online_launch_special();
+			return true;
 		}
 
 		private function pricing_array( $opt_price, $price_rank, $quantity, $orb ) {

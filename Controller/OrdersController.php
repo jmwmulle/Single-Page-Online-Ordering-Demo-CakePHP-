@@ -528,6 +528,7 @@
 			return false;
 		}
 
+
 		/**
 		 * Sets Cart.Service.order_method session key
 		 *
