@@ -8,6 +8,7 @@
 	<script type="text/javascript">
 		if ( window.xtr === undefined) window.xtr = {};
 		var XT = window.xtr;
+		var http_host = <?=$_SERVER['HTTP_HOST'];?>;
 		XT.host = "<?php switch($_SERVER['HTTP_HOST']) {
 					case "wwww.xtreme-pizza.ca":
 						echo "xProd";
