@@ -7,7 +7,11 @@
 	$invoice = $cart['Invoice'];
 
 	$confirm_order_classes = ["modal-button", "bisecting", "confirm", "right"];
-	if (!$service['address_valid']) array_push($confirm_order_classes, "disabled");
+	$confirm_order_text = "Confirm Order";
+	if (!$service['address_valid']) {
+		array_push( $confirm_order_classes, "disabled" );
+		$confirm_order_text = "Customer Information Required";
+	}
 	$method_element = $service['order_method'] == JUST_BROWSING ? "unselected" : "selected";
 ?>
 
@@ -66,7 +70,7 @@
 			<span class="icon-circle-arrow-l"></span><span class="text">Continue Ordering</span>
 		</a>
 		<a id="finalize-order-button" href="#" <?=___cD($confirm_order_classes);?> data-route="finalize_order">
-			<span class="text">Confirm & Order</span><span class="icon-circle-arrow-r"></span>
+			<span class="text"><?=$confirm_order_text;?></span><span class="icon-circle-arrow-r"></span>
 		</a>
 	</div>
 </div>

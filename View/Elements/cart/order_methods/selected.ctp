@@ -8,6 +8,7 @@
  */
 	$adr = $service['address'];
 	$delivery_address_classes = ["modal-button", "bisecting", "discreet", "confirm"];
+	if ( !$service['address_valid'] ) array_push($delivery_address_classes, "flashing");
 	$method_switch_classes = ["modal-button", "active", "bisecting", "discreet", "hover-switch"];
 	$address_button_str = $service['address_valid'] ? "Change" : "Click to Set";
 	$details_button = $service['order_method'] == PICKUP ? "Customer Information" : "Delivery Address";

@@ -6042,6 +6042,23 @@ div#loading-img {
     background-color: #0779be;
     opacity: 1; } }
 
+@-webkit-keyframes flashing_button_bg {
+  0% {
+    background-color: #0779be !important; }
+
+  50% {
+    background-color: #044b74 !important; }
+
+  100% {
+    background-color: #0779be !important; } }
+
+@-webkit-keyframes flashing_button_text {
+
+  50% {
+    color: #e02027 !important;
+    text-shadow: 0px 0px 8px white; }
+ }
+
 .modal-load-dot {
   background-color: #0779be;
   width: 3rem;
@@ -6408,6 +6425,10 @@ div.view-cart-row.total * {
   .modal-button.hover-switch:hover span.hover {
     display: inline-block;
     opacity: 1; }
+  .modal-button.flashing {
+    -webkit-animation: flashing_button_bg 3s ease-in-out infinite normal 0s running forwards; }
+    .modal-button.flashing span {
+      -webkit-animation: flashing_button_text 3s ease-in-out infinite normal 0s running forwards; }
 
 ul.activizing li.active .modal-button {
   background-color: #faea06; }
