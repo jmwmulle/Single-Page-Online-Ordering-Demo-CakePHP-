@@ -4,7 +4,7 @@
 ._.DS_Store
 tmp/
 tmp/*
-Config/bootstrap.php
+Config/bootstraps.php
 Config/email.php
 Config/settings.php
 Config/database.php
