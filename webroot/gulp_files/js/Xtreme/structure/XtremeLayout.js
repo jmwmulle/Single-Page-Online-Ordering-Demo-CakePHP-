@@ -95,7 +95,7 @@ XtremeLayout.prototype = {
 		});
 		// window_resize_listener
 		if (window.page_name == XSM.page_name.splash) $(window).on("resize", XBS.splash.render);
-		if (XT.page_name == "menu") $(window).on("resize", XT.layout.init());
+//		if (XT.page_name == "menu") $(window).on("resize", XT.layout.init());
 	},
 
 	/**
