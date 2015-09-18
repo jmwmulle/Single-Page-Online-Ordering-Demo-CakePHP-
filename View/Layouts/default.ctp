@@ -83,8 +83,11 @@
 
 	<?php
 		$body_id = $this->get( 'page_name' );
-		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" ); 
-		echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );?>
+		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" );
+		$cart = $this->Session->read( 'Cart' );
+		$cart = json_encode( $this->Session->read( 'Cart' ) );
+		if ( !$cart ) $cart = "{}";
+		echo "<script>var cart = $cart;</script>";?>
 </head>
 
 <body id="<?php echo $body_id; ?>" <?php echo ___cD( $body_class ); ?>>
