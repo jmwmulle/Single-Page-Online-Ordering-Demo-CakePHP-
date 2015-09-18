@@ -54,7 +54,8 @@ XtremeLayout.prototype = {
 
 		if ( is_mobile() ) return;
 		$(XSM.global.footer).css({top: $(XSM.global.page_content).innerHeight()});
-		if (XT.page_name != "xtreme-pos" && XT.page_name != "Vendor Interface" && XT.page_name != "countdown") this.fasten(XSM.menu.self).css({overflow: "hidden"});
+		pr(XT.page_name);
+//		if (XT.page_name != "xtreme-pos" && XT.page_name != "Vendor Interface" && XT.page_name != "countdown") this.fasten(XSM.menu.self).css({overflow: "hidden"});
 
 		// both of these pertain to the countdown page from launch
 		setTimeout(function() {

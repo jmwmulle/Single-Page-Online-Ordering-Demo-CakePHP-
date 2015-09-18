@@ -26,14 +26,14 @@ class Orb extends AppModel {
 		),
 
 		'description' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+//			'notEmpty' => array(
+//				'rule' => array('notEmpty'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
+//			),
 		),
 		'pricedict_id' => array(
 					'notEmpty' => array(
