@@ -32,7 +32,6 @@ $(document).ready( function() {
 				setTimeout(function () { $(".make-snazzy").addClass("snazzy"); }, 30);
 			});
 
-
 			break;
 		case "Vendor Interface":
 			XT.vendor_ui = xt_vendor_ui;
@@ -62,25 +61,25 @@ $(document).ready( function() {
 	if (in_array(XT.page_name, ["Vendor Interface", "xtreme-pos", 'countdown'])) XT.layout.init()
 	$(XT).on(C.SYSTEM_READY, function() { XT.layout.init() });
 
-	if (XT.page_name == "menu") {
-		if (window.addEventListener) {
-			XT.kkeys = [], XT.konami = "38,38,40,40,37,39,37,39,66,65";
-			window.addEventListener("keydown", function (e) {
-				XT.kkeys.push(e.keyCode);
-				if (XT.kkeys.toString().indexOf(XT.konami) >= 0) {
-					var nes = $(function () {
-						new JSNES({
-							'swfPath': 'files/',
-							'ui': $('#emulator').text('').JSNESUI({
-								"Working": [
-									['Dr. Mario', 'files/DrMario.nes']
-								]
-							})
-						});
-					});
-					XT.kkeys = [];
-				}
-			}, true);
-		}
-	}
+//	if (XT.page_name == "menu") {
+//		if (window.addEventListener) {
+//			XT.kkeys = [], XT.konami = "38,38,40,40,37,39,37,39,66,65";
+//			window.addEventListener("keydown", function (e) {
+//				XT.kkeys.push(e.keyCode);
+//				if (XT.kkeys.toString().indexOf(XT.konami) >= 0) {
+//					var nes = $(function () {
+//						new JSNES({
+//							'swfPath': 'files/',
+//							'ui': $('#emulator').text('').JSNESUI({
+//								"Working": [
+//									['Dr. Mario', 'files/DrMario.nes']
+//								]
+//							})
+//						});
+//					});
+//					XT.kkeys = [];
+//				}
+//			}, true);
+//		}
+//	}
 });
