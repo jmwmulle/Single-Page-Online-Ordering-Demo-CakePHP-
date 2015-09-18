@@ -207,7 +207,7 @@ h3.top-bar-status-header {
     font-size: 3em !important;
     -webkit-transform: translateY(1rem) !important;
   }
-// &.delivery {   border-top: 1px dotted $white; }
+&.delivery {   border-top: 1px dotted $white; }
 
   &.available { color: $success-color;}
   &.unavailable { color: $alert-color;}

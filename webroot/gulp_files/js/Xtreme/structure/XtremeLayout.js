@@ -58,6 +58,7 @@ XtremeLayout.prototype = {
 // 			this.fasten(XSM.menu.self).css({overflow: "hidden"});
 // 		}
 
+
 		// both of these pertain to the countdown page from launch
 		setTimeout(function() {
 			$("p.banner").removeClass(FX.fade_out);

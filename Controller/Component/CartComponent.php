@@ -147,8 +147,32 @@
 		}
 
 		private function online_launch_special() {
-			$order = $this->Session->read('Cart.Order');
-
+			$debug = [];
+			try {
+				$order = $this->Session->read('Cart');
+				$free_fingers_id = 245;
+				$qualifies = false;
+				$free_fingers_uid = null;
+				$debug['data'] = $order;
+				$debug['items'] = [];
+				foreach ($order['Order'] as $uid => $oi) {
+					if ($oi['orb']['Orbcat']['title'] == "PIZZAS" && $oi['pricing']['unit_base_price'] > 10) $qualifies = true;
+					if ($oi['orb']['Orb']['id'] == $free_fingers_id) $free_fingers_uid = $uid;;
+				}
+				$this->Session->write('Cart.Debug.special', $debug);
+				if ($qualifies && !$free_fingers_uid) {
+					$this->add(['id' => $free_fingers_id,
+	                          'uid' => $free_fingers_id."_".time(),
+	                          'quantity' => 1,
+	                          'price_rank' => 1,
+					          'orb_note' => null
+					           ]);
+				}
+				if (!$qualifies && $free_fingers_uid) { $this->remove($free_fingers_uid, 1); }
+			} catch (Exception $e) {
+				$this->Session->write('Cart.Debug.special', $e->getMessage());
+			}
+			return;
 		}
 
 
@@ -228,8 +252,10 @@
 				$opt_price        = $this->price_orbopts( $orb[ 'orbopts' ], $orb[ 'pricing' ][ 'rank' ], $included );
 				$orb[ 'pricing' ] = $this->pricing_array( $opt_price, $orb[ 'pricing' ][ 'rank' ], $orb[ 'pricing' ][ 'quantity' ], $orb[ 'orb' ] );
 				$this->Session->write( "Cart.Order.$orb_uid", $orb );
+				$this->online_launch_special();
 				$this->update_invoice();
 			}
+
 
 			return true;
 		}
@@ -266,7 +292,7 @@
 					$this->Session->delete( "Cart.Order.$uid" );
 				}
 			}
-
+			$this->online_launch_special();
 			$this->update_invoice();
 
 			return true;
