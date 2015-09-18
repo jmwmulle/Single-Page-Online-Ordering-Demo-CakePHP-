@@ -8,9 +8,9 @@
 	<script type="text/javascript">
 		if ( window.xtr === undefined) window.xtr = {};
 		var XT = window.xtr;
-		var http_host = <?=$_SERVER['HTTP_HOST'];?>;
+		var http_host = "<?=$_SERVER['HTTP_HOST'];?>";
 		XT.host = "<?php switch($_SERVER['HTTP_HOST']) {
-					case "wwww.xtreme-pizza.ca":
+					case "www.xtreme-pizza.ca":
 						echo "xProd";
 						break;
 					case "xtreme-pizza.ca":
@@ -84,7 +84,8 @@
 
 	<?php
 		$body_id = $this->get( 'page_name' );
-		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" ); ?>
+		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" ); 
+		echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );?>
 </head>
 
 <body id="<?php echo $body_id; ?>" <?php echo ___cD( $body_class ); ?>>
@@ -92,7 +93,7 @@
 	<div id="desktop-content" class="show-for-medium-up">
 	<?=$this->Html->image('puff.svg', ['id' => 'loading-img', 'class'=> ['fade-out','hidden'] ]);?>
 	<?php
-		echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );
+		
 		echo $this->fetch( 'content' );
 	?>
 	</div>
