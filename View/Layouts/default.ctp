@@ -39,7 +39,7 @@
 			"vendor/additional-methods.min" ];
 		$gulp_js_path = "../gulp_files/js/Xtreme";
 		$xbs_scripts = [
-			"jsnes/jsnes.min",
+						"jsnes/jsnes.min",
 		                 "dynamic_audio",
 		                 "$gulp_js_path/utilities",
 		                      "$gulp_js_path/data/XSM",
@@ -58,7 +58,6 @@
 		                      "$gulp_js_path/structure/XtremeLayout",
 		                      "$gulp_js_path/structure/XtremeMenu",
 		                      "$gulp_js_path/model/XtremeCart",
-		                      "$gulp_js_path/model/Orbopt",
 		                      "$gulp_js_path/model/Orbopt",
 		                      "$gulp_js_path/model/Optflag",
 		                      "$gulp_js_path/model/Orb",
