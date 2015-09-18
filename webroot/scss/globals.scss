@@ -75,9 +75,9 @@ button.unavailable {
 .hidden { display:none;}
 .inline { display: inline-block;}
 .true-hidden {
-  visibility: none !important;
+  visibility: hidden !important;
   display:none !important;
-  opacity:none !important;
+  opacity:0 !important;
 }
 
 .flush {
@@ -245,33 +245,54 @@ textarea.note { height:2rem;}
   height: $monthly-content-wrapper-height;
   width: $monthly-content-wrapper-width;
   vertical-align: top;
+  overflow-y:scroll;
+  padding: $medium-padding;
+  @include orb-card-gradient;
   &.slide-down {
     transform: translateY(2000px);
     img { transform:  rotate(540deg); }
-
+  }
+  #launch-special {
+    h1 {
+      position:absolute;
+      z-index:10000;
+      font-size:1rem;
+      padding: 0.5rem 4rem 0.2rem 4rem;
+      border:2px solid $white;
+      text-transform:uppercase;
+      transform: rotate(45deg) translate(rem-calc(35px), rem-calc(-20px) );
+      background-color:$xtreme-blue !important;
+      color: $xtreme-yellow !important;
+      box-shadow: 5px 5px 8px $black-a50;
+      text-align:center;
+      width: 300px;
+    }
+    h2 {
+      margin-bottom : $tight-padding;
+    }
+    h3 {
+      font-size:1.3rem !important;
+      line-height: 1.3rem !important;
+      margin-bottom:$tight-padding;
+      text-transform: uppercase;
+    }
+    h4 {
+      font-size:1.8rem;
+      margin: $tight-padding 0;
+      line-height   : 1.5rem;
+      text-transform: uppercase;
+    }
+    h5 {
+      font-size : 1.5rem;
+      text-transform: uppercase;
+      margin: $tight-padding 0;
+      line-height:1.5rem;
+    }
+    h2, h3, h4, h5, p { color: $text-grey !important; }
   }
 }
 
-//#launch-apology {
-//  position:absolute;
-//  top:rem-calc(125px);
-//  left:15%;
-//  width:rem-calc(500px);
-//  height: auto;
-//  border-radius:1rem;
-//  border: 1rem solid $white;
-//  background-color:$xtreme-blue;
-//  padding:1rem;
-//  z-index:999999;
-//  #launch-apology-content {
-//    @include HelveticaThCn;
-//    #close-modal {
-//      z-index:99999999;
-//      color: $white;
-//      span { color: $white; }
-//    }
-//  }
-//}
+
 div#cake-error-overlay {
   width:1000px;
   height:auto;

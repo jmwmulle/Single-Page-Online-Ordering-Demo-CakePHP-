@@ -1,18 +1,10 @@
-<div id='monthly-content-wrapper' class=''>
-	<?php
-	/**
-	 * J. Mulle, for app, 6/17/15 8:20 PM
-	 * www.introspectacle.net
-	 * Email: this.impetus@gmail.com
-	 * Twitter: @thisimpetus
-	 * About.me: about.me/thisimpetus
-	 */
-//		echo sprintf("%s</div>", $this->Html->Image('splash/logo.png'));
-		if (true):
-	?>
-
-	<h1>Online Ordering Special</h1>
-	<h3>Order <span class="red">ANY</span> Pizza over $10 and receive a FREE Medium Garlic Fingers!</h2>
-	<p>We'll add the garlic fingers to your order as soon as it qualifies—you don't have to do a thing!</p>
-	<?php endif; ?>
+<div id='monthly-content-wrapper' class='float-pane'>
+	<div id='launch-special' class="">
+		<h1>Launch Special!</h1>
+		<h3>Order <span class="red">ANY</span></h3>
+		<h3>Pizza over $10</h3> <h3>and receive </h3>
+		<h4 class="text-center">FREE&nbsp;&nbsp;</h4>
+		<h4>Garlic Fingers!</h4>
+		<p>You add the pizza, we'll add the garlic fingers—there's nothing to click or do! Have fun and thanks for checking out our new site!</p>
+	</div>
 </div>

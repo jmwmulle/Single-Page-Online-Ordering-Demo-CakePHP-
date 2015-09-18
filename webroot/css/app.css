@@ -5153,9 +5153,9 @@ button.unavailable {
   display: inline-block; }
 
 .true-hidden {
-  visibility: none !important;
+  visibility: hidden !important;
   display: none !important;
-  opacity: none !important; }
+  opacity: 0 !important; }
 
 .flush {
   padding: 0;
@@ -5315,11 +5315,62 @@ textarea.note {
   float: left;
   height: 17.8125rem;
   width: 15.85938rem;
-  vertical-align: top; }
+  vertical-align: top;
+  overflow-y: scroll;
+  padding: 0.625rem;
+  background-color: #d2d2d2;
+  background: whitesmoke;
+  /* Old browsers */
+  background: -moz-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #f5f5f5), color-stop(100%, #969696));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
+  /* IE10+ */
+  background: linear-gradient(45deg, #f5f5f5 0%, #969696 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#969696', GradientType=1);
+  /* IE6-9 fallback on horizontal gradient */ }
   #monthly-content-wrapper.slide-down {
     transform: translateY(2000px); }
     #monthly-content-wrapper.slide-down img {
       transform: rotate(540deg); }
+  #monthly-content-wrapper #launch-special h1 {
+    position: absolute;
+    z-index: 10000;
+    font-size: 1rem;
+    padding: 0.5rem 4rem 0.2rem 4rem;
+    border: 2px solid white;
+    text-transform: uppercase;
+    transform: rotate(45deg) translate(2.1875rem, -1.25rem);
+    background-color: #0779be !important;
+    color: #faea06 !important;
+    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 300px; }
+  #monthly-content-wrapper #launch-special h2 {
+    margin-bottom: 0.3125rem; }
+  #monthly-content-wrapper #launch-special h3 {
+    font-size: 1.3rem !important;
+    line-height: 1.3rem !important;
+    margin-bottom: 0.3125rem;
+    text-transform: uppercase; }
+  #monthly-content-wrapper #launch-special h4 {
+    font-size: 1.8rem;
+    margin: 0.3125rem 0;
+    line-height: 1.5rem;
+    text-transform: uppercase; }
+  #monthly-content-wrapper #launch-special h5 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    margin: 0.3125rem 0;
+    line-height: 1.5rem; }
+  #monthly-content-wrapper #launch-special h2, #monthly-content-wrapper #launch-special h3, #monthly-content-wrapper #launch-special h4, #monthly-content-wrapper #launch-special h5, #monthly-content-wrapper #launch-special p {
+    color: #373737 !important; }
 
 div#cake-error-overlay {
   width: 1000px;
