@@ -5537,6 +5537,8 @@ h3.top-bar-status-header {
   .top-bar-status.store-closed {
     font-size: 3em !important;
     -webkit-transform: translateY(1rem) !important; }
+  .top-bar-status.delivery {
+    border-top: 1px dotted white; }
   .top-bar-status.available {
     color: #43ac6a; }
   .top-bar-status.unavailable {

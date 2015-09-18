@@ -12,6 +12,18 @@
  * $navopts = (array) <<topnav opts, not expected to change, but who can know? >>
  * $here = (str) << currently viewed page,  must exactly match one of the navopts >>
  */
+$store_string = "OPEN";
+$store_class = "available";
+$delivery_string = "DELIVERING";
+$delivery_class = "available";
+if ( !$store_open) {
+	$store_string = "CLOSED";
+	$store_class  = "unavailable";
+}
+if ( !$delivering) {
+	$delivery_string = "NOT DELIVERING";
+	$delivery_class  = "unavailable";
+}
 
 $auth_user =  $this->Session->read('Auth.User') ? true : false;
 $auth_str = "http://development-xtreme-pizza.ca/auth/";
@@ -109,11 +121,8 @@ $auth_live = false;
 				</div>
 			</div>
 		</div>
-		<div class="large-4 columns third"
+		<div class="large-4 columns third">
 			<div class="row">
-				<?php
-					$site_fucking_works = false;
-					if ($site_fucking_works) {?>
 				<div id="unknown-status" class="large-12 columns top-bar-status unknown true-hidden">
 					<span>We're having trouble reaching the store just now, please call for delivery and confirmation that we're open.</span>
 				</div>
@@ -121,13 +130,11 @@ $auth_live = false;
 					<h3 class="top-bar-status-header">WE ARE:</h3>
 				</div>
 				<div class="large-8 columns">
-					<span id="store-status" class="top-bar-status store"></span>
-					<span id="delivery-status" class="top-bar-status delivery"></span>
+					<span id="store-status" class="top-bar-status store <?=$store_class;?>"><?=$store_string;?></span>
+					<span id="delivery-status" class="top-bar-status delivery <?=$delivery_class;?>"><?=$delivery_string;?></span>
 				</div>
-				<?php } else { ?>
-						&nbsp;
-				<?php }?>
 			</div>
+		</div>
 		<div class="large-4 columns show-for-large-up third">
 			<ul id="hours-and-location">
 				<li>

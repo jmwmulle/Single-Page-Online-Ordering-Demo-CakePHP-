@@ -8,7 +8,10 @@
 	 */
 ?>
 
-<?= $this->Element( "menu_ui/top_bar", compact('render_transparent') ); ?>
+<?= $this->Element( "menu_ui/top_bar", ['render_transparent' => $render_transparent,
+                                        'store_open' => $system[0]['Sysvar']['status'],
+                                        'delivering' => $system[3]['Sysvar']['status']
+] ); ?>
 <div class="row">
 	<main id="menu" class="large-12 columns<?= $this->get( "render_transparent" ) ? " fade-out" : null; ?>">
 		<div class="row">
