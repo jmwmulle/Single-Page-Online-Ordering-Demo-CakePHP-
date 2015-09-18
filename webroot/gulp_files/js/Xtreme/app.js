@@ -13,8 +13,7 @@ $(document).ready( function() {
 			var date = new Date(2015, 8, 19);
 		    var now = new Date();
 		    var diff = (date.getTime()/1000) - (now.getTime()/1000);
-			pr(diff);
-			var clock = $('#countdown-clock').FlipClock(diff, {
+			var clock = $('#countdown-clock').FlipClock(3, {
 				autostart:true,
 				clockFace: "DailyCounter",
 				countdown: true,
