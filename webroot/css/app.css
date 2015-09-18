@@ -4834,6 +4834,9 @@ span.icon-hn-inline {
 .icon-f-cheeses:before {
   content: "6"; }
 
+.icon-appetizers:before {
+  content: "7"; }
+
 @font-face {
   font-family: "Helvetica Neue Condensed Black";
   src: url('../files/font/HelveticaNeueLTStdBlkCn.otf');

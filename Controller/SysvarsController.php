@@ -132,7 +132,6 @@ class SysvarsController extends AppController {
 
 	public function sv_config($id, $method, $status=null, $force_no_json=false) {
 		$this->autoRender = false;
-
 		$options = [];
 
 		if ( !($status === null) ) $status = (bool) $status;

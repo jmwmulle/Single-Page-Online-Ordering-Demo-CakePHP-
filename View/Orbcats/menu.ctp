@@ -6,11 +6,22 @@
 	 * Twitter: @thisimpetus
 	 * About.me: about.me/thisimpetus
 	 */
-?>
+$store_status = null;
+$delivery = null;
+if ( !is_array($system) ) {
+	$system = json_decode($system, true)['data']['system'];
+	$store_status = $system['store_open'];
+	$delivery = $system['delivery_available'];
+} else {
+	$store_status = $system[0]['Sysvar']['status'];
+	$delivery = $system[3]['Sysvar']['status'];
+}
 
+
+?>
 <?= $this->Element( "menu_ui/top_bar", ['render_transparent' => $render_transparent,
-                                        'store_open' => $system[0]['Sysvar']['status'],
-                                        'delivering' => $system[3]['Sysvar']['status']
+                                        'store_open' => $store_status,
+                                        'delivering' => $delivery
 ] ); ?>
 <div class="row">
 	<main id="menu" class="large-12 columns<?= $this->get( "render_transparent" ) ? " fade-out" : null; ?>">

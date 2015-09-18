@@ -51,13 +51,9 @@ XtremeLayout.prototype = {
 				}, 30);
 			}, 300);
 		}, 800);
-		pr(XT.page_name);
+
 		if ( is_mobile() ) return;
 		$(XSM.global.footer).css({top: $(XSM.global.page_content).innerHeight()});
-// 		if (XT.page_name != "xtreme-pos" && XT.page_name != "Vendor Interface" && XT.page_name != "countdown") {
-// 			this.fasten(XSM.menu.self).css({overflow: "hidden"});
-// 		}
-
 
 		// both of these pertain to the countdown page from launch
 		setTimeout(function() {
@@ -99,6 +95,7 @@ XtremeLayout.prototype = {
 		});
 		// window_resize_listener
 		if (window.page_name == XSM.page_name.splash) $(window).on("resize", XBS.splash.render);
+		if (XT.page_name == "menu") $(window).on("resize", XT.layout.init());
 	},
 
 	/**

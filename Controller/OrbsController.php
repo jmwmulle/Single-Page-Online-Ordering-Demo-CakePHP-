@@ -301,7 +301,7 @@
 		public function update_menu($orb_id, $attribute) {
 			if ( $this->request->is( 'ajax' ) && $this->request->is( 'post' ) ) {
 				$this->layout = "ajax";
-				$response     = array( 'success' => true, 'error' => false, 'submitted_data' => $this->request->data );
+				$response     = ['success' => true, 'error' => false, 'submitted_data' => $this->request->data];
 				$data         = $this->request->data;
 				try {
 					switch ( $attribute ) {
