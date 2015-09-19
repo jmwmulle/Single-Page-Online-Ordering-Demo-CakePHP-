@@ -74,7 +74,6 @@
 		echo $this->Html->meta( 'icon' );
 		echo $this->Html->css( "flipclock" );
 		echo $this->Html->css( "app" );
-		echo $this->Html->css( "vendor" );
 		echo $this->Html->script( "/bower_components/modernizr/modernizr" );
 		echo $this->Html->script( $vendor_scripts, array( 'block' => 'vendor' ) );
 		echo $this->Html->script( $xbs_scripts, array( 'block' => 'app' ) );
