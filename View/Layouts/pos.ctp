@@ -12,6 +12,9 @@
 					case "www.xtreme-pizza.ca":
 						echo "xProd";
 						break;
+					case "xtreme-pizza.ca":
+							echo "xProd";
+							break;
 					case "development-xtreme-pizza.ca":
 						echo "xDev";
 						break;
