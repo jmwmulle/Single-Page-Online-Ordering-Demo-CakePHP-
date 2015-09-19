@@ -92,7 +92,7 @@ XtremePOS.prototype = {
 				setTimeout( function() { hide_time += self.current.hide() }, hide_time);
 				self.current.order = self.pending.next();
 				if ( self.current.order ) {
-					self.printer.is_xtreme_tablet() ? Android.playTone() : new Audio("files/new_order_tone.mp3").play();
+					//self.printer.is_xtreme_tablet() ? Android.playTone() : new Audio("files/new_order_tone.mp3").play();
 					var route = ["pos_reply", self.current.order.id, C.ACCEPTED].join(C.DS);
 					$(self.DOM.accept).data('route', route);
 					$(self.DOM.current.address).html("").append( self.customer_details(self.current.order.Service) );
