@@ -418,6 +418,7 @@ XtremePOS.prototype = {
 			            ])
 				)
 			}
+			if ( !is_string(r.pricing.label) ) r.pricing.label = "";
 			$(food).append(
 				$("<li>").append(
 					$("<ul>").addClass('orbs').append([
