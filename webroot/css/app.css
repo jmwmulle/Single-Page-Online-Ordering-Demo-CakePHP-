@@ -6059,7 +6059,7 @@ h1.success, h2.success, h3.success, h4.success, h5.success {
     #delivery-times .container li.delivery-time h1 {
       display: block;
       box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
-      min-width: 223px !important;
+      min-width: 446px !important;
       font-size: 3.75rem;
       line-height: 10rem;
       text-align: center; }

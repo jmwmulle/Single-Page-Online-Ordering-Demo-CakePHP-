@@ -167,7 +167,11 @@ Modal.prototype = {
 	on_close: {
 		init: function(self) {
 			self.on_close.launch = function() {
-				var action = $( $(self.DOM.box).find(XSM.modal.on_close)[0]).data('action').replace(/(-)/g, "_");
+				try {
+					var action = $($(self.DOM.box).find(XSM.modal.on_close)[0]).data('action').replace(/(-)/g, "_");
+				} catch (e) {
+					var action = false;
+				}
 //				if (action == undefined) action="unstash";
 				if (action) self.on_close[action]();
 			};
