@@ -9,9 +9,12 @@
 		if ( window.xtr === undefined) window.xtr = {};
 		var XT = window.xtr;
 		window.xtr.host = "<?php switch($_SERVER['HTTP_HOST']) {
-					case "xtreme-pizza.ca":
+					case "www.xtreme-pizza.ca":
 						echo "xProd";
 						break;
+					case "xtreme-pizza.ca":
+							echo "xProd";
+							break;
 					case "development-xtreme-pizza.ca":
 						echo "xDev";
 						break;
@@ -35,8 +38,8 @@
 			"vendor/additional-methods.min" ];
 		$gulp_js_path = "../gulp_files/js/Xtreme";
 		$xbs_scripts = [
-			"jsnes/jsnes.min",
-		                 "dynamic_audio",
+//			"jsnes/jsnes.min",
+//		                 "dynamic_audio",
 		                 "$gulp_js_path/utilities",
 		                      "$gulp_js_path/data/XSM",
 		                      "$gulp_js_path/data/XCL",
@@ -70,6 +73,7 @@
 		                      "$gulp_js_path/app" ];
 		echo $this->Html->meta( 'icon' );
 		echo $this->Html->css( "app" );
+//		echo $this->Html->css( "vendor" );
 		echo $this->Html->script( "/bower_components/modernizr/modernizr" );
 		echo $this->Html->script( $vendor_scripts, array( 'block' => 'vendor' ) );
 		echo $this->Html->script( $xbs_scripts, array( 'block' => 'app' ) );

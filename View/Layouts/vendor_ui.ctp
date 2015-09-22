@@ -17,6 +17,9 @@
 	if ( window.xtr === undefined) window.xtr = {};
 		var XT = window.xtr;
 		window.xtr.host = "<?php switch($_SERVER['HTTP_HOST']) {
+					case "www.xtreme-pizza.ca":
+						echo "xProd";
+						break;
 					case "xtreme-pizza.ca":
 						echo "xProd";
 						break;

@@ -5,7 +5,10 @@
  * Email: this.impetus@gmail.com
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
- */ ?>
+ */ 
+ echo "<!---".$delivering."--->";
+ 	$delivery = $delivering ? "" : "disabled";
+ ?>
 <div class="row">
 	<div class="large-6 columns">
 		<a href="#" class="modal-button full-width" data-route="set_order_method/review/pickup">
@@ -13,7 +16,7 @@
 		</a>
 	</div>
 	<div class="large-6 columns">
-		<a href="#" class="modal-button full-width" data-route="set_order_method/review/delivery">
+		<a href="#" class="modal-button full-width <?=$delivery;?>" data-route="set_order_method/review/delivery">
 			<span class="icon-delivery"></span><span class="text">Order for Delivery</span>
 		</a>
 	</div>

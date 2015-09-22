@@ -22,8 +22,6 @@
 	 * to use (in this case, /app/View/Pages/splash.ctp)...
 	 */
 	// I know this is stupid, I just think it's prettier. Blame my IDE.
-	$launch_day = new DateTime("2015-09-19");
-	$now = new DateTime("now");
 	define('CTR', 'controller');
 	define('ATN', 'action');
 
