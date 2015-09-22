@@ -101,6 +101,12 @@
 	</div>
 	<div id="mobile-page-content" class="show-for-small-only">
 		<?=$this->fetch('mobile-content');?>
+		<div class="panel">
+		<h1>Mobile Coming Soon!</h1>
+		<p>Our mobile site will follow the launch of our desktop site. For now you can visit us on your laptop, desktop or large-format tablet.</p>
+		<p>But that doesn't mean you're out of luck; you can also order on-line from Xtreme Pizza via <a href="http://www.just-eat.ca">JustEat</a></p>
+		<h3>Thanks for visiting!</h3>
+		</div>
 	</div>
 </div>
 <?php

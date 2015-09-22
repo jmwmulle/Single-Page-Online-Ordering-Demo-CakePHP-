@@ -29,11 +29,7 @@
 
 	Router::connect( '/!',                           [ CTR => 'orders', ATN => 'init_cart', 'true' ] );
 	/**  PAGES CONTROLLER */
-	if ($launch_day > $now) {
-		Router::connect( '/',                           [ CTR => 'pages', ATN => 'display', 'countdown' ] );
-	} else {
-		Router::connect( '/',                           [ CTR => 'pages', ATN => 'display', 'splash' ] );
-	}
+	Router::connect( '/',                           [ CTR => 'orbcats', ATN => 'menu' ] );
 	Router::connect( '/pages/*',                    [ CTR => 'pages', ATN => 'display' ] );
 	Router::connect( '/register',                   [ CTR => 'pages', ATN => 'signup' ] );
 	Router::connect( '/splash-order',               [ CTR => 'pages', ATN => 'display', 'splash_order_modal' ] );
@@ -57,14 +53,8 @@
 	Router::connect( '/add-price-labels',           [ CTR => 'orbs', ATN => 'pricedict_add' ] );
 	Router::connect( '/add-menu-item',              [ CTR => 'orbs', ATN => 'add' ] );
 	Router::connect( '/delete-menu-item/*',         [ CTR => 'orbs', ATN => 'deprecate' ] );
-
-	/** ORBCATS CONTROLLER */
-	if ($launch_day > $now) {
-		Router::connect( '/menu',                       [ CTR => 'pages', ATN => 'display', 'countdown' ] );
-	} else {
-		Router::connect( '/menu/*',                     [ CTR => 'orbcats', ATN => 'menu'] );
-	}
 	Router::connect( '/menu/*',                     [ CTR => 'orbcats', ATN => 'menu'] );
+
 	Router::connect( '/deferred-menu',              [ CTR => 'orbcats', ATN => 'menu', null, null, true] );
 	Router::connect( '/private-menu/*',             [ CTR => 'orbcats', ATN => 'menu' ] );
 
