@@ -6,6 +6,7 @@
 	 * Twitter: @thisimpetus
 	 * About.me: about.me/thisimpetus
 	 */
+
 $logged_in = $this->Session->read('Auth');
 $orb = $content['Orb'];
 $prices = $content['Prices'];

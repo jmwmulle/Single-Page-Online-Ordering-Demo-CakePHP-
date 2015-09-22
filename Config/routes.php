@@ -29,11 +29,8 @@
 
 	Router::connect( '/!',                           [ CTR => 'orders', ATN => 'init_cart', 'true' ] );
 	/**  PAGES CONTROLLER */
-	if ($launch_day > $now) {
-		Router::connect( '/',                           [ CTR => 'pages', ATN => 'display', 'countdown' ] );
-	} else {
-		Router::connect( '/',                           [ CTR => 'pages', ATN => 'display', 'splash' ] );
-	}
+		Router::connect( '/',                           [ CTR => 'orbcats', ATN => 'menu' ] );
+
 	Router::connect( '/pages/*',                    [ CTR => 'pages', ATN => 'display' ] );
 	Router::connect( '/register',                   [ CTR => 'pages', ATN => 'signup' ] );
 	Router::connect( '/splash-order',               [ CTR => 'pages', ATN => 'display', 'splash_order_modal' ] );

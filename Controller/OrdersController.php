@@ -22,7 +22,7 @@
 		                          "price_rank" => 0,
 		                          "orbopts"    => [ ],
 		                          "orb_note"   => "" ];
-		private $use_test_user = true;
+		private $use_test_user = false;
 		private $test_user = [
 			'firstname'      => "Jimmy",
 			'lastname'       => "TheKid",
@@ -354,15 +354,15 @@
 						break;
 					case DEBIT:
 						$paid = false;
-						if ( !AppController::debit_available() ) {
-							$cart[ 'Service' ][ 'payment_method' ] = null;
-							$this->Session->write( 'Cart', $cart );
-							$response[ 'sucess' ]         = false;
-							$response[ 'error' ]          = "Debit unavailable";
-							$response[ 'data' ][ 'cart' ] = $cart;
-							$response[ 'delegate_route' ] = "review_order";
-							$this->render_ajax_response( $response );
-						}
+// 						if ( !AppController::debit_available() ) {
+// 							$cart[ 'Service' ][ 'payment_method' ] = null;
+// 							$this->Session->write( 'Cart', $cart );
+// 							$response[ 'sucess' ]         = false;
+// 							$response[ 'error' ]          = "Debit unavailable";
+// 							$response[ 'data' ][ 'cart' ] = $cart;
+// 							$response[ 'delegate_route' ] = "review_order";
+// 							$this->render_ajax_response( $response );
+// 						}
 						break;
 					default:
 						// todo: set some default keys if needed, maybe?
@@ -384,6 +384,8 @@
 					return $this->render_ajax_response( $response );
 				}
 				$cart[ 'id' ] = $this->Order->id;
+				$this->Order->set('detail', json_encode( $cart) );
+				$this->Order->save();
 				$this->Session->write( 'Cart', $cart );
 				$response[ 'data' ][ 'cart' ] = $cart;
 				$response[ 'delegate_route' ] = 'launch_order_confirmation' . DS . $this->Order->id . DS . true;
@@ -430,6 +432,8 @@
 		 */
 		public function review_order() {
 			if ( $this->request->is( 'ajax' ) ) {
+				$status = json_decode($this->system_status(DELIVERY_AVAILABLE, 1, true), true);
+				$this->set('delivering', $status['data']['system']['delivery_available']['status']);
 				$this->layout = 'ajax';
 				$this->set( "masthead", [ 'header'    => "Review Your Order",
 				                          'subheader' => "So close to food you can almost taste it..." ] );

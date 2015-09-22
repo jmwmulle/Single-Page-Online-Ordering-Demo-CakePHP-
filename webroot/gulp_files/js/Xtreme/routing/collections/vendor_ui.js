@@ -69,7 +69,7 @@ window.xtr.route_collections.vendor_ui = function() {
 				var self = this;
 				XT.router.cake_ajax_response(this.deferral_data, {
 						callback: function (response, data) {
-							if (data.target == 'pricedicts') $("#menu-tab").load("vendor-ui/menu", function() {
+							if (data.target == 'pricedicts') $("#menu-tab").load([XT.host, "vendor-ui", "menu"].join(C.DS), function() {
 									XT.vendor_ui.fix_breakouts()
 							});
 							if (self.modal) self.modal.hide();
@@ -111,7 +111,7 @@ window.xtr.route_collections.vendor_ui = function() {
 										this.set_callback("launch", function () {
 											XT.router.cake_ajax_response(this.deferral_data, {
 												callback: function () {
-													$(XSM.vendor_ui.menu_tab).load("vendor-ui/menu", function () {
+													$(XSM.vendor_ui.menu_tab).load([XT.host, "vendor-ui", "menu"].join(C.DS), function () {
 														XT.vendor_ui.data_tables('menu');
 														XT.vendor_ui.fix_breakouts();
 													});
@@ -140,7 +140,7 @@ window.xtr.route_collections.vendor_ui = function() {
 										this.set_callback("launch", function () {
 											XT.router.cake_ajax_response(this.deferral_data, {
 												callback: function () {
-													$(XSM.vendor_ui.menu_tab).load("vendor-ui/menu",
+													$(XSM.vendor_ui.menu_tab).load([XT.host, "vendor-ui", "menu"].join(C.DS),
 														function () {
 															XT.vendor_ui.data_tables('menu');
 															XT.vendor_ui.fix_breakouts();
@@ -219,7 +219,7 @@ window.xtr.route_collections.vendor_ui = function() {
 								this.set_callback("launch", function () {
 									XT.router.cake_ajax_response(this.deferral_data, {
 										callback: function () {
-											$(XSM.vendor_ui.menu_options_tab).load("vendor-ui/opts",
+											$(XSM.vendor_ui.menu_options_tab).load([XT.host, "vendor-ui", "menu"].join(C.DS),
 												function () {
 													XT.vendor_ui.data_tables('opts');
 													XT.vendor_ui.fix_breakouts();

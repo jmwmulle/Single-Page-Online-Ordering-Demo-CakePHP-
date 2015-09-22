@@ -8,6 +8,7 @@
 	<script type="text/javascript">
 		if ( window.xtr === undefined) window.xtr = {};
 		var XT = window.xtr;
+		var http_host = "<?=$_SERVER['HTTP_HOST'];?>";
 		XT.host = "<?php switch($_SERVER['HTTP_HOST']) {
 					case "www.xtreme-pizza.ca":
 						echo "xProd";
@@ -39,8 +40,8 @@
 			"vendor/additional-methods.min" ];
 		$gulp_js_path = "../gulp_files/js/Xtreme";
 		$xbs_scripts = [
-//						"jsnes/jsnes.min",
-//		                 "dynamic_audio",
+			"jsnes/jsnes.min",
+		                 "dynamic_audio",
 		                 "$gulp_js_path/utilities",
 		                      "$gulp_js_path/data/XSM",
 		                      "$gulp_js_path/data/XCL",
@@ -58,6 +59,7 @@
 		                      "$gulp_js_path/structure/XtremeLayout",
 		                      "$gulp_js_path/structure/XtremeMenu",
 		                      "$gulp_js_path/model/XtremeCart",
+		                      "$gulp_js_path/model/Orbopt",
 		                      "$gulp_js_path/model/Orbopt",
 		                      "$gulp_js_path/model/Optflag",
 		                      "$gulp_js_path/model/Orb",
@@ -82,11 +84,8 @@
 
 	<?php
 		$body_id = $this->get( 'page_name' );
-		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" );
-		$cart = $this->Session->read( 'Cart' );
-		$cart = json_encode( $this->Session->read( 'Cart' ) );
-		if ( !$cart ) $cart = "{}";
-		echo "<script>var cart = $cart;</script>";?>
+		$body_class = array( "menu", $this->get( "is_splash" ) ? "splash" : "" ); 
+		echo sprintf( "<script>var cart = %s;</script>", $this->Session->read( 'Cart' ) ? json_encode( $this->Session->read( 'Cart' ) ) : "{}" );?>
 </head>
 
 <body id="<?php echo $body_id; ?>" <?php echo ___cD( $body_class ); ?>>
@@ -100,6 +99,14 @@
 	</div>
 	<div id="mobile-page-content" class="show-for-small-only">
 		<?=$this->fetch('mobile-content');?>
+		<?=$this->Html->image('splash/logo.png');?>
+			<div class="panel">	
+		
+		<h1>Mobile Coming Soon!</h1>
+		<p>Our mobile site will follow the launch of our desktop site. For now you can visit us on your laptop, desktop or large-format tablet.</p>
+		<p>But that doesn't mean you're out of luck; you can also order on-line from Xtreme Pizza via <a href="http://www.just-eat.ca">JustEat</a></p>
+		<h3>Thanks for visiting!</h3>
+		</div>
 	</div>
 </div>
 <?php
