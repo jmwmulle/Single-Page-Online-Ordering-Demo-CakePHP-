@@ -248,7 +248,7 @@ XtremePOS.prototype = {
 					var response = self.printer.print(  self.current.receipt[i][0],
 														self.current.receipt[i][1],
 														self.current.receipt[i][2] );
-					if ( !response.success ) {
+					if ( !response ) {
 						i--;
 						failed_lines++;
 					}
