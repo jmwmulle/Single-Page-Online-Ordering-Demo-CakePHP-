@@ -5721,6 +5721,16 @@ footer#footer {
   100% {
     transform: rotate(-90deg) translateY(29.6875rem); } }
 
+@-webkit-keyframes response-wait {
+  0% {
+    background-color: #e02027; }
+
+  50% {
+    background-color: #871319; }
+
+  100% {
+    background-color: #e02027; } }
+
 body#pos {
   background-color: #191919;
   background-image: none; }
@@ -5847,7 +5857,7 @@ body#pos {
   width: 8rem;
   text-align: center;
   text-shadow: 0 0 0.33rem rgba(0, 0, 0, 0.5);
-  z-index: 99999; }
+  z-index: 9999; }
   #pending-orders-count h5 {
     position: relative;
     width: 9.375rem;
@@ -5919,6 +5929,7 @@ body#pos {
   margin-top: 0.3125rem; }
 
 #accept-acknowledge {
+  background-color: rgba(0, 0, 0, 0.75);
   background-image: url("../img/pos-hero.png");
   background-repeat: no-repeat;
   background-position: 225px 490px;
@@ -5928,14 +5939,14 @@ body#pos {
   height: 50rem;
   position: relative;
   margin-top: 5rem;
-  z-index: 10;
+  z-index: 11000;
   transition: transform 300ms ease-in-out; }
   #accept-acknowledge.slide-right {
-    transform: translateX(34.375rem); }
+    transform: translateX(43.75rem); }
   #accept-acknowledge #message {
     background-image: url("../img/pos-hero-speech.png");
     background-repeat: no-repeat;
-    background-position: 50px 275px;
+    background-position: 50px 0px;
     background-size: auto 300px;
     font-family: 'Bangers', cursive;
     color: black;
@@ -5947,8 +5958,43 @@ body#pos {
     #accept-acknowledge #message span {
       display: block;
       width: 190px;
-      margin-top: 360px;
+      margin-top: 85px;
       margin-left: 160px; }
+  #accept-acknowledge #post-accept-wrapper {
+    height: 14.0625rem; }
+  #accept-acknowledge #post-accept-panel {
+    position: absolute;
+    height: auto;
+    line-height: 1.5rem;
+    padding: 0 2.25rem; }
+    #accept-acknowledge #post-accept-panel a {
+      border: 3px solid white;
+      margin-top: 1rem; }
+      #accept-acknowledge #post-accept-panel a span {
+        font-size: 4rem;
+        line-height: 4rem; }
+
+a.pos-button.pressed {
+  transition: background-color 800ms !important;
+  background-color: #044b74 !important;
+  box-shadow: inset 5px 5px 8px rgba(0, 0, 0, 0.33); }
+  a.pos-button.pressed.success {
+    background-color: #2e7548 !important; }
+a.pos-button.loading {
+  -webkit-animation: response-wait 1200ms ease-in infinite normal 0s running forwards; }
+
+#fatal-error {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 39rem;
+  height: 62.5rem;
+  background-color: #e02027;
+  color: white !important;
+  padding: 4rem;
+  z-index: 15000; }
+  #fatal-error ul, #fatal-error li {
+    font-family: "Helvetica Neue Medium Condensed", arial, sans-serif; }
 
 #virtual-receipt {
   position: absolute;
@@ -6022,7 +6068,7 @@ h1.success, h2.success, h3.success, h4.success, h5.success {
   border: 2px solid white;
   border-bottom: none;
   padding: 0.9375rem;
-  z-index: 99999999;
+  z-index: 10000;
   text-align: center;
   font-size: 1.5rem;
   color: white !important;

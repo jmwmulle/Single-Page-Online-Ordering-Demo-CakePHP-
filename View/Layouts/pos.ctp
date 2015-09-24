@@ -32,6 +32,7 @@
 	<?php
 		$vendor_scripts = [
 			"/bower_components/jquery/dist/jquery.min",
+//			"vendor/jquery.mobile.custom.min.js",
 			"//code.jquery.com/ui/1.11.1/jquery-ui.js",
 			"/bower_components/foundation/js/foundation.min",
 			"vendor/jquery.validate.min",
@@ -72,6 +73,7 @@
 		                      "$gulp_js_path/exceptions",
 		                      "$gulp_js_path/app" ];
 		echo $this->Html->meta( 'icon' );
+//		echo $this->Html->css( "http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" );
 		echo $this->Html->css( "app" );
 //		echo $this->Html->css( "vendor" );
 		echo $this->Html->script( "/bower_components/modernizr/modernizr" );

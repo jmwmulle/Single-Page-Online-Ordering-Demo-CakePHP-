@@ -255,6 +255,7 @@ XT.route_collections.orders_api = function() {
 
 						XT.router.cake_ajax_response(this.deferral_data, {
 							callback: function(response, data) {
+
 								if (data.action == "add") XT.orbcard.orb = undefined;
 								XT.cart.import_cart(response.data.Cart);
 								if ( exists(response.delegate_route) ) return;

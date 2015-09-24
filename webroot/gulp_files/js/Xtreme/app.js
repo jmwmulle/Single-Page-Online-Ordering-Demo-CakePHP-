@@ -3,7 +3,7 @@
  */
 XT.host = XT.data.host_root_dirs[XT.host];
 
-//$(window).on(C.ORBCARD_ANIMATION_COMPLETE, function(e) { pr(e, "orb_anim");});
+
 $(document).ready( function() {
 	XT.development_mode = true;
 	XT.router = new XtremeRouter();

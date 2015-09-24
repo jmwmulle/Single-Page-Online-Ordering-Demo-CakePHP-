@@ -5235,6 +5235,8 @@ li.orbopt.disabled {
     background-color: #43ac6a; }
     .modal-button.success:hover {
       background-color: #73c892; }
+    .modal-button.success.press-button:hover {
+      background-color: #2e7548; }
   .modal-button.full-width {
     width: 100%; }
   .modal-button.full-height {

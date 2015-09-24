@@ -42,6 +42,10 @@ XtremePOS.prototype = {
 				box: undefined,
 				text: undefined
 			}
+		},
+		error: {
+			box: undefined,
+			mesage: undefined
 		}
 	},
 	buttons: {
@@ -68,6 +72,7 @@ XtremePOS.prototype = {
 	},
 	current: {
 		order: false,
+		receipt: undefined,
 		init: function(self) {
 			self.current.fetch = function () {
 				if (self.pending.list()) return self.pending.orders[0];
@@ -94,7 +99,7 @@ XtremePOS.prototype = {
 				if ( self.current.order ) {
 					self.printer.is_xtreme_tablet() ? Android.playTone() : new Audio("files/new_order_tone.mp3").play();
 					var route = ["pos_reply", self.current.order.id, C.ACCEPTED].join(C.DS);
-					$(self.DOM.accept).data('route', route);
+					$(self.DOM.accept).data('pressroute', route);
 					$(self.DOM.current.address).html("").append( self.customer_details(self.current.order.Service) );
 					$(self.DOM.current.food).html("").append( self.order_rows( self.current.order.Order) );
 					self.update_order_method();
@@ -104,13 +109,15 @@ XtremePOS.prototype = {
 				}
 				return hide_time
 			};
-			self.current.resolve = function(data) {
+			self.current.accept = function(data) {
 				if (data.error) {
 					// confirm user has been notified
 					// if can't get confirmation, take ordering off-line
 					// else advance to next order; if it happens again, take ordering off-line
 					return;
 				}
+				$(self.DOM.accept).removeClass(FX.loading);
+				$(self.DOM.accept).removeClass(FX.pressed);
 				$(self.DOM.pos_hero.message.text).html(accept_messages[ ranged_random(0, accept_messages.length -1) ]);
 				var start_size = 10;
 				$(self.DOM.pos_hero.message.text).css({
@@ -126,12 +133,9 @@ XtremePOS.prototype = {
 				}
 				start_size -= 2;
 				$(self.DOM.pos_hero.message.text).css("font-size", start_size)
-				$(self.DOM.pos_hero.box).removeClass(FX.slide_right);
+				$(self.DOM.pos_hero.box).removeClass(FX.hidden);
+				setTimeout( function() { $(self.DOM.pos_hero.box).removeClass(FX.slide_right); }, 30);
 				setTimeout(function() { $(self.DOM.pos_hero.message.box).removeClass(FX.fade_out) }, 300);
-				setTimeout(function() { $(self.DOM.pos_hero.box).addClass(FX.slide_right) }, 1000);
-				setTimeout(function() { $(self.DOM.pos_hero.message.box).addClass(FX.fade_out) }, 1300);
-				self.current.receipt_lines();
-				setTimeout(function() { self.current.update() }, 1300);
 			};
 			self.current.receipt_lines = function() {
 				var s = self.current.order.Service;
@@ -234,14 +238,43 @@ XtremePOS.prototype = {
 				r.push([hst, "h4", true]);
 				r.push([total, "h4", true]);
 				r.push(["****************************************************************", "h5", true]);
-				for (var i = 0; i < r.length;  i++)  self.printer.print( r[i][0], r[i][1], r[i][2] );
-				self.printer.cut(true);
+
+				return r;
+			}
+			self.current.print = function() {
+				self.current.receipt = self.current.receipt_lines();
+				var failed_lines = 0;
+				for (var i = 0; i < self.current.receipt.length;  i++) {
+					var response = self.printer.print(  self.current.receipt[i][0],
+														self.current.receipt[i][1],
+														self.current.receipt[i][2] );
+					if ( !response.success ) {
+						i--;
+						failed_lines++;
+					}
+					if (failed_lines > 25) break;
+				}
+				if (failed_lines <= 25) {
+					self.printer.cut(true);
+				} else {
+					$(self.DOM.error.message).html("Printer being fussy...");
+					$(self.DOM.error.box).removeClass(FX.hidden);
+					setTimeout( function() { $(self.DOM.error.box).removeClass(FX.fade_out) }, 30)
+					die();
+				}
+			},
+			self.current.clear = function() {
+				$(self.DOM.pos_hero.box).addClass(FX.slide_right);
+				setTimeout(function() { $(self.DOM.pos_hero.message.box).addClass(FX.fade_out) }, 500);
+				setTimeout(function() { self.current.update() }, 800);
 			}
 		},
 		hide: undefined,
 		show: undefined,
 		update: undefined,
-		receipt_lines: undefined
+		accept: undefined,
+		receipt_lines: undefined,
+		print: undefined
 	},
 	pending: {
 		fetch_count: 0,
@@ -250,7 +283,7 @@ XtremePOS.prototype = {
 			self.pending.list = function() { return self.pending.count() > 0 ? self.pending.orders : false };
 
 			self.pending.fetch = function(orders) {
-				//if ( self.pending.fetch_count > 2) return;
+				if ( self.pending.fetch_count > 2) return;
 				self.pending.fetch_count++;
 				if ( defined(orders) && orders.length > 0 ) {
 					var update = self.pending.count() == 0 && !self.current.order;
@@ -365,6 +398,7 @@ XtremePOS.prototype = {
 	init_DOM: function() {
 		this.DOM.box = $("#pos-ui")[0];
 		this.DOM.accept = $(XSM.pos.order_accept_button)[0];
+		this.DOM.print_button = $("#order-print-button")[0];
 		this.DOM.next = $(XSM.pos.next_order)[0];
 		this.DOM.current.box = $(XSM.pos.order_content)[0];
 		this.DOM.current.address = $(XSM.pos.order_address)[0];
@@ -378,31 +412,23 @@ XtremePOS.prototype = {
 		this.DOM.pos_hero.box = $("#accept-acknowledge")[0];
 		this.DOM.pos_hero.message.box = $("#message")[0];
 		this.DOM.pos_hero.message.text = $("#message span")[0];
-		$(this.DOM.accept).on(C.VMOUSEDOWN, function() { $(this).addClass(FX.pressed) });
-		var self = this;
-		$(XSM.pos.order_accept_button+".pressed").on(C.VMOUSEMOVE, function(e) {
-		   pr(e);
-			if ( !self.buttons.pressed(C.ACCEPT) ) return;
-			if (success_stop < 95) return $(self.DOM.accept).css({ background: self.bg_string(e) });
-			$(self.DOM.accept).attr("style", null);
-			$(self.DOM.accept).addClass('launching');
-			$(XT.router).trigger(C.ROUTE_REQUEST, {request:"pos_print", trigger:e});
+		this.DOM.error.box =  $("#fatal-error")[0];
+		this.DOM.error.message =  $("span.error-message", this.DOM.error.box)[0];
+		$(".pos-button").on("mousedown", function(e) {
+			$(this).addClass(FX.pressed);
+			var button = this;
+			setTimeout( function() {
+				if ( $(button).hasClass(FX.pressed) ) {
+					$(button).addClass(FX.loading);
+					var route = $(button).data('pressroute');
+					$(XT.router).trigger(C.ROUTE_REQUEST, {request:route, trigger: e});
+				}
+			}, 600);
 		});
-		$(this.DOM.accept).on([C.VMOUSEOUT, C.VMOUSEUP].join(" "), function(e) {
-			$(self.DOM.accept).removeClass(FX.pressed);
-			$(self.DOM.accept).css({background: self.bg_gradient(e) });
+		$(".pos-button").on("mouseup", function() {
+			$(this).removeClass(FX.pressed)
 		});
-
 		return this
-	},
-	bg_gradient: function(e) {
-		var pos = defined(e) ? e.pageX : 0;
-		var success_stop = Math.round( 100 * (e.pageX - $(self.DOM.accept).offset().left) / 512);
-		var success_color = "rgba(50,255,50,1)";
-		var ready_color = "rgba(125,185,232,1)";
-		var bg_str = "-webkit-linear-gradient(left, " + success_color + " " + success_stop + "%,";
-		bg_str += ready_color + " " + (success_stop + 1) +"%," + ready_color + " 100%)";
-		return bg_str;
 	},
 	order_rows: function(rows) {
 		var food = $("<ul>").addClass("food");

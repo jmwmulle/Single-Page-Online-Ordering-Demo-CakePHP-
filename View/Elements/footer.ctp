@@ -82,6 +82,9 @@
 					Your use and continued use of the site constitutes your binding acceptance of these Terms and Conditions, including any changes or modifications made by Xtreme Pizza, as permitted above.
 					If at any time these Terms and Conditions becomes unacceptable to you, you should immediately stop using this site.</p>
 
+					<h4>REFUND POLICY</h4>
+					<p>Xtreme Pizza does not offer refunds. The store will offer you a negotiable credit, approved by one of the on duty owner/officers, depending on the nature of the order involved.This credit may be used towards a future purchase at the Xtreme Pizza outlet the initial order was placed at. In the event of a credit card/ debit card order that turns out to be miscalculated/overcharged, we will reimburse the customer with the cash value difference, with proof of purchase receipt. There will be no direct card refunds.</p>
+
 					<h4>LIMITATION OF LIABILITY</h4>
 
 					<p>Xtreme Pizza, its franchisees and the site designers, will not be liable for any damages or injuries arising from the use of this site, caused by, including but not limited to, any error, failure in operation, inaccuracy, omission, interruption in service, delays in operation of transmission, computer virus, Trojan Horse, or failure to process your request.

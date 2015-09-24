@@ -1,4 +1,4 @@
-<div id="loading-img"></div>
+
 <div id="order-tone-wrapper" class="true-hidden">
 	<audio controls>
 	  <source src="files/new_order_tone.mp3" type="audio/mpeg">
@@ -34,10 +34,12 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="small-12 columns">
-				<a id="order-accept-button" class="modal-button success full-width huge" data-route="pos_reply/-1/accept">
-					<span class="text">ACCEPT</span>
-				</a>
+			<div  class="small-12 columns">
+				<div id="order-accept-panel">
+					<a id="order-accept-button" class="modal-button pos-button success full-width huge" data-pressroute="pos_reply/-1/accept">
+						<span class="text">ACCEPT</span>
+					</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -65,9 +67,32 @@
 </a>
 
 <div id="accept-acknowledge" class="slide-right">
+	<div id="post-accept-wrapper" class="row">
+		<div id="post-accept-panel" class="small-12 columns">
+			<a id="order-print-button" class="modal-button full-width pos-button" data-pressroute="pos_print">
+				<span class="text">PRINT</span>
+			</a>
+			<a id="order-clear-button" class="modal-button full-width pos-button" data-pressroute="pos_clear">
+				<span class="text">CLEAR</span>
+			</a>
+		</div>
+	</div>
 	<p id="message" class="fade-out">
-		<span>Grumpy wizards make toxic brew for evil queen and jack.</span></p>
+		<span>Grumpy wizards make toxic brew for evil queen and jack.</span>
+	</p>
 </div>
+
+<div id="fatal-error" class="fade-out hidden">
+	<h2>ERROR: <span class="error-message"></span></h2>
+	<h3>What To Do:</h3>
+	<ul>
+		<li>1. Restart the tablet app</li>
+		<li>2. If that failed, clear the app data. Open the tablet's Settings app, find the application management area, find the Xtreme app and then delete local data (NOT the app).</li>
+		<li>3. Turn the printer and the tablet OFF and then on again.</li>
+		<li>4. You should never have got here, this can't be good. Call Jon.</li>
+	</ul>
+</div>
+
 
 <main id="js-console" class="hidden">
 <h4 id="called-from"></h4>

@@ -33,6 +33,7 @@ XtremeRouter.prototype = {
 			this.launch(data) });
 	},
 
+
 	/**
 	 * launch() creates and runs an instance of the class from passed param array
 	 * @param params

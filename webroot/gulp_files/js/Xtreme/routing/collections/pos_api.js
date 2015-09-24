@@ -54,18 +54,42 @@ XT.route_collections.pos_api = function() {
 		params: {id: {url_fragment: true}, reply:{url_fragment: true} },
 		url: { url: "resolve-order", type: C.POST, defer: true},
 		callbacks: {
-			//params_set: function() {
-			//	this.unset("url");
-			//	this.unset("launch");
-			//	XT.pos.current.resolve({})
-			//},
+//			params_set: function() {
+//				this.unset("url");
+//				this.unset("launch");
+//				XT.pos.current.accept({})
+//			},
 			launch: function () {
 				XT.router.cake_ajax_response(this.deferral_data, {
-					callback: function (response) { XT.pos.current.resolve(response.data) }
+					callback: function (response) { XT.pos.current.accept(response.data) }
 				}, true, true);
 			}
 		}
 	};
+	this.pos_print = {
+		callbacks: {
+			launch: function() {
+				try {
+					if ( !XT.pos.current.print() ) throw "no has printings"
+				} catch (e) {
+					pr(e.message);
+				}
+				var self = this;
+				setTimeout( function() { $(self.trigger.element).removeClass(FX.loading) }, 500);
+			}
+		}
+	},
+	this.pos_clear = {
+		callbacks: {
+			launch: function() {
+				try {
+					if ( !XT.pos.current.clear() ) throw "no has cleared";
+				} catch (e) {}
+				var self = this;
+				setTimeout( function() { $(self.trigger.element).removeClass(FX.loading) }, 500);
+			}
+		}
+	},
 	this.delivery_time_buttons = {
 		params:['action'],
 		callbacks: { launch: function() { XT.pos.delivery_times[this.read('action')]() } }

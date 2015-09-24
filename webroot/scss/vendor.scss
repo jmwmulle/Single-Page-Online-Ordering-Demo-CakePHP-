@@ -405,6 +405,9 @@ display:none !important;
   &.success {
     background-color: $success-color;
     &:hover { background-color: lighten($success-color, 15%);}
+    &.press-button {
+      &:hover { background-color: darken($success-color, 15%);}
+    }
   }
   &.full-width { width : 100%; }
   &.full-height { height : 100%; }

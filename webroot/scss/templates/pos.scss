@@ -4,6 +4,13 @@
   100% { transform: rotate(-90deg) translateY(rem-calc(475px)); }
 }
 
+@-webkit-keyframes response-wait {
+
+ 0% { background-color: $xtreme-red}
+ 50% { background-color: darken($xtreme-red, 20%)}
+ 100% { background-color: $xtreme-red}
+
+}
 
 body#pos {
   background-color : $dark-grey;
@@ -143,7 +150,7 @@ body#pos {
   width            : rem-calc(128px);
   text-align       : center;
   text-shadow      : 0 0 0.33rem $black-a50;
-  z-index:99999;
+  z-index:9999;
   h5 {
     position          : relative;
     width             : rem-calc(150px);
@@ -227,6 +234,7 @@ body#pos {
 
 
 #accept-acknowledge {
+  background-color: $black-a75;
   background-image:url("../img/pos-hero.png");
   background-repeat:no-repeat;
   background-position: 225px 490px;
@@ -236,13 +244,13 @@ body#pos {
   height:rem-calc(800px);
   position: relative;
   margin-top:rem-calc(80px);
-  z-index:10;
+  z-index:11000;
   transition: transform 300ms ease-in-out;
-  &.slide-right {  transform: translateX( rem-calc(550px) ); }
+  &.slide-right {  transform: translateX( rem-calc(700px) ); }
   #message {
     background-image: url("../img/pos-hero-speech.png");
     background-repeat:no-repeat;
-    background-position: 50px 275px;
+    background-position: 50px 0px;
     background-size:auto 300px;
     font-family: 'Bangers', cursive;
     color:$black;
@@ -254,11 +262,51 @@ body#pos {
     span {
       display: block;
       width:190px;
-      margin-top:360px;
+      margin-top:85px;
       margin-left:160px;
 //      text-align: center;
     }
   }
+  #post-accept-wrapper {
+    height:rem-calc(225px);
+  }
+  #post-accept-panel  {
+    position:absolute;
+    height:auto;
+    line-height: rem-calc(24px);
+    padding: 0 rem-calc(36px);
+    a {
+      border:3px solid $white;
+      margin-top:1rem;
+      span {
+        font-size:rem-calc(64px);
+        line-height: rem-calc(64px);
+      }
+    }
+  }
+}
+
+a.pos-button {
+  &.pressed {
+   transition: background-color 800ms !important;
+   background-color: darken($xtreme-blue, 15%) !important;
+   &.success { background-color: darken($success-color, 15%) !important; }
+   box-shadow: inset 5px 5px 8px $black-a33;
+ }
+ &.loading { -webkit-animation : response-wait 1200ms ease-in infinite normal 0s running forwards;}
+}
+
+#fatal-error {
+  position:fixed;
+  top:0;
+  left:0;
+  width:rem-calc(624px);
+  height: rem-calc(1000px);
+  background-color:$xtreme-red;
+  color:$white !important;
+  padding: rem-calc(64px);
+  z-index:15000;
+  ul, li { @include HelveticaMdCn;}
 }
 
 #virtual-receipt {
@@ -342,7 +390,7 @@ h1, h2, h3, h4, h5 {
   border:2px solid $white;
   border-bottom: none;
   padding:$base-padding;
-  z-index:99999999;
+  z-index:10000;
   text-align: center;
   font-size: rem-calc(24px);
   color: $white !important;
@@ -414,3 +462,4 @@ div#loading-img {
   background-color:$black-a50;
   z-index:11;
 }
+
