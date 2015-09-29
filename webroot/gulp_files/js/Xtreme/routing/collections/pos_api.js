@@ -69,11 +69,7 @@ XT.route_collections.pos_api = function() {
 	this.pos_print = {
 		callbacks: {
 			launch: function() {
-				try {
-					if ( !XT.pos.current.print() ) throw "no has printings"
-				} catch (e) {
-					pr(e.message);
-				}
+				XT.pos.current.print();
 				var self = this;
 				setTimeout( function() { $(self.trigger.element).removeClass(FX.loading) }, 500);
 			}
@@ -82,24 +78,26 @@ XT.route_collections.pos_api = function() {
 	this.pos_clear = {
 		callbacks: {
 			launch: function() {
-				try {
-					if ( !XT.pos.current.clear() ) throw "no has cleared";
-				} catch (e) {}
-				var self = this;
-				setTimeout( function() { $(self.trigger.element).removeClass(FX.loading) }, 500);
+				if ( XT.pos.current.clear() ) {
+					var self = this;
+					setTimeout( function() { $(self.trigger.element).removeClass( [FX.loading, FX.pressed].join(" ")) }, 500);
+				}
 			}
 		}
 	},
 	this.delivery_time_buttons = {
 		params:['action'],
-		callbacks: { launch: function() { XT.pos.delivery_times[this.read('action')]() } }
+		callbacks: { launch: function() {
+			$(this.trigger.element).removeClass( FX.pressed );
+			XT.pos.delivery_times[this.read('action')]()
+		} }
 	};
 	this.set_delivery_time = {
 		params:{time:{url_fragment:true}},
 		url: { url: "set-delivery-time", type: C.POST, defer:true},
 		callbacks: {
 			launch: function() {
-				pr("yer moms");
+				$(this.trigger.element).removeClass( FX.pressed );
 				XT.router.cake_ajax_response(this.deferral_data, {
 					callback: function() { XT.pos.delivery_times.hide() }
 				}, true, true);

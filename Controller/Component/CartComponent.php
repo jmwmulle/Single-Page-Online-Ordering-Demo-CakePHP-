@@ -199,13 +199,22 @@
 			$orb                    = $this->Controller->Orb->find( 'first', [ 'recursive'  => 0,
 			                                                                   'conditions' => [ 'Orb.id' => $orb_id ] ]
 			);
+
 			$orb[ 'Orb' ][ 'note' ] = $orb_cfg[ 'orb_note' ];
 
 			if ( empty( $orb ) ) return null; // if bad orb_id passed, exit quietly
 
 			// get orbopt data
 			$orbopts = $this->fetch_orbopts_from_ids( $orbopts );
-
+			foreach ($orbopts as $id => $opt) {
+				$default = $this->Controller->OrbsOrbopt->find('first', [
+				                                                         'conditions' => [
+																			  '`OrbsOrbopt`.`orb_id`' => $orb_id,
+				                                                              '`OrbsOrbopt`.`orbopt_id`' => $id,
+				                                                              '`OrbsOrbopt`.`default`' => true]]);
+				$orbopts[$id]['Orbopt']['default'] = !empty($default);
+			}
+//			$this->Session->write("Cart.Debug.default_opts", $debug);
 			// get the pricing info for each opt
 			$opt_price = $this->price_orbopts( $orbopts, $price_rank, [ 'opt_count'       => $orb[ 'Orb' ][ 'opt_count' ],
 			                                                            'cheese_count'    => $orb[ 'Orb' ][ 'cheese_count' ],

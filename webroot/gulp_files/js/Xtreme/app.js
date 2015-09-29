@@ -1,8 +1,8 @@
 /**
  * Created by jono on 8/12/15.
  */
-XT.host = XT.data.host_root_dirs[XT.host];
 
+XT.host = XT.data.host_root_dirs[XT.host];
 
 $(document).ready( function() {
 	XT.development_mode = true;

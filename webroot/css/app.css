@@ -5974,13 +5974,13 @@ body#pos {
         font-size: 4rem;
         line-height: 4rem; }
 
-a.pos-button.pressed {
+a.pos-button.pressed, li.pos-button h1.pressed {
   transition: background-color 800ms !important;
   background-color: #044b74 !important;
-  box-shadow: inset 5px 5px 8px rgba(0, 0, 0, 0.33); }
-  a.pos-button.pressed.success {
+  box-shadow: inset 5px 5px 8px rgba(0, 0, 0, 0.33) !important; }
+  a.pos-button.pressed.success, li.pos-button h1.pressed.success {
     background-color: #2e7548 !important; }
-a.pos-button.loading {
+a.pos-button.loading, li.pos-button h1.loading {
   -webkit-animation: response-wait 1200ms ease-in infinite normal 0s running forwards; }
 
 #fatal-error {

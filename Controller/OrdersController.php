@@ -15,7 +15,7 @@
 			#'Paypal',
 			#'AuthorizeNet'
 		);
-		public $uses = array( 'User', 'Address', 'Order', 'Orb', 'Orbopt', 'Optflag' );
+		public $uses = array( 'User', 'Address', 'Order', 'Orb', 'Orbopt', 'Optflag', 'OrbsOrbopt' );
 		private $orb_template = [ "id"         => -1,
 		                          "uid"        => -1,
 		                          "quantity"   => -1,

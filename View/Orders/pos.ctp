@@ -62,7 +62,7 @@
 		</div>
 	</div>
 </div>
-<a href="#" id="delivery-time-button" data-route="delivery_time_buttons/show">
+<a href="#" id="delivery-time-button" class="pos-button" data-pressroute="delivery_time_buttons/show">
 	<span class="text">SET DELIVERY TIME</span>
 </a>
 

@@ -286,12 +286,12 @@ body#pos {
   }
 }
 
-a.pos-button {
+a.pos-button, li.pos-button h1 {
   &.pressed {
    transition: background-color 800ms !important;
    background-color: darken($xtreme-blue, 15%) !important;
    &.success { background-color: darken($success-color, 15%) !important; }
-   box-shadow: inset 5px 5px 8px $black-a33;
+   box-shadow: inset 5px 5px 8px $black-a33 !important;
  }
  &.loading { -webkit-animation : response-wait 1200ms ease-in infinite normal 0s running forwards;}
 }

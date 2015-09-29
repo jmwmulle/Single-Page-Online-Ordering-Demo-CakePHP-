@@ -2,7 +2,12 @@
  * Created by jono on 1/24/15.
  */
 var accept_messages = ["Challenge accepted.", "No stomach unfed.", "Get ready to be XTREMELY fed.", "Yes ma'am!", "Yes sir!",
-                       "I can refuse no appetite.", "Heed the call of hunger, mighty chef!"];
+                       "I can refuse no appetite.", "Heed the call of hunger, mighty chef!", "Thwart yonder angry stomach!",
+                       "Hells yeah I'ma cook that.", "Ain't no party like an Xtreme party.", "The drunk & hungry yearn for you...",
+                       "Sauce. Cheese. Sauce. Cheese.", "Mountains are nice.", "BOOM goes the dynamite.", "I can has 'za?",
+                       "Psy... again? Can we change this?"
+];
+
 XtremePOS = function() {
 	this.init();
 	return this;
@@ -16,6 +21,19 @@ XtremePOS.prototype = {
 	update_interval: 3000,
 	printer: undefined,
 	ip: undefined,
+	is_tablet: undefined,
+	styles: {
+		default: {indent:0, scale: 3, line_h:1.75, align:'left', bold: false, underline: false},
+		center: {indent:0, scale: 3, line_h:1.75, align:'center', bold: false, underline: false},
+		right: {indent:0, scale: 3, line_h:1.75, align:'right', bold: false, underline: false},
+		medium: {indent:0, scale: 2.5, line_h:2.5, align:'medium', bold: false, underline: false},
+		small: {indent:0, scale:1.5, line_h:3, align:'left', bold: false, underline: false},
+		h1: {indent:0, scale: 5, line_h:7.5, align: "center", bold: false, underline: false},
+		h2: {indent:0, scale: 4, line_h:6, align: "center", bold: false, underline: false},
+		h3: {indent:0, scale: 3, line_h:4.5, align: "center", bold: false, underline: false},
+		h4: {indent:0, scale: 2, line_h:5, align: "center", bold: false, underline: false},
+		h5: {indent:0, scale: 1, line_h:2, align: "center", bold: false, underline: false}
+	},
 	DOM: {
 		current: {
 			box: undefined,
@@ -92,12 +110,29 @@ XtremePOS.prototype = {
 				setTimeout( function() { $(self.DOM.box).removeClass( FX.fade_out) }, fade_time);
 				return slide_time + fade_time;
 			};
-			self.current.update = function() {
+			self.current.update = function(recovered) {
 				var hide_time = self.splash.hide();
 				setTimeout( function() { hide_time += self.current.hide() }, hide_time);
-				self.current.order = self.pending.next();
+				if ( defined(recovered) ) {
+					self.current.order = recovered;
+				} else {
+					self.current.order = self.pending.next();
+					pr(self.current.receipt_lines());
+					try {
+						if (self.current.order) {
+							self.tablet_response( Android.set_current(self.current.order), self.current.receipt_lines() )
+						}
+					} catch (e) {
+						if ( self.is_tablet ) self.pos_error(e);
+					}
+				}
 				if ( self.current.order ) {
-					self.printer.is_xtreme_tablet() ? Android.playTone() : new Audio("files/new_order_tone.mp3").play();
+					try {
+						Android.playTone();
+					} catch (e) {
+						if (self.is_tablet) self.pos_error(e);
+						new Audio("files/gangnam_style.mp3").play();
+					}
 					var route = ["pos_reply", self.current.order.id, C.ACCEPTED].join(C.DS);
 					$(self.DOM.accept).data('pressroute', route);
 					$(self.DOM.current.address).html("").append( self.customer_details(self.current.order.Service) );
@@ -110,12 +145,7 @@ XtremePOS.prototype = {
 				return hide_time
 			};
 			self.current.accept = function(data) {
-				if (data.error) {
-					// confirm user has been notified
-					// if can't get confirmation, take ordering off-line
-					// else advance to next order; if it happens again, take ordering off-line
-					return;
-				}
+				if (data.error) self.pos_error(data.error)
 				$(self.DOM.accept).removeClass(FX.loading);
 				$(self.DOM.accept).removeClass(FX.pressed);
 				$(self.DOM.pos_hero.message.text).html(accept_messages[ ranged_random(0, accept_messages.length -1) ]);
@@ -206,6 +236,7 @@ XtremePOS.prototype = {
 						var opt_str = [];
 						for (var i in o.orbopts) {
 							var opt = o.orbopts[i].Orbopt;
+							if (opt.default) continue;
 							var coverage;
 							switch (opt.coverage) {
 								case "L":
@@ -238,35 +269,48 @@ XtremePOS.prototype = {
 				r.push([hst, "h4", true]);
 				r.push([total, "h4", true]);
 				r.push(["****************************************************************", "h5", true]);
-
+				for (var i=0; i < r.length; i++) r[i] = [r[i][0], self.styles[ r[i][1]] ];
 				return r;
-			}
+			};
 			self.current.print = function() {
-				self.current.receipt = self.current.receipt_lines();
-				var failed_lines = 0;
-				for (var i = 0; i < self.current.receipt.length;  i++) {
-					var response = self.printer.print(  self.current.receipt[i][0],
-														self.current.receipt[i][1],
-														self.current.receipt[i][2] );
-					if ( !response ) {
-						i--;
-						failed_lines++;
-					}
-					if (failed_lines > 25) break;
+				try {
+					return self.tablet_response( Android.print_current(), {} );
+				} catch (e) {
+					if ( self.is_tablet ) self.pos_error( e );
 				}
-				if (failed_lines <= 25) {
-					self.printer.cut(true);
-				} else {
-					$(self.DOM.error.message).html("Printer being fussy...");
-					$(self.DOM.error.box).removeClass(FX.hidden);
-					setTimeout( function() { $(self.DOM.error.box).removeClass(FX.fade_out) }, 30)
-					die();
-				}
-			},
+
+//				self.current.receipt = self.current.receipt_lines();
+//				var failed_lines = 0;
+//				for (var i = 0; i < self.current.receipt.length;  i++) {
+//					var response = self.printer.print(  self.current.receipt[i][0],
+//														self.current.receipt[i][1],
+//														self.current.receipt[i][2] );
+//					if ( !response ) {
+//						i--;
+//						failed_lines++;
+//					}
+//					if (failed_lines > 25) break;
+//				}
+//				if (failed_lines <= 25) {
+//					self.printer.cut(true);
+//				} else {
+//					self.pos_error("Printer being fussy...");
+//				}
+			};
 			self.current.clear = function() {
-				$(self.DOM.pos_hero.box).addClass(FX.slide_right);
-				setTimeout(function() { $(self.DOM.pos_hero.message.box).addClass(FX.fade_out) }, 500);
-				setTimeout(function() { self.current.update() }, 800);
+				var cleared = undefined;
+				try {
+					cleared = self.tablet_response(Android.clear_current(), {});
+				} catch (e) {
+					if ( self.is_tablet ) self.pos_error(e);
+					cleared = true;
+				}
+				if ( cleared ) {
+					$(self.DOM.pos_hero.box).addClass(FX.slide_right);
+					setTimeout(function() { $(self.DOM.pos_hero.message.box).addClass(FX.fade_out) }, 500);
+					setTimeout(function() { self.current.update() }, 800);
+				}
+				return cleared;
 			}
 		},
 		hide: undefined,
@@ -274,7 +318,8 @@ XtremePOS.prototype = {
 		update: undefined,
 		accept: undefined,
 		receipt_lines: undefined,
-		print: undefined
+		print: undefined,
+		clear: undefined
 	},
 	pending: {
 		fetch_count: 0,
@@ -351,7 +396,11 @@ XtremePOS.prototype = {
 			};
 			self.pending.next = function() {
 				if ( !self.pending.list() ) {
-
+					try {
+						Android.playTone();
+					} catch(e) {
+						if ( self.is_tablet) self.pos_error(e);
+					}
 					setTimeout(function () { self.splash.show() }, self.current.hide());
 					return false
 				}
@@ -385,14 +434,19 @@ XtremePOS.prototype = {
 		show: undefined
 	},
 	init: function() {
-		this.printer = new Printer();
+		this.is_tablet = navigator.userAgent == C.XTREME_TABLET_USER_AGENT;
 		this.init_DOM();
 		var self = this;
-		if ( !this.printer.init( self.ip ) && !XT.development_mode ) {
-			// handle this case;
-		}
 		for (var i = 0; i < this.init_list.length; i++) this[this.init_list[i]].init(this);
-		this.printer.build_styles();
+		try {
+			this.tablet_response(Android.get_current(), {
+				callback: function(data) {
+					if ( defined(data.Order) ) this.current.update(data.Order)
+				}
+			});
+		} catch(e) {
+			if ( this.is_tablet ) throw (e);
+		}
 		this.pending.fetch();
 	},
 	init_DOM: function() {
@@ -425,10 +479,21 @@ XtremePOS.prototype = {
 				}
 			}, 600);
 		});
-		$(".pos-button").on("mouseup", function() {
-			$(this).removeClass(FX.pressed)
-		});
+		$(".pos-button").on("mouseup", function() { $(this).removeClass(FX.pressed) });
 		return this
+	},
+	tablet_response: function(response, handler) {
+		if ( response.success == true) {
+			return defined(handler.callback) ? handler.callback(response.data) : true;
+		} else {
+			this.pos_error(response.error);
+		}
+	},
+	pos_error: function(e) {
+		$(self.DOM.error.message).html(e);
+		$(self.DOM.error.box).removeClass(FX.hidden);
+		setTimeout( function() { $(self.DOM.error.box).removeClass(FX.fade_out) }, 30)
+		throw e;
 	},
 	order_rows: function(rows) {
 		var food = $("<ul>").addClass("food");
