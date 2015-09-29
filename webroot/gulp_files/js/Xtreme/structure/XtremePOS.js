@@ -483,6 +483,7 @@ XtremePOS.prototype = {
 		return this
 	},
 	tablet_response: function(response, handler) {
+		response = $.parseJSON(response);
 		if ( response.success == true) {
 			return defined(handler.callback) ? handler.callback(response.data) : true;
 		} else {
