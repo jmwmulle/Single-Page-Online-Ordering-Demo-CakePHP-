@@ -13,6 +13,7 @@
 		private $hst_rate = 0.15;
 		private $bottle_deposit = 0.1;
 		private $delivery_min = 10;
+		private $delivery_leeway = 0.05;
 
 
 		public function __construct( ComponentCollection $collection, $settings = array() ) {
@@ -148,23 +149,39 @@
 
 		private function online_launch_special() {
 			$debug = [];
+			$fingers_ids = [1 => 250, 2 => 251, 3 => 252];
 			try {
 				$order = $this->Session->read('Cart');
-				$free_fingers_id = 245;
+				$free_fingers_id = null;
+				$free_fingers_rank = -1;
 				$qualifies = false;
 				$free_fingers_uid = null;
 				$debug['data'] = $order;
 				$debug['items'] = [];
 				foreach ($order['Order'] as $uid => $oi) {
-					if ($oi['orb']['Orbcat']['title'] == "PIZZAS" && $oi['pricing']['unit_base_price'] > 10) $qualifies = true;
-					if ($oi['orb']['Orb']['id'] == $free_fingers_id) $free_fingers_uid = $uid;;
+					array_push($debug['items'], $oi);
+//					continue;
+					if ($oi['orb']['Orbcat']['title'] == "PIZZAS" && $oi['pricing']['unit_base_price'] > 10) {
+						$qualifies = true;
+						if ( $oi[ 'pricing' ][ 'rank' ] > $free_fingers_rank ) {
+							$free_fingers_rank = $oi[ 'pricing' ][ 'rank' ];
+							$free_fingers_id   = $fingers_ids[ $free_fingers_rank ];
+						}
+					}
+					if ( in_array($oi['orb']['Orb']['id'], $fingers_ids) ) {
+						if ($oi[ 'pricing' ][ 'rank' ] < $free_fingers_rank) {
+							$this->remove( $uid, 1 );
+						} else {
+							$free_fingers_uid = $uid;
+						}
+					}
 				}
 				$this->Session->write('Cart.Debug.special', $debug);
 				if ($qualifies && !$free_fingers_uid) {
 					$this->add(['id' => $free_fingers_id,
 	                          'uid' => $free_fingers_id."_".time(),
 	                          'quantity' => 1,
-	                          'price_rank' => 1,
+	                          'price_rank' => $free_fingers_rank,
 					          'orb_note' => null
 					           ]);
 				}
@@ -295,8 +312,7 @@
 				// if deleting some but not all of them item, reduce quantity
 				if ( $quantity > 0 ) {
 					$this->Session->write( "Cart.Order.$uid.pricing.quantity", $quantity );
-					$this->Session->write( "Cart.Order.$uid.pricing.configured_unit_price",
-					                       $quantity * $conf_unit_price );
+					$this->Session->write( "Cart.Order.$uid.pricing.net", $quantity * $conf_unit_price );
 				} else {
 					$this->Session->delete( "Cart.Order.$uid" );
 				}
@@ -373,8 +389,8 @@
 
 			$this->Session->write( 'Cart.updateInvoice', $debug);
 			$this->Session->write( 'Cart.Invoice', $invoice );
-			$this->Session->write( 'Cart.Service.deliverable',
-            $this->Session->read( 'Cart.Invoice.total' ) >= $this->delivery_min );
+			$deliverable = $invoice['total'] >= $this->delivery_min - ($this->delivery_min * $this->delivery_leeway);
+			$this->Session->write( 'Cart.Service.deliverable', $deliverable);
 		}
 
 

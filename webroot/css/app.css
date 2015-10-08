@@ -5362,11 +5362,6 @@ textarea.note {
     line-height: 1.3rem !important;
     margin-bottom: 0.3125rem;
     text-transform: uppercase; }
-  #monthly-content-wrapper #launch-special h4 {
-    font-size: 1.8rem;
-    margin: 0.3125rem 0;
-    line-height: 1.5rem;
-    text-transform: uppercase; }
   #monthly-content-wrapper #launch-special h5 {
     font-size: 1.5rem;
     text-transform: uppercase;
@@ -5374,6 +5369,24 @@ textarea.note {
     line-height: 1.5rem; }
   #monthly-content-wrapper #launch-special h2, #monthly-content-wrapper #launch-special h3, #monthly-content-wrapper #launch-special h4, #monthly-content-wrapper #launch-special h5, #monthly-content-wrapper #launch-special p {
     color: #373737 !important; }
+  #monthly-content-wrapper #launch-special h4 {
+    font-size: 1.7rem;
+    margin: 0.3125rem 0;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+    color: #faea06 !important;
+    text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.5); }
+    #monthly-content-wrapper #launch-special h4 span.superscript {
+      display: inline-block;
+      font-size: 1rem;
+      -webkit-transform: translateY(-0.5rem); }
+  #monthly-content-wrapper #launch-special p.deal-description {
+    line-height: 1.2rem; }
+    #monthly-content-wrapper #launch-special p.deal-description span.callout {
+      color: #e02027; }
+  #monthly-content-wrapper #launch-special p.fine-print {
+    font-size: 0.7rem;
+    line-height: 0.7rem; }
 
 div#cake-error-overlay {
   width: 1000px;

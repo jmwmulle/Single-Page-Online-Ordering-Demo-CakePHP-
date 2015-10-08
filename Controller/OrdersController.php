@@ -85,6 +85,7 @@
 		                                           'receipt_rows' => 0,
 		                                           'hst'          => 0 ],
 		                           'Service'  => [ 'deliverable'         => true,
+		                                           'minimum_order'       => "$10.00",
 		                                           'order_method'        => JUST_BROWSING,
 		                                           'pay_method'          => CASH,
 		                                           'address'             => [ 'id'            => null,

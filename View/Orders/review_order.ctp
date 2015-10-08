@@ -12,6 +12,13 @@
 		array_push( $confirm_order_classes, "disabled" );
 		$confirm_order_text = "Customer Information Required";
 	}
+	if ( $service['order_method'] == DELIVERY && !$service['deliverable'] ) {
+		if ( !in_array( "disabled", $confirm_order_classes ) ) {
+			array_push( $confirm_order_classes, "disabled" );
+		}
+		$confirm_order_text = sprintf( "Apologies, the minimum for delivery is %s before HST.", $service[ 'minimum_order' ] );
+	}
+
 	$method_element = $service['order_method'] == JUST_BROWSING ? "unselected" : "selected";
 ?>
 

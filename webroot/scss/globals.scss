@@ -277,12 +277,6 @@ textarea.note { height:2rem;}
       margin-bottom:$tight-padding;
       text-transform: uppercase;
     }
-    h4 {
-      font-size:1.8rem;
-      margin: $tight-padding 0;
-      line-height   : 1.5rem;
-      text-transform: uppercase;
-    }
     h5 {
       font-size : 1.5rem;
       text-transform: uppercase;
@@ -290,6 +284,27 @@ textarea.note { height:2rem;}
       line-height:1.5rem;
     }
     h2, h3, h4, h5, p { color: $text-grey !important; }
+    h4 {
+      font-size:1.7rem;
+      margin: $tight-padding 0;
+      line-height   : 1.5rem;
+      text-transform: uppercase;
+      color: $xtreme-yellow !important;
+      text-shadow: 0px 0px 6px $black-a50;
+      span.superscript {
+        display: inline-block;
+        font-size : 1rem;
+        -webkit-transform:translateY(-0.5rem);
+      }
+    }
+    p.deal-description {
+      line-height : 1.2rem;
+      span.callout { color: $xtreme-red; }
+    }
+    p.fine-print {
+      font-size:.7rem;
+      line-height:0.7rem;
+    }
   }
 }
 
