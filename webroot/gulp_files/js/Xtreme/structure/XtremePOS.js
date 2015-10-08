@@ -318,10 +318,10 @@ XtremePOS.prototype = {
 			self.pending.list = function() { return self.pending.count() > 0 ? self.pending.orders : false };
 
 			self.pending.fetch = function(orders) {
-//				if ( self.pending.fetch_count > 2) return;
+				//if ( self.pending.fetch_count > 2) return;
 				self.pending.fetch_count++;
 				if ( defined(orders) && orders.length > 0 ) {
-					var update = self.pending.count() == 0 && !self.current.order;
+					var update = self.pending.count() == 0 && self.current.order == false;
 					self.pending.update_list(orders);
 					var count_update_delay = 0;
 					if (update) count_update_delay = self.current.update();
@@ -334,12 +334,13 @@ XtremePOS.prototype = {
 			};
 
 			self.pending.update_list = function(orders) {
+				pr(orders, "RAW")
 				for(var i = 0; i < orders.length; i++) {
-				console.log("I HAVE A THEORY");
 					var order = orders[i].Order.detail;
 					order.id = orders[i].Order.id;
 					if ( !(order.id in self.pending.orders) && order.id != self.current.order.id ) self.pending.orders[order.id] = order;
 				}
+				pr(self.pending.orders, "PARSED");
 			};
 
 			self.pending.count = function() { return obj_len( self.pending.orders ) },
@@ -388,7 +389,7 @@ XtremePOS.prototype = {
 			self.pending.next = function() {
 				if ( !self.pending.list() ) {
 					try {
-						Android.playTone();
+						Android.end_tone();
 					} catch(e) {
 						if ( self.is_tablet) self.pos_error(e);
 					}
@@ -429,18 +430,24 @@ XtremePOS.prototype = {
 		this.init_DOM();
 		var self = this;
 		for (var i = 0; i < this.init_list.length; i++) this[this.init_list[i]].init(this);
-
-		try {
+		var uncleared_order = undefined;
+		var restoring = false;
+		//try {
 			this.tablet_response(Android.get_current(), {
 				callback: function(data) {
-					if ( data.Order != null ) self.current.update(data.Order)
+					if ( data.Order != null ) {
+						console.log("RESTORING THE FOLOWING ORDER");
+						//console.log(data.Order);
+						uncleared_order = [{Order:{id:data.Order.id, detail:data.Order}}];
+					}
 				}
 			});
-		} catch(e) {
-			if ( this.is_tablet ) this.pos_error(e.message);
-		}
-		
-		this.pending.fetch();
+	//	} catch(e) {
+	//		console.log("ERROR TRYING TO GET CURRENT");
+	//		if ( this.is_tablet ) this.pos_error(e.message);
+	//}
+
+		this.pending.fetch(uncleared_order);
 	},
 	init_DOM: function() {
 		this.DOM.box = $("#pos-ui")[0];
