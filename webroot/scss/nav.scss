@@ -183,31 +183,34 @@ nav#login {
     border-left: 3px double lighten($dark-grey, 5%);
   }
 }
-#unknown-status {}
+
 h3.top-bar-status-header {
   text-align: right;
   height:$topbar-height;
   line-height:$topbar-height;
 }
 .top-bar-status {
-  &.store, &.delivery {
+  &.store, &.delivery, &.online-ordering {
     display:block;
-    width:100%;
+    width:100% !important;
     font-size:1.5rem !important;
     height: 0.5 * $topbar-height;
     line-height: 0.5 * $topbar-height;
     text-align: center;
   }
-
+  &.online-ordering {
+    font-size:.9rem !important;
+    height: 0.5 * $topbar-height;
+    line-height: 0.5 * $topbar-height;
+  }
   padding: 0.05 * $topbar-height 1rem;
   &.store { -webkit-transform: translateY(0.1rem) !important; }
 
-  &.store-closed{
-
+  &.store-closed {
     font-size: 3em !important;
     -webkit-transform: translateY(1rem) !important;
   }
-&.delivery {   border-top: 1px dotted $white; }
+&.delivery, &.online-ordering {   border-top: 1px dotted $white; }
 
   &.available { color: $success-color;}
   &.unavailable { color: $alert-color;}

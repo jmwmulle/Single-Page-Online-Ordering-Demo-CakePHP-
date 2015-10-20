@@ -419,7 +419,7 @@ li.orbcat {
   a {
     @include HelveticaMdCn;
     color       : $body-font-color;
-    font-size   : rem-calc(14px);
+    font-size   : 0.8rem;
     @media #{$small-only} {
         font-size:0.7rem;
 //        @include helvetica_v_center_lh(1rem,$orbcat-menu-title-font-size);

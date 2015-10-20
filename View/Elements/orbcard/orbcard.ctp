@@ -6,7 +6,9 @@
 	 * Twitter: @thisimpetus
 	 * About.me: about.me/thisimpetus
 	 */
-
+$order_button_text = $online_ordering ? "Confirm" : "Call 902.404.1600 To Order";
+$order_button_class = ["rounded", "modal-button", "bisecting", "confirm right"];
+if ( !$online_ordering ) array_push($order_button_class, "disabled");
 $logged_in = $this->Session->read('Auth');
 $orb = $content['Orb'];
 $prices = $content['Prices'];
@@ -24,7 +26,7 @@ $prices = $content['Prices'];
 						<li id="orb-card-row-2" class="orb-card-row">
 							<?php $data_array = [
 							                          "price-rank" => floor( count($prices) / 2 ),
-							                          "float-label" => "order",
+							                          "float-label" => $online_ordering ? "order" : "options",
 							                          "route" => "configure_orb".DS.$orb['id'].DS.'0'];
 								$class_array = ["orb-card-button", "float-labeled", "inline"];
 							?>
@@ -123,8 +125,8 @@ $prices = $content['Prices'];
 						<a id="cancel-order-button" href="#" class="rounded modal-button bisecting cancel left" data-route="cart/cancel">
 							<span class="icon-circle-arrow-l"></span><span class="text">Cancel</span>
 						</a>
-						<a id="confirm-order-button" href="#" class="rounded modal-button bisecting confirm right" data-route="cart/add">
-							<span class="text">Confirm</span><span class="icon-circle-arrow-r right"></span>
+						<a id="confirm-order-button" href="#" <?=___cD($order_button_class);?> data-route="cart/add">
+							<span class="text"><?=$order_button_text?></span><span class="icon-circle-arrow-r right"></span>
 						</a>
 					</div>
 				</section>

@@ -12,7 +12,8 @@ $sv_labels = [
 	STORE_OPEN => ['open', 'closed'],
 	DEBIT_AVAILABLE => ['available', 'unavailable'],
 	CREDIT_AVAILABLE => ['available', 'unavailable'],
-	DELIVERY_AVAILABLE => ['available', 'unavailable'] ];
+	DELIVERY_AVAILABLE => ['available', 'unavailable'],
+	ONLINE_ORDERING => ['available', 'unavailable'] ];
 //$closing_time = new DateTime($closing);
 $now = new DateTime('now');
 ?>
@@ -26,7 +27,9 @@ $now = new DateTime('now');
 	</div>
 <?php
 	$new_row = false;
-	foreach (array_slice($system, 0, 5) as $sysvar):
+	$sys_vars = array_slice($system, 0, 5);
+	array_push($sys_vars, $system[11]); # online-ordering added late
+	foreach ( $sys_vars as $sysvar):
 		$sv = $sysvar['Sysvar'];
 		if ($sv['id'] == POS_AVAILABLE) continue;
 		$new_row = !$new_row;

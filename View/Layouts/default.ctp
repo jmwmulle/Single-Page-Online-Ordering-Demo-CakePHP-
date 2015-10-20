@@ -36,7 +36,7 @@
 			"//code.jquery.com/ui/1.11.1/jquery-ui.js",
 			"/bower_components/foundation/js/foundation.min",
 			"vendor/jquery.validate.min",
-			"vendor/flipclock.min",
+//			"vendor/flipclock.min",
 			"vendor/additional-methods.min" ];
 		$gulp_js_path = "../gulp_files/js/Xtreme";
 		$xbs_scripts = [
@@ -74,7 +74,7 @@
 		                      "$gulp_js_path/exceptions",
 		                      "$gulp_js_path/app" ];
 		echo $this->Html->meta( 'icon' );
-		echo $this->Html->css( "flipclock" );
+//		echo $this->Html->css( "flipclock" );
 		echo $this->Html->css( "app" );
 		echo $this->Html->script( "/bower_components/modernizr/modernizr" );
 		echo $this->Html->script( $vendor_scripts, array( 'block' => 'vendor' ) );
@@ -91,21 +91,12 @@
 <body id="<?php echo $body_id; ?>" <?php echo ___cD( $body_class ); ?>>
 <div id="page-content">
 	<div id="desktop-content" class="show-for-medium-up">
-	<?=$this->Html->image('puff.svg', ['id' => 'loading-img', 'class'=> ['fade-out','hidden'] ]);?>
-	<?php
-		
-		echo $this->fetch( 'content' );
-	?>
+		<?=$this->Html->image('puff.svg', ['id' => 'loading-img', 'class'=> ['fade-out','hidden'] ]);?>
+		<?=$this->fetch( 'content' );?>
 	</div>
 	<div id="mobile-page-content" class="show-for-small-only">
 		<?=$this->fetch('mobile-content');?>
-<<<<<<< HEAD
 		<div class="panel">
-=======
-		<?=$this->Html->image('splash/logo.png');?>
-			<div class="panel">	
-		
->>>>>>> d2ac24a57a5be5262a0790f7364e9aec45377f54
 		<h1>Mobile Coming Soon!</h1>
 		<p>Our mobile site will follow the launch of our desktop site. For now you can visit us on your laptop, desktop or large-format tablet.</p>
 		<p>But that doesn't mean you're out of luck; you can also order on-line from Xtreme Pizza via <a href="http://www.just-eat.ca">JustEat</a></p>

@@ -22,7 +22,7 @@ main#menu {
 //  @media #{$large-up} {
 //    width: $row-width;
 //  }
-  padding: 3rem;
+//  padding: 3rem;
   padding-top : $menu-top-padding;
   overflow-x:hidden;
   #menu-container {
@@ -62,6 +62,14 @@ ul#user-activity-panel {
       background-color : $white-a75;
       a { color : $dark-grey; }
     }
+    &.disabled, &.disabled:hover {
+      background-color : $black-a25;
+//      cursor: pointer;
+      a {
+        color: $white-a25;
+        cursor: default;
+      }
+    }
   }
 
 }
@@ -72,7 +80,7 @@ ul#user-activity-panel {
 
 ***************************************************************/
 ul#orbcat-menu {
-  width:100%;
+  width: $orbcat-menu-width;
  // @media #{$large-up} { width  : $orbcat-menu-width;}
 
   height : $orbcat-menu-height;

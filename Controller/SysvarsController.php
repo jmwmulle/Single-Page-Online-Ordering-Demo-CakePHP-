@@ -130,7 +130,7 @@ class SysvarsController extends AppController {
 		}
 	}
 
-	public function sv_config($id, $method, $status=null, $force_no_json=false) {
+	public function sv_config($id, $method, $status=null) {
 		$this->autoRender = false;
 		$options = [];
 
@@ -143,7 +143,7 @@ class SysvarsController extends AppController {
 		                'test' => [$id > 0, is_bool($status), !!$method]
 		    ]];
 		$sysvars = null;
-		if ( $id > 0 and is_bool($status) and $method) {
+		if ( (int) $id > 0 and is_bool($status) and $method) {
 			if ( !$this->Sysvar->save(compact('id', 'status')) ) {
 				$response['success'] = false;
 				$response['error'] = $this->Sysvar->getValidationErrors;
@@ -154,7 +154,7 @@ class SysvarsController extends AppController {
 		$response['data']['system'] = $sysvars;
 
 		if ( !$method ) {
-			if ($id != -1) $options['conditions'] = ['`variable`.`id`' => $id];
+			if ($id != -1) $options['conditions'] = ['`Sysvar`.`id`' => $id];
 			if ($id > 0 && !$this->Sysvar->exists($id) ) {
 				$response['success'] = false;
 				$response['error'] = "Sysvar id not found.";

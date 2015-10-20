@@ -16,6 +16,7 @@ $store_string = "OPEN";
 $store_class = "available";
 $delivery_string = "DELIVERING";
 $delivery_class = "available";
+$online_ordering_string = "ONLINE ORDERING UNAVAILABLE";
 if ( !$store_open) {
 	$store_string = "CLOSED";
 	$store_class  = "unavailable";
@@ -45,13 +46,13 @@ $fb_text = "Login via Facebook";
 $fb_auth = sprintf($auth_str, 'facebook');
 $fb_like_str = "http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fdevelopment-xtreme-pizza.ca&width&layout=button_count&action=recommend&show_faces=true&share=true&height=21";
 $fb_icon = "<span class='icon-facebook'></span>";
-$fb_data = array( 'href'       => "http://development-xtreme-pizza.ca",
+$fb_data = ['href'       => "http://development-xtreme-pizza.ca",
                         'layout'     => 'button_count',
                         'action'     => 'like',
                         'show-faces' => 'false',
                         'share'      => 'false' ,
 						'hover-text' => 'Like Xtreme!'
-	);
+	];
 /*  E-mail Deets */
 $email_text = "Login With Your E-Mail Address";
 $email_icon = "<span class='icon-topbar-email'></span>";
@@ -63,15 +64,16 @@ $register_icon = "<span class='icon-topbar-sign-up'></span>";
 
 /*  Favorites Deets  */
 $favorites_icon = "<span class='icon-favorites'></span>";
-$favorites_data = array('route' => 'topbar_link/favorites', 'text' => "View Your Favorites");
+$favorites_data = ['route' => 'topbar_link/favorites', 'text' => "View Your Favorites"];
 
 /*  Account Deets  */
 $account_icon = "<span class='icon-settings'></span>";
-$account_data = array('route' => 'topbar_link/settings', 'text' => "View Your Favorites");
+$account_data = ['route' => 'topbar_link/settings', 'text' => "View Your Favorites"];
 
 /*  Cart Deets  */
-$cart_css = !$this->Session->read('Cart.OrderItem') ?" class='' " : ' ';
-$cart_data =  array('hover-text' => "View Your Cart", 'route' => 'cart/review');
+$cart_class = !$this->Session->read('Cart.OrderItem') ? ["hidden"] : [];
+if ( !$online_ordering ) $cart_class = ["hidden"];
+$cart_data =  ['hover-text' => "View Your Cart", 'route' => 'cart/review'];
 $cart_icon = "<span class='icon-shopping'></span>";
 
 
@@ -109,7 +111,7 @@ $auth_live = false;
 							}
 
 						}
-						echo sprintf("<a id='top-bar-view-cart' href='#' %s %s> %s </a>", $cart_css, ___dA($cart_data), $cart_icon);
+						echo sprintf("<a id='top-bar-view-cart' href='#' %s %s> %s </a>", ___cD($cart_class), ___dA($cart_data), $cart_icon);
 					?>
 					<hr id="topbar-divider" />
 				</div>
@@ -131,7 +133,11 @@ $auth_live = false;
 				</div>
 				<div class="large-8 columns">
 					<span id="store-status" class="top-bar-status store <?=$store_class;?>"><?=$store_string;?></span>
+				<?php if ($online_ordering):?>
 					<span id="delivery-status" class="top-bar-status delivery <?=$delivery_class;?>"><?=$delivery_string;?></span>
+				<?php else:?>
+					<span id="online-ordering-status" class="top-bar-status online-ordering unavailable"><?=$online_ordering_string;?></span>
+				<?php endif;?>
 				</div>
 			</div>
 		</div>

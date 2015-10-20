@@ -45,9 +45,9 @@
 						    ), 
 		                            ), 
 		);
-		public $uses = ['Sysvar'];
-		public $helpers = array( "Session", "Html", "Form" );
-		protected $topnav = array( 'Menu', 'Deals', 'Favs', 'Order', );
+		public $uses = ['App', 'Sysvar'];
+		public $helpers = [ "Session", "Html", "Form" ];
+		protected $topnav = ['Menu', 'Deals', 'Favs', 'Order'];
 
 		static function cakeUrl($controller, $action, $params = null) {
 			if ( !is_array( $params ) & !empty( $params ) ) {
@@ -371,8 +371,12 @@
 		 * $method 0 == get, 1 == set
 		 * $id -1 gets all sysvars
 		 */
-		public function system_status($id=-1, $method = 0, $status=null) {
-			$system = $this->requestAction("sysvars/sv_config/$id/$method/$status");
+		public function system_status($id=-1, $method = 0, $status=null, $as_json = true) {
+			if ($id > 0 && !$as_json) {
+				$this->Sysvar->id = $id;
+				return $this->Sysvar->field("status");
+			}
+			$system = $this->requestAction("sysvars/sv_config/$id/$method/$status/$as_json");
 			$this->set(compact('system'));
 			return $system;
 		}

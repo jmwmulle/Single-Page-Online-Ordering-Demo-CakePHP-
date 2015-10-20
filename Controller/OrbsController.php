@@ -192,8 +192,8 @@
 				unset( $orb[ 'Orbopt' ] );
 				$orb                            = array_filter( $orb );
 				$orb[ 'Orb' ][ 'default_opts' ] = $this->requestAction( "OrbsOrbopts/fetch_default_opts/$id" );
-//				db(compact('orb', 'portionable', 'submitted_data'));
-				$this->set( compact('orb', 'portionable', 'submitted_data') );
+				$online_ordering = $this->system_status(ONLINE_ORDERING, false, null, false);
+				$this->set( compact('orb', 'portionable', 'submitted_data', 'online_ordering') );
 
 				return $render ? $this->render( 'menu_item', 'ajax' ) : $orb;
 			}

@@ -4949,7 +4949,7 @@ li.orbcat {
   li.orbcat a {
     font-family: "Helvetica Neue Medium Condensed", arial, sans-serif;
     color: white;
-    font-size: 0.875rem; }
+    font-size: 0.8rem; }
     @media only screen and (max-width: 40em) {
       li.orbcat a {
         font-size: 0.7rem; } }
@@ -5584,7 +5584,6 @@ nav#login {
   #topbar .third:first-of-type {
     border-left: 3px double #262626; }
 
-
 h3.top-bar-status-header {
   text-align: right;
   height: 65px;
@@ -5592,19 +5591,23 @@ h3.top-bar-status-header {
 
 .top-bar-status {
   padding: 3.25px 1rem; }
-  .top-bar-status.store, .top-bar-status.delivery {
+  .top-bar-status.store, .top-bar-status.delivery, .top-bar-status.online-ordering {
     display: block;
-    width: 100%;
+    width: 100% !important;
     font-size: 1.5rem !important;
     height: 32.5px;
     line-height: 32.5px;
     text-align: center; }
+  .top-bar-status.online-ordering {
+    font-size: 0.9rem !important;
+    height: 32.5px;
+    line-height: 32.5px; }
   .top-bar-status.store {
     -webkit-transform: translateY(0.1rem) !important; }
   .top-bar-status.store-closed {
     font-size: 3em !important;
     -webkit-transform: translateY(1rem) !important; }
-  .top-bar-status.delivery {
+  .top-bar-status.delivery, .top-bar-status.online-ordering {
     border-top: 1px dotted white; }
   .top-bar-status.available {
     color: #43ac6a; }
@@ -7018,7 +7021,6 @@ body {
 main#menu {
   min-height: 100%;
   width: 81rem;
-  padding: 3rem;
   padding-top: 5.3125rem;
   overflow-x: hidden; }
   @media only screen and (max-width: 40em) {
@@ -7056,6 +7058,11 @@ ul#user-activity-panel {
       background-color: rgba(255, 255, 255, 0.75); }
       ul#user-activity-panel li.active a {
         color: #191919; }
+    ul#user-activity-panel li.disabled, ul#user-activity-panel li.disabled:hover {
+      background-color: rgba(0, 0, 0, 0.25); }
+      ul#user-activity-panel li.disabled a, ul#user-activity-panel li.disabled:hover a {
+        color: rgba(255, 255, 255, 0.25);
+        cursor: default; }
 
 /**************************************************************
 
@@ -7063,7 +7070,7 @@ ul#user-activity-panel {
 
 ***************************************************************/
 ul#orbcat-menu {
-  width: 100%;
+  width: 50rem;
   height: 17.8125rem;
   margin: 0 1.25rem;
   background: #e02027;

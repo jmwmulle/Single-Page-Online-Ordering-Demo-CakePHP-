@@ -130,6 +130,7 @@ XtremeLayout.prototype = {
 		return true;
 	},
 	activize: function (element, kill) {
+		if ($(element).hasClass(FX.disabled)) return;
 		if (isEvent(arguments[0])) element = element.currentTarget;
 		if ($(element).hasClass(FX.inactive)) {
 			$(element).removeClass(FX.inactive)

@@ -12,7 +12,9 @@
 	             "data" => ["submitted_data" => $submitted_data,
 	                        'view_data' => [
 		                        "orb" => $orb,
-		                        'orb_card_stage' => $this->Element( 'orbcard/orbcard', [ 'content' => $orb, "ajax" => $ajax ] ),
+		                        'orb_card_stage' => $this->Element( 'orbcard/orbcard', [ 'content' => $orb,
+		                                                                                 'online_ordering' => $online_ordering,
+		                                                                                 "ajax" => $ajax ] ),
 	                            'filter' => $this->Element( 'orbcard/optflag_filter_header', [ 'optflags' => $orb[ 'Orb' ][ 'Optflag' ] ] ),
 	                            'orbopts'   => ['portionable' => $portionable,
 	                                            'list' => $this->Element('orbcard/menu_list', ['ajax' => $ajax,
