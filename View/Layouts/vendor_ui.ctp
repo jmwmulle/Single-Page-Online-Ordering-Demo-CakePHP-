@@ -39,10 +39,11 @@
 	</script>
 	<?php
 		$vendor_scripts = array(
+				    "vendor/complete",
 					"/bower_components/jquery/dist/jquery.min",
+					"vendor/jquery.jquery-ui",
 					"/bower_components/foundation/js/foundation.min",
 				    "vendor/jquery.dataTables.min",
-					"//code.jquery.com/ui/1.11.1/jquery-ui.js",
 					"vendor/jquery.validate.min",
 				    "vendor/jquery.dataTables.editable",
 				    "vendor/jquery.dataTables.rowGrouping",
@@ -50,7 +51,6 @@
 				    "vendor/ColReorder",
 				    "vendor/ColVis",
 					"vendor/additional-methods.min",
-		//		    "vendor/complete",
 				);
 			$gulp_js_path = "../gulp_files/js/Xtreme";
 		$xbs_scripts = [

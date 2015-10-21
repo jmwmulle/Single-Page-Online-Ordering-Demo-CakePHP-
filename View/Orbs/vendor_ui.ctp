@@ -26,24 +26,18 @@
 			</div>
 
 			<!------------------------------------- TAB 1: VENDOR UI ------------------------------->
-			<?php //echo $this->Element('vendor_ui/vendor_home', array('store' => $this->get('store_status'), 'delivery' => $this->get('delivery_status')));?>
-			<?php echo $this->Element( 'vendor_ui/vendor_home', [ 'system'   => $system,
-			                                                      'closing' => "11PM"]
-			); ?>
+			<?=$this->Element( 'vendor_ui/vendor_home', [ 'system'   => $system, 'closing' => "11PM"]); ?>
 
 			<!------------------------------------- TAB 2: MENU ------------------------------------>
 
-			<?php echo $this->Element( 'vendor_ui/menu_table', array( 'orbs'       => $orbs,
-			                                                          'pricedicts' => $pricedicts,
-				)
-			);?>
+			<?=$this->Element( 'vendor_ui/menu_table', ['orbs' => $orbs, 'pricedicts' => $pricedicts]);?>
 
 			<!------------------------------------- TAB 3: MENU OPTIONS ---------------------------->
-			<?php echo $this->Element( 'vendor_ui/menu_options', array( 'optflags' => $optflags,
-			                                                            'orbopts'  => $orbopts,
-			                                                            'orbopts_groups' => $orbopts_groups,
-			                                                            'opt_pricelists' => $opt_pricelists
-				)
+			<?=$this->Element( 'vendor_ui/menu_options', [  'optflags' => $optflags,
+	                                                        'orbopts'  => $orbopts,
+	                                                        'orbopts_groups' => $orbopts_groups,
+	                                                        'opt_pricelists' => $opt_pricelists
+				]
 			);?>
 
 		</div>

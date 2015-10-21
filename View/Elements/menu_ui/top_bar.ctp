@@ -71,7 +71,7 @@ $account_icon = "<span class='icon-settings'></span>";
 $account_data = ['route' => 'topbar_link/settings', 'text' => "View Your Favorites"];
 
 /*  Cart Deets  */
-$cart_class = !$this->Session->read('Cart.OrderItem') ? ["hidden"] : [];
+$cart_class = !$this->Session->read('Cart.OrderItem') ? [] : [];
 if ( !$online_ordering ) $cart_class = ["hidden"];
 $cart_data =  ['hover-text' => "View Your Cart", 'route' => 'cart/review'];
 $cart_icon = "<span class='icon-shopping'></span>";

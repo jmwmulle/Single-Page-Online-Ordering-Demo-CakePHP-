@@ -59,6 +59,7 @@ $now = new DateTime('now');
 			</div>
 		</div>
 	<?=!$new_row ? "</div>" : "";?>
+	<?=$sv['id'] == ONLINE_ORDERING  ? "</div>" : "";?>
 	<?php endforeach; ?>
 	<div class="row">
 		<div class="large-12 columns">

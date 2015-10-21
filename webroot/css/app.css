@@ -6515,7 +6515,7 @@ div.view-cart-row.total * {
     cursor: default;
     background-color: #cecece; }
     .modal-button.disabled span, .modal-button.disabled a, .modal-button.disabled:hover span, .modal-button.disabled:hover a {
-      color: #b4b4b4 !important;
+      color: #ff8080 !important;
       text-shadow: none; }
   .modal-button.secondary {
     background-color: transparent;

@@ -396,7 +396,7 @@ div.view-cart-row {
     cursor           : default;
     background-color : lighten($light-grey, 10%);
     span, a {
-      color       : $light-grey !important;
+      color       : rgb(255,128,128) !important;
       text-shadow : none;
     }
   }
