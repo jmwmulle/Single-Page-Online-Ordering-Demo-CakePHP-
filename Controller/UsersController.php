@@ -1,6 +1,6 @@
 <?php
 	App::uses( 'AppController', 'Controller' );
-
+	App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 	/**
 	 * Users Controller
 	 *
@@ -90,6 +90,13 @@
 		 * @return void
 		 */
 		public function edit($id) {
+			if ( !isset($id) ) {
+				if ($this->Auth->loggedIn()) {
+					$id = $this->Auth->User('id');
+				} else {
+					return $this->redirect( array( 'controller' => 'menu', 'action' => '') );
+				}
+			}
 			if ( !$this->User->exists( $id ) ) {
 				throw new NotFoundException( __( 'Invalid user' ) );
 			}
@@ -193,20 +200,19 @@
 				return $this->redirect( '/menu' );
 			}
 			if ( $this->request->is('ajax') ) $this->layout = "ajax";
-			if ( $this->request->is( 'post' ) ) {
-				if ( $this->Auth->login() ) {
+			if ( $this->request->is('post') ) {
+				if ( $this->_authorize($this->request->data['User']['email'], $this->request->data['User']['password'])) {
 					$this->Session->setFlash( __( 'Welcome' ) );
+					$curUser =  $this->User->find('first', array('conditions'=>array('User.email'=>$this->request->data['User']['email'])));
+					$this->Auth->login($curUser['User']);
 					if ( $this->Session->check( 'storedUser' ) ) {
-						$exUser           = $this->User->find( 'first', array( 'conditions' => array( 'User.email' => $this->request[ 'email' ] ) ) );
-						$exUser[ 'User' ] = array_merge( $exUser[ 'User' ], $this->Session->read( 'storedUser' ) );
+						$curUser[ 'User' ] = array_merge( $curUser[ 'User' ], $this->Session->read( 'storedUser' ) );
 						$this->Session->delete( 'stashedUser' );
 					}
-
-					return $this->redirect( ___cakeUrl( 'users', 'edit', $this->Auth->user('id') ) );
+					return $this->redirect( ___cakeUrl( 'users', 'edit', $this->Auth->User('id') ) );
 				}
 				else {
 					$this->Session->setFlash( __( 'Your email or password was incorrect.' ) );
-
 					return $this->redirect( ___cakeUrl( 'menu', '' ) );
 				}
 			}
@@ -263,6 +269,12 @@
 				}
 			}
 
+		}
+
+		private function _authorize($email, $pw) {
+			$passwordHasher = new BlowfishPasswordHasher();
+			$stored_hash = $this->User->find('first', array('conditions'=>array('User.email'=>'rs854321@dal.ca')))['User']['password'];
+			return(crypt($pw, $stored_hash)==$stored_hash);
 		}
 
 		/*logout*/
@@ -347,6 +359,13 @@
 
 				return $this->redirect( ___cakeUrl( 'menu', 'index' ) );
 			}
+		}
+
+		public function test_blowfish($pw) {
+			$passwordHasher = new BlowfishPasswordHasher();
+			$hash = $passwordHasher->hash($pw);
+			$stored_hash = '$2a$10$QNzHzORlj8WEE3OK5D4Zpe88G8B7K0MUx2Dzh6gJ4QJccImhUoFXu';
+			db([$pw, $hash, crypt($pw, $stored_hash)==$stored_hash]);
 		}
 
 		/*view_gdrive*/

@@ -1,5 +1,5 @@
 <?php
-	App::uses( 'AuthComponent', 'Controller/Component');
+	App::uses('AuthComponent', 'Controller/Component');
 	App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 	/**
 	 * User Model
@@ -197,7 +197,7 @@
 			    );
 		      }
 	    	      return true;
-		}		   
+		}
 
 		public function parentNode() {
 			if ( !$this->id && empty( $this->data ) ) {

@@ -34,7 +34,7 @@
 	Router::connect( '/sign-up',                    [ CTR => 'pages', ATN => 'display', 'sign_up' ] );
 
 	/** USERS CONTROLLER */
-	Router::connect( '/users/update',               [ CTR => 'users', ATN => 'edit' ] );
+	Router::connect( '/users/update/*',             [ CTR => 'users', ATN => 'edit' ] );
 	Router::connect( '/favorite/*',                 [ CTR => 'users', ATN => 'add_favourite' ] );
 	Router::connect( '/favorites/*',                [ CTR => 'users', ATN => 'favorites' ] );
 	Router::connect( '/settings',                   [ CTR => 'users', ATN => 'account' ] );

@@ -7,10 +7,16 @@
                 echo $this->Form->input('email');
 		echo $this->Form->input('firstname');
 		echo $this->Form->input('lastname');
+		echo $this->Form->input('address');
+		echo $this->Form->input('address1');
+		echo $this->Form->input('postal_code');
+		echo $this->Form->input('city', array('default' => 'Halifax'));
+		echo $this->Form->input('province', array('default' => 'Nova Scotia'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
 </div>
+
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
