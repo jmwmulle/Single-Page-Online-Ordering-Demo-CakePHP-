@@ -242,7 +242,7 @@ XtremePOS.prototype = {
 						var opt_str = [];
 						for (var i in o.orbopts) {
 							var opt = o.orbopts[i].Orbopt;
-							if (opt.default) continue;
+
 							var coverage;
 							switch (opt.coverage) {
 								case "L":
@@ -318,7 +318,7 @@ XtremePOS.prototype = {
 			self.pending.list = function() { return self.pending.count() > 0 ? self.pending.orders : false };
 
 			self.pending.fetch = function(orders) {
-				//if ( self.pending.fetch_count > 2) return;
+// 				if ( self.pending.fetch_count > 2) return;
 				self.pending.fetch_count++;
 				if ( defined(orders) && orders.length > 0 ) {
 					var update = self.pending.count() == 0 && self.current.order == false;
@@ -389,7 +389,7 @@ XtremePOS.prototype = {
 			self.pending.next = function() {
 				if ( !self.pending.list() ) {
 					try {
-						Android.end_tone();
+						Android.play_tone();
 					} catch(e) {
 						if ( self.is_tablet) self.pos_error(e);
 					}
