@@ -221,14 +221,14 @@ XtremePOS.prototype = {
 						var new_ostr_l1 = "";
 						var new_ostr_l2 = "";
 						for (var ol_part = 0; ol_part < o_str_parts.length; ol_part++) {
-							var part = o_str_parts[ol_part]
+							var part = o_str_parts[ol_part];
 							if (new_ostr_l1.length + 1 + part.length < 22) {
 								new_ostr_l1 += " " + part;
 							} else {
 								new_ostr_l2 += " " + part;
 							}
 						}
-						while (new_ostr_l2.length < 22) { new_ostr_l2 += " " };
+						while (new_ostr_l2.length < 22) { new_ostr_l2 += " " }
 						new_ostr_l2 += p_str;
 						r.push([new_ostr_l1, "medium", true]);
 						r.push([new_ostr_l2, "medium", true]);
@@ -241,7 +241,7 @@ XtremePOS.prototype = {
 						var opt_str = [];
 						for (var i in o.orbopts) {
 							var opt = o.orbopts[i].Orbopt;
-							if (opt.default) continue;
+							//if (opt.default) continue;
 							var coverage;
 							switch (opt.coverage) {
 								case "L":
@@ -333,13 +333,11 @@ XtremePOS.prototype = {
 			};
 
 			self.pending.update_list = function(orders) {
-				pr(orders, "RAW")
 				for(var i = 0; i < orders.length; i++) {
 					var order = orders[i].Order.detail;
 					order.id = orders[i].Order.id;
 					if ( !(order.id in self.pending.orders) && order.id != self.current.order.id ) self.pending.orders[order.id] = order;
 				}
-				pr(self.pending.orders, "PARSED");
 			};
 
 			self.pending.count = function() { return obj_len( self.pending.orders ) },
@@ -347,7 +345,6 @@ XtremePOS.prototype = {
 			self.pending.update_DOM = function() {
 				var displayed = $(self.DOM.pending.box).data('count');
 				var current = self.pending.count();
-				current;
 				if ( current != displayed) {
 					setTimeout(function () {
 						if (current > 0)  {
@@ -427,10 +424,8 @@ XtremePOS.prototype = {
 	init: function() {
 		this.is_tablet = navigator.userAgent == C.XTREME_TABLET_USER_AGENT;
 		this.init_DOM();
-		var self = this;
 		for (var i = 0; i < this.init_list.length; i++) this[this.init_list[i]].init(this);
 		var uncleared_order = undefined;
-		var restoring = false;
 		try {
 			this.tablet_response(Android.get_current(), {
 				callback: function(data) {
@@ -444,7 +439,7 @@ XtremePOS.prototype = {
 		} catch(e) {
 			console.log("ERROR TRYING TO GET CURRENT");
 			if ( this.is_tablet ) this.pos_error(e.message, "428: init()");
-	}
+		}
 
 		this.pending.fetch(uncleared_order);
 	},
