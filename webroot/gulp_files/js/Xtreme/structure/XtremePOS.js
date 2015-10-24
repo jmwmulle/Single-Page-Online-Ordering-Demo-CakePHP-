@@ -127,16 +127,15 @@ XtremePOS.prototype = {
 							self.tablet_response( Android.set_current( order_json, receipt_json) );
 						}
 					} catch (e) {
-						if ( self.is_tablet ) self.pos_error(e);
+						if ( self.is_tablet ) self.pos_error(e, "133: current.update()[1]");
 					}
 				}
 				if ( self.current.order ) {
-					pr(self.current.receipt_lines());
 					try {
 						Android.play_tone("gangnam");
 					} catch (e) {
 						console.log(e)
-						if (self.is_tablet) self.pos_error(e);
+						if (self.is_tablet) self.pos_error(e, "133: current.update()[2]");
 						new Audio("files/gangnam_style.mp3").play();
 					}
 					var route = ["pos_reply", self.current.order.id, C.ACCEPTED].join(C.DS);
@@ -151,7 +150,7 @@ XtremePOS.prototype = {
 				return hide_time
 			};
 			self.current.accept = function(data) {
-				if (data.error) self.pos_error(data.error)
+				if (data.error) self.pos_error(data.error, "153: current.accept()")
 				$(self.DOM.accept).removeClass(FX.loading);
 				$(self.DOM.accept).removeClass(FX.pressed);
 				$(self.DOM.pos_hero.message.text).html(accept_messages[ ranged_random(0, accept_messages.length -1) ]);
@@ -222,14 +221,14 @@ XtremePOS.prototype = {
 						var new_ostr_l1 = "";
 						var new_ostr_l2 = "";
 						for (var ol_part = 0; ol_part < o_str_parts.length; ol_part++) {
-							var part = o_str_parts[ol_part]
+							var part = o_str_parts[ol_part];
 							if (new_ostr_l1.length + 1 + part.length < 22) {
 								new_ostr_l1 += " " + part;
 							} else {
 								new_ostr_l2 += " " + part;
 							}
 						}
-						while (new_ostr_l2.length < 22) { new_ostr_l2 += " " };
+						while (new_ostr_l2.length < 22) { new_ostr_l2 += " " }
 						new_ostr_l2 += p_str;
 						r.push([new_ostr_l1, "medium", true]);
 						r.push([new_ostr_l2, "medium", true]);
@@ -242,7 +241,7 @@ XtremePOS.prototype = {
 						var opt_str = [];
 						for (var i in o.orbopts) {
 							var opt = o.orbopts[i].Orbopt;
-
+							//if (opt.default) continue;
 							var coverage;
 							switch (opt.coverage) {
 								case "L":
@@ -284,7 +283,7 @@ XtremePOS.prototype = {
 				try {
 					return self.tablet_response( Android.print_current(), {} );
 				} catch (e) {
-					if ( self.is_tablet ) self.pos_error( e );
+					if ( self.is_tablet ) self.pos_error( e, "283: current.print()" );
 				}
 			};
 			self.current.clear = function() {
@@ -292,7 +291,7 @@ XtremePOS.prototype = {
 				try {
 					cleared = self.tablet_response(Android.clear_current(), {});
 				} catch (e) {
-					if ( self.is_tablet ) self.pos_error(e);
+					if ( self.is_tablet ) self.pos_error(e, "290: current.clear()");
 					cleared = true;
 				}
 				if ( cleared ) {
@@ -334,13 +333,11 @@ XtremePOS.prototype = {
 			};
 
 			self.pending.update_list = function(orders) {
-				pr(orders, "RAW")
 				for(var i = 0; i < orders.length; i++) {
 					var order = orders[i].Order.detail;
 					order.id = orders[i].Order.id;
 					if ( !(order.id in self.pending.orders) && order.id != self.current.order.id ) self.pending.orders[order.id] = order;
 				}
-				pr(self.pending.orders, "PARSED");
 			};
 
 			self.pending.count = function() { return obj_len( self.pending.orders ) },
@@ -348,7 +345,6 @@ XtremePOS.prototype = {
 			self.pending.update_DOM = function() {
 				var displayed = $(self.DOM.pending.box).data('count');
 				var current = self.pending.count();
-				current;
 				if ( current != displayed) {
 					setTimeout(function () {
 						if (current > 0)  {
@@ -391,7 +387,7 @@ XtremePOS.prototype = {
 					try {
 						Android.play_tone();
 					} catch(e) {
-						if ( self.is_tablet) self.pos_error(e);
+						if ( self.is_tablet) self.pos_error(e, "389: pending.next()");
 					}
 					setTimeout(function () { self.splash.show() }, self.current.hide());
 					return false
@@ -428,11 +424,9 @@ XtremePOS.prototype = {
 	init: function() {
 		this.is_tablet = navigator.userAgent == C.XTREME_TABLET_USER_AGENT;
 		this.init_DOM();
-		var self = this;
 		for (var i = 0; i < this.init_list.length; i++) this[this.init_list[i]].init(this);
 		var uncleared_order = undefined;
-		var restoring = false;
-		//try {
+		try {
 			this.tablet_response(Android.get_current(), {
 				callback: function(data) {
 					if ( data.Order != null ) {
@@ -442,10 +436,10 @@ XtremePOS.prototype = {
 					}
 				}
 			});
-	//	} catch(e) {
-	//		console.log("ERROR TRYING TO GET CURRENT");
-	//		if ( this.is_tablet ) this.pos_error(e.message);
-	//}
+		} catch(e) {
+			console.log("ERROR TRYING TO GET CURRENT");
+			if ( this.is_tablet ) this.pos_error(e.message, "428: init()");
+		}
 
 		this.pending.fetch(uncleared_order);
 	},
@@ -488,12 +482,13 @@ XtremePOS.prototype = {
 			if (defined(handler) && "callback" in handler) handler.callback(response.data);
 			return true;
 		} else {
-			this.pos_error(response.error);
+			this.pos_error(response.error, "485: tablet_response()");
 			return false;
 		}
 	},
-	pos_error: function(e) {
-		$(this.DOM.error.message).html(e);
+	pos_error: function(e, func) {
+		if (!defined(func) ) func = "<undefined>";
+		$(this.DOM.error.message).html(e + "<br /><h3>Trace: " + func);
 		$(this.DOM.error.box).removeClass(FX.hidden);
 		var self = this;
 		setTimeout( function() { $(self.DOM.error.box).removeClass(FX.fade_out) }, 30)
