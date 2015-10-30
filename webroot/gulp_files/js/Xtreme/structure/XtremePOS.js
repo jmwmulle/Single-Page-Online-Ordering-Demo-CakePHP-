@@ -387,7 +387,7 @@ XtremePOS.prototype = {
 					try {
 						Android.play_tone();
 					} catch(e) {
-						if ( self.is_tablet) self.pos_error(e, "389: pending.next()");
+						// if ( self.is_tablet) self.pos_error(e.message, "389: pending.next()");
 					}
 					setTimeout(function () { self.splash.show() }, self.current.hide());
 					return false
