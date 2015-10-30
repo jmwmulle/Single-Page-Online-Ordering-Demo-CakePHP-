@@ -223,7 +223,9 @@
 			$optflags       = $this->Orb->Orbopt->Optflag->find( 'list' );
 			$pricedicts = $this->build_pricedicts();
 			$opt_pricelists = $this->build_opt_pricelists();
-			$this->set( compact( 'orbs', 'orbcats', 'orbopts', 'orbopts_groups', 'optflags', 'pricedicts', 'opt_pricelists' ) );
+			$specials = $this->Orb->Special->find('all', ['conditions' => ['`Special`.deprecated' => false]]);
+			$specials_orbs = $this->Orb->find('all', ['recursive' => -1, 'conditions' => ['`Orb`.`orbcat_id`' => 23]]);
+			$this->set( compact( 'orbs', 'orbcats', 'orbopts', 'orbopts_groups', 'optflags', 'pricedicts', 'opt_pricelists', 'specials', 'specials_orbs' ) );
 			if ( $refreshing == "menu" ) {
 				return $this->render( "/Elements/vendor_ui/menu_table", "ajax" );
 			}

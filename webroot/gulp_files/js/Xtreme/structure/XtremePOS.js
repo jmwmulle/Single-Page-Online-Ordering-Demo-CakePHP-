@@ -334,13 +334,11 @@ XtremePOS.prototype = {
 			};
 
 			self.pending.update_list = function(orders) {
-				pr(orders, "RAW")
 				for(var i = 0; i < orders.length; i++) {
 					var order = orders[i].Order.detail;
 					order.id = orders[i].Order.id;
 					if ( !(order.id in self.pending.orders) && order.id != self.current.order.id ) self.pending.orders[order.id] = order;
 				}
-				pr(self.pending.orders, "PARSED");
 			};
 
 			self.pending.count = function() { return obj_len( self.pending.orders ) },
@@ -432,7 +430,7 @@ XtremePOS.prototype = {
 		for (var i = 0; i < this.init_list.length; i++) this[this.init_list[i]].init(this);
 		var uncleared_order = undefined;
 		var restoring = false;
-		//try {
+		try {
 			this.tablet_response(Android.get_current(), {
 				callback: function(data) {
 					if ( data.Order != null ) {
@@ -442,10 +440,9 @@ XtremePOS.prototype = {
 					}
 				}
 			});
-	//	} catch(e) {
-	//		console.log("ERROR TRYING TO GET CURRENT");
-	//		if ( this.is_tablet ) this.pos_error(e.message);
-	//}
+		} catch(e) {
+			if ( this.is_tablet ) this.pos_error(e.message);
+		}
 
 		this.pending.fetch(uncleared_order);
 	},

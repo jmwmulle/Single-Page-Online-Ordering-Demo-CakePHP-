@@ -71,6 +71,7 @@
 		                           'uid'      => null,
 		                           'accepted' => false,
 		                           'accepted_enquiries' => 0,
+		                           'Debug'    => [ ],
 		                           'Order'    => [ ],
 		                           'User'     => [
 			                           'firstname'      => null,
@@ -209,6 +210,7 @@
 				$options             = array( 'conditions' => array( 'Order.' . $this->Order->primaryKey => $id ) );
 				$this->request->data = $this->Order->find( 'first', $options );
 			}
+
 			$users = $this->Order->User->find( 'list' );
 			$orbs  = $this->Order->Orb->find( 'list' );
 			$this->set( compact( 'users', 'orbs' ) );
@@ -241,7 +243,10 @@
 			if ( $this->Session->read( 'Cart.uid' ) === null ) $this->Session->write( 'Cart.uid', String::uuid() );
 
 			if ( $this->request->url === "!" ) $this->redirect( ___cakeUrl( "orbcats", "menu" ) );
-			$this->Session->write('System', $this->system_status());
+			$user_debug = ['user_agent' => $_SERVER['HTTP_USER_AGENT']];
+//			               'browser' => get_browser($_SERVER['HTTP_USER_AGENT'])];
+			$this->Session->write('Cart.Debug.user', $user_debug);
+			$this->Session->write('Cart.System', $this->system_status());
 		}
 
 		/**
