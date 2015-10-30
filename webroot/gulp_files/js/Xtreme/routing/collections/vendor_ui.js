@@ -485,5 +485,15 @@ window.xtr.route_collections.vendor_ui = function() {
 		}
 	};
 
+	this.specials_add = {
+		params: ['action'],
+		url: {url:'add-special', type: C.GET},
+		modal: C.PRIMARY,
+		callbacks: {
+			params_set: function() {},
+			launch: function() {},
+		}
+	}
+
 	return this
 };

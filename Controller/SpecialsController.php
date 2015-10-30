@@ -59,6 +59,19 @@ class SpecialsController extends AppController {
 		$this->set(compact('orbs'));
 	}
 
+	public function ajax_add() {
+		if ( $this->is_ajax_post() ) {
+
+		} else if ( $this->is_ajax_get() || true ) {
+			$orbcats = $this->Special->Orb->Orbcat->find('list');
+			$orbs = $this->Special->Orb->find('all', ['recursive' => -1, 'order' => '`orb`.`orbcat_id`'] );
+			$specials = $this->Special->find('all');
+			$this->set(compact('orbcats', 'orbs', 'specials'));
+			$this->render('ajax_add', 'ajax');
+		} else {
+			$this->redirect(___cakeUrl('orbcats', 'menu'));
+		}
+	}
 /**
  * edit method
  *

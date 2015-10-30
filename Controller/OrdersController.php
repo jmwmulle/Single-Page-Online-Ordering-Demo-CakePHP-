@@ -670,6 +670,7 @@
 				$response = [ 'success' => true,
 				              'error'   => false,
 				              'data'    => [
+					          'session' => $this->Session->read('Cart'),
 				              'submitted_data' => compact( 'id', 'status' ),
 				              'status'         => false,
 				              ]

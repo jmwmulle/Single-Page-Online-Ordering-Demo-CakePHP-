@@ -107,7 +107,7 @@ class Orb extends AppModel {
 		'Pricedict' => array(
 			'className' => 'Pricedict',
 			'foreign_key' => 'pricedict_id'
-		)
+		),
 	);
 
 /**
@@ -121,6 +121,19 @@ class Orb extends AppModel {
 			'joinTable' => 'orbs_orbopts',
 			'foreignKey' => 'orb_id',
 			'associationForeignKey' => 'orbopt_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+		),
+		'Special' => array(
+			'className' => 'Special',
+			'joinTable' => 'specials_orbs',
+			'foreignKey' => 'orb_id',
+			'associationForeignKey' => 'special_id',
 			'unique' => 'keepExisting',
 			'conditions' => '',
 			'fields' => '',

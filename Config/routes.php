@@ -103,6 +103,9 @@
 	Router::connect( '/system/*',            [ CTR => 'sysvars', ATN => 'sv_config' ] );
 	Router::connect( '/set-delivery-time/*',            [ CTR => 'sysvars', ATN => 'delivery_time' ] );
 
+	/** SPECIALS CONTROLLER */
+	Router::connect( '/add-special',            [ CTR => 'specials', ATN => 'ajax_add' ] );
+
 
 	Router::connect( '/auth/email',                 [ CTR => 'users', ATN => 'login' ] );
 

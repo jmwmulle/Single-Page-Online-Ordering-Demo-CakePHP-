@@ -106,24 +106,31 @@ class SysvarsController extends AppController {
 	public function delivery_time($id = null) {
 		if ($this->is_ajax_post()) {
 			if ($id === null) {
-				$time = $this->Sysvar->find('first', ['conditions' =>
-					                                      ['`Sysvar`.`id` >=' => DELIVERY_TIME_30, '`Sysvar`.`status`' => true],
-				                                      'fields' => 'id'
+				$time = $this->Sysvar->find('first', ['conditions' => [
+					                                      "`Sysvar`.`id`" => [DELIVERY_TIME_30,
+				                                                                DELIVERY_TIME_45,
+				                                                                DELIVERY_TIME_60,
+				                                                                DELIVERY_TIME_75],
+
+					                                       '`Sysvar`.`status`' => true
+				                                    ],
+				                                      'fields' => ['id']
 				]);
+				$this->Session->write("Cart.Debug.delivery_time", $time);
 				// basicaly if this fails, it should fail gracefully
-				return !empty($time) ? ($time['Sysvar']['id'] - 5) * 15 : 45;
+				return !empty($time) ? ($time['Sysvar']['id'] - 4) * 15 : 45;
 			}
 			$response = ['success' => true,
 			             'error' => false,
 			             'data' => ['submitted' => ["id" => $id]]];
 
-				for($i = 6; $i <= 11; $i++) {
-					if ( !$this->Sysvar->save(['id' => $i, 'status' => $i === (int) $id]) ) {
-						$response['success'] = false;
-						$response['error'] = $this->Sysvar->getValidationErrors;
-						break;
-					}
+			for($i = 6; $i <= 11; $i++) {
+				if ( !$this->Sysvar->save(['id' => $i, 'status' => $i === (int) $id]) ) {
+					$response['success'] = false;
+					$response['error'] = $this->Sysvar->getValidationErrors;
+					break;
 				}
+			}
 			return $this->render_ajax_response($response);
 		} else {
 			$this->redirect( ___cakeUrl( "orders", "menu" ) );

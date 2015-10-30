@@ -202,9 +202,8 @@ define("POS_AVAILABLE", 3);
 define("DELIVERY_AVAILABLE", 4);
 define("CREDIT_AVAILABLE", 5);
 define("ONLINE_ORDERING", 12);
-define("DELIVERY_TIME_15", 6);
-define("DELIVERY_TIME_30", 7);
-define("DELIVERY_TIME_45", 8);
-define("DELIVERY_TIME_60", 9);
-define("DELIVERY_TIME_75", 10);
+define("DELIVERY_TIME_30", 6);
+define("DELIVERY_TIME_45", 7);
+define("DELIVERY_TIME_60", 8);
+define("DELIVERY_TIME_75", 9);
 
