@@ -340,6 +340,54 @@ var xt_vendor_ui = {
 		}
 		$("#overflagging-alert")[method](class_1);
 		setTimeout( function() { $("#overflagging-alert")[method](class_2); }, time);
-	}
+	},
 
+	specials_orbcat_filter: function() {
+		var orbcat_id = $( $("#special-orbcats-list-select").find(":selected")[0] ).val();
+		$("option", "#special-orbs-list-select").each( function() {
+			var action = $(this).data('orbcat') == orbcat_id ? "removeClass" : "addClass";
+			$(this)[action](FX.hidden);
+		});
+	},
+
+	specials_add_orb: function() {
+		var orbs_count = $("#specialOrbCount").val();
+		$("#specialOrbCount").val( orbs_count + 1);
+		var orbcat_id = $( $("#special-orbcats-list-select").find(":selected")[0] ).val();
+		var orbcat_title = $( $("#special-orbcats-list-select").find(":selected")[0] ).text();
+		var orb_id = $( $("#special-orbs-list-select").find(":selected")[0] ).val();
+		var orb_title = $( $("#special-orbs-list-select").find(":selected")[0] ).text();
+		var quantity = $( $("#special-orbs-quantity-select").find(":selected")[0] ).val();
+		$("#specialAjaxAddForm").append([
+			$("<input/>").attr({
+				type: "hidden",
+				name:"data[special][Orb]["+orbs_count+"][id]",
+				value:orb_id}),
+			$("<input/>").attr({
+				type: "hidden",
+				name:"data[special][Orb]["+orbs_count+"][orbcat_id]",
+				value:orbcat_id}),
+			$("<input/>").attr({
+				type: "hidden",
+				name:"data[special][Orb]["+orbs_count+"][quantity]",
+				value:quantity})]);
+
+		$("tbody", "#specials-orbs").append(
+			$("<tr/>").attr('id', 'orb-'+ orbs_count +'-table-row').append([
+				$("<td />").text(orb_title),
+				$("<td />").text(orbcat_title),
+				$("<td />").text(quantity)],
+				$("<td />").append(
+					$("<a />").attr({
+						href: "#",
+						"data-route": ['specials_add_delete_orb', orbs_count].join(C.DS)
+						}).
+						addClass("tiny modal-button delete full-width text-center").append(
+						$("<span />").addClass("icon-cancel textless")
+					)
+				)
+			)
+		);
+
+	}
 }

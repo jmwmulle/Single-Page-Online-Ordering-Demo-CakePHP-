@@ -490,8 +490,28 @@ window.xtr.route_collections.vendor_ui = function() {
 		url: {url:'add-special', type: C.GET},
 		modal: C.PRIMARY,
 		callbacks: {
-			params_set: function() {},
-			launch: function() {},
+			params_set: function() {
+				switch ( this.read("action") ) {
+					case "add_orb":
+						this.url = false;
+						XT.vendor_ui.specials_add_orb();
+						break;
+				}
+			},
+			launch: function() {}
+		}
+	}
+
+	this.specials_add_orbcat_filter = {
+		params: ['action'],
+		callbacks: {
+			params_set: function() {
+				switch (this.read('action') ) {
+					case "reveal":
+						XT.vendor_ui.specials_orbcat_filter();
+						break;
+				}
+			}
 		}
 	}
 
