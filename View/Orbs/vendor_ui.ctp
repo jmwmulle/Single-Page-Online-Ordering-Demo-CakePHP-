@@ -21,6 +21,7 @@
 						<li><a href="#vendor-home-tab">Home</a></li>
 						<li><a href="#menu-tab">Menu</a></li>
 						<li><a href="#menu-options-tab">Menu Options</a></li>
+						<li><a href="#specials-tab">Specials</a></li>
 					</ul>
 				</div>
 			</div>
@@ -39,6 +40,9 @@
 	                                                        'opt_pricelists' => $opt_pricelists
 				]
 			);?>
+
+			<!------------------------------------- TAB 4: SPECIALS -------------------------------->
+			<?=$this->Element( 'vendor_ui/specials', compact('specials', 'specials_orbs'));?>
 
 		</div>
 	</div>

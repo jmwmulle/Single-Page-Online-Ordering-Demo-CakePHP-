@@ -49,11 +49,14 @@ XtremeRoute.prototype = {
 		this.request = request_obj.request;
 		this.trigger = {event: request_obj.trigger, element: request_obj.trigger.currentTarget};
 		this.param_data = request_obj.request.split(C.DS).slice(1);
-		if ("stash" in route_data) this.stash = route_data.stash;
-		if ("modal" in route_data) this.modal = new Modal(route_data.modal);
-		this.url = {url:undefined, type: undefined, defer: undefined};
-		if ("url" in route_data) {this.set_url(route_data.url) }
-		if ("loading_animation" in route_data) this.suppress_loader = !route_data.loading_animation;
+		try {
+			if ("stash" in route_data) this.stash = route_data.stash;
+			if ("modal" in route_data) this.modal = new Modal(route_data.modal);
+			this.url = {url:undefined, type: undefined, defer: undefined};
+			if ("url" in route_data) {this.set_url(route_data.url) }
+			if ("loading_animation" in route_data) this.suppress_loader = !route_data.loading_animation;
+		} catch (e) {
+		}
 
 		this.__stop_propagation = "propagates" in route_data ? !route_data.propagates : true;
 		this.stop_propagation();

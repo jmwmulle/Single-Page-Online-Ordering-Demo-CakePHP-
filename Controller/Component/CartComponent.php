@@ -4,11 +4,6 @@
 		public $portion_pricing = array( 'F' => 1, 'L' => 0.5, 'R' => 0.5, 'D' => 2 );
 		public $components = array( 'Session' );
 		public $Controller;
-		private $invoice_template = [ 'subtotal'     => 0,
-		                              'total'        => 0,
-		                              'item_count'   => 0,
-		                              'invoice_rows' => 0,
-		                              'hst'          => 0 ];
 		private $maxQuantity = 99;
 		private $hst_rate = 0.15;
 		private $bottle_deposit = 0.1;
@@ -23,6 +18,13 @@
 
 		public function startup( Controller $controller ) { }
 
+		private function invoice_template() {
+			return [ 'subtotal'     => 0,
+				                              'total'        => 0,
+				                              'item_count'   => 0,
+				                              'invoice_rows' => 0,
+				                              'hst'          => 0 ];
+		}
 
 		/**
 		 * returns array of orbopt model records from values of orbopt_ids array
@@ -159,7 +161,7 @@
 			$debug['items'] = [];
 			foreach ($order['Order'] as $uid => $oi) {
 				array_push($debug['items'], $oi);
-//					continue;
+				$this->Session->write('Cart.Debug.special', $debug);
 				if ($oi['orb']['Orbcat']['title'] == "PIZZAS" && $oi['pricing']['unit_base_price'] > 10) {
 					$qualifies = true;
 					if ( $oi[ 'pricing' ][ 'rank' ] > $free_fingers_rank ) {
@@ -182,9 +184,9 @@
                           'quantity' => 1,
                           'price_rank' => $free_fingers_rank,
 				          'orb_note' => null
-				           ]);
+				           ], $check_special=false);
 			}
-			if (!$qualifies && $free_fingers_uid) { $this->remove($free_fingers_uid, 1); }
+			if (!$qualifies && $free_fingers_uid) { $this->remove($free_fingers_uid, 1, true); }
 			return;
 		}
 
@@ -194,7 +196,7 @@
 		 *
 		 * @return mixed|null
 		 */
-		public function add( $orb_cfg ) {
+		public function add( $orb_cfg, $check_special=true ) {
 			// $orb_cfg = [orb_id, uid, quantity, price_rank, orbopts]
 			$orb_id     = $orb_cfg[ 'id' ];
 			$uid        = $orb_cfg[ 'uid' ];
@@ -240,7 +242,7 @@
 			$candidate = compact( "orb", 'orbopts', 'pricing' );
 
 			if ( !$this->update_quantity( $candidate ) ) $this->Session->write( "Cart.Order.$uid", $candidate );
-			$this->online_launch_special();
+			if ($check_special) $this->online_launch_special();
 			return true;
 		}
 
@@ -300,7 +302,7 @@
 		 *
 		 * @return int
 		 */
-		public function remove( $uid, $quantity ) {
+		public function remove( $uid, $quantity, $called_from_launch_special=False ) {
 			if ( $this->Session->check( "Cart.Order.$uid" ) ) {
 				$quantity        = $this->Session->read( "Cart.Order.$uid.pricing.quantity" ) - $quantity;
 				$conf_unit_price = $this->Session->read( "Cart.Order.$uid.pricing.configured_unit_price" );
@@ -313,7 +315,7 @@
 					$this->Session->delete( "Cart.Order.$uid" );
 				}
 			}
-			$this->online_launch_special();
+			if (!$called_from_launch_special) $this->online_launch_special();
 			$this->update_invoice();
 
 			return true;
@@ -328,7 +330,7 @@
 		public function update_invoice() {
 			if ( !empty( $cart[ 'Order' ] ) ) return;
 
-			$invoice = $this->invoice_template;
+			$invoice = $this->invoice_template();
 			foreach ( $this->Session->read( "Cart.Order" ) as $uid => $oi ) {
 				$invoice[ 'subtotal' ] += $oi[ 'pricing' ][ 'net' ];
 				$invoice[ 'item_count' ] += $oi[ 'pricing' ][ 'quantity' ];

@@ -426,6 +426,8 @@ XtremePOS.prototype = {
 		this.init_DOM();
 		for (var i = 0; i < this.init_list.length; i++) this[this.init_list[i]].init(this);
 		var uncleared_order = undefined;
+
+		var restoring = false;
 		try {
 			this.tablet_response(Android.get_current(), {
 				callback: function(data) {
@@ -437,7 +439,6 @@ XtremePOS.prototype = {
 				}
 			});
 		} catch(e) {
-			console.log("ERROR TRYING TO GET CURRENT");
 			if ( this.is_tablet ) this.pos_error(e.message, "428: init()");
 		}
 
