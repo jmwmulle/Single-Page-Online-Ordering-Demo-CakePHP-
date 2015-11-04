@@ -11,6 +11,8 @@ $default_oc_id = array_keys($orbcats)[0];
 <div class="row">
 	<div class="large-12 columns">
 		<h1>Create a new Special</h1>
+
+		<span class="note">This is still <emphasis>very</emphasis> in development; saving is not yet enabled. Basically this is the UI you'll eventually use.</span><br />
 	</div>
 	<?=$this->Form->create('special');?>
 	<div class="large-6 columns">
@@ -33,7 +35,10 @@ $default_oc_id = array_keys($orbcats)[0];
 			</div>
 			<div class="large-12 columns">
 				<label>&nbsp</label>
-				<a href="#" class="modal-button full-width active"><span>Active</span></a>
+				<ul class="activizing inline">
+					<li class="active"><a href="#" class="modal-button active full-width left"><span>Active</span></a></li>
+					<li class="inactive"><a href="#" class="modal-button full-width right"><span>Inactive</span></a></li>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -41,11 +46,12 @@ $default_oc_id = array_keys($orbcats)[0];
 		<h3>Add Menu Items</h3>
 	</div>
 	<div id="add-special-orbcats-list" class="large-3 columns">
+		<?=$this->Form->input('orb_count', ['type' => 'hidden']);?>
 		<div clas="input select">
 			<label for="special-orbcats-list-select">Menu Category</label>
-			<select id="special-orbcats-list-select" data-changeroute="special-add-orb/reveal">
+			<select id="special-orbcats-list-select" data-changeroute="specials_add_orbcat_filter/reveal">
 			<?php foreach ($orbcats as $id => $oc):?>
-				<option><?=$oc;?></option>
+				<option value="<?=$id;?>"><?=$oc;?></option>
 			<?php endforeach;?>
 			</select>
 		</div>
@@ -56,10 +62,9 @@ $default_oc_id = array_keys($orbcats)[0];
 			<select id="special-orbs-list-select">
 			<?php foreach ($orbs as $orb):
 				$class = [$orb['Orb']['orbcat_id'] == $default_oc_id ? "" : "hidden"];
-				$data = ['orbcat' => $orb['Orb']['orbcat_id'],
-				         'orb' => $orb['Orb']['id']];
+				$data = ['orbcat' => $orb['Orb']['orbcat_id']];
 				?>
-				<option <?=___cD($class)?> <?=___dA($data);?> >
+				<option <?=___cD($class)?> <?=___dA($data);?> value="<?=$orb['Orb']['id'];?>" >
 					<?=ucwords($orb['Orb']['title']);?>
 				</option>
 			<?php endforeach;?>
@@ -85,16 +90,22 @@ $default_oc_id = array_keys($orbcats)[0];
 	</div>
 	<div class="large-3 columns">
 		<label>&nbsp;</label>
-		<a href="#" class="modal-button full-width" data-route="special-add/add-orb">
+		<a href="#" class="modal-button full-width" data-route="specials_add/add_orb">
 			<span>Add & Configure</span>
 		</a>
 	</div>
 	<div class="large-12 columns">
 		<table id="specials-orbs">
-			<tr>
-				<td>OrbTitle</td>
-				<td><input type="hidden" name="specials[Orbs][id][quantity]"></td>
-			</tr>
+			<thead>
+				<tr>
+					<th>Item</th>
+					<th>Menu Category</th>
+					<th>Quantity</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
 		</table>
 	</div>
 	<div class="large-12 columns">
