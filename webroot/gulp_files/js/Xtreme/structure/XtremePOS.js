@@ -261,6 +261,7 @@ XtremePOS.prototype = {
 							r.push(["     " + coverage + opt.title, "small", true]);
 						}
 					}
+					if ( o.orb.Orb.note ) r.push(["Note: " + o.orb.Orb.note, "small", true]);
 				}
 				r.push([" ", "h5", true]);
 				r.push(["****************************************************************", "h5", true]);
@@ -274,6 +275,7 @@ XtremePOS.prototype = {
 				r.push([hst, "h4", true]);
 				r.push([total, "h4", true]);
 				r.push(["****************************************************************", "h5", true]);
+				pr(r);
 				for (var i=0; i < r.length; i++) {
 					r[i] = [ r[i][0], obj_values( self.styles[ r[i][1] ]) ];
 				}
@@ -283,7 +285,11 @@ XtremePOS.prototype = {
 				try {
 					return self.tablet_response( Android.print_current(), {} );
 				} catch (e) {
-					if ( self.is_tablet ) self.pos_error( e, "283: current.print()" );
+					if ( self.is_tablet ) {
+						self.pos_error( e, "283: current.print()" );
+					} else {
+						pr(self.current.receipt_lines())
+					}
 				}
 			};
 			self.current.clear = function() {
