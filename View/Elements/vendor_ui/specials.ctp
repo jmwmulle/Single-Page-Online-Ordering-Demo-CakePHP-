@@ -6,6 +6,7 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
+$ready_to_list_specials = false;
 ?>
 <div id="specials-tab">
 	<!-- Menu Options tab proper -->
@@ -31,6 +32,7 @@
 					</tr>
 				</thead>
 				<tbody>
+				<?php if ($ready_to_list_specials) {?>
 				<?php foreach ( $specials as $special ):
 					$sid = $special['Special']['id'];
 					$sp = $special['Special'];
@@ -98,7 +100,7 @@
 					</td>
 
 				</tr>
-			<?php endforeach; ?>
+			<?php endforeach; } ?>
 				</tbody>
 			</table>
 		</div>
