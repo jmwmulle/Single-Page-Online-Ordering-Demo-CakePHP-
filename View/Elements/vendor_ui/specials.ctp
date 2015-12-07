@@ -85,18 +85,18 @@ $ready_to_list_specials = false;
 							<span class="icon-cancel textless"></span>
 						</a>
 
-						<div id="delete-specials-<?php echo $sid; ?>" class="breakout hidden">
-							<h4>Are you sure you want to delete "<?php echo $sp[ 'title' ]; ?>"?</h4>
+						<div id="delete-specials-<?=$sid; ?>" class="breakout hidden">
+							<h4>Are you sure you want to delete "<?=$sp[ 'title' ]; ?>"?</h4>
 							<a href="#" class="modal-button bisecting confirm right"
-							   data-route="specials_config/<?php echo $sid; ?>/delete/delete">
+							   data-route="specials_config/<?=$sid; ?>/delete/delete">
 								<span class="text">Confirm</span><span class="icon-circle-arrow-r"></span>
 							</a>
 							<a href="#" class="modal-button bisecting cancel left"
-							   data-route="specials_config/<?php echo $sid; ?>/delete/cancel">
+							   data-route="specials_config/<?=$sid; ?>/delete/cancel">
 								<span class="text">Cancel</span>
 							</a>
 						</div>
-						<div id="delete-specials-<?php echo $sid; ?>" class="breakout hidden">
+						<div id="delete-specials-<?=$sid; ?>" class="breakout hidden">
 					</td>
 
 				</tr>
