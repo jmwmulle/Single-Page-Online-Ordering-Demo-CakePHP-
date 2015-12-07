@@ -407,6 +407,7 @@
 			'action'     => ''
 		);
 		$this->Auth->loginRedirect  = ___cakeUrl( "users", "edit", array( 'id' => $this->Auth->user( 'id' ) ) );
+		$this->Auth->allow();
 	}
 
 }
