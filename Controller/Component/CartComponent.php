@@ -152,7 +152,7 @@
 		private function online_launch_special() {
 			$debug = [];
 			$order = $this->Session->read('Cart');
-			$free_eggroll_id = 253;
+			$free_eggroll_id = 254;
 			$qualifies = false;
 			$free_eggroll_uid = null;
 			$debug['data'] = $order;
