@@ -161,7 +161,9 @@
 			foreach ($order['Order'] as $uid => $oi) {
 				array_push($debug['items'], $oi);
 				$this->Session->write('Cart.Debug.special', $debug);
-				$qualifies = $oi['orb']['Orbcat']['title'] == "PIZZAS" && $oi['pricing']['rank'] == 3;
+				if ($oi['orb']['Orbcat']['title'] == "PIZZAS" && $oi['pricing']['rank'] == 3) {
+					$qualifies = true;
+				}
 				if ($oi['orb']['Orb']['id'] == $free_eggroll_id) $free_eggroll_uid = $uid;
 			}
 

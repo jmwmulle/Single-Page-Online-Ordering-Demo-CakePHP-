@@ -6,6 +6,9 @@ XtremeMenu = function() {}
 
 XtremeMenu.prototype = {
 	constructor: XtremeMenu,
+	DOM: {},
+	init_DOM: function() {
+	},
 	add_to_cart: function () {
 		// todo: ajax fallbacks
 		$.ajax({
@@ -51,5 +54,17 @@ XtremeMenu.prototype = {
 		XT.orbcard.reset_stage();
 
 		return 600
+	},
+	update_active_orbcat: function(orbcat_str) {
+		$("#active-orbcat-title").addClass(FX.condensed);
+		setTimeout(function() { $("#active-orbcat-title").addClass(FX.fade_out); }, 310);
+		setTimeout(function() { $("#active-orbcat-title").html(orbcat_str); }, 630);
+		setTimeout(function() { $("#active-orbcat-title").addClass("salient"); }, 630);
+		setTimeout(function() { $("#active-orbcat-title").removeClass(FX.condensed); }, 650);
+		setTimeout(function() { $("#active-orbcat-title").removeClass(FX.fade_out); }, 975);
+		setTimeout(function() { $("#active-orbcat-title").removeClass("salient"); }, 1200);
+//		setTimeout(function() { $("#active-orbcat-title").addClass(FX.condensed); }, 950);
+//		setTimeout(function() { $("#active-orbcat-title").removeClass(FX.condensed); }, 1600);
+
 	}
 }
