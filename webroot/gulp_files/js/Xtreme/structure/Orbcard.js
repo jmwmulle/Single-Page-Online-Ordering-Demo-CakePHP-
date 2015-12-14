@@ -112,6 +112,7 @@ Orbcard.prototype = {
 	load_menu: function (data) {
 		var self = this;
 		$(this).on(C.ORB_LOADED, function() {
+			XT.menu.update_active_orbcat(data.orbcat);
 			$(self).off(C.ORB_LOADED);
 			self.menu.lists.unload(C.FRONT);
 			setTimeout( function() { self.menu.headers.set(data.orbcat) }, 150);

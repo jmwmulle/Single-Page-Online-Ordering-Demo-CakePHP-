@@ -148,27 +148,6 @@ XtremeLayout.prototype = {
 		if (is_static) XBS.layout.fasten(element);
 		return $(element);
 	},
-	// this was just for launch day! delete if after sept.19/2015
-	resolve_countdown: function() {
-		$.get("deferred-menu", function(resp) {
-			resp = $.parseHTML(resp);
-			$("#desktop-content").append(resp);
-			$("#countdown", "body").addClass(FX.slide_down);
-			$("#count-down-wrapper").append(
-				$("<h1>").addClass(FX.slide_up).attr('id', "launch-time-banner").html("OK... Here we go!").css({
-					fontSize:"96px",
-					width:"100%",
-					texAlign: "center",
-				}));
-			setTimeout(function() { $("#launch-time-banner", "body").removeClass(FX.slide_up)}, 500);
-			setTimeout(function() { $("#count-down-wrapper").addClass(FX.fade_out) }, 1500);
-			setTimeout(function() { $("#topbar").removeClass(FX.fade_out) }, 1800);
-			setTimeout(function() { $("#menu").removeClass(FX.fade_out) }, 2000);
-			setTimeout(function() { $("#count-down-wrapper").remove(); }, 2000);
-
-
-		});
-	},
 
 	fasten: function (selector) {
 		var debug_this = 0;

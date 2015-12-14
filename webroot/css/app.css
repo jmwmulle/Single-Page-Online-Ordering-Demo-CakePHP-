@@ -4942,6 +4942,20 @@ input {
   line-height: 4.63125rem;
   color: white; }
 
+span#active-orbcat-title {
+  white-space: nowrap;
+  display: inline-block;
+  width: 10em;
+  overflow: hidden;
+  vertical-align: top; }
+  span#active-orbcat-title.condensed {
+    width: 0.001em;
+    transition: background-color 0.3s ease-in-out, background-image 0.3s ease-in-out, color 0.3s ease-in-out, opacity 0.3s ease-in-out, width 0.3s ease-in-out, transform 0.3s ease-in-out; }
+  span#active-orbcat-title.salient {
+    color: #0779be; }
+  span#active-orbcat-title.fade-out {
+    opacity: 0; }
+
 li.orbcat {
   text-align: center; }
   li.orbcat span {

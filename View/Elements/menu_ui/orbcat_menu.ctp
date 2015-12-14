@@ -5,4 +5,4 @@
 <?=sprintf("<a class='text-center'><span class='orbcat-icon icon-%s'></span>$uc_orbcat</a></li>", ___strToSel(str_replace("&nbsp;", "_", $orbcat)));?>
 <?php endforeach;?>
 <?='<li id="orbcat-menu-title" class="stretch box rel downward">';?>
-<?=sprintf("<h1>MENU/<span>%s</span></h1></li></ul>", $active['menu_title']);?>
+<?=sprintf("<h1>MENU/<span id='active-orbcat-title'>%s</span></h1></li></ul>", $active['menu_title']);?>
