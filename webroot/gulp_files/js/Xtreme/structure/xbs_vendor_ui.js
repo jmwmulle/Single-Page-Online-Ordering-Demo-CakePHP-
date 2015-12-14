@@ -351,36 +351,33 @@ var xt_vendor_ui = {
 	},
 
 	specials_add_orb: function() {
-		var orbs_count = $("#specialOrbCount").val();
-		$("#specialOrbCount").val( orbs_count + 1);
-		var orbcat_id = $( $("#special-orbcats-list-select").find(":selected")[0] ).val();
+		var orb_count = Number($("#specials-orbs").data('orbCount'));
+		$("#specials-orbs").data('orbCount', orb_count + 1);
+//		var orbcat_id = $( $("#special-orbcats-list-select").find(":selected")[0] ).val();
 		var orbcat_title = $( $("#special-orbcats-list-select").find(":selected")[0] ).text();
 		var orb_id = $( $("#special-orbs-list-select").find(":selected")[0] ).val();
 		var orb_title = $( $("#special-orbs-list-select").find(":selected")[0] ).text();
 		var quantity = $( $("#special-orbs-quantity-select").find(":selected")[0] ).val();
-		$("#specialAjaxAddForm").append([
+		$("#SpecialMenuStatus").val( $("#menu-active").hasClass(FX.active) );
+		$("#SpecialAjaxAddForm").append([
+			$("<input/>").attr({
+						type: "hidden",
+						name:"data[SpecialsOrb]["+orb_count+"][orb_id]",
+						value:orb_id}),
 			$("<input/>").attr({
 				type: "hidden",
-				name:"data[special][Orb]["+orbs_count+"][id]",
-				value:orb_id}),
-			$("<input/>").attr({
-				type: "hidden",
-				name:"data[special][Orb]["+orbs_count+"][orbcat_id]",
-				value:orbcat_id}),
-			$("<input/>").attr({
-				type: "hidden",
-				name:"data[special][Orb]["+orbs_count+"][quantity]",
+				name:"data[SpecialsOrb]["+orb_count+"][quantity]",
 				value:quantity})]);
 
 		$("tbody", "#specials-orbs").append(
-			$("<tr/>").attr('id', 'orb-'+ orbs_count +'-table-row').append([
+			$("<tr/>").attr('id', 'orb-'+ orb_count +'-table-row').append([
 				$("<td />").text(orb_title),
 				$("<td />").text(orbcat_title),
 				$("<td />").text(quantity)],
 				$("<td />").append(
 					$("<a />").attr({
 						href: "#",
-						"data-route": ['specials_add_delete_orb', orbs_count].join(C.DS)
+						"data-route": ['specials_add_delete_orb', orb_count].join(C.DS)
 						}).
 						addClass("tiny modal-button delete full-width text-center").append(
 						$("<span />").addClass("icon-cancel textless")

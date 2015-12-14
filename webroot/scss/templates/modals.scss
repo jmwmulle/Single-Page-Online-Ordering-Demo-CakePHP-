@@ -444,9 +444,11 @@ div.view-cart-row {
 
 // hack to retroactively combine .activizing JS with modal-buttons
 ul.activizing {
-    li.active .modal-button {
-      background-color: $xtreme-yellow;
-      span { color: $text-grey !important; }
+    li.active  {
+      a.modal-button {
+        background-color: $xtreme-yellow !important;
+        span { color: $text-grey !important; }
+      }
       &:hover { span { color: $text-grey !important; } }
     }
     li.inactive .modal-button {

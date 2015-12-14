@@ -462,12 +462,6 @@ window.xtr.route_collections.vendor_ui = function() {
 					this.unset('launch');
 					XT.vendor_ui.overflagging_alert(C.SHOW);
 				}
-//				} else {
-//					this.url = {
-//						url: ["optflag-config", this.read('orbopt'), this.read('optflag')].join(C.DS),
-//						type: C.POST,
-//						defer: true}
-//				}
 			},
 			launch: function () {
 				XT.router.cake_ajax_response(this.deferral_data, {
@@ -496,9 +490,18 @@ window.xtr.route_collections.vendor_ui = function() {
 						this.url = false;
 						XT.vendor_ui.specials_add_orb();
 						break;
+					case 'save':
+						this.url.type = C.POST;
+						this.url.data = $("#SpecialAjaxAddForm").serialize();
+						this.url.defer = true;
+						break;
 				}
 			},
-			launch: function() {}
+			launch: function() {
+				if (this.read('action') == 'save') {
+					XT.router.cake_ajax_response(this.deferral_data, {}, true, true);
+				}
+			}
 		}
 	}
 
@@ -517,3 +520,4 @@ window.xtr.route_collections.vendor_ui = function() {
 
 	return this
 };
+

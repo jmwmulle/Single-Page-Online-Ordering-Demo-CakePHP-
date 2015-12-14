@@ -15,7 +15,7 @@ $default_oc_id = array_keys($orbcats)[0];
 
 		<span class="note">This is still <emphasis>very</emphasis> in development; saving is not yet enabled. Basically this is the UI you'll eventually use.</span><br />
 	</div>
-	<?=$this->Form->create('special');?>
+	<?=$this->Form->create('Special');?>
 	<div class="large-6 columns">
 		<div class="row">
 			<div class="large-12 columns">
@@ -35,10 +35,11 @@ $default_oc_id = array_keys($orbcats)[0];
 				<?=$this->Form->input('description', ['type' => 'textarea']);?>
 			</div>
 			<div class="large-12 columns">
-				<label>&nbsp</label>
+				<label>Menu Status</label>
+				<?=$this->Form->input('menu_status', ['type' => 'hidden', 'value' => true] );?>
 				<ul class="activizing inline">
-					<li class="active"><a href="#" class="modal-button active full-width left"><span>Active</span></a></li>
-					<li class="inactive"><a href="#" class="modal-button full-width right"><span>Inactive</span></a></li>
+					<li id="menu-active" class="default active bisecting discreet"><a href="#" class="modal-button full-width left sml"><span>Active</span></a></li>
+					<li id="menu-inactive" class="inactive bisecting discreet"><a href="#" class="modal-button full-width right sml"><span>Inactive</span></a></li>
 				</ul>
 			</div>
 		</div>
@@ -47,7 +48,6 @@ $default_oc_id = array_keys($orbcats)[0];
 		<h3>Add Menu Items</h3>
 	</div>
 	<div id="add-special-orbcats-list" class="large-3 columns">
-		<?=$this->Form->input('orb_count', ['type' => 'hidden']);?>
 		<div clas="input select">
 			<label for="special-orbcats-list-select">Menu Category</label>
 			<select id="special-orbcats-list-select" data-changeroute="specials_add_orbcat_filter/reveal">
@@ -74,7 +74,7 @@ $default_oc_id = array_keys($orbcats)[0];
 	</div>
 	<div id="add-special-orbs-quantity" class="large-3 columns">
 		<div clas="input select">
-			<label for="special-orbs-quantity-select">Menu Item</label>
+			<label for="special-orbs-quantity-select">Quantity</label>
 			<select id="special-orbs-quantity-select">
 				<option>1</option>
 				<option>2</option>
@@ -92,11 +92,11 @@ $default_oc_id = array_keys($orbcats)[0];
 	<div class="large-3 columns">
 		<label>&nbsp;</label>
 		<a href="#" class="modal-button full-width" data-route="specials_add/add_orb">
-			<span>Add & Configure</span>
+			<span>Add</span>
 		</a>
 	</div>
 	<div class="large-12 columns">
-		<table id="specials-orbs">
+		<table id="specials-orbs" data-orb-count="0">
 			<thead>
 				<tr>
 					<th>Item</th>
@@ -110,7 +110,7 @@ $default_oc_id = array_keys($orbcats)[0];
 		</table>
 	</div>
 	<div class="large-12 columns">
-		<a href="#" class="modal-button full-width"><span>Save & Close</span></a>
+		<a href="#" class="modal-button full-width" data-route="specials_add/save"><span>Save & Close</span></a>
 	</div>
 </div>
 

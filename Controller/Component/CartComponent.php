@@ -151,48 +151,37 @@
 
 		private function online_launch_special() {
 			$debug = [];
-			$fingers_ids = [1 => 250, 2 => 251, 3 => 252];
 			$order = $this->Session->read('Cart');
-			$free_fingers_id = null;
-			$free_fingers_rank = -1;
+			$free_eggroll_id = 253;
 			$qualifies = false;
-			$free_fingers_uid = null;
+			$free_eggroll_uid = null;
 			$debug['data'] = $order;
 			$debug['items'] = [];
+
 			foreach ($order['Order'] as $uid => $oi) {
 				array_push($debug['items'], $oi);
 				$this->Session->write('Cart.Debug.special', $debug);
-				if ($oi['orb']['Orbcat']['title'] == "PIZZAS" && $oi['pricing']['unit_base_price'] > 10) {
-					$qualifies = true;
-					if ( $oi[ 'pricing' ][ 'rank' ] > $free_fingers_rank ) {
-						$free_fingers_rank = $oi[ 'pricing' ][ 'rank' ];
-						$free_fingers_id   = $fingers_ids[ $free_fingers_rank ];
-					}
-				}
-				if ( in_array($oi['orb']['Orb']['id'], $fingers_ids) ) {
-					if ($oi[ 'pricing' ][ 'rank' ] < $free_fingers_rank) {
-						$this->remove( $uid, 1 );
-					} else {
-						$free_fingers_uid = $uid;
-					}
-				}
+				$qualifies = $oi['orb']['Orbcat']['title'] == "PIZZAS" && $oi['pricing']['rank'] == 3;
+				if ($oi['orb']['Orb']['id'] == $free_eggroll_id) $free_eggroll_uid = $uid;
 			}
+
 			$this->Session->write('Cart.Debug.special', $debug);
-			if ($qualifies && !$free_fingers_uid) {
-				$this->add(['id' => $free_fingers_id,
-                          'uid' => $free_fingers_id."_".time(),
-                          'quantity' => 1,
-                          'price_rank' => $free_fingers_rank,
+			if ($qualifies && !$free_eggroll_uid) {
+				$this->add(['id' => $free_eggroll_id,
+                          'uid' => $free_eggroll_id."_".time(),
+                          'quantity' => 2,
+                          'price_rank' => 1,
 				          'orb_note' => null
 				           ], $check_special=false);
 			}
-			if (!$qualifies && $free_fingers_uid) { $this->remove($free_fingers_uid, 1, true); }
+			if (!$qualifies && $free_eggroll_uid) { $this->remove($free_eggroll_uid, 2, true); }
 			return;
 		}
 
 
 		/**
 		 * @param $orb_cfg
+		 * @param $check_special
 		 *
 		 * @return mixed|null
 		 */

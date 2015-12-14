@@ -246,7 +246,7 @@ textarea.note { height:2rem;}
   width: $monthly-content-wrapper-width;
   vertical-align: top;
   overflow-x:hidden;
-  overflow-y:auto;
+  overflow-y:hidden;
   padding: $medium-padding;
   @include orb-card-gradient;
   &.slide-down {

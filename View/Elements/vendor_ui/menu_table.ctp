@@ -55,13 +55,10 @@
 				</thead>
 				<tbody>
 				<?php
-					$orb_count = 0;
-					foreach ( $orbs as $orb ) {
-						$orb_count++;
-//						if ($orb_count > 10) break;
-						if ( $orb[ 'Orb' ][ 'deprecated' ] ) {
-							continue;
-						}
+					foreach ( $orbs as $index => $orb ) {
+						if ( $_SERVER['HTTP_HOST'] == "localhost" and $index > 10) break;
+						if ( $orb[ 'Orb' ][ 'deprecated' ] ) continue;
+
 						$oid    = $orb[ 'Orb' ][ 'id' ];
 						$o      = $orb[ 'Orb' ];
 						$data   = [ 'orb-id'          => $oid,

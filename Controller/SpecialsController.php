@@ -61,7 +61,23 @@ class SpecialsController extends AppController {
 
 	public function ajax_add() {
 		if ( $this->is_ajax_post() ) {
-
+			$response = ['success' => true,
+			             'error' => false,
+			             'data' => ['submitted' => $this->request->data]];
+			$special = $this->request->data['Special'];
+			if ( !$this->Special->save($special) ) {
+			    $response['error'] = $this->Special->validationErrors;
+				$response['success'] = false;
+			} else {
+				$this->loadModel('SpecialsOrb');
+				$specials_orbs = Hash::insert($this->request->data['SpecialsOrb'], "{n}.special_id", $this->Special->id);
+				if ( !$this->SpecialsOrb->saveAll($specials_orbs) ) {
+					$this->Special->delete($this->Special->id);
+					$response['error'] = ['Specials' => False, 'SpecialsOrb' => $this->SpecialsOrb->validationErrors];
+					$response['success'] = false;
+				}
+			}
+			$this->render_ajax_response($response);
 		} else if ( $this->is_ajax_get() ) {
 			$orbcats = $this->Special->Orb->Orbcat->find('list');
 			$orbs = $this->Special->Orb->find('all', ['recursive' => -1, 'order' => '`orbcat_id`'] );

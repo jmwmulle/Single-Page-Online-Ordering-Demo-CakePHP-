@@ -9,20 +9,20 @@
 		if ( window.xtr === undefined) window.xtr = {};
 		var XT = window.xtr;
 		var http_host = "<?=$_SERVER['HTTP_HOST'];?>";
-		XT.host = "<?php switch($_SERVER['HTTP_HOST']) {
-					case "www.xtreme-pizza.ca":
-						echo "xProd";
-						break;
-					case "xtreme-pizza.ca":
-						echo "xProd";
-						break;
-					case "development-xtreme-pizza.ca":
-						echo "xDev";
-						break;
-					default:
-						echo "xLoc";
-						break;
-					}?>";
+	XT.host = "<?php switch($_SERVER['HTTP_HOST']) {
+				case "www.xtreme-pizza.ca":
+					echo "xProd";
+					break;
+				case "xtreme-pizza.ca":
+					echo "xProd";
+					break;
+				case "development-xtreme-pizza.ca":
+					echo "xDev";
+					break;
+				default:
+					echo "xLoc";
+					break;
+				}?>";
 		XT.store_status = <?php echo $this->get('store_status') ? $this->get('store_status') : "{reachable:false, delivering:false, time:0}"; ?>;
 		XT.is_splash = <?php echo ($this->get("is_splash")) ? 'true' : 'false';?>;
 		XT.page_name = "<?php echo ($this->get("page_name")) ? $this->get("page_name") : "Xtreme Menu"; ?>";
