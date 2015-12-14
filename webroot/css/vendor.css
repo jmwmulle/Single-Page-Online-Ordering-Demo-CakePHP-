@@ -5322,6 +5322,33 @@ li.orbopt.disabled {
     .modal-button.delete:hover span {
       color: #ff533d !important; }
 
+ul.activizing li.active a.modal-button {
+  background-color: #faea06 !important; }
+  ul.activizing li.active a.modal-button span {
+    color: #373737 !important; }
+ul.activizing li.active:hover span {
+  color: #373737 !important; }
+ul.activizing li.inactive .modal-button {
+  background-color: #e1e1e1; }
+  ul.activizing li.inactive .modal-button span {
+    color: #b4b4b4 !important; }
+  ul.activizing li.inactive .modal-button:hover {
+    background-color: #cecece; }
+    ul.activizing li.inactive .modal-button:hover span {
+      color: #e02027 !important; }
+ul.activizing li.bisecting {
+  width: 50%; }
+  ul.activizing li.bisecting.rounded:first-of-type {
+    border-bottom-left-radius: 3px; }
+  ul.activizing li.bisecting.rounded:last-of-type {
+    border-bottom-right-radius: 3px; }
+  ul.activizing li.bisecting.confirm {
+    width: 66.6666%; }
+  ul.activizing li.bisecting.cancel {
+    width: 33.3333%; }
+  ul.activizing li.bisecting.discreet {
+    width: 49%; }
+
 li.sysvar {
   list-style-type: none;
   font-weight: bold;

@@ -515,6 +515,43 @@ display:none !important;
   }
 }
 
+ul.activizing {
+    li.active  {
+      a.modal-button {
+        background-color: $xtreme-yellow !important;
+        span { color: $text-grey !important; }
+      }
+      &:hover { span { color: $text-grey !important; } }
+    }
+    li.inactive .modal-button {
+      background-color: $very-light-grey;
+      span { color: $light-grey !important; }
+      &:hover {
+        background-color: lighten($light-grey, 10%);
+        span { color: $xtreme-red !important; }
+      }
+    }
+  li.bisecting {
+      width : 50%;
+      &.rounded {
+        &:first-of-type {
+          border-bottom-left-radius : $global-radius;
+        }
+        &:last-of-type {
+          border-bottom-right-radius : $global-radius;
+        }
+      }
+      &.confirm {
+        width : 66.6666%;
+        //      &:hover { text-shadow: 0 0 0.5rem $white;}
+      }
+      &.cancel { width : 33.3333%; }
+      &.discreet {
+        width:49%;
+      }
+    }
+ }
+
 li.sysvar {
   list-style-type: none;
   font-weight:bold;

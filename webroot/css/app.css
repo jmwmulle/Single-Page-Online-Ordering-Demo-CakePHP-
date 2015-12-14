@@ -5320,7 +5320,7 @@ textarea.note {
   width: 15.85938rem;
   vertical-align: top;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding: 0.625rem;
   background-color: #d2d2d2;
   background: whitesmoke;
@@ -6548,12 +6548,12 @@ div.view-cart-row.total * {
     .modal-button.flashing span {
       -webkit-animation: flashing_button_text 3s ease-in-out infinite normal 0s running forwards; }
 
-ul.activizing li.active .modal-button {
-  background-color: #faea06; }
-  ul.activizing li.active .modal-button span {
+ul.activizing li.active a.modal-button {
+  background-color: #faea06 !important; }
+  ul.activizing li.active a.modal-button span {
     color: #373737 !important; }
-  ul.activizing li.active .modal-button:hover span {
-    color: #373737 !important; }
+ul.activizing li.active:hover span {
+  color: #373737 !important; }
 ul.activizing li.inactive .modal-button {
   background-color: #e1e1e1; }
   ul.activizing li.inactive .modal-button span {
