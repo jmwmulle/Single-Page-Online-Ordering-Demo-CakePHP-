@@ -40,8 +40,8 @@
 					<td>
 						<ul>
 							<li><?=sprintf("%s %s", $address['firstname'], $address['lastname']);?></li>
-							<?=$address['address'] ? sprintf("<li>%s</li>") : null;?>
-							<?=$address['address_2'] ? sprintf("<li>%s</li>") : null;?>
+							<?=$address['address'] ? sprintf("<li>%s</li>", $address['address']) : null;?>
+							<?=$address['address_2'] ? sprintf("<li>%s</li>", $address['address_2']) : null;?>
 							<li><?=sprintf("(%s)%s-%s", substr($address['phone'],0,3), substr($address['phone'],3,3), substr($address['phone'],6,4));?></li>
 						</ul>
 					</td>
