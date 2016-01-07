@@ -150,6 +150,7 @@
 		}
 
 		private function online_launch_special() {
+return;
 			$debug = [];
 			$order = $this->Session->read('Cart');
 			$free_eggroll_id = 254;
