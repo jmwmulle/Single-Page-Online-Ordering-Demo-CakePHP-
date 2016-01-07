@@ -6150,6 +6150,9 @@ h1.success, h2.success, h3.success, h4.success, h5.success {
       position: absolute;
       width: 465px;
       bottom: 1rem; }
+  .tab-panel #table-container {
+    height: 625px;
+    overflow-y: auto; }
   .tab-panel table {
     color: #373737;
     border-spacing: 0;

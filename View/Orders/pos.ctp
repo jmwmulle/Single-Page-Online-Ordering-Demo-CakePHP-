@@ -110,7 +110,7 @@
 	</ul>
 </div>
 
-<div id="polling-button" onclick="XT.pos.toggle_polling()"> TOGGLE POLLING </div>
+<div id="polling-button" style="display:none;" onclick="XT.pos.toggle_polling()"> TOGGLE POLLING </div>
 <main id="js-console" class="hidden">
 <h4 id="called-from"></h4>
 </main>

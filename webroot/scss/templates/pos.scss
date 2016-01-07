@@ -453,6 +453,10 @@ h1, h2, h3, h4, h5 {
       bottom: rem-calc(16px);
     }
   }
+  #table-container {
+    height: 625px;
+    overflow-y: auto;
+  }
   table {
     color: $text-grey;
     border-spacing:0;

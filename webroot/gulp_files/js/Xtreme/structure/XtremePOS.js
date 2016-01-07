@@ -465,24 +465,30 @@ XtremePOS.prototype = {
 						} catch (e) {
 							if ( self.is_tablet ) self.pos_error(e, "471: order_history.reprint()");
 						}
-						try {
-							self.tablet_response(Android.set_current(order_json, receipt_json), {});
-						} catch (e) {
-							if ( self.is_tablet ) self.pos_error(e, "475: order_history.reprint()");
-						}
-						self.current.print()
-						try {
-							self.tablet_response(Android.clear_current(), {});
-						} catch (e) {
-							if ( self.is_tablet ) self.pos_error(e, "484: order_history.reprint()");
-						}
-						var order_json = JSON.stringify( self.current.order );
-						var receipt_json = JSON.stringify( self.current.receipt_lines(self.current.order) );
-						try {
-							self.tablet_response(Android.set_current(order_json, receipt_json), {});
-						} catch (e) {
-							if ( self.is_tablet ) self.pos_error(e, "491: order_history.reprint()");
-						}
+						setTimeout(function() {
+							try {
+								self.tablet_response(Android.set_current(order_json, receipt_json), {});
+							} catch (e) {
+								if ( self.is_tablet ) self.pos_error(e, "475: order_history.reprint()");
+							}
+						}, 50);
+						setTimeout(function() { self.current.print() },  100);
+						setTimeout(function() {
+							try {
+								self.tablet_response(Android.clear_current(), {});
+							} catch (e) {
+								if ( self.is_tablet ) self.pos_error(e, "484: order_history.reprint()");
+							}
+						}, 150);
+						setTimeout(function() {
+							var order_json = JSON.stringify( self.current.order );
+							var receipt_json = JSON.stringify( self.current.receipt_lines(self.current.order) );
+							try {
+								self.tablet_response(Android.set_current(order_json, receipt_json), {});
+							} catch (e) {
+								if ( self.is_tablet ) self.pos_error(e, "491: order_history.reprint()");
+							}
+						}, 200);
 					});
 			}
 		},
