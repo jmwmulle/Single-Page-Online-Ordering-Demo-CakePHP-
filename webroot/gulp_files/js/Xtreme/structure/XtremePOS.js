@@ -543,10 +543,11 @@ XtremePOS.prototype = {
 					$(button).addClass(FX.loading);
 					var route = $(button).data('pressroute');
 					$(XT.router).trigger(C.ROUTE_REQUEST, {request:route, trigger: e});
+					setTimeout(function(){$(button).removeClass(FX.loading)}, 300);
 				}
 			}, 600);
 		});
-		$(C.BODY).on("mouseup", ".pos-button", function() { $(this).removeClass(FX.pressed) });
+//		$(C.BODY).on("mouseup", ".pos-button", function() { $(this).removeClass(FX.pressed) });
 		return this
 	},
 	tablet_response: function(response, handler) {
