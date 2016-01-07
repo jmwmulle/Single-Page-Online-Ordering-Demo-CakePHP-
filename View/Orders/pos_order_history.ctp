@@ -49,7 +49,7 @@
 						<?="$".$o['detail']['Invoice']['total'];?>
 					</td>
 					<td>
-					<a href="#" class="pos-button" data-route="order_history/reprint/<?=$id;?>">
+					<a href="#" class="modal-button pos-button" data-pressroute="order_history/reprint/<?=$id;?>">
 						<span>Reprint</span>
 					</a>
 				</tr>

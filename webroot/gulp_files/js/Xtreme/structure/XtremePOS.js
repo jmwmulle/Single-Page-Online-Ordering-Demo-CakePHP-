@@ -535,7 +535,7 @@ XtremePOS.prototype = {
 		this.DOM.pos_hero.message.text = $("#message span")[0];
 		this.DOM.error.box =  $("#fatal-error")[0];
 		this.DOM.error.message =  $("span.error-message", this.DOM.error.box)[0];
-		$(".pos-button").on("mousedown", function(e) {
+		$(C.BODY).on("mousedown", ".pos-button", function(e) {
 			$(this).addClass(FX.pressed);
 			var button = this;
 			setTimeout( function() {
