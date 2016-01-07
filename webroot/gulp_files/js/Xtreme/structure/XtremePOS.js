@@ -391,7 +391,7 @@ XtremePOS.prototype = {
 			self.pending.next = function() {
 				if ( !self.pending.list() ) {
 					try {
-						Android.play_tone();
+						Android.end_tone();
 					} catch(e) {
 						// if ( self.is_tablet) self.pos_error(e.message, "389: pending.next()");
 					}
