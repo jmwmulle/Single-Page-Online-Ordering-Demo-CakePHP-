@@ -546,7 +546,7 @@ XtremePOS.prototype = {
 				}
 			}, 600);
 		});
-		$(".pos-button").on("mouseup", function() { $(this).removeClass(FX.pressed) });
+		$(C.BODY).on("mouseup", ".pos-button", function() { $(this).removeClass(FX.pressed) });
 		return this
 	},
 	tablet_response: function(response, handler) {
