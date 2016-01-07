@@ -25,6 +25,12 @@ XT.route_collections.menu_ui = function() {
 							this.modal.hide();
 							setTimeout(function () { XT.menu.unstash() }, 300);
 						}
+						if (this.read('reveal_method') == 'condense') {
+													this.unset('url');
+													this.unset('launch_callback');
+													this.modal.hide();
+													setTimeout(function () { XT.menu.specials_view() }, 300);
+												}
 					},
 					launch: function () { window.xtr.splash.fold();}
 				}

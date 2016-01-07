@@ -104,7 +104,15 @@ XT.route_collections.pos_api = function() {
 			}
 		}
 	};
-
+	this.order_history = {
+		params: ["action", "id"],
+		callbacks:{
+			params_set: function() {
+				$(this.trigger.element).removeClass( FX.pressed );
+				XT.pos.order_history[this.read('action')](this.read('id'));
+			}
+		}
+	};
 	this.system = {
 		params: {sysvar: {url_fragment:true}, method: {url_fragment:true}, value: {url_fragment:true}},
 		url: {url:"system", defer:true, type: C.POST},

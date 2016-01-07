@@ -706,6 +706,24 @@
 			}
 		}
 
+		public function pos_order_history($id=false) {
+			$this->system_status();
+			if ( $this->request->header( 'User-Agent' ) == "xtreme-pos-tablet" || true ) {
+				$conditions = ["limit" => 10];
+				if ($id) $conditions['conditions'] = ['`order`.`id`' => $id];
+				$orders = $this->Order->find("all", $conditions);
+				$this->set("orders", $orders);
+				if ($id != false) {
+					$this->render_ajax_response(['success' => true, 'error' => false, 'data' => $orders]);
+				} else {
+					$this->render("pos_order_history", "ajax");
+				}
+			} else {
+				$this->redirect( "/menu" );
+			}
+
+		}
+
 		private function process_paypal_payment() {
 			// NOT VALID CODE, NOT IMPLEMENTED
 			if ( $this->Session->check( 'Cart.Paypal.Details' ) ) {

@@ -96,6 +96,12 @@ ul#orbcat-menu {
       -o-transform      : translate(2000px, 0);
       transform         : translate(2000px, 0);
   }
+  &.condensed {
+    width: 3rem;
+    li {
+      display:none;
+    }
+  }
 }
 
 li.orbcat {

@@ -5,7 +5,8 @@ var accept_messages = ["Challenge accepted.", "No stomach unfed.", "Get ready to
                        "I can refuse no appetite.", "Heed the call of hunger, mighty chef!", "Thwart yonder angry stomach!",
                        "Hells yeah I'ma cook that.", "Ain't no party like an Xtreme party.", "The drunk & hungry yearn for you...",
                        "Sauce. Cheese. Sauce. Cheese.", "Mountains are nice.", "BOOM goes the dynamite.", "I can has 'za?",
-                       "Psy... again? Can we change this?"
+                       "Psy... again? Can we change this?", "Marvelous! Simply marvelous!", "OPPA IS GANGNAM STYLE!",
+                       "So I says to Mabel, I says...", "9000 Calories, coming right up!", "This message just travelled from space!"
 ];
 
 XtremePOS = function() {
@@ -15,8 +16,9 @@ XtremePOS = function() {
 
 XtremePOS.prototype = {
 	constructor: XtremePOS,
+	stop_polling: false,
 	last_tone_play: 0,
-	init_list: ["buttons", "splash", "pending", "current", "delivery_times"],
+	init_list: ["buttons", "splash", "pending", "current", "delivery_times", "order_history"],
 	icon_classes: { F:"", D:"icon-double", R:"icon-right-side", L:"icon-left-side"},
 	update_interval: 3000,
 	printer: undefined,
@@ -54,6 +56,10 @@ XtremePOS.prototype = {
 			box: undefined,
 			button:undefined
 		},
+		order_history: {
+			box: undefined,
+			button: undefined
+		},
 		pos_hero: {
 			box: undefined,
 			message: {
@@ -64,6 +70,8 @@ XtremePOS.prototype = {
 		error: {
 			box: undefined,
 			mesage: undefined
+		},
+		history: {
 		}
 	},
 	buttons: {
@@ -117,7 +125,6 @@ XtremePOS.prototype = {
 					self.current.order = recovered;
 				} else {
 					self.current.order = self.pending.next();
-
 					try {
 						if (self.current.order) {
 							var r_lines = self.current.receipt_lines();
@@ -127,7 +134,7 @@ XtremePOS.prototype = {
 							self.tablet_response( Android.set_current( order_json, receipt_json) );
 						}
 					} catch (e) {
-						if ( self.is_tablet ) self.pos_error(e, "133: current.update()[1]");
+						if ( self.is_tablet ) self.pos_error(e, "132: current.update()[1]");
 					}
 				}
 				if ( self.current.order ) {
@@ -135,7 +142,7 @@ XtremePOS.prototype = {
 						Android.play_tone("gangnam");
 					} catch (e) {
 						console.log(e)
-						if (self.is_tablet) self.pos_error(e, "133: current.update()[2]");
+						if (self.is_tablet) self.pos_error(e, "140: current.update()[2]");
 						new Audio("files/gangnam_style.mp3").play();
 					}
 					var route = ["pos_reply", self.current.order.id, C.ACCEPTED].join(C.DS);
@@ -172,9 +179,10 @@ XtremePOS.prototype = {
 				setTimeout( function() { $(self.DOM.pos_hero.box).removeClass(FX.slide_right); }, 30);
 				setTimeout(function() { $(self.DOM.pos_hero.message.box).removeClass(FX.fade_out) }, 300);
 			};
-			self.current.receipt_lines = function() {
-				var s = self.current.order.Service;
-				var a = self.current.order.Service.address;
+			self.current.receipt_lines = function(order) {
+				if ( !defined(order) ) order = self.current.order;
+				var s = order.Service;
+				var a = s.address
 				var r = [];
 
 				r.push( [ s.order_method == "delivery" ? "DELIVERY (" + str_to_upper(s.pay_method) + ")" : "PICKUP", "h2", true]);
@@ -208,9 +216,9 @@ XtremePOS.prototype = {
 						r.push(["****************************************************************", "h5", true]);
 					}
 				}
-				for (var id in self.current.order.Order) {
-					var o = self.current.order.Order[id];
-					var inv = self.current.order.Invoice;
+				for (var id in order.Order) {
+					var o = order.Order[id];
+					var inv = order.Invoice;
 					var rank = o.pricing.rank;
 					var size = o.orb.Pricedict["l"+rank];
 					var o_str = "(" + o.pricing.quantity + ")" + " x " + size + " " + o.orb.Orb.title;
@@ -275,7 +283,6 @@ XtremePOS.prototype = {
 				r.push([hst, "h4", true]);
 				r.push([total, "h4", true]);
 				r.push(["****************************************************************", "h5", true]);
-				pr(r);
 				for (var i=0; i < r.length; i++) {
 					r[i] = [ r[i][0], obj_values( self.styles[ r[i][1] ]) ];
 				}
@@ -288,7 +295,8 @@ XtremePOS.prototype = {
 					if ( self.is_tablet ) {
 						self.pos_error( e, "283: current.print()" );
 					} else {
-						pr(self.current.receipt_lines())
+						pr(self.current.receipt_lines(), "RECEIPT")
+						return true;
 					}
 				}
 			};
@@ -323,7 +331,7 @@ XtremePOS.prototype = {
 			self.pending.list = function() { return self.pending.count() > 0 ? self.pending.orders : false };
 
 			self.pending.fetch = function(orders) {
-				//if ( self.pending.fetch_count > 2) return;
+				if (self.stop_polling) return;
 				self.pending.fetch_count++;
 				if ( defined(orders) && orders.length > 0 ) {
 					var update = self.pending.count() == 0 && self.current.order == false;
@@ -414,18 +422,74 @@ XtremePOS.prototype = {
 	delivery_times: {
 		init: function(self) {
 			self.delivery_times.show = function() {
-				$(self.DOM.delivery_times.button).addClass(FX.slide_right);
+				self.tab_state(C.HIDE);
 				$(self.DOM.delivery_times.box).removeClass(FX.hidden);
-				setTimeout(function() { $(self.DOM.delivery_times.box).removeClass(FX.fade_out); }, 150);
+				setTimeout(function() { $(self.DOM.delivery_times.box).removeClass(FX.fade_out); }, 450);
 			};
 			self.delivery_times.hide = function() {
 				$(self.DOM.delivery_times.box).addClass(FX.fade_out);
 				setTimeout(function() { $(self.DOM.delivery_times.box).addClass(FX.hidden); }, 300);
-				setTimeout(function() { $(self.DOM.delivery_times.button).removeClass(FX.slide_right); }, 450);
+				setTimeout(function() { self.tab_state(C.SHOW); }, 600);
 			};
 		},
 		hide: undefined,
 		show: undefined
+	},
+	order_history: {
+		max_orders: 10,
+		init: function(self) {
+			self.order_history.show = function() {
+				self.tab_state(C.HIDE);
+				$(".container", self.DOM.order_history.box).load([XT.host, "order-history"].join(C.DS));
+				$(self.DOM.order_history.box).removeClass(FX.hidden);
+				setTimeout(function() { $(self.DOM.order_history.box).removeClass(FX.fade_out); }, 300);
+			};
+			self.order_history.hide = function() {
+				$(self.DOM.order_history.box).addClass(FX.fade_out);
+				setTimeout(function() { $(self.DOM.order_history.box).addClass(FX.hidden); }, 300);
+				setTimeout(function() { self.tab_state(C.SHOW); }, 600);
+			};
+			self.order_history.fetch = function() {
+				$.get([XT.host, "order-history"].join(C.DS), function(response) { pr(response) });
+			};
+			self.order_history.reprint = function(id) {
+				/* so sorry for this insane garbage, the java developer was gone by the time the need for this
+				   functionality was introduced D: */
+				$.get([XT.host, 'order-history', id].join(C.DS),
+					function(response) {
+						var order = $.parseJSON($.parseJSON(response).data[0].Order.detail);
+						var order_json = JSON.stringify( order );
+						var receipt_json = JSON.stringify( self.current.receipt_lines(order) );
+						try {
+							self.tablet_response(Android.clear_current(), {});
+						} catch (e) {
+							if ( self.is_tablet ) self.pos_error(e, "471: order_history.reprint()");
+						}
+						try {
+							self.tablet_response(Android.set_current(order_json, receipt_json), {});
+						} catch (e) {
+							if ( self.is_tablet ) self.pos_error(e, "475: order_history.reprint()");
+						}
+						self.current.print()
+						try {
+							self.tablet_response(Android.clear_current(), {});
+						} catch (e) {
+							if ( self.is_tablet ) self.pos_error(e, "484: order_history.reprint()");
+						}
+						var order_json = JSON.stringify( self.current.order );
+						var receipt_json = JSON.stringify( self.current.receipt_lines(self.current.order) );
+						try {
+							self.tablet_response(Android.set_current(order_json, receipt_json), {});
+						} catch (e) {
+							if ( self.is_tablet ) self.pos_error(e, "491: order_history.reprint()");
+						}
+					});
+			}
+		},
+		show: undefined,
+		hide: undefined,
+		fetch: undefined,
+		update: undefined
 	},
 	init: function() {
 		this.is_tablet = navigator.userAgent == C.XTREME_TABLET_USER_AGENT;
@@ -464,6 +528,8 @@ XtremePOS.prototype = {
 		this.DOM.order_method = $("h2.order-method")[0];
 		this.DOM.delivery_times.box = $("#delivery-times")[0];
 		this.DOM.delivery_times.button = $("#delivery-time-button")[0];
+		this.DOM.order_history.box = $("#order-history")[0];
+		this.DOM.order_history.button = $("#order-history-button")[0];
 		this.DOM.pos_hero.box = $("#accept-acknowledge")[0];
 		this.DOM.pos_hero.message.box = $("#message")[0];
 		this.DOM.pos_hero.message.text = $("#message span")[0];
@@ -557,5 +623,16 @@ XtremePOS.prototype = {
 			.removeClass("pickup delivery")
 			.addClass(this.current.order.Service.order_method)
 			.append( $("<span>").html(this.current.order.Service.order_method.toUpperCase()));
+	},
+	toggle_polling: function() {
+		this.stop_polling = this.stop_polling === false;
+		$("#polling-button")[this.stop_polling ? "addClass" : "removeClass"](FX.active);
+		if (this.stop_polling === false) this.pending.fetch();
+		pr(this.stop_polling, "POLLING STATE");
+	},
+	tab_state: function(state) {
+		$(".pos-tab")[state == C.HIDE ? "addClass" : "removeClass"](FX.slide_right);
+		setTimeout( function() { $(".pos-tab").removeClass(FX.loading) }, 300);
 	}
+
 };

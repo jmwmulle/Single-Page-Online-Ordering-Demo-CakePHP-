@@ -55,8 +55,7 @@ XtremeRoute.prototype = {
 			this.url = {url:undefined, type: undefined, defer: undefined};
 			if ("url" in route_data) {this.set_url(route_data.url) }
 			if ("loading_animation" in route_data) this.suppress_loader = !route_data.loading_animation;
-		} catch (e) {
-		}
+		} catch (e) {}
 
 		this.__stop_propagation = "propagates" in route_data ? !route_data.propagates : true;
 		this.stop_propagation();

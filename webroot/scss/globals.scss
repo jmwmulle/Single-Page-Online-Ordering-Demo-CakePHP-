@@ -62,7 +62,9 @@ body#vendor {
 background-image $global-transition-time ease-in-out,
 color $global-transition-time ease-in-out,
 opacity $global-transition-time ease-in-out,
-transform $global-transition-time ease-in-out; }
+transform $global-transition-time ease-in-out,
+width $global-transition-time ease-in-out
+}
 
 li { list-style-type: none  !important; }
 hr { margin: $tight-padding 0 !important;}
@@ -249,6 +251,9 @@ textarea.note { height:2rem;}
   overflow-y:hidden;
   padding: $medium-padding;
   @include orb-card-gradient;
+  &.expanded {
+    width:62.85em;
+  }
   &.slide-down {
     transform: translateY(2000px);
     img { transform:  rotate(540deg); }

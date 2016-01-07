@@ -44,7 +44,10 @@
 		</div>
 	</div>
 </div>
-<div id="delivery-times" class="fade-out hidden">
+
+<!--- DELIVERY TIMES PANE --->
+
+<div id="delivery-times" class="fade-out hidden tab-panel">
 	<div class="container">
 		<div class="row">
 			<div class="large-12 columns">
@@ -55,17 +58,30 @@
 					</li>
 					<?php endforeach;?>
 				</ul>
-				<a href="#" class="modal-button lrg full-width cancel" data-route="delivery_time_buttons/hide">
+				<a href="#" class="modal-button lrg full-width cancel bottom-rounded" data-route="delivery_time_buttons/hide">
 					<span class="icon-cancel"></span><span class="text">CANCEL</span>
 				</a>
 			</div>
 		</div>
 	</div>
 </div>
-<a href="#" id="delivery-time-button" class="pos-button" data-pressroute="delivery_time_buttons/show">
+
+<!--- ORDER HISTORY PANE --->
+
+<div id="order-history" class="fade-out hidden tab-panel">
+	<div class="container">
+	</div>
+</div>
+
+<!--- TABS --->
+<a href="#" id="delivery-time-button" class="pos-button pos-tab" data-pressroute="delivery_time_buttons/show">
 	<span class="text">SET DELIVERY TIME</span>
 </a>
+<a href="#" id="order-history-button" class="pos-button pos-tab" data-pressroute="order_history/show">
+	<span class="text">ORDER HISTORY</span>
+</a>
 
+<!--- ORDER UI --->
 <div id="accept-acknowledge" class="slide-right">
 	<div id="post-accept-wrapper" class="row">
 		<div id="post-accept-panel" class="small-12 columns">
@@ -82,6 +98,7 @@
 	</p>
 </div>
 
+<!--- ERROR MESSAGES --->
 <div id="fatal-error" class="fade-out hidden">
 	<h2>ERROR: <span class="error-message"></span></h2>
 	<h3>What To Do:</h3>
@@ -93,7 +110,7 @@
 	</ul>
 </div>
 
-
+<div id="polling-button" onclick="XT.pos.toggle_polling()"> TOGGLE POLLING </div>
 <main id="js-console" class="hidden">
 <h4 id="called-from"></h4>
 </main>

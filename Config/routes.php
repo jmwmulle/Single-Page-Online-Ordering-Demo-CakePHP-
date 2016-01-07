@@ -76,6 +76,7 @@
 	Router::connect( '/review-order',               [ CTR => 'orders', ATN => 'review_order' ] );
 	Router::connect( '/pos',                        [ CTR => 'orders', ATN => 'pos' ] );
 	Router::connect( '/resolve-order/*',            [ CTR => 'orders', ATN => 'pos_resolve' ] );
+	Router::connect( '/order-history/*',            [ CTR => 'orders', ATN => 'pos_order_history' ] );
 
 	/** OPTFLAGS CONTROLLER */
 	Router::connect( '/flagmap',                    [ CTR => 'optflags', ATN => 'ajax_list' ] );

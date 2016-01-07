@@ -1,8 +1,3 @@
-@-webkit-keyframes panel-stow {
-  0% { transform: rotate(-90deg) translateY(rem-calc(375px)); }
-  20% { transform: rotate(-90deg) translateY(rem-calc(365px)); }
-  100% { transform: rotate(-90deg) translateY(rem-calc(475px)); }
-}
 
 @-webkit-keyframes response-wait {
 
@@ -377,12 +372,11 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-#delivery-time-button {
-  position: absolute;
-  width:400px;
+.pos-tab {
+  left:50px;
+  width:250px;
   height:60px;
-  left:0px;
-  top:400px;
+  position: absolute;
   border-top-left-radius: rem-calc(16px);
   border-top-right-radius: rem-calc(16px);
   box-shadow: 0px -4px 8px $black-a50;
@@ -396,18 +390,22 @@ h1, h2, h3, h4, h5 {
   color: $white !important;
   transform: rotate(-90deg) translateY(rem-calc(375px));
   &.slide-right {
-    transform: rotate(-90deg) translateY(rem-calc(375px));
-    -webkit-animation : panel-stow 300ms ease-in 1 normal 0s running forwards;
-//    transform: rotate(-90deg) translateY(rem-calc(450px));
+    transform: rotate(-90deg) translateY(rem-calc(450px));
   }
 }
-#delivery-times {
+
+#order-history-button { top:290px; }
+#delivery-time-button { top:565px; }
+
+
+.tab-panel {
   position: absolute;
   top:0;
   left:0;
   width:100%;
   height:100%;
   background-color: $black-a50;
+  .content-box { height: 665px; }
   .container {
     position: absolute;
     top: rem-calc(110px);
@@ -445,12 +443,40 @@ h1, h2, h3, h4, h5 {
         color: $white;
       }
     }
-    a.cancel {
+    a.bottom-rounded {
       border-bottom-left-radius: rem-calc(16px);
       border-bottom-right-radius: rem-calc(16px);
     }
+    a.bottom-anchored {
+      position:absolute;
+      width:465px;
+      bottom: rem-calc(16px);
+    }
   }
-
+  table {
+    color: $text-grey;
+    border-spacing:0;
+    width:100%;
+    thead {
+      text-transform: uppercase;
+      tr {
+      background-color: $text-grey !important;
+      color:$white;
+       th {
+         padding-top:5px;
+         border-bottom:3px solid $white;
+       }
+      }
+    }
+    tr:nth-of-type(odd) {
+      background-color: lighten($very-light-grey, 5%);
+    }
+    td {
+      @include HelveticaMdCn;
+    }
+    span.icon-green { color:$success-color;}
+    span.icon-red { color:$xtreme-red;}
+  }
 }
 
 div#loading-img {
@@ -463,3 +489,21 @@ div#loading-img {
   z-index:11;
 }
 
+#polling-button {
+  position: fixed;
+  bottom:20px;
+  left:20px;
+  color: $white;
+  background-color: $dark-grey;
+  &.active {
+    background-color: $xtreme-yellow;
+    color: $dark-grey;
+  }
+  z-index:9999999999;
+  border:2px solid $white;
+  padding: 8px;
+  &:hover {
+    background-color: $light-grey;
+    color:$xtreme-red;
+  }
+}

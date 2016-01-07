@@ -1,5 +1,5 @@
 <div id='monthly-content-wrapper' class='float-pane'>
-	<div id='launch-special' class="">
+	<div id='launch-special' class="" data-route="menu/condense">
 		<h1>Online Special!</h1>
 		<h3>Order <span class="red">A</span></h3>
 		<h3>Large Pizza</h3>
