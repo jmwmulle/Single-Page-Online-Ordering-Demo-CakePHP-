@@ -479,6 +479,55 @@ window.xtr.route_collections.vendor_ui = function() {
 		}
 	};
 
+	this.specials_edit = {
+		params: { id: {value: null}, action: {}, action_arg: {} },
+		modal: C.PRIMARY,
+		callbacks: {
+			params_set: function() {
+				switch ( this.read('action') ) {
+					case "edit":
+						XT.vendor_ui.edit_cell('specials', this.read('id'), this.read('action_arg'));
+						break;
+					case "cancel":
+						XT.vendor_ui.cancel_cell_editing('specials', this.read('id'), this.read('action_arg'));
+						break;
+					case "delete":
+						var confirmation_box = as_id(['delete', 'specials', this.read('id')].join("-"));
+						switch (this.read('action_arg')) {
+							case "confirm":
+								$(confirmation_box).addClass(XSM.effects.fade_out).removeClass(XSM.effects.hidden);
+								setTimeout(function () { $(confirmation_box).removeClass(XSM.effects.fade_out);}, 300);
+								this.unset('launch');
+								break;
+							case "cancel":
+								$(confirmation_box).addClass(XSM.effects.fade_out);
+								setTimeout(function () { $(confirmation_box).addClass(XSM.effects.hidden); }, 300);
+								this.unset('launch');
+								break;
+							case "delete":
+								this.url = {
+									url: ["delete-menu-item", this.read('id')].join(C.DS),
+									type: C.POST,
+									defer: true
+								};
+								this.set_callback("launch", function () {
+									XT.router.cake_ajax_response(this.deferral_data, {
+										callback: function () {
+											$(XSM.vendor_ui.menu_tab).load([XT.host, "vendor-ui", "menu"].join(C.DS), function () {
+												XT.vendor_ui.data_tables('menu');
+												XT.vendor_ui.fix_breakouts();
+											});
+										}
+									}, true, true);
+								});
+						}
+
+				}
+
+			}
+		}
+	};
+
 	this.specials_add = {
 		params: ['action'],
 		url: {url:'add-special', type: C.GET},
@@ -503,7 +552,7 @@ window.xtr.route_collections.vendor_ui = function() {
 				}
 			}
 		}
-	}
+	};
 
 	this.specials_add_orbcat_filter = {
 		params: ['action'],
@@ -514,6 +563,38 @@ window.xtr.route_collections.vendor_ui = function() {
 						XT.vendor_ui.specials_orbcat_filter();
 						break;
 				}
+			}
+		}
+	}
+
+	this.specials_add_conditions = {
+		params:['action'],
+		callbacks: {
+			params_set: function() {
+				XT.vendor_ui.toggle_specials_add_conditions()
+			}
+		}
+	}
+
+	this.specials_criteria = {
+			params:['target', 'action'],
+			callbacks: {
+				params_set: function() {
+					switch (this.read('action') ) {
+						case "choose":
+							XT.vendor_ui.toggle_specials_options(this.read('target'), false)
+							break;
+						case "restore":
+							XT.vendor_ui.toggle_specials_options(this.read('target'), true)
+					}
+				}
+			}
+		},
+	this.specials_add_close_breakout = {
+		params: ['parent', 'target'],
+		callbacks: {
+			params_set: function() {
+				XT.vendor_ui.close_specials_breakout(this.read('parent'), this.read('target'));
 			}
 		}
 	}

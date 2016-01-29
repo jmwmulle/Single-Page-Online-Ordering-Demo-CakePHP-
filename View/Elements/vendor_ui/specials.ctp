@@ -6,7 +6,8 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-$ready_to_list_specials = false;
+$ready_to_list_specials = true;
+//db($specials);
 ?>
 <div id="specials-tab">
 	<!-- Menu Options tab proper -->
@@ -26,7 +27,7 @@ $ready_to_list_specials = false;
 					<tr>
 						<th><a href="#">Vendor Title</th>
 						<th><a href="#">Menu Title</th>
-						<th>Opts</th>
+						<th>Orbs</th>
 						<th>Price</th>
 						<th>&nbsp;</th>
 					</tr>
@@ -43,7 +44,7 @@ $ready_to_list_specials = false;
 						<div class="specials-attr display">
 							<?=$sp[ 'vendor_title' ] ?  $sp[ 'vendor_title' ] : "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"?>
 						</div>
-						<div class="specials-attr edit fade-out hidden">
+						<div class="specials-attr edit hidden">
 							<form>
 								<input type="text" name="Special[vendor_title]" value="<?=$sp['vendor_title'];?>" >
 							</form>
@@ -59,7 +60,7 @@ $ready_to_list_specials = false;
 					</td>
 					<td id='specials-<?=$sid;?>-title' data-route="specials_edit/<?=$sid;?>/edit/title">
 						<div class="specials-attr display"><?=$sp[ 'title' ] ?></div>
-						<div class="specials-attr edit fade-out hidden">
+						<div class="specials-attr edit hidden">
 							<form>
 								<input type="text" name="Special[title]" value="<?=$sp['title'];?>" >
 							</form>
@@ -79,9 +80,9 @@ $ready_to_list_specials = false;
 							endforeach;?>
 					</td>
 					<td id="specials-<?=$sid;?>-pricing" data-route="specials_pricelist/launch/false/<?=$sid;?>">
-						<a href="#">Choose...</a>
+						<div class="specials-attr display"><?=money_format( "%#3.2n",$sp['price']);?>
 					<td>
-						<a href="#" class="modal-button lrg delete full-width text-center" data-route="specials_config/<?=$sid;?>/delete/confirm">
+						<a href="#" class="modal-button lrg delete full-width text-center" data-route="specials_edit/<?=$sid;?>/delete/confirm">
 							<span class="icon-cancel textless"></span>
 						</a>
 

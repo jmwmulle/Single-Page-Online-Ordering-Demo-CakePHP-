@@ -154,7 +154,11 @@ var xt_vendor_ui = {
 			display_element = XSM.vendor_ui.orbopt_attr_display;
 			edit_element = XSM.vendor_ui.orbopt_attr_edit;
 		}
-		pr([table, id, attribute, cell_id], "edit_cell");
+		if (table == "specials") {
+			display_element = XSM.vendor_ui.specials_attr_display;
+			edit_element = XSM.vendor_ui.specials_attr_edit;
+		}
+
 		$(display_element, cell_id).addClass(FX.fade_out);
 		setTimeout( function() {
 			$(display_element, cell_id).addClass(FX.hidden);
@@ -170,7 +174,10 @@ var xt_vendor_ui = {
 			display_element = XSM.vendor_ui.orbopt_attr_display;
 			edit_element = XSM.vendor_ui.orbopt_attr_edit;
 		}
-		pr([table, id, attribute, cell_id], "cancel_cell_editing");
+		if (table == "specials") {
+			display_element = XSM.vendor_ui.specials_attr_display;
+			edit_element = XSM.vendor_ui.specials_attr_edit;
+		}
 		$(edit_element, cell_id).addClass(FX.fade_out);
 		setTimeout(function() { $(display_element, cell_id).removeClass(FX.fade_out);}, 30)
 		setTimeout(function() {
@@ -306,6 +313,29 @@ var xt_vendor_ui = {
 		}
 	},
 
+	toggle_specials_add_conditions: function() {
+		var add = FX.active;
+		var remove = FX.inactive;
+		var disabled = false;
+		if ( $("#specials-add-conditions-button", C.BODY).hasClass(FX.active) ) {
+			add = FX.inactive;
+			remove = FX.active;
+			disabled = true;
+		}
+		$("#specials-add-conditions-button", C.BODY).addClass(add).removeClass(remove);
+		if (disabled) {
+			$(".specials-add-condition").each(function() {
+				$(this).attr('disabled', true).val($("option:first", this).val());
+			});
+
+		} else {
+			$(".specials-add-condition", C.BODY).removeAttr('disabled');
+		}
+
+
+
+	},
+
 	overflagged: function(opt_id, optflag_id) {
 		var true_count = 0;
 		var flag_map = {0: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null};
@@ -385,6 +415,46 @@ var xt_vendor_ui = {
 				)
 			)
 		);
+	},
 
+	toggle_specials_options: function(target, cancel) {
+		var select = as_id(["add-special", target, "select"].join("-"));
+		var wrapper = as_id(["add-special", target, "wrapper"].join("-"));
+		var choice = as_id(["add-special", target, "choice"].join("-"));
+		var value = $( $(select).find(":selected")[0] ).val();
+		var breakout = as_id(["add-special", target, value].join("-"));
+
+		if (!cancel) {
+			setTimeout(function() {$( breakout ).removeClass(FX.hidden); }, 330);
+			setTimeout(function() {$( breakout ).removeClass(FX.fade_out); }, 390);
+		} else {
+			$( choice ).addClass(FX.fade_out);
+			setTimeout(function() { $( choice ).addClass(FX.hidden); }, 360);
+			setTimeout(function() {
+				$(select).val($("option:first", select).val());
+			}, 330);
+			setTimeout(function() { $(wrapper).removeClass(FX.hidden) }, 330);
+			setTimeout(function() { $(wrapper).removeClass(FX.fade_out) }, 360);
+		}
+
+	},
+
+	close_specials_breakout: function(parent, target) {
+		var breakout = as_id(['add-special', parent, target].join("-"));
+		var select = as_id(['add-special', parent, 'select'].join("-"));
+		var wrapper = as_id(['add-special', parent, 'wrapper'].join("-"));
+		var choice = as_id(['add-special', parent, 'choice'].join("-"));
+		var value = $(select).val();
+
+		$(breakout).addClass(FX.fade_out);
+		setTimeout(function() { $( wrapper ).addClass(FX.fade_out); }, 330);
+		setTimeout(function() { $( breakout ).addClass(FX.hidden); }, 330);
+		setTimeout(function() { $( choice ).removeClass(FX.hidden); }, 660);
+		setTimeout(function() { $( wrapper ).addClass(FX.hidden); }, 690);
+		setTimeout(function() { $("span.select-choice", choice).html(value); }, 700);
+		setTimeout(function() { $( choice ).removeClass(FX.fade_out); }, 1030);
 	}
+
+
+
 }

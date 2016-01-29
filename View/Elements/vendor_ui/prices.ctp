@@ -27,8 +27,8 @@ $oid = $orb['Orb']['id'];
 				<?php echo $d ? $d : "&nbsp;"; ?>
 			</span>
 			<br/>
-			<span <?php echo ___dA($p_data); ?> class='pricelist'>
-				<?php echo $p ? money_format( "%#3.2n", $orb[ 'Pricelist' ][ "p$i" ] ): "&nbsp;"; ?>
+			<span <?=___dA($p_data); ?> class='pricelist'>
+				<?=$p ? money_format( "%#3.2n", $orb[ 'Pricelist' ][ "p$i" ] ): "&nbsp;"; ?>
 			</span>
 		</div>
 <?php }?>
@@ -48,11 +48,11 @@ $oid = $orb['Orb']['id'];
 			</div>
 
 			<form>
-				<input type="hidden" name="Orb[id]" value="<?php echo $oid;?>">
+				<input type="hidden" name="Orb[id]" value="<?=$oid;?>">
 			<?php for ( $i = 1; $i <= 5; $i++ ) {
 				$p = $orb[ 'Pricelist' ][ "p$i" ];
 				$d = $orb[ 'Pricedict' ][ "l$i" ];
-				$data = array('rank' => $i);
+				$data = ['rank' => $i];
 				?>
 				<div class="price-rank-edit">
 					<div class="price-value">

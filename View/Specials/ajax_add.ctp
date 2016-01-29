@@ -12,8 +12,6 @@ $default_oc_id = array_keys($orbcats)[0];
 <div class="row">
 	<div class="large-12 columns">
 		<h1>Create a new Special</h1>
-
-		<span class="note">This is still <emphasis>very</emphasis> in development; saving is not yet enabled. Basically this is the UI you'll eventually use.</span><br />
 	</div>
 	<?=$this->Form->create('Special');?>
 	<div class="large-6 columns">
@@ -47,17 +45,123 @@ $default_oc_id = array_keys($orbcats)[0];
 	<div class="large-12 columns">
 		<h3>Add Menu Items</h3>
 	</div>
-	<div id="add-special-orbcats-list" class="large-3 columns">
-		<div clas="input select">
-			<label for="special-orbcats-list-select">Menu Category</label>
-			<select id="special-orbcats-list-select" data-changeroute="specials_add_orbcat_filter/reveal">
-			<?php foreach ($orbcats as $id => $oc):?>
-				<option value="<?=$id;?>"><?=$oc;?></option>
-			<?php endforeach;?>
-			</select>
+	<div class="row">
+		<!--- SPECIALS SET-CRITERIA --->
+		<div id="add-special-criteria" class="large-4 columns">
+			<div id="add-special-criteria-wrapper" class="input select">
+				<label for="add-special-criteria-select">From</label>
+				<select id="add-special-criteria-select" data-changeroute="specials_criteria/criteria/choose">
+					<option>--</option>
+					<option value="orbcats">A category...</option>
+					<option value="orbs">A custom list...</option>
+				</select>
+			</div>
+			<div id="add-special-criteria-choice" class="hidden fade-out">
+				<label>From</label>
+				<span class="select-choice" data-route="specials_criteria/criteria/restore"></span>
+			</div>
+			<div id="add-special-criteria-orbcats" class="breakout pricing hidden fade-out">
+				<div clas="input select">
+					<label for="add-special-criteria-orbcats-select">Select a Category</label>
+					<select id="add-special-criteria-orbcats-select" data-changeroute="specials_add_orbcat_filter/reveal">
+					<?php foreach ($orbcats as $id => $oc):?>
+						<option value="<?=$id;?>"><?=$oc;?></option>
+					<?php endforeach;?>
+					</select>
+					<div>
+						<a href="#" class="modal-button full-width" data-route="specials_add_close_breakout/criteria/orbcats">
+							<span>OK</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--- SPECIALS SET-METHOD--->
+		<div id="add-special-method" class="large-4 columns">
+			<div id="add-special-method-wrapper" class="input select">
+				<label for="add-special-method-select">&nbsp;</label>
+				<select id="add-special-method-select" data-changeroute="specials_criteria/method/choose">
+					<option>--</option>
+					<option value="choose">Choose</option>
+					<option value="receive">Receive</option>
+				</select>
+			</div>
+			<div id="add-special-method-choice" class="select hidden fade-out">
+				<label>&nbsp;</label>
+				<span class="select-choice" data-route="specials_criteria/method/restore"></span>
+			</div>
+		</div>
+
+		<div id="add-special-quantity" class="large-4 columns">
+			<div id="add-special-quantity-wrapper" class="input select">
+				<label for="add-special-quantity-select">&nbsp;</label>
+				<select id="add-special-quantity-select">
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+					<option>6</option>
+					<option>7</option>
+					<option>8</option>
+					<option>9</option>
+					<option>10</option>
+				</select>
+			</div>
 		</div>
 	</div>
-	<div id="add-special-orbs-list" class="large-3 columns">
+	<div class="row">
+		<div class="large-3 columns">
+			<label>&nbsp;</label>
+			<a href="#" id="specials-add-conditions-button" class="modal-button cancel full-width inactive" data-route="specials_add_conditions/toggle">
+				<span>Add Conditions</span>
+			</a>
+		</div>
+		<div id="add-special-conditions-order-content" class="large-3 columns">
+			<div class="input select">
+				<label for="add-special-conditions-order-content-select">Order Includes</label>
+				<select id="add-special-conditions-order-content-select"  class="specials-add-condition" disabled>
+					<option value="order_content/false">--</option>
+					<option value="order_content/max">Specific item</option>
+					<option value="order_content/min">From category</option>
+				</select>
+			</div>
+		</div>
+		<div id="add-special-conditions-price" class="large-3 columns">
+			<div class="input select">
+				<label for="add-special-conditions-price-select">Order Costs</label>
+				<select id="add-special-conditions-price-select"  class="specials-add-condition" disabled>
+					<option value="price/false">--</option>
+					<option value="price/max">Less than</option>
+					<option value="price/min">At least</option>
+				</select>
+			</div>
+		</div>
+		<div id="add-special-conditions-order-method" class="large-3 columns">
+			<div class="input select">
+				<label for="add-special-conditions-order-method-select">Orders For</label>
+				<select id="add-special-conditions-order-method-select" class="specials-add-condition" disabled>
+					<option value="price/false">--</option>
+					<option value="price/max">Delivery</option>
+					<option value="price/min">Pick-up</option>
+				</select>
+			</div>
+		</div>
+		<div id="add-special-conditions-order-content-breakout" class="breakout pricing hidden fade-out">
+			<div clas="input select">
+				<p>order conditions</p>
+			</div>
+		</div>
+		<div id="add-special-conditions-order-price-breakout" class="breakout pricing hidden fade-out">
+			<div clas="input select">
+				<p>order conditions</p>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="add-special-orbs-list" class="breakout hidden fade-out">
 		<div clas="input select">
 			<label for="special-orbs-list-select">Menu Item</label>
 			<select id="special-orbs-list-select">
@@ -70,25 +174,14 @@ $default_oc_id = array_keys($orbcats)[0];
 				</option>
 			<?php endforeach;?>
 			</select>
+			<div>
+				<a href="#" class="modal-button full-width" data-route="specials_add_close_breakout/orbs">
+					<span>OK</span>
+				</a>
+			</div>
 		</div>
 	</div>
-	<div id="add-special-orbs-quantity" class="large-3 columns">
-		<div clas="input select">
-			<label for="special-orbs-quantity-select">Quantity</label>
-			<select id="special-orbs-quantity-select">
-				<option>1</option>
-				<option>2</option>
-				<option>3</option>
-				<option>4</option>
-				<option>5</option>
-				<option>6</option>
-				<option>7</option>
-				<option>8</option>
-				<option>9</option>
-				<option>10</option>
-			</select>
-		</div>
-	</div>
+
 	<div class="large-3 columns">
 		<label>&nbsp;</label>
 		<a href="#" class="modal-button full-width" data-route="specials_add/add_orb">

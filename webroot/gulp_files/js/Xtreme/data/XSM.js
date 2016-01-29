@@ -254,6 +254,8 @@ var XSM = {
 		orbopt_optgroup_config_form: "#orbopt-optgroup-config-form",
 		orbopt_selection_template: "#orbopt-selection-template",
 		price_dict_update_form: ".price-dict-update-form",
+		specials_attr_display: "div.specials-attr.display",
+		specials_attr_edit: "div.specials-attr.edit",
 		ui_tabs: "#ui-tabs"
 	},
 	footer: {

@@ -594,6 +594,11 @@ li.sysvar {
       height: 111px;
     }
   }
+
+  &.modal {
+    width:62.75rem;
+  }
+
 }
 
 // DATA TABLES
@@ -705,3 +710,13 @@ ul.inline {
   }
 }
 
+span.select-choice {
+  font-size: 18px;
+    width: 100%;
+    display: inline-block;
+    padding-top: .5em;
+    text-align: center;
+  &:hover {
+    color:$xtreme-red;
+  }
+}

@@ -83,7 +83,7 @@
 
 <!--- ORDER UI --->
 <div id="accept-acknowledge" class="slide-right">
-	<div id="post-accept-wrapper" class="row">
+	<div id="post-accept-wrapper" class="">
 		<div id="post-accept-panel" class="small-12 columns">
 			<a id="order-print-button" class="modal-button full-width pos-button" data-pressroute="pos_print">
 				<span class="text">PRINT</span>

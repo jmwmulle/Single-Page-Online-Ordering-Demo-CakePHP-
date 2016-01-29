@@ -5384,6 +5384,8 @@ li.sysvar {
     .breakout.pricing .price-rank-edit {
       width: 120px;
       height: 111px; }
+  .breakout.modal {
+    width: 62.75rem; }
 
 .dataTables_length, .dataTables_filter {
   display: inline-block;
@@ -5494,3 +5496,12 @@ ul.inline {
   font-size: 0.75rem; }
   ul.inline li {
     display: inline-block; }
+
+span.select-choice {
+  font-size: 18px;
+  width: 100%;
+  display: inline-block;
+  padding-top: 0.5em;
+  text-align: center; }
+  span.select-choice:hover {
+    color: #e02027; }

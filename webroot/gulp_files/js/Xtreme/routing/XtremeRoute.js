@@ -57,7 +57,11 @@ XtremeRoute.prototype = {
 			if ("loading_animation" in route_data) this.suppress_loader = !route_data.loading_animation;
 		} catch (e) {}
 
-		this.__stop_propagation = "propagates" in route_data ? !route_data.propagates : true;
+		try {
+			this.__stop_propagation = "propagates" in route_data ? !route_data.propagates : true;
+		} catch(e) {
+			throw("Route not found");
+		}
 		this.stop_propagation();
 
 		if ("params" in route_data) {
