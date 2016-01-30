@@ -216,6 +216,7 @@ XtremePOS.prototype = {
 						r.push(["****************************************************************", "h5", true]);
 					}
 				}
+
 				for (var id in order.Order) {
 					var o = order.Order[id];
 					var inv = order.Invoice;
@@ -249,7 +250,7 @@ XtremePOS.prototype = {
 						var opt_str = [];
 						for (var i in o.orbopts) {
 							var opt = o.orbopts[i].Orbopt;
-							//if (opt.default) continue;
+							var not = opt.included ? "" : "**NOT** ";
 							var coverage;
 							switch (opt.coverage) {
 								case "L":
@@ -266,7 +267,7 @@ XtremePOS.prototype = {
 									break
 							}
 
-							r.push(["     " + coverage + opt.title, "small", true]);
+							r.push(["     " + not + coverage + opt.title, "small", true]);
 						}
 					}
 					if ( o.orb.Orb.note ) r.push(["Note: " + o.orb.Orb.note, "small", true]);
@@ -471,15 +472,15 @@ XtremePOS.prototype = {
 							} catch (e) {
 								if ( self.is_tablet ) self.pos_error(e, "475: order_history.reprint()");
 							}
-						}, 50);
-						setTimeout(function() { self.current.print() },  100);
+						}, 250);
+						setTimeout(function() { self.current.print() },  500);
 						setTimeout(function() {
 							try {
 								self.tablet_response(Android.clear_current(), {});
 							} catch (e) {
 								if ( self.is_tablet ) self.pos_error(e, "484: order_history.reprint()");
 							}
-						}, 150);
+						}, 750);
 						setTimeout(function() {
 							var order_json = JSON.stringify( self.current.order );
 							var receipt_json = JSON.stringify( self.current.receipt_lines(self.current.order) );
@@ -488,7 +489,7 @@ XtremePOS.prototype = {
 							} catch (e) {
 								if ( self.is_tablet ) self.pos_error(e, "491: order_history.reprint()");
 							}
-						}, 200);
+						}, 1000);
 					});
 			}
 		},

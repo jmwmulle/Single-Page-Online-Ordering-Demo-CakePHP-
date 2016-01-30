@@ -5376,7 +5376,7 @@ li.sysvar {
   background-color: white;
   padding: 1rem;
   width: 800px;
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.75);
   border: 1px solid #787878;
   border-radius: 3px; }
   .breakout.pricing {
@@ -5497,11 +5497,24 @@ ul.inline {
   ul.inline li {
     display: inline-block; }
 
+span.config-label {
+  font-size: 16px;
+  display: inline-block;
+  padding-top: 0.5em; }
+  span.config-label.disabled {
+    color: #e1e1e1; }
+
 span.select-choice {
   font-size: 18px;
   width: 100%;
   display: inline-block;
-  padding-top: 0.5em;
-  text-align: center; }
+  text-align: center;
+  color: #0779be;
+  padding-top: 0.5em; }
   span.select-choice:hover {
     color: #e02027; }
+
+select.multiselect {
+  height: auto;
+  min-height: 12rem;
+  max-height: 18rem; }

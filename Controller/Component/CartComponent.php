@@ -81,6 +81,7 @@
 			$this->Session->write("Cart.Debug.orbopts.data", $orbopts);
 			$counting = [];
 			foreach ( $orbopts as $id => $orbopt ) {
+				if ( !$orbopt['Orbopt']['included'] ) continue;
 				$ot = $orbopt['Orbopt']['title'];
 				$price = $orbopt[ 'Pricelist' ][ "p$price_rank" ];
 
@@ -150,11 +151,12 @@
 		}
 
 		private function online_launch_special() {
-return;
 			$debug = [];
 			$order = $this->Session->read('Cart');
 			$free_eggroll_id = 254;
+			$garlic_finger_id = 250;
 			$qualifies = false;
+			$garlic_finger_uid = null;
 			$free_eggroll_uid = null;
 			$debug['data'] = $order;
 			$debug['items'] = [];
@@ -166,6 +168,7 @@ return;
 					$qualifies = true;
 				}
 				if ($oi['orb']['Orb']['id'] == $free_eggroll_id) $free_eggroll_uid = $uid;
+				if ($oi['orb']['Orb']['id'] == $garlic_finger_id) $garlic_finger_uid = $uid;
 			}
 
 			$this->Session->write('Cart.Debug.special', $debug);
@@ -176,8 +179,17 @@ return;
                           'price_rank' => 1,
 				          'orb_note' => null
 				           ], $check_special=false);
+				$this->add(['id' => $garlic_finger_id,
+                          'uid' => $garlic_finger_id."_".time(),
+                          'quantity' => 1,
+                          'price_rank' => 1,
+				          'orb_note' => null
+				           ], $check_special=false);
 			}
-			if (!$qualifies && $free_eggroll_uid) { $this->remove($free_eggroll_uid, 2, true); }
+			if (!$qualifies && $free_eggroll_uid && $garlic_finger_uid) {
+				$this->remove($free_eggroll_uid, 2, true);
+				$this->remove($garlic_finger_uid, 2, true);
+			}
 			return;
 		}
 
@@ -213,14 +225,39 @@ return;
 
 			// get orbopt data
 			$orbopts = $this->fetch_orbopts_from_ids( $orbopts );
-			foreach ($orbopts as $id => $opt) {
-				$default = $this->Controller->OrbsOrbopt->find('first', [
-				                                                         'conditions' => [
-																			  '`OrbsOrbopt`.`orb_id`' => $orb_id,
-				                                                              '`OrbsOrbopt`.`orbopt_id`' => $id,
-				                                                              '`OrbsOrbopt`.`default`' => true]]);
-				$orbopts[$id]['Orbopt']['default'] = !empty($default);
+			$default_orbopts = $this->Controller->OrbsOrbopt->find('all', [ 'conditions' => [
+																						'`OrbsOrbopt`.`orb_id`' => $orb_id,
+																						'`OrbsOrbopt`.`default`' => true]]);
+			$default_opt_ids = Hash::extract($default_orbopts, "{n}.Orbopt.id");
+			$coverage_mask = [];
+			if (count($default_opt_ids) > 0) {
+				$coverage_mask = array_fill(0, count($default_opt_ids), "F");
 			}
+			$default_orbopts = $this->fetch_orbopts_from_ids(array_combine($default_opt_ids, $coverage_mask));
+
+			foreach ($orbopts as $id => $opt) {
+				$orbopts[$id]['Orbopt']['default'] = array_key_exists($opt['Orbopt']['id'], $default_orbopts);
+				$orbopts[$id]['Orbopt']['included'] = true;
+			}
+			foreach ($default_orbopts as $id => $opt) {
+				if ( !array_key_exists($id, $orbopts) )  {
+					$opt['Orbopt']['default'] = true;
+					$opt['Orbopt']['included'] = false;
+					$orbopts[$id] = $opt;
+				}
+			}
+
+//			db($orbopts);
+
+
+//			foreach ($orbopts as $id => $opt) {
+//				$default = $this->Controller->OrbsOrbopt->find('first', [
+//				                                                         'conditions' => [
+//																			  '`OrbsOrbopt`.`orb_id`' => $orb_id,
+//				                                                              '`OrbsOrbopt`.`orbopt_id`' => $id,
+//				                                                              '`OrbsOrbopt`.`default`' => true]]);
+//				$orbopts[$id]['Orbopt']['default'] = !empty($default);
+//			}
 //			$this->Session->write("Cart.Debug.default_opts", $debug);
 			// get the pricing info for each opt
 			$opt_price = $this->price_orbopts( $orbopts, $price_rank, [ 'opt_count'       => $orb[ 'Orb' ][ 'opt_count' ],
@@ -231,7 +268,7 @@ return;
 			);
 			$pricing   = $this->pricing_array( $opt_price, $price_rank, $quantity, $orb );
 			// walk current cart (if it exists); if item of identical configuration found, update it's quantity
-			$candidate = compact( "orb", 'orbopts', 'pricing' );
+			$candidate = compact( "orb", 'orbopts', 'default_orbopts', 'pricing' );
 
 			if ( !$this->update_quantity( $candidate ) ) $this->Session->write( "Cart.Order.$uid", $candidate );
 			if ($check_special) $this->online_launch_special();

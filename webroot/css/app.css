@@ -5359,6 +5359,8 @@ textarea.note {
     transform: translateY(2000px); }
     #monthly-content-wrapper.slide-down img {
       transform: rotate(540deg); }
+  #monthly-content-wrapper #launch-special span.condition {
+    color: #e02027; }
   #monthly-content-wrapper #launch-special h1 {
     position: absolute;
     font-size: 1rem;
@@ -5386,7 +5388,7 @@ textarea.note {
   #monthly-content-wrapper #launch-special h2, #monthly-content-wrapper #launch-special h3, #monthly-content-wrapper #launch-special h4, #monthly-content-wrapper #launch-special h5, #monthly-content-wrapper #launch-special p {
     color: #373737 !important; }
   #monthly-content-wrapper #launch-special h4 {
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     margin: 0.3125rem 0;
     line-height: 1.5rem;
     text-transform: uppercase;

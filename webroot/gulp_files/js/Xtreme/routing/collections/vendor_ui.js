@@ -567,34 +567,29 @@ window.xtr.route_collections.vendor_ui = function() {
 		}
 	}
 
-	this.specials_add_conditions = {
-		params:['action'],
-		callbacks: {
-			params_set: function() {
-				XT.vendor_ui.toggle_specials_add_conditions()
-			}
-		}
-	}
-
 	this.specials_criteria = {
-			params:['target', 'action'],
+			params:['is_condition', 'target', 'action'],
 			callbacks: {
 				params_set: function() {
+					if (this.read('is_condition') == "1" && this.read('action') == 'toggle') {
+						XT.vendor_ui.toggle_specials_add_conditions();
+						return;
+					}
 					switch (this.read('action') ) {
 						case "choose":
-							XT.vendor_ui.toggle_specials_options(this.read('target'), false)
+							XT.vendor_ui.toggle_specials_options(this.read('target'), false, this.read('is_condition') == "1")
 							break;
 						case "restore":
-							XT.vendor_ui.toggle_specials_options(this.read('target'), true)
+							XT.vendor_ui.toggle_specials_options(this.read('target'), true, this.read('is_condition') == "1")
 					}
 				}
 			}
 		},
 	this.specials_add_close_breakout = {
-		params: ['parent', 'target'],
+		params: ['is_condition', 'parent', 'target'],
 		callbacks: {
 			params_set: function() {
-				XT.vendor_ui.close_specials_breakout(this.read('parent'), this.read('target'));
+				XT.vendor_ui.set_specials_option_choice(this.read('parent'), this.read('target'), this.read('is_condition') == "1");
 			}
 		}
 	}

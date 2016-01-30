@@ -259,6 +259,7 @@ textarea.note { height:2rem;}
     img { transform:  rotate(540deg); }
   }
   #launch-special {
+    span.condition { color: $xtreme-red; }
     h1 {
       position:absolute;
 //      z-index:10000;
@@ -290,7 +291,7 @@ textarea.note { height:2rem;}
     }
     h2, h3, h4, h5, p { color: $text-grey !important; }
     h4 {
-      font-size:1.7rem;
+      font-size:1.6rem;
       margin: $tight-padding 0;
       line-height   : 1.5rem;
       text-transform: uppercase;

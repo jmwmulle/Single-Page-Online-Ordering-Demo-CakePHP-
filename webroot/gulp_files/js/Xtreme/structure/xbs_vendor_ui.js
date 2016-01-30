@@ -323,17 +323,19 @@ var xt_vendor_ui = {
 			disabled = true;
 		}
 		$("#specials-add-conditions-button", C.BODY).addClass(add).removeClass(remove);
-		if (disabled) {
-			$(".specials-add-condition").each(function() {
-				$(this).attr('disabled', true).val($("option:first", this).val());
-			});
-
-		} else {
-			$(".specials-add-condition", C.BODY).removeAttr('disabled');
-		}
-
-
-
+		var self = this;
+		$(".specials-add-condition").each(function() {
+			var target = $(this).attr('id').split("-")[3];
+			var config_label = as_id(["add-special-conditions", target, "config-label"].join("-"));
+			if (disabled) {
+				$(this).attr(FX.disabled, true).val($("option:first", this).val());
+				self.toggle_specials_options(target, true, true);
+				$("span.config-label", config_label).addClass(FX.disabled);
+			} else {
+				$(this).removeAttr(FX.disabled);
+				$("span.config-label", config_label).removeClass(FX.disabled);
+			}
+		});
 	},
 
 	overflagged: function(opt_id, optflag_id) {
@@ -373,11 +375,14 @@ var xt_vendor_ui = {
 	},
 
 	specials_orbcat_filter: function() {
-		var orbcat_id = $( $("#special-orbcats-list-select").find(":selected")[0] ).val();
+		var selected = $("#add-special-criteria-orbcats-select").find(":selected")[0];
+		var orbcat_id = $( selected ).val();
+		var orbcat = $(selected).html();
 		$("option", "#special-orbs-list-select").each( function() {
 			var action = $(this).data('orbcat') == orbcat_id ? "removeClass" : "addClass";
 			$(this)[action](FX.hidden);
 		});
+		$("input.choice-text", "#add-special-criteria-choice").val(orbcat);
 	},
 
 	specials_add_orb: function() {
@@ -417,16 +422,21 @@ var xt_vendor_ui = {
 		);
 	},
 
-	toggle_specials_options: function(target, cancel) {
-		var select = as_id(["add-special", target, "select"].join("-"));
-		var wrapper = as_id(["add-special", target, "wrapper"].join("-"));
-		var choice = as_id(["add-special", target, "choice"].join("-"));
-		var value = $( $(select).find(":selected")[0] ).val();
-		var breakout = as_id(["add-special", target, value].join("-"));
+	toggle_specials_options: function(target, cancel, is_condition) {
+		var prefix = is_condition ? "add-special-conditions" : "add-special";
+		var select = as_id([prefix, target, "select"].join("-"));
+		var wrapper = as_id([prefix, target, "wrapper"].join("-"));
+		var choice = as_id([prefix, target, "choice"].join("-"));
+		var selected = $(select).find(":selected")[0];
+		var breakout = as_id($( selected ).data('breakout'));
 
 		if (!cancel) {
-			setTimeout(function() {$( breakout ).removeClass(FX.hidden); }, 330);
-			setTimeout(function() {$( breakout ).removeClass(FX.fade_out); }, 390);
+			if ( breakout != "0" ) {
+				setTimeout(function() {$( breakout ).removeClass(FX.hidden); }, 330);
+				setTimeout(function() {$( breakout ).removeClass(FX.fade_out); }, 390);
+			} else {
+				this.set_specials_option_choice(target, false, is_condition)
+			}
 		} else {
 			$( choice ).addClass(FX.fade_out);
 			setTimeout(function() { $( choice ).addClass(FX.hidden); }, 360);
@@ -439,19 +449,24 @@ var xt_vendor_ui = {
 
 	},
 
-	close_specials_breakout: function(parent, target) {
-		var breakout = as_id(['add-special', parent, target].join("-"));
-		var select = as_id(['add-special', parent, 'select'].join("-"));
-		var wrapper = as_id(['add-special', parent, 'wrapper'].join("-"));
-		var choice = as_id(['add-special', parent, 'choice'].join("-"));
+	set_specials_option_choice: function(parent, target, is_condition) {
+		var prefix = is_condition ? "add-special-conditions" : "add-special";
+		var select = as_id([prefix, parent, 'select'].join("-"));
+		var selected = $(select).find(":selected")[0];
+		var breakout = as_id($( selected ).data('breakout'));
+		var wrapper = as_id([prefix, parent, 'wrapper'].join("-"));
+		var choice = as_id([prefix, parent, 'choice'].join("-"));
 		var value = $(select).val();
+		var label = $( selected ).html();
+		var choice_text = $("input.choice-text", choice).val();
+		if ( defined(choice_text) && choice_text.length > 0 && choice_text != "--" ) label = title_case(choice_text);
 
-		$(breakout).addClass(FX.fade_out);
+		try { $(breakout).addClass(FX.fade_out); } catch(e) {}
 		setTimeout(function() { $( wrapper ).addClass(FX.fade_out); }, 330);
-		setTimeout(function() { $( breakout ).addClass(FX.hidden); }, 330);
+		try { setTimeout(function() { $( breakout ).addClass(FX.hidden); }, 330); } catch(e) {}
 		setTimeout(function() { $( choice ).removeClass(FX.hidden); }, 660);
 		setTimeout(function() { $( wrapper ).addClass(FX.hidden); }, 690);
-		setTimeout(function() { $("span.select-choice", choice).html(value); }, 700);
+		setTimeout(function() { $("span.select-choice", choice).html(label); }, 700);
 		setTimeout(function() { $( choice ).removeClass(FX.fade_out); }, 1030);
 	}
 
