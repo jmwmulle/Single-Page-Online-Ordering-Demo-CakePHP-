@@ -589,7 +589,14 @@ window.xtr.route_collections.vendor_ui = function() {
 		params: ['is_condition', 'parent', 'target'],
 		callbacks: {
 			params_set: function() {
-				XT.vendor_ui.set_specials_option_choice(this.read('parent'), this.read('target'), this.read('is_condition') == "1");
+				if (this.read('target') == 'orb_selector') {
+					$("#orb-selector").addClass(FX.fade_out);
+					setTimeout( function() {
+						$("#orb-selector").addClass(FX.hidden);
+					}, 300);
+				} else {
+					XT.vendor_ui.set_specials_option_choice(this.read('parent'), this.read('target'), this.read('is_condition') == "1");
+				}
 			}
 		}
 	}

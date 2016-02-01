@@ -46,6 +46,8 @@ $default_oc_id = array_keys($orbcats)[0];
 		<h3 class="text-center">Configure Rules for Ordering</h3>
 	</div>
 	<div class="row">
+
+		<!-- ORB SELECTOR --->
 		<div class="large-9 columns">
 			<div id="orb-selector" class="breakout modal fade-out hidden">
 				<h3>Item Selector</h3>
@@ -78,6 +80,46 @@ $default_oc_id = array_keys($orbcats)[0];
 						</select>
 					</div>
 					<div class="large-12 columns">
+						<a href="#" class="modal-button cancel bisecting left" data-route="specials_add_close_breakout/0/false/orb_selector">
+							<span class="icon-circle-arrow-l"></span><span>Cancel</span>
+						</a>
+						<a href="#" class="modal-button confirm bisecting right" data-route="specials_add_close_breakout/orbs">
+							<span>OK</span><span class="icon-circle-arrow-r"></span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- ORBCAT SELECTOR -->
+		<div class="large-9 columns">
+			<div id="orbcat-selector" class="breakout modal fade-out hidden">
+				<h3>Category Selector</h3>
+				<div class="input select">
+					<div id="orb-selector-from" class="large-5 columns">
+						<label for="special-orbs-list-select">Choose From Here</label>
+						<select id="orb-selector-from-select" multiple class="multiselect">
+							<option>--</option>
+							<?php foreach ($orbcats as $id => $oc):?>
+								<option value="<?=$id;?>"><?=$oc;?></option>
+							<?php endforeach;?>
+						</select>
+					</div>
+					<div class="large-2 columns">
+						</br></br>
+						<a href="#" class="modal-button sml full-width">
+							<span class="icon-circle-arrow-l"></span><span>Remove</span>
+						</a> </br></br></br>
+						<a href="#" class="modal-button sml full-width">
+							<span>Add</span><span class="icon-circle-arrow-r"></span>
+						</a>
+					</div>
+					<div id="orb-selector-to" class="large-5 columns">
+						<label for="special-orbs-list-select">Add To Here</label>
+						<select id="orb-selector-to-select" multiple class="multiselect">
+						</select>
+					</div>
+					<div class="large-12 columns">
 						<a href="#" class="modal-button cancel bisecting left" data-route="specials_add_close_breakout/orbs">
 							<span class="icon-circle-arrow-l"></span><span>Cancel</span>
 						</a>
@@ -88,6 +130,8 @@ $default_oc_id = array_keys($orbcats)[0];
 				</div>
 			</div>
 		</div>
+
+
 		<!--- SPECIALS SET-METHOD--->
 		<div id="add-special-method-config-label" class="large-3 columns">
 			<div class="input select">
@@ -106,7 +150,30 @@ $default_oc_id = array_keys($orbcats)[0];
 			</div>
 			<div id="add-special-method-choice" class="select hidden fade-out">
 				<label>&nbsp;</label>
-				<span class="select-choice" data-route="specials_criteria/method/restore"></span>
+				<span class="select-choice" data-route="specials_criteria/0/method/restore"></span>
+			</div>
+		</div>
+
+		<!--- SPECIALS SET-CHOICECOUNT--->
+		<div id="add-special-choicecount-config-label" class="large-3 columns">
+			<div class="input select">
+				<label>&nbsp</label>
+				<span class="config-label disabled">From this many lists:</span>
+			</div>
+		</div>
+		<div id="add-special-choicecount" class="large-9 columns">
+			<div id="add-special-choicecount-wrapper" class="input select">
+				<label for="add-special-choicecount-select">&nbsp;</label>
+				<select id="add-special-choicecount-select" disabled data-changeroute="specials_criteria/0/choicecount/choose">
+					<option>--</option>
+					<?php for ($i=1; $i<11; $i++):?>
+					<?="<option value='$i' data-breakout='0'>$i</option>";?>
+					<?php endfor; ?>
+				</select>
+			</div>
+			<div id="add-special-choicecount-choice" class="select hidden fade-out">
+				<label>&nbsp;</label>
+				<span class="select-choice" data-route="specials_criteria/choicecount/restore"></span>
 			</div>
 		</div>
 

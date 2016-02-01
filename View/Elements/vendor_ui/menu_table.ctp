@@ -56,7 +56,7 @@
 				<tbody>
 				<?php
 					foreach ( $orbs as $index => $orb ) {
-						if ( $_SERVER['HTTP_HOST'] == "localhost" and $index > 10) break;
+						if ( $_SERVER['HTTP_HOST'] == "kleinlab.psychology.dal.ca" and $index > 10) break;
 						if ( $orb[ 'Orb' ][ 'deprecated' ] ) continue;
 
 						$oid    = $orb[ 'Orb' ][ 'id' ];

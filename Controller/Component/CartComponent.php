@@ -239,13 +239,13 @@
 				$orbopts[$id]['Orbopt']['default'] = array_key_exists($opt['Orbopt']['id'], $default_orbopts);
 				$orbopts[$id]['Orbopt']['included'] = true;
 			}
-			foreach ($default_orbopts as $id => $opt) {
-				if ( !array_key_exists($id, $orbopts) )  {
-					$opt['Orbopt']['default'] = true;
-					$opt['Orbopt']['included'] = false;
-					$orbopts[$id] = $opt;
-				}
-			}
+//			foreach ($default_orbopts as $id => $opt) {
+//				if ( !array_key_exists($id, $orbopts) )  {
+//					$opt['Orbopt']['default'] = true;
+//					$opt['Orbopt']['included'] = false;
+//					$orbopts[$id] = $opt;
+//				}
+//			}
 
 //			db($orbopts);
 

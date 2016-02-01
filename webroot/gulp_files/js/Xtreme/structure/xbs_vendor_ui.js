@@ -422,6 +422,23 @@ var xt_vendor_ui = {
 		);
 	},
 
+	specials_unique_behaviors: function(target, selected, cancelling) {
+		switch (target) {
+			case 'method':
+				if (selected == "choose") {
+					if (!cancelling) {
+						$('span', '#add-special-choicecount-config-label').removeClass(FX.disabled);
+						$('#add-special-choicecount-select').removeAttr(FX.disabled);
+					} else {
+						this.toggle_specials_options('choicecount', true, false);
+						$('span', '#add-special-choicecount-config-label').addClass(FX.disabled);
+						$('#add-special-choicecount-select').attr(FX.disabled, true);
+					}
+					break;
+				}
+		}
+	},
+
 	toggle_specials_options: function(target, cancel, is_condition) {
 		var prefix = is_condition ? "add-special-conditions" : "add-special";
 		var select = as_id([prefix, target, "select"].join("-"));
@@ -429,8 +446,10 @@ var xt_vendor_ui = {
 		var choice = as_id([prefix, target, "choice"].join("-"));
 		var selected = $(select).find(":selected")[0];
 		var breakout = as_id($( selected ).data('breakout'));
+		var selected = $(selected).val();
 
 		if (!cancel) {
+			this.specials_unique_behaviors(target, true);
 			if ( breakout != "0" ) {
 				setTimeout(function() {$( breakout ).removeClass(FX.hidden); }, 330);
 				setTimeout(function() {$( breakout ).removeClass(FX.fade_out); }, 390);
@@ -447,6 +466,7 @@ var xt_vendor_ui = {
 			setTimeout(function() { $(wrapper).removeClass(FX.fade_out) }, 360);
 		}
 
+		this.specials_unique_behaviors(target, selected, cancel)
 	},
 
 	set_specials_option_choice: function(parent, target, is_condition) {

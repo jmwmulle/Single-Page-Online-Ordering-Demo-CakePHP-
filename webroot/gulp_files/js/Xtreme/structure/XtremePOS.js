@@ -250,7 +250,8 @@ XtremePOS.prototype = {
 						var opt_str = [];
 						for (var i in o.orbopts) {
 							var opt = o.orbopts[i].Orbopt;
-							var not = opt.included ? "" : "**NOT** ";
+							var not = "";
+//							var not = opt.included ? "" : "**NOT** ";
 							var coverage;
 							switch (opt.coverage) {
 								case "L":
@@ -287,6 +288,7 @@ XtremePOS.prototype = {
 				for (var i=0; i < r.length; i++) {
 					r[i] = [ r[i][0], obj_values( self.styles[ r[i][1] ]) ];
 				}
+				pr(r);
 				return r;
 			};
 			self.current.print = function() {
