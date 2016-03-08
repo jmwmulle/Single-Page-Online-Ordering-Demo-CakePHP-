@@ -47,7 +47,7 @@
 							</div>
 							<div class="large-4 columns">
 								<label>&nbsp;</label>
-								<a href="#" class="modal-button sml create-button" data-route="specials_orblists/create">
+								<a href="#" class="modal-button sml" data-route="specials_orblists/create">
 									<span>Create List</span>
 								</a>
 							</div>
