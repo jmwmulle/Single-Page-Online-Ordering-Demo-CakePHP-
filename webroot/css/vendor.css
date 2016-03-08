@@ -5204,7 +5204,7 @@ li.orbopt.disabled {
       float: left; }
     .modal-button span.icon-circle-arrow-r, .modal-button span.icon-tab-arrow-r {
       float: right; }
-    .modal-button span tiny {
+    .modal-button span.tiny {
       color: white !important;
       font-size: 0.75rem; }
   .modal-button.grey-scale {
@@ -5215,6 +5215,11 @@ li.orbopt.disabled {
       background-color: white; }
       .modal-button.grey-scale:hover span {
         color: #0779be !important; }
+  .modal-button.huge {
+    padding: 2rem; }
+    .modal-button.huge span {
+      font-size: 6.25rem;
+      line-height: 6.25rem; }
   .modal-button.lrg {
     padding: 0.75rem; }
     .modal-button.lrg span {
@@ -5226,11 +5231,16 @@ li.orbopt.disabled {
       font-size: 0.8rem; }
       .modal-button.sml span[class*="icon-"] {
         font-size: 1.25em; }
-  .modal-button.huge {
-    padding: 2rem; }
-    .modal-button.huge span {
-      font-size: 6.25rem;
-      line-height: 6.25rem; }
+  .modal-button.tny {
+    height: 1.5rem;
+    padding: 0.3rem; }
+    .modal-button.tny.circle {
+      border-radius: 1000px;
+      text-align: center; }
+    .modal-button.tny span {
+      font-size: 0.75rem; }
+      .modal-button.tny span[class*="icon-"] {
+        font-size: 1em; }
   .modal-button.success {
     background-color: #43ac6a; }
     .modal-button.success:hover {
@@ -5385,7 +5395,8 @@ li.sysvar {
       width: 120px;
       height: 111px; }
   .breakout.modal {
-    width: 62.75rem; }
+    top: 18.75rem;
+    width: 60.75rem; }
 
 .dataTables_length, .dataTables_filter {
   display: inline-block;
@@ -5518,3 +5529,34 @@ select.multiselect {
   height: auto;
   min-height: 12rem;
   max-height: 18rem; }
+
+div.specials-section {
+  height: 3.4375rem; }
+
+div.section-buttons {
+  margin-top: 2rem; }
+
+span.config-label.incomplete {
+  color: #ec7a7f; }
+
+input#price-selector-input {
+  width: 125px;
+  display: inline; }
+
+.multiselect.error, .select.error, .input.error {
+  box-shadow: 0px 0px 6px #e02027;
+  margin-bottom: 1rem; }
+
+option:disabled {
+  color: #e1e1e1; }
+
+a.create-button {
+  background-color: rgba(0, 0, 0, 0); }
+  a.create-button span {
+    display: inline-block;
+    font-size: 1rem;
+    color: #373737; }
+    a.create-button span.icon {
+      -webkit-transform: translateY(0.13rem); }
+  a.create-button:hover span {
+    color: #0779be; }

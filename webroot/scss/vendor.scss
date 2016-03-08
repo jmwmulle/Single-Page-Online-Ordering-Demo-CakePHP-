@@ -363,7 +363,7 @@ display:none !important;
     &.icon-circle-arrow-l, &.icon-tab-arrow-l { float : left; }
     &.icon-circle-arrow-r, &.icon-tab-arrow-r { float : right; }
 //    &.text { -webkit-transform : translateY(.25rem) !important; }
-    tiny {
+    &.tiny {
       color     : $white !important;
       font-size : .75rem;
     }
@@ -377,6 +377,13 @@ display:none !important;
     }
   }
 
+  &.huge {
+    padding: 2rem;
+    span {
+      font-size: rem-calc(100px);
+      line-height: rem-calc(100px);
+    }
+  }
 
   &.lrg {
     padding : 0.75rem;
@@ -388,18 +395,20 @@ display:none !important;
     padding : 0.5rem;
     span {
       font-size : 0.8rem;
-//      &.text { -webkit-transform : translateY(.4rem) !important; }
-      &[class*="icon-"] {
-//        -webkit-transform : translateY(.2rem) !important;
-        font-size         : 1.25em;
-      }
+      &[class*="icon-"] { font-size: 1.25em; }
     }
   }
-  &.huge {
-    padding: 2rem;
+
+  &.tny {
+    height:1.5rem;
+    padding : 0.3rem;
+    &.circle {
+      border-radius:1000px;
+      text-align: center;
+    }
     span {
-      font-size: rem-calc(100px);
-      line-height: rem-calc(100px);
+      font-size : 0.75rem;
+      &[class*="icon-"] { font-size: 1em; }
     }
   }
   &.success {
@@ -513,6 +522,7 @@ display:none !important;
       span { color: $alert-color !important; }
     }
   }
+
 }
 
 ul.activizing {
@@ -596,7 +606,8 @@ li.sysvar {
   }
 
   &.modal {
-    width:62.75rem;
+    top:rem-calc(300px);
+    width:60.75rem;
   }
 
 }
@@ -734,4 +745,33 @@ select.multiselect {
   height:auto;
   min-height:12rem;
   max-height:18rem;
+}
+
+div.specials-section {
+  height: rem-calc(55px);
+}
+
+div.section-buttons { margin-top:2rem;}
+
+span.config-label.incomplete { color: lighten($xtreme-red, 20%);}
+input#price-selector-input { width: 125px; display: inline;}
+
+.multiselect.error, .select.error, .input.error {
+  box-shadow: 0px 0px 6px $xtreme-red;
+  margin-bottom:1rem;
+}
+
+option:disabled { color: $very-light-grey; }
+
+a.create-button {
+  background-color:rgba(0,0,0,0);
+  span {
+    display:inline-block;
+    font-size: 1rem;
+    color: $text-grey;
+    &.icon { -webkit-transform: translateY(0.13rem); }
+  }
+  &:hover {
+    span { color: $xtreme-blue; }
+  }
 }

@@ -106,6 +106,12 @@
 
 	/** SPECIALS CONTROLLER */
 	Router::connect( '/add-special',            [ CTR => 'specials', ATN => 'ajax_add' ] );
+	Router::connect( '/save-special',            [ CTR => 'specials', ATN => 'ajax_add' ] );
+
+	/** ORBLISTS CONTROLLER */
+	Router::connect( '/load-orblists',            [ CTR => 'orblists', ATN => 'ajax_list' ] );
+	Router::connect( '/create-orblist',            [ CTR => 'orblists', ATN => 'ajax_add' ] );
+	Router::connect( '/update-orblist/*',            [ CTR => 'orblists', ATN => 'ajax_update' ] );
 
 
 	Router::connect( '/auth/email',                 [ CTR => 'users', ATN => 'login' ] );

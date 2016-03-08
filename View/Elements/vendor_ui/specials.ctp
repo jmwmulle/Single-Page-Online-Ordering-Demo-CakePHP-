@@ -14,7 +14,7 @@ $ready_to_list_specials = true;
 	<div class="row">
 		<div class="large-12 columns">
 			<br />
-			<a href="#" class="modal-button full-width med" data-route="specials_add/launch">
+			<a href="#" class="modal-button full-width med" data-route="specials/launch">
 				<span class="icon-add"></span>
 				<span>Add A New Special</span>
 			</a>

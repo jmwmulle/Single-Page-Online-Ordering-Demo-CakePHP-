@@ -3,11 +3,13 @@ XT.events = {
 		orb_loaded: createCustomEvent(C.ORB_LOADED),
 		order_form_update: createCustomEvent(C.ORDER_FORM_UPDATE),
 		order_ui_update: createCustomEvent(C.ORDER_UI_UPDATE),
-		route_launched: createCustomEvent("route_launched"),
+		route_launched: createCustomEvent(C.ROUTE_LAUNCHED),
 		route_request: createCustomEvent(C.ROUTE_REQUEST),
 		orb_row_animation_complete: createCustomEvent(C.ORB_ROW_ANIMATION_COMPLETE),
 		orbcard_reset_complete: createCustomEvent(C.ORBCARD_RESET_COMPLETE),
-		modal_dismissed: createCustomEvent(C.MODAL_DISMISSED)
+		modal_dismissed: createCustomEvent(C.MODAL_DISMISSED),
+		orblists_loaded: createCustomEvent(C.ORBLIST_LOADED),
+
 };
 
 XT.data = {

@@ -83,7 +83,8 @@ var constants = {
 	CONFIGURED: "configured",
 	ACTIVE: "active",
 	INACTIVE: "inactive",
-	SYSTEM_READY: "system_ready"
+	SYSTEM_READY: "system_ready",
+	ORBLIST_LOADED: "orblist_loaded"
 };
 
 var C = constants;

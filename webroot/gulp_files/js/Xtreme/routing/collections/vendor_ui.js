@@ -479,127 +479,177 @@ window.xtr.route_collections.vendor_ui = function() {
 		}
 	};
 
-	this.specials_edit = {
-		params: { id: {value: null}, action: {}, action_arg: {} },
-		modal: C.PRIMARY,
+	this.specials_selects = {
+		params:['action', 'type', 'target'],
 		callbacks: {
 			params_set: function() {
-				switch ( this.read('action') ) {
-					case "edit":
-						XT.vendor_ui.edit_cell('specials', this.read('id'), this.read('action_arg'));
-						break;
-					case "cancel":
-						XT.vendor_ui.cancel_cell_editing('specials', this.read('id'), this.read('action_arg'));
-						break;
-					case "delete":
-						var confirmation_box = as_id(['delete', 'specials', this.read('id')].join("-"));
-						switch (this.read('action_arg')) {
-							case "confirm":
-								$(confirmation_box).addClass(XSM.effects.fade_out).removeClass(XSM.effects.hidden);
-								setTimeout(function () { $(confirmation_box).removeClass(XSM.effects.fade_out);}, 300);
-								this.unset('launch');
-								break;
-							case "cancel":
-								$(confirmation_box).addClass(XSM.effects.fade_out);
-								setTimeout(function () { $(confirmation_box).addClass(XSM.effects.hidden); }, 300);
-								this.unset('launch');
-								break;
-							case "delete":
-								this.url = {
-									url: ["delete-menu-item", this.read('id')].join(C.DS),
-									type: C.POST,
-									defer: true
-								};
-								this.set_callback("launch", function () {
-									XT.router.cake_ajax_response(this.deferral_data, {
-										callback: function () {
-											$(XSM.vendor_ui.menu_tab).load([XT.host, "vendor-ui", "menu"].join(C.DS), function () {
-												XT.vendor_ui.data_tables('menu');
-												XT.vendor_ui.fix_breakouts();
-											});
-										}
-									}, true, true);
-								});
-						}
-
-				}
-
+				XT.vendor_ui.specials.current[ this.read('type') ][ this.read('action') ]( this.read('target') );
 			}
 		}
 	};
 
-	this.specials_add = {
+	this.specials_conditions = {
+		params: ['action', 'target', 'arg_1'],
+		callbacks: {
+			params_set: function() {
+				XT.vendor_ui.specials.current.conditions[this.read('action')](this.read('arg_1'));
+			}
+		}
+	};
+	this.specials_features = {
+		params: ['action', 'target', 'arg_1'],
+		callbacks: {
+			params_set: function() {
+				XT.vendor_ui.specials.current.features[this.read('action')]( this.read('arg_1') );
+			}
+		}
+	};
+
+	this.specials_breakouts = {
+		params: ['action', 'target', 'arg_1'],
+		callbacks: {
+			params_set: function() {
+				XT.vendor_ui.specials.breakout[this.read('action')]( this.read('target'), this.read('arg_1') );
+			}
+		}
+	};
+
+	this.specials_orblists = {
+		params: ['action'],
+		callbacks: {
+			params_set: function() {
+				XT.vendor_ui.specials.orblist[this.read('action')]();
+			}
+		}
+	};
+	this.specials_fields = {
+		params: ['target', 'action'],
+		callbacks: {
+			params_set: function() {
+				XT.vendor_ui.specials.current[this.read('action')](this.read('target'));
+			}
+		}
+	}
+
+	this.specials_save = {
+		params: ['action'],
+		callbacks: {
+			params_set: function() {
+				XT.vendor_ui.specials.current[this.read('action')]();
+//				switch ( this.read("action") ) {
+//					case 'save':
+//						this.url = false;
+//						this.set_callback("launch", undefined)
+//						pr(XT.vendor_ui);
+//						break;
+			}
+		}
+	};
+
+	this.specials = {
 		params: ['action'],
 		url: {url:'add-special', type: C.GET},
 		modal: C.PRIMARY,
 		callbacks: {
 			params_set: function() {
 				switch ( this.read("action") ) {
-					case "add_orb":
-						this.url = false;
-						XT.vendor_ui.specials_add_orb();
-						break;
 					case 'save':
-						this.url.type = C.POST;
-						this.url.data = $("#SpecialAjaxAddForm").serialize();
-						this.url.defer = true;
+						this.url = false;
+						this.set_callback("launch", undefined)
+						XT.vendor_ui.specials.current[this.read('action')]();
 						break;
 				}
 			},
 			launch: function() {
-				if (this.read('action') == 'save') {
-					XT.router.cake_ajax_response(this.deferral_data, {}, true, true);
-				}
+				XT.vendor_ui.specials = new SpecialsCreator();
 			}
 		}
 	};
 
-	this.specials_add_orbcat_filter = {
-		params: ['action'],
-		callbacks: {
-			params_set: function() {
-				switch (this.read('action') ) {
-					case "reveal":
-						XT.vendor_ui.specials_orbcat_filter();
-						break;
-				}
-			}
-		}
-	}
 
-	this.specials_criteria = {
-			params:['is_condition', 'target', 'action'],
-			callbacks: {
-				params_set: function() {
-					if (this.read('is_condition') == "1" && this.read('action') == 'toggle') {
-						XT.vendor_ui.toggle_specials_add_conditions();
-						return;
-					}
-					switch (this.read('action') ) {
-						case "choose":
-							XT.vendor_ui.toggle_specials_options(this.read('target'), false, this.read('is_condition') == "1")
-							break;
-						case "restore":
-							XT.vendor_ui.toggle_specials_options(this.read('target'), true, this.read('is_condition') == "1")
-					}
-				}
-			}
-		},
-	this.specials_add_close_breakout = {
-		params: ['is_condition', 'parent', 'target'],
-		callbacks: {
-			params_set: function() {
-				if (this.read('target') == 'orb_selector') {
-					$("#orb-selector").addClass(FX.fade_out);
-					setTimeout( function() {
-						$("#orb-selector").addClass(FX.hidden);
-					}, 300);
-				} else {
-					XT.vendor_ui.set_specials_option_choice(this.read('parent'), this.read('target'), this.read('is_condition') == "1");
-				}
-			}
-		}
-	}
+//	this.specials_edit = {
+//		params: { id: {value: null}, action: {}, action_arg: {} },
+//		modal: C.PRIMARY,
+//		callbacks: {
+//			params_set: function() {
+//				switch ( this.read('action') ) {
+//					case "edit":
+//						XT.vendor_ui.edit_cell('specials', this.read('id'), this.read('action_arg'));
+//						break;
+//					case "cancel":
+//						XT.vendor_ui.cancel_cell_editing('specials', this.read('id'), this.read('action_arg'));
+//						break;
+//					case "delete":
+//						var confirmation_box = as_id(['delete', 'specials', this.read('id')].join("-"));
+//						switch (this.read('action_arg')) {
+//							case "confirm":
+//								$(confirmation_box).addClass(XSM.effects.fade_out).removeClass(XSM.effects.hidden);
+//								setTimeout(function () { $(confirmation_box).removeClass(XSM.effects.fade_out);}, 300);
+//								this.unset('launch');
+//								break;
+//							case "cancel":
+//								$(confirmation_box).addClass(XSM.effects.fade_out);
+//								setTimeout(function () { $(confirmation_box).addClass(XSM.effects.hidden); }, 300);
+//								this.unset('launch');
+//								break;
+//							case "delete":
+//								this.url = {
+//									url: ["delete-menu-item", this.read('id')].join(C.DS),
+//									type: C.POST,
+//									defer: true
+//								};
+//								this.set_callback("launch", function () {
+//									XT.router.cake_ajax_response(this.deferral_data, {
+//										callback: function () {
+//											$(XSM.vendor_ui.menu_tab).load([XT.host, "vendor-ui", "menu"].join(C.DS), function () {
+//												XT.vendor_ui.data_tables('menu');
+//												XT.vendor_ui.fix_breakouts();
+//											});
+//										}
+//									}, true, true);
+//								});
+//						}
+//
+//				}
+//
+//			}
+//		}
+//	};
+
+
+
+
+//	this.specials_add_orbcat_filter = {
+//		params: ['action'],
+//		callbacks: {
+//			params_set: function() {
+//				switch (this.read('action') ) {
+//					case "reveal":
+//						XT.vendor_ui.specials_orbcat_filter();
+//						break;
+//				}
+//			}
+//		}
+//	}
+//
+//
+//	this.specials_add_close_breakout = {
+//		params: ['is_condition', 'parent', 'target'],
+//		callbacks: {
+//			params_set: function() {
+//				if (this.read('target') == 'orb_selector') {
+//					$("#orb-selector").addClass(FX.fade_out);
+//					setTimeout( function() {
+//						$("#orb-selector").addClass(FX.hidden);
+//					}, 300);
+//				} else {
+//					XT.vendor_ui.set_specials_option_choice(this.read('parent'), this.read('target'), this.read('is_condition') == "1");
+//				}
+//			}
+//		}
+//	}
+
+
 
 	return this
 };

@@ -41,7 +41,7 @@ XtremeRouter.prototype = {
 	 * @returns {boolean}
 	 */
 	launch: function (request_obj) {
-		var debug_this = 0;
+		var debug_this = 1;
 		if (debug_this > 0) pr([request_obj], "XtremeRouter.launch(request_obj, event)", 2);
 		var route_name = request_obj.request.split(C.DS)[0];
 		var route_data = this.route_data[ route_name ];

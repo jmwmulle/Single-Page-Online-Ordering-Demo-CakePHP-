@@ -549,6 +549,13 @@ if (!String.prototype.toTitleCase) {
 		return keys;
 	}
 
+	function array_to_obj(array) {
+		if ( !is_array(array) ) throw new Error("Argument 'array' must be an array.");
+		var obj = {};
+		for (var i = 0; i < array.length; i++) obj[i] = array[i];
+		return obj;
+	}
+
 	function obj_pop(obj) {
 	  for (var key in obj) {
 	    // Uncomment below to fix prototype problem.
