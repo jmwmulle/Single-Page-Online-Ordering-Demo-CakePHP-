@@ -36,10 +36,17 @@
 			</div>
 			<div class="large-12 columns">
 				<label>Menu Status</label>
-				<?=$this->Form->input('active', ['type' => 'hidden', 'value' => true] );?>
 				<ul class="activizing inline">
-					<li id="menu-active" class="default active bisecting discreet"><a href="#" class="modal-button full-width left sml"><span>Active</span></a></li>
-					<li id="menu-inactive" class="inactive bisecting discreet"><a href="#" class="modal-button full-width right sml"><span>Inactive</span></a></li>
+					<li id="SpecialsActive" class="default active bisecting discreet">
+						<a href="#" class="modal-button full-width left sml" data-route="specials/active/1">
+							<span>Active</span>
+						</a>
+					</li>
+					<li id="SpecialsInactive" class="inactive bisecting discreet">
+						<a href="#"  class="modal-button full-width right sml" data-route="specials/active/0">
+							<span>Inactive</span>
+						</a>
+					</li>
 				</ul>
 			</div>
 		</div>

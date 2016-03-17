@@ -5560,3 +5560,24 @@ a.create-button {
       -webkit-transform: translateY(0.13rem); }
   a.create-button:hover span {
     color: #0779be; }
+
+li.orb-sizes {
+  display: inline-block; }
+
+div.special-feature-condition h4 {
+  margin-bottom: 0;
+  font-size: 1.25rem; }
+
+ul.special-feature-condition {
+  font-size: 1rem;
+  line-height: 1.2rem;
+  padding-left: 1rem; }
+  ul.special-feature-condition ul li {
+    font-size: 0.8rem;
+    padding: none;
+    margin: none;
+    list-style-type: none;
+    line-height: 1rem; }
+
+td.top-aligned {
+  vertical-align: top; }

@@ -113,37 +113,70 @@ class SpecialsController extends AppController {
 	public function ajax_add() {
 		if ( $this->is_ajax_post() ) {
 			$response = ['success' => true,
-			             'error' => false,
-			             'data' => ['submitted' => $this->request->data]];
-//			$special = $this->request->data['Special'];
-//			if ( !$this->Special->save($special) ) {
-//			    $response['error'] = $this->Special->validationErrors;
-//				$response['success'] = false;
-//			} else {
-//				$this->loadModel('SpecialsOrb');
-//				$specials_orbs = Hash::insert($this->request->data['SpecialsOrb'], "{n}.special_id", $this->Special->id);
-//				if ( !$this->SpecialsOrb->saveAll($specials_orbs) ) {
-//					$this->Special->delete($this->Special->id);
-//					$response['error'] = ['Specials' => False, 'SpecialsOrb' => $this->SpecialsOrb->validationErrors];
-//					$response['success'] = false;
-//				}
-//			}
+			             'error' => ['specials' => false,
+			                         'special_features'=> false,
+			                         'special_conditions' => false,
+			                         'specials_orbs'=> false],
+			             'data' => ['submitted' => $this->request->data, 'processed' => ['c' => [], 'f' => []]]];
+			$special = $this->request->data['Special'];
+//			$specials_orbs = $this->request->data['SpecialsOrbs'];
+			$id = null;
+			if ( !$this->Special->save($special) ) {
+			    $response['error']['specials'] = $this->Special->validationErrors;
+				$response['success'] = false;
+			} else {
+				$id = $this->Special->getLastInsertID();
+				if ( array_key_exists("SpecialFeature", $this->request->data) ) {
+					foreach ($this->request->data['SpecialFeature'] as $i => $sf) {
+						$this->request->data['SpecialFeature'][$i]['special_id'] = $id;
+					}
+					if ( !$this->Special->SpecialFeature->saveAll($this->request->data['SpecialFeature']) ) {
+						$response['error']['special_features'] = $this->Special->SpecialFeature->validationErrors;
+						$response['success'] = false;
+					}
+
+				}
+				if ( array_key_exists("SpecialCondition", $this->request->data) ) {
+					foreach ($this->request->data['SpecialCondition'] as $i => $sc) {
+						$this->request->data['SpecialCondition'][$i]['special_id'] = $id;
+					}
+					if ( !$this->Special->SpecialCondition->saveAll($this->request->data['SpecialCondition']) ) {
+						$response['error']['special_conditions'] = $this->Special->SpecialCondition->validationErrors;
+						$response['success'] = false;
+					}
+				}
+				if ( array_key_exists("SpecialsOrbs", $this->request->data) ) {
+					foreach ($this->request->data['SpecialsOrbs'] as $i => $sc) {
+						$this->request->data['SpecialsOrbs'][$i]['special_id'] = $id;
+					}
+					if ( !$this->Special->SpecialsOrb->saveAll($this->request->data['SpecialsOrbs']) ) {
+						$response['error']['specials_orbs'] = $this->Special->SpecialsOrb->validationErrors;
+						$response['success'] = false;
+					}
+				}
+			}
 			$this->render_ajax_response($response);
 		} else if ( $this->is_ajax_get() ) {
-
 			$this->loadModel("Orblists");
 			$orblists = $this->Orblists->find('list');
 			for ($i=1; $i<11; $i++) array_push($this->features[1]['options'], [$i, 0, $i]);
 			$orbcats = $this->Special->Orb->Orbcat->find('list');
-			$go = $this->Special->Orb->Orbcat->find('all', ['recursive' => 1]);
+			$go = $this->Special->Orb->Orbcat->find('all', ['recursive' => 2]);
 			$grouped_orbs = [];
 			foreach ($go as $oc) {
 				$os = [];
-				foreach( $oc['Orb'] as $o ) array_push($os, ['id' => $o['id'], 'title' => $o['title']]);
-				array_push($grouped_orbs, ['id' => $oc['Orbcat']['id'], 'title' => $oc['Orbcat']['menu_title'], 'Orb' => $os]);
+				foreach( $oc['Orb'] as $o ) {
+					array_push($os, ['id' => $o['id'],
+					                 'title' => $o['title'],
+					                 'price_dict' => array_filter(array_slice(array_values($o['Pricedict']), 1))
+					]);
+				}
+				array_push($grouped_orbs, [ 'id' => $oc['Orbcat']['id'],
+				                            'title' => $oc['Orbcat']['menu_title'],
+				                            'Orb' => $os]);
 			}
 			$orbs = $this->Special->Orb->find('all', ['recursive' => -1, 'order' => '`orbcat_id`'] );
-			$specials = $this->Special->find('all');
+			$specials = $this->Special->find('all', ['conditions' => ['`special`.`deprecated`' => false]]);
 			$this->set(compact('orbcats', 'orbs', 'specials', 'grouped_orbs', 'orblists'));
 			$this->set('features', $this->features);
 			$this->set('conditions', $this->conditions);
@@ -197,5 +230,19 @@ class SpecialsController extends AppController {
 			$this->Session->setFlash(__('The special could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
+	}
+
+	public function deprecate($id = null) {
+		if ( $this->is_ajax_post() ) {
+			$response = ['success' => true, 'error' => false, 'data' => ['id' => $id]];
+			$this->Special->id = $id;
+			if ( !$this->Special->saveField('deprecated', true) ) {
+				$response['error'] = $this->Special->validationErrors;
+				$response['success'] = false;
+			}
+			$this->render_ajax_response($response);
+		} else {
+			$this->redirect(___cakeUrl('orbcats', 'menu'));
+		}
 	}
 }

@@ -1,12 +1,14 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * SpecialsOrb Model
+ * SpecialCondition Model
  *
  * @property Special $Special
+ * @property Orblist $Orblist
+ * @property Orbcat $Orbcat
  * @property Orb $Orb
  */
-class SpecialsOrb extends AppModel {
+class SpecialCondition extends AppModel {
 
 /**
  * Validation rules
@@ -24,39 +26,19 @@ class SpecialsOrb extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'orb_id' => array(
+		'orblist_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
+				'allowEmpty' => true,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'condition' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'feature' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'price_1' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
+		'orbcat_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				'allowEmpty' => true,
 				//'required' => false,
@@ -64,9 +46,9 @@ class SpecialsOrb extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'price_2' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
+		'price_min' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				'allowEmpty' => true,
 				//'required' => false,
@@ -74,9 +56,9 @@ class SpecialsOrb extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'price_3' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
+		'price_max' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				'allowEmpty' => true,
 				//'required' => false,
@@ -84,9 +66,9 @@ class SpecialsOrb extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'price_4' => array(
+		'delivery' => array(
 			'boolean' => array(
-				'rule' => array('boolean'),
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				'allowEmpty' => true,
 				//'required' => false,
@@ -94,9 +76,9 @@ class SpecialsOrb extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'price_5' => array(
+		'pickup' => array(
 			'boolean' => array(
-				'rule' => array('boolean'),
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				'allowEmpty' => true,
 				//'required' => false,
@@ -121,12 +103,41 @@ class SpecialsOrb extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'Orb' => array(
-			'className' => 'Orb',
-			'foreignKey' => 'orb_id',
+		'Orblist' => array(
+			'className' => 'Orblist',
+			'foreignKey' => 'orblist_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Orbcat' => array(
+			'className' => 'Orbcat',
+			'foreignKey' => 'orbcat_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		)
 	);
+
+/**
+ * hasAndBelongsToMany associations
+ *
+ * @var array
+ */
+//	public $hasAndBelongsToMany = array(
+//		'Orb' => array(
+//			'className' => 'Orb',
+//			'joinTable' => 'special_conditions_orbs',
+//			'foreignKey' => 'special_condition_id',
+//			'associationForeignKey' => 'orb_id',
+//			'unique' => 'keepExisting',
+//			'conditions' => '',
+//			'fields' => '',
+//			'order' => '',
+//			'limit' => '',
+//			'offset' => '',
+//			'finderQuery' => '',
+//		)
+//	);
+
 }

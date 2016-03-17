@@ -479,6 +479,7 @@ window.xtr.route_collections.vendor_ui = function() {
 		}
 	};
 
+	// SPECIALS
 	this.specials_selects = {
 		params:['action', 'type', 'target'],
 		callbacks: {
@@ -546,18 +547,35 @@ window.xtr.route_collections.vendor_ui = function() {
 		}
 	};
 
+	this.specials_orbs = {
+		params: ['action', 'target', 'arg_1'],
+		callbacks: {
+			params_set: function() {
+				XT.vendor_ui.specials.breakout[ this.read('action') ]( this.read('target'), this.read('arg_1') );
+			}
+		}
+	};
+
+	this.specials_delete = {
+		params: ['action', 'target'],
+		callbacks: {
+			params_set: function() {
+				XT.vendor_ui[ this.read('action') ]( this.read('target') );
+			}
+		}
+	};
+
+
 	this.specials = {
-		params: ['action'],
+		params: ['action', 'arg_1'],
 		url: {url:'add-special', type: C.GET},
 		modal: C.PRIMARY,
 		callbacks: {
 			params_set: function() {
-				switch ( this.read("action") ) {
-					case 'save':
-						this.url = false;
-						this.set_callback("launch", undefined)
-						XT.vendor_ui.specials.current[this.read('action')]();
-						break;
+				if ( this.read('action') != "launch" ) {
+					this.url = false;
+					this.set_callback("launch", undefined)
+					XT.vendor_ui.specials.current[this.read('action')](this.read('arg_1'));
 				}
 			},
 			launch: function() {

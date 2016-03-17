@@ -7,9 +7,6 @@
 	 * About.me: about.me/thisimpetus
 	 */
 
-//db($orbs);
-	//pr($optflags);
-//		db($orbopts);
 ?>
 
 <div id="vendor-ui" class="row">
@@ -42,7 +39,7 @@
 			);?>
 
 			<!------------------------------------- TAB 4: SPECIALS -------------------------------->
-			<?=$this->Element( 'vendor_ui/specials', compact('specials', 'specials_orbs'));?>
+			<?=$this->Element( 'vendor_ui/specials', compact('specials'));?>
 
 		</div>
 	</div>

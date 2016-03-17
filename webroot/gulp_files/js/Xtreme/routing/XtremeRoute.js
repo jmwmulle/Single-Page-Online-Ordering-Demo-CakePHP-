@@ -43,7 +43,7 @@ XtremeRoute.prototype = {
 	 * @private
 	 */
 	init: function (name, route_data, request_obj) {
-		var debug_this = 2;
+		var debug_this = 0;
 		if (debug_this > 0) pr([name, route_data, request_obj], "XtremeRoute::__init( request_obj )", 2);
 		this.route_data = $.extend(true, {}, route_data);
 		this.request = request_obj.request;

@@ -55,8 +55,8 @@ class Special extends AppModel {
 			),
 		),
 		'deprecated' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
+			'boolean' => array(
+				'rule' => array('boolean'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -68,26 +68,39 @@ class Special extends AppModel {
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
-///**
-// * hasMany associations
-// *
-// * @var array
-// */
-//	public $hasMany = array(
-//		'EligibilityRule' => array(
-//			'className' => 'EligibilityRule',
-//			'foreignKey' => 'special_id',
-//			'dependent' => false,
-//			'conditions' => '',
-//			'fields' => '',
-//			'order' => '',
-//			'limit' => '',
-//			'offset' => '',
-//			'exclusive' => '',
-//			'finderQuery' => '',
-//			'counterQuery' => ''
-//		)
-//	);
+/**
+ * hasMany associations
+ *
+ * @var array
+ */
+	public $hasMany = array(
+		'SpecialCondition' => array(
+			'className' => 'SpecialCondition',
+			'foreignKey' => 'special_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'SpecialFeature' => [
+			'className' => 'SpecialFeature',
+			'foreignKey' => 'special_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		]
+	);
 
 
 /**

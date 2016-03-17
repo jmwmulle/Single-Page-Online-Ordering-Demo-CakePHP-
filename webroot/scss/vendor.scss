@@ -271,7 +271,7 @@ img#vendor-home-logo {
 }
 table {
   width:100%;
-  td[data-route]:hover { background-color: $xtreme-yellow;};
+  td[data-route]:hover { background-color: $xtreme-yellow; };
 }
 table#menu-table {
   tr {
@@ -774,4 +774,31 @@ a.create-button {
   &:hover {
     span { color: $xtreme-blue; }
   }
+}
+
+li.orb-sizes {
+  display: inline-block;
+}
+
+div.special-feature-condition {
+  h4 {
+    margin-bottom:0;
+    font-size:1.25rem;
+  }
+}
+ul.special-feature-condition {
+  font-size: 1rem;
+  line-height:1.2rem;
+  padding-left:1rem;
+  ul li {
+    font-size: 0.8rem;
+    padding:none;
+    margin:none;
+    list-style-type: none;
+    line-height:1rem;
+  }
+}
+
+td.top-aligned {
+vertical-align: top;
 }

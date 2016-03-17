@@ -46,6 +46,7 @@
 	Router::connect( '/menu-item/*',                [ CTR => 'orbs', ATN => 'orbcard' ] );
 	Router::connect( '/vendor-ui/opts',             [ CTR => 'orbs', ATN => 'vendor_ui', 'opts' ] );
 	Router::connect( '/vendor-ui/menu',             [ CTR => 'orbs', ATN => 'vendor_ui', 'menu' ] );
+	Router::connect( '/vendor-ui/specials',         [ CTR => 'orbs', ATN => 'vendor_ui', 'specials' ] );
 	Router::connect( '/vendor-ui',                  [ CTR => 'orbs', ATN => 'vendor_ui' ] );
 	Router::connect( '/orbopt-config/*',            [ CTR => 'orbs', ATN => 'orbopt_config' ] );
 	Router::connect( '/add-price-labels',           [ CTR => 'orbs', ATN => 'pricedict_add' ] );
@@ -107,6 +108,7 @@
 	/** SPECIALS CONTROLLER */
 	Router::connect( '/add-special',            [ CTR => 'specials', ATN => 'ajax_add' ] );
 	Router::connect( '/save-special',            [ CTR => 'specials', ATN => 'ajax_add' ] );
+	Router::connect( '/delete-special/*',            [ CTR => 'specials', ATN => 'deprecate' ] );
 
 	/** ORBLISTS CONTROLLER */
 	Router::connect( '/load-orblists',            [ CTR => 'orblists', ATN => 'ajax_list' ] );

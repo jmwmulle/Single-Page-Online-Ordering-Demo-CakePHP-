@@ -30,6 +30,7 @@ SpecialsCreator.prototype = {
 			title: undefined,
 			vendor_title: undefined,
 			active: undefined,
+			inactive: undefined,
 			price: undefined,
 			description: undefined
 		},
@@ -124,6 +125,10 @@ SpecialsCreator.prototype = {
 					remove: undefined,
 					save: undefined,
 					cancel: undefined
+				},
+				sizes: {
+					wrapper: undefined,
+					content: undefined
 				}
 			},
 			orbcat:{
@@ -171,7 +176,7 @@ SpecialsCreator.prototype = {
 		fields: {
 			title: undefined,
 			vendortitle: undefined,
-			active: undefined,
+			active: true,
 			price: undefined,
 			description: undefined
 		},
@@ -182,6 +187,7 @@ SpecialsCreator.prototype = {
 			self.current.update = function() {
 				var saveable = true;
 				for (var f in self.current.fields) {
+					if (f == "active") continue;
 					var val = $(self.DOM.fields[f]).val();
 					self.current.fields[f] = val != "" ? val : undefined;
 					if ( !defined(self.current.fields[f]) ) saveable = false;
@@ -190,23 +196,122 @@ SpecialsCreator.prototype = {
 			};
 
 			self.current.save = function() {
+				var special = self.current.fields;
+				special.vendor_title = special.vendortitle;
+				delete(special.vendortitle);
+				var features = self.current.format_features();
+				var conditions = self.current.format_conditions();
+				var specials_orbs = features[1];
+				for (var i=0; i < conditions[1].length; i++) specials_orbs.push(conditions[1][i]);
 				var data = {
-					details: self.current.fields,
-					features: self.current.features.saved,
-					conditions: self.current.conditions.saved
-				}
+					Special: special,
+					SpecialFeature: features[0],
+					SpecialCondition: conditions[0],
+					SpecialsOrbs: specials_orbs
+				};
 				$.ajax({
 					type: C.POST,
 					url: "save-special",
 					data: data,
 					success: function (data) {
-						data = JSON.parse(data);
-						pr(data);
-						if (data.success == true) { pr("yay");}
+						try {
+							data = JSON.parse(data);
+						} catch (e) {
+							$("#primary-modal-content", C.BODY).append($("<div />").html(data));
+							die();
+						}
+						if (data.success == true) {
+							XT.vendor_ui.reload_tab('specials');
+							$(XT.router).trigger(C.ROUTE_REQUEST, {request:["close_modal","primary"].join(C.DS), trigger:{}});
+						}
 					}
 				});
 			};
+
+			self.current.format_features = function() {
+				var formatted = [];
+				var specials_orbs = [];
+				for (var f in self.current.features.saved) {
+					var f = self.current.features.saved[f];
+					var feature = {choose: false, receive: false, quantity:1, orblist_id: null, orbcat_id: null};
+					feature.choose = f.method.opt == "choose" ? 1 : 0;
+					feature.receive = f.method.opt == "receive" ? 1 : 0;
+					feature.quantity = f.quantity.value;
+					if (f.criteria.opt == "orblist") feature.orblist_id = f.criteria.value;
+					if (f.criteria.opt == "orbcat") feature.orbcat_id = f.criteria.value;
+					if (f.criteria.opt == "orb") {
+						for (var i = 0; i < f.criteria.value.length; i++) {
+							var sp_o = {
+								orb_id:f.criteria.value[i][0],
+								feature:1,
+								condition: 0,
+								price_1: 0,
+								price_2: 0,
+								price_3: 0,
+								price_4: 0,
+								price_5: 0
+							}
+							for (var j = 0; j < f.criteria.value[i][1].length + 1; j++) {
+								sp_o['price_'+f.criteria.value[i][1][j]] = 1
+							}
+							specials_orbs.push(sp_o)
+						}
+					}
+					formatted.push(feature);
+				}
+				return [formatted, specials_orbs];
+			};
+			self.current.format_conditions = function() {
+				var formatted = [];
+				var specials_orbs = [];
+				for (var c in self.current.conditions.saved) {
+					var c = self.current.conditions.saved[c];
+					var condition = {
+						orblist_id: null,
+						orbcat_id: null,
+						price_min: null,
+						price_max: null,
+						delivery: false,
+						pickup: false
+					};
+					if (defined(c.price) && c.price.opt == "max") condition.price_max = c.price.value;
+					if (defined(c.price) && c.price.opt == "min") condition.price_min = c.price.value;
+					condition.delivery = defined(c.order_method) && c.order_method.opt == "delivery" ? 1 : 0;
+					condition.pickup = defined(c.order_method) && c.order_method.opt == "pick-up" ? 1 : 0;
+					if (defined(c.content) && c.content.opt == "orblist") condition.orblist_id = c.content.value;
+					if (defined(c.content) && c.content.opt == "orbcat") condition.orbcat_id = c.content.value;
+					if (defined(c.content) && c.content.opt == "orb") {
+						for (var i = 0; i < c.content.value.length; i++) {
+							var sp_o = {
+								orb_id: c.content.value[i][0],
+								feature:1,
+								condition: 0,
+								price_1: 0,
+								price_2: 0,
+								price_3: 0,
+								price_4: 0,
+								price_5: 0
+							}
+							for (var j = 0; j < c.content.value[i][1].length; j++) {
+								sp_o['price_'+ c.content.value[i][1][j]] = 1
+							}
+							specials_orbs.push(sp_o)
+						}
+					}
+					formatted.push(condition);
+				}
+				return [formatted, specials_orbs];
+			}
+
+			self.current.active = function(state) {
+				self.current.fields.active = Number(state) == 1;
+				var active_el = self.current.fields.active ? "active" : "inactive";
+				var inactive_el = self.current.fields.active ? "inactive" : "active";
+				$(self.DOM.fields[active_el]).addClass(FX.active).removeClass(FX.inactive);
+				$(self.DOM.fields[inactive_el]).addClass(FX.inactive).removeClass(FX.active);
+			}
 		},
+		active: undefined,
 		update: undefined,
 		save: undefined,
 		features: {
@@ -390,6 +495,7 @@ SpecialsCreator.prototype = {
 
 				c.cancel = function() {
 					c.hide();
+					c.active = undefined;
 					setTimeout(function() {
 							c.reset('content');
 							c.reset('price');
@@ -407,7 +513,7 @@ SpecialsCreator.prototype = {
 					}
 					var opt = $("option:selected", self.DOM.conditions[target].select.field)[0];
 					var breakout = $(opt).data('breakout');
-					c[target].opt = $(self.DOM.conditions[target].select.field).val();
+					c[target].opt = $(opt).val();
 					if ( breakout != "0") return self.breakout.launch(breakout, c.section, target);
 					c[target].value = $(self.DOM.conditions[target].select.field).val();
 					c[target].content = $(opt).html();
@@ -440,11 +546,10 @@ SpecialsCreator.prototype = {
 					var condition = {
 						id: id,
 						section: c.section,
-						sentence: sentence,
-						method: c.method,
-						quantity: c.quantity,
-						criteria: c.criteria
+						sentence: sentence
 					}
+
+					condition[c.active] = c[c.active];
 					self.current.conditions.saved[id] = condition;
 					c.cancel();
 					$(self.DOM.conditions.table).append( self.table_row(condition) );
@@ -503,8 +608,9 @@ SpecialsCreator.prototype = {
 				o.load()
 			};
 
-			o.save = function(section, select) {
+			o.save = function(section, select, opt) {
 				if ( !defined(o.active) ) return false;
+				self.current[section][select].opt = opt;
 				self.current[section][select].value = o.active.id;
 				self.current[section][select].content = o.active.name;
 				return true
@@ -638,10 +744,11 @@ SpecialsCreator.prototype = {
 			};
 
 			b.save = function(target, type) {
+				var opt = self.current[b.section][b.select].opt;
 				if ( target == "orblist") {
-					if ( !self.orblist.save(b.section, b.select) ) return;
+					if ( !self.orblist.save(b.section, b.select, opt) ) return;
 				} else {
-					if ( !b["save_" + type](target) ) return;
+					if ( !b["save_" + type](target, opt) ) return;
 				}
 
 				b.hide(target);
@@ -649,7 +756,7 @@ SpecialsCreator.prototype = {
 				setTimeout(function() { b.reset(target); }, 350);
 			};
 
-			b.save_select = function(target) {
+			b.save_select = function(target, opt) {
 				self.current[b.section].reset(b.select, true);
 				var choice = $("option:selected", self.DOM.breakouts[target].index)[0];
 				if ($(choice).val() ==  "--" ) {
@@ -657,18 +764,26 @@ SpecialsCreator.prototype = {
 					return false;
 				}
 				$( self.DOM.breakouts[target].index ).removeClass(FX.error);
+				self.current[b.section][b.select].opt = opt;
 				self.current[b.section][b.select].value = title_case( $(choice).val() );
 				self.current[b.section][b.select].content = $(choice).html();
 
 				return true
 			};
 
-			b.save_multiselect = function(target) {
+			b.save_multiselect = function(target, opt) {
 				var collection_ids = [];
 				var collection_labels = [];
 				$("option", self.DOM.breakouts[target].collection).each( function() {
 					if ( !$(this).hasClass(FX.hidden) ) {
-						collection_ids.push( $(this).val() );
+						var orb_id = $(this).val();
+						var sizes = [];
+						$('input.orb-size', as_id(["orb", "selector", "sizes", orb_id].join("-"))).each( function() {
+							if ( $(this).prop('checked') ) {
+								sizes.push( $(this).val() );
+							}
+						});
+						collection_ids.push( [orb_id, sizes] );
 						collection_labels.push( $(this).data('label') );
 					}
 				});
@@ -680,13 +795,14 @@ SpecialsCreator.prototype = {
 				var c_str = String(collection_labels.join(", "));
 				if ( c_str.length > self.max_c_length) c_str = c_str.substr(0, self.max_c_length) + "...";
 				self.current[b.section].reset(b.select, true);
+				self.current[b.section][b.select].opt = opt;
 				self.current[b.section][b.select].value = collection_ids;
 				self.current[b.section][b.select].content = c_str;
 
 				return true
 			};
 
-			b.save_input = function(target) {
+			b.save_input = function(target, opt) {
 				var price_prefix = "";
 
 				if (b.select == "price") {
@@ -702,7 +818,9 @@ SpecialsCreator.prototype = {
 					return false;
 				}
 				$(self.DOM.breakouts[target].input).removeClass(FX.error);
-				self.current[b.section][b.select] = {value: value, content:content};
+				self.current[b.section][b.select].opt = opt;
+				self.current[b.section][b.select].content = content;
+				self.current[b.section][b.select].value = value;
 				return true;
 			}
 
@@ -739,13 +857,23 @@ SpecialsCreator.prototype = {
 				$('option', self.DOM.breakouts[target].collection).each( function() {
 					$(this).attr('selected', false).addClass(FX.hidden);
 				});
+				$('.orb-size-row').addClass(FX.fade_out);
+				setTimeout( function() {
+					$('.orb-size-row').addClass(FX.hidden);
+					$("input", self.DOM.breakouts.orb.sizes.content).each( function() {
+						$(this).prop('checked', true);
+					});
+				}, 330);
 				$(self.DOM.breakouts[target].collection).removeClass(FX.error);
 			};
 
 			b.add = function(target) {
 				$("option:selected", self.DOM.breakouts[target].index).each( function() {
+					var orb_id = $(this).val();
 					$(this).attr(FX.disabled, true);
-					$( as_id([target, "selector", "collection", $(this).val()].join("-"))).removeClass(FX.hidden);
+					$( as_id([target, "selector", "collection", orb_id].join("-"))).removeClass(FX.hidden);
+					$(as_id(['orb','selector', 'sizes', orb_id].join("-"))).removeClass(FX.hidden);
+					setTimeout(function() { $(as_id(['orb','selector', 'sizes', orb_id].join("-"))).removeClass(FX.fade_out);}, 30);
 				});
 
 				if (target == "orblist") self.orblist.inspect_active()
@@ -753,9 +881,19 @@ SpecialsCreator.prototype = {
 
 			b.remove = function(target) {
 				$("option:selected", self.DOM.breakouts[target].collection).each( function() {
+					var orb_id = $(this).val();
 					$(this).addClass(FX.hidden);
-					$( as_id([target, "selector", "index", $(this).val()].join("-"))).removeAttr(FX.disabled);
+					$( as_id([target, "selector", "index", orb_id].join("-"))).removeAttr(FX.disabled);
+					$(as_id(['orb','selector', 'sizes', orb_id].join("-"))).addClass(FX.fade_out);
+					setTimeout(function() {
+						$(as_id(['orb','selector', 'sizes', orb_id].join("-"))).addClass(FX.hidden);
+						$("input.orb-size", as_id(['orb','selector', 'sizes', orb_id].join("-"))).each( function() {
+							$(this).prop('checked', true);
+						});
+					}, 300);
 				});
+
+
 
 				if (target == "orblist") self.orblist.inspect_active()
 			}
@@ -789,6 +927,8 @@ SpecialsCreator.prototype = {
 		for (var f in this.current.fields) {
 			this.DOM.fields[f] = $(as_id("Special"+title_case(f)))[0];
 		}
+		this.DOM.fields["inactive"] = $(as_id('SpecialsInactive'))[0];
+		this.DOM.fields["active"] = $(as_id('SpecialsActive'))[0];
 		this.DOM.buttons.save = $(as_id("specials-save-button"))[0];
 		this.DOM.buttons.cancel = $(as_id("specials-cancel-button"))[0];
 
@@ -820,8 +960,10 @@ SpecialsCreator.prototype = {
 			} else {
 				this.DOM.breakouts[s].input = $( as_id([s, "selector", "input"].join("-")) )[0];
 			}
-			 for ( var b in buttons ) this.DOM.breakouts[s].buttons[b] = $(as_class([b,'button'].join("-")), this.DOM.breakouts[s].box)[0];
+			for ( var b in buttons ) this.DOM.breakouts[s].buttons[b] = $(as_class([b,'button'].join("-")), this.DOM.breakouts[s].box)[0];
 		}
+		this.DOM.breakouts.orb.sizes.wrapper = $(as_id("orb-sizes-wrapper"))[0];
+		this.DOM.breakouts.orb.sizes.content = $(as_id("orb-sizes-wrapper-content"))[0];
 
 	},
 
@@ -849,7 +991,7 @@ var xt_vendor_ui = {
 		XT.vendor_ui.loading_screen(0);
 		XT.vendor_ui.fix_breakouts();
 		$(XSM.vendor_ui.ui_tabs).tabs();
-		for ( var table in {menu:null, opts:null } ) {
+		for ( var table in {menu:null, opts:null, specials:null } ) {
 			XT.vendor_ui.data_tables(table);
 		}
 	},
@@ -894,6 +1036,18 @@ var xt_vendor_ui = {
 					{ width: 76 },
 					{ width: 76 }
 				]
+			},
+			specials: {
+				id: XSM.vendor_ui.specials_table,
+				cols: [
+					{ width: 100 },
+					{ width: 100 },
+					{ width: 76 },
+					{ width: 76 },
+					{ width: 76 },
+					{ width: 76 },
+					{ width: 76 }
+				]
 			}
 		};
 		$(tables[table].id).dataTable({
@@ -901,7 +1055,7 @@ var xt_vendor_ui = {
 				bJQueryUI: true,
 				bDeferRender: false,
 				autoWidth: false,
-				columns: tables[table]
+				columns: tables[table].cols
 		});
 	},
 
@@ -1131,17 +1285,26 @@ var xt_vendor_ui = {
 	},
 
 	reload_tab: function( tab ) {
-		if (tab == "opts") {
-			$(XSM.vendor_ui.menu_options_tab).html('');
-			$(XSM.vendor_ui.menu_options_tab).load(["vendor-ui", "opts"].join(C.DS), function() {
-																	XT.vendor_ui.data_tables(tab);
-																	XT.vendor_ui.fix_breakouts();
-																});
+		switch (tab) {
+			case "opts":
+				$(XSM.vendor_ui.menu_options_tab).html('');
+				$(XSM.vendor_ui.menu_options_tab).load(["vendor-ui", "opts"].join(C.DS), function() {
+																		XT.vendor_ui.data_tables(tab);
+																		XT.vendor_ui.fix_breakouts();
+																	});
+			break;
+			case "menu":
+				$(XSM.vendor_ui.menu_tab).load(["vendor-ui", "menu"].join(C.DS), function() {
+																XT.vendor_ui.data_tables(tab);
+																XT.vendor_ui.fix_breakouts();
+															});
+			break;
+			case "specials":
+				$(XSM.vendor_ui.specials_tab).load(["vendor-ui", "specials"].join(C.DS), function() {
+																				XT.vendor_ui.data_tables(tab);
+																				XT.vendor_ui.fix_breakouts();
+																			});
 		}
-		$(XSM.vendor_ui.menu_tab).load(["vendor-ui", "menu"].join(C.DS), function() {
-														XT.vendor_ui.data_tables(tab);
-														XT.vendor_ui.fix_breakouts();
-													});
 	},
 
 	toggle_menu_options_breakout: function( id ) {
@@ -1186,222 +1349,33 @@ var xt_vendor_ui = {
 		$("#overflagging-alert")[method](class_1);
 		setTimeout( function() { $("#overflagging-alert")[method](class_2); }, time);
 	},
+
+	confirm_delete_special: function(id) {
+		$(as_id(["specials", "delete", id].join("-"))).removeClass(FX.hidden);
+		setTimeout(function() { $(as_id(["specials", "delete", id].join("-"))).removeClass(FX.fade_out); }, 30);
+	},
+	cancel_delete_special: function(id) {
+		$(as_id(["specials", "delete", id].join("-"))).addClass(FX.fade_out);
+		setTimeout(function() { $(as_id(["specials", "delete", id].join("-"))).addClass(FX.hidden); }, 330);
+	},
+	delete_special: function(id) {
+		$.ajax({
+			type: C.POST,
+			url: ["delete-special", id].join(C.DS),
+			data: null,
+			success: function (data) {
+				try {
+					data = JSON.parse(data);
+				} catch (e) {
+					$(C.BODY).append($("<div />").html(data));
+					die();
+				}
+				pr(data);
+				if (data.success == true) {
+					XT.vendor_ui.reload_tab('specials');
+				}
+			}
+		});
+	},
 	specials: undefined
 }
-
-//
-//	toggle_specials_add_conditions: function() {
-//		var add = FX.active;
-//		var remove = FX.inactive;
-//		var disabled = false;
-//		if ( $("#specials-add-conditions-button", C.BODY).hasClass(FX.active) ) {
-//			add = FX.inactive;
-//			remove = FX.active;
-//			disabled = true;
-//		}
-//		$("#specials-add-conditions-button", C.BODY).addClass(add).removeClass(remove);
-//		var self = this;
-//		$(".specials-add-condition").each(function() {
-//			var target = $(this).attr('id').split("-")[3];
-//			var config_label = as_id(["add-special-conditions", target, "config-label"].join("-"));
-//			if (disabled) {
-//				$(this).attr(FX.disabled, true).val($("option:first", this).val());
-//				self.toggle_specials_options(target, true, true);
-//				$("span.config-label", config_label).addClass(FX.disabled);
-//			} else {
-//				$(this).removeAttr(FX.disabled);
-//				$("span.config-label", config_label).removeClass(FX.disabled);
-//			}
-//		});
-//	},
-//
-//
-//
-//	specials_orbcat_filter: function() {
-//		var selected = $("#add-special-criteria-orbcats-select").find(":selected")[0];
-//		var orbcat_id = $( selected ).val();
-//		var orbcat = $(selected).html();
-//		$("option", "#special-orbs-list-select").each( function() {
-//			var action = $(this).data('orbcat') == orbcat_id ? "removeClass" : "addClass";
-//			$(this)[action](FX.hidden);
-//		});
-//		$("input.choice-text", "#add-special-criteria-choice").val(orbcat);
-//	},
-//
-//	specials_add_orb: function() {
-//		var orb_count = Number($("#specials-orbs").data('orbCount'));
-//		$("#specials-orbs").data('orbCount', orb_count + 1);
-////		var orbcat_id = $( $("#special-orbcats-list-select").find(":selected")[0] ).val();
-//		var orbcat_title = $( $("#special-orbcats-list-select").find(":selected")[0] ).text();
-//		var orb_id = $( $("#special-orbs-list-select").find(":selected")[0] ).val();
-//		var orb_title = $( $("#special-orbs-list-select").find(":selected")[0] ).text();
-//		var quantity = $( $("#special-orbs-quantity-select").find(":selected")[0] ).val();
-//		$("#SpecialMenuStatus").val( $("#menu-active").hasClass(FX.active) );
-//		$("#SpecialAjaxAddForm").append([
-//			$("<input/>").attr({
-//						type: "hidden",
-//						name:"data[SpecialsOrb]["+orb_count+"][orb_id]",
-//						value:orb_id}),
-//			$("<input/>").attr({
-//				type: "hidden",
-//				name:"data[SpecialsOrb]["+orb_count+"][quantity]",
-//				value:quantity})]);
-//
-//		$("tbody", "#specials-orbs").append(
-//			$("<tr/>").attr('id', 'orb-'+ orb_count +'-table-row').append([
-//				$("<td />").text(orb_title),
-//				$("<td />").text(orbcat_title),
-//				$("<td />").text(quantity)],
-//				$("<td />").append(
-//					$("<a />").attr({
-//						href: "#",
-//						"data-route": ['specials_add_delete_orb', orb_count].join(C.DS)
-//						}).
-//						addClass("tiny modal-button delete full-width text-center").append(
-//						$("<span />").addClass("icon-cancel textless")
-//					)
-//				)
-//			)
-//		);
-//	},
-//
-//	specials_unique_behaviors: function(target, selected, cancelling) {
-//		switch (target) {
-//			case 'method':
-//				if (selected == "choose") {
-//					if (!cancelling) {
-//						$('span', '#add-special-choicecount-config-label').removeClass(FX.disabled);
-//						$('#add-special-choicecount-select').removeAttr(FX.disabled);
-//					} else {
-//						this.specials_target = target;
-//						this.toggle_specials_options('choicecount', true, false);
-//						$('span', '#add-special-choicecount-config-label').addClass(FX.disabled);
-//						$('#add-special-choicecount-select').attr(FX.disabled, true);
-//						var route = ['specials_criteria', '0', 'method', 'restore'];
-//					}
-//					break;
-//				}
-//		}
-//	},
-//
-//	toggle_specials_options: function(target, cancel, is_condition) {
-//		var prefix = is_condition ? "add-special-conditions" : "add-special";
-//		var select = as_id([prefix, target, "select"].join("-"));
-//		var wrapper = as_id([prefix, target, "wrapper"].join("-"));
-//		var choice = as_id([prefix, target, "choice"].join("-"));
-//		var selected = $(select).find(":selected")[0];
-//		var breakout = as_id($( selected ).data('breakout'));
-//		var selected = $(selected).val();
-//
-//		if (!cancel) {
-//			this.specials_unique_behaviors(target, true);
-//			if ( breakout != "0" ) {
-//				setTimeout(function() {$( breakout ).removeClass(FX.hidden); }, 330);
-//				setTimeout(function() {$( breakout ).removeClass(FX.fade_out); }, 390);
-//			} else {
-//				this.set_specials_option_choice(target, false, is_condition)
-//			}
-//		} else {
-//			$( choice ).addClass(FX.fade_out);
-//			setTimeout(function() { $( choice ).addClass(FX.hidden); }, 360);
-//			setTimeout(function() {
-//				var target = $("option:first", select).val();
-//				$(select).val(target);
-//			}, 330);
-//			setTimeout(function() { $(wrapper).removeClass(FX.hidden) }, 330);
-//			setTimeout(function() { $(wrapper).removeClass(FX.fade_out) }, 360);
-//		}
-//
-//		this.specials_unique_behaviors(target, selected, cancel)
-//	},
-//
-//	set_specials_option_choice: function(parent, target, is_condition) {
-//		var prefix = is_condition ? "add-special-conditions" : "add-special";
-//		var select = as_id([prefix, parent, 'select'].join("-"));
-//		var selected = $(select).find(":selected")[0];
-//		var breakout = as_id($( selected ).data('breakout'));
-//		var wrapper = as_id([prefix, parent, 'wrapper'].join("-"));
-//		var choice = as_id([prefix, parent, 'choice'].join("-"));
-//		var value = $(select).val();
-//		var label = $( selected ).html();
-//		var choice_text = $("input.choice-text", choice).val();
-//		if ( defined(choice_text) && choice_text.length > 0 && choice_text != "--" ) label = title_case(choice_text);
-//
-//		try { $(breakout).addClass(FX.fade_out); } catch(e) {}
-//		setTimeout(function() { $( wrapper ).addClass(FX.fade_out); }, 330);
-//		try { setTimeout(function() { $( breakout ).addClass(FX.hidden); }, 330); } catch(e) {}
-//		setTimeout(function() { $( choice ).removeClass(FX.hidden); }, 660);
-//		setTimeout(function() { $( wrapper ).addClass(FX.hidden); }, 690);
-//		setTimeout(function() { $("span.select-choice", choice).html(label); }, 700);
-//		setTimeout(function() { $( choice ).removeClass(FX.fade_out); }, 1030);
-//	},
-//
-//	specials_add_rule: function() {
-//		$("#specials-rules").removeClass(FX.hidden);
-//		setTimeout(function() { $("#specials-rules").removeClass(FX.fade_out) }, 30);
-//	},
-//
-//	specials_save_feature: function() {
-//		var feature = []
-//		var incomplete = [];
-//		$("select", "#specials-rules").each( function() {
-//			if (!$(this).val().length > 0 || $(this).val() == undefined ) {
-//				incomplete.push(this);
-//			} else {
-//				var id = $(this).attr('id').split("-").slice(0,-1).push("config", "label");
-//				$("span.config-label", as_id(id)).removeClass(FX.incomplete);
-//			}
-//			feature.push([ $(this).val(), $( $(this).find(":selected")[0] ).html() ]);
-//		});
-//
-//		if (incomplete.length == 0) {
-//			var feature_string = feature[0][1] + " " + feature[1][1] + " items from " + feature[3][1];
-//			var feature_count = $("tr", "#features-table").length;
-//			$("tbody", "#features-table").append(
-//				$("<tr />").append([
-//					$("<td />").attr("id", "feature-" + feature_count).html(title_case(feature_string)),
-//					$("<td />").append( $("<a />").attr("href", "#").addClass("modal-button sml").html("<span>Edit</span>") )
-//				])
-//			);
-//			$("select", "#specials-rules").each( function() { $(this).val($("option:first", this).val()) });
-//			$("#specials-rules").addClass(FX.fade_out);
-//			setTimeout( function() { $("#specials-rules").addClass(FX.hidden) }, 300);
-//		} else {
-//			$(incomplete).each( function() {
-//				var id = $(this).attr('id').split("-").slice(0,-1).push("config", "label");
-//				$("span.config-label", as_id(id)).addClass(FX.incomplete);
-//			});
-//		}
-//	},
-//
-//	item_selector: function(item, action) {
-//		var from_list = $(as_id([item, "selector", action == "add" ? "from" : "to", "select"].join("-")));
-//		from_list.find(":selected").each(function() {
-//			var from = as_id([item, 'selector', action == "add" ? "from" : "to", $(this).val()].join("-"));
-//			var to = as_id([item, 'selector', action == "add" ? "to" : "from", $(this).val()].join("-"));
-//			$(from).addClass(FX.hidden);
-//			$(to).removeClass(FX.hidden);
-//		});
-//	},
-//
-//	item_selections: function (item, save) {
-//		var items = {};
-//		var to_list = $(as_id([item, "selector", "to", "select"].join("-")));
-//		var from_list = $(as_id([item, "selector", "from", "select"].join("-")));
-//		to_list.find("option").each(function() {
-//			if ( !$(this).hasClass(FX.hidden) ) items[ $(this).val() ] = $(this).data('label');
-//			$(this).addClass(FX.hidden);
-//		});
-//		$("option", from_list).each(function() {
-//			$(this).removeClass(FX.hidden).attr('selected', false);
-//		});
-//		var route = save ? ["specials_add_close_breakout", "orbs"] : ["specials_add_close_breakout",0,this.specials_target,"orb_selector"];
-//		this.specials_target = undefined;
-//		$(XT.router).trigger(C.ROUTE_REQUEST, {request: route.join(C.DS), trigger:{}});
-//	}
-//
-//
-//
-//
-
-//}

@@ -1,0 +1,52 @@
+<?php
+/**
+ * J. Mulle, for xtreme, 3/17/16 7:15 PM
+ * www.introspectacle.net
+ * Email: this.impetus@gmail.com
+ * Twitter: @thisimpetus
+ * About.me: about.me/thisimpetus
+ */
+?>
+<div class="special-feature-condition">
+	<div class="row">
+		<div class="large-12 columns">
+			<? if ( count($conditions) > 1 ):?>
+			<h4>Conditions</h4>
+			<ul class="special-feature-condition">
+				<?php foreach($conditions as $i => $c):
+					if ($i == "Orb") continue;?>
+					<li>
+					<?php
+						$c_str;
+						$print_orbs = false;
+						if ( $c['orbcat_id'] ):
+							$c_str = "Order must include an item from ".$c['Orbcat']['title']." (category).";
+						elseif ( $c['orblist_id'] ):
+							$c_str = "Order must include an item from ".$c['Orblist']['name']." (custom list).";
+						elseif ( $c['price_max'] or $c['price_min'] ):
+							$price = $c['price_max'] ? money_format( "%#3.2n",$c['price_max']) : money_format( "%#3.2n",$c['price_min']);
+							$c_str = "Order must cost ".($c['price_max'] ? "at most " : "at least ")."$price.";
+						elseif ( $c['delivery'] or $c['pickup'] ):
+							$c_str = "Order must be for ".($c['delivery'] ? "delivery" : "pick-up");
+						else:
+							$print_orbs = true;
+							$c_str = "Order must include ".(count($conditions['Orb']) > 1 ? "any of the following items:" : ":");?>
+						<?php endif;?>
+						<?=$c_str;?>
+						<?php if ($print_orbs): ?>
+							<ul>
+							<?php foreach($conditions['Orb'] as $o):?>
+								<li>
+									<?=sprintf(" %s (%s)", $o['title'], implode(array_slice($o,6), ", "));?>
+								</li>
+							<?php endforeach;?>
+							</ul>
+						<?php endif;?>
+					</li>
+				<?php endforeach;?>
+			</ul>
+			<?php endif;?>
+
+		</div>
+	</div>
+</div>

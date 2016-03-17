@@ -34,6 +34,8 @@
 				</div>
 			<?=$this->Form->end(); ?>
 			</div>
+			<br />
+			<br />
 		</div>
 	</div>
 	<div class="row">
@@ -48,8 +50,8 @@
 			<table role="grid" id="menu-options-table">
 				<thead>
 					<tr>
-						<th><a href="#">Vendor Title</th>
-						<th><a href="#">Menu Title</th>
+						<th><a href="#">Vendor Title</a></th>
+						<th><a href="#">Menu Title</a></th>
 					<?php foreach($optflags as $of) { echo sprintf("<th><a href='#'>%s</a></th>", strtoupper($of)); }?>
 						<th>MENU CATEGORIES</th>
 						<th>Pricing</th>
