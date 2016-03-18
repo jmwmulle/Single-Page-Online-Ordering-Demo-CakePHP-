@@ -211,7 +211,7 @@
 			$this->layout = 'vendor_ui';
 			$this->set( 'page_name', "Vendor Interface" );
 			$this->system_status();
-			$orbs    = $this->Orb->find( 'all', array( 'recursive' => 1 ) );
+			$orbs    = $this->Orb->find( 'all', ['recursive' => 1] );
 			$orbopts = Hash::remove( $this->Orb->Orbopt->find( 'all' ), "{n}.Orb" );
 			foreach ( $orbopts as $i => $opt ) {
 				$orbopts[ $i ] = Hash::insert( $opt, "Orbopt.flags", Hash::extract( $opt, "Optflag.{n}.id" ) );
@@ -224,7 +224,7 @@
 			$pricedicts = $this->build_pricedicts();
 			$opt_pricelists = $this->build_opt_pricelists();
 			$this->Orb->Special->Behaviors->load( 'Containable' );
-			$sp_cond = [ 'conditions' => ['`Special`.`deprecated`' => false],
+			$sp_cond = [ 'conditions' => ['`deprecated`' => false],
 			             'recursive' => 2,
                         'contain'    => [
                             'SpecialCondition' => [
