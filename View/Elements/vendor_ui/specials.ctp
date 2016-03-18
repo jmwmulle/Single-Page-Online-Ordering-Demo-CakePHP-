@@ -103,7 +103,7 @@
 					</td>
 					<!-- SPECIALS FEATURES -->
 					<td class="top-aligned">
-						<?=$this->Element("vendor_ui/specials/special_features_desc", ['features' => $special['SpecialFeature']]);?>
+						<?php //$this->Element("vendor_ui/specials/special_features_desc", ['features' => $special['SpecialFeature']]);?>
 					</td>
 					<!-- SPECIALS PRICE -->
 					<td id="specials-<?=$sid;?>-pricing" datar-route="specials_pricelist/launch/false/<?=$sid;?>">

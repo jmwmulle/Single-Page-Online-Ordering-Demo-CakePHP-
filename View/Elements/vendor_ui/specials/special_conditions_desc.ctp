@@ -10,10 +10,10 @@
 <div class="special-feature-condition">
 	<div class="row">
 		<div class="large-12 columns">
-			<? if ( count($conditions) > 1 ):?>
+			<? if ( count($conditions) > 1 ) {?>
 			<h4>Conditions</h4>
 			<ul class="special-feature-condition">
-				<?php foreach($conditions as $i => $c):
+				<?php foreach($conditions as $i => $c) {
 					if ($i == "Orb") continue;?>
 					<li>
 					<?php
@@ -21,12 +21,12 @@
 						$print_orbs = false;
 						if ( $c['orbcat_id'] ) {
 							$c_str = "Order must include an item from ".$c['Orbcat']['title']." (category).";
-						} elseif ( $c['orblist_id'] ) {
+						} else if ( $c['orblist_id'] ) {
 							$c_str = "Order must include an item from ".$c['Orblist']['name']." (custom list).";
-						} elseif ( $c['price_max'] or $c['price_min'] ) {
+						} else if ( $c['price_max'] or $c['price_min'] ) {
 							$price = $c['price_max'] ? money_format( "%#3.2n",$c['price_max']) : money_format( "%#3.2n",$c['price_min']);
 							$c_str = "Order must cost ".($c['price_max'] ? "at most " : "at least ")."$price.";
-						} elseif ( $c['delivery'] or $c['pickup'] ) {
+						} else if ( $c['delivery'] or $c['pickup'] ) {
 							$order_for = $c['delivery'] ? "delivery" : "pick-up";
 							$c_str = "Order must be for $order_for";
 						} else {
@@ -35,19 +35,19 @@
 							$c_str = "Order must include $include";?>
 						<?php } ;?>
 						<?=$c_str;?>
-						<?php if ($print_orbs): ?>
+						<?php if ($print_orbs) { ?>
 							<ul>
-							<?php foreach($conditions['Orb'] as $o):?>
+							<?php foreach($conditions['Orb'] as $o) {?>
 								<li>
 									<?=sprintf(" %s (%s)", $o['title'], implode(array_slice($o,6), ", "));?>
 								</li>
-							<?php endforeach;?>
+							<?php };?>
 							</ul>
-						<?php endif;?>
+						<?php }?>
 					</li>
-				<?php endforeach;?>
+				<?php };?>
 			</ul>
-			<?php endif;?>
+			<?php };?>
 
 		</div>
 	</div>
