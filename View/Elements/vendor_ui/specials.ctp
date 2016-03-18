@@ -99,11 +99,11 @@
 
 					<!-- SPECIALS CONDITIONS-->
 					<td class="top-aligned">
-						<?php //$this->Element("vendor_ui/specials/special_conditions_desc", ['conditions' => $special['SpecialCondition']]);?>
+						<?=$this->Element("vendor_ui/specials/special_conditions_desc", ['conditions' => $special['SpecialCondition']]);?>
 					</td>
 					<!-- SPECIALS FEATURES -->
 					<td class="top-aligned">
-						<?php //$this->Element("vendor_ui/specials/special_features_desc", ['features' => $special['SpecialFeature']]);?>
+						<?=$this->Element("vendor_ui/specials/special_features_desc", ['features' => $special['SpecialFeature']]);?>
 					</td>
 					<!-- SPECIALS PRICE -->
 					<td id="specials-<?=$sid;?>-pricing" datar-route="specials_pricelist/launch/false/<?=$sid;?>">
