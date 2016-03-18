@@ -27,7 +27,7 @@
 						<?=$f_str;?>
 						<?php if ($f['receive'] ) {?>
 							<ul>
-							<?php foreach($features['Orb'] as $o) { echo "<li>".$o['title']." (".implode(array_slice($o,7), ", ").")"."</li>"}?>
+							<?php foreach($features['Orb'] as $o) { echo "<li>".$o['title']." (".implode(array_slice($o,7), ", ").")"."</li>";}?>
 							</ul>
 							<?php };?>
 						</li>
