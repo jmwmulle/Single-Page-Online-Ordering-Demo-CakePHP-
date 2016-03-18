@@ -10,10 +10,10 @@
 <div class="special-feature-condition">
 	<div class="row">
 		<div class="large-12 columns">
-			<? if ( count($features) > 1 ):?>
+			<? if ( count($features) > 1 ) {?>
 			<h4>Features</h4>
 			<ul class="special-feature-condition">
-				<?php foreach($features as $i => $f):
+				<?php foreach($features as $i => $f) {
 						if ($i == "Orb") continue;?>
 						<li>
 						<?php
@@ -25,15 +25,15 @@
 								$f_str .= count($features['Orb']) > 1 ? " each:" : ":";
 							};?>
 						<?=$f_str;?>
-						<?php if ($f['receive'] ):?>
+						<?php if ($f['receive'] ) {?>
 							<ul>
-							<?php foreach($features['Orb'] as $o) echo "<li>".$o['title']." (".implode(array_slice($o,7), ", ").")"."</li>"?>
+							<?php foreach($features['Orb'] as $o) { echo "<li>".$o['title']." (".implode(array_slice($o,7), ", ").")"."</li>"}?>
 							</ul>
-							<?php endif;?>
+							<?php };?>
 						</li>
-				<?php endforeach;?>
+				<?php };?>
 			</ul>
-			<?php endif;?>
+			<?php };?>
  		</div>
 	</div>
 </div>

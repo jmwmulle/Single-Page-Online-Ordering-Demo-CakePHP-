@@ -23,10 +23,10 @@
 							$c_str = "Order must include an item from ".$c['Orbcat']['title']." (category).";
 						} else if ( $c['orblist_id'] ) {
 							$c_str = "Order must include an item from ".$c['Orblist']['name']." (custom list).";
-						} else if ( $c['price_max'] or $c['price_min'] ) {
+						} else if ( $c['price_max'] || $c['price_min'] ) {
 							$price = $c['price_max'] ? money_format( "%#3.2n",$c['price_max']) : money_format( "%#3.2n",$c['price_min']);
 							$c_str = "Order must cost ".($c['price_max'] ? "at most " : "at least ")."$price.";
-						} else if ( $c['delivery'] or $c['pickup'] ) {
+						} else if ( $c['delivery'] || $c['pickup'] ) {
 							$order_for = $c['delivery'] ? "delivery" : "pick-up";
 							$c_str = "Order must be for $order_for";
 						} else {
