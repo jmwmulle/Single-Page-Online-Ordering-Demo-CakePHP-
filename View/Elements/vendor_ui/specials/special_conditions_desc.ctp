@@ -10,7 +10,7 @@
 <div class="special-feature-condition">
 	<div class="row">
 		<div class="large-12 columns">
-			<? if ( count($conditions) > 1 ) {?>
+			<?php if ( count($conditions) > 1 ) {?>
 			<h4>Conditions</h4>
 			<ul class="special-feature-condition">
 				<?php foreach($conditions as $i => $c) {
