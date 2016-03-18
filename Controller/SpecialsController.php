@@ -176,7 +176,7 @@ class SpecialsController extends AppController {
 				                            'Orb' => $os]);
 			}
 			$orbs = $this->Special->Orb->find('all', ['recursive' => -1, 'order' => '`orbcat_id`'] );
-			$specials = $this->Special->find('all', ['conditions' => ['`special`.`deprecated`' => false]]);
+			$specials = $this->Special->find('all', ['conditions' => ['`deprecated`' => false]]);
 			$this->set(compact('orbcats', 'orbs', 'specials', 'grouped_orbs', 'orblists'));
 			$this->set('features', $this->features);
 			$this->set('conditions', $this->conditions);

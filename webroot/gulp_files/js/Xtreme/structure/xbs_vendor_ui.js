@@ -1370,7 +1370,6 @@ var xt_vendor_ui = {
 					$(C.BODY).append($("<div />").html(data));
 					die();
 				}
-				pr(data);
 				if (data.success == true) {
 					XT.vendor_ui.reload_tab('specials');
 				}
