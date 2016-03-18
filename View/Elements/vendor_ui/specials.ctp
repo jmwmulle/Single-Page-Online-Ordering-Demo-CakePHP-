@@ -6,7 +6,6 @@
  * Twitter: @thisimpetus
  * About.me: about.me/thisimpetus
  */
-$ready_to_list_specials = true;
 
 ?>
 <div id="specials-tab">
@@ -37,7 +36,6 @@ $ready_to_list_specials = true;
 					</tr>
 				</thead>
 				<tbody>
-				<?php if ($ready_to_list_specials) {?>
 				<?php foreach ( $specials as $special ):
 					$sid = $special['Special']['id'];
 					$sp = $special['Special'];
@@ -105,7 +103,7 @@ $ready_to_list_specials = true;
 					</td>
 					<!-- SPECIALS FEATURES -->
 					<td class="top-aligned">
-						<?=$this->Element("vendor_ui/specials/special_features_desc", ['features' => $special['SpecialFeature']]);?>
+						<?php //$this->Element("vendor_ui/specials/special_features_desc", ['features' => $special['SpecialFeature']]);?>
 					</td>
 					<!-- SPECIALS PRICE -->
 					<td id="specials-<?=$sid;?>-pricing" datar-route="specials_pricelist/launch/false/<?=$sid;?>">
@@ -133,7 +131,7 @@ $ready_to_list_specials = true;
 					</td>
 
 				</tr>
-			<?php endforeach; } ?>
+			<?php endforeach; ?>
 				</tbody>
 			</table>
 		</div>

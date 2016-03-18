@@ -39,7 +39,7 @@
 			);?>
 
 			<!------------------------------------- TAB 4: SPECIALS -------------------------------->
-			<?=$this->Element( 'vendor_ui/specials', compact('specials'));?>
+			<?=$this->Element( 'vendor_ui/specials', ['specials' => $specials]);?>
 
 		</div>
 	</div>

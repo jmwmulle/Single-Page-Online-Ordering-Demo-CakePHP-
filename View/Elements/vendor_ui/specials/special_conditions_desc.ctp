@@ -27,10 +27,12 @@
 							$price = $c['price_max'] ? money_format( "%#3.2n",$c['price_max']) : money_format( "%#3.2n",$c['price_min']);
 							$c_str = "Order must cost ".($c['price_max'] ? "at most " : "at least ")."$price.";
 						elseif ( $c['delivery'] or $c['pickup'] ):
-							$c_str = "Order must be for ".($c['delivery'] ? "delivery" : "pick-up");
+							$order_for = $c['delivery'] ? "delivery" : "pick-up";
+							$c_str = "Order must be for $order_for";
 						else:
 							$print_orbs = true;
-							$c_str = "Order must include ".(count($conditions['Orb']) > 1 ? "any of the following items:" : ":");?>
+							$include == count($conditions['Orb']) > 1 ? "any of the following items:" : ":";
+							$c_str = "Order must include $include";?>
 						<?php endif;?>
 						<?=$c_str;?>
 						<?php if ($print_orbs): ?>

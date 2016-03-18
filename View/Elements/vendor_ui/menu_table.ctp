@@ -28,7 +28,8 @@
 	                   'description' => true,
 	                   'orbcat'      => true,
 	                   'price'       => true,
-	                   'orbopt'      => true );
+	                   'orbopt'      => true,
+	);
 ?>
 <div id="menu-tab">
 	<div class="row">
