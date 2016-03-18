@@ -99,7 +99,7 @@
 
 					<!-- SPECIALS CONDITIONS-->
 					<td class="top-aligned">
-						<?=$this->Element("vendor_ui/specials/special_conditions_desc", ['conditions' => $special['SpecialCondition']]);?>
+						<?php //$this->Element("vendor_ui/specials/special_conditions_desc", ['conditions' => $special['SpecialCondition']]);?>
 					</td>
 					<!-- SPECIALS FEATURES -->
 					<td class="top-aligned">
