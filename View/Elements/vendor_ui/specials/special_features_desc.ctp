@@ -18,12 +18,12 @@
 						<li>
 						<?php
 							$f_str = $f['choose'] ? "Choose " : "Receive ".$f['quantity'];
-							if ( $f['choose'] ):
+							if ( $f['choose'] ) {
 								$f_str .= $f['quantity'] > 1 ? ' items' : ' item'." from ";
 								$f_str .= $f['orblist_id'] ? $f['Orblist']['name']." (custom list)" : $f['Orbcat']['title']." (category)";
-							else:
+							} else {
 								$f_str .= count($features['Orb']) > 1 ? " each:" : ":";
-							endif;?>
+							};?>
 						<?=$f_str;?>
 						<?php if ($f['receive'] ):?>
 							<ul>

@@ -19,21 +19,21 @@
 					<?php
 						$c_str;
 						$print_orbs = false;
-						if ( $c['orbcat_id'] ):
+						if ( $c['orbcat_id'] ) {
 							$c_str = "Order must include an item from ".$c['Orbcat']['title']." (category).";
-						elseif ( $c['orblist_id'] ):
+						} elseif ( $c['orblist_id'] ) {
 							$c_str = "Order must include an item from ".$c['Orblist']['name']." (custom list).";
-						elseif ( $c['price_max'] or $c['price_min'] ):
+						} elseif ( $c['price_max'] or $c['price_min'] ) {
 							$price = $c['price_max'] ? money_format( "%#3.2n",$c['price_max']) : money_format( "%#3.2n",$c['price_min']);
 							$c_str = "Order must cost ".($c['price_max'] ? "at most " : "at least ")."$price.";
-						elseif ( $c['delivery'] or $c['pickup'] ):
+						} elseif ( $c['delivery'] or $c['pickup'] ) {
 							$order_for = $c['delivery'] ? "delivery" : "pick-up";
 							$c_str = "Order must be for $order_for";
-						else:
+						} else {
 							$print_orbs = true;
 							$include == count($conditions['Orb']) > 1 ? "any of the following items:" : ":";
 							$c_str = "Order must include $include";?>
-						<?php endif;?>
+						<?php } ;?>
 						<?=$c_str;?>
 						<?php if ($print_orbs): ?>
 							<ul>
