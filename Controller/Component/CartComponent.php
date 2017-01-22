@@ -9,6 +9,7 @@
 		private $bottle_deposit = 0.1;
 		private $delivery_min = 10;
 		private $delivery_leeway = 0.05;
+		private $debug_list = ['price_orbopts' => false, 'update_quantity' => false, 'online_launch_special' => false];
 
 
 		public function __construct( ComponentCollection $collection, $settings = array() ) {
@@ -78,7 +79,7 @@
 			                                'included' => $included[ 'opt_count' ],
 			                                'price'    => 0 ],
 			];
-			$this->Session->write("Cart.Debug.orbopts.data", $orbopts);
+			if ($this->debug_list['price_orbopts']) $this->Session->write("Cart.Debug.orbopts.data", $orbopts);
 			$counting = [];
 			foreach ( $orbopts as $id => $orbopt ) {
 				if ( !$orbopt['Orbopt']['included'] ) continue;
@@ -99,14 +100,14 @@
 					if ( $price_map[ $index ][ 'price' ] == 0 ) $price_map[ $index ][ 'price' ] = $price;
 				}
 			}
-			$this->Session->write("Cart.Debug.orbopts.counts", $counting);
+			if ($this->debug_list['price_orbopts'])  $this->Session->write("Cart.Debug.orbopts.counts", $counting);
 			$unused_premium = $price_map['premium']['included'] - ($price_map['premium']['count'] - $price_map['premium']['included']);
 			if ($unused_premium > 0) {
 				$price_map['opt']['included'] += $unused_premium;
 			} else {
 				$price_map['opt']['included'] -= $price_map['premium']['included'];
 			}
-			$this->Session->write("Cart.Debug.orbopts.price_map", $price_map);
+			if ($this->debug_list['price_orbopts']) $this->Session->write("Cart.Debug.orbopts.price_map", $price_map);
 			$price_breakdown = [];
 			$price = 0;
 			foreach ( $price_map as $flag => $map) {
@@ -116,7 +117,7 @@
 					$price += ( $qty_diff * $map[ 'price' ] );
 				}
 			}
-			$this->Session->write("Cart.Debug.orbopts.price_breakdown", $price_breakdown);
+			if ($this->debug_list['price_orbopts']) $this->Session->write("Cart.Debug.orbopts.price_breakdown", $price_breakdown);
 
 			return $price;
 		}
@@ -131,7 +132,7 @@
 			foreach ( $this->Session->read( 'Cart.Order' ) as $uid => $oi ) {
 				$rank_match = $oi['pricing']['rank'] == $candidate['pricing']['rank'];
 				// slices orbs & opts for comparison
-				$this->Session->write("Cart.Debug.qty.comparison.$i", compact('oi', 'candidate', 'rank_match'));
+				if ($this->debug_list['update_quantity']) $this->Session->write("Cart.Debug.qty.comparison.$i", compact('oi', 'candidate', 'rank_match'));
 				if ( $rank_match ) {
 					if ( array_slice( $oi, 0, 2 ) == array_slice( $candidate, 0, 2 ) ) {
 						$candidate[ 'pricing' ][ 'quantity' ] += $oi[ 'pricing' ][ 'quantity' ];
@@ -163,7 +164,7 @@
 
 			foreach ($order['Order'] as $uid => $oi) {
 				array_push($debug['items'], $oi);
-				$this->Session->write('Cart.Debug.special', $debug);
+				if ($this->debug_list['online_launch_special']) $this->Session->write('Cart.Debug.special', $debug);
 				if ($oi['orb']['Orbcat']['title'] == "PIZZAS" && $oi['pricing']['rank'] == 3) {
 					$qualifies = true;
 				}
@@ -171,7 +172,7 @@
 				if ($oi['orb']['Orb']['id'] == $garlic_finger_id) $garlic_finger_uid = $uid;
 			}
 
-			$this->Session->write('Cart.Debug.special', $debug);
+			if ($this->debug_list['online_launch_special']) $this->Session->write('Cart.Debug.special', $debug);
 			if ($qualifies && !$free_eggroll_uid) {
 				$this->add(['id' => $free_eggroll_id,
                           'uid' => $free_eggroll_id."_".time(),
@@ -239,26 +240,6 @@
 				$orbopts[$id]['Orbopt']['default'] = array_key_exists($opt['Orbopt']['id'], $default_orbopts);
 				$orbopts[$id]['Orbopt']['included'] = true;
 			}
-//			foreach ($default_orbopts as $id => $opt) {
-//				if ( !array_key_exists($id, $orbopts) )  {
-//					$opt['Orbopt']['default'] = true;
-//					$opt['Orbopt']['included'] = false;
-//					$orbopts[$id] = $opt;
-//				}
-//			}
-
-//			db($orbopts);
-
-
-//			foreach ($orbopts as $id => $opt) {
-//				$default = $this->Controller->OrbsOrbopt->find('first', [
-//				                                                         'conditions' => [
-//																			  '`OrbsOrbopt`.`orb_id`' => $orb_id,
-//				                                                              '`OrbsOrbopt`.`orbopt_id`' => $id,
-//				                                                              '`OrbsOrbopt`.`default`' => true]]);
-//				$orbopts[$id]['Orbopt']['default'] = !empty($default);
-//			}
-//			$this->Session->write("Cart.Debug.default_opts", $debug);
 			// get the pricing info for each opt
 			$opt_price = $this->price_orbopts( $orbopts, $price_rank, [ 'opt_count'       => $orb[ 'Orb' ][ 'opt_count' ],
 			                                                            'cheese_count'    => $orb[ 'Orb' ][ 'cheese_count' ],

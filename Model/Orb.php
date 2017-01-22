@@ -155,6 +155,19 @@ class Orb extends AppModel {
 			'offset' => '',
 			'finderQuery' => '',
 		),
+		'Order' => array(
+			'className' => 'Order',
+			'joinTable' => 'orders_orbs',
+			'foreignKey' => 'orb_id',
+			'associationForeignKey' => 'order_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+		)
 	);
 
 }

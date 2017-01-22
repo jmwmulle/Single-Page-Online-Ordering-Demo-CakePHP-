@@ -52,7 +52,7 @@ class Orbopt extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		)
+		),
 	);
 
 /**
@@ -92,6 +92,19 @@ class Orbopt extends AppModel {
 			'joinTable' => 'orbs_orbopts',
 			'foreignKey' => 'orbopt_id',
 			'associationForeignKey' => 'orb_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+		),
+		'Orders' => array(
+			'className' => 'Orders',
+			'joinTable' => 'orders_orbopts',
+			'foreignKey' => 'orbopt_id',
+			'associationForeignKey' => 'orders_id',
 			'unique' => 'keepExisting',
 			'conditions' => '',
 			'fields' => '',

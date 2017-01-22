@@ -17,6 +17,7 @@ XtremeCart.prototype = {
 		this.cart_id = cart_id;
 		this.import_cart(false);
 	},
+
 	import_cart: function(session_data) {
 		this.orb = undefined;
 		var self = this;
@@ -24,7 +25,7 @@ XtremeCart.prototype = {
 			$.get([XT.host, "load-cart", this.cart_id].join(C.DS), function(response) { self.import_cart($.parseJSON(response).data)});
 			return;
 		}
-		pr(session_data, "session_data");
+
 		if ( session_data && !this.cart_id) this.cart_id = session_data.cart_id;
 
 		this.session_data = session_data;
@@ -154,7 +155,6 @@ XtremeCart.prototype = {
 	},
 
 	update: function(uid, target) {
-		pr([uid, target, this.session_data.Order[uid], as_id(["order-item", uid].join("-")), as_id([uid, "price"].join("-"))]);
 		if ( $(target).hasClass('edit-orb') ) {
 			var orb = this.session_data.Order[uid];
 			$( as_id([uid, "price"].join("-")) ).html(orb.pricing.net_formatted)

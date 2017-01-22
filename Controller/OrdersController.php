@@ -338,60 +338,133 @@
 
 
 		public function finalize() {
-			if ( $this->is_ajax_post() ) {
+			if ( $this->is_ajax_post() or true) {
 				$response       = [ 'success' => true,
 				                    'error'   => false,
 				                    'data'    => [
+					                    'formatted'      => null,
 					                    'submitted_data' => $this->request->data,
 					                    'cart'           => $this->Session->read( 'Cart' ) ]
 				];
-				$payment_method = $this->request->data[ 'Order' ][ 'payment_method' ];
-				$cart           = $this->Session->read( 'Cart' );
-				$this->Order->set( 'uid', $cart[ 'uid' ] );
-				$this->Order->set( 'state', ORDER_PENDING );
-				$this->Order->set( 'detail', json_encode( $this->Session->read( 'Cart' ) ) );
-				$this->Order->set( 'invoice', json_encode( $this->Session->read( 'Cart.Invoice' ) ) );
-				switch ( $payment_method ) {
-					case PAYPAL:
-						$paid = $this->Order->process_paypal_payment();
-						break;
-					case CREDIT_CARD:
-						$paid = $this->Order->process_credit_payment();
-						break;
-					case DEBIT:
-						$paid = false;
-// 						if ( !AppController::debit_available() ) {
-// 							$cart[ 'Service' ][ 'payment_method' ] = null;
-// 							$this->Session->write( 'Cart', $cart );
-// 							$response[ 'sucess' ]         = false;
-// 							$response[ 'error' ]          = "Debit unavailable";
-// 							$response[ 'data' ][ 'cart' ] = $cart;
-// 							$response[ 'delegate_route' ] = "review_order";
-// 							$this->render_ajax_response( $response );
-// 						}
-						break;
-					default:
-						// todo: set some default keys if needed, maybe?
-				}
-				$cart[ 'Service' ][ 'payment_method' ] = $payment_method;
-				$save                                  = true;
-				if ( $this->Auth->loggedIn() ) {
-					$this->Order->set( 'id', $this->Auth->user[ 'id' ] );
-					$save = $this->User->saveAssociated( [ "User" => $this->User, "Order" => $this->Order ] );
-				} else {
-					$this->Order->set( 'user_id', -1 );
-					$save = $this->Order->save();
-				}
-				if ( !$save ) {
-					$response[ 'success' ]        = false;
-					$response[ 'error' ]          = $this->Order->getValidationErrors();
-					$response[ 'delegate_route' ] = 'fatal_error';
 
-					return $this->render_ajax_response( $response );
+				// prepare basic insert data
+				$order_id = null;
+				$cart = $this->Session->read( 'Cart' );
+
+				$order = ['address_id' => null,
+	                     'state' => ORDER_PENDING,
+	                     'total' => $cart['Invoice']['total'],
+	                     'subtotal' => $cart['Invoice']['subtotal'],
+	                     'item_count' => $cart['Invoice']['item_count'],
+	                     'hst' => $cart['Invoice']['hst'],
+	                     'delivery' => $cart['Service']['order_method'] == DELIVERY,
+	                     'cash' => $cart['Service']['pay_method'] == CASH
+						];
+				$opt_key = 'Orbopt';
+				$o_key = 'Orb';
+				$data = [ $opt_key => [], $o_key => [] ];
+
+				// Create or find an address if the order is for delivery
+
+				$address = $cart['Service']['address'];
+
+				if ($address['id'] == -1) {
+					$conditions = ['conditions' => ['`Address`.`id`' => $address['id']]];
+				} else {
+					$conditions = ['conditions' => ['`Address`.`firstname`' => $address['firstname'],
+					                                '`Address`.`lastname`' => $address['lastname'],
+					                                '`Address`.`phone`' => $address['phone'],
+					                                '`Address`.`email`' => $address['email'],
+					                                '`Address`.`address`' => $address['address'],
+					                                '`Address`.`address_2`' => $address['address_2'],
+					                                '`Address`.`building_type`' => $address['building_type'],
+					                                '`Address`.`postal_code`' => $address['postal_code']]];
+				};
+				$extant = $this->Order->Address->find('first', $conditions);
+				if ( count($extant) > 0 ) {
+					$order['address_id'] = $extant['Address']['id'];
+				} else {
+					if ( !$this->Order->Address->save($address) ) {
+						$response['success'] = false;
+						$response['error']['address'] = $this->Order->Address->validationErrors;
+					} else {
+						$order['address_id'] = $this->Order->Address->getLastInsertID();
+					}
 				}
+
+				// compose associated model data (ie. OrdersOrbs, OrdersOrbopts)
+				foreach ($cart['Order'] as $uid => $o) {
+					$orb_id = $o['orb']['Orb']['id'];
+					array_push($data[$o_key], ['orb_id' => $orb_id,
+					                           'orb_uid' => $uid,
+					                           'quantity' => $o['pricing']['quantity'],
+					                           'rank' => $o['pricing']['rank']]);
+					foreach ($o['orbopts'] as $opt) {
+						array_push($data[$opt_key], [
+				                                   'orb_uid' => $uid,
+				                                   'orbopt_id' => $opt['Orbopt']['id'],
+			                                       'coverage' => $opt['Orbopt']['coverage'],
+			                                       'included' => $opt['Orbopt']['included']]);
+					}
+				}
+				$data['Order'] = $order;
+				// try to save the order itself
+				if ( !$this->Order->saveAssociated($data) ) {
+					$response['success'] = false;
+					$response['error'] = $this->Order->validationErrors;
+					$data['Address'] = $address;
+					$response['data']['formatted'] = $data;
+				}
+
+
+//				$payment_method = $this->request->data[ 'Order' ][ 'payment_method' ];
+//				$cart           = $this->Session->read( 'Cart' );
+//				$this->Order->set( 'uid', $cart[ 'uid' ] );
+//				$this->Order->set( 'state', ORDER_PENDING );
+//
+//				$this->Order->set( 'detail', json_encode( $this->Session->read( 'Cart' ) ) );
+//				$this->Order->set( 'invoice', json_encode( $this->Session->read( 'Cart.Invoice' ) ) );
+//				switch ( $payment_method ) {
+//					case PAYPAL:
+//						$paid = $this->Order->process_paypal_payment();
+//						break;
+//					case CREDIT_CARD:
+//						$paid = $this->Order->process_credit_payment();
+//						break;
+//					case DEBIT:
+//						$paid = false;
+//// 						if ( !AppController::debit_available() ) {
+//// 							$cart[ 'Service' ][ 'payment_method' ] = null;
+//// 							$this->Session->write( 'Cart', $cart );
+//// 							$response[ 'sucess' ]         = false;
+//// 							$response[ 'error' ]          = "Debit unavailable";
+//// 							$response[ 'data' ][ 'cart' ] = $cart;
+//// 							$response[ 'delegate_route' ] = "review_order";
+//// 							$this->render_ajax_response( $response );
+//// 						}
+//						break;
+//					default:
+//						// todo: set some default keys if needed, maybe?
+//				}
+//				$cart[ 'Service' ][ 'payment_method' ] = $payment_method;
+//				$save = true;
+//				if ( $this->Auth->loggedIn() ) {
+//					$this->Order->set( 'id', $this->Auth->user[ 'id' ] );
+//					$save = $this->User->saveAssociated( [ "User" => $this->User, "Order" => $this->Order ] );
+//				} else {
+//					$this->Order->set( 'user_id', -1 );
+//					$save = $this->Order->save();
+//				}
+//				if ( !$save ) {
+//					$response[ 'success' ]        = false;
+//					$response[ 'error' ]          = $this->Order->getValidationErrors();
+//					$response[ 'delegate_route' ] = 'fatal_error';
+//
+//					return $this->render_ajax_response( $response );
+//				}
 				$cart[ 'id' ] = $this->Order->id;
-				$this->Order->set('detail', json_encode( $cart) );
-				$this->Order->save();
+//				$this->Order->set('detail', json_encode( $cart) );
+//				$this->Order->save();
 				$this->Session->write( 'Cart', $cart );
 				$response[ 'data' ][ 'cart' ] = $cart;
 				$response[ 'delegate_route' ] = 'launch_order_confirmation' . DS . $this->Order->id . DS . true;
@@ -414,6 +487,8 @@
 			}
 		}
 
+		private function sanitize_detail($detail) {
+		}
 
 		/**
 		 * Review cart only (ie. no order details like payment or service)
@@ -615,10 +690,10 @@
 			if ( $this->request->is( 'ajax' ) or true) {
 				$sys = $this->system_status(POS_AVAILABLE, 1, true);
 
-				$orders = $this->Order->find( 'all', ['conditions' => ['Order.state' => ORDER_PENDING ], 'recursive' => -1 ] );
-				foreach ($orders as $i => $order) {
-					$orders[ $i ][ 'Order' ][ 'detail' ] = json_decode( $orders[ $i ][ 'Order' ][ 'detail' ], true );
-				}
+				$orders = $this->Order->find( 'all', ['conditions' => ['Order.state' => ORDER_PENDING ], 'recursive' => 1 ] );
+//				foreach ($orders as $i => $order) {
+//					$orders[ $i ][ 'Order' ][ 'detail' ] = json_decode( $orders[ $i ][ 'Order' ][ 'detail' ], true );
+//				}
 				$response     = ['success' => true,
 				                 'error' => false,
 				                 'data' => compact('orders', 'sys')
